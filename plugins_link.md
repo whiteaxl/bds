@@ -7,6 +7,7 @@
 * Swiper: https://github.com/leecade/react-native-swiper#basic-usage
 * Refreshable ListView: https://github.com/jsdf/react-native-refreshable-listview#usage
 * Float button: https://github.com/mastermoo/react-native-action-button
+* Form : https://github.com/gcanti/tcomb-form-native
 
 Source: 
 * http://www.gajotres.net/must-have-plugins-for-react-native/
