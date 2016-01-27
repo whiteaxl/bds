@@ -9,7 +9,8 @@ export default class Home extends React.Component {
 	render() {
 		return(
 			<View style={styles.container}>
-				<Text> Home </Text>
+				<Text> Home - Welcome </Text>
+				<Text> {this.props.user.name} </Text>
 			</View>
 		)
 	}

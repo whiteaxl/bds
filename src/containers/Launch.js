@@ -48,8 +48,8 @@ export default class Launch extends React.Component {
   }
 
   loginWithGoogle() {
-    _rwGoogleSignIn.signIn();
-    this.signOut = _rwGoogleSignIn.signOut
+    this.signInService = this._rwGoogleSignIn;
+    this.signInService.signIn();
   }
 
   render() {
@@ -65,7 +65,7 @@ export default class Launch extends React.Component {
 
           <Text style={{height: 10}}> </Text>
        
-          <Icon.Button style={styles.button} name="google" backgroundColor="#f44336" onPress={this.loginWithGoogle}>
+          <Icon.Button style={styles.button} name="google" backgroundColor="#f44336" onPress={this.loginWithGoogle.bind(this)}>
             Login with Google
           </Icon.Button>
 
@@ -81,19 +81,25 @@ export default class Launch extends React.Component {
   
 
   signInFail(error) {
-    console.log('ERROR signin in', error);
-    this.errorAlert.checkError(error);
+    console.log('ERROR signin in:', error);
+    //this.errorAlert.checkError(error);
   }
 
   signInSuccess(user) {
-    console.log(user);
+    this.signInService = this._rwGoogleSignIn; //incase auto call when startup
+
     this.setState({user: user});
-    Actions.app(user);
+
+    Actions.app({user: user, facade: this });
   }
 
-  postSignOut() {
-    this.setState({user: null});
+  signOut() {
+    console.log("signout:")
+    console.log(this)
+    console.log(this.signInService)
+    return this.signInService.signOut();
   }
+
 } 
 
 var styles = StyleSheet.create({

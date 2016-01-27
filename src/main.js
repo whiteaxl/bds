@@ -23,8 +23,8 @@ export default class MainBDS extends React.Component {
 	render() {
 		return (
 			<Router hideNavBar={true}>
-				<Route name="launch" header={Header} component={Launch} wrapRouter={true} title="Launch title" hideNavBar={true} initial={true}/>		
-				<Route name="app" component={App} title="Replace" type="replace"/>
+				<Route name="launch1" header={Header} component={Launch} wrapRouter={true} title="Launch title" hideNavBar={true} initial={true}/>		
+				<Route name="app" component={App} title="Replace" />
 			</Router>
 		);
 	}

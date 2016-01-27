@@ -64,6 +64,21 @@ let Tabbar = React.createClass({
       selectedTab: 'home'
     };
   },
+
+  _renderOneTab(Component, name, title, iconName) {
+    return(
+      <TabNavigator.Item selected={this.state.selectedTab === name}
+                           title={title}
+                           renderIcon={() => <Icon name={iconName} size={30} color="#FFB3B3" />}
+                           renderSelectedIcon={() => <Icon name={iconName} size={30} color="#FF3366" />}
+                           onPress={() => this.setState({ selectedTab: name })}>
+          <View style={styles.container}>
+            <Component user={this.props.user} facade={this.props.facade} />
+          </View>
+        </TabNavigator.Item>
+    );
+  },
+
   /**
    * ### render
    * Either display the 'Home' or the 'Profile'
@@ -72,45 +87,10 @@ let Tabbar = React.createClass({
   render() {
     return (
       <TabNavigator>
-        <TabNavigator.Item selected={this.state.selectedTab === 'home'}
-                           title="Home"
-                           renderIcon={() => <Icon name="home" size={30} color="#FFB3B3" />}
-                           renderSelectedIcon={() => <Icon name="home" size={30} color="#FF3366" />}
-                           onPress={() => this.setState({ selectedTab: 'home' })}>
-          <View style={styles.container}>
-            <Home />
-          </View>
-        </TabNavigator.Item>
-
-        <TabNavigator.Item selected={this.state.selectedTab === 'PostAd'}
-                           title="PostAd"
-                           renderIcon={() => <Icon name="plus-square-o" size={30} color="#FFB3B3" />}
-                           renderSelectedIcon={() => <Icon name="plus-square-o" size={30} color="#FF3366" />}
-                           onPress={() => this.setState({ selectedTab: 'PostAd' })}>
-          <View style={styles.container}>
-            <PostAd/>
-          </View>
-        </TabNavigator.Item>
-
-        <TabNavigator.Item selected={this.state.selectedTab === 'Inbox'}
-                           title="Inbox"
-                           renderIcon={() => <Icon name="inbox" size={30} color="#FFB3B3" />}
-                           renderSelectedIcon={() => <Icon name="inbox" size={30} color="#FF3366" />}
-                           onPress={() => this.setState({ selectedTab: 'Inbox' })}>
-          <View style={styles.container}>
-            <Inbox/>
-          </View>
-        </TabNavigator.Item>
-       
-        <TabNavigator.Item selected={this.state.selectedTab === 'profile'}
-                           title="Profile"
-                           renderIcon={() => <Icon name="gear" size={30} color="#FFB3B3" />}
-                           renderSelectedIcon={() => <Icon name="gear" size={30} color="#FF3366" />}
-                           onPress={() => this.setState({ selectedTab: 'profile' })}>
-          <View style={styles.container}>
-            <Profile/>
-          </View>
-        </TabNavigator.Item>
+        {this._renderOneTab(Home, 'home', 'Home' ,'home')}
+        {this._renderOneTab(PostAd, 'postAd', 'Post Ad', 'plus-square-o')}
+        {this._renderOneTab(Inbox, 'inbox', 'Inbox','inbox')}
+        {this._renderOneTab(Profile, 'profile', 'Profile' , 'gear')}
       </TabNavigator>
 
     )

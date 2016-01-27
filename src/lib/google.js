@@ -7,6 +7,7 @@ var GoogleSignin = require('react-native-google-signin');
 export default class RwgGoogleSignIn {
 
   constructor(launchObj) {
+    console.log("call constructor of GoogleSignInService")
     this._configureOauth(
       '113039164647-968jspgcqgo1d3pbfn4ghfil77g6l6pq.apps.googleusercontent.com' //RwBDS
     );
@@ -35,6 +36,5 @@ export default class RwgGoogleSignIn {
 
   signOut() {
     GoogleSignin.signOut();
-    this.launchObj.postSignOut();
   }
 };

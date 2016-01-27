@@ -8,9 +8,14 @@ import React, {
 import Tabbar from '../components/Tabbar'
 
 export default class App extends React.Component {
+	constructor(props) {
+		super(props);
+	}
+
 	render() {
+		console.log(this.props.user);
 		return (
-			<Tabbar/>
+			<Tabbar user={this.props.user} facade={this.props.facade} />
 		)
 	}
 }
