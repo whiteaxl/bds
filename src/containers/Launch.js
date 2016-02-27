@@ -1,4 +1,5 @@
 'use strict';
+
 import React, {
   StyleSheet,
   Text,
@@ -10,12 +11,7 @@ import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Dimensions from 'Dimensions';
 
-//google sigin
-import { NativeAppEventEmitter } from 'react-native';
-
-var GoogleSignin = require('react-native-google-signin');
-
-import RwGoogleSignIn from '../lib/google.js'
+import DeviceInfo from 'react-native-device-info';
 
 
 /**
@@ -40,16 +36,18 @@ export default class Launch extends React.Component {
     }
   }
   componentDidMount() {
-    this._rwGoogleSignIn = new RwGoogleSignIn(this);
+    
   }
 
-	loginWithFacebook() {
+  loginWithoutUser() {
+    console.log("Device Unique ID", DeviceInfo.getUniqueID());
+    console.log("Device Model", DeviceInfo.getModel());
 
+    Actions.Drawer()
   }
 
-  loginWithGoogle() {
-    this.signInService = this._rwGoogleSignIn;
-    this.signInService.signIn();
+  login() {
+    
   }
 
   render() {
@@ -59,16 +57,27 @@ export default class Launch extends React.Component {
 		      <IntroSwiper />
 				</View>
 				<View style={styles.buttonControl} > 
-       		<Icon.Button style={styles.button} name="facebook-official" backgroundColor="#3b5998" onPress={this.loginWithFacebook}>
-            Login with Facebook
-          </Icon.Button>
-
-          <Text style={{height: 10}}> </Text>
        
-          <Icon.Button style={styles.button} name="google" backgroundColor="#f44336" onPress={this.loginWithGoogle.bind(this)}>
-            Login with Google
+          <View style={{flexDirection: 'row'}}>
+            <Icon.Button style={styles.button} name="sign-in" backgroundColor="#f44336" 
+                onPress={this.login.bind(this)}>
+              Dang Nhap
+            </Icon.Button>
+            <Text style={{width: 10}}> </Text>
+            <Icon.Button style={styles.button} name="book" backgroundColor="#f44336" 
+                onPress={this.login.bind(this)}>
+              Dang Ky
+            </Icon.Button>
+          </View>
+          
+          <Text style={{height: 10}}> </Text>
+          
+          <Icon.Button style={{width: 250}} name="play" backgroundColor="#004306" 
+              onPress={this.loginWithoutUser.bind(this)}>
+            Dang nhap khong can dang ky
           </Icon.Button>
-
+          
+       
           <Text style={styles.termLine}> 
             Bằng việc đăng ký, bạn đồng ý với 
             <Text style={{color: 'lightblue'}}> Điều Khoản Dịch Vụ </Text>
@@ -122,7 +131,7 @@ var styles = StyleSheet.create({
   }, 
 
   button : {
-    width: 200, 
+    width: 120, 
     //marginLeft: 10
   }, 
 
