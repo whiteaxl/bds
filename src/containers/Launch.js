@@ -14,6 +14,22 @@ import Dimensions from 'Dimensions';
 import DeviceInfo from 'react-native-device-info';
 
 
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+/**
+ * The actions we need
+ */
+import * as globalActions from '../reducers/global/globalActions';
+import * as authActions from '../reducers/auth/authActions';
+
+/**
+ * Immutable Mapn
+ */
+import {Map} from 'immutable';
+
+
+
 /**
  * The ErrorAlert displays an alert for both ios & android
  */
@@ -22,11 +38,47 @@ import ErrorAlert from '../components/ErrorAlert';
 //intro swiper
 import IntroSwiper from '../components/IntroSwiper';
 
+
+/**
+ * The 4 states were interested in
+ */
+const {
+  LOGIN_STATE_LOGOUT,
+} = require('../lib/constants').default;
+
+/**
+ * ## Redux boilerplate
+ */
+const actions = [
+  globalActions, 
+  authActions
+];
+
+function mapStateToProps(state) {
+  return {
+      ...state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  const creators = Map()
+          .merge(...actions)
+          .filter(value => typeof value === 'function')
+          .toObject();
+
+  return {
+    actions: bindActionCreators(creators, dispatch),
+    dispatch
+  };
+}
+
+
+
 var topHeight = function() {
   return Dimensions.get('window').height * 4 / 5 - 15;
 }
 
-export default class Launch extends React.Component {
+class Launch extends React.Component {
   constructor(props) {
     super(props);
     this.errorAlert = new ErrorAlert();
@@ -40,8 +92,16 @@ export default class Launch extends React.Component {
   }
 
   loginWithoutUser() {
-    console.log("Device Unique ID", DeviceInfo.getUniqueID());
+    let uid = DeviceInfo.getUniqueID();
+
+    console.log("Device Unique ID", uid);
     console.log("Device Model", DeviceInfo.getModel());
+
+    this.props.actions.loginWithoutUser({
+      userID : uid
+      , name : 'Device'
+      , isDevice : true
+    })
 
     Actions.Drawer()
   }
@@ -141,3 +201,5 @@ var styles = StyleSheet.create({
     color: 'white'
   }
 });
+
+export default connect(mapStateToProps, mapDispatchToProps)(Launch);
