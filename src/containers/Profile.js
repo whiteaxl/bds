@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import * as globalActions from '../reducers/global/globalActions';
 
 /**
- * Immutable Mapn
+ * Immutable Map
  */
 import {Map} from 'immutable';
 
@@ -49,18 +49,16 @@ function mapDispatchToProps(dispatch) {
 
 
 
-class Home extends Component {
+class Profile extends Component {
   render() {
     return (
 			<View style={styles.container}>
-				<Text style={styles.welcome}>........Home screen........</Text>
+				<Text style={styles.welcome}>........Profile screen........</Text>
 				<Text style={styles.stuff}>Welcome: {this.props.global.currentUser.userID}</Text>
-				<Text style={styles.stuff}>Awesome stuffs are here</Text>
-				<Text style={styles.notes}>You can take a tour by using the side menu </Text>
 			</View>
 		)
 	}
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 

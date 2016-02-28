@@ -4,7 +4,21 @@ import Drawer from 'react-native-drawer';
 var Button = require('react-native-button');
 var Actions = require('react-native-router-flux').Actions;
 
+
 class SideDrawerContent extends Component {
+
+	_button(page, caption) {
+		const { drawer } = this.context;
+
+		return (
+			<Button onPress={() => { 
+				page.call(); 
+				drawer.close();
+			}}>
+				{caption}
+			</Button>
+		);
+	}
 
 	static contextTypes = {
 		drawer: PropTypes.object.isRequired,
@@ -14,10 +28,11 @@ class SideDrawerContent extends Component {
 		const { drawer } = this.context;
 		return (
 			<View>
-				<Button onPress={() => { Actions.Drawer.call(); } }>Home</Button>
-				<Button onPress={() => { Actions.Screen1.call(); drawer.close(); } }>Screen 1</Button>
-				<Button onPress={() => { Actions.Screen2.call(); drawer.close(); } }>Screen 2</Button>
-				<Button onPress={() => { Actions.Login.call(); } }>Logout</Button>
+				<Button onPress={() => { Actions.Home.call(); drawer.close();} }>Trang chủ</Button>
+				<Button onPress={() => { Actions.Screen1.call(); drawer.close(); } }>Đăng tin bán/cho thuê</Button>
+				<Button onPress={() => { Actions.Screen2.call(); drawer.close(); } }>Danh sách đã đánh dấu</Button>
+				<Button onPress={() => { Actions.Screen2.call(); drawer.close(); } }>Hộp thư</Button>
+				{this._button(Actions.Profile, "Trang cá nhân")}
 			</View>
 		);
 	}
@@ -47,6 +62,11 @@ export default class SideDrawer extends Component {
 }
 
 var drawerStyles = {
-	drawer: { backgroundColor: '#ffffff' },
-	main: { paddingLeft: 3 }
+	drawer: { 
+		backgroundColor: '#ffffff' ,
+		paddingTop: 20
+	},
+	main: { 
+		paddingLeft: 3
+	}
 };

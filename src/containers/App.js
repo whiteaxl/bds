@@ -71,6 +71,7 @@ import SideDrawer from './SideDrawer';
 import Home from './Home';
 import Screen1 from './Screen1';
 import Screen2 from './Screen2';
+import Profile from './Profile';
 
 
 
@@ -165,6 +166,8 @@ class App extends Component {
 							<Route name='Home' component={Home} schema='main' title='Home' />
 							<Route name='Screen1' component={Screen1} schema='main' title='Screen1' />
 							<Route name='Screen2' component={Screen2} schema='main' title='Screen2' />
+							<Route name='Profile' component={Profile} schema='main' title='Profile' />
+
 						</Router>
 	     			</SideDrawer>
 				</Route>

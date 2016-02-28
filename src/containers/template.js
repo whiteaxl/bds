@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import * as globalActions from '../reducers/global/globalActions';
 
 /**
- * Immutable Mapn
+ * Immutable Map
  */
 import {Map} from 'immutable';
 
