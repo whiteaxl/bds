@@ -67,11 +67,14 @@ import { Router, Route, Schema, Animations, TabBar} from 'react-native-router-fl
 import Login from './Login';
 import Launch from './Launch';
 import Register from './Register';
-import SideDrawer from './SideDrawer';
+
 import Home from './Home';
+
 import Screen1 from './Screen1';
 import Screen2 from './Screen2';
+
 import Profile from './Profile';
+import Tabbar from '../components/Tabbar';
 
 
 
@@ -156,8 +159,10 @@ class App extends Component {
 				<Route name='Launch' component={Launch} schema='boot' initial hideNavBar title="Welcome" />
 				<Route name='Register' component={Register} schema='main' title="Register Screen" />
 
+
 				<Route name='Drawer' hideNavBar={true} type='replace'>
-			        <SideDrawer>
+			        <Tabbar>
+						{/*		
 						<Router
 							sceneStyle={styles.routerScene}
 							navigationBarStyle={styles.navBar}
@@ -169,7 +174,8 @@ class App extends Component {
 							<Route name='Profile' component={Profile} schema='main' title='Profile' />
 
 						</Router>
-	     			</SideDrawer>
+						*/}
+	     			</Tabbar>
 				</Route>
 
 			</Router>

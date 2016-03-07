@@ -16,6 +16,7 @@
     "react-native-router-flux": "^2.3.6",
     "react-native-simpledialog-android": "^1.0.2",
     "react-native-swiper": "^1.4.3",
+    "react-native-tab-navigator": "^0.2.16",
     "react-native-vector-icons": "^1.2.1",
     "react-redux": "^4.4.0",
     "redux": "^3.3.1",
