@@ -1,10 +1,22 @@
 import React, {StyleSheet, PixelRatio} from 'react-native';
 
 module.exports = StyleSheet.create({
+	search: {
+			marginTop: 15,
+	    flexDirection: 'row',
+	    alignItems: 'center',
+			justifyContent: 'center',
+			backgroundColor: '#f44336',
+	},
+	fullWidthContainer: {
+			flex: 1,
+			alignItems: 'stretch',
+			backgroundColor: '#F5FCFF',
+	},
 	container: {
 			flex: 1,
 			justifyContent: 'center',
-			alignItems: 'center',
+			alignItems: 'stretch',
 			backgroundColor: '#F5FCFF',
 	},
 	welcome: {
