@@ -1,6 +1,7 @@
 'use strict';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
+import FloatLabelTextInput from 'react-native-floating-label-text-input';
 
 /**
  * The actions we need
@@ -58,7 +59,11 @@ class Home extends Component {
           name="search" backgroundColor="#f44336"
           underlayColor="gray"
           style={styles.search}>
-          Search BDS
+          <FloatLabelTextInput
+            placeHolder={"Search BDS"}
+            onFocus={this.onFocusSearchButton}
+            onBlur={this.onBlurSearchButton}
+          />
         </Icon.Button>
 
         <View style={styles.container}>
@@ -72,6 +77,12 @@ class Home extends Component {
 	}
   handleSearchButton() {
     console.log("Search button pressed!");
+  }
+  onFocusSearchButton() {
+
+  }
+  onBlurSearchButton() {
+
   }
 }
 
