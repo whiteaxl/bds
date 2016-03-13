@@ -65,7 +65,7 @@ class Search extends Component {
     );
   }
   onCancel() {
-    console.log("On Cancel pressed!");
+    Actions.pop();
   }
   onApply() {
     console.log("On Apply pressed!");
