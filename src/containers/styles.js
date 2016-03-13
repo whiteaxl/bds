@@ -13,6 +13,12 @@ module.exports = StyleSheet.create({
 			alignItems: 'stretch',
 			backgroundColor: '#F5FCFF',
 	},
+  buttonWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+		marginLeft: 15,
+		marginRight: 15
+  },
 	container: {
 			flex: 1,
 			justifyContent: 'center',

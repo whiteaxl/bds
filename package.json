@@ -13,7 +13,6 @@
     "react-native-button": "^1.4.2",
     "react-native-device-info": "^0.8.3",
     "react-native-drawer": "^1.16.7",
-    "react-native-floating-label-text-input": "0.0.8",
     "react-native-router-flux": "^2.3.6",
     "react-native-simpledialog-android": "^1.0.2",
     "react-native-swiper": "^1.4.3",

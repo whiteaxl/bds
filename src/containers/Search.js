@@ -14,7 +14,7 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component } from 'react-native'
+import React, { Text, View, Component, Navigator } from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -50,29 +50,26 @@ function mapDispatchToProps(dispatch) {
 
 
 
-class Home extends Component {
+class Search extends Component {
   render() {
     return (
-      <View style={styles.fullWidthContainer}>
-        <Icon.Button onPress={this.handleSearchButton}
-          name="search" backgroundColor="#f44336"
-          underlayColor="gray"
-          style={styles.search}>
-          Search BDS
-        </Icon.Button>
-
-        <View style={styles.container}>
-  				<Text style={styles.welcome}>........Home screen........</Text>
-  				<Text style={styles.stuff}>Welcome: {this.props.global.currentUser.userID}</Text>
-  				<Text style={styles.stuff}>Awesome stuffs are here</Text>
-  				<Text style={styles.notes}>You can take a tour by using the side menu </Text>
+      <View style={styles.container}>
+        <Text style={styles.welcome}>
+        Search filters
+        </Text>
+        <View style={styles.buttonWrapper}>
+          <Button onPress={this.onCancel}>Cancel</Button>
+          <Button onPress={this.onApply}>Apply</Button>
         </View>
       </View>
-		)
-	}
-  handleSearchButton() {
-    Actions.Search();
+    );
+  }
+  onCancel() {
+    console.log("On Cancel pressed!");
+  }
+  onApply() {
+    console.log("On Apply pressed!");
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(Home);
+export default connect(mapStateToProps, mapDispatchToProps)(Search);

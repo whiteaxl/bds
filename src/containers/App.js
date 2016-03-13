@@ -73,6 +73,8 @@ import Home from './Home';
 import Screen1 from './Screen1';
 import Screen2 from './Screen2';
 
+import Search from './Search';
+
 import Profile from './Profile';
 import Tabbar from '../components/Tabbar';
 
@@ -158,11 +160,11 @@ class App extends Component {
 
 				<Route name='Launch' component={Launch} schema='boot' initial hideNavBar title="Welcome" />
 				<Route name='Register' component={Register} schema='main' title="Register Screen" />
+        <Route name='Search' component={Search} schema='main' title="Search" />
 
-
-				<Route name='Drawer' hideNavBar={true} type='replace'>
+				<Route name='Home' hideNavBar={true} type='replace'>
 			        <Tabbar>
-						{/*		
+						{/*
 						<Router
 							sceneStyle={styles.routerScene}
 							navigationBarStyle={styles.navBar}
@@ -202,4 +204,3 @@ const styles = StyleSheet.create({
 
 //connect the props
 export default connect(mapStateToProps, mapDispatchToProps) (App);
-
