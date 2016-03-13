@@ -25,6 +25,36 @@ module.exports = StyleSheet.create({
 	    justifyContent: 'space-between',
 			margin: 15,
 	},
+	searchFilter: {
+			flex: 1,
+			alignItems: 'stretch',
+			justifyContent: 'flex-start',
+			marginTop: 65,
+	},
+	searchFilterDetail: {
+			flex: 1,
+			alignItems: 'flex-start',
+			justifyContent: 'flex-start',
+			marginTop: 65,
+	},
+	searchFilterAttribute: {
+			margin: 15,
+	},
+	searchMoreFilterButton: {
+			flex: 1,
+			alignItems: 'center',
+			justifyContent: 'center',
+	},
+  searchFilterButton: {
+	    flexDirection: 'row',
+	    justifyContent: 'space-between',
+  },
+	searchFilterButtonText: {
+			marginLeft: 15,
+			marginRight: 15,
+			marginTop: 10,
+			marginBottom: 10,
+	},
 	searchButton: {
 			flex: 1,
 			alignItems: 'stretch',

@@ -54,10 +54,40 @@ class Search extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.container}>
-          <Text style={styles.welcome}>
-          Search filters
-          </Text>
+        <View style={styles.searchFilter}>
+          <View style={styles.searchFilterButton}>
+            <Button onPress={this.onForSale}
+            style={styles.searchFilterButtonText}>FOR SALE</Button>
+            <Button onPress={this.onForRent}
+            style={styles.searchFilterButtonText}>FOR RENT</Button>
+            <Button onPress={this.onSaveSearch}
+            style={styles.searchFilterButtonText}>Saved search</Button>
+          </View>
+          <View style={styles.searchFilterDetail}>
+            <View style={styles.searchFilterAttribute}>
+              <Text style={styles.welcome}>
+              Price Range
+              </Text>
+            </View>
+            <View style={styles.searchFilterAttribute}>
+              <Text style={styles.welcome}>
+              Property Types
+              </Text>
+            </View>
+            <View style={styles.searchFilterAttribute}>
+              <Text style={styles.welcome}>
+              Dien tich
+              </Text>
+            </View>
+          </View>
+          <View style={styles.searchMoreFilterButton}>
+            <View style={styles.searchFilterAttribute}>
+              <Button onPress={this.onMoreOption}>More</Button>
+            </View>
+            <View style={styles.searchFilterAttribute}>
+              <Button onPress={this.onResetFilters}>Reset Filters</Button>
+            </View>
+          </View>
         </View>
         <View style={styles.searchButton}>
           <View style={styles.searchButtonWrapper}>
@@ -75,6 +105,21 @@ class Search extends Component {
   }
   onApply() {
     console.log("On Apply pressed!");
+  }
+  onForSale() {
+    console.log("On For Sale pressed!");
+  }
+  onForRent() {
+    console.log("On For Rent pressed!");
+  }
+  onMoreOption() {
+    console.log("On More Option pressed!");
+  }
+  onResetFilters() {
+    console.log("On Reset Filters pressed!");
+  }
+  onSaveSearch() {
+    console.log("On Save Search pressed!");
   }
 }
 
