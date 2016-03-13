@@ -58,41 +58,41 @@ class Home extends Component {
           name="search" backgroundColor="#f44336"
           underlayColor="gray"
           style={styles.search}>
-          Search BDS
+          Tìm kiếm BDS
         </Icon.Button>
 
         <View style={styles.homeDetailInfo}>
           <View style={styles.homeDetailInfo}>
-  				    <Text style={styles.welcome}>Thong tin du an</Text>
+  				    <Text style={styles.welcome}>Thông tin dự án</Text>
           </View>
           <View style={styles.homeDetailInfo}>
-  				    <Text style={styles.welcome}>Nha dat ban</Text>
+  				    <Text style={styles.welcome}>Nhà đất bán</Text>
               <View style={styles.homeRowAlign}>
-                <Text style={styles.welcome}>Ban can ho chung cu</Text>
-                <Text style={styles.welcome}>Ban nha rieng</Text>
+                <Text style={styles.welcome}>Bán căn hộ chung cư</Text>
+                <Text style={styles.welcome}>Bán nhà riêng</Text>
               </View>
               <View style={styles.homeRowAlign}>
-                <Text style={styles.welcome}>Ban nha mat pho</Text>
-                <Text style={styles.welcome}>Ban biet thu, lien ke</Text>
+                <Text style={styles.welcome}>Bán nhà mặt phố</Text>
+                <Text style={styles.welcome}>Bán biệt thự, liền kề</Text>
               </View>
               <View style={styles.homeRowAlign}>
-                <Text style={styles.welcome}>Ban dat</Text>
-                <Text style={styles.welcome}>Ban cac bds khac</Text>
+                <Text style={styles.welcome}>Bán đất</Text>
+                <Text style={styles.welcome}>Bán các bds khác</Text>
               </View>
           </View>
           <View style={styles.homeDetailInfo}>
-  				    <Text style={styles.welcome}>Nha dat cho thue</Text>
+  				    <Text style={styles.welcome}>Nhà đất cho thuê</Text>
               <View style={styles.homeRowAlign}>
-                <Text style={styles.welcome}>Thue chung cu</Text>
-                <Text style={styles.welcome}>Thue nha rieng</Text>
+                <Text style={styles.welcome}>Thuê chung cư</Text>
+                <Text style={styles.welcome}>Thuê nhà riêng</Text>
               </View>
               <View style={styles.homeRowAlign}>
-                <Text style={styles.welcome}>Thue nha mat pho</Text>
-                <Text style={styles.welcome}>Cho thue van phong</Text>
+                <Text style={styles.welcome}>Thuê nha mặt phố</Text>
+                <Text style={styles.welcome}>Cho thuê văn phòng</Text>
               </View>
               <View style={styles.homeRowAlign}>
-                <Text style={styles.welcome}>Thue cua hang, ki-ot</Text>
-                <Text style={styles.welcome}>Thue bds khac</Text>
+                <Text style={styles.welcome}>Thuê cửa hàng, ki-ốt</Text>
+                <Text style={styles.welcome}>Thuê bds khác</Text>
               </View>
           </View>
         </View>

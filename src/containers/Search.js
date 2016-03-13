@@ -57,16 +57,16 @@ class Search extends Component {
         <View style={styles.searchFilter}>
           <View style={styles.searchFilterButton}>
             <Button onPress={this.onForSale}
-            style={styles.searchFilterButtonText}>FOR SALE</Button>
+            style={styles.searchFilterButtonText}>Bán</Button>
             <Button onPress={this.onForRent}
-            style={styles.searchFilterButtonText}>FOR RENT</Button>
+            style={styles.searchFilterButtonText}>Cho thuê</Button>
             <Button onPress={this.onSaveSearch}
-            style={styles.searchFilterButtonText}>Saved search</Button>
+            style={styles.searchFilterButtonText}>Lưu tìm kiếm</Button>
           </View>
           <View style={styles.searchFilterDetail}>
             <View style={styles.searchFilterAttribute}>
               <Text style={styles.welcome}>
-              Price Range
+              Giá
               </Text>
             </View>
             <View style={styles.searchFilterAttribute}>
@@ -76,25 +76,25 @@ class Search extends Component {
             </View>
             <View style={styles.searchFilterAttribute}>
               <Text style={styles.welcome}>
-              Dien tich
+              Diện tích
               </Text>
             </View>
           </View>
           <View style={styles.searchMoreFilterButton}>
             <View style={styles.searchFilterAttribute}>
-              <Button onPress={this.onMoreOption}>More</Button>
+              <Button onPress={this.onMoreOption}>Thêm</Button>
             </View>
             <View style={styles.searchFilterAttribute}>
-              <Button onPress={this.onResetFilters}>Reset Filters</Button>
+              <Button onPress={this.onResetFilters}>Thiết lập lại</Button>
             </View>
           </View>
         </View>
         <View style={styles.searchButton}>
           <View style={styles.searchButtonWrapper}>
             <Button onPress={this.onCancel}
-            style={styles.searchButtonText}>Cancel</Button>
+            style={styles.searchButtonText}>Thoát</Button>
             <Button onPress={this.onApply}
-            style={styles.searchButtonText}>Apply</Button>
+            style={styles.searchButtonText}>Thực hiện</Button>
           </View>
         </View>
       </View>
@@ -104,7 +104,7 @@ class Search extends Component {
     Actions.pop();
   }
   onApply() {
-    console.log("On Apply pressed!");
+    Actions.SearchResultList();
   }
   onForSale() {
     console.log("On For Sale pressed!");
@@ -112,14 +112,14 @@ class Search extends Component {
   onForRent() {
     console.log("On For Rent pressed!");
   }
+  onSaveSearch() {
+    console.log("On Save Search pressed!");
+  }
   onMoreOption() {
     console.log("On More Option pressed!");
   }
   onResetFilters() {
     console.log("On Reset Filters pressed!");
-  }
-  onSaveSearch() {
-    console.log("On Save Search pressed!");
   }
 }
 

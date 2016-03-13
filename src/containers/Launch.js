@@ -121,12 +121,12 @@ class Launch extends React.Component {
           <View style={{flexDirection: 'row'}}>
             <Icon.Button style={styles.button} name="sign-in" backgroundColor="#f44336"
                 onPress={this.login.bind(this)}>
-              Dang Nhap
+              Đăng Nhập
             </Icon.Button>
             <Text style={{width: 10}}> </Text>
             <Icon.Button style={styles.button} name="book" backgroundColor="#f44336"
                 onPress={this.login.bind(this)}>
-              Dang Ky
+              Đăng Ký
             </Icon.Button>
           </View>
 
@@ -134,7 +134,7 @@ class Launch extends React.Component {
 
           <Icon.Button style={{width: 250}} name="play" backgroundColor="#004306"
               onPress={this.loginWithoutUser.bind(this)}>
-            Dang nhap khong can dang ky
+            Đăng nhập không cần đăng ký
           </Icon.Button>
 
 
