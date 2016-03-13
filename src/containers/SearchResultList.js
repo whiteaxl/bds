@@ -18,6 +18,7 @@ import React, { Text, View, Component } from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
+import Api from '../components/Api';
 
 import styles from './styles';
 
@@ -51,12 +52,15 @@ function mapDispatchToProps(dispatch) {
 
 class SearchResultList extends Component {
   render() {
+    Api.getItems()
+      .then((data) => {
+        console.log(data);
+      });
     return (
 			<View style={styles.container}>
-				<Text style={styles.welcome}>........Home screen........</Text>
-				<Text style={styles.stuff}>Welcome: {this.props.global.currentUser.userID}</Text>
-				<Text style={styles.stuff}>Awesome stuffs are here</Text>
-				<Text style={styles.notes}>You can take a tour by using the side menu </Text>
+				<Text style={styles.welcome}>Kết quả tìm kiếm 1</Text>
+        <Text style={styles.welcome}>Kết quả tìm kiếm 2</Text>
+        <Text style={styles.welcome}>Kết quả tìm kiếm 3</Text>
 			</View>
 		)
 	}
