@@ -13,12 +13,35 @@ module.exports = StyleSheet.create({
 			alignItems: 'stretch',
 			backgroundColor: '#F5FCFF',
 	},
-  buttonWrapper: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-		marginLeft: 15,
-		marginRight: 15
+	homeDetailInfo: {
+			flex: 1,
+			justifyContent: 'center',
+			alignItems: 'stretch',
+			backgroundColor: '#CCC0DA',
+	},
+	homeRowAlign: {
+	    flexDirection: 'row',
+			alignItems: 'flex-start',
+	    justifyContent: 'space-between',
+			margin: 15,
+	},
+	searchButton: {
+			flex: 1,
+			alignItems: 'stretch',
+			justifyContent: 'flex-end',
+	},
+  searchButtonWrapper: {
+	    flexDirection: 'row',
+	    justifyContent: 'space-between',
+			backgroundColor: 'green',
   },
+	searchButtonText: {
+			marginLeft: 15,
+			marginRight: 15,
+			marginTop: 10,
+			marginBottom: 10,
+			color: 'white'
+	},
 	container: {
 			flex: 1,
 			justifyContent: 'center',

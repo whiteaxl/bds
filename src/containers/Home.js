@@ -61,11 +61,40 @@ class Home extends Component {
           Search BDS
         </Icon.Button>
 
-        <View style={styles.container}>
-  				<Text style={styles.welcome}>........Home screen........</Text>
-  				<Text style={styles.stuff}>Welcome: {this.props.global.currentUser.userID}</Text>
-  				<Text style={styles.stuff}>Awesome stuffs are here</Text>
-  				<Text style={styles.notes}>You can take a tour by using the side menu </Text>
+        <View style={styles.homeDetailInfo}>
+          <View style={styles.homeDetailInfo}>
+  				    <Text style={styles.welcome}>Thong tin du an</Text>
+          </View>
+          <View style={styles.homeDetailInfo}>
+  				    <Text style={styles.welcome}>Nha dat ban</Text>
+              <View style={styles.homeRowAlign}>
+                <Text style={styles.welcome}>Ban can ho chung cu</Text>
+                <Text style={styles.welcome}>Ban nha rieng</Text>
+              </View>
+              <View style={styles.homeRowAlign}>
+                <Text style={styles.welcome}>Ban nha mat pho</Text>
+                <Text style={styles.welcome}>Ban biet thu, lien ke</Text>
+              </View>
+              <View style={styles.homeRowAlign}>
+                <Text style={styles.welcome}>Ban dat</Text>
+                <Text style={styles.welcome}>Ban cac bds khac</Text>
+              </View>
+          </View>
+          <View style={styles.homeDetailInfo}>
+  				    <Text style={styles.welcome}>Nha dat cho thue</Text>
+              <View style={styles.homeRowAlign}>
+                <Text style={styles.welcome}>Thue chung cu</Text>
+                <Text style={styles.welcome}>Thue nha rieng</Text>
+              </View>
+              <View style={styles.homeRowAlign}>
+                <Text style={styles.welcome}>Thue nha mat pho</Text>
+                <Text style={styles.welcome}>Cho thue van phong</Text>
+              </View>
+              <View style={styles.homeRowAlign}>
+                <Text style={styles.welcome}>Thue cua hang, ki-ot</Text>
+                <Text style={styles.welcome}>Thue bds khac</Text>
+              </View>
+          </View>
         </View>
       </View>
 		)

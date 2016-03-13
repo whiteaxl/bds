@@ -54,12 +54,18 @@ class Search extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-        Search filters
-        </Text>
-        <View style={styles.buttonWrapper}>
-          <Button onPress={this.onCancel}>Cancel</Button>
-          <Button onPress={this.onApply}>Apply</Button>
+        <View style={styles.container}>
+          <Text style={styles.welcome}>
+          Search filters
+          </Text>
+        </View>
+        <View style={styles.searchButton}>
+          <View style={styles.searchButtonWrapper}>
+            <Button onPress={this.onCancel}
+            style={styles.searchButtonText}>Cancel</Button>
+            <Button onPress={this.onApply}
+            style={styles.searchButtonText}>Apply</Button>
+          </View>
         </View>
       </View>
     );
