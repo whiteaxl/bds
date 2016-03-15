@@ -2,7 +2,7 @@
 
 import ApiUtils from './ApiUtils'
 
-var rootUrl = 'http://localhost/search';
+var rootUrl = 'http://localhost:5000/api/find';
 
 var Api = {
   getItems: function() {

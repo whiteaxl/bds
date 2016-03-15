@@ -8,6 +8,23 @@ module.exports = StyleSheet.create({
 			justifyContent: 'center',
 			backgroundColor: '#f44336',
 	},
+  row: {
+    justifyContent: 'center',
+    padding: 10,
+    backgroundColor: '#F6F6F6',
+  },
+  separator: {
+    height: 1,
+    backgroundColor: '#CCCCCC',
+  },
+	thumb: {
+		justifyContent: 'center',
+		alignItems: 'stretch',
+		height: 128,
+	},
+  text: {
+    flex: 1,
+  },
 	fullWidthContainer: {
 			flex: 1,
 			alignItems: 'stretch',
@@ -50,8 +67,8 @@ module.exports = StyleSheet.create({
 	    justifyContent: 'space-between',
   },
 	searchFilterButtonText: {
-			marginLeft: 15,
-			marginRight: 15,
+			marginLeft: 50,
+			marginRight: 50,
 			marginTop: 10,
 			marginBottom: 10,
 	},

@@ -60,8 +60,6 @@ class Search extends Component {
             style={styles.searchFilterButtonText}>Bán</Button>
             <Button onPress={this.onForRent}
             style={styles.searchFilterButtonText}>Cho thuê</Button>
-            <Button onPress={this.onSaveSearch}
-            style={styles.searchFilterButtonText}>Lưu tìm kiếm</Button>
           </View>
           <View style={styles.searchFilterDetail}>
             <View style={styles.searchFilterAttribute}>
@@ -71,7 +69,7 @@ class Search extends Component {
             </View>
             <View style={styles.searchFilterAttribute}>
               <Text style={styles.welcome}>
-              Property Types
+              Loại nhà đất
               </Text>
             </View>
             <View style={styles.searchFilterAttribute}>
@@ -111,9 +109,6 @@ class Search extends Component {
   }
   onForRent() {
     console.log("On For Rent pressed!");
-  }
-  onSaveSearch() {
-    console.log("On Save Search pressed!");
   }
   onMoreOption() {
     console.log("On More Option pressed!");

@@ -162,7 +162,7 @@ class App extends Component {
 				<Route name='Launch' component={Launch} schema='boot' initial hideNavBar title="Welcome" />
 				<Route name='Register' component={Register} schema='main' title="Register Screen" />
         <Route name='Search' component={Search} schema='main' title="Tìm kiếm" />
-        <Route name='SearchResultList' component={SearchResultList} schema='main' title="Kết quả tìm kiếm" />
+        <Route name='SearchResultList' component={SearchResultList} schema='main' title="Danh sách" />
 
 				<Route name='Home' hideNavBar={true} type='replace'>
 			        <Tabbar>

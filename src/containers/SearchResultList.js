@@ -14,7 +14,7 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component } from 'react-native'
+import React, { Text, View, Component, Image, ListView, RecyclerViewBackedScrollView } from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -51,19 +51,50 @@ function mapDispatchToProps(dispatch) {
 
 
 class SearchResultList extends Component {
-  render() {
+  constructor(props) {
+    super(props);
+    var dataBlob = [];
     Api.getItems()
       .then((data) => {
-        console.log(data);
+        if (data.list) {
+          data.list.map(function(aRow) {
+              dataBlob.push(aRow.value);
+            }
+          );
+          var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+          var dataSource = ds.cloneWithRows(dataBlob);
+          this.setState({
+            dataSource: dataSource
+          });
+        }
       });
+  }
+  render() {
+    if (!this.state) {
+      return (
+  			<View style={styles.container}>
+  			</View>
+      )
+    }
     return (
 			<View style={styles.container}>
-				<Text style={styles.welcome}>Kết quả tìm kiếm 1</Text>
-        <Text style={styles.welcome}>Kết quả tìm kiếm 2</Text>
-        <Text style={styles.welcome}>Kết quả tìm kiếm 3</Text>
+        <ListView
+          dataSource={this.state.dataSource}
+          renderRow={this.renderRow}
+          renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
+          renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
+        />
 			</View>
 		)
 	}
+  renderRow(rowData, sectionID, rowID) {
+    return (
+      <View style={styles.row}>
+        <Image style={styles.thumb} source={{uri: `${rowData.cover}`}} />
+        <Text style={styles.text}>{rowData.diaChi}</Text>
+      </View>
+    );
+  }
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultList);
