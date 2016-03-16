@@ -85,7 +85,7 @@ class Search extends Component {
               </Text>
             </View>
             <View style={styles.searchFilterAttribute}>
-              <Text style={styles.welcome}>
+              <Text style={styles.welcome} onPress={this.onChosePropertyTypes}>
               Loại nhà đất
               </Text>
             </View>
@@ -132,6 +132,10 @@ class Search extends Component {
   }
   onResetFilters() {
     console.log("On Reset Filters pressed!");
+  }
+
+  onChosePropertyTypes() {
+    Actions.PropertyTypes();
   }
 }
 

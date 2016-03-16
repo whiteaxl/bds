@@ -75,6 +75,7 @@ import Screen2 from './Screen2';
 
 import Search from './Search';
 import SearchResultList from './SearchResultList';
+import PropertyTypes from './PropertyTypes';
 
 import Profile from './Profile';
 import Tabbar from '../components/Tabbar';
@@ -164,6 +165,7 @@ class App extends Component {
 				<Route name='Register' component={Register} schema='main' title="Register Screen" />
 		        <Route name='Search' component={Search} schema='main' title="Tìm kiếm" />
         		<Route name='SearchResultList' component={SearchResultList} schema='main' title="Danh sách" />
+        		<Route name='PropertyTypes' component={PropertyTypes} schema='main' title="Loại nhà đất" />
 
 				<Route name='Home' hideNavBar={true} type='replace'>
 			        <Tabbar>
