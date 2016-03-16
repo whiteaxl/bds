@@ -1,6 +1,10 @@
 import keyMirror from 'key-mirror';
 
 export default keyMirror({
+  ON_SEARCH_FIELD_CHANGE : null, 
+  SEARCH_STATE_INPUT: null, 
+
+
   SET_PLATFORM: null,
   SET_VERSION: null,
 

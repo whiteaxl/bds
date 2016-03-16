@@ -29,6 +29,8 @@ import {setStore} from './reducers/global/globalActions';
 //import authInitialState from './reducers/auth/authInitialState';
 import deviceInitialState from './reducers/device/deviceInitialState';
 import globalInitialState from './reducers/global/globalInitialState';
+import searchInitialState from './reducers/search/searchInitialState';
+
 //import profileInitialState from './reducers/profile/profileInitialState';
 
 /**
@@ -47,6 +49,7 @@ function getInitialState() {
     //auth: new authInitialState,
     device: (new deviceInitialState).set('isMobile',true),
     global: (new globalInitialState),
+    search: (new searchInitialState),
     //profile: new profileInitialState
   };
   return _initState;

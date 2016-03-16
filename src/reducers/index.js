@@ -13,6 +13,8 @@
 
 import device from './device/deviceReducer';
 import global from './global/globalReducer';
+import search from './search/searchReducer';
+
 
 import { combineReducers } from 'redux';
 
@@ -26,6 +28,7 @@ const rootReducer = combineReducers({
   //auth,
   device,
   global,
+  search
   //profile
 });
 

@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
  * The actions we need
  */
 import * as globalActions from '../reducers/global/globalActions';
+import * as searchActions from '../reducers/search/searchActions';
 
 /**
  * Immutable Mapn
@@ -22,12 +23,14 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
 
+import LikeTabButton from '../components/LikeTabButton';
 
 /**
 * ## Redux boilerplate
 */
 const actions = [
-  globalActions
+  globalActions,
+  searchActions
 ];
 
 function mapStateToProps(state) {
@@ -51,15 +54,29 @@ function mapDispatchToProps(dispatch) {
 
 
 class Search extends Component {
+  constructor() {
+    super();
+  }
+
+  _onLoaiTinChange(value) {
+    this.props.actions.onSearchFieldChange("loaiTin", value);
+  }
+
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.searchFilter}>
           <View style={styles.searchFilterButton}>
-            <Button onPress={this.onForSale}
-            style={styles.searchFilterButtonText}>Bán</Button>
-            <Button onPress={this.onForRent}
-            style={styles.searchFilterButtonText}>Cho thuê</Button>
+
+            <View onPress={this.onForSale} style = {{flex:1, flexDirection: 'row'}}>
+              <LikeTabButton name={'ban'} 
+                onPress={this._onLoaiTinChange.bind(this)} 
+                selected={this.props.search.form.fields.loaiTin === 'ban'}>Bán</LikeTabButton>
+              <LikeTabButton name={'thue'} 
+                onPress={this._onLoaiTinChange.bind(this)} 
+                selected={this.props.search.form.fields.loaiTin === 'thue'}>Cho thuê</LikeTabButton> 
+            </View>
+
           </View>
           <View style={styles.searchFilterDetail}>
             <View style={styles.searchFilterAttribute}>
