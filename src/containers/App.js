@@ -157,8 +157,9 @@ class App extends Component {
 				/>
 
 				<Route name='Launch' component={Launch} schema='boot' initial hideNavBar title="Welcome" />
+				
 				<Route name='Register' component={Register} schema='main' title="Register Screen" />
-
+			
 
 				<Route name='Drawer' hideNavBar={true} type='replace'>
 			        <Tabbar>
