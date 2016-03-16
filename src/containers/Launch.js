@@ -50,7 +50,7 @@ const {
  * ## Redux boilerplate
  */
 const actions = [
-  globalActions, 
+  globalActions,
   authActions
 ];
 
@@ -88,7 +88,7 @@ class Launch extends React.Component {
     }
   }
   componentDidMount() {
-    
+
   }
 
   loginWithoutUser() {
@@ -103,11 +103,11 @@ class Launch extends React.Component {
       , isDevice : true
     })
 
-    Actions.Drawer()
+    Actions.Home()
   }
 
   login() {
-    
+
   }
 
   render() {
@@ -116,38 +116,38 @@ class Launch extends React.Component {
 				<View style={styles.swiper}>
 		      <IntroSwiper />
 				</View>
-				<View style={styles.buttonControl} > 
-       
+				<View style={styles.buttonControl} >
+
           <View style={{flexDirection: 'row'}}>
-            <Icon.Button style={styles.button} name="sign-in" backgroundColor="#f44336" 
+            <Icon.Button style={styles.button} name="sign-in" backgroundColor="#f44336"
                 onPress={this.login.bind(this)}>
-              Dang Nhap
+              Đăng Nhập
             </Icon.Button>
             <Text style={{width: 10}}> </Text>
-            <Icon.Button style={styles.button} name="book" backgroundColor="#f44336" 
+            <Icon.Button style={styles.button} name="book" backgroundColor="#f44336"
                 onPress={this.login.bind(this)}>
-              Dang Ky
+              Đăng Ký
             </Icon.Button>
           </View>
-          
+
           <Text style={{height: 10}}> </Text>
-          
-          <Icon.Button style={{width: 250}} name="play" backgroundColor="#004306" 
+
+          <Icon.Button style={{width: 250}} name="play" backgroundColor="#004306"
               onPress={this.loginWithoutUser.bind(this)}>
-            Dang nhap khong can dang ky
+            Đăng nhập không cần đăng ký
           </Icon.Button>
-          
-       
-          <Text style={styles.termLine}> 
-            Bằng việc đăng ký, bạn đồng ý với 
+
+
+          <Text style={styles.termLine}>
+            Bằng việc đăng ký, bạn đồng ý với
             <Text style={{color: 'lightblue'}}> Điều Khoản Dịch Vụ </Text>
             </Text>
          </View>
 			</View>
-		); 
+		);
 	}
 
-  
+
 
   signInFail(error) {
     console.log('ERROR signin in:', error);
@@ -169,35 +169,35 @@ class Launch extends React.Component {
     return this.signInService.signOut();
   }
 
-} 
+}
 
 var styles = StyleSheet.create({
   container : {
-  	flex: 1, 
-    justifyContent: 'center', 
+  	flex: 1,
+    justifyContent: 'center',
     alignItems: 'center'
   },
 
   swiper : {
-  	flex: 4, 
+  	flex: 4,
     //borderWidth: 5,
-  }, 
+  },
   buttonControl : {
-  	justifyContent : 'center', 
-  	alignItems : 'center', 
+  	justifyContent : 'center',
+  	alignItems : 'center',
     padding: 15,
-    //position: 'absolute', 
+    //position: 'absolute',
     bottom: 30
-  }, 
+  },
 
   button : {
-    width: 120, 
+    width: 120,
     //marginLeft: 10
-  }, 
+  },
 
   termLine : {
-    fontSize:11, 
-    paddingTop: 10, 
+    fontSize:11,
+    paddingTop: 10,
     color: 'white'
   }
 });
