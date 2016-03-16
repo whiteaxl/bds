@@ -18,12 +18,16 @@ module.exports = StyleSheet.create({
     backgroundColor: '#CCCCCC',
   },
 	thumb: {
-		justifyContent: 'center',
+		justifyContent: 'flex-end',
 		alignItems: 'stretch',
 		height: 128,
+    alignSelf: 'auto',
 	},
   text: {
-    flex: 1,
+    fontSize: 16,
+    textAlign: 'left',
+		backgroundColor: 'transparent',
+    margin: 10,
   },
 	fullWidthContainer: {
 			flex: 1,

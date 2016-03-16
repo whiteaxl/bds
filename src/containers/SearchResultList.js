@@ -66,6 +66,10 @@ class SearchResultList extends Component {
           this.setState({
             dataSource: dataSource
           });
+        } else {
+          this.setState({
+            errormsg: "Lỗi kết nối đến máy chủ!"
+          });
         }
       });
   }
@@ -73,6 +77,13 @@ class SearchResultList extends Component {
     if (!this.state) {
       return (
   			<View style={styles.container}>
+  			</View>
+      )
+    }
+    if (!this.state.dataSource) {
+      return (
+  			<View style={styles.container}>
+          <Text style={styles.welcome}>{this.state.errormsg}</Text>
   			</View>
       )
     }
@@ -90,8 +101,10 @@ class SearchResultList extends Component {
   renderRow(rowData, sectionID, rowID) {
     return (
       <View style={styles.row}>
-        <Image style={styles.thumb} source={{uri: `${rowData.cover}`}} />
-        <Text style={styles.text}>{rowData.diaChi}</Text>
+        <Image style={styles.thumb} source={{uri: `${rowData.cover}`}}>
+          <Text style={styles.text}>{rowData.price_value} {rowData.price_unit}</Text>
+          <Text style={styles.text}>{rowData.diaChi}</Text>
+        </Image>
       </View>
     );
   }
