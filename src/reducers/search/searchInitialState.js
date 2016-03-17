@@ -27,8 +27,10 @@ const SearchForm = Record({
     loaiNhaDat:'',
     soPhongNgu:0,
     soTang:0,
-    dienTich:0,
-    gia:0
+    dienTich:[0,100],
+    gia:[0,2000],
+    pickerGia: [[0, 1000,2000,3000,4000], [0, 1000,2000,3000,4000]],
+    pickerDienTich: [[0, 30,60,100,200, 300, 1000], [0, 30,60,100,200, 300, 1000]],
   }))
 });
 

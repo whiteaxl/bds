@@ -1,6 +1,6 @@
 import React, {StyleSheet, PixelRatio} from 'react-native';
 
-
+import gui from '../lib/gui';
 
 module.exports = StyleSheet.create({
 	search: {
@@ -62,18 +62,22 @@ module.exports = StyleSheet.create({
 	},
 	searchFilter: {
 			flex: 1,
-			alignItems: 'stretch',
-			justifyContent: 'flex-start',
 			marginTop: 65,
 	},
 	searchFilterDetail: {
 			flex: 1,
-			alignItems: 'flex-start',
-			justifyContent: 'flex-start',
-			marginTop: 65,
+			flexDirection:"column",
+			//borderWidth:1, 
+			//borderColor: "green"
 	},
 	searchFilterAttribute: {
-			margin: 15,
+			flexDirection : "row",
+			//borderWidth:1, 
+			//borderColor: "red", 
+			justifyContent :'space-between', 
+			padding: 10,
+			borderTopWidth: 1, 
+			borderTopColor: 'lightgray'
 	},
 	searchMoreFilterButton: {
 			flex: 2,
@@ -82,7 +86,7 @@ module.exports = StyleSheet.create({
 	},
   searchFilterButton: {
 	    flexDirection: 'row',
-	    justifyContent: 'space-between',
+	    
   },
 	searchFilterButtonText: {
 			marginLeft: 50,
@@ -97,7 +101,7 @@ module.exports = StyleSheet.create({
   searchButtonWrapper: {
 	    flexDirection: 'row',
 	    justifyContent: 'space-between',
-			backgroundColor: 'green',
+			backgroundColor: gui.green,
   },
 	searchButtonText: {
 			marginLeft: 15,
@@ -135,5 +139,23 @@ module.exports = StyleSheet.create({
 	},
 	link: {
 		color: '#3257DA',
+	},
+	searchAttributeLabel : {
+		fontSize: 15, 
+		color: 'black',
+	},
+	searchAttributeValue : {
+		fontSize: 15, 
+		color: 'gray',
+	},
+	searchSectionTitle: {
+		flexDirection : "row",
+		//borderWidth:1, 
+		//borderColor: "red", 
+		justifyContent :'space-between', 
+		padding: 10,
+		borderTopWidth: 1, 
+		borderTopColor: 'lightgray', 
+		backgroundColor: '#f8f8f8'
 	},
 });
