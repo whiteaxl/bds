@@ -2,21 +2,28 @@ import React, {
   StyleSheet,
   Text,
   View,
-  Image
+  Image,
+  TouchableOpacity
 } from 'react-native';
 
 import Button from 'react-native-button';
+import gui from '../lib/gui';
 
 export default class LikeTabButton extends React.Component {
   render() {
+    var selected = this.props.selected;
+    var myStyle = selected? 'buttonTextSelected' : 'buttonText'
+
     return (
       <View style={styles.wrapper}>
-        <Button style={[styles.ButtonText, {color: this.props.selected?'green': 'black'}]} 
+        <TouchableOpacity 
           onPress={() => this.props.onPress(this.props.name)}>
-          {this.props.children}
-        </Button>
+          <Text style={styles[myStyle]} >
+            {this.props.children}
+          </Text>
+        </TouchableOpacity>
 
-        <View style = {[styles.lineunder, {borderBottomWidth:this.props.selected ? 3:0 }]}  /> 
+        <View style = {[styles.lineunder, {borderBottomWidth:selected ? 5:0 }]}  /> 
 
       </View>
     );
@@ -28,8 +35,8 @@ export default class LikeTabButton extends React.Component {
 var styles = StyleSheet.create({
   lineunder: {
     flex: 1, 
-    borderBottomColor: "green", 
-    //borderBottomWidth: 3, 
+    borderBottomColor: gui.green1, 
+   
     borderStyle: "solid", 
     //width: 60, 
     height: 3, 
@@ -45,45 +52,21 @@ var styles = StyleSheet.create({
     
   },
 
-  tabWrapper: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center', 
-    
-  },
-  slide: {
-    flex: 1,
-    justifyContent: 'center',
-    backgroundColor: 'transparent',
-    //
-  },
-  text: {
-    color: '#FFFFFF',
-    fontSize: 20,
-    fontWeight: 'bold',
-    top: -250, 
-    alignSelf:'center', 
-    justifyContent: 'center',
-  },
-  image: {
-    flex: 1,
-    marginTop: 5
-  }, 
-  dot : {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginLeft: 3,
-    marginRight: 3,
-    marginTop: 3,
-    marginBottom: 3,
-    bottom: 160
-  }, 
-
-  ButtonText: {
+  buttonText: {
     flex: 1, 
     alignSelf:'center',
     fontSize: 15, 
     padding: 10,
+    color: 'black',
+    fontWeight : 'normal'
+  },
+
+  buttonTextSelected: {
+    flex: 1, 
+    alignSelf:'center',
+    fontSize: 15, 
+    padding: 10,
+    color: gui.green1,
+    fontWeight : 'bold'
   },
 });

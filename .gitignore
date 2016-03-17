@@ -34,3 +34,7 @@ local.properties
 node_modules/
 npm-debug.log
 
+
+src/containers/styles.js
+
+src/reducers/search/searchInitialState.js
