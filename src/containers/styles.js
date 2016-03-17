@@ -1,5 +1,7 @@
 import React, {StyleSheet, PixelRatio} from 'react-native';
 
+
+
 module.exports = StyleSheet.create({
 	search: {
 			marginTop: 15,
