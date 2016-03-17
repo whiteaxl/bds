@@ -1,13 +1,22 @@
 // Api.js
 
-import ApiUtils from './ApiUtils'
+import ApiUtils from './ApiUtils';
 
 var rootUrl = 'http://localhost:5000/api/find';
 
+const orderTypes = [
+          'Mặc định',
+          'Ngày nhập',
+          'Giá (Giảm dần)',
+          'Giá (Tăng dần)',
+          'Số phòng ngủ',
+          'Diện tích'
+        ];
+
 var Api = {
-  getItems: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich) {
-    var fullUrl = this.createFullUrl(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich);
-    // console.log("Full URL: " + fullUrl);
+  getItems: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy) {
+    var fullUrl = this.createFullUrl(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy);
+    //console.log("Full URL: " + fullUrl);
     return fetch(`${fullUrl}`, {
       method: 'POST',
       headers: {
@@ -27,7 +36,22 @@ var Api = {
     }
     return fullUrl;
   },
-  createFullUrl: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich) {
+  addOrder: function(fullUrl, orderBy) {
+    if (orderTypes[2] === orderBy) {
+      fullUrl = this.addFilter(fullUrl, "orderBy=giaDESC");
+    }
+    else if (orderTypes[3] === orderBy) {
+      fullUrl = this.addFilter(fullUrl, "orderBy=giaASC");
+    }
+    else if (orderTypes[4] === orderBy) {
+      fullUrl = this.addFilter(fullUrl, "orderBy=soPhongNguASC");
+    }
+    else if (orderTypes[5] === orderBy) {
+      fullUrl = this.addFilter(fullUrl, "orderBy=dienTichDESC");
+    }
+    return fullUrl;
+  },
+  createFullUrl: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy) {
       var fullUrl = '';
       var loaiTinVal = null;
       if ('ban' === loaiTin) {
@@ -39,20 +63,23 @@ var Api = {
       if (null !== loaiTinVal) {
         fullUrl = this.addFilter(fullUrl, "loaiTin="+loaiTinVal);
       }
-      if (null !== loaiNhaDat) {
+      if (loaiNhaDat) {
         fullUrl = this.addFilter(fullUrl, "loaiNhaDat="+loaiNhaDat);
       }
-      if (null !== gia) {
+      if (gia) {
         fullUrl = this.addFilter(fullUrl, "giaBETWEEN="+gia);
       }
-      if (null !== soPhongNgu) {
+      if (soPhongNgu) {
         fullUrl = this.addFilter(fullUrl, "soPhongNguGREATER="+soPhongNgu);
       }
-      if (null !== soTang) {
+      if (soTang) {
         fullUrl = this.addFilter(fullUrl, "soTangGREATER="+soTang);
       }
-      if (null !== dienTich) {
+      if (dienTich) {
         fullUrl = this.addFilter(fullUrl, "dienTichBETWEEN="+dienTich);
+      }
+      if (orderBy) {
+        fullUrl = this.addOrder(fullUrl, orderBy);
       }
       if ('' === fullUrl) {
         fullUrl = rootUrl;

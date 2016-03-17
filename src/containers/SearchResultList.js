@@ -54,14 +54,72 @@ function mapDispatchToProps(dispatch) {
 class SearchResultList extends Component {
   constructor(props) {
     super(props);
-    var dataBlob = [];
+  }
+  isChangeSearchFilter() {
+    var _loaiTin = this.props.search.form.fields.loaiTin;
+    var _loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
+    var _gia = this.props.search.form.fields.gia;
+    var _soPhongNgu = this.props.search.form.fields.soPhongNgu;
+    var _soTang = this.props.search.form.fields.soTang;
+    var _dienTich = this.props.search.form.fields.dienTich;
+    var _orderBy = this.props.search.form.fields.orderBy;
+
+    var loaiTin = null;
+    var loaiNhaDat = null;
+    var gia = null;
+    var soPhongNgu = null;
+    var soTang = null;
+    var dienTich = null;
+    var orderBy = null;
+    var loaded = false;
+    if (this.state) {
+      loaiTin = this.state.loaiTin;
+      loaiNhaDat = this.state.loaiNhaDat;
+      gia = this.state.gia;
+      soPhongNgu = this.state.soPhongNgu;
+      soTang = this.state.soTang;
+      dienTich = this.state.dienTich;
+      orderBy = this.state.orderBy;
+      loaded = this.state.loaded;
+    }
+    if (loaded && _loaiTin === loaiTin && _loaiNhaDat === loaiNhaDat
+      && _gia === gia && _soPhongNgu === soPhongNgu && _soTang === soTang
+      && _dienTich === dienTich && _orderBy === orderBy) {
+      return false;
+    }
+    return true;
+  }
+  updateSearchFilterState(dataSource, errormsg) {
+    var _loaiTin = this.props.search.form.fields.loaiTin;
+    var _loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
+    var _gia = this.props.search.form.fields.gia;
+    var _soPhongNgu = this.props.search.form.fields.soPhongNgu;
+    var _soTang = this.props.search.form.fields.soTang;
+    var _dienTich = this.props.search.form.fields.dienTich;
+    var _orderBy = this.props.search.form.fields.orderBy;
+    this.setState({
+      loaiTin: _loaiTin,
+      loaiNhaDat: _loaiNhaDat,
+      gia: _gia,
+      soPhongNgu: _soPhongNgu,
+      soTang: _soTang,
+      dienTich: _dienTich,
+      orderBy: _orderBy,
+      dataSource: dataSource,
+      errormsg: errormsg,
+      loaded: true
+    })
+  }
+  refreshListData() {
     var loaiTin = this.props.search.form.fields.loaiTin;
     var loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
     var gia = this.props.search.form.fields.gia;
     var soPhongNgu = this.props.search.form.fields.soPhongNgu;
     var soTang = this.props.search.form.fields.soTang;
     var dienTich = this.props.search.form.fields.dienTich;
-    Api.getItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich)
+    var orderBy = this.props.search.form.fields.orderBy;
+    var dataBlob = [];
+    Api.getItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy)
       .then((data) => {
         if (data.list) {
           data.list.map(function(aRow) {
@@ -71,17 +129,16 @@ class SearchResultList extends Component {
           );
           var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
           var dataSource = ds.cloneWithRows(dataBlob);
-          this.setState({
-            dataSource: dataSource
-          });
+          this.updateSearchFilterState(dataSource, null);
         } else {
-          this.setState({
-            errormsg: "Lỗi kết nối đến máy chủ!"
-          });
+          this.updateSearchFilterState(null, "Lỗi kết nối đến máy chủ!");
         }
       });
   }
   render() {
+    if (this.isChangeSearchFilter()) {
+      this.refreshListData();
+    }
     if (!this.state) {
       return (
   			<View style={styles.container}>
@@ -151,7 +208,7 @@ class SearchResultList extends Component {
     );
   }
   onSort() {
-    console.log("On Sort pressed!");
+    Actions.OrderPicker();
   }
   onSaveSearch() {
     console.log("On Save Search pressed!");

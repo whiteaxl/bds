@@ -1,6 +1,6 @@
 /**
  * # authInitialState.js
- * 
+ *
  * This class is a Immutable object
  * Working *successfully* with Redux, requires
  * state that is immutable.
@@ -28,16 +28,16 @@ const SearchForm = Record({
     soPhongNgu:0,
     soTang:0,
     dienTich:0,
-    gia:0
+    gia:0,
+    orderBy:''
   }))
 });
 
 /**
  * ## InitialState
- * The form is set 
+ * The form is set
  */
 var InitialState = Record({
   form: new SearchForm
 });
 export default InitialState;
-
