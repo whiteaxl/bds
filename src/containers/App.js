@@ -75,6 +75,7 @@ import Screen2 from './Screen2';
 
 import Search from './Search';
 import SearchResultList from './SearchResultList';
+import SearchResultMap from './SearchResultMap';
 import PropertyTypes from './PropertyTypes';
 import OrderPicker from './OrderPicker';
 
@@ -166,6 +167,7 @@ class App extends Component {
 				<Route name='Register' component={Register} schema='main' title="Register Screen" />
 		        <Route name='Search' component={Search} schema='main' title="Tìm kiếm" />
         		<Route name='SearchResultList' component={SearchResultList} schema='main' title="Danh sách" />
+            <Route name='SearchResultMap' component={SearchResultMap} schema='main' title="Bản đồ" />
         		<Route name='PropertyTypes' component={PropertyTypes} schema='main' title="Loại nhà đất" />
         		<Route name='OrderPicker' component={OrderPicker} schema='main' title="Sắp xếp" />
 

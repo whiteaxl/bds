@@ -214,7 +214,7 @@ class SearchResultList extends Component {
     console.log("On Save Search pressed!");
   }
   onMap() {
-    console.log("On Map pressed!");
+    Actions.SearchResultMap();
   }
 }
 
