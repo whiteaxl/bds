@@ -55,27 +55,13 @@ class SearchResultList extends Component {
   constructor(props) {
     super(props);
     var dataBlob = [];
-    // var loaiTin = 0;
-    // var loaiNhaDat = 2;
-    // var gia = "1000,2000";
-    // var soPhongNgu = 2;
-    // var soPhongTam = 1;
-    // var dienTich = "50,200";
-    var loaiTin = null;
-    var loaiNhaDat = null;
-    var gia = null;
-    var soPhongNgu = null;
-    var soPhongTam = null;
-    var dienTich = null;
-    if (this.state) {
-      loaiTin = this.state.loaiTin;
-      loaiNhaDat = this.state.loaiNhaDat;
-      gia = this.state.gia;
-      soPhongNgu = this.state.soPhongNgu;
-      soPhongTam = this.state.soPhongTam;
-      dienTich = this.state.dienTich;
-    }
-    Api.getItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soPhongTam, dienTich)
+    var loaiTin = this.props.search.form.fields.loaiTin;
+    var loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
+    var gia = this.props.search.form.fields.gia;
+    var soPhongNgu = this.props.search.form.fields.soPhongNgu;
+    var soTang = this.props.search.form.fields.soTang;
+    var dienTich = this.props.search.form.fields.dienTich;
+    Api.getItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich)
       .then((data) => {
         if (data.list) {
           data.list.map(function(aRow) {
@@ -119,13 +105,13 @@ class SearchResultList extends Component {
           style={styles.searchListView}
         />
         <View style={styles.searchButton}>
-          <View style={styles.searchButtonWrapper}>
+          <View style={styles.searchListButton}>
             <Button onPress={this.onSort}
-              style={styles.searchButtonText}>Sắp xếp</Button>
+              style={styles.searchListButtonText}>Sắp xếp</Button>
             <Button onPress={this.onSaveSearch}
-              style={styles.searchButtonText}>Lưu tìm kiếm</Button>
+              style={styles.searchListButtonText}>Lưu tìm kiếm</Button>
             <Button onPress={this.onMap}
-              style={styles.searchButtonText}>Bản đồ</Button>
+              style={styles.searchListButtonText}>Bản đồ</Button>
           </View>
         </View>
 			</View>
@@ -154,7 +140,7 @@ class SearchResultList extends Component {
         <Image style={styles.thumb} source={{uri: `${rowData.cover}`}}>
           <View style={styles.searchListViewRowAlign}>
             <View>
-              <Text style={styles.text}>{rowData.price_value} {rowData.price_unit}</Text>
+              <Text style={styles.price}>{rowData.price_value} {rowData.price_unit}</Text>
               <Text style={styles.text}>{diaChi}{soPhongNgu}</Text>
             </View>
             <Icon.Button name="heart-o" backgroundColor="transparent"

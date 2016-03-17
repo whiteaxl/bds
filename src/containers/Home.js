@@ -54,12 +54,14 @@ class Home extends Component {
   render() {
     return (
       <View style={styles.fullWidthContainer}>
-        <Icon.Button onPress={this.handleSearchButton}
-          name="search" backgroundColor="#f44336"
-          underlayColor="gray"
-          style={styles.search}>
-          Tìm kiếm BDS
-        </Icon.Button>
+        <View style={styles.pageHeader}>
+          <Icon.Button onPress={this.handleSearchButton}
+            name="search" backgroundColor="#f44336"
+            underlayColor="gray"
+            style={styles.search}>
+            Tìm kiếm BDS
+          </Icon.Button>
+        </View>
 
         <View style={styles.homeDetailInfo}>
           <View style={styles.homeDetailInfo}>

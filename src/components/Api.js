@@ -5,8 +5,8 @@ import ApiUtils from './ApiUtils'
 var rootUrl = 'http://localhost:5000/api/find';
 
 var Api = {
-  getItems: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soPhongTam, dienTich) {
-    var fullUrl = this.createFullUrl(loaiTin, loaiNhaDat, gia, soPhongNgu, soPhongTam, dienTich);
+  getItems: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich) {
+    var fullUrl = this.createFullUrl(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich);
     // console.log("Full URL: " + fullUrl);
     return fetch(`${fullUrl}`, {
       method: 'POST',
@@ -27,10 +27,17 @@ var Api = {
     }
     return fullUrl;
   },
-  createFullUrl: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soPhongTam, dienTich) {
+  createFullUrl: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich) {
       var fullUrl = '';
-      if (null !== loaiTin) {
-        fullUrl = this.addFilter(fullUrl, "loaiTin="+loaiTin);
+      var loaiTinVal = null;
+      if ('ban' === loaiTin) {
+        loaiTinVal = 0;
+      }
+      if ('thue' === loaiTin) {
+        loaiTinVal = 1;
+      }
+      if (null !== loaiTinVal) {
+        fullUrl = this.addFilter(fullUrl, "loaiTin="+loaiTinVal);
       }
       if (null !== loaiNhaDat) {
         fullUrl = this.addFilter(fullUrl, "loaiNhaDat="+loaiNhaDat);
@@ -41,8 +48,8 @@ var Api = {
       if (null !== soPhongNgu) {
         fullUrl = this.addFilter(fullUrl, "soPhongNguGREATER="+soPhongNgu);
       }
-      if (null !== soPhongTam) {
-        fullUrl = this.addFilter(fullUrl, "soPhongTamGREATER="+soPhongTam);
+      if (null !== soTang) {
+        fullUrl = this.addFilter(fullUrl, "soTangGREATER="+soTang);
       }
       if (null !== dienTich) {
         fullUrl = this.addFilter(fullUrl, "dienTichBETWEEN="+dienTich);

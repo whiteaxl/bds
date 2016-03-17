@@ -1,8 +1,13 @@
 import React, {StyleSheet, PixelRatio} from 'react-native';
 
 module.exports = StyleSheet.create({
+	pageHeader: {
+	    alignItems: 'center',
+			justifyContent: 'center',
+			backgroundColor: '#f44336',
+	},
 	search: {
-			marginTop: 15,
+			marginTop: 25,
 	    flexDirection: 'row',
 	    alignItems: 'center',
 			justifyContent: 'center',
@@ -10,7 +15,6 @@ module.exports = StyleSheet.create({
 	},
   row: {
     justifyContent: 'center',
-    padding: 10,
     backgroundColor: '#F6F6F6',
   },
   separator: {
@@ -20,16 +24,38 @@ module.exports = StyleSheet.create({
 	thumb: {
 		justifyContent: 'flex-end',
 		alignItems: 'stretch',
-		height: 128,
+		height: 181,
     alignSelf: 'auto',
 	},
-  text: {
-    fontSize: 12,
+  price: {
+    fontSize: 16,
+		fontWeight: 'bold',
     textAlign: 'left',
 		backgroundColor: 'transparent',
     marginLeft: 10,
-		margin: 3,
+		color: 'white',
   },
+  text: {
+    fontSize: 14,
+    textAlign: 'left',
+		backgroundColor: 'transparent',
+    marginLeft: 10,
+		marginBottom: 15,
+		margin: 5,
+		color: 'white',
+  },
+  searchListButton: {
+	    flexDirection: 'row',
+	    justifyContent: 'space-between',
+			backgroundColor: 'white',
+  },
+	searchListButtonText: {
+			marginLeft: 15,
+			marginRight: 15,
+			marginTop: 10,
+			marginBottom: 10,
+			color: '#5BB622'
+	},
 	searchListViewRowAlign: {
 		backgroundColor: 'transparent',
 		flexDirection: 'row',
@@ -40,6 +66,7 @@ module.exports = StyleSheet.create({
 	},
 	searchListView: {
 		marginTop: 65,
+		margin: 0,
 	},
 	fullWidthContainer: {
 			flex: 1,
@@ -95,7 +122,7 @@ module.exports = StyleSheet.create({
   searchButtonWrapper: {
 	    flexDirection: 'row',
 	    justifyContent: 'space-between',
-			backgroundColor: 'green',
+			backgroundColor: '#5BB622',
   },
 	searchButtonText: {
 			marginLeft: 15,
