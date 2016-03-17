@@ -19,6 +19,7 @@ import React, { Text, View, Component, Image, ListView, RecyclerViewBackedScroll
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
 import Api from '../components/Api';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
 
@@ -54,10 +55,31 @@ class SearchResultList extends Component {
   constructor(props) {
     super(props);
     var dataBlob = [];
-    Api.getItems()
+    // var loaiTin = 0;
+    // var loaiNhaDat = 2;
+    // var gia = "1000,2000";
+    // var soPhongNgu = 2;
+    // var soPhongTam = 1;
+    // var dienTich = "50,200";
+    var loaiTin = null;
+    var loaiNhaDat = null;
+    var gia = null;
+    var soPhongNgu = null;
+    var soPhongTam = null;
+    var dienTich = null;
+    if (this.state) {
+      loaiTin = this.state.loaiTin;
+      loaiNhaDat = this.state.loaiNhaDat;
+      gia = this.state.gia;
+      soPhongNgu = this.state.soPhongNgu;
+      soPhongTam = this.state.soPhongTam;
+      dienTich = this.state.dienTich;
+    }
+    Api.getItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soPhongTam, dienTich)
       .then((data) => {
         if (data.list) {
           data.list.map(function(aRow) {
+              // console.log(aRow.value);
               dataBlob.push(aRow.value);
             }
           );
@@ -94,19 +116,62 @@ class SearchResultList extends Component {
           renderRow={this.renderRow}
           renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
           renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
+          style={styles.searchListView}
         />
+        <View style={styles.searchButton}>
+          <View style={styles.searchButtonWrapper}>
+            <Button onPress={this.onSort}
+              style={styles.searchButtonText}>Sắp xếp</Button>
+            <Button onPress={this.onSaveSearch}
+              style={styles.searchButtonText}>Lưu tìm kiếm</Button>
+            <Button onPress={this.onMap}
+              style={styles.searchButtonText}>Bản đồ</Button>
+          </View>
+        </View>
 			</View>
 		)
 	}
   renderRow(rowData, sectionID, rowID) {
+    var diaChi = rowData.diaChi;
+    var index = diaChi.indexOf(',', 20);
+    var length = 0;
+    if (index !== -1 && index <= 30) {
+      length = index;
+    } else {
+      index = diaChi.indexOf(' ', 20);
+      length = index !== -1 && index <= 30 ? index : 30;
+    }
+    diaChi = diaChi.substring(0,length);
+    if (diaChi.length < rowData.diaChi.length) {
+      diaChi = diaChi + '...';
+    }
+    var soPhongNgu = rowData.soPhongNgu;
+    if (soPhongNgu) {
+      soPhongNgu = " " + soPhongNgu + " phòng ngủ";
+    }
     return (
       <View style={styles.row}>
         <Image style={styles.thumb} source={{uri: `${rowData.cover}`}}>
-          <Text style={styles.text}>{rowData.price_value} {rowData.price_unit}</Text>
-          <Text style={styles.text}>{rowData.diaChi}</Text>
+          <View style={styles.searchListViewRowAlign}>
+            <View>
+              <Text style={styles.text}>{rowData.price_value} {rowData.price_unit}</Text>
+              <Text style={styles.text}>{diaChi}{soPhongNgu}</Text>
+            </View>
+            <Icon.Button name="heart-o" backgroundColor="transparent"
+              underlayColor="transparent" style={styles.heartButton}/>
+          </View>
         </Image>
       </View>
     );
+  }
+  onSort() {
+    console.log("On Sort pressed!");
+  }
+  onSaveSearch() {
+    console.log("On Save Search pressed!");
+  }
+  onMap() {
+    console.log("On Map pressed!");
   }
 }
 

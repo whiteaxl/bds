@@ -26,11 +26,23 @@ module.exports = StyleSheet.create({
     alignSelf: 'auto',
 	},
   text: {
-    fontSize: 16,
+    fontSize: 12,
     textAlign: 'left',
 		backgroundColor: 'transparent',
-    margin: 10,
+    marginLeft: 10,
+		margin: 3,
   },
+	searchListViewRowAlign: {
+		backgroundColor: 'transparent',
+		flexDirection: 'row',
+		justifyContent: 'space-between',
+	},
+	heartButton: {
+		marginBottom: 10,
+	},
+	searchListView: {
+		marginTop: 65,
+	},
 	fullWidthContainer: {
 			flex: 1,
 			alignItems: 'stretch',
@@ -64,7 +76,7 @@ module.exports = StyleSheet.create({
 			margin: 15,
 	},
 	searchMoreFilterButton: {
-			flex: 1,
+			flex: 2,
 			alignItems: 'center',
 			justifyContent: 'center',
 	},
@@ -79,7 +91,6 @@ module.exports = StyleSheet.create({
 			marginBottom: 10,
 	},
 	searchButton: {
-			flex: 1,
 			alignItems: 'stretch',
 			justifyContent: 'flex-end',
 	},
