@@ -15,44 +15,53 @@ const orderTypes = [
 
 var Api = {
   getItems: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy) {
-    var fullUrl = this.createFullUrl(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy);
-    //console.log("Full URL: " + fullUrl);
-    return fetch(`${fullUrl}`, {
+    var fullParams = this.createFullParams(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy);
+    var params = {};
+    fullParams.map(function(oneParam) {
+      params[oneParam.key] = oneParam.value;
+    })
+    console.log(JSON.stringify(params));
+    return fetch(`${rootUrl}`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
-      }
+      },
+      body: JSON.stringify(params)
     })
     .then(ApiUtils.checkStatus)
     .then(response => response.json())
     .catch(e => e);
   },
-  addFilter: function(fullUrl, aFilter) {
-    if ('' === fullUrl) {
-      fullUrl = rootUrl + "?" + aFilter;
-    } else {
-      fullUrl = fullUrl + "&" + aFilter;
-    }
-    return fullUrl;
-  },
-  addOrder: function(fullUrl, orderBy) {
+  createOrderParam: function(orderBy) {
+    var orderParams = [];
     if (orderTypes[2] === orderBy) {
-      fullUrl = this.addFilter(fullUrl, "orderBy=giaDESC");
+      orderParams.push({key: 'orderBy', value: 'giaDESC'});
     }
     else if (orderTypes[3] === orderBy) {
-      fullUrl = this.addFilter(fullUrl, "orderBy=giaASC");
+      orderParams.push({key: 'orderBy', value: 'giaASC'});
     }
     else if (orderTypes[4] === orderBy) {
-      fullUrl = this.addFilter(fullUrl, "orderBy=soPhongNguASC");
+      orderParams.push({key: 'orderBy', value: 'soPhongNguASC'});
     }
     else if (orderTypes[5] === orderBy) {
-      fullUrl = this.addFilter(fullUrl, "orderBy=dienTichDESC");
+      orderParams.push({key: 'orderBy', value: 'dienTichDESC'});
     }
-    return fullUrl;
+    return orderParams;
   },
-  createFullUrl: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy) {
-      var fullUrl = '';
+  arrayToString: function(arr) {
+    var val = "";
+    arr.map(function(one) {
+      if ("" === val) {
+        val = one;
+      } else {
+        val = val + ',' + one;
+      }
+    });
+    return val;
+  },
+  createFullParams: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy) {
+      var params = [];
       var loaiTinVal = null;
       if ('ban' === loaiTin) {
         loaiTinVal = 0;
@@ -61,30 +70,28 @@ var Api = {
         loaiTinVal = 1;
       }
       if (null !== loaiTinVal) {
-        fullUrl = this.addFilter(fullUrl, "loaiTin="+loaiTinVal);
+        params.push({key: 'loaiTin', value: loaiTinVal});
       }
       if (loaiNhaDat) {
-        fullUrl = this.addFilter(fullUrl, "loaiNhaDat="+loaiNhaDat);
+        params.push({key: 'loaiNhaDat', value: loaiNhaDat});
       }
       if (gia) {
-        fullUrl = this.addFilter(fullUrl, "giaBETWEEN="+gia);
+        params.push({key: 'giaBETWEEN', value: this.arrayToString(gia)});
       }
       if (soPhongNgu) {
-        fullUrl = this.addFilter(fullUrl, "soPhongNguGREATER="+soPhongNgu);
+        params.push({key: 'soPhongNguGREATER', value: soPhongNgu});
       }
       if (soTang) {
-        fullUrl = this.addFilter(fullUrl, "soTangGREATER="+soTang);
+        params.push({key: 'soTangGREATER', value: soTang});
       }
       if (dienTich) {
-        fullUrl = this.addFilter(fullUrl, "dienTichBETWEEN="+dienTich);
+        params.push({key: 'dienTichBETWEEN', value: this.arrayToString(dienTich)});
       }
-      if (orderBy) {
-        fullUrl = this.addOrder(fullUrl, orderBy);
-      }
-      if ('' === fullUrl) {
-        fullUrl = rootUrl;
-      }
-      return fullUrl;
+      var orderParams = this.createOrderParam(orderBy);
+      orderParams.map(function(oneParam) {
+        params.push(oneParam);
+      });
+      return params;
   }
 };
 
