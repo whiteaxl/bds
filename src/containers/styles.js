@@ -111,9 +111,14 @@ module.exports = StyleSheet.create({
 			borderTopWidth: 1,
 			borderTopColor: 'lightgray'
 	},
+	searchMoreFilterAttribute: {
+			padding: 10,
+			borderTopWidth: 1,
+			borderTopColor: 'lightgray'
+	},
 	searchMoreFilterButton: {
 			flex: 2,
-			alignItems: 'center',
+			alignItems: 'stretch',
 			justifyContent: 'center',
 	},
   searchFilterButton: {

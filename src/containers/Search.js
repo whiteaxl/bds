@@ -94,16 +94,16 @@ class Search extends Component {
       <View style={styles.container}>
         <View style={styles.searchFilter}>
           <View style={styles.searchFilterButton}>
-            
+
 
 
             <View onPress={this.onForSale} style = {{flex:1, flexDirection: 'row'}}>
-              <LikeTabButton name={'ban'} 
-                onPress={this._onLoaiTinChange.bind(this)} 
+              <LikeTabButton name={'ban'}
+                onPress={this._onLoaiTinChange.bind(this)}
                 selected={this.props.search.form.fields.loaiTin === 'ban'}>Bán</LikeTabButton>
-              <LikeTabButton name={'thue'} 
-                onPress={this._onLoaiTinChange.bind(this)} 
-                selected={this.props.search.form.fields.loaiTin === 'thue'}>Cho thuê</LikeTabButton> 
+              <LikeTabButton name={'thue'}
+                onPress={this._onLoaiTinChange.bind(this)}
+                selected={this.props.search.form.fields.loaiTin === 'thue'}>Cho thuê</LikeTabButton>
             </View>
 
           </View>
@@ -115,15 +115,15 @@ class Search extends Component {
               </Text>
             </View>
 
-            
+
             <View style={styles.searchFilterAttribute}>
               <Text style={styles.searchAttributeLabel}>
                 Giá
               </Text>
-              
-              <TouchableOpacity style={{flexDirection: "row"}} 
+
+              <TouchableOpacity style={{flexDirection: "row"}}
                 onPress={this._onPressGiaHandle.bind(this)}>
-                  <Text style={styles.searchAttributeValue}> {this._getGiaValue()} </Text> 
+                  <Text style={styles.searchAttributeValue}> {this._getGiaValue()} </Text>
                   <Text style={styles.searchAttributeValue}> V </Text>
                </TouchableOpacity>
             </View>
@@ -138,10 +138,10 @@ class Search extends Component {
               <Text style={styles.searchAttributeLabel}>
                 Diện tích
               </Text>
-              
-              <TouchableOpacity style={{flexDirection: "row"}} 
+
+              <TouchableOpacity style={{flexDirection: "row"}}
                 onPress={this._onPressDienTichHandle.bind(this)}>
-                  <Text style={styles.searchAttributeValue}>{this._getDienTichValue()} </Text> 
+                  <Text style={styles.searchAttributeValue}>{this._getDienTichValue()} </Text>
                   <Text style={styles.searchAttributeValue}> V </Text>
                </TouchableOpacity>
             </View>
@@ -150,10 +150,10 @@ class Search extends Component {
 
           </View>
           <View style={styles.searchMoreFilterButton}>
-            <View style={styles.searchFilterAttribute}>
+            <View style={styles.searchMoreFilterAttribute}>
               <Button onPress={this.onMoreOption}>Thêm</Button>
             </View>
-            <View style={styles.searchFilterAttribute}>
+            <View style={styles.searchMoreFilterAttribute}>
               <Button onPress={this.onResetFilters}>Thiết lập lại</Button>
             </View>
           </View>

@@ -35,6 +35,9 @@ var Api = {
   },
   createOrderParam: function(orderBy) {
     var orderParams = [];
+    if (orderTypes[1] === orderBy) {
+      orderParams.push({key: 'orderBy', value: 'ngayDangTinDESC'});
+    }
     if (orderTypes[2] === orderBy) {
       orderParams.push({key: 'orderBy', value: 'giaDESC'});
     }
