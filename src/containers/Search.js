@@ -15,7 +15,7 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component, Navigator, TouchableOpacity } from 'react-native'
+import React, { Text, View, Component, Navigator, TouchableOpacity, SegmentedControlIOS } from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -51,8 +51,6 @@ function mapDispatchToProps(dispatch) {
     dispatch
   };
 }
-
-
 
 class Search extends Component {
   constructor() {
@@ -129,9 +127,42 @@ class Search extends Component {
             </View>
 
             <View style={styles.searchFilterAttribute}>
-              <Text onPress={this.onChosePropertyTypes}>
+              <Text style={styles.searchAttributeLabel}>
               Loại nhà đất
               </Text>
+              <Icon name="angle-right" size={20} onPress={this._onPropertyTypesChoosed}/>
+            </View>
+
+            <View style={styles.searchFilterAttribute, {flexDirection: "column"}}>
+              <View style={styles.searchFilterAttribute}>
+                <Text style={styles.searchAttributeLabel}>
+                  Số phòng ngủ
+                </Text>
+              </View>
+              <View style={{paddingLeft: 10, paddingRight: 10, paddingBottom: 10}}>
+                <SegmentedControlIOS 
+                  values={["0+","1+","2+","3+","4+","5+"]}
+                  selectedIndex={0}
+                  onChange={this._onSoPhongNguChanged.bind(this)}
+                >
+                </SegmentedControlIOS>
+              </View>
+            </View>
+
+            <View style={styles.searchFilterAttribute, {flexDirection: "column"}}>
+              <View style={styles.searchFilterAttribute}>
+                <Text style={styles.searchAttributeLabel}>
+                  Số tầng
+                </Text>
+              </View>
+              <View style={{paddingLeft: 10, paddingRight: 10, paddingBottom: 10}}>
+                <SegmentedControlIOS 
+                  values={["0+","1+","2+","3+","4+","5+"]}
+                  selectedIndex={0}
+                  onChange={this._onSoTangChanged.bind(this)}
+                >
+                </SegmentedControlIOS>
+              </View>
             </View>
 
             <View style={styles.searchFilterAttribute}>
@@ -145,8 +176,6 @@ class Search extends Component {
                   <Text style={styles.searchAttributeValue}> V </Text>
                </TouchableOpacity>
             </View>
-
-
 
           </View>
           <View style={styles.searchMoreFilterButton}>
@@ -205,8 +234,16 @@ class Search extends Component {
     console.log("On Reset Filters pressed!");
   }
 
-  onChosePropertyTypes() {
+  _onPropertyTypesChoosed() {
     Actions.PropertyTypes();
+  }
+
+  _onSoPhongNguChanged(event) {
+    this.props.actions.onSearchFieldChange("soPhongNgu", event.nativeEvent.selectedSegmentIndex)
+  }
+
+  _onSoTangChanged(event) {
+    this.props.actions.onSearchFieldChange("soTang", event.nativeEvent.selectedSegmentIndex)
   }
 }
 

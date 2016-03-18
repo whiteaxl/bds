@@ -14,7 +14,7 @@ import * as searchActions from '../reducers/search/searchActions';
 import {Map} from 'immutable';
 
 
-import React, {View, Component} from 'react-native'
+import React, {View, Component, SegmentedControlIOS} from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -80,17 +80,21 @@ class PropertyTypes extends Component {
         
         <MultipleChoice
           options={this.props.search.form.fields.loaiTin=='ban' ? nhaDatBan : nhaDatChoThue}
-          style={{paddingTop: 80, paddingLeft: 20}}
+          style={{paddingTop: 80, paddingLeft: 20, paddingRight: 20}}
           selectedOptions={['Tất cả']}
-          maxSelectedOptions={6}
+          maxSelectedOptions={this.props.search.form.fields.loaiTin=='ban' ? nhaDatBan.length : nhaDatChoThue.length}
           onSelection={(option)=>{this.handlePropertyTypeChosen}}
-        />
+        />  
+        
       </View>
+     
     );
   }
   
   handlePropertyTypeChosen(option) {
     alert(option);
+    this.props.actions.onSearchFieldChange("loaiNhaDat", option);
+    
   }
 
 }

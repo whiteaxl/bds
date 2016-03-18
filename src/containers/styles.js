@@ -117,7 +117,7 @@ module.exports = StyleSheet.create({
 			borderTopColor: 'lightgray'
 	},
 	searchMoreFilterButton: {
-			flex: 2,
+			flex: 0.5,
 			alignItems: 'stretch',
 			justifyContent: 'center',
 	},
