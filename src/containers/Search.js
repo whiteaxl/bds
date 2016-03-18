@@ -169,13 +169,13 @@ class Search extends Component {
 
         <View>
           <Picker ref={pickerGia => this.pickerGia = pickerGia}
-                    style={{height: 420}} showDuration={300}
+                    style={{height: 320}} showDuration={300}
                     pickerData={this.props.search.form.fields.pickerGia}
                     selectedValue={this.props.search.form.fields.gia}
                     onPickerDone={(pickedValue) => {this._onGiaChanged(pickedValue)}}
               />
           <Picker ref={pickerDienTich => this.pickerDienTich = pickerDienTich}
-                    style={{height: 420}} showDuration={300}
+                    style={{height: 320}} showDuration={300}
                     pickerData={this.props.search.form.fields.pickerDienTich}
                     selectedValue={this.props.search.form.fields.dienTich}
                     onPickerDone={(pickedValue) => {this._onDienTichChanged(pickedValue)}}
