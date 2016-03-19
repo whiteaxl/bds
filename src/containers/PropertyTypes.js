@@ -49,23 +49,32 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-var LoaiNhaDatBan = {
-    1  : "Bán căn hộ chung cư",
-    2  : "Bán nhà riêng",
-    3  : "Bán nhà mặt phố", 
-    4  : "Bán biệt thự, liền kề", 
-    5  : "Bán đất", 
-    99 : "Bán các bds khác"
-}
+var LoaiNhaDatBan = [
+    "Bán căn hộ chung cư",
+    "Bán nhà riêng",
+    "Bán nhà mặt phố",
+    "Bán biệt thự, liền kề",
+    "Bán đất",
+    "Bán các bds khác"
+];
 
-var LoaiNhaDatThue = {
-    1 : "Cho Thuê căn hộ chung cư",
-    2 : "Cho Thuê nhà riêng",
-    3 : "Cho Thuê nhà mặt phố", 
-    4 : "Cho Thuê văn phòng", 
-    5 : "Cho Thuê cửa hàng, ki-ốt",
-    99: "Cho Thuê các bds khác"
-}
+var LoaiNhaDatThue = [
+    "Cho Thuê căn hộ chung cư",
+    "Cho Thuê nhà riêng",
+    "Cho Thuê nhà mặt phố",
+    "Cho Thuê văn phòng",
+    "Cho Thuê cửa hàng, ki-ốt",
+    "Cho Thuê các bds khác"
+];
+
+var LoaiNhaDatKey = [
+    1,
+    2,
+    3,
+    4,
+    5,
+    99
+];
 
 class PropertyTypes extends Component {
   constructor() {
@@ -80,25 +89,30 @@ class PropertyTypes extends Component {
           style={{paddingTop: 80, paddingLeft: 20, paddingRight: 20}}
           selectedOptions={this.props.choice}
           maxSelectedOptions={1}//{this.props.search.form.fields.loaiTin=='ban' ? nhaDatBan.length : nhaDatChoThue.length}
-          onSelection={this._onPropertyTypeSelected.bind(this)}//{this.handlePropertyTypeChosen.bind(this)}}
-        />  
+          onSelection={(option)=>this._onPropertyTypeSelected(option)}
+        />
       </View>
     );
   }
-  
+
   _onPropertyTypeSelected(option) {
-    var hash = this.props.search.form.fields.loaiTin=='ban' ? LoaiNhaDatBan : LoaiNhaDatThue ;
-    this.props.actions.onSearchFieldChange("loaiNhaDat", option);
+    var values = this.props.search.form.fields.loaiTin=='ban' ? LoaiNhaDatBan : LoaiNhaDatThue ;
+    this.props.actions.onSearchFieldChange("loaiNhaDat", this.getKeyByValue(values, option));
   }
 
-  getKeyByValue(hash, value) {
-    for( var key in hash){
-      if (hash[key]==value)   
-        return key;
+  getKeyByValue(values, value) {
+    var key = '';
+    for (var i = 0; i < values.length; i++) {
+      var oneValue = values[i];
+      if (value === oneValue) {
+        key = LoaiNhaDatKey[i];
+        break;
+      }
     }
-    return null;
+    //console.log(key);
+    return key;
   }
-  
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PropertyTypes);

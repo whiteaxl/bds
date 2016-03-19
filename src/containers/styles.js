@@ -102,6 +102,9 @@ module.exports = StyleSheet.create({
 			//borderWidth:1,
 			//borderColor: "green"
 	},
+  scrollView: {
+			flex: 1,
+  },
 	searchFilterAttribute: {
 			flexDirection : "row",
 			//borderWidth:1,

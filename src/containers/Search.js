@@ -15,7 +15,7 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component, Navigator, TouchableOpacity, SegmentedControlIOS } from 'react-native'
+import React, { Text, View, Component, Navigator, TouchableOpacity, SegmentedControlIOS, ScrollView } from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -88,12 +88,11 @@ class Search extends Component {
   }
 
   render() {
+    var _scrollView: ScrollView;
     return (
       <View style={styles.container}>
         <View style={styles.searchFilter}>
           <View style={styles.searchFilterButton}>
-
-
 
             <View onPress={this.onForSale} style = {{flex:1, flexDirection: 'row'}}>
               <LikeTabButton name={'ban'}
@@ -105,87 +104,97 @@ class Search extends Component {
             </View>
 
           </View>
-          <View style={styles.searchFilterDetail}>
+          <ScrollView
+            ref={(scrollView) => { _scrollView = scrollView; }}
+            automaticallyAdjustContentInsets={false}
+            vertical={true}
+            style={styles.scrollView}>
 
-            <View style={styles.searchSectionTitle}>
-              <Text style={styles.searchAttributeLabel}>
-                Các điều kiện
-              </Text>
-            </View>
+            <View style={styles.searchFilterDetail}>
+
+              <View style={styles.searchSectionTitle}>
+                <Text style={styles.searchAttributeLabel}>
+                  Các điều kiện
+                </Text>
+              </View>
 
 
-            <View style={styles.searchFilterAttribute}>
-              <Text style={styles.searchAttributeLabel}>
-                Giá
-              </Text>
-
-              <TouchableOpacity style={{flexDirection: "row"}}
+              <TouchableOpacity style={styles.searchFilterAttribute}
                 onPress={this._onPressGiaHandle.bind(this)}>
+                <Text style={styles.searchAttributeLabel}>
+                  Giá
+                </Text>
+
+                <View style={{flexDirection: "row"}}>
                   <Text style={styles.searchAttributeValue}> {this._getGiaValue()} </Text>
                   <Text style={styles.searchAttributeValue}> V </Text>
-               </TouchableOpacity>
-            </View>
+                </View>
+              </TouchableOpacity>
 
-            <View style={styles.searchFilterAttribute}>
-              <Text style={styles.searchAttributeLabel}>
-              Loại nhà đất
-              </Text>
-              <Icon name="angle-right" size={20} onPress={this._onPropertyTypesChoosed}/>
-            </View>
+              <TouchableOpacity
+                onPress={this._onPropertyTypesChoosed}>
+                <View style={styles.searchFilterAttribute}>
+                  <Text style={styles.searchAttributeLabel}>
+                  Loại nhà đất
+                  </Text>
+                  <Icon name="angle-right" size={20} />
+                </View>
+              </TouchableOpacity>
 
-            <View style={styles.searchFilterAttribute, {flexDirection: "column"}}>
-              <View style={styles.searchFilterAttribute}>
+              <View style={styles.searchFilterAttribute, {flexDirection: "column"}}>
+                <View style={styles.searchFilterAttribute}>
+                  <Text style={styles.searchAttributeLabel}>
+                    Số phòng ngủ
+                  </Text>
+                </View>
+                <View style={{paddingLeft: 10, paddingRight: 10, paddingBottom: 10}}>
+                  <SegmentedControlIOS
+                    values={["0+","1+","2+","3+","4+","5+"]}
+                    selectedIndex={0}
+                    onChange={this._onSoPhongNguChanged.bind(this)}
+                  >
+                  </SegmentedControlIOS>
+                </View>
+              </View>
+
+              <View style={styles.searchFilterAttribute, {flexDirection: "column"}}>
+                <View style={styles.searchFilterAttribute}>
+                  <Text style={styles.searchAttributeLabel}>
+                    Số tầng
+                  </Text>
+                </View>
+                <View style={{paddingLeft: 10, paddingRight: 10, paddingBottom: 10}}>
+                  <SegmentedControlIOS
+                    values={["0+","1+","2+","3+","4+","5+"]}
+                    selectedIndex={0}
+                    onChange={this._onSoTangChanged.bind(this)}
+                  >
+                  </SegmentedControlIOS>
+                </View>
+              </View>
+
+              <TouchableOpacity style={styles.searchFilterAttribute}
+                  onPress={this._onPressDienTichHandle.bind(this)}>
                 <Text style={styles.searchAttributeLabel}>
-                  Số phòng ngủ
+                  Diện tích
                 </Text>
-              </View>
-              <View style={{paddingLeft: 10, paddingRight: 10, paddingBottom: 10}}>
-                <SegmentedControlIOS 
-                  values={["0+","1+","2+","3+","4+","5+"]}
-                  selectedIndex={0}
-                  onChange={this._onSoPhongNguChanged.bind(this)}
-                >
-                </SegmentedControlIOS>
-              </View>
-            </View>
 
-            <View style={styles.searchFilterAttribute, {flexDirection: "column"}}>
-              <View style={styles.searchFilterAttribute}>
-                <Text style={styles.searchAttributeLabel}>
-                  Số tầng
-                </Text>
+                <View style={{flexDirection: "row"}}>
+                    <Text style={styles.searchAttributeValue}>{this._getDienTichValue()} </Text>
+                    <Text style={styles.searchAttributeValue}> V </Text>
+                </View>
+              </TouchableOpacity>
               </View>
-              <View style={{paddingLeft: 10, paddingRight: 10, paddingBottom: 10}}>
-                <SegmentedControlIOS 
-                  values={["0+","1+","2+","3+","4+","5+"]}
-                  selectedIndex={0}
-                  onChange={this._onSoTangChanged.bind(this)}
-                >
-                </SegmentedControlIOS>
+              <View style={styles.searchMoreFilterButton}>
+                <View style={styles.searchMoreFilterAttribute}>
+                  <Button onPress={this.onMoreOption}>Thêm</Button>
+                </View>
+                <View style={styles.searchMoreFilterAttribute}>
+                  <Button onPress={this.onResetFilters.bind(this)}>Thiết lập lại</Button>
+                </View>
               </View>
-            </View>
 
-            <View style={styles.searchFilterAttribute}>
-              <Text style={styles.searchAttributeLabel}>
-                Diện tích
-              </Text>
-
-              <TouchableOpacity style={{flexDirection: "row"}}
-                onPress={this._onPressDienTichHandle.bind(this)}>
-                  <Text style={styles.searchAttributeValue}>{this._getDienTichValue()} </Text>
-                  <Text style={styles.searchAttributeValue}> V </Text>
-               </TouchableOpacity>
-            </View>
-
-          </View>
-          <View style={styles.searchMoreFilterButton}>
-            <View style={styles.searchMoreFilterAttribute}>
-              <Button onPress={this.onMoreOption}>Thêm</Button>
-            </View>
-            <View style={styles.searchMoreFilterAttribute}>
-              <Button onPress={this.onResetFilters}>Thiết lập lại</Button>
-            </View>
-          </View>
+            </ScrollView>
         </View>
         <View style={styles.searchButton}>
           <View style={styles.searchButtonWrapper}>
@@ -231,7 +240,11 @@ class Search extends Component {
     console.log("On More Option pressed!");
   }
   onResetFilters() {
-    console.log("On Reset Filters pressed!");
+    //this.props.actions.onSearchFieldChange("loaiNhaDat", '');
+    //this.props.actions.onSearchFieldChange("soPhongNgu", 0);
+    //this.props.actions.onSearchFieldChange("soTang", 0);
+    //this.props.actions.onSearchFieldChange("dienTich", [0,100]);
+    //this.props.actions.onSearchFieldChange("gia", [0,2000]);
   }
 
   _onPropertyTypesChoosed() {

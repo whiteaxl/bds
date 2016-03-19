@@ -59,6 +59,14 @@ const orderTypes = [
           'Diện tích'
         ];
 
+const orderKeys = [
+          '',
+          'ngayDangTinDESC',
+          'giaDESC',
+          'giaASC',
+          'soPhongNguASC',
+          'dienTichDESC'
+        ];
 
 class OrderPicker extends Component {
   constructor() {
@@ -66,7 +74,7 @@ class OrderPicker extends Component {
   }
 
   render() {
-    var orderBy = this.props.search.form.fields.orderBy;
+    var orderBy = this.getValueByKey(this.props.search.form.fields.orderBy);
     if (!orderBy) {
       orderBy = orderTypes[0];
     }
@@ -84,8 +92,34 @@ class OrderPicker extends Component {
     );
   }
   handleOrderTypeChosen(option) {
-    this.props.actions.onSearchFieldChange("orderBy", option);
+    this.props.actions.onSearchFieldChange("orderBy", this.getKeyByValue(option));
     Actions.pop();
+  }
+
+  getValueByKey(key) {
+    var value = '';
+    for (var i = 0; i < orderKeys.length; i++) {
+      var orderKey = orderKeys[i];
+      if (key === orderKey) {
+        value = orderTypes[i];
+        break;
+      }
+    }
+    //console.log(value);
+    return value;
+  }
+
+  getKeyByValue(value) {
+    var key = '';
+    for (var i = 0; i < orderTypes.length; i++) {
+      var orderType = orderTypes[i];
+      if (value === orderType) {
+        key = orderKeys[i];
+        break;
+      }
+    }
+    //console.log(key);
+    return key;
   }
 
 }

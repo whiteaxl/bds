@@ -4,15 +4,6 @@ import ApiUtils from './ApiUtils';
 
 var rootUrl = 'http://localhost:5000/api/find';
 
-const orderTypes = [
-          'Mặc định',
-          'Ngày nhập',
-          'Giá (Giảm dần)',
-          'Giá (Tăng dần)',
-          'Số phòng ngủ',
-          'Diện tích'
-        ];
-
 var Api = {
   getItems: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy) {
     var fullParams = this.createFullParams(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy);
@@ -32,25 +23,6 @@ var Api = {
     .then(ApiUtils.checkStatus)
     .then(response => response.json())
     .catch(e => e);
-  },
-  createOrderParam: function(orderBy) {
-    var orderParams = [];
-    if (orderTypes[1] === orderBy) {
-      orderParams.push({key: 'orderBy', value: 'ngayDangTinDESC'});
-    }
-    if (orderTypes[2] === orderBy) {
-      orderParams.push({key: 'orderBy', value: 'giaDESC'});
-    }
-    else if (orderTypes[3] === orderBy) {
-      orderParams.push({key: 'orderBy', value: 'giaASC'});
-    }
-    else if (orderTypes[4] === orderBy) {
-      orderParams.push({key: 'orderBy', value: 'soPhongNguASC'});
-    }
-    else if (orderTypes[5] === orderBy) {
-      orderParams.push({key: 'orderBy', value: 'dienTichDESC'});
-    }
-    return orderParams;
   },
   arrayToString: function(arr) {
     var val = "";
@@ -90,10 +62,9 @@ var Api = {
       if (dienTich) {
         params.push({key: 'dienTichBETWEEN', value: this.arrayToString(dienTich)});
       }
-      var orderParams = this.createOrderParam(orderBy);
-      orderParams.map(function(oneParam) {
-        params.push(oneParam);
-      });
+      if (orderBy) {
+        params.push({key: 'orderBy', value: orderBy});
+      }
       return params;
   }
 };
