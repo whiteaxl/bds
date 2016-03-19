@@ -6,6 +6,7 @@ module.exports = StyleSheet.create({
 	customPageHeader: {
 			flexDirection: 'row',
 			alignItems: 'flex-start',
+			justifyContent: 'space-between',
 			backgroundColor: '#f44336',
 	},
 	customPageTitle: {
@@ -13,7 +14,7 @@ module.exports = StyleSheet.create({
 			marginLeft: 15,
 			marginRight: 15,
 			marginBottom: 10,
-			width: 270
+			alignItems: 'stretch',
 	},
 	customPageTitleText: {
 			color: 'white',
