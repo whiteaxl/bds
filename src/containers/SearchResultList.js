@@ -144,7 +144,9 @@ class SearchResultList extends Component {
       return (
   			<View style={styles.fullWidthContainer}>
           <CommonHeader headerTitle={"Danh sách"} />
-          <Text style={styles.welcome}>Đang tải dữ liệu!</Text>
+          <View style={styles.searchContent}>
+            <Text style={styles.welcome}>Đang tải dữ liệu!</Text>
+          </View>
           <SearchResultFooter />
   			</View>
       )
@@ -153,7 +155,9 @@ class SearchResultList extends Component {
       return (
   			<View style={styles.fullWidthContainer}>
           <CommonHeader headerTitle={"Danh sách"} />
-          <Text style={styles.welcome}>{this.state.errormsg}</Text>
+          <View style={styles.searchContent}>
+            <Text style={styles.welcome}>{this.state.errormsg}</Text>
+          </View>
           <SearchResultFooter />
   			</View>
       )

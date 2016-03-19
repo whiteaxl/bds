@@ -88,6 +88,11 @@ module.exports = StyleSheet.create({
 	searchListView: {
 		margin: 0,
 	},
+	searchContent: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center'
+	},
 	searchMapView: {
 		flex: 1,
 		margin: 0,
