@@ -3,6 +3,24 @@ import React, {StyleSheet, PixelRatio} from 'react-native';
 import gui from '../lib/gui';
 
 module.exports = StyleSheet.create({
+	customPageHeader: {
+			flexDirection: 'row',
+			alignItems: 'flex-start',
+			backgroundColor: '#f44336',
+	},
+	customPageTitle: {
+			marginTop: 35,
+			marginLeft: 15,
+			marginRight: 15,
+			marginBottom: 10,
+			width: 270
+	},
+	customPageTitleText: {
+			color: 'white',
+			fontSize: 14,
+			fontWeight: 'bold',
+			textAlign: 'center',
+	},
 	pageHeader: {
 	    alignItems: 'center',
 			justifyContent: 'center',
@@ -67,12 +85,10 @@ module.exports = StyleSheet.create({
 		marginBottom: 10,
 	},
 	searchListView: {
-		marginTop: 65,
 		margin: 0,
 	},
 	searchMapView: {
-		flex: 2,
-		marginTop: 65,
+		flex: 1,
 		margin: 0,
 	},
 	fullWidthContainer: {
@@ -94,7 +110,6 @@ module.exports = StyleSheet.create({
 	},
 	searchFilter: {
 			flex: 1,
-			marginTop: 65,
 	},
 	searchFilterDetail: {
 			flex: 1,
@@ -141,7 +156,7 @@ module.exports = StyleSheet.create({
   searchButtonWrapper: {
 	    flexDirection: 'row',
 	    justifyContent: 'space-between',
-			backgroundColor: gui.green,
+			backgroundColor: '#f44336',
   },
 	searchButtonText: {
 			marginLeft: 15,

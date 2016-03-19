@@ -58,7 +58,20 @@ class SearchResultMap extends Component {
   render() {
     var pin = {latitude: 0, longitude: 0};
     return (
-			<View style={styles.container}>
+      <View style={styles.fullWidthContainer}>
+        <View style={styles.customPageHeader}>
+          <Icon.Button onPress={this.onList}
+            name="chevron-left" backgroundColor="#f44336"
+            underlayColor="gray"
+            style={styles.search} >
+          </Icon.Button>
+          <View style={styles.customPageTitle}>
+            <Text style={styles.customPageTitleText}>
+              Bản đồ
+            </Text>
+          </View>
+        </View>
+
         <MapView
           annotations={[pin]}
           onRegionChangeComplete={this.onRegionChangeComplete}

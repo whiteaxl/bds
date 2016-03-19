@@ -165,9 +165,9 @@ class App extends Component {
 				<Route name='Launch' component={Launch} schema='boot' initial hideNavBar title="Welcome" />
 
 				<Route name='Register' component={Register} schema='main' title="Register Screen" />
-		        <Route name='Search' component={Search} schema='main' title="Tìm kiếm" />
-        		<Route name='SearchResultList' component={SearchResultList} schema='main' title="Danh sách" />
-            <Route name='SearchResultMap' component={SearchResultMap} schema='main' title="Bản đồ" />
+		        <Route name='Search' component={Search} schema='main' title="Tìm kiếm" hideNavBar={true} />
+        		<Route name='SearchResultList' component={SearchResultList} schema='main' title="Danh sách" hideNavBar={true} />
+            <Route name='SearchResultMap' component={SearchResultMap} schema='main' title="Bản đồ" hideNavBar={true} />
         		<Route name='PropertyTypes' component={PropertyTypes} schema='main' title="Loại nhà đất" />
         		<Route name='OrderPicker' component={OrderPicker} schema='main' title="Sắp xếp" />
 

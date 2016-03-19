@@ -153,7 +153,20 @@ class SearchResultList extends Component {
       )
     }
     return (
-			<View style={styles.container}>
+      <View style={styles.fullWidthContainer}>
+        <View style={styles.customPageHeader}>
+          <Icon.Button onPress={this.onCancel}
+            name="chevron-left" backgroundColor="#f44336"
+            underlayColor="gray"
+            style={styles.search} >
+          </Icon.Button>
+          <View style={styles.customPageTitle}>
+            <Text style={styles.customPageTitleText}>
+              Danh sách
+            </Text>
+          </View>
+        </View>
+
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this.renderRow}
@@ -206,6 +219,9 @@ class SearchResultList extends Component {
         </Image>
       </View>
     );
+  }
+  onCancel() {
+    Actions.pop();
   }
   onSort() {
     Actions.OrderPicker();

@@ -90,7 +90,20 @@ class Search extends Component {
   render() {
     var _scrollView: ScrollView;
     return (
-      <View style={styles.container}>
+      <View style={styles.fullWidthContainer}>
+        <View style={styles.customPageHeader}>
+          <Icon.Button onPress={this.onCancel}
+            name="chevron-left" backgroundColor="#f44336"
+            underlayColor="gray"
+            style={styles.search} >
+          </Icon.Button>
+          <View style={styles.customPageTitle}>
+            <Text style={styles.customPageTitleText}>
+            Tìm kiếm
+            </Text>
+          </View>
+        </View>
+
         <View style={styles.searchFilter}>
           <View style={styles.searchFilterButton}>
 
