@@ -67,7 +67,7 @@ module.exports = StyleSheet.create({
   },
   searchListButton: {
 	    flexDirection: 'row',
-	    justifyContent: 'space-between',
+	    justifyContent: 'space-around',
 			backgroundColor: 'white',
   },
 	searchListButtonText: {
