@@ -176,13 +176,13 @@ class SearchResultList extends Component {
 	}
   renderRow(rowData, sectionID, rowID) {
     var diaChi = rowData.diaChi;
-    var index = diaChi.indexOf(',', 20);
+    var index = diaChi.indexOf(',', 15);
     var length = 0;
-    if (index !== -1 && index <= 30) {
+    if (index !== -1 && index <= 20) {
       length = index;
     } else {
-      index = diaChi.indexOf(' ', 20);
-      length = index !== -1 && index <= 30 ? index : 30;
+      index = diaChi.indexOf(' ', 15);
+      length = index !== -1 && index <= 20 ? index : 20;
     }
     diaChi = diaChi.substring(0,length);
     if (diaChi.length < rowData.diaChi.length) {
