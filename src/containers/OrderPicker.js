@@ -14,7 +14,7 @@ import * as searchActions from '../reducers/search/searchActions';
 import {Map} from 'immutable';
 
 
-import React, {View, Component} from 'react-native'
+import React, {View, Component, Text} from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -79,17 +79,31 @@ class OrderPicker extends Component {
       orderBy = orderTypes[0];
     }
     return (
-      <View style={styles.container}>
-
+      <View style={styles.fullWidthContainer}>
+        <View style={styles.customPageHeader}>
+          <Icon.Button onPress={this._onBack}
+            name="chevron-left" backgroundColor="#f44336"
+            underlayColor="gray"
+            style={styles.search} >
+          </Icon.Button>
+          <View style={styles.customPageTitle}>
+            <Text style={styles.customPageTitleText}>
+            Sắp xếp
+            </Text>
+          </View>
+        </View>
         <MultipleChoice
           options={orderTypes}
-          style={{paddingTop: 80, paddingLeft: 20}}
+          style={{paddingTop: 10, paddingLeft: 20}}
           selectedOptions={[orderBy]}
           maxSelectedOptions={1}
           onSelection={(option)=>this.handleOrderTypeChosen(option)}
         />
       </View>
     );
+  }
+  _onBack() {
+    Actions.pop();
   }
   handleOrderTypeChosen(option) {
     this.props.actions.onSearchFieldChange("orderBy", this.getKeyByValue(option));

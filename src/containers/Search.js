@@ -110,10 +110,10 @@ class Search extends Component {
             <View onPress={this.onForSale} style = {{flex:1, flexDirection: 'row'}}>
               <LikeTabButton name={'ban'}
                 onPress={this._onLoaiTinChange.bind(this)}
-                selected={this.props.search.form.fields.loaiTin === 'ban'}>Bán</LikeTabButton>
+                selected={this.props.search.form.fields.loaiTin === 'ban'}>BÁN</LikeTabButton>
               <LikeTabButton name={'thue'}
                 onPress={this._onLoaiTinChange.bind(this)}
-                selected={this.props.search.form.fields.loaiTin === 'thue'}>Cho thuê</LikeTabButton>
+                selected={this.props.search.form.fields.loaiTin === 'thue'}>CHO THUÊ</LikeTabButton>
             </View>
 
           </View>
@@ -127,7 +127,7 @@ class Search extends Component {
 
               <View style={styles.searchSectionTitle}>
                 <Text style={styles.searchAttributeLabel}>
-                  Các điều kiện
+                  CÁC ĐIỀU KIỆN
                 </Text>
               </View>
 

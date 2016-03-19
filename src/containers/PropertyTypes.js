@@ -14,7 +14,7 @@ import * as searchActions from '../reducers/search/searchActions';
 import {Map} from 'immutable';
 
 
-import React, {View, Component, SegmentedControlIOS} from 'react-native'
+import React, {View, Component, SegmentedControlIOS, Text} from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -85,16 +85,32 @@ class PropertyTypes extends Component {
     var values = this.props.search.form.fields.loaiTin=='ban' ? LoaiNhaDatBan : LoaiNhaDatThue ;
     var loaiNhaDat = this.getValueByKey(values, this.props.search.form.fields.loaiNhaDat);
     return (
-      <View style={styles.container}>
+      <View style={styles.fullWidthContainer}>
+        <View style={styles.customPageHeader}>
+          <Icon.Button onPress={this._onBack}
+            name="chevron-left" backgroundColor="#f44336"
+            underlayColor="gray"
+            style={styles.search} >
+          </Icon.Button>
+          <View style={styles.customPageTitle}>
+            <Text style={styles.customPageTitleText}>
+            Loại nhà đất
+            </Text>
+          </View>
+        </View>
         <MultipleChoice
           options={values}
-          style={{paddingTop: 80, paddingLeft: 20, paddingRight: 20}}
+          style={{paddingTop: 10, paddingLeft: 20, paddingRight: 20}}
           selectedOptions={[loaiNhaDat]}
           maxSelectedOptions={1}//{this.props.search.form.fields.loaiTin=='ban' ? nhaDatBan.length : nhaDatChoThue.length}
           onSelection={(option)=>this._onPropertyTypeSelected(option)}
         />
       </View>
     );
+  }
+
+  _onBack() {
+    Actions.pop();
   }
 
   _onPropertyTypeSelected(option) {

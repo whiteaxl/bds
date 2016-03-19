@@ -59,7 +59,7 @@ class Home extends Component {
             name="search" backgroundColor="#f44336"
             underlayColor="gray"
             style={styles.search}>
-            Tìm kiếm BDS
+            Tìm kiếm
           </Icon.Button>
         </View>
 
