@@ -150,7 +150,7 @@ class Search extends Component {
                 <View style={{paddingLeft: 10, paddingRight: 10, paddingBottom: 10}}>
                   <SegmentedControlIOS
                     values={["0+","1+","2+","3+","4+","5+"]}
-                    selectedIndex={0}
+                    selectedIndex={this.props.search.form.fields.soPhongNgu}
                     onChange={this._onSoPhongNguChanged.bind(this)}
                   >
                   </SegmentedControlIOS>
@@ -166,7 +166,7 @@ class Search extends Component {
                 <View style={{paddingLeft: 10, paddingRight: 10, paddingBottom: 10}}>
                   <SegmentedControlIOS
                     values={["0+","1+","2+","3+","4+","5+"]}
-                    selectedIndex={0}
+                    selectedIndex={this.props.search.form.fields.soTang}
                     onChange={this._onSoTangChanged.bind(this)}
                   >
                   </SegmentedControlIOS>
@@ -240,11 +240,12 @@ class Search extends Component {
     console.log("On More Option pressed!");
   }
   onResetFilters() {
-    //this.props.actions.onSearchFieldChange("loaiNhaDat", '');
-    //this.props.actions.onSearchFieldChange("soPhongNgu", 0);
-    //this.props.actions.onSearchFieldChange("soTang", 0);
-    //this.props.actions.onSearchFieldChange("dienTich", [0,100]);
-    //this.props.actions.onSearchFieldChange("gia", [0,2000]);
+    this.props.actions.onSearchFieldChange("loaiNhaDat", '');
+    this.props.actions.onSearchFieldChange("soPhongNgu", 0);
+    this.props.actions.onSearchFieldChange("soTang", 0);
+    this.props.actions.onSearchFieldChange("dienTich", [0,100]);
+    this.props.actions.onSearchFieldChange("gia", [0,2000]);
+    this.props.actions.onSearchFieldChange("orderBy", '');
   }
 
   _onPropertyTypesChoosed() {

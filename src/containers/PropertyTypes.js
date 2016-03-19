@@ -82,12 +82,14 @@ class PropertyTypes extends Component {
   }
 
   render() {
+    var values = this.props.search.form.fields.loaiTin=='ban' ? LoaiNhaDatBan : LoaiNhaDatThue ;
+    var loaiNhaDat = this.getValueByKey(values, this.props.search.form.fields.loaiNhaDat);
     return (
       <View style={styles.container}>
         <MultipleChoice
-          options={this.props.search.form.fields.loaiTin=='ban' ? LoaiNhaDatBan : LoaiNhaDatThue}
+          options={values}
           style={{paddingTop: 80, paddingLeft: 20, paddingRight: 20}}
-          selectedOptions={this.props.choice}
+          selectedOptions={[loaiNhaDat]}
           maxSelectedOptions={1}//{this.props.search.form.fields.loaiTin=='ban' ? nhaDatBan.length : nhaDatChoThue.length}
           onSelection={(option)=>this._onPropertyTypeSelected(option)}
         />
@@ -98,6 +100,19 @@ class PropertyTypes extends Component {
   _onPropertyTypeSelected(option) {
     var values = this.props.search.form.fields.loaiTin=='ban' ? LoaiNhaDatBan : LoaiNhaDatThue ;
     this.props.actions.onSearchFieldChange("loaiNhaDat", this.getKeyByValue(values, option));
+  }
+
+  getValueByKey(values, key) {
+    var value = '';
+    for (var i = 0; i < LoaiNhaDatKey.length; i++) {
+      var loaiKey = LoaiNhaDatKey[i];
+      if (key === loaiKey) {
+        value = values[i];
+        break;
+      }
+    }
+    //console.log(value);
+    return value;
   }
 
   getKeyByValue(values, value) {
