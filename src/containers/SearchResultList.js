@@ -178,11 +178,11 @@ class SearchResultList extends Component {
     var diaChi = rowData.diaChi;
     var index = diaChi.indexOf(',', 20);
     var length = 0;
-    if (index !== -1 && index <= 30) {
+    if (index !== -1 && index <= 25) {
       length = index;
     } else {
       index = diaChi.indexOf(' ', 20);
-      length = index !== -1 && index <= 30 ? index : 30;
+      length = index !== -1 && index <= 25 ? index : 25;
     }
     diaChi = diaChi.substring(0,length);
     if (diaChi.length < rowData.diaChi.length) {
