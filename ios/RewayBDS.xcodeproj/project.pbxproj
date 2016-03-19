@@ -542,7 +542,7 @@
 				INFOPLIST_FILE = bds/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.rwg.bds;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rwg.bds.thanh;
 				PRODUCT_NAME = RewayBDS;
 			};
 			name = Debug;
@@ -566,7 +566,7 @@
 				INFOPLIST_FILE = bds/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.rwg.bds;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rwg.bds.thanh;
 				PRODUCT_NAME = RewayBDS;
 			};
 			name = Release;

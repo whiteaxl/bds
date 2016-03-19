@@ -196,6 +196,22 @@ module.exports = StyleSheet.create({
 			textAlign: 'center',
 			margin: 10,
 	},
+	boldLabel: {
+			fontSize: 16,
+			fontWeight: 'bold',
+    		textAlign: 'center',
+			backgroundColor: 'grey',
+    		marginLeft: 10,
+			color: 'white',			
+	},
+	boldTitle: {
+			fontSize: 16,
+			fontWeight: 'bold',
+    		textAlign: 'left',
+			backgroundColor: 'transparent',
+    		marginLeft: 10,
+			color: 'white',			
+	},
 	stuff: {
 			textAlign: 'center',
 			fontSize: 22,
