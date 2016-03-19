@@ -22,6 +22,7 @@ import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
+import CommonHeader from './CommonHeader';
 
 import LikeTabButton from '../components/LikeTabButton';
 import Picker from 'react-native-picker'
@@ -91,18 +92,7 @@ class Search extends Component {
     var _scrollView: ScrollView;
     return (
       <View style={styles.fullWidthContainer}>
-        <View style={styles.customPageHeader}>
-          <Icon.Button onPress={this.onCancel}
-            name="chevron-left" backgroundColor="#f44336"
-            underlayColor="gray"
-            style={styles.search} >
-          </Icon.Button>
-          <View style={styles.customPageTitle}>
-            <Text style={styles.customPageTitleText}>
-            Tìm kiếm
-            </Text>
-          </View>
-        </View>
+        <CommonHeader headerTitle={"Tìm kiếm"} />
 
         <View style={styles.searchFilter}>
           <View style={styles.searchFilterButton}>

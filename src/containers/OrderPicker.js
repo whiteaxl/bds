@@ -21,6 +21,7 @@ import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
+import CommonHeader from './CommonHeader';
 
 import MultipleChoice from 'react-native-multiple-choice';
 
@@ -80,18 +81,8 @@ class OrderPicker extends Component {
     }
     return (
       <View style={styles.fullWidthContainer}>
-        <View style={styles.customPageHeader}>
-          <Icon.Button onPress={this._onBack}
-            name="chevron-left" backgroundColor="#f44336"
-            underlayColor="gray"
-            style={styles.search} >
-          </Icon.Button>
-          <View style={styles.customPageTitle}>
-            <Text style={styles.customPageTitleText}>
-            Sắp xếp
-            </Text>
-          </View>
-        </View>
+        <CommonHeader headerTitle={"Sắp xếp"} />
+
         <MultipleChoice
           options={orderTypes}
           style={{paddingTop: 10, paddingLeft: 20}}

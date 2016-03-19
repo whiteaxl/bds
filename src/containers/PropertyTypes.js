@@ -20,6 +20,7 @@ import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
+import CommonHeader from './CommonHeader';
 
 import MultipleChoice from 'react-native-multiple-choice';
 
@@ -86,18 +87,8 @@ class PropertyTypes extends Component {
     var loaiNhaDat = this.getValueByKey(values, this.props.search.form.fields.loaiNhaDat);
     return (
       <View style={styles.fullWidthContainer}>
-        <View style={styles.customPageHeader}>
-          <Icon.Button onPress={this._onBack}
-            name="chevron-left" backgroundColor="#f44336"
-            underlayColor="gray"
-            style={styles.search} >
-          </Icon.Button>
-          <View style={styles.customPageTitle}>
-            <Text style={styles.customPageTitleText}>
-            Loại nhà đất
-            </Text>
-          </View>
-        </View>
+        <CommonHeader headerTitle={"Loại nhà đất"} />
+
         <MultipleChoice
           options={values}
           style={{paddingTop: 10, paddingLeft: 20, paddingRight: 20}}
