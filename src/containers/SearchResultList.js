@@ -176,13 +176,13 @@ class SearchResultList extends Component {
 	}
   renderRow(rowData, sectionID, rowID) {
     var diaChi = rowData.diaChi;
-    var index = diaChi.indexOf(',', 15);
+    var index = diaChi.indexOf(',', 20);
     var length = 0;
-    if (index !== -1 && index <= 20) {
+    if (index !== -1 && index <= 30) {
       length = index;
     } else {
-      index = diaChi.indexOf(' ', 15);
-      length = index !== -1 && index <= 20 ? index : 20;
+      index = diaChi.indexOf(' ', 20);
+      length = index !== -1 && index <= 30 ? index : 30;
     }
     diaChi = diaChi.substring(0,length);
     if (diaChi.length < rowData.diaChi.length) {
@@ -190,7 +190,7 @@ class SearchResultList extends Component {
     }
     var soPhongNgu = rowData.soPhongNgu;
     if (soPhongNgu) {
-      soPhongNgu = " " + soPhongNgu + " phòng ngủ";
+      soPhongNgu = " " + soPhongNgu + " p.ngủ";
     }
     return (
       <View style={styles.row}>
