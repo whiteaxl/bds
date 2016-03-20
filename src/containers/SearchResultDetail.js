@@ -15,7 +15,7 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component, Image, Dimensions } from 'react-native'
+import React, { Text, View, Component, Image, Dimensions, ScrollView } from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -130,6 +130,7 @@ class SearchResultDetail extends Component {
     if (phone) {
       lienHe = lienHe + 'phone ' + phone + '; ';
     }
+    var _scrollView: ScrollView;
     return (
 			<View style={styles.fullWidthContainer}>
         <View style={styles.customPageHeader}>
@@ -144,66 +145,72 @@ class SearchResultDetail extends Component {
             style={styles.search} >Chia sẻ
           </Icon.Button>
         </View>
-        <View style={styles.searchContent}>
-          <Image style={{flex:1, justifyContent: 'center',
-                 alignItems: 'center', width: Dimensions.get('window').width,
-                 height: Dimensions.get('window').height}}
-             source={{uri: `${imageUrl}`}}>
-            <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'stretch',
-            			backgroundColor: 'transparent', marginTop: Dimensions.get('window').height/2-100}}>
-              <View style={styles.searchDetailRowAlign}>
+        <ScrollView
+          ref={(scrollView) => { _scrollView = scrollView; }}
+          automaticallyAdjustContentInsets={false}
+          vertical={true}
+          style={styles.scrollView}>
+          <View style={styles.searchContent}>
+            <Image style={{flex:1, justifyContent: 'center',
+                   alignItems: 'center', width: Dimensions.get('window').width,
+                   height: Dimensions.get('window').height}}
+               source={{uri: `${imageUrl}`}}>
+              <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'stretch',
+              			backgroundColor: 'transparent', marginTop: Dimensions.get('window').height/2-100}}>
+                <View style={styles.searchDetailRowAlign}>
+                  <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
+                      fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10, width: Dimensions.get('window').width/2-50}}>
+                    Bán/Cho thuê: {loaiTin}
+                  </Text>
+                  <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
+                      fontSize: 14, color: 'white', marginBottom: 10, width: Dimensions.get('window').width/2+50}}>
+                    Loại nhà: {loaiNhaDat}
+                  </Text>
+                </View>
                 <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                    fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10, width: Dimensions.get('window').width/2-50}}>
-                  Bán/Cho thuê: {loaiTin}
+                    fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10}}>
+                  Địa chỉ: {diaChi}
+                </Text>
+                <View style={styles.searchDetailRowAlign}>
+                  <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
+                      fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10, width: Dimensions.get('window').width/2-50}}>
+                    Diện tích: {dienTich}
+                  </Text>
+                  <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
+                      fontSize: 14, color: 'white', marginBottom: 10}}>
+                    Giá: {gia}
+                  </Text>
+                </View>
+                <View style={styles.searchDetailRowAlign}>
+                  <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
+                      fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10, width: Dimensions.get('window').width/2-50}}>
+                    Số tầng: {soTang}
+                  </Text>
+                  <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
+                      fontSize: 14, color: 'white', marginBottom: 10}}>
+                    Số phòng ngủ: {soPhongNgu}
+                  </Text>
+                </View>
+                <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
+                    fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10}}>
+                  Ngày đăng: {ngayDangTin}
                 </Text>
                 <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                    fontSize: 14, color: 'white', marginBottom: 10, width: Dimensions.get('window').width/2+50}}>
-                  Loại nhà: {loaiNhaDat}
+                    fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10}}>
+                  Chi tiết: {chiTiet}
+                </Text>
+                <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
+                    fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10}}>
+                  Liên hệ: {lienHe}
+                </Text>
+                <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
+                    fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10}}>
+                  Danh sách comments
                 </Text>
               </View>
-              <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                  fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10}}>
-                Địa chỉ: {diaChi}
-              </Text>
-              <View style={styles.searchDetailRowAlign}>
-                <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                    fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10, width: Dimensions.get('window').width/2-50}}>
-                  Diện tích: {dienTich}
-                </Text>
-                <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                    fontSize: 14, color: 'white', marginBottom: 10}}>
-                  Giá: {gia}
-                </Text>
-              </View>
-              <View style={styles.searchDetailRowAlign}>
-                <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                    fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10, width: Dimensions.get('window').width/2-50}}>
-                  Số tầng: {soTang}
-                </Text>
-                <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                    fontSize: 14, color: 'white', marginBottom: 10}}>
-                  Số phòng ngủ: {soPhongNgu}
-                </Text>
-              </View>
-              <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                  fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10}}>
-                Ngày đăng: {ngayDangTin}
-              </Text>
-              <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                  fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10}}>
-                Chi tiết: {chiTiet}
-              </Text>
-              <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                  fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10}}>
-                Liên hệ: {lienHe}
-              </Text>
-              <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                  fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10}}>
-                Danh sách comments
-              </Text>
-            </View>
-          </Image>
-        </View>
+            </Image>
+          </View>
+        </ScrollView>
         <SearchResultDetailFooter />
 			</View>
 		)
