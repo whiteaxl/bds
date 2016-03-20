@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
  * The actions we need
  */
 import * as globalActions from '../reducers/global/globalActions';
+import * as searchActions from '../reducers/search/searchActions';
 
 /**
  * Immutable Mapn
@@ -14,7 +15,7 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, StyleSheet, View, Component, ScrollView, Image, Dimensions } from 'react-native'
+import React, { Text, StyleSheet, View, Component, ScrollView, Image, Dimensions, TouchableOpacity } from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -27,7 +28,8 @@ import styles from './styles';
 * ## Redux boilerplate
 */
 const actions = [
-  globalActions
+  globalActions,
+  searchActions
 ];
 
 function mapStateToProps(state) {
@@ -88,18 +90,30 @@ class Home extends Component {
               </View>
               
               <View style={homeStyles.itemRow}>
-                <HotDeal title="Bán căn hộ chung cư" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
-                <HotDeal title="Bán nhà riêng" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
+                <TouchableOpacity style={homeStyles.column} onPress={this._onBanCanHoChungCuPressed.bind(this)}>
+                  <HotDeal title="Bán căn hộ chung cư" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
+                </TouchableOpacity>
+                <TouchableOpacity style={homeStyles.column} onPress={this._onBanNhaRiengPressed.bind(this)}>
+                  <HotDeal title="Bán nhà riêng" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
+                </TouchableOpacity>
               </View>
 
               <View style={homeStyles.itemRow}>
-                <HotDeal title="Bán nhà mặt phố" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
-                <HotDeal title="Bán biệt thự, liền kề" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
+                <TouchableOpacity style={homeStyles.column} onPress={this._onBanNhaMatPhoPressed.bind(this)}>
+                  <HotDeal title="Bán nhà mặt phố" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
+                </TouchableOpacity>
+                <TouchableOpacity style={homeStyles.column} onPress={this._onBanBietThuLienKePressed.bind(this)}>
+                  <HotDeal title="Bán biệt thự, liền kề" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
+                </TouchableOpacity>
               </View>
               
               <View style={homeStyles.itemRow}>
-                <HotDeal title="Bán đất" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
-                <HotDeal title="Bán bất động sản khác" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
+                <TouchableOpacity style={homeStyles.column} onPress={this._onBanDatPressed.bind(this)}>
+                  <HotDeal title="Bán đất" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
+                </TouchableOpacity>
+                <TouchableOpacity style={homeStyles.column} onPress={this._onBanBdsKhacPressed.bind(this)}>
+                  <HotDeal title="Bán bất động sản khác" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
+                </TouchableOpacity>
               </View>
             </View>
 
@@ -111,18 +125,30 @@ class Home extends Component {
               </View>
 
               <View style={homeStyles.itemRow}>
-                <HotDeal title="Thuê chung cư" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
-                <HotDeal title="Thuê nhà riêng" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
+                <TouchableOpacity style={homeStyles.column} onPress={this._onChoThueCanHoChungCuPressed.bind(this)}>
+                  <HotDeal title="Cho thuê chung cư" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
+                </TouchableOpacity>
+                <TouchableOpacity style={homeStyles.column} onPress={this._onChoThueNhaRiengPressed.bind(this)}>
+                  <HotDeal title="Cho thuê nhà riêng" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
+                </TouchableOpacity>
               </View>
 
               <View style={homeStyles.itemRow}>
-                <HotDeal title="Thuê nhà mặt phố" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
-                <HotDeal title="Cho thuê văn phòng" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
+                <TouchableOpacity style={homeStyles.column} onPress={this._onChoThueNhaMatPhoPressed.bind(this)}>
+                  <HotDeal title="Cho thuê nhà mặt phố" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
+                </TouchableOpacity>
+                <TouchableOpacity style={homeStyles.column} onPress={this._onChoThueVanPhongPressed.bind(this)}>
+                  <HotDeal title="Cho thuê văn phòng" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
+                </TouchableOpacity>
               </View>
               
               <View style={homeStyles.itemRow}>
-                <HotDeal title="Thuê cửa hàng, ki-ốt" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
-                <HotDeal title="Thuê bds khác" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
+                <TouchableOpacity style={homeStyles.column} onPress={this._onChoThueCuaHangKiotPressed.bind(this)}>
+                  <HotDeal title="Cho thuê cửa hàng, ki-ốt" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
+                </TouchableOpacity>
+                <TouchableOpacity style={homeStyles.column} onPress={this._onChoThueBdsKhacPressed.bind(this)}>
+                  <HotDeal title="Cho thuê bds khác" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
+                </TouchableOpacity>
               </View>
             </View>
           </ScrollView>
@@ -131,8 +157,65 @@ class Home extends Component {
       </View>
 		)
 	}
+  
   handleSearchButton() {
     Actions.Search();
+  }
+
+  _onBanCanHoChungCuPressed() {
+    this._onHotDealPressed('ban', 1);
+  }
+
+  _onBanNhaRiengPressed() {
+    this._onHotDealPressed('ban', 2);
+  }
+
+  _onBanNhaMatPhoPressed() {
+    this._onHotDealPressed('ban', 3);
+  }
+
+  _onBanBietThuLienKePressed() {
+    this._onHotDealPressed('ban', 4);
+  }
+
+  _onBanDatPressed() {
+    this._onHotDealPressed('ban', 5);
+  }
+
+  _onBanBdsKhacPressed() {
+    this._onHotDealPressed('ban', 99);
+  }
+
+  _onChoThueCanHoChungCuPressed() {
+    this._onHotDealPressed('thue', 1);
+  }
+
+  _onChoThueNhaRiengPressed() {
+    this._onHotDealPressed('thue', 2);
+  }
+
+  _onChoThueNhaMatPhoPressed() {
+    this._onHotDealPressed('thue', 3);
+  }
+
+  _onChoThueVanPhongPressed() {
+    this._onHotDealPressed('thue', 4);
+  }
+
+  _onChoThueCuaHangKiotPressed() {
+    this._onHotDealPressed('thue', 5);
+  }
+
+  _onChoThueBdsKhacPressed() {
+    this._onHotDealPressed('thue', 99);
+  }
+
+  _onHotDealPressed(loaiTin, loaiNhaDat){
+    this.props.actions.onSearchFieldChange("loaiTin", loaiTin)
+    this.props.actions.onSearchFieldChange("loaiNhaDat", loaiNhaDat);
+    console.log("Search cridential:");
+    console.log(this.props.search.form.fields);
+    Actions.SearchResultList();
   }
 }
 
