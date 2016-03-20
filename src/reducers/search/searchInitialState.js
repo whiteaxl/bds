@@ -32,9 +32,9 @@ const SearchForm = Record({
     soTang:0,
     dienTich:RangeUtils.BAT_KY_RANGE,
     gia:RangeUtils.BAT_KY_RANGE,
-    //pickerDienTich: [[0, 30,60,100,200, 300, 1000], [0, 30,60,100,200, 300, 1000]],
-    orderBy:'',
     giaPicker : RangeUtils.sellPriceRange.getPickerData(),
+    orderBy:'',
+    listData: []
   }))
 });
 
