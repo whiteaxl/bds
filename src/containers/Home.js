@@ -23,6 +23,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
 
+import LinearGradient from 'react-native-linear-gradient';
+
 
 /**
 * ## Redux boilerplate
@@ -53,7 +55,7 @@ function mapDispatchToProps(dispatch) {
 
 
 class Home extends Component {
-  
+
   render() {
     var _scrollView: ScrollView;
 
@@ -68,7 +70,7 @@ class Home extends Component {
           </Icon.Button>
         </View>
 
-        <View style={styles.homeDetailInfo}>            
+        <View style={styles.homeDetailInfo}>
           <ScrollView
             ref={(scrollView) => { _scrollView = scrollView; }}
             automaticallyAdjustContentInsets={false}
@@ -88,13 +90,13 @@ class Home extends Component {
                   Nhà đất bán
                 </Text>
               </View>
-              
+
               <View style={homeStyles.itemRow}>
                 <TouchableOpacity style={homeStyles.column} onPress={this._onBanCanHoChungCuPressed.bind(this)}>
                   <HotDeal title="Bán căn hộ chung cư" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={homeStyles.column} onPress={this._onBanNhaRiengPressed.bind(this)}>
-                  <HotDeal title="Bán nhà riêng" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
+                  <HotDeal title="Bán nhà riêng" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
                 </TouchableOpacity>
               </View>
 
@@ -103,16 +105,16 @@ class Home extends Component {
                   <HotDeal title="Bán nhà mặt phố" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={homeStyles.column} onPress={this._onBanBietThuLienKePressed.bind(this)}>
-                  <HotDeal title="Bán biệt thự, liền kề" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
+                  <HotDeal title="Bán biệt thự, liền kề" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
                 </TouchableOpacity>
               </View>
-              
+
               <View style={homeStyles.itemRow}>
                 <TouchableOpacity style={homeStyles.column} onPress={this._onBanDatPressed.bind(this)}>
                   <HotDeal title="Bán đất" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={homeStyles.column} onPress={this._onBanBdsKhacPressed.bind(this)}>
-                  <HotDeal title="Bán bất động sản khác" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
+                  <HotDeal title="Bán bất động sản khác" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
                 </TouchableOpacity>
               </View>
             </View>
@@ -129,7 +131,7 @@ class Home extends Component {
                   <HotDeal title="Cho thuê chung cư" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={homeStyles.column} onPress={this._onChoThueNhaRiengPressed.bind(this)}>
-                  <HotDeal title="Cho thuê nhà riêng" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
+                  <HotDeal title="Cho thuê nhà riêng" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
                 </TouchableOpacity>
               </View>
 
@@ -138,26 +140,26 @@ class Home extends Component {
                   <HotDeal title="Cho thuê nhà mặt phố" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={homeStyles.column} onPress={this._onChoThueVanPhongPressed.bind(this)}>
-                  <HotDeal title="Cho thuê văn phòng" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
+                  <HotDeal title="Cho thuê văn phòng" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
                 </TouchableOpacity>
               </View>
-              
+
               <View style={homeStyles.itemRow}>
                 <TouchableOpacity style={homeStyles.column} onPress={this._onChoThueCuaHangKiotPressed.bind(this)}>
                   <HotDeal title="Cho thuê cửa hàng, ki-ốt" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
                 </TouchableOpacity>
                 <TouchableOpacity style={homeStyles.column} onPress={this._onChoThueBdsKhacPressed.bind(this)}>
-                  <HotDeal title="Cho thuê bds khác" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
+                  <HotDeal title="Cho thuê bds khác" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
                 </TouchableOpacity>
               </View>
             </View>
           </ScrollView>
         </View>
-        
+
       </View>
 		)
 	}
-  
+
   handleSearchButton() {
     Actions.Search();
   }
@@ -225,29 +227,38 @@ class HotDeal extends React.Component{
         <View style={homeStyles.column}>
           <Image style={homeStyles.imgItem}
             source={{uri: this.props.imageUrl}}>
+           <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
+             style={homeStyles.linearGradient}>
             <Text style={homeStyles.boldTitle}>{this.props.title}</Text>
+          </LinearGradient>
           </Image>
         </View>
-    );          
+    );
   }
 }
 
 var homeStyles = StyleSheet.create({
+  linearGradient: {
+    flex: 1,
+    paddingLeft: 0,
+    paddingRight: 0,
+    backgroundColor : "transparent"
+  },
   imgItem: {
     flex:1,
-    alignItems: 'flex-start', 
-    width: Dimensions.get('window').width/2-10, 
+    alignItems: 'flex-start',
+    width: Dimensions.get('window').width/2-10,
     height:80
   },
   slideImgItem: {
-    flex:1, 
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    width: Dimensions.get('window').width, 
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: Dimensions.get('window').width,
     height:120
   },
   column: {
-    flex:1, 
+    flex:1,
     alignItems: "center"
   },
   boldTitle: {
@@ -258,25 +269,25 @@ var homeStyles = StyleSheet.create({
     marginLeft: 5,
     marginRight: 5,
     marginTop: 5,
-    color: 'white',     
+    color: 'white',
   },
   boldLabel: {
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'center',
-    backgroundColor: 'grey',
-    color: 'white',     
+    backgroundColor: 'transparent',
+    color: 'white',
   },
   headerLabel: {
-    textAlign: "center", 
-    paddingTop: 10, 
-    fontSize: 16, 
-    fontWeight: "bold", 
+    textAlign: "center",
+    paddingTop: 10,
+    fontSize: 16,
+    fontWeight: "bold",
     color: "#FF3366"
   },
   itemRow: {
-    flex:1, 
-    flexDirection: "row", 
+    flex:1,
+    flexDirection: "row",
     paddingTop:10
   }
 });

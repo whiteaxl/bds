@@ -26,6 +26,7 @@ import styles from './styles';
 import SearchResultDetailFooter from './SearchResultDetailFooter';
 import CommonHeader from './CommonHeader';
 
+import LinearGradient from 'react-native-linear-gradient';
 
 /**
 * ## Redux boilerplate
@@ -153,6 +154,10 @@ class SearchResultDetail extends Component {
           <View style={styles.searchContent}>
             <Image style={detailStyles.imgItem}
                source={{uri: `${imageUrl}`}}>
+
+             <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
+               style={detailStyles.linearGradient}>
+
               <View style={detailStyles.slideItem}>
                 <View style={styles.searchDetailRowAlign}>
                   <Text style={detailStyles.textHalfWidth}>
@@ -194,6 +199,8 @@ class SearchResultDetail extends Component {
                   Danh sách comments
                 </Text>
               </View>
+
+            </LinearGradient>
             </Image>
           </View>
         </ScrollView>
@@ -225,6 +232,12 @@ class SearchResultDetail extends Component {
 }
 
 var detailStyles = StyleSheet.create({
+  linearGradient: {
+    flex: 1,
+    paddingLeft: 0,
+    paddingRight: 0,
+    backgroundColor : "transparent"
+  },
   imgItem: {
     flex:1,
     justifyContent: 'center',
