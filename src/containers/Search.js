@@ -71,9 +71,10 @@ class Search extends Component {
     } else {
       pickerData = RangeUtils.rentPriceRange.getPickerData();
     }
-
-    this.props.actions.onSearchFieldChange("giaPicker", pickerData);
+    
     this.props.actions.onSearchFieldChange("gia", RangeUtils.BAT_KY_RANGE);
+   
+    this.props.actions.onSearchFieldChange("giaPicker", pickerData);
     
     this.props.actions.onSearchFieldChange("loaiTin", value);
   }
@@ -95,7 +96,7 @@ class Search extends Component {
   }
 
   _getGiaValue() {
-    console.log(this.props.search.form.fields.gia)
+    //console.log(this.props.search.form.fields.gia)
     return RangeUtils.getFromToDisplay(this.props.search.form.fields.gia);
   }
 
@@ -104,7 +105,7 @@ class Search extends Component {
   }
 
   render() {
-    console.log(RangeUtils.sellPriceRange.getPickerData());
+    //console.log(RangeUtils.sellPriceRange.getPickerData());
 
     var _scrollView: ScrollView;
     return (
