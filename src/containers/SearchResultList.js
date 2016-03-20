@@ -234,9 +234,8 @@ class SearchResultList extends Component {
 var myStyles = StyleSheet.create({
   linearGradient: {
     flex: 1,
-    paddingLeft: 15,
-    paddingRight: 15,
-    borderRadius: 5, 
+    paddingLeft: 0,
+    paddingRight: 0,
     backgroundColor : "transparent"
   },
 
