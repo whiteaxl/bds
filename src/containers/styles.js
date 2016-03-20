@@ -65,23 +65,7 @@ module.exports = StyleSheet.create({
 		height: 181,
     alignSelf: 'auto',
 	},
-  price: {
-    fontSize: 16,
-		fontWeight: 'bold',
-    textAlign: 'left',
-		backgroundColor: 'transparent',
-    marginLeft: 10,
-		color: 'white',
-  },
-  text: {
-    fontSize: 14,
-    textAlign: 'left',
-		backgroundColor: 'transparent',
-    marginLeft: 10,
-		marginBottom: 15,
-		margin: 5,
-		color: 'white',
-  },
+  
   searchListButton: {
 	    flexDirection: 'row',
 	    justifyContent: 'space-around',

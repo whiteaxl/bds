@@ -15,7 +15,8 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component, Image, ListView, RecyclerViewBackedScrollView, TouchableHighlight } from 'react-native'
+import React, { Text, View, Component, Image, ListView
+  , RecyclerViewBackedScrollView, TouchableHighlight , StyleSheet} from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -25,6 +26,8 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import styles from './styles';
 import CommonHeader from './CommonHeader';
 import SearchResultFooter from './SearchResultFooter';
+
+import LinearGradient from 'react-native-linear-gradient';
 
 /**
 * ## Redux boilerplate
@@ -202,21 +205,67 @@ class SearchResultList extends Component {
       <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
         <View>
           <View style={styles.row}>
-            <Image style={styles.thumb} source={{uri: `${rowData.cover}`}}>
-              <View style={styles.searchListViewRowAlign}>
-                <View>
-                  <Text style={styles.price}>{rowData.price_value} {rowData.price_unit}</Text>
-                  <Text style={styles.text}>{diaChi}{soPhongNgu}</Text>
+            
+            
+              <Image style={styles.thumb} source={{uri: `${rowData.cover}`}} >
+              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']} 
+              style={myStyles.linearGradient}>
+           
+                <View style={myStyles.searchListViewRowAlign}>
+                  <View>
+                    <Text style={myStyles.price}>{rowData.price_value} {rowData.price_unit}</Text>
+                    <Text style={myStyles.text}>{diaChi}{soPhongNgu}</Text>
+                  </View>
+                  <Icon.Button name="heart-o" backgroundColor="transparent"
+                    underlayColor="transparent" style={myStyles.heartButton}/>
                 </View>
-                <Icon.Button name="heart-o" backgroundColor="transparent"
-                  underlayColor="transparent" style={styles.heartButton}/>
-              </View>
-            </Image>
+                </LinearGradient>
+              
+              </Image>
+             
           </View>
         </View>
       </TouchableHighlight>
     );
   }
 }
+
+// Later on in your styles..
+var myStyles = StyleSheet.create({
+  linearGradient: {
+    flex: 1,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 5, 
+    backgroundColor : "transparent"
+  },
+
+  searchListViewRowAlign: {
+    backgroundColor: 'transparent',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    top: 123,
+  },
+  price: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'left',
+    backgroundColor: 'transparent',
+    marginLeft: 10,
+    color: 'white',
+  },
+  text: {
+    fontSize: 14,
+    textAlign: 'left',
+    backgroundColor: 'transparent',
+    marginLeft: 10,
+    marginBottom: 15,
+    margin: 5,
+    color: 'white',
+  },
+  heartButton: {
+    marginBottom: 10,
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultList);

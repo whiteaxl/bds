@@ -1,5 +1,5 @@
 // Import some code we need
-import React, {View, Component, Text} from 'react-native';
+import React, {View, Component, Text, StyleSheet} from 'react-native';
 import Button from 'react-native-button';
 
 import styles from './styles';
@@ -12,11 +12,11 @@ var SearchResultFooter = React.createClass({
     return <View style={styles.searchButton}>
       <View style={styles.searchListButton}>
         <Button onPress={this.onSort}
-          style={styles.searchListButtonText}>Sắp xếp</Button>
+          style={myStyles.searchListButtonText}>Sắp xếp</Button>
         <Button onPress={this.onSaveSearch}
-          style={styles.searchListButtonText}>Lưu tìm kiếm</Button>
+          style={myStyles.searchListButtonText}>Lưu tìm kiếm</Button>
         <Button onPress={this.onMap}
-          style={styles.searchListButtonText}>Bản đồ</Button>
+          style={myStyles.searchListButtonText}>Bản đồ</Button>
       </View>
     </View>
   },
@@ -29,6 +29,20 @@ var SearchResultFooter = React.createClass({
   onMap() {
     Actions.SearchResultMap();
   }
+});
+
+
+
+// Later on in your styles..
+var myStyles = StyleSheet.create({
+  searchListButtonText: {
+      marginLeft: 15,
+      marginRight: 15,
+      marginTop: 10,
+      marginBottom: 10,
+      color: '#5BB622', 
+      fontSize : 16
+  },
 });
 
 // Make this code available elsewhere
