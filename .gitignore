@@ -33,3 +33,9 @@ local.properties
 #
 node_modules/
 npm-debug.log
+
+main.jsbundle
+
+ios/RewayBDS.xcodeproj/xcshareddata/xcschemes/bds.xcscheme
+
+ios/RewayBDS.xcodeproj/xcshareddata/xcschemes/bds.xcscheme
