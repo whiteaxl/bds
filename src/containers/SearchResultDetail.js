@@ -106,7 +106,7 @@ class SearchResultDetail extends Component {
     var loaiNhaDat = this.getValueByKey(loaiNhaDatArr, rowData.loaiNhaDat);
     var diaChi = rowData.diaChi;
     var dienTich = '';
-    if (dienTich) {
+    if (rowData.dienTich) {
       dienTich = rowData.dienTich + ' m²';
     }
     var gia = rowData.price_value + ' ' + rowData.price_unit;
