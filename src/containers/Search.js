@@ -29,6 +29,8 @@ import LikeTabButton from '../components/LikeTabButton';
 import RangeUtils from "../lib/RangeUtils"
 import RangePicker from "../components/RangePicker"
 
+import CommonUtils from "../lib/CommonUtils"
+
 
 
 
@@ -100,8 +102,13 @@ class Search extends Component {
     return RangeUtils.getFromToDisplay(this.props.search.form.fields.gia);
   }
 
-   _getDienTichValue() {
+  _getDienTichValue() {
     return RangeUtils.getFromToDisplay(this.props.search.form.fields.dienTich);
+  }
+
+  _getLoaiNhatDatValue() {
+    return CommonUtils.getLoaiNhaDatForDisplay(this.props.search.form.fields.loaiTin ,
+                                               this.props.search.form.fields.loaiNhaDat);
   }
 
   render() {
@@ -139,7 +146,6 @@ class Search extends Component {
                 </Text>
               </View>
 
-
               <TouchableOpacity style={styles.searchFilterAttribute}
                 onPress={this._onPressGiaHandle.bind(this)}>
                 <Text style={myStyles.searchAttributeLabelBold}>
@@ -157,7 +163,10 @@ class Search extends Component {
                   <Text style={styles.searchAttributeLabel}>
                   Loại nhà đất
                   </Text>
-                  <Icon name="angle-right" style = { {color:'gray'} } size={20} />
+                  <View style={{flexDirection: "row", alignItems: "flex-end"}}>
+                    <Text style={styles.searchAttributeValue}> {this._getLoaiNhatDatValue()} </Text>
+                    <Icon name="angle-right" style = { {color:'gray'} } size={20} />
+                  </View>
                 </View>
               </TouchableOpacity>
 
