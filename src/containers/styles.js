@@ -227,7 +227,7 @@ module.exports = StyleSheet.create({
 		fontSize: 10,
 	},
 	link: {
-		color: '#3257DA',
+		color: 'red',
 	},
 	searchAttributeLabel : {
 		fontSize: 15,

@@ -28,14 +28,13 @@ export default class LikeTabButton extends React.Component {
       </View>
     );
   }
-
 }
 
 
 var styles = StyleSheet.create({
   lineunder: {
     flex: 1, 
-    borderBottomColor: gui.green1, 
+    borderBottomColor: gui.blue1, 
    
     borderStyle: "solid", 
     //width: 60, 
@@ -66,7 +65,7 @@ var styles = StyleSheet.create({
     alignSelf:'center',
     fontSize: 15, 
     padding: 10,
-    color: gui.green1,
+    color: gui.blue1,
     fontWeight : 'bold'
   },
 });

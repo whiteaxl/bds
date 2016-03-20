@@ -15,7 +15,8 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component, Navigator, TouchableOpacity, SegmentedControlIOS, ScrollView } from 'react-native'
+import React, { Text, View, Component, Navigator, TouchableOpacity
+  , SegmentedControlIOS, ScrollView, StyleSheet } from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -25,7 +26,11 @@ import styles from './styles';
 import CommonHeader from './CommonHeader';
 
 import LikeTabButton from '../components/LikeTabButton';
-import Picker from 'react-native-picker'
+import RangeUtils from "../lib/RangeUtils"
+import RangePicker from "../components/RangePicker"
+
+
+
 
 /**
 * ## Redux boilerplate
@@ -59,6 +64,17 @@ class Search extends Component {
   }
 
   _onLoaiTinChange(value) {
+    let pickerData = null;
+
+    if (value=='ban') {
+      pickerData = RangeUtils.sellPriceRange.getPickerData();
+    } else {
+      pickerData = RangeUtils.rentPriceRange.getPickerData();
+    }
+
+    this.props.actions.onSearchFieldChange("giaPicker", pickerData);
+    this.props.actions.onSearchFieldChange("gia", RangeUtils.BAT_KY_RANGE);
+    
     this.props.actions.onSearchFieldChange("loaiTin", value);
   }
 
@@ -79,16 +95,17 @@ class Search extends Component {
   }
 
   _getGiaValue() {
-    //if (this.props.search.form.fields.gia)
-    return this.props.search.form.fields.gia.join(",");
+    console.log(this.props.search.form.fields.gia)
+    return RangeUtils.getFromToDisplay(this.props.search.form.fields.gia);
   }
 
    _getDienTichValue() {
-    //if (this.props.search.form.fields.gia)
-    return this.props.search.form.fields.dienTich.join(",");
+    return RangeUtils.getFromToDisplay(this.props.search.form.fields.dienTich);
   }
 
   render() {
+    console.log(RangeUtils.sellPriceRange.getPickerData());
+
     var _scrollView: ScrollView;
     return (
       <View style={styles.fullWidthContainer}>
@@ -97,7 +114,7 @@ class Search extends Component {
         <View style={styles.searchFilter}>
           <View style={styles.searchFilterButton}>
 
-            <View onPress={this.onForSale} style = {{flex:1, flexDirection: 'row'}}>
+            <View style = {{flex:1, flexDirection: 'row'}}>
               <LikeTabButton name={'ban'}
                 onPress={this._onLoaiTinChange.bind(this)}
                 selected={this.props.search.form.fields.loaiTin === 'ban'}>BÁN</LikeTabButton>
@@ -116,7 +133,7 @@ class Search extends Component {
             <View style={styles.searchFilterDetail}>
 
               <View style={styles.searchSectionTitle}>
-                <Text style={styles.searchAttributeLabel}>
+                <Text style={styles.searchAttributeValue}>
                   CÁC ĐIỀU KIỆN
                 </Text>
               </View>
@@ -124,13 +141,12 @@ class Search extends Component {
 
               <TouchableOpacity style={styles.searchFilterAttribute}
                 onPress={this._onPressGiaHandle.bind(this)}>
-                <Text style={styles.searchAttributeLabel}>
+                <Text style={myStyles.searchAttributeLabelBold}>
                   Giá
                 </Text>
 
                 <View style={{flexDirection: "row"}}>
                   <Text style={styles.searchAttributeValue}> {this._getGiaValue()} </Text>
-                  <Text style={styles.searchAttributeValue}> V </Text>
                 </View>
               </TouchableOpacity>
 
@@ -140,7 +156,7 @@ class Search extends Component {
                   <Text style={styles.searchAttributeLabel}>
                   Loại nhà đất
                   </Text>
-                  <Icon name="angle-right" size={20} />
+                  <Icon name="angle-right" style = { {color:'gray'} } size={20} />
                 </View>
               </TouchableOpacity>
 
@@ -178,13 +194,12 @@ class Search extends Component {
 
               <TouchableOpacity style={styles.searchFilterAttribute}
                   onPress={this._onPressDienTichHandle.bind(this)}>
-                <Text style={styles.searchAttributeLabel}>
+                <Text style={myStyles.searchAttributeLabelBold}>
                   Diện tích
                 </Text>
 
                 <View style={{flexDirection: "row"}}>
                     <Text style={styles.searchAttributeValue}>{this._getDienTichValue()} </Text>
-                    <Text style={styles.searchAttributeValue}> V </Text>
                 </View>
               </TouchableOpacity>
               </View>
@@ -202,22 +217,22 @@ class Search extends Component {
         <View style={styles.searchButton}>
           <View style={styles.searchButtonWrapper}>
             <Button onPress={this.onCancel}
-            style={styles.searchButtonText}>Thoát</Button>
+            style={myStyles.searchButtonText}>Thoát</Button>
             <Button onPress={this.onApply.bind(this)}
-            style={styles.searchButtonText}>Thực hiện</Button>
+            style={myStyles.searchButtonText}>Thực hiện</Button>
           </View>
         </View>
 
         <View>
-          <Picker ref={pickerGia => this.pickerGia = pickerGia}
-                    style={{height: 320}} showDuration={300}
-                    pickerData={this.props.search.form.fields.pickerGia}
+          <RangePicker ref={pickerGia => this.pickerGia = pickerGia}
+                    pickerTitle = "Chọn Giá"
+                    pickerData={this.props.search.form.fields.giaPicker}
                     selectedValue={this.props.search.form.fields.gia}
                     onPickerDone={(pickedValue) => {this._onGiaChanged(pickedValue)}}
               />
-          <Picker ref={pickerDienTich => this.pickerDienTich = pickerDienTich}
-                    style={{height: 320}} showDuration={300}
-                    pickerData={this.props.search.form.fields.pickerDienTich}
+          <RangePicker ref={pickerDienTich => this.pickerDienTich = pickerDienTich}
+                    pickerTitle = "Chọn Diện Tích"
+                    pickerData={RangeUtils.dienTichRange.getPickerData()}
                     selectedValue={this.props.search.form.fields.dienTich}
                     onPickerDone={(pickedValue) => {this._onDienTichChanged(pickedValue)}}
               />
@@ -233,12 +248,7 @@ class Search extends Component {
     console.log(this.props.search.form.fields);
     Actions.SearchResultList();
   }
-  onForSale() {
-    console.log("On For Sale pressed!");
-  }
-  onForRent() {
-    console.log("On For Rent pressed!");
-  }
+  
   onMoreOption() {
     console.log("On More Option pressed!");
   }
@@ -263,5 +273,25 @@ class Search extends Component {
     this.props.actions.onSearchFieldChange("soTang", event.nativeEvent.selectedSegmentIndex)
   }
 }
+
+/**
+ * ## Styles
+ */
+var myStyles = StyleSheet.create({
+  searchAttributeLabelBold : {
+    fontSize: 15,
+    color: 'black',
+    fontWeight: 'bold'
+  },
+
+  searchButtonText: {
+      marginLeft: 15,
+      marginRight: 15,
+      marginTop: 10,
+      marginBottom: 10,
+      color: 'white',
+      fontWeight : 'normal'
+  },
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

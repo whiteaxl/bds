@@ -1,8 +1,9 @@
 // Api.js
 
 import ApiUtils from './ApiUtils';
+import RangeUtils from "../lib/RangeUtils"
 
-var rootUrl = 'http://localhost:5000/api/find';
+var rootUrl = 'http://203.162.13.101:5000/api/find';
 
 var Api = {
   getItems: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy) {
@@ -51,7 +52,9 @@ var Api = {
         params.push({key: 'loaiNhaDat', value: loaiNhaDat});
       }
       if (gia) {
-        params.push({key: 'giaBETWEEN', value: this.arrayToString(gia)});
+        let giaVal = RangeUtils.sellPriceRange.toValRange(gia);
+
+        params.push({key: 'giaBETWEEN', value: this.arrayToString(giaVal)});
       }
       if (soPhongNgu) {
         params.push({key: 'soPhongNguGREATER', value: soPhongNgu});
@@ -60,7 +63,9 @@ var Api = {
         params.push({key: 'soTangGREATER', value: soTang});
       }
       if (dienTich) {
-        params.push({key: 'dienTichBETWEEN', value: this.arrayToString(dienTich)});
+        let dienTichVal = RangeUtils.dienTichRange.toValRange(dienTich);
+
+        params.push({key: 'dienTichBETWEEN', value: this.arrayToString(dienTichVal)});
       }
       if (orderBy) {
         params.push({key: 'orderBy', value: orderBy});

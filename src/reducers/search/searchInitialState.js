@@ -17,21 +17,24 @@ const {
   SEARCH_STATE_INPUT
 } = require('../../lib/constants').default;
 
+import RangeUtils from "../../lib/RangeUtils"
+
 /**
  * This Record contains the state of the seach form
  */
 const SearchForm = Record({
   state: SEARCH_STATE_INPUT,
+
   fields: new (Record({
     loaiTin:'ban',
     loaiNhaDat:'',
     soPhongNgu:0,
     soTang:0,
-    dienTich:[0,100],
-    gia:[0,2000],
-    pickerGia: [[0, 1000,2000,3000,4000], [0, 1000,2000,3000,4000]],
-    pickerDienTich: [[0, 30,60,100,200, 300, 1000], [0, 30,60,100,200, 300, 1000]],
-    orderBy:''
+    dienTich:RangeUtils.BAT_KY_RANGE,
+    gia:RangeUtils.BAT_KY_RANGE,
+    //pickerDienTich: [[0, 30,60,100,200, 300, 1000], [0, 30,60,100,200, 300, 1000]],
+    orderBy:'',
+    giaPicker : RangeUtils.sellPriceRange.getPickerData(),
   }))
 });
 
