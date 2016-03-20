@@ -14,7 +14,7 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component, ScrollView, Image, Dimensions } from 'react-native'
+import React, { Text, StyleSheet, View, Component, ScrollView, Image, Dimensions } from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -74,131 +74,56 @@ class Home extends Component {
             style={styles.scrollView}>
 
             <View style={{flex: 1}}>
-  				    <Image style={{flex:1, justifyContent: 'center', 
-                             alignItems: 'center', width: Dimensions.get('window').width, height:120}}
+  				    <Image style={homeStyles.slideImgItem}
                 source={require('../lib/image/home1.jpg')}>
-                <Text style={styles.boldLabel}>Thông tin dự án</Text>
-                
+                <Text style={homeStyles.boldLabel}>Thông tin dự án</Text>
               </Image>
             </View>
 
             <View style={{flex:1, flexDirection: "column"}}>
-  				    <View style={{flex:1}}>
-                <Text style={{textAlign: "center", padding: 10, fontSize: 16, fontWeight: "bold", color: "white"}}>
+  				    <View style={{flex:1, alignItems: "center"}}>
+                <Text style={homeStyles.headerLabel}>
                   Nhà đất bán
                 </Text>
               </View>
               
-              <View style={{flex:1, flexDirection: "row"}}>
-                <View style={{flex:1, alignItems: "center"}}>
-                  <Image style={{flex:1, 
-                         alignItems: 'flex-start', width: Dimensions.get('window').width/2-10, height:80}}
-                         source={require('../lib/image/home1.jpg')}>
-                    <Text style={styles.boldTitle}>Bán căn hộ chung cư</Text>
-                  </Image>
-                </View>
-                <View style={{flex:1, alignItems: "center"}}>
-                  <Image style={{flex:1, 
-                         alignItems: 'flex-start', width: Dimensions.get('window').width/2-10, height:80}}
-                         source={require('../lib/image/home1.jpg')}>
-                    <Text style={styles.boldTitle}>Bán nhà riêng</Text>
-                  </Image>
-                </View>
+              <View style={homeStyles.itemRow}>
+                <HotDeal title="Bán căn hộ chung cư" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
+                <HotDeal title="Bán nhà riêng" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
               </View>
 
-              <View style={{flex:1, flexDirection: "row"}}>
-                <View style={{flex:1, alignItems: "center"}}>
-                  <Image style={{flex:1, 
-                         alignItems: 'flex-start', width: Dimensions.get('window').width/2-10, height:80}}
-                         source={require('../lib/image/home1.jpg')}>
-                    <Text style={styles.boldTitle}>Bán nhà mặt phố</Text>
-                  </Image>
-                </View>
-                <View style={{flex:1, alignItems: "center"}}>
-                  <Image style={{flex:1, 
-                         alignItems: 'flex-start', width: Dimensions.get('window').width/2-10, height:80}}
-                         source={require('../lib/image/home1.jpg')}>
-                    <Text style={styles.boldTitle}>Bán biệt thự, liền </Text>
-                  </Image>
-                </View>
+              <View style={homeStyles.itemRow}>
+                <HotDeal title="Bán nhà mặt phố" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
+                <HotDeal title="Bán biệt thự, liền kề" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
               </View>
-
-              <View style={{flex:1, flexDirection: "row"}}>
-                <View style={{flex:1, alignItems: "center"}}>
-                  <Image style={{flex:1, 
-                         alignItems: 'flex-start', width: Dimensions.get('window').width/2-10, height:80}}
-                         source={require('../lib/image/home1.jpg')}>
-                    <Text style={styles.boldTitle}>Bán đất</Text>
-                  </Image>
-                </View>
-                <View style={{flex:1, alignItems: "center"}}>
-                  <Image style={{flex:1, 
-                         alignItems: 'flex-start', width: Dimensions.get('window').width/2-10, height:80}}
-                         source={require('../lib/image/home1.jpg')}>
-                    <Text style={styles.boldTitle}>Bán bất động sản khác</Text>
-                  </Image>
-                </View>
+              
+              <View style={homeStyles.itemRow}>
+                <HotDeal title="Bán đất" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
+                <HotDeal title="Bán bất động sản khác" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
               </View>
             </View>
 
             <View style={{flex:1, flexDirection: "column"}}>
-              <View style={{flex: 1}}>
-                <Text style={{textAlign: "center", padding: 10, fontSize: 16, fontWeight: "bold", color: "white"}}>
+              <View style={{flex: 1, alignItems: "center"}}>
+                <Text style={homeStyles.headerLabel}>
                   Nhà đất cho thuê
                 </Text>
               </View>
 
-              <View style={{flex:1, flexDirection: "row"}}>
-                <View style={{flex:1, alignItems: "center"}}>
-                  <Image style={{flex:1, 
-                         alignItems: 'flex-start', width: Dimensions.get('window').width/2-10, height:80}}
-                         source={require('../lib/image/home1.jpg')}>
-                    <Text style={styles.boldTitle}>Thuê chung cư</Text>
-                  </Image>
-                </View>
-                <View style={{flex:1, alignItems: "center"}}>
-                  <Image style={{flex:1, 
-                         alignItems: 'flex-start', width: Dimensions.get('window').width/2-10, height:80}}
-                         source={require('../lib/image/home1.jpg')}>
-                    <Text style={styles.boldTitle}>Thuê nhà riêng</Text>
-                  </Image>
-                </View>
+              <View style={homeStyles.itemRow}>
+                <HotDeal title="Thuê chung cư" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
+                <HotDeal title="Thuê nhà riêng" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
               </View>
 
-              <View style={{flex:1, flexDirection: "row"}}>
-                <View style={{flex:1, alignItems: "center"}}>
-                  <Image style={{flex:1, 
-                         alignItems: 'flex-start', width: Dimensions.get('window').width/2-10, height:80}}
-                         source={require('../lib/image/home1.jpg')}>
-                    <Text style={styles.boldTitle}>Thuê nhà mặt phố</Text>
-                  </Image>
-                </View>
-                <View style={{flex:1, alignItems: "center"}}>
-                  <Image style={{flex:1, 
-                         alignItems: 'flex-start', width: Dimensions.get('window').width/2-10, height:80}}
-                         source={require('../lib/image/home1.jpg')}>
-                    <Text style={styles.boldTitle}>Cho thuê văn phòng</Text>
-                  </Image>
-                </View>
+              <View style={homeStyles.itemRow}>
+                <HotDeal title="Thuê nhà mặt phố" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
+                <HotDeal title="Cho thuê văn phòng" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
               </View>
               
-              <View style={{flex:1, flexDirection: "row"}}>
-                <View style={{flex:1, alignItems: "center"}}>
-                  <Image style={{flex:1, 
-                         alignItems: 'flex-start', width: Dimensions.get('window').width/2-10, height:80}}
-                         source={require('../lib/image/home1.jpg')}>
-                    <Text style={styles.boldTitle}>Thuê cửa hàng, ki-ốt</Text>
-                  </Image>
-                </View>
-                <View style={{flex:1, alignItems: "center"}}>
-                  <Image style={{flex:1, 
-                         alignItems: 'flex-start', width: Dimensions.get('window').width/2-10, height:80}}
-                         source={require('../lib/image/home1.jpg')}>
-                    <Text style={styles.boldTitle}>Thuê bds khác</Text>
-                  </Image>
-                </View>
+              <View style={homeStyles.itemRow}>
+                <HotDeal title="Thuê cửa hàng, ki-ốt" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
+                <HotDeal title="Thuê bds khác" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>                
               </View>
-              
             </View>
           </ScrollView>
         </View>
@@ -210,5 +135,69 @@ class Home extends Component {
     Actions.Search();
   }
 }
+
+class HotDeal extends React.Component{
+  render() {
+    return (
+        <View style={homeStyles.column}>
+          <Image style={homeStyles.imgItem}
+            source={{uri: this.props.imageUrl}}>
+            <Text style={homeStyles.boldTitle}>{this.props.title}</Text>
+          </Image>
+        </View>
+    );          
+  }
+}
+
+var homeStyles = StyleSheet.create({
+  imgItem: {
+    flex:1,
+    alignItems: 'flex-start', 
+    width: Dimensions.get('window').width/2-10, 
+    height:80
+  },
+  slideImgItem: {
+    flex:1, 
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    width: Dimensions.get('window').width, 
+    height:120
+  },
+  column: {
+    flex:1, 
+    alignItems: "center"
+  },
+  boldTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'left',
+    backgroundColor: 'transparent',
+    marginLeft: 5,
+    marginRight: 5,
+    marginTop: 5,
+    color: 'white',     
+  },
+  boldLabel: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    backgroundColor: 'grey',
+    color: 'white',     
+  },
+  headerLabel: {
+    textAlign: "center", 
+    paddingTop: 10, 
+    fontSize: 16, 
+    fontWeight: "bold", 
+    color: "#FF3366"
+  },
+  itemRow: {
+    flex:1, 
+    flexDirection: "row", 
+    paddingTop:10
+  }
+});
+
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Home);
