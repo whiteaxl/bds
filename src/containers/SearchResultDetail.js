@@ -15,7 +15,7 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component, Image, Dimensions, ScrollView } from 'react-native'
+import React, { Text, View, Component, Image, Dimensions, ScrollView, StyleSheet } from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -151,60 +151,46 @@ class SearchResultDetail extends Component {
           vertical={true}
           style={styles.scrollView}>
           <View style={styles.searchContent}>
-            <Image style={{flex:1, justifyContent: 'center',
-                   alignItems: 'center', width: Dimensions.get('window').width,
-                   height: Dimensions.get('window').height}}
+            <Image style={detailStyles.imgItem}
                source={{uri: `${imageUrl}`}}>
-              <View style={{flex: 1, justifyContent: 'flex-start', alignItems: 'stretch',
-              			backgroundColor: 'transparent', marginTop: Dimensions.get('window').height/2-100}}>
+              <View style={detailStyles.slideItem}>
                 <View style={styles.searchDetailRowAlign}>
-                  <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                      fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10, width: Dimensions.get('window').width/2-10}}>
+                  <Text style={detailStyles.textHalfWidth}>
                     Bán/Cho thuê: {loaiTin}
                   </Text>
-                  <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                      fontSize: 14, color: 'white', marginBottom: 10}}>
+                  <Text style={detailStyles.textHalfWidth}>
                     Loại nhà: {loaiNhaDat}
                   </Text>
                 </View>
-                <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                    fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10}}>
+                <Text style={detailStyles.textFullWidth}>
                   Địa chỉ: {diaChi}
                 </Text>
                 <View style={styles.searchDetailRowAlign}>
-                  <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                      fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10, width: Dimensions.get('window').width/2-10}}>
+                  <Text style={detailStyles.textHalfWidth}>
                     Diện tích: {dienTich}
                   </Text>
-                  <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                      fontSize: 14, color: 'white', marginBottom: 10}}>
+                  <Text style={detailStyles.textHalfWidth}>
                     Giá: {gia}
                   </Text>
                 </View>
                 <View style={styles.searchDetailRowAlign}>
-                  <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                      fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10, width: Dimensions.get('window').width/2-10}}>
+                  <Text style={detailStyles.textHalfWidth}>
                     Số tầng: {soTang}
                   </Text>
-                  <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                      fontSize: 14, color: 'white', marginBottom: 10}}>
+                  <Text style={detailStyles.textHalfWidth}>
                     Số phòng ngủ: {soPhongNgu}
                   </Text>
                 </View>
-                <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                    fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10}}>
+                <Text style={detailStyles.textFullWidth}>
                   Ngày đăng: {ngayDangTin}
                 </Text>
-                <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                    fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10}}>
+                <Text style={detailStyles.textFullWidth}>
                   Chi tiết: {chiTiet}
                 </Text>
-                <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                    fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10}}>
+                <Text style={detailStyles.textFullWidth}>
                   Liên hệ: {lienHe}
                 </Text>
-                <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                    fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10}}>
+                <Text style={detailStyles.textFullWidth}>
                   Danh sách comments
                 </Text>
               </View>
@@ -237,5 +223,40 @@ class SearchResultDetail extends Component {
     console.log("On share pressed!");
   }
 }
+
+var detailStyles = StyleSheet.create({
+  imgItem: {
+    flex:1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height
+  },
+  slideItem: {
+    flex: 1, justifyContent: 'flex-start', alignItems: 'stretch',
+          backgroundColor: 'transparent', marginTop: Dimensions.get('window').height/2-100
+  },
+  textHalfWidth: {
+    textAlign: 'left',
+    alignItems: 'flex-start',
+    backgroundColor: 'transparent',
+    fontSize: 14,
+    color: 'white',
+    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
+    width: Dimensions.get('window').width/2-20
+  },
+  textFullWidth: {
+    textAlign: 'left',
+    alignItems: 'flex-start',
+    backgroundColor: 'transparent',
+    fontSize: 14,
+    color: 'white',
+    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
+  }
+});
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultDetail);
