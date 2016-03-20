@@ -30,6 +30,7 @@ import RangeUtils from "../lib/RangeUtils"
 import RangePicker from "../components/RangePicker"
 
 import CommonUtils from "../lib/CommonUtils"
+import LoaiNhaDat from "../lib/DanhMuc"
 
 
 
@@ -44,7 +45,9 @@ const actions = [
 
 function mapStateToProps(state) {
   return {
-      ...state
+      ...state,
+      showSoPhongNgu: true,
+      showSoTang: true
   };
 }
 
@@ -62,7 +65,7 @@ function mapDispatchToProps(dispatch) {
 
 class Search extends Component {
   constructor() {
-    super();
+    super();    
   }
 
   _onLoaiTinChange(value) {
@@ -107,7 +110,7 @@ class Search extends Component {
   }
 
   _getLoaiNhatDatValue() {
-    return CommonUtils.getLoaiNhaDatForDisplay(this.props.search.form.fields.loaiTin ,
+    return this.getLoaiNhaDatForDisplay(this.props.search.form.fields.loaiTin ,
                                                this.props.search.form.fields.loaiNhaDat);
   }
 
@@ -170,37 +173,9 @@ class Search extends Component {
                 </View>
               </TouchableOpacity>
 
-              <View style={styles.searchFilterAttribute, {flexDirection: "column"}}>
-                <View style={styles.searchFilterAttribute}>
-                  <Text style={styles.searchAttributeLabel}>
-                    Số phòng ngủ
-                  </Text>
-                </View>
-                <View style={{paddingLeft: 10, paddingRight: 10, paddingBottom: 10}}>
-                  <SegmentedControlIOS
-                    values={["0+","1+","2+","3+","4+","5+"]}
-                    selectedIndex={this.props.search.form.fields.soPhongNgu}
-                    onChange={this._onSoPhongNguChanged.bind(this)}
-                  >
-                  </SegmentedControlIOS>
-                </View>
-              </View>
+              {this._renderSoPhongNgu()}
 
-              <View style={styles.searchFilterAttribute, {flexDirection: "column"}}>
-                <View style={styles.searchFilterAttribute}>
-                  <Text style={styles.searchAttributeLabel}>
-                    Số tầng
-                  </Text>
-                </View>
-                <View style={{paddingLeft: 10, paddingRight: 10, paddingBottom: 10}}>
-                  <SegmentedControlIOS
-                    values={["0+","1+","2+","3+","4+","5+"]}
-                    selectedIndex={this.props.search.form.fields.soTang}
-                    onChange={this._onSoTangChanged.bind(this)}
-                  >
-                  </SegmentedControlIOS>
-                </View>
-              </View>
+              {this._renderSoTang()}
 
               <TouchableOpacity style={styles.searchFilterAttribute}
                   onPress={this._onPressDienTichHandle.bind(this)}>
@@ -250,9 +225,11 @@ class Search extends Component {
       </View>
     );
   }
+
   onCancel() {
     Actions.pop();
   }
+
   onApply() {
     this.props.actions.onSearchFieldChange("listData", []);
     console.log("Search cridential:");
@@ -263,6 +240,7 @@ class Search extends Component {
   onMoreOption() {
     console.log("On More Option pressed!");
   }
+
   onResetFilters() {
     this.props.actions.onSearchFieldChange("loaiNhaDat", '');
     this.props.actions.onSearchFieldChange("soPhongNgu", 0);
@@ -277,11 +255,101 @@ class Search extends Component {
   }
 
   _onSoPhongNguChanged(event) {
-    this.props.actions.onSearchFieldChange("soPhongNgu", event.nativeEvent.selectedSegmentIndex)
+    this.props.actions.onSearchFieldChange("soPhongNgu", event.nativeEvent.selectedSegmentIndex);
   }
 
   _onSoTangChanged(event) {
-    this.props.actions.onSearchFieldChange("soTang", event.nativeEvent.selectedSegmentIndex)
+    this.props.actions.onSearchFieldChange("soTang", event.nativeEvent.selectedSegmentIndex);
+  }
+
+  _renderSoPhongNgu(){
+    let loaiTin = this.props.search.form.fields.loaiTin;
+    let loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
+    if (this.showSoPhongNgu(loaiTin, loaiNhaDat)){
+      return (
+        <View style={styles.searchFilterAttribute, {flexDirection: "column"}}>
+          <View style={styles.searchFilterAttribute}>
+            <Text style={styles.searchAttributeLabel}>
+              Số phòng ngủ
+            </Text>
+          </View>
+          <View style={{paddingLeft: 10, paddingRight: 10, paddingBottom: 10}}>
+            <SegmentedControlIOS
+              values={["0+","1+","2+","3+","4+","5+"]}
+              selectedIndex={this.props.search.form.fields.soPhongNgu}
+              onChange={this._onSoPhongNguChanged.bind(this)}
+            >
+            </SegmentedControlIOS>
+          </View>
+        </View>
+      );
+    } else {
+      this.props.actions.onSearchFieldChange("soPhongNgu", 0);
+      return;
+    } 
+  }
+
+  _renderSoTang() {
+    let loaiTin = this.props.search.form.fields.loaiTin;
+    let loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
+    if (this.showSoTang(loaiTin, loaiNhaDat)){
+      return (
+        <View style={styles.searchFilterAttribute, {flexDirection: "column"}}>
+          <View style={styles.searchFilterAttribute}>
+            <Text style={styles.searchAttributeLabel}>
+              Số tầng
+            </Text>
+          </View>
+          <View style={{paddingLeft: 10, paddingRight: 10, paddingBottom: 10}}>
+            <SegmentedControlIOS
+              values={["0+","1+","2+","3+","4+","5+"]}
+              selectedIndex={this.props.search.form.fields.soTang}
+              onChange={this._onSoTangChanged.bind(this)}
+             >
+             </SegmentedControlIOS>
+          </View>
+        </View>
+      );
+    }else{
+      this.props.actions.onSearchFieldChange("soTang", 0);
+      return;
+    }
+  }
+
+  getLoaiNhaDatForDisplay(loaiTin, loaiNhaDatKey){
+    if (loaiTin == 'ban')
+      return LoaiNhaDat.ban[loaiNhaDatKey];
+
+    if (loaiTin == 'thue')
+      return LoaiNhaDat.thue[loaiNhaDatKey];
+
+    return null;
+  }
+
+  showSoPhongNgu(loaiTin, loaiNhaDatKey){
+    let banDat = 5;
+    if (loaiTin == 'ban' && [banDat].indexOf(loaiNhaDatKey)!=-1)
+      return false;
+    
+    let thueVanPhong = 4;
+    let thueCuaHang = 5;
+    if (loaiTin == 'thue' && [thueVanPhong, thueCuaHang].indexOf(loaiNhaDatKey)!=-1)
+      return false;
+
+    return true;
+  }
+
+  showSoTang(loaiTin, loaiNhaDatKey){
+    let banDat = 5;
+    let banCanHoChungCu = 1;
+    if (loaiTin == 'ban' && [banCanHoChungCu, banDat].indexOf(loaiNhaDatKey)!=-1)
+      return false;
+    
+    let thueCanHoChungCu = 1;
+    if (loaiTin == 'thue' && [thueCanHoChungCu].indexOf(loaiNhaDatKey)!=-1)
+      return false;
+
+    return true;
   }
 }
 

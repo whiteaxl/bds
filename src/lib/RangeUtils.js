@@ -54,7 +54,7 @@ class IncRange {
 		for (var i = 0; i < arr.length ; i++) {
 			ret[arr[i]] = [BAT_KY].concat(arr.slice(i+1));
 		}
-
+		
 		return ret;
 	}
 
