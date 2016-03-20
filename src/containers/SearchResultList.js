@@ -22,7 +22,8 @@ import Api from '../components/Api';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
-
+import CommonHeader from './CommonHeader';
+import SearchResultFooter from './SearchResultFooter';
 
 /**
 * ## Redux boilerplate
@@ -141,31 +142,29 @@ class SearchResultList extends Component {
     }
     if (!this.state) {
       return (
-  			<View style={styles.container}>
+  			<View style={styles.fullWidthContainer}>
+          <CommonHeader headerTitle={"Danh sách"} />
+          <View style={styles.searchContent}>
+            <Text style={styles.welcome}>Đang tải dữ liệu!</Text>
+          </View>
+          <SearchResultFooter />
   			</View>
       )
     }
     if (!this.state.dataSource) {
       return (
-  			<View style={styles.container}>
-          <Text style={styles.welcome}>{this.state.errormsg}</Text>
+  			<View style={styles.fullWidthContainer}>
+          <CommonHeader headerTitle={"Danh sách"} />
+          <View style={styles.searchContent}>
+            <Text style={styles.welcome}>{this.state.errormsg}</Text>
+          </View>
+          <SearchResultFooter />
   			</View>
       )
     }
     return (
       <View style={styles.fullWidthContainer}>
-        <View style={styles.customPageHeader}>
-          <Icon.Button onPress={this.onCancel}
-            name="chevron-left" backgroundColor="#f44336"
-            underlayColor="gray"
-            style={styles.search} >
-          </Icon.Button>
-          <View style={styles.customPageTitle}>
-            <Text style={styles.customPageTitleText}>
-              Danh sách
-            </Text>
-          </View>
-        </View>
+        <CommonHeader headerTitle={"Danh sách"} />
 
         <ListView
           dataSource={this.state.dataSource}
@@ -174,16 +173,7 @@ class SearchResultList extends Component {
           renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
           style={styles.searchListView}
         />
-        <View style={styles.searchButton}>
-          <View style={styles.searchListButton}>
-            <Button onPress={this.onSort}
-              style={styles.searchListButtonText}>Sắp xếp</Button>
-            <Button onPress={this.onSaveSearch}
-              style={styles.searchListButtonText}>Lưu tìm kiếm</Button>
-            <Button onPress={this.onMap}
-              style={styles.searchListButtonText}>Bản đồ</Button>
-          </View>
-        </View>
+        <SearchResultFooter />
 			</View>
 		)
 	}
@@ -219,18 +209,6 @@ class SearchResultList extends Component {
         </Image>
       </View>
     );
-  }
-  onCancel() {
-    Actions.pop();
-  }
-  onSort() {
-    Actions.OrderPicker();
-  }
-  onSaveSearch() {
-    console.log("On Save Search pressed!");
-  }
-  onMap() {
-    Actions.SearchResultMap();
   }
 }
 

@@ -22,6 +22,7 @@ import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MapApi from '../components/MapApi';
 import styles from './styles';
+import CommonHeader from './CommonHeader';
 
 
 /**
@@ -59,18 +60,7 @@ class SearchResultMap extends Component {
     var pin = {latitude: 0, longitude: 0};
     return (
       <View style={styles.fullWidthContainer}>
-        <View style={styles.customPageHeader}>
-          <Icon.Button onPress={this.onList}
-            name="chevron-left" backgroundColor="#f44336"
-            underlayColor="gray"
-            style={styles.search} >
-          </Icon.Button>
-          <View style={styles.customPageTitle}>
-            <Text style={styles.customPageTitleText}>
-              Bản đồ
-            </Text>
-          </View>
-        </View>
+        <CommonHeader headerTitle={"Bản đồ"} />
 
         <MapView
           annotations={[pin]}

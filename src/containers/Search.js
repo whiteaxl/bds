@@ -22,6 +22,7 @@ import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
+import CommonHeader from './CommonHeader';
 
 import LikeTabButton from '../components/LikeTabButton';
 import Picker from 'react-native-picker'
@@ -91,18 +92,7 @@ class Search extends Component {
     var _scrollView: ScrollView;
     return (
       <View style={styles.fullWidthContainer}>
-        <View style={styles.customPageHeader}>
-          <Icon.Button onPress={this.onCancel}
-            name="chevron-left" backgroundColor="#f44336"
-            underlayColor="gray"
-            style={styles.search} >
-          </Icon.Button>
-          <View style={styles.customPageTitle}>
-            <Text style={styles.customPageTitleText}>
-            Tìm kiếm
-            </Text>
-          </View>
-        </View>
+        <CommonHeader headerTitle={"Tìm kiếm"} />
 
         <View style={styles.searchFilter}>
           <View style={styles.searchFilterButton}>
@@ -110,10 +100,10 @@ class Search extends Component {
             <View onPress={this.onForSale} style = {{flex:1, flexDirection: 'row'}}>
               <LikeTabButton name={'ban'}
                 onPress={this._onLoaiTinChange.bind(this)}
-                selected={this.props.search.form.fields.loaiTin === 'ban'}>Bán</LikeTabButton>
+                selected={this.props.search.form.fields.loaiTin === 'ban'}>BÁN</LikeTabButton>
               <LikeTabButton name={'thue'}
                 onPress={this._onLoaiTinChange.bind(this)}
-                selected={this.props.search.form.fields.loaiTin === 'thue'}>Cho thuê</LikeTabButton>
+                selected={this.props.search.form.fields.loaiTin === 'thue'}>CHO THUÊ</LikeTabButton>
             </View>
 
           </View>
@@ -127,7 +117,7 @@ class Search extends Component {
 
               <View style={styles.searchSectionTitle}>
                 <Text style={styles.searchAttributeLabel}>
-                  Các điều kiện
+                  CÁC ĐIỀU KIỆN
                 </Text>
               </View>
 

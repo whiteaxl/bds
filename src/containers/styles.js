@@ -3,6 +3,18 @@ import React, {StyleSheet, PixelRatio} from 'react-native';
 import gui from '../lib/gui';
 
 module.exports = StyleSheet.create({
+	searchDetailImage: {
+			justifyContent: 'center',
+			alignItems: 'stretch',
+			flex: 1,
+	    alignSelf: 'auto',
+	},
+	searchDetailInfo: {
+			flex: 1,
+			justifyContent: 'center',
+			alignItems: 'stretch',
+			backgroundColor: '#CCC0DA',
+	},
 	customPageHeader: {
 			flexDirection: 'row',
 			alignItems: 'flex-start',
@@ -87,6 +99,11 @@ module.exports = StyleSheet.create({
 	},
 	searchListView: {
 		margin: 0,
+	},
+	searchContent: {
+		flex: 1,
+		alignItems: 'center',
+		justifyContent: 'center'
 	},
 	searchMapView: {
 		flex: 1,
@@ -178,6 +195,22 @@ module.exports = StyleSheet.create({
 			fontSize: 16,
 			textAlign: 'center',
 			margin: 10,
+	},
+	boldLabel: {
+			fontSize: 16,
+			fontWeight: 'bold',
+    		textAlign: 'center',
+			backgroundColor: 'grey',
+    		marginLeft: 10,
+			color: 'white',			
+	},
+	boldTitle: {
+			fontSize: 16,
+			fontWeight: 'bold',
+    		textAlign: 'left',
+			backgroundColor: 'transparent',
+    		marginLeft: 10,
+			color: 'white',			
 	},
 	stuff: {
 			textAlign: 'center',

@@ -78,6 +78,7 @@ import SearchResultList from './SearchResultList';
 import SearchResultMap from './SearchResultMap';
 import PropertyTypes from './PropertyTypes';
 import OrderPicker from './OrderPicker';
+import SearchResultDetail from './SearchResultDetail';
 
 import Profile from './Profile';
 import Tabbar from '../components/Tabbar';
@@ -168,8 +169,9 @@ class App extends Component {
 		        <Route name='Search' component={Search} schema='main' title="Tìm kiếm" hideNavBar={true} />
         		<Route name='SearchResultList' component={SearchResultList} schema='main' title="Danh sách" hideNavBar={true} />
             <Route name='SearchResultMap' component={SearchResultMap} schema='main' title="Bản đồ" hideNavBar={true} />
-        		<Route name='PropertyTypes' component={PropertyTypes} schema='main' title="Loại nhà đất" />
-        		<Route name='OrderPicker' component={OrderPicker} schema='main' title="Sắp xếp" />
+        		<Route name='PropertyTypes' component={PropertyTypes} schema='main' title="Loại nhà đất" hideNavBar={true} />
+        		<Route name='OrderPicker' component={OrderPicker} schema='main' title="Sắp xếp" hideNavBar={true} />
+            <Route name='SearchResultDetail' component={SearchResultDetail} schema='main' title="Chi tiết" hideNavBar={true} />
 
 				<Route name='Home' hideNavBar={true} type='replace'>
 			        <Tabbar>

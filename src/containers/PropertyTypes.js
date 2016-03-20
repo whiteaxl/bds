@@ -14,12 +14,13 @@ import * as searchActions from '../reducers/search/searchActions';
 import {Map} from 'immutable';
 
 
-import React, {View, Component, SegmentedControlIOS} from 'react-native'
+import React, {View, Component, SegmentedControlIOS, Text} from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
+import CommonHeader from './CommonHeader';
 
 import MultipleChoice from 'react-native-multiple-choice';
 
@@ -85,16 +86,22 @@ class PropertyTypes extends Component {
     var values = this.props.search.form.fields.loaiTin=='ban' ? LoaiNhaDatBan : LoaiNhaDatThue ;
     var loaiNhaDat = this.getValueByKey(values, this.props.search.form.fields.loaiNhaDat);
     return (
-      <View style={styles.container}>
+      <View style={styles.fullWidthContainer}>
+        <CommonHeader headerTitle={"Loại nhà đất"} />
+
         <MultipleChoice
           options={values}
-          style={{paddingTop: 80, paddingLeft: 20, paddingRight: 20}}
+          style={{paddingTop: 10, paddingLeft: 20, paddingRight: 20}}
           selectedOptions={[loaiNhaDat]}
           maxSelectedOptions={1}//{this.props.search.form.fields.loaiTin=='ban' ? nhaDatBan.length : nhaDatChoThue.length}
           onSelection={(option)=>this._onPropertyTypeSelected(option)}
         />
       </View>
     );
+  }
+
+  _onBack() {
+    Actions.pop();
   }
 
   _onPropertyTypeSelected(option) {
