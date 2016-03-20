@@ -73,11 +73,11 @@ class Search extends Component {
     } else {
       pickerData = RangeUtils.rentPriceRange.getPickerData();
     }
-    
+
     this.props.actions.onSearchFieldChange("gia", RangeUtils.BAT_KY_RANGE);
-   
+
     this.props.actions.onSearchFieldChange("giaPicker", pickerData);
-    
+
     this.props.actions.onSearchFieldChange("loaiTin", value);
   }
 
@@ -259,7 +259,7 @@ class Search extends Component {
     console.log(this.props.search.form.fields);
     Actions.SearchResultList();
   }
-  
+
   onMoreOption() {
     console.log("On More Option pressed!");
   }
@@ -267,8 +267,8 @@ class Search extends Component {
     this.props.actions.onSearchFieldChange("loaiNhaDat", '');
     this.props.actions.onSearchFieldChange("soPhongNgu", 0);
     this.props.actions.onSearchFieldChange("soTang", 0);
-    this.props.actions.onSearchFieldChange("dienTich", [0,100]);
-    this.props.actions.onSearchFieldChange("gia", [0,2000]);
+    this.props.actions.onSearchFieldChange("dienTich", RangeUtils.BAT_KY_RANGE);
+    this.props.actions.onSearchFieldChange("gia", RangeUtils.BAT_KY_RANGE);
     this.props.actions.onSearchFieldChange("orderBy", '');
   }
 

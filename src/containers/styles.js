@@ -65,7 +65,7 @@ module.exports = StyleSheet.create({
 		height: 181,
     alignSelf: 'auto',
 	},
-  
+
   searchListButton: {
 	    flexDirection: 'row',
 	    justifyContent: 'space-around',
@@ -76,7 +76,7 @@ module.exports = StyleSheet.create({
 			marginRight: 15,
 			marginTop: 10,
 			marginBottom: 10,
-			color: '#5BB622'
+			color: gui.blue1
 	},
 	searchListViewRowAlign: {
 		backgroundColor: 'transparent',

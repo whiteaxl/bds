@@ -4,6 +4,8 @@ import Button from 'react-native-button';
 
 import styles from './styles';
 
+import gui from '../lib/gui';
+
 import {Actions} from 'react-native-router-flux';
 
 // Create our component
@@ -40,7 +42,7 @@ var myStyles = StyleSheet.create({
       marginRight: 15,
       marginTop: 10,
       marginBottom: 10,
-      color: '#5BB622', 
+      color: gui.blue1,
       fontSize : 16
   },
 });
