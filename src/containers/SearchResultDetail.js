@@ -159,11 +159,11 @@ class SearchResultDetail extends Component {
               			backgroundColor: 'transparent', marginTop: Dimensions.get('window').height/2-100}}>
                 <View style={styles.searchDetailRowAlign}>
                   <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                      fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10, width: Dimensions.get('window').width/2-50}}>
+                      fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10, width: Dimensions.get('window').width/2-10}}>
                     Bán/Cho thuê: {loaiTin}
                   </Text>
                   <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                      fontSize: 14, color: 'white', marginBottom: 10, width: Dimensions.get('window').width/2+50}}>
+                      fontSize: 14, color: 'white', marginBottom: 10}}>
                     Loại nhà: {loaiNhaDat}
                   </Text>
                 </View>
@@ -173,7 +173,7 @@ class SearchResultDetail extends Component {
                 </Text>
                 <View style={styles.searchDetailRowAlign}>
                   <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                      fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10, width: Dimensions.get('window').width/2-50}}>
+                      fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10, width: Dimensions.get('window').width/2-10}}>
                     Diện tích: {dienTich}
                   </Text>
                   <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
@@ -183,7 +183,7 @@ class SearchResultDetail extends Component {
                 </View>
                 <View style={styles.searchDetailRowAlign}>
                   <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
-                      fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10, width: Dimensions.get('window').width/2-50}}>
+                      fontSize: 14, color: 'white', marginBottom: 10, marginLeft: 10, width: Dimensions.get('window').width/2-10}}>
                     Số tầng: {soTang}
                   </Text>
                   <Text style={{textAlign: 'left', alignItems: 'flex-start', backgroundColor: 'transparent',
