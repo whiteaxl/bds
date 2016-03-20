@@ -9,11 +9,16 @@ module.exports = StyleSheet.create({
 			flex: 1,
 	    alignSelf: 'auto',
 	},
+	searchDetailRowAlign: {
+			flexDirection: 'row',
+			alignItems: 'flex-start',
+			justifyContent: 'space-around',
+	},
 	searchDetailInfo: {
 			flex: 1,
 			justifyContent: 'center',
 			alignItems: 'stretch',
-			backgroundColor: '#CCC0DA',
+			backgroundColor: 'transparent',
 	},
 	customPageHeader: {
 			flexDirection: 'row',
@@ -202,7 +207,7 @@ module.exports = StyleSheet.create({
     		textAlign: 'center',
 			backgroundColor: 'grey',
     		marginLeft: 10,
-			color: 'white',			
+			color: 'white',
 	},
 	boldTitle: {
 			fontSize: 16,
@@ -210,7 +215,7 @@ module.exports = StyleSheet.create({
     		textAlign: 'left',
 			backgroundColor: 'transparent',
     		marginLeft: 10,
-			color: 'white',			
+			color: 'white',
 	},
 	stuff: {
 			textAlign: 'center',

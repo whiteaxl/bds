@@ -229,6 +229,7 @@ class Search extends Component {
     Actions.pop();
   }
   onApply() {
+    this.props.actions.onSearchFieldChange("listData", []);
     console.log("Search cridential:");
     console.log(this.props.search.form.fields);
     Actions.SearchResultList();

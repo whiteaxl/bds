@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
  * The actions we need
  */
 import * as globalActions from '../reducers/global/globalActions';
+import * as searchActions from '../reducers/search/searchActions';
 
 /**
  * Immutable Map
@@ -14,7 +15,7 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component, Image, ListView, RecyclerViewBackedScrollView } from 'react-native'
+import React, { Text, View, Component, Image, ListView, RecyclerViewBackedScrollView, TouchableHighlight } from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -29,7 +30,8 @@ import SearchResultFooter from './SearchResultFooter';
 * ## Redux boilerplate
 */
 const actions = [
-  globalActions
+  globalActions,
+  searchActions
 ];
 
 function mapStateToProps(state) {
@@ -128,6 +130,7 @@ class SearchResultList extends Component {
               dataBlob.push(aRow.value);
             }
           );
+          this.props.actions.onSearchFieldChange("listData", dataBlob);
           var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
           var dataSource = ds.cloneWithRows(dataBlob);
           this.updateSearchFilterState(dataSource, null);
@@ -196,18 +199,22 @@ class SearchResultList extends Component {
       soPhongNgu = " " + soPhongNgu + " p.ngủ";
     }
     return (
-      <View style={styles.row}>
-        <Image style={styles.thumb} source={{uri: `${rowData.cover}`}}>
-          <View style={styles.searchListViewRowAlign}>
-            <View>
-              <Text style={styles.price}>{rowData.price_value} {rowData.price_unit}</Text>
-              <Text style={styles.text}>{diaChi}{soPhongNgu}</Text>
-            </View>
-            <Icon.Button name="heart-o" backgroundColor="transparent"
-              underlayColor="transparent" style={styles.heartButton}/>
+      <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
+        <View>
+          <View style={styles.row}>
+            <Image style={styles.thumb} source={{uri: `${rowData.cover}`}}>
+              <View style={styles.searchListViewRowAlign}>
+                <View>
+                  <Text style={styles.price}>{rowData.price_value} {rowData.price_unit}</Text>
+                  <Text style={styles.text}>{diaChi}{soPhongNgu}</Text>
+                </View>
+                <Icon.Button name="heart-o" backgroundColor="transparent"
+                  underlayColor="transparent" style={styles.heartButton}/>
+              </View>
+            </Image>
           </View>
-        </Image>
-      </View>
+        </View>
+      </TouchableHighlight>
     );
   }
 }
