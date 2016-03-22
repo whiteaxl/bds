@@ -21,6 +21,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
 import CommonHeader from './CommonHeader';
+import DanhMuc from '../components/DanhMuc';
 
 import MultipleChoice from 'react-native-multiple-choice';
 
@@ -50,24 +51,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-var LoaiNhaDatBan = [
-    "Bán căn hộ chung cư",
-    "Bán nhà riêng",
-    "Bán nhà mặt phố",
-    "Bán biệt thự, liền kề",
-    "Bán đất",
-    "Bán các bds khác"
-];
-
-var LoaiNhaDatThue = [
-    "Cho Thuê căn hộ chung cư",
-    "Cho Thuê nhà riêng",
-    "Cho Thuê nhà mặt phố",
-    "Cho Thuê văn phòng",
-    "Cho Thuê cửa hàng, ki-ốt",
-    "Cho Thuê các bds khác"
-];
-
 var LoaiNhaDatKey = [
     1,
     2,
@@ -75,6 +58,24 @@ var LoaiNhaDatKey = [
     4,
     5,
     99
+];
+
+var LoaiNhaDatBan = [
+    DanhMuc['ban'][LoaiNhaDatKey[0]],
+    DanhMuc['ban'][LoaiNhaDatKey[1]],
+    DanhMuc['ban'][LoaiNhaDatKey[2]],
+    DanhMuc['ban'][LoaiNhaDatKey[3]],
+    DanhMuc['ban'][LoaiNhaDatKey[4]],
+    DanhMuc['ban'][LoaiNhaDatKey[5]]
+];
+
+var LoaiNhaDatThue = [
+    DanhMuc['thue'][LoaiNhaDatKey[0]],
+    DanhMuc['thue'][LoaiNhaDatKey[1]],
+    DanhMuc['thue'][LoaiNhaDatKey[2]],
+    DanhMuc['thue'][LoaiNhaDatKey[3]],
+    DanhMuc['thue'][LoaiNhaDatKey[4]],
+    DanhMuc['thue'][LoaiNhaDatKey[5]]
 ];
 
 class PropertyTypes extends Component {

@@ -22,6 +22,7 @@ import {Actions} from 'react-native-router-flux';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MapApi from '../components/MapApi';
+import DanhMuc from '../components/DanhMuc';
 import styles from './styles';
 import SearchResultDetailFooter from './SearchResultDetailFooter';
 import CommonHeader from './CommonHeader';
@@ -55,21 +56,21 @@ function mapDispatchToProps(dispatch) {
 }
 
 var LoaiNhaDatBan = [
-    {key: 1, value: "Bán căn hộ chung cư"},
-    {key: 2, value: "Bán nhà riêng"},
-    {key: 3, value: "Bán nhà mặt phố"},
-    {key: 4, value: "Bán biệt thự, liền kề"},
-    {key: 5, value: "Bán đất"},
-    {key: 99, value: "Bán các bds khác"}
+    {key: 1, value: DanhMuc['ban'][1]},
+    {key: 2, value: DanhMuc['ban'][2]},
+    {key: 3, value: DanhMuc['ban'][3]},
+    {key: 4, value: DanhMuc['ban'][4]},
+    {key: 5, value: DanhMuc['ban'][5]},
+    {key: 99, value: DanhMuc['ban'][99]}
 ];
 
 var LoaiNhaDatThue = [
-    {key: 1, value: "Cho Thuê căn hộ chung cư"},
-    {key: 2, value: "Cho Thuê nhà riêng"},
-    {key: 3, value: "Cho Thuê nhà mặt phố"},
-    {key: 4, value: "Cho Thuê văn phòng"},
-    {key: 5, value: "Cho Thuê cửa hàng, ki-ốt"},
-    {key: 99, value: "Cho Thuê các bds khác"}
+    {key: 1, value: DanhMuc['thue'][1]},
+    {key: 2, value: DanhMuc['thue'][2]},
+    {key: 3, value: DanhMuc['thue'][3]},
+    {key: 4, value: DanhMuc['thue'][4]},
+    {key: 5, value: DanhMuc['thue'][5]},
+    {key: 99, value: DanhMuc['thue'][99]}
 ];
 
 var LoaiTin = [
@@ -243,7 +244,7 @@ var detailStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height
+    height: Dimensions.get('window').height-100
   },
   slideItem: {
     flex: 1, justifyContent: 'flex-start', alignItems: 'stretch',

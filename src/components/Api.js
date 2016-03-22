@@ -3,7 +3,7 @@
 import ApiUtils from './ApiUtils';
 import RangeUtils from "../lib/RangeUtils"
 
-var rootUrl = 'http://localhost:5000/api/find';
+var rootUrl = 'http://203.162.13.101:5000/api/find';
 
 var Api = {
   getItems: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy) {
