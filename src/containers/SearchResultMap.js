@@ -20,9 +20,9 @@ import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-import MapApi from '../components/MapApi';
+import MapApi from '../lib/MapApi';
 import styles from './styles';
-import CommonHeader from './CommonHeader';
+import CommonHeader from '../components/CommonHeader';
 
 
 /**

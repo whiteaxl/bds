@@ -23,14 +23,14 @@ import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
-import CommonHeader from './CommonHeader';
+import CommonHeader from '../components/CommonHeader';
 
 import LikeTabButton from '../components/LikeTabButton';
 import RangeUtils from "../lib/RangeUtils"
 import RangePicker from "../components/RangePicker"
 
 import CommonUtils from "../lib/CommonUtils"
-import LoaiNhaDat from "../lib/DanhMuc"
+import LoaiNhaDat from "../assets/DanhMuc"
 
 
 

@@ -14,14 +14,13 @@ import * as searchActions from '../reducers/search/searchActions';
 import {Map} from 'immutable';
 
 
-import React, {View, Component, Text} from 'react-native'
+import React, {View, Component, Text, StyleSheet} from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import styles from './styles';
-import CommonHeader from './CommonHeader';
+import CommonHeader from '../components/CommonHeader';
 
 import MultipleChoice from 'react-native-multiple-choice';
 
@@ -80,7 +79,7 @@ class OrderPicker extends Component {
       orderBy = orderTypes[0];
     }
     return (
-      <View style={styles.fullWidthContainer}>
+      <View style={myStyles.fullWidthContainer}>
         <CommonHeader headerTitle={"Sắp xếp"} />
 
         <MultipleChoice
@@ -130,3 +129,13 @@ class OrderPicker extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(OrderPicker);
+
+
+// Later on in your styles..
+var myStyles = StyleSheet.create({
+  fullWidthContainer: {
+      flex: 1,
+      alignItems: 'stretch',
+      backgroundColor: '#F5FCFF'
+  }
+});

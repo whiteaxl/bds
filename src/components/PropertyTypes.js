@@ -14,14 +14,13 @@ import * as searchActions from '../reducers/search/searchActions';
 import {Map} from 'immutable';
 
 
-import React, {View, Component, SegmentedControlIOS, Text} from 'react-native'
+import React, {View, Component, SegmentedControlIOS, Text, StyleSheet} from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import styles from './styles';
-import CommonHeader from './CommonHeader';
-import DanhMuc from '../components/DanhMuc';
+import CommonHeader from '../components/CommonHeader';
+import DanhMuc from '../assets/DanhMuc';
 
 import MultipleChoice from 'react-native-multiple-choice';
 
@@ -87,7 +86,7 @@ class PropertyTypes extends Component {
     var values = this.props.search.form.fields.loaiTin=='ban' ? LoaiNhaDatBan : LoaiNhaDatThue ;
     var loaiNhaDat = this.getValueByKey(values, this.props.search.form.fields.loaiNhaDat);
     return (
-      <View style={styles.fullWidthContainer}>
+      <View style={myStyles.fullWidthContainer}>
         <CommonHeader headerTitle={"Loại nhà đất"} />
 
         <MultipleChoice
@@ -139,3 +138,15 @@ class PropertyTypes extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PropertyTypes);
+
+
+
+// Later on in your styles..
+var myStyles = StyleSheet.create({
+  fullWidthContainer: {
+      flex: 1,
+      alignItems: 'stretch',
+      backgroundColor: '#F5FCFF'
+  }
+});
+

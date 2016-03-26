@@ -1,4 +1,4 @@
-// ApiUtils.js
+//
 
 var CommonUtils = {
   getKeyOfMap: function(hash, value) {

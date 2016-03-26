@@ -2,8 +2,6 @@
 import React, {View, Component, Text, StyleSheet} from 'react-native';
 import Button from 'react-native-button';
 
-import styles from './styles';
-
 import gui from '../lib/gui';
 
 import {Actions} from 'react-native-router-flux';
@@ -11,8 +9,8 @@ import {Actions} from 'react-native-router-flux';
 // Create our component
 var SearchResultFooter = React.createClass({
   render: function() {
-    return <View style={styles.searchButton}>
-      <View style={styles.searchListButton}>
+    return <View style={myStyles.searchButton}>
+      <View style={myStyles.searchListButton}>
         <Button onPress={this.onSort}
           style={myStyles.searchListButtonText}>Sắp xếp</Button>
         <Button onPress={this.onSaveSearch}
@@ -44,6 +42,17 @@ var myStyles = StyleSheet.create({
       marginBottom: 10,
       color: gui.blue1,
       fontSize : 16
+  },
+
+  searchListButton: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      backgroundColor: 'white',
+  },
+
+  searchButton: {
+      alignItems: 'stretch',
+      justifyContent: 'flex-end',
   },
 });
 

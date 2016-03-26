@@ -21,11 +21,11 @@ import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-import MapApi from '../components/MapApi';
-import DanhMuc from '../components/DanhMuc';
+import MapApi from '../lib/MapApi';
+import DanhMuc from '../assets/DanhMuc';
 import styles from './styles';
-import SearchResultDetailFooter from './SearchResultDetailFooter';
-import CommonHeader from './CommonHeader';
+import SearchResultDetailFooter from '../components/SearchResultDetailFooter';
+import CommonHeader from '../components/CommonHeader';
 
 import LinearGradient from 'react-native-linear-gradient';
 

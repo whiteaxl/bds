@@ -76,8 +76,8 @@ import Screen2 from './Screen2';
 import Search from './Search';
 import SearchResultList from './SearchResultList';
 import SearchResultMap from './SearchResultMap';
-import PropertyTypes from './PropertyTypes';
-import OrderPicker from './OrderPicker';
+import PropertyTypes from '../components/PropertyTypes';
+import OrderPicker from '../components/OrderPicker';
 import SearchResultDetail from './SearchResultDetail';
 
 import Profile from './Profile';

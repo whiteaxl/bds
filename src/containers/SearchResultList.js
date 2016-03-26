@@ -20,12 +20,12 @@ import React, { Text, View, Component, Image, ListView
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
-import Api from '../components/Api';
+import Api from '../lib/FindApi';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
-import CommonHeader from './CommonHeader';
-import SearchResultFooter from './SearchResultFooter';
+import CommonHeader from '../components/CommonHeader';
+import SearchResultFooter from '../components/SearchResultFooter';
 
 import LinearGradient from 'react-native-linear-gradient';
 
