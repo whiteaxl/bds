@@ -142,9 +142,29 @@ class SearchResultDetail extends Component {
             style={styles.search} >
           </Icon.Button>
           <Icon.Button onPress={this._onShare}
-            name="share-square-o" backgroundColor="#f44336"
+            name="facebook" backgroundColor="#f44336"
             underlayColor="gray"
-            style={styles.search} >Chia sẻ
+            style={styles.search} >
+          </Icon.Button>
+          <Icon.Button onPress={this._onShare}
+            name="envelope-o" backgroundColor="#f44336"
+            underlayColor="gray"
+            style={styles.search} >
+          </Icon.Button>
+          <Icon.Button onPress={this._onShare}
+            name="share-alt" backgroundColor="#f44336"
+            underlayColor="gray"
+            style={styles.search} >
+          </Icon.Button>
+          <Icon.Button onPress={this._onShare}
+            name="comment-o" backgroundColor="#f44336"
+            underlayColor="gray"
+            style={styles.search} >
+          </Icon.Button>
+          <Icon.Button onPress={this._onShare}
+            name="clone" backgroundColor="#f44336"
+            underlayColor="gray"
+            style={styles.search} >
           </Icon.Button>
         </View>
         <ScrollView
@@ -155,7 +175,7 @@ class SearchResultDetail extends Component {
           <View style={styles.searchContent}>
             <Image style={detailStyles.imgItem}
                source={{uri: `${imageUrl}`}}>
-
+            </Image>
              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
                style={detailStyles.linearGradient}>
 
@@ -202,7 +222,6 @@ class SearchResultDetail extends Component {
               </View>
 
             </LinearGradient>
-            </Image>
           </View>
         </ScrollView>
         <SearchResultDetailFooter />
@@ -244,18 +263,18 @@ var detailStyles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height-100
+    height: 256
   },
   slideItem: {
     flex: 1, justifyContent: 'flex-start', alignItems: 'stretch',
-          backgroundColor: 'transparent', marginTop: Dimensions.get('window').height/2-100
+          backgroundColor: 'transparent', marginTop: 15
   },
   textHalfWidth: {
     textAlign: 'left',
     alignItems: 'flex-start',
     backgroundColor: 'transparent',
     fontSize: 14,
-    color: 'white',
+    color: 'black',
     marginBottom: 10,
     marginLeft: 10,
     marginRight: 10,
@@ -266,7 +285,7 @@ var detailStyles = StyleSheet.create({
     alignItems: 'flex-start',
     backgroundColor: 'transparent',
     fontSize: 14,
-    color: 'white',
+    color: 'black',
     marginBottom: 10,
     marginLeft: 10,
     marginRight: 10,
