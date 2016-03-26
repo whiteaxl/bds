@@ -3,7 +3,7 @@
 var BAT_KY = "Bất kỳ";
 var BIG = 9999999;
 
-var sellStepValues = [0, 100, 200, 300, 500, 1000, 1500, 2000, 3000];
+var sellStepValues = [0, 1000, 2000, 3000, 5000, 7000, 10000, 20000, 30000];
 
 var rentStepValues = [0, 2, 5, 10, 20, 50, 100, 500]; //by month
 
