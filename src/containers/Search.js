@@ -32,7 +32,7 @@ import RangePicker from "../components/RangePicker"
 import CommonUtils from "../lib/CommonUtils"
 import LoaiNhaDat from "../assets/DanhMuc"
 
-
+import SearchInput from '../components/SearchInput';
 
 
 /**
@@ -118,10 +118,11 @@ class Search extends Component {
     var _scrollView: ScrollView;
     return (
       <View style={styles.fullWidthContainer}>
-        <CommonHeader headerTitle={"Tìm kiếm"} />
+        
 
-        <View style={styles.searchFilter}>
-          <View style={styles.searchFilterButton}>
+        <View style={[styles.searchFilter, {top: 60}]}>
+
+          <View style={[styles.searchFilterButton]}>
 
             <View style = {{flex:1, flexDirection: 'row'}}>
               <LikeTabButton name={'ban'}
@@ -223,6 +224,8 @@ class Search extends Component {
                     onPickerDone={(pickedValue) => {this._onDienTichChanged(pickedValue)}}
               />
         </View>
+
+         <SearchInput />
       </View>
     );
   }
