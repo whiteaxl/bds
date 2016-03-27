@@ -163,7 +163,7 @@ class SearchResultDetail extends Component {
           <View style={styles.searchContent}>
 
             <Swiper style={detailStyles.wrapper} height={256}
-                    showsButtons={false} autoplay={true} autoplayTimeout={5}
+                    showsButtons={false} autoplay={true} autoplayTimeout={5} loop={false}
                     dot={<View style={[detailStyles.dot, {backgroundColor: 'white'}]} />}
                     activeDot={<View style={[detailStyles.dot, {backgroundColor: 'red'}]}/>}
             >
