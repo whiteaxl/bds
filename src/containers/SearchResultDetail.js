@@ -26,6 +26,8 @@ import styles from './styles';
 import SearchResultDetailFooter from '../components/SearchResultDetailFooter';
 import CommonHeader from '../components/CommonHeader';
 
+import Swiper from 'react-native-swiper';
+
 /**
 * ## Redux boilerplate
 */
@@ -159,9 +161,18 @@ class SearchResultDetail extends Component {
           vertical={true}
           style={styles.scrollView}>
           <View style={styles.searchContent}>
-            <Image style={detailStyles.imgItem}
-               source={{uri: `${imageUrl}`}}>
-            </Image>
+
+            <Swiper style={detailStyles.wrapper} height={256}
+                    showsButtons={false} autoplay={true} autoplayTimeout={5}
+                    dot={<View style={[detailStyles.dot, {backgroundColor: 'white'}]} />}
+                    activeDot={<View style={[detailStyles.dot, {backgroundColor: 'red'}]}/>}
+            >
+              <View style={detailStyles.slide}>
+                <Image style={detailStyles.imgItem}
+                   source={{uri: `${imageUrl}`}}>
+                </Image>
+              </View>
+            </Swiper>
 
             <View style={detailStyles.slideItem}>
               <Text style={detailStyles.price}>
@@ -252,6 +263,23 @@ class SearchResultDetail extends Component {
 }
 
 var detailStyles = StyleSheet.create({
+  wrapper: {
+  },
+  slide: {
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    //
+  },
+  dot : {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginLeft: 3,
+    marginRight: 3,
+    marginTop: 3,
+    marginBottom: 3,
+    bottom: 32
+  },
   imgItem: {
     flex:1,
     justifyContent: 'center',
