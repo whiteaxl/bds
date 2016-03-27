@@ -21,7 +21,6 @@ import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-import MapApi from '../lib/MapApi';
 import DanhMuc from '../assets/DanhMuc';
 import styles from './styles';
 import SearchResultDetailFooter from '../components/SearchResultDetailFooter';
@@ -118,7 +117,8 @@ class SearchResultDetail extends Component {
     var mobile = rowData.cust_mobile;
     var phone = rowData.cust_phone;
     var _scrollView: ScrollView;
-    var pin = {latitude: 0, longitude: 0};
+    var mapSize = Dimensions.get('window').width-20;
+    var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=16&size='+mapSize+'x'+mapSize+'&markers=color:red|'+rowData.hdLat+','+rowData.hdLong+'&sensor=false';
     return (
 			<View style={styles.fullWidthContainer}>
         <View style={styles.customPageHeader}>
@@ -185,25 +185,17 @@ class SearchResultDetail extends Component {
                 Chi tiết: {chiTiet}
               </Text>
               <Text style={detailStyles.textFullWidth}>
-                Ngày đăng: {ngayDangTin}
-              </Text>
-              <Text style={detailStyles.textTitle}>
-                Đặc điểm
-              </Text>
-              <Text style={detailStyles.textFullWidth}>
                 Số tầng: {soTang}
               </Text>
               <Text style={detailStyles.textFullWidth}>
                 Số phòng ngủ: {soPhongNgu}
               </Text>
-              <Text style={detailStyles.textTitle}>
-                Bản đồ
+              <Text style={detailStyles.textFullWidth}>
+                Ngày đăng: {ngayDangTin}
               </Text>
-              <MapView
-                annotations={[pin]}
-                onRegionChangeComplete={this.onRegionChangeComplete}
-                style={detailStyles.searchMapView}>
-              </MapView>
+              <Image style={detailStyles.searchMapView}
+                 source={{uri: `${mapUrl}`}}>
+              </Image>
               <Text style={detailStyles.textTitle}>
                 Liên hệ
               </Text>
