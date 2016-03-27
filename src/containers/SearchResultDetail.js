@@ -15,7 +15,7 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component, Image, Dimensions, ScrollView, StyleSheet } from 'react-native'
+import React, { Text, View, Component, Image, Dimensions, ScrollView, StyleSheet, MapView } from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -26,8 +26,6 @@ import DanhMuc from '../assets/DanhMuc';
 import styles from './styles';
 import SearchResultDetailFooter from '../components/SearchResultDetailFooter';
 import CommonHeader from '../components/CommonHeader';
-
-import LinearGradient from 'react-native-linear-gradient';
 
 /**
 * ## Redux boilerplate
@@ -101,7 +99,7 @@ class SearchResultDetail extends Component {
     var rowData = listData[rowIndex];
     //console.log(rowData);
     var imageUrl = rowData.cover;
-    console.log(imageUrl);
+    //console.log(imageUrl);
     var loaiTin = this.getValueByKey(LoaiTin, rowData.loaiTin);
     var loaiNhaDatArr = rowData.loaiTin ? LoaiNhaDatThue : LoaiNhaDatBan;
     var loaiNhaDat = this.getValueByKey(loaiNhaDatArr, rowData.loaiNhaDat);
@@ -115,24 +113,12 @@ class SearchResultDetail extends Component {
     var soPhongNgu = rowData.soPhongNgu;
     var ngayDangTin = rowData.ngayDangTin;
     var chiTiet = rowData.loc;
-    var lienHe = '';
     var dangBoi = rowData.cust_dangBoi;
-    if (dangBoi) {
-      lienHe = lienHe + 'đăng bởi ' + dangBoi + '; ';
-    }
     var email = rowData.cust_email;
-    if (email) {
-      lienHe = lienHe + 'email ' + email + '; ';
-    }
     var mobile = rowData.cust_mobile;
-    if (mobile) {
-      lienHe = lienHe + 'mobile ' + mobile + '; ';
-    }
     var phone = rowData.cust_phone;
-    if (phone) {
-      lienHe = lienHe + 'phone ' + phone + '; ';
-    }
     var _scrollView: ScrollView;
+    var pin = {latitude: 0, longitude: 0};
     return (
 			<View style={styles.fullWidthContainer}>
         <View style={styles.customPageHeader}>
@@ -176,52 +162,67 @@ class SearchResultDetail extends Component {
             <Image style={detailStyles.imgItem}
                source={{uri: `${imageUrl}`}}>
             </Image>
-             <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
-               style={detailStyles.linearGradient}>
 
-              <View style={detailStyles.slideItem}>
-                <View style={styles.searchDetailRowAlign}>
-                  <Text style={detailStyles.textHalfWidth}>
-                    Bán/Cho thuê: {loaiTin}
-                  </Text>
-                  <Text style={detailStyles.textHalfWidth}>
-                    Loại nhà: {loaiNhaDat}
-                  </Text>
-                </View>
-                <Text style={detailStyles.textFullWidth}>
-                  Địa chỉ: {diaChi}
+            <View style={detailStyles.slideItem}>
+              <Text style={detailStyles.price}>
+                Giá: {gia}
+              </Text>
+              <View style={styles.searchDetailRowAlign}>
+                <Text style={detailStyles.textHalfWidth}>
+                  Bán/Cho thuê: {loaiTin}
                 </Text>
-                <View style={styles.searchDetailRowAlign}>
-                  <Text style={detailStyles.textHalfWidth}>
-                    Diện tích: {dienTich}
-                  </Text>
-                  <Text style={detailStyles.textHalfWidth}>
-                    Giá: {gia}
-                  </Text>
-                </View>
-                <View style={styles.searchDetailRowAlign}>
-                  <Text style={detailStyles.textHalfWidth}>
-                    Số tầng: {soTang}
-                  </Text>
-                  <Text style={detailStyles.textHalfWidth}>
-                    Số phòng ngủ: {soPhongNgu}
-                  </Text>
-                </View>
-                <Text style={detailStyles.textFullWidth}>
-                  Ngày đăng: {ngayDangTin}
-                </Text>
-                <Text style={detailStyles.textFullWidth}>
-                  Chi tiết: {chiTiet}
-                </Text>
-                <Text style={detailStyles.textFullWidth}>
-                  Liên hệ: {lienHe}
-                </Text>
-                <Text style={detailStyles.textFullWidth}>
-                  Danh sách comments
+                <Text style={detailStyles.textHalfWidth}>
+                  Loại nhà: {loaiNhaDat}
                 </Text>
               </View>
-
-            </LinearGradient>
+              <Text style={detailStyles.textFullWidth}>
+                Diện tích: {dienTich}
+              </Text>
+              <Text style={detailStyles.textFullWidth}>
+                Địa chỉ: {diaChi}
+              </Text>
+              <Text style={detailStyles.textFullWidth}>
+                Chi tiết: {chiTiet}
+              </Text>
+              <Text style={detailStyles.textFullWidth}>
+                Ngày đăng: {ngayDangTin}
+              </Text>
+              <Text style={detailStyles.textTitle}>
+                Đặc điểm
+              </Text>
+              <Text style={detailStyles.textFullWidth}>
+                Số tầng: {soTang}
+              </Text>
+              <Text style={detailStyles.textFullWidth}>
+                Số phòng ngủ: {soPhongNgu}
+              </Text>
+              <Text style={detailStyles.textTitle}>
+                Bản đồ
+              </Text>
+              <MapView
+                annotations={[pin]}
+                onRegionChangeComplete={this.onRegionChangeComplete}
+                style={detailStyles.searchMapView}>
+              </MapView>
+              <Text style={detailStyles.textTitle}>
+                Liên hệ
+              </Text>
+              <Text style={detailStyles.textFullWidth}>
+                Đăng bởi: {dangBoi}
+              </Text>
+              <Text style={detailStyles.textFullWidth}>
+                Email: {email}
+              </Text>
+              <Text style={detailStyles.textFullWidth}>
+                Mobile: {mobile}
+              </Text>
+              <Text style={detailStyles.textFullWidth}>
+                Phone: {phone}
+              </Text>
+              <Text style={detailStyles.textTitle}>
+                Danh sách comments
+              </Text>
+            </View>
           </View>
         </ScrollView>
         <SearchResultDetailFooter />
@@ -249,15 +250,16 @@ class SearchResultDetail extends Component {
   _onShare() {
     console.log("On share pressed!");
   }
+
+  onRegionChangeComplete(region) {
+    MapApi(region.latitude, region.longitude)
+      .then((data) => {
+        console.log(data);
+      });
+  }
 }
 
 var detailStyles = StyleSheet.create({
-  linearGradient: {
-    flex: 1,
-    paddingLeft: 0,
-    paddingRight: 0,
-    backgroundColor : "transparent"
-  },
   imgItem: {
     flex:1,
     justifyContent: 'center',
@@ -265,9 +267,37 @@ var detailStyles = StyleSheet.create({
     width: Dimensions.get('window').width,
     height: 256
   },
+  searchMapView: {
+    flex: 1,
+    width: Dimensions.get('window').width-20,
+    height: Dimensions.get('window').width-20,
+    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
+  },
   slideItem: {
     flex: 1, justifyContent: 'flex-start', alignItems: 'stretch',
           backgroundColor: 'transparent', marginTop: 15
+  },
+  price: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'left',
+    backgroundColor: 'transparent',
+    color: 'black',
+    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  textTitle: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'left',
+    backgroundColor: 'transparent',
+    color: 'black',
+    marginBottom: 10,
+    marginLeft: 10,
+    marginRight: 10,
   },
   textHalfWidth: {
     textAlign: 'left',
