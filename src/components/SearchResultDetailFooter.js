@@ -1,24 +1,37 @@
 // Import some code we need
 import React, {View, Component, Text, StyleSheet} from 'react-native';
-import Button from 'react-native-button';
 
 import gui from '../lib/gui';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 // Create our component
 var SearchResultDetailFooter = React.createClass({
   render: function() {
     return <View style={myStyles.searchButton}>
       <View style={myStyles.searchListButton}>
-        <Button onPress={this.onSave}
-          style={myStyles.searchListButtonText}>Lưu lại</Button>
-        <Button onPress={this.onChat}
-          style={myStyles.searchListButtonText}>Trò chuyện</Button>
-        <Button onPress={this.onComment}
-          style={myStyles.searchListButtonText}>Chú thích</Button>
+        <Icon.Button onPress={this.onContact}
+          name="hdd-o" backgroundColor="white"
+          underlayColor="gray" color={gui.blue1}
+          style={myStyles.searchListButtonText} >
+          Liên hệ
+        </Icon.Button>
+        <Icon.Button onPress={this.onChat}
+          name="comment-o" backgroundColor="white"
+          underlayColor="gray" color={gui.blue1}
+          style={myStyles.searchListButtonText} >
+          Trò chuyện
+        </Icon.Button>
+        <Icon.Button onPress={this.onComment}
+          name="sticky-note-o" backgroundColor="white"
+          underlayColor="gray" color={gui.blue1}
+          style={myStyles.searchListButtonText} >
+          Chú thích
+        </Icon.Button>
       </View>
     </View>
   },
-  onSave() {
+  onContact() {
     console.log("On Save pressed!");
   },
   onChat() {
@@ -39,7 +52,6 @@ var myStyles = StyleSheet.create({
       marginRight: 15,
       marginTop: 10,
       marginBottom: 10,
-      color: gui.blue1
   },
   searchListButton: {
       flexDirection: 'row',

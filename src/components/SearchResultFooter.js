@@ -1,22 +1,35 @@
 // Import some code we need
 import React, {View, Component, Text, StyleSheet} from 'react-native';
-import Button from 'react-native-button';
 
 import gui from '../lib/gui';
 
 import {Actions} from 'react-native-router-flux';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 // Create our component
 var SearchResultFooter = React.createClass({
   render: function() {
     return <View style={myStyles.searchButton}>
       <View style={myStyles.searchListButton}>
-        <Button onPress={this.onSort}
-          style={myStyles.searchListButtonText}>Sắp xếp</Button>
-        <Button onPress={this.onSaveSearch}
-          style={myStyles.searchListButtonText}>Lưu tìm kiếm</Button>
-        <Button onPress={this.onMap}
-          style={myStyles.searchListButtonText}>Bản đồ</Button>
+        <Icon.Button onPress={this.onSort}
+          name="sort" backgroundColor="white"
+          underlayColor="gray" color={gui.blue1}
+          style={myStyles.searchListButtonText} >
+          Sắp xếp
+        </Icon.Button>
+        <Icon.Button onPress={this.onSaveSearch}
+          name="hdd-o" backgroundColor="white"
+          underlayColor="gray" color={gui.blue1}
+          style={myStyles.searchListButtonText} >
+          Lưu tìm kiếm
+        </Icon.Button>
+        <Icon.Button onPress={this.onMap}
+          name="map-o" backgroundColor="white"
+          underlayColor="gray" color={gui.blue1}
+          style={myStyles.searchListButtonText} >
+          Bản đồ
+        </Icon.Button>
       </View>
     </View>
   },
@@ -40,8 +53,6 @@ var myStyles = StyleSheet.create({
       marginRight: 15,
       marginTop: 10,
       marginBottom: 10,
-      color: gui.blue1,
-      fontSize : 16
   },
 
   searchListButton: {

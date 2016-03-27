@@ -14,15 +14,16 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component, MapView } from 'react-native'
+import React, { Text, View, Component, MapView, StyleSheet } from 'react-native'
 
-import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MapApi from '../lib/MapApi';
 import styles from './styles';
 import CommonHeader from '../components/CommonHeader';
+
+import gui from '../lib/gui';
 
 
 /**
@@ -67,14 +68,26 @@ class SearchResultMap extends Component {
           onRegionChangeComplete={this.onRegionChangeComplete}
           style={styles.searchMapView}>
         </MapView>
-        <View style={styles.searchButton}>
-          <View style={styles.searchListButton}>
-            <Button onPress={this.onLocalInfo}
-              style={styles.searchListButtonText}>Local Info</Button>
-            <Button onPress={this.onSaveSearch}
-              style={styles.searchListButtonText}>Lưu tìm kiếm</Button>
-            <Button onPress={this.onList}
-              style={styles.searchListButtonText}>Danh sách</Button>
+        <View style={myStyles.searchButton}>
+          <View style={myStyles.searchListButton}>
+            <Icon.Button onPress={this.onLocalInfo}
+              name="location-arrow" backgroundColor="white"
+              underlayColor="gray" color={gui.blue1}
+              style={myStyles.searchListButtonText} >
+              Local Info
+            </Icon.Button>
+            <Icon.Button onPress={this.onSaveSearch}
+              name="hdd-o" backgroundColor="white"
+              underlayColor="gray" color={gui.blue1}
+              style={myStyles.searchListButtonText} >
+              Lưu tìm kiếm
+            </Icon.Button>
+            <Icon.Button onPress={this.onList}
+              name="list" backgroundColor="white"
+              underlayColor="gray" color={gui.blue1}
+              style={myStyles.searchListButtonText} >
+              Danh sách
+            </Icon.Button>
           </View>
         </View>
 			</View>
@@ -98,3 +111,25 @@ class SearchResultMap extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultMap);
+
+
+// Later on in your styles..
+var myStyles = StyleSheet.create({
+  searchListButtonText: {
+      marginLeft: 15,
+      marginRight: 15,
+      marginTop: 10,
+      marginBottom: 10,
+  },
+
+  searchListButton: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      backgroundColor: 'white',
+  },
+
+  searchButton: {
+      alignItems: 'stretch',
+      justifyContent: 'flex-end',
+  },
+});
