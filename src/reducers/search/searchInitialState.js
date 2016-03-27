@@ -30,6 +30,7 @@ const SearchForm = Record({
     loaiNhaDat:'',
     soPhongNgu:0,
     soTang:0,
+    soNhaTam:0,
     dienTich:RangeUtils.BAT_KY_RANGE,
     gia:RangeUtils.BAT_KY_RANGE,
     giaPicker : RangeUtils.sellPriceRange.getPickerData(),

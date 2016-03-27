@@ -45,9 +45,7 @@ const actions = [
 
 function mapStateToProps(state) {
   return {
-      ...state,
-      showSoPhongNgu: true,
-      showSoTang: true
+      ...state
   };
 }
 
@@ -177,6 +175,8 @@ class Search extends Component {
 
               {this._renderSoTang()}
 
+              {this._renderSoNhaTam()}
+
               <TouchableOpacity style={styles.searchFilterAttribute}
                   onPress={this._onPressDienTichHandle.bind(this)}>
                 <Text style={myStyles.searchAttributeLabelBold}>
@@ -188,6 +188,7 @@ class Search extends Component {
                 </View>
               </TouchableOpacity>
               </View>
+              
               <View style={styles.searchMoreFilterButton}>
                 <View style={styles.searchMoreFilterAttribute}>
                   <Button onPress={this.onMoreOption}>Thêm</Button>
@@ -245,6 +246,7 @@ class Search extends Component {
     this.props.actions.onSearchFieldChange("loaiNhaDat", '');
     this.props.actions.onSearchFieldChange("soPhongNgu", 0);
     this.props.actions.onSearchFieldChange("soTang", 0);
+    this.props.actions.onSearchFieldChange("soNhaTam", 0);
     this.props.actions.onSearchFieldChange("dienTich", RangeUtils.BAT_KY_RANGE);
     this.props.actions.onSearchFieldChange("gia", RangeUtils.BAT_KY_RANGE);
     this.props.actions.onSearchFieldChange("orderBy", '');
@@ -260,6 +262,10 @@ class Search extends Component {
 
   _onSoTangChanged(event) {
     this.props.actions.onSearchFieldChange("soTang", event.nativeEvent.selectedSegmentIndex);
+  }
+
+  _onSoNhaTamChanged(event) {
+    this.props.actions.onSearchFieldChange("soNhaTam", event.nativeEvent.selectedSegmentIndex);
   }
 
   _renderSoPhongNgu(){
@@ -316,6 +322,33 @@ class Search extends Component {
     }
   }
 
+  _renderSoNhaTam() {
+    let loaiTin = this.props.search.form.fields.loaiTin;
+    let loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
+    if (this.showSoNhaTam(loaiTin, loaiNhaDat)){
+      return (
+        <View style={styles.searchFilterAttribute, {flexDirection: "column"}}>
+          <View style={styles.searchFilterAttribute}>
+            <Text style={styles.searchAttributeLabel}>
+              Số nhà tắm
+            </Text>
+          </View>
+          <View style={{paddingLeft: 10, paddingRight: 10, paddingBottom: 10}}>
+            <SegmentedControlIOS
+              values={["0+","1+","2+","3+","4+","5+"]}
+              selectedIndex={this.props.search.form.fields.soNhaTam}
+              onChange={this._onSoNhaTamChanged.bind(this)}
+             >
+             </SegmentedControlIOS>
+          </View>
+        </View>
+      );
+    }else{
+      this.props.actions.onSearchFieldChange("soNhaTam", 0);
+      return;
+    }
+  }
+
   getLoaiNhaDatForDisplay(loaiTin, loaiNhaDatKey){
     if (loaiTin == 'ban')
       return LoaiNhaDat.ban[loaiNhaDatKey];
@@ -350,6 +383,18 @@ class Search extends Component {
       return false;
 
     return true;
+  }
+
+  showSoNhaTam(loaiTin, loaiNhaDatKey){
+    let banCanHoChungCu = 1;
+    if (loaiTin == 'ban' && [banCanHoChungCu].indexOf(loaiNhaDatKey)!=-1)
+      return true;
+    
+    let thueCanHoChungCu = 1;
+    if (loaiTin == 'thue' && [thueCanHoChungCu].indexOf(loaiNhaDatKey)!=-1)
+      return true;
+
+    return false;
   }
 }
 
