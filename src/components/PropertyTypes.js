@@ -107,6 +107,7 @@ class PropertyTypes extends Component {
   _onPropertyTypeSelected(option) {
     var values = this.props.search.form.fields.loaiTin=='ban' ? LoaiNhaDatBan : LoaiNhaDatThue ;
     this.props.actions.onSearchFieldChange("loaiNhaDat", this.getKeyByValue(values, option));
+    Actions.pop();
   }
 
   getValueByKey(values, key) {
