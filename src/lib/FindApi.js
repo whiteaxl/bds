@@ -12,7 +12,7 @@ var Api = {
     fullParams.map(function(oneParam) {
       params[oneParam.key] = oneParam.value;
     })
-    console.log(JSON.stringify(params));
+    console.log(rootUrl + "?" + JSON.stringify(params));
     return fetch(`${rootUrl}`, {
       method: 'POST',
       headers: {

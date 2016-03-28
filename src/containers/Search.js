@@ -63,7 +63,7 @@ function mapDispatchToProps(dispatch) {
 
 class Search extends Component {
   constructor() {
-    super();    
+    super();
   }
 
   _onLoaiTinChange(value) {
@@ -118,7 +118,7 @@ class Search extends Component {
     var _scrollView: ScrollView;
     return (
       <View style={styles.fullWidthContainer}>
-        
+
 
         <View style={[styles.searchFilter, {top: 60}]}>
 
@@ -189,7 +189,7 @@ class Search extends Component {
                 </View>
               </TouchableOpacity>
               </View>
-              
+
               <View style={styles.searchMoreFilterButton}>
                 <View style={styles.searchMoreFilterAttribute}>
                   <Button onPress={this.onMoreOption}>Thêm</Button>
@@ -292,10 +292,10 @@ class Search extends Component {
           </View>
         </View>
       );
-    } else {
+    } else if (0 != this.props.search.form.fields.soPhongNgu) {
       this.props.actions.onSearchFieldChange("soPhongNgu", 0);
       return;
-    } 
+    }
   }
 
   _renderSoTang() {
@@ -319,7 +319,7 @@ class Search extends Component {
           </View>
         </View>
       );
-    }else{
+    }else if (0 != this.props.search.form.fields.soTang) {
       this.props.actions.onSearchFieldChange("soTang", 0);
       return;
     }
@@ -346,7 +346,7 @@ class Search extends Component {
           </View>
         </View>
       );
-    }else{
+    }else if (0 != this.props.search.form.fields.soNhaTam) {
       this.props.actions.onSearchFieldChange("soNhaTam", 0);
       return;
     }
@@ -366,7 +366,7 @@ class Search extends Component {
     let banDat = 5;
     if (loaiTin == 'ban' && [banDat].indexOf(loaiNhaDatKey)!=-1)
       return false;
-    
+
     let thueVanPhong = 4;
     let thueCuaHang = 5;
     if (loaiTin == 'thue' && [thueVanPhong, thueCuaHang].indexOf(loaiNhaDatKey)!=-1)
@@ -380,7 +380,7 @@ class Search extends Component {
     let banCanHoChungCu = 1;
     if (loaiTin == 'ban' && [banCanHoChungCu, banDat].indexOf(loaiNhaDatKey)!=-1)
       return false;
-    
+
     let thueCanHoChungCu = 1;
     if (loaiTin == 'thue' && [thueCanHoChungCu].indexOf(loaiNhaDatKey)!=-1)
       return false;
@@ -392,7 +392,7 @@ class Search extends Component {
     let banCanHoChungCu = 1;
     if (loaiTin == 'ban' && [banCanHoChungCu].indexOf(loaiNhaDatKey)!=-1)
       return true;
-    
+
     let thueCanHoChungCu = 1;
     if (loaiTin == 'thue' && [thueCanHoChungCu].indexOf(loaiNhaDatKey)!=-1)
       return true;

@@ -99,7 +99,7 @@ class SearchResultDetail extends Component {
     }
     var rowData = listData[rowIndex];
     //console.log(rowData);
-    var imageUrl = rowData.cover;
+    //var imageUrl = rowData.cover;
     //console.log(imageUrl);
     var loaiTin = this.getValueByKey(LoaiTin, rowData.loaiTin);
     var loaiNhaDatArr = rowData.loaiTin ? LoaiNhaDatThue : LoaiNhaDatBan;
@@ -121,6 +121,17 @@ class SearchResultDetail extends Component {
     var _scrollView: ScrollView;
     var mapSize = Dimensions.get('window').width-20;
     var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=16&size='+mapSize+'x'+mapSize+'&markers=color:red|'+rowData.hdLat+','+rowData.hdLong+'&sensor=false';
+    var imageItems = [];
+    var imageIndex = 0;
+    rowData.images_small.map(function(imageUrl) {
+      imageItems.push(
+        <View style={detailStyles.slide} key={"img"+(imageIndex++)}>
+          <Image style={detailStyles.imgItem}
+             source={{uri: `${imageUrl}`}}>
+          </Image>
+        </View>
+      );
+    });
     return (
 			<View style={styles.fullWidthContainer}>
         <View style={styles.customPageHeader}>
@@ -167,11 +178,7 @@ class SearchResultDetail extends Component {
                     dot={<View style={[detailStyles.dot, {backgroundColor: 'white'}]} />}
                     activeDot={<View style={[detailStyles.dot, {backgroundColor: 'red'}]}/>}
             >
-              <View style={detailStyles.slide}>
-                <Image style={detailStyles.imgItem}
-                   source={{uri: `${imageUrl}`}}>
-                </Image>
-              </View>
+              {imageItems}
             </Swiper>
 
             <View style={detailStyles.slideItem}>
