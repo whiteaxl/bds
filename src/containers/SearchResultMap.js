@@ -58,14 +58,24 @@ class SearchResultMap extends Component {
     super(props);
   }
   render() {
-    var pin = {latitude: 0, longitude: 0};
+    var region = {
+      latitude: 21.03558,
+      longitude: 105.76047,
+      latitudeDelta: 0.0461,
+      longitudeDelta: 0.0211,
+    };
+    if (this.state && this.state.region) {
+      region = this.state.region;
+    }
+    var pin = { longitude: region.longitude, latitude: region.latitude };
     return (
       <View style={styles.fullWidthContainer}>
         <CommonHeader headerTitle={"Bản đồ"} />
 
         <MapView
           annotations={[pin]}
-          onRegionChangeComplete={this.onRegionChangeComplete}
+          region={region}
+          onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
           style={styles.searchMapView}>
         </MapView>
         <View style={myStyles.searchButton}>
@@ -94,9 +104,13 @@ class SearchResultMap extends Component {
 		)
 	}
   onRegionChangeComplete(region) {
+    this.setState({
+      region: region
+    });
     MapApi(region.latitude, region.longitude)
       .then((data) => {
-        console.log(data);
+        //console.log(data);
+        this.setState(data);
       });
   }
   onLocalInfo() {
@@ -118,8 +132,9 @@ var myStyles = StyleSheet.create({
   searchListButtonText: {
       marginLeft: 15,
       marginRight: 15,
-      marginTop: 10,
-      marginBottom: 10,
+      marginTop: 0,
+      marginBottom: 0,
+      flexDirection: 'column',
   },
 
   searchListButton: {
