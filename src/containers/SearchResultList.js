@@ -228,6 +228,29 @@ class SearchResultList extends Component {
         </View>
       );
     });
+    if (imageItems.length == 0) {
+      imageItems.push(
+        <View style={myStyles.slide} key={"img"+(imageIndex)}>
+        <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
+          <Image style={styles.thumb} source={{uri: `${rowData.cover}`}} >
+            <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']} 
+            style={myStyles.linearGradient}>
+       
+            <View style={myStyles.searchListViewRowAlign}>
+              <View>
+                <Text style={myStyles.price}>{rowData.price_value} {rowData.price_unit}</Text>
+                <Text style={myStyles.text}>{diaChi}{soPhongNgu}</Text>
+              </View>
+              <Icon.Button name="heart-o" backgroundColor="transparent"
+                underlayColor="transparent" style={myStyles.heartButton}/>
+            </View>
+            </LinearGradient>
+          
+          </Image>
+        </TouchableHighlight>
+        </View>
+      );
+    }
     return (
         <View>
             

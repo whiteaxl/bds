@@ -136,6 +136,15 @@ class SearchResultDetail extends Component {
         </View>
       );
     });
+    if (imageItems.length == 0) {
+      imageItems.push(
+        <View style={detailStyles.slide} key={"img"+(imageIndex)}>
+          <Image style={detailStyles.imgItem}
+             source={{uri: `${rowData.cover}`}}>
+          </Image>
+        </View>
+      );
+    }
     return (
 			<View style={styles.fullWidthContainer}>
         <View style={detailStyles.customPageHeader}>

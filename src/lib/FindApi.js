@@ -5,7 +5,7 @@ import RangeUtils from "../lib/RangeUtils"
 
 var rootUrl = 'http://localhost:5000/api/find';
 
-var maxRows = 500;
+var maxRows = 200;
 
 var Api = {
   getItems: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy) {
