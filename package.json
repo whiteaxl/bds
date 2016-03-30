@@ -13,6 +13,7 @@
     "react-native": "^0.20.0",
     "react-native-autocomplete-input": "0.0.5",
     "react-native-button": "^1.4.2",
+    "react-native-communications": "^1.0.1",
     "react-native-device-info": "^0.8.3",
     "react-native-drawer": "^1.16.7",
     "react-native-linear-gradient": "^1.5.2",
