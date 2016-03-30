@@ -114,6 +114,9 @@ class SearchResultDetail extends Component {
     var gia = rowData.price_value + ' ' + rowData.price_unit;
     var soTang = rowData.soTang;
     var soPhongNgu = rowData.soPhongNgu;
+    if (soPhongNgu) {
+      soPhongNgu = soPhongNgu + ' phòng ngủ';
+    }
     var ngayDangTin = rowData.ngayDangTin;
     var chiTiet = rowData.loc;
     var dangBoi = rowData.cust_dangBoi;
@@ -183,10 +186,10 @@ class SearchResultDetail extends Component {
 
             <View style={detailStyles.slideItem}>
               <Text style={detailStyles.price}>
-                Giá: {gia}
+                {gia}
               </Text>
               <Text style={detailStyles.textFullWidth}>
-                {soPhongNgu} phòng ngủ
+                {soPhongNgu}
               </Text>
               <Text style={detailStyles.textFullWidth}>
                 {loaiNhaDat}, {ngayDangTin}
