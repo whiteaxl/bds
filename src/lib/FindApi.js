@@ -5,6 +5,8 @@ import RangeUtils from "../lib/RangeUtils"
 
 var rootUrl = 'http://localhost:5000/api/find';
 
+var maxRows = 500;
+
 var Api = {
   getItems: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy) {
     var fullParams = this.createFullParams(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy);
@@ -12,6 +14,7 @@ var Api = {
     fullParams.map(function(oneParam) {
       params[oneParam.key] = oneParam.value;
     })
+    params['limit'] = maxRows;
     console.log(rootUrl + "?" + JSON.stringify(params));
     return fetch(`${rootUrl}`, {
       method: 'POST',

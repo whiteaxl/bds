@@ -208,6 +208,7 @@ class SearchResultList extends Component {
     rowData.images_small.map(function(imageUrl) {
       imageItems.push(
         <View style={myStyles.slide} key={"img"+(imageIndex++)}>
+        <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
           <Image style={styles.thumb} source={{uri: `${imageUrl}`}} >
             <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']} 
             style={myStyles.linearGradient}>
@@ -223,11 +224,11 @@ class SearchResultList extends Component {
             </LinearGradient>
           
           </Image>
+        </TouchableHighlight>
         </View>
       );
     });
     return (
-      <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
         <View>
             
           <Swiper style={myStyles.wrapper} height={181}
@@ -239,7 +240,6 @@ class SearchResultList extends Component {
           </Swiper>
              
         </View>
-      </TouchableHighlight>
     );
   }
 }
