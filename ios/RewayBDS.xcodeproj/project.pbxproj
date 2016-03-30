@@ -20,6 +20,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		750484731C9EC50E00730C8B /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 750484721C9EC4DE00730C8B /* libBVLinearGradient.a */; };
+		753605FC1CABB6D600E17AEA /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 753605EF1CABB6BF00E17AEA /* libAirMaps.a */; };
 		758115AE1CA7C14F001D4DBC /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 758115AD1CA7C14F001D4DBC /* FontAwesome.ttf */; };
 		75B73F751C81672D0088D254 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75B73F741C8166C60088D254 /* libRNDeviceInfo.a */; };
 		75F3DF2F1C575378009B3BDF /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75F3DF2E1C575378009B3BDF /* AddressBook.framework */; };
@@ -94,6 +95,13 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = BVLinearGradient;
 		};
+		753605EE1CABB6BF00E17AEA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 753605EA1CABB6BF00E17AEA /* AirMaps.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 11FA5C511C4A1296003AC2EE;
+			remoteInfo = AirMaps;
+		};
 		75B73F731C8166C60088D254 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 75B73F651C8166C60088D254 /* RNDeviceInfo.xcodeproj */;
@@ -133,6 +141,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = bds/main.m; sourceTree = "<group>"; };
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		7504846D1C9EC4DE00730C8B /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
+		753605EA1CABB6BF00E17AEA /* AirMaps.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
 		758115AD1CA7C14F001D4DBC /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		75B73F651C8166C60088D254 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		75F3DF2E1C575378009B3BDF /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -149,6 +158,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				753605FC1CABB6D600E17AEA /* libAirMaps.a in Frameworks */,
 				750484731C9EC50E00730C8B /* libBVLinearGradient.a in Frameworks */,
 				75B73F751C81672D0088D254 /* libRNDeviceInfo.a in Frameworks */,
 				75F3DF351C575397009B3BDF /* libz.tbd in Frameworks */,
@@ -255,6 +265,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		753605EB1CABB6BF00E17AEA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				753605EF1CABB6BF00E17AEA /* libAirMaps.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		75B73F661C8166C60088D254 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -274,6 +292,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				753605EA1CABB6BF00E17AEA /* AirMaps.xcodeproj */,
 				7504846D1C9EC4DE00730C8B /* BVLinearGradient.xcodeproj */,
 				75B73F651C8166C60088D254 /* RNDeviceInfo.xcodeproj */,
 				146833FF1AC3E56700842450 /* React.xcodeproj */,
@@ -370,6 +389,10 @@
 			productRefGroup = 83CBBA001A601CBA00E9B192 /* Products */;
 			projectDirPath = "";
 			projectReferences = (
+				{
+					ProductGroup = 753605EB1CABB6BF00E17AEA /* Products */;
+					ProjectRef = 753605EA1CABB6BF00E17AEA /* AirMaps.xcodeproj */;
+				},
 				{
 					ProductGroup = 7504846E1C9EC4DE00730C8B /* Products */;
 					ProjectRef = 7504846D1C9EC4DE00730C8B /* BVLinearGradient.xcodeproj */;
@@ -488,6 +511,13 @@
 			fileType = archive.ar;
 			path = libBVLinearGradient.a;
 			remoteRef = 750484711C9EC4DE00730C8B /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		753605EF1CABB6BF00E17AEA /* libAirMaps.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libAirMaps.a;
+			remoteRef = 753605EE1CABB6BF00E17AEA /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		75B73F741C8166C60088D254 /* libRNDeviceInfo.a */ = {

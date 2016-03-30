@@ -31,7 +31,7 @@ import Home from '../containers/Home';
 import Profile from '../containers/Profile';
 import PostAd from '../containers/Screen1';
 import Inbox from '../containers/Screen2';
-import Activity from '../containers/Screen1';
+import Activity from '../test/ViewAsMarker';
 
 /**
  * ## Styles
