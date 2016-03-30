@@ -163,7 +163,7 @@ module.exports = StyleSheet.create({
   searchButtonWrapper: {
 	    flexDirection: 'row',
 	    justifyContent: 'space-between',
-			backgroundColor: '#f44336',
+			backgroundColor: gui.blue1,
   },
 	searchButtonText: {
 			marginLeft: 15,

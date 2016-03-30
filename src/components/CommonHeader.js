@@ -4,13 +4,15 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import {Actions} from 'react-native-router-flux';
 
+import gui from '../lib/gui';
+
 // Create our component
 var CommonHeader = React.createClass({
   render: function() {
     return <View style={myStyles.customPageHeader}>
       <Icon.Button onPress={this._onBack}
-        name="chevron-left" backgroundColor="#f44336"
-        underlayColor="gray"
+        name="chevron-left" backgroundColor="transparent"
+        underlayColor="transparent" color={gui.blue1}
         style={myStyles.search} >
       </Icon.Button>
       <View style={myStyles.customPageTitle}>
@@ -33,7 +35,7 @@ customPageHeader: {
       flexDirection: 'row',
       alignItems: 'flex-start',
       justifyContent: 'space-between',
-      backgroundColor: '#f44336',
+      backgroundColor: 'transparent',
   },
   customPageTitle: {
       marginTop: 35,
@@ -43,7 +45,7 @@ customPageHeader: {
       alignItems: 'stretch',
   },
   customPageTitleText: {
-      color: 'white',
+      color: gui.blue1,
       fontSize: 14,
       fontWeight: 'bold',
       textAlign: 'center',
@@ -53,6 +55,6 @@ customPageHeader: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#f44336',
+      backgroundColor: 'transparent',
   },
 });

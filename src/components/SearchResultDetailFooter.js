@@ -1,7 +1,5 @@
 // Import some code we need
-import React, {View, Component, Text, StyleSheet} from 'react-native';
-
-import gui from '../lib/gui';
+import React, {View, Component, Text, StyleSheet, Dimensions} from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -10,34 +8,34 @@ var SearchResultDetailFooter = React.createClass({
   render: function() {
     return <View style={myStyles.searchButton}>
       <View style={myStyles.searchListButton}>
-        <Icon.Button onPress={this.onContact}
+        <Icon.Button onPress={this.onCall}
           name="hdd-o" backgroundColor="white"
-          underlayColor="gray" color={gui.blue1}
+          underlayColor="gray" color='gray'
           style={myStyles.searchListButtonText} >
-          Liên hệ
+          Call
         </Icon.Button>
         <Icon.Button onPress={this.onChat}
-          name="comment-o" backgroundColor="white"
-          underlayColor="gray" color={gui.blue1}
+          name="comment-o" backgroundColor="gray"
+          underlayColor="white" color='white'
           style={myStyles.searchListButtonText} >
-          Trò chuyện
+          Chat
         </Icon.Button>
-        <Icon.Button onPress={this.onComment}
-          name="sticky-note-o" backgroundColor="white"
-          underlayColor="gray" color={gui.blue1}
+        <Icon.Button onPress={this.onLike}
+          name="heart-o" backgroundColor='#0070C0'
+          underlayColor="white" color='white'
           style={myStyles.searchListButtonText} >
-          Chú thích
+          Thích
         </Icon.Button>
       </View>
     </View>
   },
-  onContact() {
+  onCall() {
     console.log("On Save pressed!");
   },
   onChat() {
     console.log("On Chat pressed!");
   },
-  onComment() {
+  onLike() {
     console.log("On Comment pressed!");
   }
 });
@@ -48,11 +46,10 @@ module.exports = SearchResultDetailFooter;
 
 var myStyles = StyleSheet.create({
   searchListButtonText: {
-      marginLeft: 15,
-      marginRight: 15,
-      marginTop: 0,
-      marginBottom: 0,
+      margin: 0,
       flexDirection: 'column',
+      alignItems: 'center',
+      width: Dimensions.get('window').width/3,
   },
   searchListButton: {
       flexDirection: 'row',

@@ -28,6 +28,8 @@ import CommonHeader from '../components/CommonHeader';
 
 import Swiper from 'react-native-swiper';
 
+import gui from '../lib/gui';
+
 /**
 * ## Redux boilerplate
 */
@@ -134,49 +136,36 @@ class SearchResultDetail extends Component {
     });
     return (
 			<View style={styles.fullWidthContainer}>
-        <View style={styles.customPageHeader}>
+        <View style={detailStyles.customPageHeader}>
           <Icon.Button onPress={this._onBack}
-            name="chevron-left" backgroundColor="#f44336"
-            underlayColor="gray"
-            style={styles.search} >
+            name="chevron-left" backgroundColor="transparent"
+            underlayColor="gray" color={gui.blue1}
+            style={detailStyles.search} >
           </Icon.Button>
-          <Icon.Button onPress={this._onShare}
-            name="facebook" backgroundColor="#f44336"
-            underlayColor="gray"
-            style={styles.search} >
-          </Icon.Button>
-          <Icon.Button onPress={this._onShare}
-            name="envelope-o" backgroundColor="#f44336"
-            underlayColor="gray"
-            style={styles.search} >
-          </Icon.Button>
-          <Icon.Button onPress={this._onShare}
-            name="share-alt" backgroundColor="#f44336"
-            underlayColor="gray"
-            style={styles.search} >
-          </Icon.Button>
-          <Icon.Button onPress={this._onShare}
-            name="comment-o" backgroundColor="#f44336"
-            underlayColor="gray"
-            style={styles.search} >
-          </Icon.Button>
-          <Icon.Button onPress={this._onShare}
-            name="clone" backgroundColor="#f44336"
-            underlayColor="gray"
-            style={styles.search} >
-          </Icon.Button>
+          <View style={detailStyles.shareButton}>
+            <Icon.Button onPress={this._onLike}
+              name="heart-o" backgroundColor="transparent"
+              underlayColor="gray" color={gui.blue1}
+              style={detailStyles.search} >
+            </Icon.Button>
+            <Icon.Button onPress={this._onShare}
+              name="share-alt" backgroundColor="transparent"
+              underlayColor="gray" color={gui.blue1}
+              style={detailStyles.search} >
+            </Icon.Button>
+          </View>
         </View>
         <ScrollView
           ref={(scrollView) => { _scrollView = scrollView; }}
           automaticallyAdjustContentInsets={false}
           vertical={true}
-          style={styles.scrollView}>
+          style={detailStyles.scrollView}>
           <View style={styles.searchContent}>
 
             <Swiper style={detailStyles.wrapper} height={256}
-                    showsButtons={false} autoplay={true} autoplayTimeout={5} loop={false}
-                    dot={<View style={[detailStyles.dot, {backgroundColor: 'white'}]} />}
-                    activeDot={<View style={[detailStyles.dot, {backgroundColor: 'red'}]}/>}
+                    showsButtons={false} autoplay={false} loop={false}
+                    dot={<View style={[detailStyles.dot, {backgroundColor: 'transparent'}]} />}
+                    activeDot={<View style={[detailStyles.dot, {backgroundColor: 'transparent'}]}/>}
             >
               {imageItems}
             </Swiper>
@@ -211,9 +200,11 @@ class SearchResultDetail extends Component {
               <Text style={detailStyles.textFullWidth}>
                 Ngày đăng: {ngayDangTin}
               </Text>
-              <Image style={detailStyles.searchMapView}
-                 source={{uri: `${mapUrl}`}}>
-              </Image>
+              <View style={detailStyles.imgItem}>
+                <Image style={detailStyles.searchMapView}
+                   source={{uri: `${mapUrl}`}}>
+                </Image>
+              </View>
               <Text style={detailStyles.textTitle}>
                 Liên hệ
               </Text>
@@ -261,6 +252,10 @@ class SearchResultDetail extends Component {
     console.log("On share pressed!");
   }
 
+    _onLike() {
+      console.log("On like pressed!");
+    }
+
   onRegionChangeComplete(region) {
     MapApi(region.latitude, region.longitude)
       .then((data) => {
@@ -270,6 +265,25 @@ class SearchResultDetail extends Component {
 }
 
 var detailStyles = StyleSheet.create({
+  scrollView: {
+      flex: 1,
+  },
+  shareButton: {
+      flexDirection: 'row',
+  },
+  customPageHeader: {
+      flexDirection: 'row',
+      alignItems: 'flex-start',
+      justifyContent: 'space-between',
+      backgroundColor: 'transparent',
+  },
+	search: {
+			marginTop: 25,
+	    flexDirection: 'row',
+	    alignItems: 'center',
+			justifyContent: 'center',
+			backgroundColor: 'transparent',
+	},
   wrapper: {
   },
   slide: {
@@ -296,11 +310,11 @@ var detailStyles = StyleSheet.create({
   },
   searchMapView: {
     flex: 1,
-    width: Dimensions.get('window').width-20,
-    height: Dimensions.get('window').width-20,
+    width: 256,
+    height: 256,
     marginBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   slideItem: {
     flex: 1, justifyContent: 'flex-start', alignItems: 'stretch',
