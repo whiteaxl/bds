@@ -14,7 +14,7 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component, MapView, StyleSheet } from 'react-native'
+import React, { Text, View, Component, StyleSheet } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 
@@ -25,6 +25,8 @@ import CommonHeader from '../components/CommonHeader';
 
 import gui from '../lib/gui';
 
+var MapView = require('react-native-maps');
+import MMapMarker from '../components/MMapMarker';
 
 /**
 * ## Redux boilerplate
@@ -51,8 +53,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-
-
 class SearchResultMap extends Component {
   constructor(props) {
     super(props);
@@ -64,20 +64,40 @@ class SearchResultMap extends Component {
       latitudeDelta: 0.0461,
       longitudeDelta: 0.0211,
     };
+
+    var markers = [
+        {coordinate: {latitude: 21.03558, longitude: 105.76047+0.01},
+         price: 1.1,
+         unit: 'Tỷ',
+         id: 0 
+        },
+        {coordinate: {latitude: 21.03558-0.01, longitude: 105.76047-0.01},
+         price: 800,
+         unit: 'Triệu',
+         id : 1
+        }
+      ];
+
     if (this.state && this.state.region) {
       region = this.state.region;
     }
-    var pin = { longitude: region.longitude, latitude: region.latitude };
+    
+
     return (
       <View style={styles.fullWidthContainer}>
         <CommonHeader headerTitle={"Bản đồ"} />
 
         <MapView
-          annotations={[pin]}
           region={region}
           onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
-          style={styles.searchMapView}>
+          style={myStyles.map}
+        >
+          {markers.map( marker =>(
+            <MMapMarker marker={marker}>
+            </MMapMarker>
+          ))}
         </MapView>
+
         <View style={myStyles.searchButton}>
           <View style={myStyles.searchListButton}>
             <Icon.Button onPress={this.onLocalInfo}
@@ -132,9 +152,15 @@ var myStyles = StyleSheet.create({
   searchListButtonText: {
       marginLeft: 15,
       marginRight: 15,
-      marginTop: 0,
-      marginBottom: 0,
-      flexDirection: 'column',
+      marginTop: 10,
+      marginBottom: 10,
+  },
+  
+  map: {
+    flex: 1,
+    margin: 0,
+    top: 10,
+    bottom: 10
   },
 
   searchListButton: {
