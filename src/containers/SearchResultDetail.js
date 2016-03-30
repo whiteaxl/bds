@@ -119,7 +119,9 @@ class SearchResultDetail extends Component {
     var dangBoi = rowData.cust_dangBoi;
     var email = rowData.cust_email;
     var mobile = rowData.cust_mobile;
-    var phone = rowData.cust_phone;
+    if (!mobile) {
+      mobile = rowData.cust_phone;
+    }
     var _scrollView: ScrollView;
     var mapSize = Dimensions.get('window').width-20;
     var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=16&size='+mapSize+'x'+mapSize+'&markers=color:red|'+rowData.hdLat+','+rowData.hdLong+'&sensor=false';
@@ -174,32 +176,40 @@ class SearchResultDetail extends Component {
               <Text style={detailStyles.price}>
                 Giá: {gia}
               </Text>
+              <Text style={detailStyles.textFullWidth}>
+                {soPhongNgu} phòng ngủ
+              </Text>
+              <Text style={detailStyles.textFullWidth}>
+                {loaiNhaDat}, {ngayDangTin}
+              </Text>
+              <Text style={detailStyles.textFullWidth}>
+                {diaChi}
+              </Text>
+              <Text style={detailStyles.textTitle}>
+                Chi tiết
+              </Text>
+              <Text style={detailStyles.textFullWidth}>
+                {chiTiet}
+              </Text>
+              <Text style={detailStyles.textTitle}>
+                Đặc điểm
+              </Text>
               <View style={styles.searchDetailRowAlign}>
                 <Text style={detailStyles.textHalfWidth}>
-                  Bán/Cho thuê: {loaiTin}
+                  Diện tích
                 </Text>
-                <Text style={detailStyles.textHalfWidth}>
-                  Loại nhà: {loaiNhaDat}
+                <Text style={detailStyles.textHalfWidthBold}>
+                  {dienTich}
                 </Text>
               </View>
-              <Text style={detailStyles.textFullWidth}>
-                Diện tích: {dienTich}
-              </Text>
-              <Text style={detailStyles.textFullWidth}>
-                Địa chỉ: {diaChi}
-              </Text>
-              <Text style={detailStyles.textFullWidth}>
-                Chi tiết: {chiTiet}
-              </Text>
-              <Text style={detailStyles.textFullWidth}>
-                Số tầng: {soTang}
-              </Text>
-              <Text style={detailStyles.textFullWidth}>
-                Số phòng ngủ: {soPhongNgu}
-              </Text>
-              <Text style={detailStyles.textFullWidth}>
-                Ngày đăng: {ngayDangTin}
-              </Text>
+              <View style={styles.searchDetailRowAlign}>
+                <Text style={detailStyles.textHalfWidth}>
+                  Số tầng
+                </Text>
+                <Text style={detailStyles.textHalfWidthBold}>
+                  {soTang}
+                </Text>
+              </View>
               <View style={detailStyles.imgItem}>
                 <Image style={detailStyles.searchMapView}
                    source={{uri: `${mapUrl}`}}>
@@ -209,16 +219,13 @@ class SearchResultDetail extends Component {
                 Liên hệ
               </Text>
               <Text style={detailStyles.textFullWidth}>
-                Đăng bởi: {dangBoi}
+                {dangBoi}
               </Text>
               <Text style={detailStyles.textFullWidth}>
-                Email: {email}
+                {mobile}
               </Text>
               <Text style={detailStyles.textFullWidth}>
-                Mobile: {mobile}
-              </Text>
-              <Text style={detailStyles.textFullWidth}>
-                Phone: {phone}
+                {email}
               </Text>
               <Text style={detailStyles.textTitle}>
                 Danh sách comments
@@ -327,8 +334,8 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     color: 'black',
     marginBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
+    marginLeft: 15,
+    marginRight: 15,
   },
   textTitle: {
     fontSize: 16,
@@ -337,8 +344,8 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     color: 'black',
     marginBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
+    marginLeft: 15,
+    marginRight: 15,
   },
   textHalfWidth: {
     textAlign: 'left',
@@ -347,8 +354,20 @@ var detailStyles = StyleSheet.create({
     fontSize: 14,
     color: 'black',
     marginBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
+    marginLeft: 15,
+    marginRight: 5,
+    width: Dimensions.get('window').width/2-60
+  },
+  textHalfWidthBold: {
+    textAlign: 'left',
+    alignItems: 'flex-start',
+    backgroundColor: 'transparent',
+    fontSize: 14,
+    fontWeight: 'bold',
+    color: 'black',
+    marginBottom: 10,
+    marginLeft: 5,
+    marginRight: 15,
     width: Dimensions.get('window').width/2-20
   },
   textFullWidth: {
@@ -358,8 +377,8 @@ var detailStyles = StyleSheet.create({
     fontSize: 14,
     color: 'black',
     marginBottom: 10,
-    marginLeft: 10,
-    marginRight: 10,
+    marginLeft: 15,
+    marginRight: 15,
   }
 });
 

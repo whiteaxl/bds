@@ -29,6 +29,8 @@ import SearchResultFooter from '../components/SearchResultFooter';
 
 import LinearGradient from 'react-native-linear-gradient';
 
+import Swiper from 'react-native-swiper';
+
 /**
 * ## Redux boilerplate
 */
@@ -201,29 +203,41 @@ class SearchResultList extends Component {
     if (soPhongNgu) {
       soPhongNgu = " " + soPhongNgu + " p.ngủ";
     }
+    var imageItems = [];
+    var imageIndex = 0;
+    rowData.images_small.map(function(imageUrl) {
+      imageItems.push(
+        <View style={myStyles.slide} key={"img"+(imageIndex++)}>
+          <Image style={styles.thumb} source={{uri: `${imageUrl}`}} >
+            <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']} 
+            style={myStyles.linearGradient}>
+       
+            <View style={myStyles.searchListViewRowAlign}>
+              <View>
+                <Text style={myStyles.price}>{rowData.price_value} {rowData.price_unit}</Text>
+                <Text style={myStyles.text}>{diaChi}{soPhongNgu}</Text>
+              </View>
+              <Icon.Button name="heart-o" backgroundColor="transparent"
+                underlayColor="transparent" style={myStyles.heartButton}/>
+            </View>
+            </LinearGradient>
+          
+          </Image>
+        </View>
+      );
+    });
     return (
       <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
         <View>
-          <View style={styles.row}>
             
-            
-              <Image style={styles.thumb} source={{uri: `${rowData.cover}`}} >
-              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']} 
-              style={myStyles.linearGradient}>
-           
-                <View style={myStyles.searchListViewRowAlign}>
-                  <View>
-                    <Text style={myStyles.price}>{rowData.price_value} {rowData.price_unit}</Text>
-                    <Text style={myStyles.text}>{diaChi}{soPhongNgu}</Text>
-                  </View>
-                  <Icon.Button name="heart-o" backgroundColor="transparent"
-                    underlayColor="transparent" style={myStyles.heartButton}/>
-                </View>
-                </LinearGradient>
-              
-              </Image>
+          <Swiper style={myStyles.wrapper} height={181}
+                  showsButtons={false} autoplay={false} loop={false}
+                  dot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]} />}
+                  activeDot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]}/>}
+          >
+            {imageItems}
+          </Swiper>
              
-          </View>
         </View>
       </TouchableHighlight>
     );
@@ -232,6 +246,23 @@ class SearchResultList extends Component {
 
 // Later on in your styles..
 var myStyles = StyleSheet.create({
+  wrapper: {
+  },
+  slide: {
+    justifyContent: 'center',
+    backgroundColor: 'transparent',
+    //
+  },
+  dot : {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginLeft: 3,
+    marginRight: 3,
+    marginTop: 3,
+    marginBottom: 3,
+    bottom: 32
+  },
   linearGradient: {
     flex: 1,
     paddingLeft: 0,
