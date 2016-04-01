@@ -15,7 +15,7 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component, Image, Dimensions, ScrollView, StyleSheet, MapView } from 'react-native'
+import React, { Text, View, Component, Image, Dimensions, ScrollView, StyleSheet } from 'react-native'
 
 var ShareManager = React.NativeModules.ShareManager;
 
@@ -270,7 +270,7 @@ class SearchResultDetail extends Component {
         break;
       }
     }
-    console.log(value);
+    //console.log(value);
     return value;
   }
 
@@ -282,15 +282,8 @@ class SearchResultDetail extends Component {
     ShareManager.share({text: text, url: url});
   }
 
-    _onLike() {
-      console.log("On like pressed!");
-    }
-
-  onRegionChangeComplete(region) {
-    MapApi(region.latitude, region.longitude)
-      .then((data) => {
-        console.log(data);
-      });
+  _onLike() {
+    console.log("On like pressed!");
   }
 }
 

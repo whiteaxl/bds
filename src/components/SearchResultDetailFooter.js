@@ -1,5 +1,5 @@
 // Import some code we need
-import React, {View, Component, Text, StyleSheet, Dimensions} from 'react-native';
+import React, {View, Component, Text, StyleSheet, Dimensions, AlertIOS } from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -27,7 +27,7 @@ var SearchResultDetailFooter = React.createClass({
           </Icon.Button>
         </View>
         <View style={myStyles.searchListButtonItem3}>
-          <Icon.Button onPress={this.onComment}
+          <Icon.Button onPress={this.onAlertComment}
             name="comment-o" backgroundColor='#0070C0'
             underlayColor="white" color='white'
             style={myStyles.searchListButtonText} >
@@ -43,8 +43,18 @@ var SearchResultDetailFooter = React.createClass({
   onChat() {
     Communications.text(this.props.mobile);
   },
-  onComment() {
-    console.log("On Comment pressed!");
+  onAlertComment() {
+    AlertIOS.prompt('Nhập comment', null,
+            [{
+              text: 'Thực hiện',
+              onPress: this.onComment
+            }, {
+              text: 'Thoát',
+              style: 'cancel',
+            }], 'plain-text', 'Default comment');
+  },
+  onComment(comment) {
+    console.log("Comment value: " + comment);
   }
 });
 
