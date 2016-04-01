@@ -12,7 +12,7 @@ var SearchResultDetailFooter = React.createClass({
       <View style={myStyles.searchListButton}>
         <View style={myStyles.searchListButtonItem1}>
           <Icon.Button onPress={this.onCall}
-            name="hdd-o" backgroundColor="white"
+            name="phone" backgroundColor="white"
             underlayColor="gray" color='gray'
             style={myStyles.searchListButtonText} >
             Call
@@ -20,7 +20,7 @@ var SearchResultDetailFooter = React.createClass({
         </View>
         <View style={myStyles.searchListButtonItem2}>
           <Icon.Button onPress={this.onChat}
-            name="comment-o" backgroundColor="gray"
+            name="commenting-o" backgroundColor="gray"
             underlayColor="white" color='white'
             style={myStyles.searchListButtonText} >
             Chat
@@ -31,7 +31,7 @@ var SearchResultDetailFooter = React.createClass({
             name="comment-o" backgroundColor='#0070C0'
             underlayColor="white" color='white'
             style={myStyles.searchListButtonText} >
-            Thích
+            Comment
           </Icon.Button>
         </View>
       </View>
