@@ -74,6 +74,7 @@ class Home extends Component {
           <ScrollView
             ref={(scrollView) => { _scrollView = scrollView; }}
             automaticallyAdjustContentInsets={false}
+            showsVerticalScrollIndicator={false}
             vertical={true}
             style={styles.scrollView}>
 

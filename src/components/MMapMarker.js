@@ -23,6 +23,8 @@ import {Map} from 'immutable';
 
 import {Actions} from 'react-native-router-flux';
 
+import gui from '../lib/gui';
+
 /**
 * ## Redux boilerplate
 */
@@ -52,7 +54,7 @@ function mapDispatchToProps(dispatch) {
 class MMapMarker extends Component {
 	
 	render() {
-		var mcolor = this.props.marker.color ? this.props.marker.color : '#FF5A5F';
+		var mcolor = this.props.marker.color ? this.props.marker.color : gui.blue1;
 		if (this.state && this.state.mcolor){
 			mcolor = this.state.mcolor;
 		}

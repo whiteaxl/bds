@@ -6,12 +6,12 @@ import { connect } from 'react-redux';
  * The actions we need
  */
 import * as globalActions from '../reducers/global/globalActions';
+import * as searchActions from '../reducers/search/searchActions';
 
 /**
  * Immutable Map
  */
 import {Map} from 'immutable';
-
 
 
 import React, { Text, View, Component, StyleSheet } from 'react-native'
@@ -21,18 +21,19 @@ import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MapApi from '../lib/MapApi';
 import styles from './styles';
-import CommonHeader from '../components/CommonHeader';
+import SearchHeader from '../components/SearchHeader';
 
 import gui from '../lib/gui';
 
-var MapView = require('react-native-maps');
+import MapView from 'react-native-maps';
 import MMapMarker from '../components/MMapMarker';
 
 /**
 * ## Redux boilerplate
 */
 const actions = [
-  globalActions
+  globalActions,
+  searchActions
 ];
 
 function mapStateToProps(state) {
@@ -57,42 +58,50 @@ class SearchResultMap extends Component {
   constructor(props) {
     super(props);
   }
+
   render() {
+    var markerList = [];
+
+    if (this.props.search.form.fields.listData) {
+      let i = 0;
+      this.props.search.form.fields.listData.map(function(item){
+        let marker = {
+          coordinate: {latitude: item.hdLat, longitude: item.hdLong},
+          price: item.price_value,
+          unit: item.price_unit,
+          id: i,
+          cover: item.cover,
+          diaChi: item.diaChi,
+          dienTich: item.dienTich
+        }
+        markerList.push(marker);
+        i++;
+      });
+
+    }
+
     var region = {
-      latitude: 21.03558,
-      longitude: 105.76047,
+      latitude: (markerList[0] ? markerList[0].coordinate.latitude : 10.75759410858154),
+      longitude: (markerList[0] ? markerList[0].coordinate.longitude : 106.7169036865234),
       latitudeDelta: 0.0461,
       longitudeDelta: 0.0211,
     };
 
-    var markers = [
-        {coordinate: {latitude: 21.03558, longitude: 105.76047+0.01},
-         price: 1.1,
-         unit: 'Tỷ',
-         id: 0 
-        },
-        {coordinate: {latitude: 21.03558-0.01, longitude: 105.76047-0.01},
-         price: 800,
-         unit: 'Triệu',
-         id : 1
-        }
-      ];
-
     if (this.state && this.state.region) {
       region = this.state.region;
     }
-    
 
     return (
       <View style={styles.fullWidthContainer}>
-        <CommonHeader headerTitle={"Bản đồ"} />
-
+        <View style={myStyles.search}>
+            <SearchHeader />
+          </View>
         <MapView
           region={region}
           onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
           style={myStyles.map}
         >
-          {markers.map( marker =>(
+          {markerList.map( marker =>(
             <MMapMarker marker={marker}>
             </MMapMarker>
           ))}
@@ -118,7 +127,7 @@ class SearchResultMap extends Component {
               style={myStyles.searchListButtonText} >
               Danh sách
             </Icon.Button>
-          </View>
+          </View>          
         </View>
 			</View>
 		)
@@ -135,6 +144,7 @@ class SearchResultMap extends Component {
   }
   onLocalInfo() {
     console.log("On Local Info pressed!");
+    
   }
   onSaveSearch() {
     console.log("On Save Search pressed!");
@@ -158,9 +168,8 @@ var myStyles = StyleSheet.create({
   
   map: {
     flex: 1,
-    margin: 0,
-    top: 10,
-    bottom: 10
+    marginTop: 30,
+    marginBottom: 0
   },
 
   searchListButton: {
@@ -172,5 +181,10 @@ var myStyles = StyleSheet.create({
   searchButton: {
       alignItems: 'stretch',
       justifyContent: 'flex-end',
+  },
+  search: {
+      top:0,
+      alignItems: 'stretch',
+      justifyContent: 'flex-start',
   },
 });

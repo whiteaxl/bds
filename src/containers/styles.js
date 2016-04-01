@@ -94,10 +94,7 @@ module.exports = StyleSheet.create({
 		alignItems: 'center',
 		justifyContent: 'center'
 	},
-	searchMapView: {
-		flex: 1,
-		margin: 0,
-	},
+	
 	fullWidthContainer: {
 			flex: 1,
 			alignItems: 'stretch',
