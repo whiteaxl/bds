@@ -65,17 +65,19 @@ class SearchResultMap extends Component {
     if (this.props.search.form.fields.listData) {
       let i = 0;
       this.props.search.form.fields.listData.map(function(item){
-        let marker = {
-          coordinate: {latitude: item.hdLat, longitude: item.hdLong},
-          price: item.price_value,
-          unit: item.price_unit,
-          id: i,
-          cover: item.cover,
-          diaChi: item.diaChi,
-          dienTich: item.dienTich
+        if (item.hdLat && item.hdLong) {
+          let marker = {
+            coordinate: {latitude: item.hdLat, longitude: item.hdLong},
+            price: item.price_value,
+            unit: item.price_unit,
+            id: i,
+            cover: item.cover,
+            diaChi: item.diaChi,
+            dienTich: item.dienTich
+          }
+          markerList.push(marker);
+          i++;
         }
-        markerList.push(marker);
-        i++;
       });
 
     }
@@ -127,7 +129,7 @@ class SearchResultMap extends Component {
               style={myStyles.searchListButtonText} >
               Danh sách
             </Icon.Button>
-          </View>          
+          </View>
         </View>
 			</View>
 		)
@@ -144,7 +146,7 @@ class SearchResultMap extends Component {
   }
   onLocalInfo() {
     console.log("On Local Info pressed!");
-    
+
   }
   onSaveSearch() {
     console.log("On Save Search pressed!");
@@ -165,7 +167,7 @@ var myStyles = StyleSheet.create({
       marginTop: 10,
       marginBottom: 10,
   },
-  
+
   map: {
     flex: 1,
     marginTop: 30,
