@@ -205,14 +205,15 @@ class SearchResultList extends Component {
     }
     var imageItems = [];
     var imageIndex = 0;
-    rowData.images_small.map(function(imageUrl) {
+    rowData.images_small.map(function(imageSmallUrl) {
+      var imageUrl = imageSmallUrl.replace("80x60", "745x510");
       imageItems.push(
         <View style={myStyles.slide} key={"img"+(imageIndex++)}>
         <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
           <Image style={styles.thumb} source={{uri: `${imageUrl}`}} >
-            <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']} 
+            <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
             style={myStyles.linearGradient}>
-       
+
             <View style={myStyles.searchListViewRowAlign}>
               <View>
                 <Text style={myStyles.price}>{rowData.price_value} {rowData.price_unit}</Text>
@@ -222,7 +223,7 @@ class SearchResultList extends Component {
                 underlayColor="transparent" style={myStyles.heartButton}/>
             </View>
             </LinearGradient>
-          
+
           </Image>
         </TouchableHighlight>
         </View>
@@ -233,9 +234,9 @@ class SearchResultList extends Component {
         <View style={myStyles.slide} key={"img"+(imageIndex)}>
         <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
           <Image style={styles.thumb} source={{uri: `${rowData.cover}`}} >
-            <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']} 
+            <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
             style={myStyles.linearGradient}>
-       
+
             <View style={myStyles.searchListViewRowAlign}>
               <View>
                 <Text style={myStyles.price}>{rowData.price_value} {rowData.price_unit}</Text>
@@ -245,7 +246,7 @@ class SearchResultList extends Component {
                 underlayColor="transparent" style={myStyles.heartButton}/>
             </View>
             </LinearGradient>
-          
+
           </Image>
         </TouchableHighlight>
         </View>
@@ -253,7 +254,7 @@ class SearchResultList extends Component {
     }
     return (
         <View>
-            
+
           <Swiper style={myStyles.wrapper} height={181}
                   showsButtons={false} autoplay={false} loop={false}
                   dot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]} />}
@@ -261,7 +262,7 @@ class SearchResultList extends Component {
           >
             {imageItems}
           </Swiper>
-             
+
         </View>
     );
   }

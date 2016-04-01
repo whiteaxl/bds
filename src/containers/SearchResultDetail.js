@@ -30,6 +30,7 @@ import Swiper from 'react-native-swiper';
 
 import gui from '../lib/gui';
 
+
 /**
 * ## Redux boilerplate
 */
@@ -79,6 +80,7 @@ var LoaiTin = [
     {key: 1, value: "Cho thuê"}
 ];
 
+var mapSize = 256;
 
 class SearchResultDetail extends Component {
   constructor(props) {
@@ -126,11 +128,11 @@ class SearchResultDetail extends Component {
       mobile = rowData.cust_phone;
     }
     var _scrollView: ScrollView;
-    var mapSize = Dimensions.get('window').width-20;
-    var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=16&size='+mapSize+'x'+mapSize+'&markers=color:red|'+rowData.hdLat+','+rowData.hdLong+'&sensor=false';
+    var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=12&size='+mapSize+'x'+mapSize+'&markers=color:red|'+rowData.hdLat+','+rowData.hdLong+'&sensor=false';
     var imageItems = [];
     var imageIndex = 0;
-    rowData.images_small.map(function(imageUrl) {
+    rowData.images_small.map(function(imageSmallUrl) {
+      var imageUrl = imageSmallUrl.replace("80x60", "745x510");
       imageItems.push(
         <View style={detailStyles.slide} key={"img"+(imageIndex++)}>
           <Image style={detailStyles.imgItem}
@@ -245,7 +247,7 @@ class SearchResultDetail extends Component {
             </View>
           </View>
         </ScrollView>
-        <SearchResultDetailFooter />
+        <SearchResultDetailFooter mobile={mobile}/>
 			</View>
 		)
 	}
@@ -329,8 +331,8 @@ var detailStyles = StyleSheet.create({
   },
   searchMapView: {
     flex: 1,
-    width: 256,
-    height: 256,
+    width: mapSize,
+    height: mapSize,
     marginBottom: 10,
     alignItems: 'center',
     justifyContent: 'center'

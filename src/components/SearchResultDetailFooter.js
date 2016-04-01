@@ -3,13 +3,15 @@ import React, {View, Component, Text, StyleSheet, Dimensions} from 'react-native
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+var Communications = require('react-native-communications');
+
 // Create our component
 var SearchResultDetailFooter = React.createClass({
   render: function() {
     return <View style={myStyles.searchButton}>
       <View style={myStyles.searchListButton}>
         <View style={myStyles.searchListButtonItem1}>
-          <Icon.Button onPress={this.onCall}
+          <Icon.Button onPress={this.onCall.bind(this)}
             name="hdd-o" backgroundColor="white"
             underlayColor="gray" color='gray'
             style={myStyles.searchListButtonText} >
@@ -17,7 +19,7 @@ var SearchResultDetailFooter = React.createClass({
           </Icon.Button>
         </View>
         <View style={myStyles.searchListButtonItem2}>
-          <Icon.Button onPress={this.onChat}
+          <Icon.Button onPress={this.onChat.bind(this)}
             name="comment-o" backgroundColor="gray"
             underlayColor="white" color='white'
             style={myStyles.searchListButtonText} >
@@ -25,8 +27,8 @@ var SearchResultDetailFooter = React.createClass({
           </Icon.Button>
         </View>
         <View style={myStyles.searchListButtonItem3}>
-          <Icon.Button onPress={this.onLike}
-            name="heart-o" backgroundColor='#0070C0'
+          <Icon.Button onPress={this.onComment.bind(this)}
+            name="comment-o" backgroundColor='#0070C0'
             underlayColor="white" color='white'
             style={myStyles.searchListButtonText} >
             Thích
@@ -36,12 +38,12 @@ var SearchResultDetailFooter = React.createClass({
     </View>
   },
   onCall() {
-    console.log("On Save pressed!");
+    Communications.phonecall(this.props.mobile, true);
   },
   onChat() {
-    console.log("On Chat pressed!");
+    Communications.text(this.props.mobile);
   },
-  onLike() {
+  onComment() {
     console.log("On Comment pressed!");
   }
 });
