@@ -17,6 +17,8 @@ import {Map} from 'immutable';
 
 import React, { Text, View, Component, Image, Dimensions, ScrollView, StyleSheet, MapView } from 'react-native'
 
+var ShareManager = React.NativeModules.ShareManager;
+
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
 
@@ -81,6 +83,10 @@ var LoaiTin = [
 ];
 
 var mapSize = 256;
+
+var url = '';
+
+var text = '';
 
 class SearchResultDetail extends Component {
   constructor(props) {
@@ -150,6 +156,9 @@ class SearchResultDetail extends Component {
         </View>
       );
     }
+    url = rowData.cover;
+    text = 'Check out this property | found using the Reway Mobile app\n\n'
+        + loaiNhaDat + '\n' + diaChi + '\n' + gia + '\n' + soPhongNgu + ', ' + dienTich + '\n';
     return (
 			<View style={styles.fullWidthContainer}>
         <View style={detailStyles.customPageHeader}>
@@ -270,7 +279,7 @@ class SearchResultDetail extends Component {
   }
 
   _onShare() {
-    console.log("On share pressed!");
+    ShareManager.share({text: text, url: url});
   }
 
     _onLike() {
