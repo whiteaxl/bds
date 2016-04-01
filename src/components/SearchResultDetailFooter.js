@@ -11,7 +11,7 @@ var SearchResultDetailFooter = React.createClass({
     return <View style={myStyles.searchButton}>
       <View style={myStyles.searchListButton}>
         <View style={myStyles.searchListButtonItem1}>
-          <Icon.Button onPress={this.onCall.bind(this)}
+          <Icon.Button onPress={this.onCall}
             name="hdd-o" backgroundColor="white"
             underlayColor="gray" color='gray'
             style={myStyles.searchListButtonText} >
@@ -19,7 +19,7 @@ var SearchResultDetailFooter = React.createClass({
           </Icon.Button>
         </View>
         <View style={myStyles.searchListButtonItem2}>
-          <Icon.Button onPress={this.onChat.bind(this)}
+          <Icon.Button onPress={this.onChat}
             name="comment-o" backgroundColor="gray"
             underlayColor="white" color='white'
             style={myStyles.searchListButtonText} >
@@ -27,7 +27,7 @@ var SearchResultDetailFooter = React.createClass({
           </Icon.Button>
         </View>
         <View style={myStyles.searchListButtonItem3}>
-          <Icon.Button onPress={this.onComment.bind(this)}
+          <Icon.Button onPress={this.onComment}
             name="comment-o" backgroundColor='#0070C0'
             underlayColor="white" color='white'
             style={myStyles.searchListButtonText} >
