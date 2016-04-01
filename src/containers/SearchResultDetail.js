@@ -32,6 +32,7 @@ import Swiper from 'react-native-swiper';
 
 import gui from '../lib/gui';
 
+import CollapsiblePanel from '../components/CollapsiblePanel';
 
 /**
 * ## Redux boilerplate
@@ -208,51 +209,48 @@ class SearchResultDetail extends Component {
               <Text style={detailStyles.textFullWidth}>
                 {diaChi}
               </Text>
-              <Text style={detailStyles.textTitle}>
-                Chi tiết
-              </Text>
-              <Text style={detailStyles.textFullWidth}>
-                {chiTiet}
-              </Text>
-              <Text style={detailStyles.textTitle}>
-                Đặc điểm
-              </Text>
-              <View style={styles.searchDetailRowAlign}>
-                <Text style={detailStyles.textHalfWidth}>
-                  Diện tích
+              <CollapsiblePanel title="Chi tiết">
+                <Text style={detailStyles.textFullWidth}>
+                  {chiTiet}
                 </Text>
-                <Text style={detailStyles.textHalfWidthBold}>
-                  {dienTich}
-                </Text>
-              </View>
-              <View style={styles.searchDetailRowAlign}>
-                <Text style={detailStyles.textHalfWidth}>
-                  Số tầng
-                </Text>
-                <Text style={detailStyles.textHalfWidthBold}>
-                  {soTang}
-                </Text>
-              </View>
+              </CollapsiblePanel>
+
+              <CollapsiblePanel title="Đặc điểm">
+                <View style={styles.searchDetailRowAlign}>
+                  <Text style={detailStyles.textHalfWidth}>
+                    Diện tích
+                  </Text>
+                  <Text style={detailStyles.textHalfWidthBold}>
+                    {dienTich}
+                  </Text>
+                </View>
+                <View style={styles.searchDetailRowAlign}>
+                  <Text style={detailStyles.textHalfWidth}>
+                    Số tầng
+                  </Text>
+                  <Text style={detailStyles.textHalfWidthBold}>
+                    {soTang}
+                  </Text>
+                </View>
+              </CollapsiblePanel>
               <View style={detailStyles.imgItem}>
                 <Image style={detailStyles.searchMapView}
                    source={{uri: `${mapUrl}`}}>
                 </Image>
               </View>
-              <Text style={detailStyles.textTitle}>
-                Liên hệ
-              </Text>
-              <Text style={detailStyles.textFullWidth}>
-                {dangBoi}
-              </Text>
-              <Text style={detailStyles.textFullWidth}>
-                {mobile}
-              </Text>
-              <Text style={detailStyles.textFullWidth}>
-                {email}
-              </Text>
-              <Text style={detailStyles.textTitle}>
-                Danh sách comments
-              </Text>
+              <CollapsiblePanel title="Liên hệ">
+                <Text style={detailStyles.textFullWidth}>
+                  {dangBoi}
+                </Text>
+                <Text style={detailStyles.textFullWidth}>
+                  {mobile}
+                </Text>
+                <Text style={detailStyles.textFullWidth}>
+                  {email}
+                </Text>
+              </CollapsiblePanel>
+              <CollapsiblePanel title="Danh sách comments">
+              </CollapsiblePanel>
             </View>
           </View>
         </ScrollView>
