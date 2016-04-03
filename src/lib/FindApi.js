@@ -15,7 +15,7 @@ var Api = {
       params[oneParam.key] = oneParam.value;
     })
     params['limit'] = maxRows;
-    console.log(rootUrl + "?" + JSON.stringify(params));
+    //console.log(rootUrl + "?" + JSON.stringify(params));
     return fetch(`${rootUrl}`, {
       method: 'POST',
       headers: {

@@ -11,7 +11,7 @@ var CommonHeader = React.createClass({
   render: function() {
     return <View style={myStyles.customPageHeader}>
       <Icon.Button onPress={this._onBack}
-        name="chevron-left" backgroundColor="transparent"
+        name="angle-left" backgroundColor="transparent"
         underlayColor="transparent" color={gui.blue1}
         style={myStyles.search} >
       </Icon.Button>

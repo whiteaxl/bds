@@ -83,7 +83,7 @@ var LoaiTin = [
     {key: 1, value: "Cho thuê"}
 ];
 
-var mapSize = 256;
+var mapSize = Dimensions.get('window').width-20;
 
 var url = '';
 
@@ -122,9 +122,15 @@ class SearchResultDetail extends Component {
     }
     var gia = rowData.price_value + ' ' + rowData.price_unit;
     var soTang = rowData.soTang;
-    var soPhongNgu = rowData.soPhongNgu;
+    var soPhongNguVal = rowData.soPhongNgu;
+    var soPhongNgu = soPhongNguVal;
     if (soPhongNgu) {
       soPhongNgu = soPhongNgu + ' phòng ngủ';
+    }
+    var soPhongTamVal = rowData.soPhongTam;
+    var soPhongTam = soPhongTamVal;
+    if (soPhongTam) {
+      soPhongTam = soPhongTam + ' phòng tắm';
     }
     var ngayDangTin = rowData.ngayDangTin;
     var chiTiet = rowData.loc;
@@ -135,7 +141,7 @@ class SearchResultDetail extends Component {
       mobile = rowData.cust_phone;
     }
     var _scrollView: ScrollView;
-    var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=12&size='+mapSize+'x'+mapSize+'&markers=color:red|'+rowData.hdLat+','+rowData.hdLong+'&sensor=false';
+    var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=12&size='+mapSize+'x'+((mapSize-mapSize%2)/2)+'&markers=color:red|'+rowData.hdLat+','+rowData.hdLong+'&sensor=false';
     var imageItems = [];
     var imageIndex = 0;
     rowData.images_small.map(function(imageSmallUrl) {
@@ -164,7 +170,7 @@ class SearchResultDetail extends Component {
 			<View style={styles.fullWidthContainer}>
         <View style={detailStyles.customPageHeader}>
           <Icon.Button onPress={this._onBack}
-            name="chevron-left" backgroundColor="transparent"
+            name="angle-left" backgroundColor="transparent"
             underlayColor="gray" color={gui.blue1}
             style={detailStyles.search} >
           </Icon.Button>
@@ -200,56 +206,44 @@ class SearchResultDetail extends Component {
               <Text style={detailStyles.price}>
                 {gia}
               </Text>
-              <Text style={detailStyles.textFullWidth}>
-                {soPhongNgu}
-              </Text>
-              <Text style={detailStyles.textFullWidth}>
-                {loaiNhaDat}, {ngayDangTin}
-              </Text>
-              <Text style={detailStyles.textFullWidth}>
-                {diaChi}
-              </Text>
-              <CollapsiblePanel title="Chi tiết">
+              <View style={detailStyles.lineBorder}>
+                <Text style={detailStyles.textFullWidth}>
+                  {diaChi}
+                </Text>
+              </View>
+              {this.renderTwoNormalProps(loaiTin, loaiNhaDat)}
+              {this.renderTwoNormalProps(dienTich, soPhongNgu)}
+              {this.renderTwoNormalProps(soPhongTam, ngayDangTin)}
+              <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
+              <CollapsiblePanel title="Chi Tiết">
                 <Text style={detailStyles.textFullWidth}>
                   {chiTiet}
                 </Text>
               </CollapsiblePanel>
-
-              <CollapsiblePanel title="Đặc điểm">
-                <View style={styles.searchDetailRowAlign}>
-                  <Text style={detailStyles.textHalfWidth}>
-                    Diện tích
-                  </Text>
-                  <Text style={detailStyles.textHalfWidthBold}>
-                    {dienTich}
-                  </Text>
-                </View>
-                <View style={styles.searchDetailRowAlign}>
-                  <Text style={detailStyles.textHalfWidth}>
-                    Số tầng
-                  </Text>
-                  <Text style={detailStyles.textHalfWidthBold}>
-                    {soTang}
-                  </Text>
-                </View>
+              <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
+              <CollapsiblePanel title="Đặc Điểm">
+                {this.renderTitleProps("Loại tin rao", loaiNhaDat)}
+                {this.renderTitleProps("Giá", gia)}
+                {this.renderTitleProps("Phòng ngủ", soPhongNguVal)}
+                {this.renderTitleProps("Phòng tắm", soPhongTamVal)}
+                {this.renderTitleProps("Diện tích", dienTich)}
+                {this.renderTitleProps("Số tầng", soTang)}
+                {this.renderTitleProps("Ngày đăng tin", ngayDangTin)}
+                {this.renderTitleProps("Địa chỉ", diaChi)}
               </CollapsiblePanel>
-              <View style={detailStyles.imgItem}>
-                <Image style={detailStyles.searchMapView}
+              <View style={detailStyles.searchMapView}>
+                <Image style={detailStyles.imgMapView}
                    source={{uri: `${mapUrl}`}}>
                 </Image>
               </View>
-              <CollapsiblePanel title="Liên hệ">
-                <Text style={detailStyles.textFullWidth}>
-                  {dangBoi}
-                </Text>
-                <Text style={detailStyles.textFullWidth}>
-                  {mobile}
-                </Text>
-                <Text style={detailStyles.textFullWidth}>
-                  {email}
-                </Text>
+              <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
+              <CollapsiblePanel title="Liên Hệ">
+                {this.renderTitleProps("Tên liên lạc", dangBoi)}
+                {this.renderTitleProps("Điện thoại", mobile)}
+                {this.renderTitleProps("Email", email)}
               </CollapsiblePanel>
-              <CollapsiblePanel title="Danh sách comments">
+              <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
+              <CollapsiblePanel title="Danh Sách Comments">
               </CollapsiblePanel>
             </View>
           </View>
@@ -258,6 +252,44 @@ class SearchResultDetail extends Component {
 			</View>
 		)
 	}
+
+  renderTwoNormalProps(prop1, prop2) {
+    if (prop1 && prop2) {
+      return (
+        <View style={[styles.searchDetailRowAlign,detailStyles.lineBorder]}>
+          <Text style={detailStyles.textHalfWidth}>
+            {prop1}
+          </Text>
+          <Text style={detailStyles.textHalfWidth}>
+            {prop2}
+          </Text>
+        </View>
+      )
+    } else if (prop1 || prop2) {
+      return (
+        <View style={detailStyles.lineBorder}>
+          <Text style={detailStyles.textFullWidth}>
+            {prop1 ? prop1 : prop2}
+          </Text>
+        </View>
+      )
+    }
+  }
+
+  renderTitleProps(title, prop) {
+    if (prop) {
+      return (
+        <View style={styles.searchDetailRowAlign}>
+          <Text style={detailStyles.textHalfWidth}>
+            {title}
+          </Text>
+          <Text style={detailStyles.textHalfWidthBold}>
+            {prop}
+          </Text>
+        </View>
+      )
+    }
+  }
 
   getValueByKey(hashArr, key) {
     var value = '';
@@ -330,12 +362,14 @@ var detailStyles = StyleSheet.create({
     height: 256
   },
   searchMapView: {
-    flex: 1,
-    width: mapSize,
-    height: mapSize,
+    marginTop: 10,
     marginBottom: 10,
     alignItems: 'center',
     justifyContent: 'center'
+  },
+  imgMapView: {
+    width: mapSize,
+    height: mapSize/2
   },
   slideItem: {
     flex: 1, justifyContent: 'flex-start', alignItems: 'stretch',
@@ -348,8 +382,8 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     color: 'black',
     marginBottom: 10,
-    marginLeft: 15,
-    marginRight: 15,
+    marginLeft: 0,
+    marginRight: 0,
   },
   textTitle: {
     fontSize: 16,
@@ -358,8 +392,8 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     color: 'black',
     marginBottom: 10,
-    marginLeft: 15,
-    marginRight: 15,
+    marginLeft: 0,
+    marginRight: 0,
   },
   textHalfWidth: {
     textAlign: 'left',
@@ -367,10 +401,11 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     fontSize: 14,
     color: 'black',
+    marginTop: 10,
     marginBottom: 10,
-    marginLeft: 15,
-    marginRight: 5,
-    width: Dimensions.get('window').width/2-60
+    marginLeft: 0,
+    marginRight: 0,
+    width: Dimensions.get('window').width/2-10
   },
   textHalfWidthBold: {
     textAlign: 'left',
@@ -379,10 +414,11 @@ var detailStyles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     color: 'black',
+    marginTop: 10,
     marginBottom: 10,
-    marginLeft: 5,
-    marginRight: 15,
-    width: Dimensions.get('window').width/2-20
+    marginLeft: 0,
+    marginRight: 0,
+    width: Dimensions.get('window').width/2-10
   },
   textFullWidth: {
     textAlign: 'left',
@@ -390,9 +426,15 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     fontSize: 14,
     color: 'black',
+    marginTop: 10,
     marginBottom: 10,
-    marginLeft: 15,
-    marginRight: 15,
+    marginLeft: 0,
+    marginRight: 0,
+  },
+  lineBorder: {
+    borderTopWidth: 1,
+    borderTopColor: 'lightgray',
+    width: Dimensions.get('window').width - 20
   }
 });
 

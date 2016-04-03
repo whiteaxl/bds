@@ -9,8 +9,8 @@ class CollapsiblePanel extends Component{
         super(props);
 
         this.icons = {     //Step 2
-            'up'    : 'chevron-up',
-            'down'  : 'chevron-down'
+            'up'    : 'angle-up',
+            'down'  : 'angle-down'
         };
 
         this.state = {       //Step 3
@@ -65,7 +65,7 @@ class CollapsiblePanel extends Component{
                     <Text style={styles.title}>{this.state.title}</Text>
                     <Icon.Button onPress={this.toggle.bind(this)}
                         name={icon} backgroundColor="transparent"
-                        underlayColor="#f1f1f1" color={gui.blue1}
+                        underlayColor="#f1f1f1" color={'gray'}
                         style={styles.button} />
                 </View>
 
@@ -80,18 +80,16 @@ class CollapsiblePanel extends Component{
 
 var styles = StyleSheet.create({
     container   : {
-        backgroundColor: '#fff',
-        marginTop: 0,
-        marginBottom: 10,
-        marginLeft: 15,
-        marginRight: 15,
+        backgroundColor: 'transparent',
+        margin: 0,
         overflow:'hidden',
-        width: Dimensions.get('window').width-30
+        width: Dimensions.get('window').width-20
     },
     titleContainer : {
         flexDirection: 'row',
-  			alignItems: 'flex-start',
+		alignItems: 'flex-start',
         justifyContent: 'space-between',
+        margin: 0
     },
     title       : {
         flex    : 1,
@@ -100,7 +98,8 @@ var styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'left',
         backgroundColor: 'transparent',
-        width: Dimensions.get('window').width-60
+        marginLeft: 0,
+        width: Dimensions.get('window').width-50
     },
     button      : {
         justifyContent: 'flex-end'

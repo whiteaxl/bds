@@ -15,7 +15,7 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component, Image, ListView
+import React, { Text, View, Component, Image, ListView, Dimensions
   , RecyclerViewBackedScrollView, TouchableHighlight , StyleSheet} from 'react-native'
 
 import Button from 'react-native-button';
@@ -30,6 +30,7 @@ import SearchResultFooter from '../components/SearchResultFooter';
 import LinearGradient from 'react-native-linear-gradient';
 
 import Swiper from 'react-native-swiper';
+import SearchHeader from '../components/SearchHeader';
 
 /**
 * ## Redux boilerplate
@@ -57,7 +58,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-
+var imgHeight = Dimensions.get('window').height/3 - 39;
 
 class SearchResultList extends Component {
   constructor(props) {
@@ -131,7 +132,7 @@ class SearchResultList extends Component {
       .then((data) => {
         if (data.list) {
           data.list.map(function(aRow) {
-              // console.log(aRow.value);
+              console.log(aRow.value);
               dataBlob.push(aRow.value);
             }
           );
@@ -151,7 +152,9 @@ class SearchResultList extends Component {
     if (!this.state) {
       return (
   			<View style={styles.fullWidthContainer}>
-          <CommonHeader headerTitle={"Danh sách"} />
+          <View style={myStyles.search}>
+            <SearchHeader />
+          </View>
           <View style={styles.searchContent}>
             <Text style={styles.welcome}>Đang tải dữ liệu!</Text>
           </View>
@@ -162,7 +165,9 @@ class SearchResultList extends Component {
     if (!this.state.dataSource) {
       return (
   			<View style={styles.fullWidthContainer}>
-          <CommonHeader headerTitle={"Danh sách"} />
+          <View style={myStyles.search}>
+            <SearchHeader />
+          </View>
           <View style={styles.searchContent}>
             <Text style={styles.welcome}>{this.state.errormsg}</Text>
           </View>
@@ -172,14 +177,16 @@ class SearchResultList extends Component {
     }
     return (
       <View style={styles.fullWidthContainer}>
-        <CommonHeader headerTitle={"Danh sách"} />
+        <View style={myStyles.search}>
+          <SearchHeader />
+        </View>
 
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this.renderRow}
           renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
           renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
-          style={styles.searchListView}
+          style={myStyles.searchListView}
         />
         <SearchResultFooter />
 			</View>
@@ -210,7 +217,7 @@ class SearchResultList extends Component {
       imageItems.push(
         <View style={myStyles.slide} key={"img"+(imageIndex++)}>
         <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
-          <Image style={styles.thumb} source={{uri: `${imageUrl}`}} >
+          <Image style={myStyles.thumb} source={{uri: `${imageUrl}`}} >
             <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
             style={myStyles.linearGradient}>
 
@@ -233,7 +240,7 @@ class SearchResultList extends Component {
       imageItems.push(
         <View style={myStyles.slide} key={"img"+(imageIndex)}>
         <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
-          <Image style={styles.thumb} source={{uri: `${rowData.cover}`}} >
+          <Image style={myStyles.thumb} source={{uri: `${rowData.cover}`}} >
             <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
             style={myStyles.linearGradient}>
 
@@ -255,7 +262,7 @@ class SearchResultList extends Component {
     return (
         <View>
 
-          <Swiper style={myStyles.wrapper} height={181}
+          <Swiper style={myStyles.wrapper} height={imgHeight}
                   showsButtons={false} autoplay={false} loop={false}
                   dot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]} />}
                   activeDot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]}/>}
@@ -292,6 +299,16 @@ var myStyles = StyleSheet.create({
     paddingLeft: 0,
     paddingRight: 0,
     backgroundColor : "transparent"
+  },
+  thumb: {
+    justifyContent: 'flex-end',
+    alignItems: 'stretch',
+    height: imgHeight,
+    alignSelf: 'auto',
+  },
+  searchListView: {
+    marginTop: 30,
+    margin: 0,
   },
 
   searchListViewRowAlign: {
