@@ -3,6 +3,7 @@
 import ApiUtils from './ApiUtils';
 import RangeUtils from "../lib/RangeUtils"
 
+//var rootUrl = 'http://203.162.13.101:5000/api/find';
 var rootUrl = 'http://localhost:5000/api/find';
 
 var maxRows = 200;

@@ -330,7 +330,7 @@ var myStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    top: 123,
+    top: imgHeight-60,
   },
   price: {
     fontSize: 16,

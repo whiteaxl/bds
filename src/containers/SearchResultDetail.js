@@ -245,7 +245,7 @@ class SearchResultDetail extends Component {
                     style={detailStyles.wrapper} >
                   </Icon.Button>
                   <Icon.Button onPress={this._onShare}
-                    name="link" backgroundColor="transparent"
+                    name="envelope-o" backgroundColor="transparent"
                     underlayColor="gray" color={gui.blue1}
                     style={detailStyles.wrapper} >
                   </Icon.Button>
