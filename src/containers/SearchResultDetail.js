@@ -168,112 +168,117 @@ class SearchResultDetail extends Component {
         + loaiNhaDat + '\n' + diaChi + '\n' + gia + '\n' + soPhongNgu + ', ' + dienTich + '\n';
     return (
 			<View style={styles.fullWidthContainer}>
-        <View style={detailStyles.customPageHeader}>
-          <Icon.Button onPress={this._onBack}
-            name="angle-left" backgroundColor="transparent"
-            underlayColor="gray" color={gui.blue1}
-            style={detailStyles.search} >
-          </Icon.Button>
-          <View style={detailStyles.shareButton}>
-            <Icon.Button onPress={this._onLike}
-              name="heart-o" backgroundColor="transparent"
-              underlayColor="gray" color={gui.blue1}
-              style={detailStyles.search} >
-            </Icon.Button>
-            <Icon.Button onPress={this._onShare}
-              name="share-alt" backgroundColor="transparent"
-              underlayColor="gray" color={gui.blue1}
-              style={detailStyles.search} >
-            </Icon.Button>
-          </View>
-        </View>
-        <ScrollView
-          ref={(scrollView) => { _scrollView = scrollView; }}
-          automaticallyAdjustContentInsets={false}
-          vertical={true}
-          style={detailStyles.scrollView}>
-          <View style={styles.searchContent}>
+        <View style={detailStyles.mainView}>
+          <ScrollView
+            ref={(scrollView) => { _scrollView = scrollView; }}
+            automaticallyAdjustContentInsets={false}
+            vertical={true}
+            style={detailStyles.scrollView}>
+            <View style={styles.searchContent}>
 
-            <Swiper style={detailStyles.wrapper} height={256}
-                    showsButtons={false} autoplay={false} loop={false}
-                    dot={<View style={[detailStyles.dot, {backgroundColor: 'transparent'}]} />}
-                    activeDot={<View style={[detailStyles.dot, {backgroundColor: 'transparent'}]}/>}
-            >
-              {imageItems}
-            </Swiper>
+              <Swiper style={detailStyles.wrapper} height={256}
+                      showsButtons={false} autoplay={false} loop={false}
+                      dot={<View style={[detailStyles.dot, {backgroundColor: 'transparent'}]} />}
+                      activeDot={<View style={[detailStyles.dot, {backgroundColor: 'transparent'}]}/>}
+              >
+                {imageItems}
+              </Swiper>
 
-            <View style={detailStyles.slideItem}>
-              <Text style={detailStyles.price}>
-                {gia}
-              </Text>
-              <View style={detailStyles.lineBorder}>
-                <Text style={detailStyles.textFullWidth}>
-                  {diaChi}
+              <View style={detailStyles.slideItem}>
+                <Text style={detailStyles.price}>
+                  {gia}
                 </Text>
-              </View>
-              {this.renderTwoNormalProps(loaiTin, loaiNhaDat)}
-              {this.renderTwoNormalProps(dienTich, soPhongNgu)}
-              {this.renderTwoNormalProps(soPhongTam, ngayDangTin)}
-              <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
-              <CollapsiblePanel title="Chi Tiết">
-                <Text style={detailStyles.textFullWidth}>
-                  {chiTiet}
-                </Text>
-              </CollapsiblePanel>
-              <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
-              <CollapsiblePanel title="Đặc Điểm">
-                {this.renderTitleProps("Loại tin rao", loaiNhaDat)}
-                {this.renderTitleProps("Giá", gia)}
-                {this.renderTitleProps("Phòng ngủ", soPhongNguVal)}
-                {this.renderTitleProps("Phòng tắm", soPhongTamVal)}
-                {this.renderTitleProps("Diện tích", dienTich)}
-                {this.renderTitleProps("Số tầng", soTang)}
-                {this.renderTitleProps("Ngày đăng tin", ngayDangTin)}
-                {this.renderTitleProps("Địa chỉ", diaChi)}
-              </CollapsiblePanel>
-              <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
-              <CollapsiblePanel title="Chia sẻ">
-                <View style={detailStyles.shareButton}>
-                  <Icon.Button onPress={this._onShare}
-                    name="twitter" backgroundColor="transparent"
-                    underlayColor="gray" color={gui.blue1}
-                    style={detailStyles.wrapper} >
-                  </Icon.Button>
-                  <Icon.Button onPress={this._onShare}
-                    name="facebook" backgroundColor="transparent"
-                    underlayColor="gray" color={gui.blue1}
-                    style={detailStyles.wrapper} >
-                  </Icon.Button>
-                  <Icon.Button onPress={this._onShare}
-                    name="envelope-o" backgroundColor="transparent"
-                    underlayColor="gray" color={gui.blue1}
-                    style={detailStyles.wrapper} >
-                  </Icon.Button>
-                  <Icon.Button onPress={this._onShare}
-                    name="share-alt" backgroundColor="transparent"
-                    underlayColor="gray" color={gui.blue1}
-                    style={detailStyles.wrapper} >
-                  </Icon.Button>
+                <View style={detailStyles.lineBorder}>
+                  <Text style={detailStyles.textFullWidth}>
+                    {diaChi}
+                  </Text>
                 </View>
-              </CollapsiblePanel>
-              <View style={[detailStyles.lineBorder, {marginTop: 10}]} />
-              <View style={detailStyles.searchMapView}>
-                <Image style={detailStyles.imgMapView}
-                   source={{uri: `${mapUrl}`}}>
-                </Image>
+                {this.renderTwoNormalProps(loaiTin, loaiNhaDat)}
+                {this.renderTwoNormalProps(dienTich, soPhongNgu)}
+                {this.renderTwoNormalProps(soPhongTam, ngayDangTin)}
+                <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
+                <CollapsiblePanel title="Chi Tiết" expanded={true}>
+                  <Text style={[detailStyles.textFullWidth,{marginBottom: 15}]}>
+                    {chiTiet}
+                  </Text>
+                </CollapsiblePanel>
+                <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
+                <CollapsiblePanel title="Đặc Điểm" expanded={true}>
+                  {this.renderTitleProps("Loại tin rao", loaiNhaDat)}
+                  {this.renderTitleProps("Giá", gia)}
+                  {this.renderTitleProps("Phòng ngủ", soPhongNguVal)}
+                  {this.renderTitleProps("Phòng tắm", soPhongTamVal)}
+                  {this.renderTitleProps("Diện tích", dienTich)}
+                  {this.renderTitleProps("Số tầng", soTang)}
+                  {this.renderTitleProps("Ngày đăng tin", ngayDangTin)}
+                  {this.renderTitleProps("Địa chỉ", diaChi)}
+                  <Text style={{fontSize: 5}} />
+                </CollapsiblePanel>
+                <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
+                <CollapsiblePanel title="Chia sẻ" expanded={false}>
+                  <View style={detailStyles.shareButton}>
+                    <Icon.Button onPress={this._onShare}
+                      name="twitter" backgroundColor="transparent"
+                      underlayColor="gray" color={gui.blue1}
+                      style={detailStyles.wrapper} >
+                    </Icon.Button>
+                    <Icon.Button onPress={this._onShare}
+                      name="facebook" backgroundColor="transparent"
+                      underlayColor="gray" color={gui.blue1}
+                      style={detailStyles.wrapper} >
+                    </Icon.Button>
+                    <Icon.Button onPress={this._onShare}
+                      name="envelope-o" backgroundColor="transparent"
+                      underlayColor="gray" color={gui.blue1}
+                      style={detailStyles.wrapper} >
+                    </Icon.Button>
+                    <Icon.Button onPress={this._onShare}
+                      name="share-alt" backgroundColor="transparent"
+                      underlayColor="gray" color={gui.blue1}
+                      style={detailStyles.wrapper} >
+                    </Icon.Button>
+                  </View>
+                </CollapsiblePanel>
+                <View style={[detailStyles.lineBorder, {marginTop: 10}]} />
+                <View style={detailStyles.searchMapView}>
+                  <Image style={detailStyles.imgMapView}
+                     source={{uri: `${mapUrl}`}}>
+                  </Image>
+                </View>
+                <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
+                <CollapsiblePanel title="Liên Hệ" expanded={false}>
+                  {this.renderTitleProps("Tên liên lạc", dangBoi)}
+                  {this.renderTitleProps("Điện thoại", mobile)}
+                  {this.renderTitleProps("Email", email)}
+                  <Text style={{fontSize: 5}} />
+                </CollapsiblePanel>
+                <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
+                <CollapsiblePanel title="Danh Sách Comments" expanded={false}>
+                </CollapsiblePanel>
               </View>
-              <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
-              <CollapsiblePanel title="Liên Hệ">
-                {this.renderTitleProps("Tên liên lạc", dangBoi)}
-                {this.renderTitleProps("Điện thoại", mobile)}
-                {this.renderTitleProps("Email", email)}
-              </CollapsiblePanel>
-              <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
-              <CollapsiblePanel title="Danh Sách Comments">
-              </CollapsiblePanel>
+            </View>
+          </ScrollView>
+
+          <View style={detailStyles.customPageHeader}>
+            <Icon.Button onPress={this._onBack}
+              name="angle-left" backgroundColor="transparent"
+              underlayColor="gray" color={gui.blue1}
+              style={detailStyles.search} >
+            </Icon.Button>
+            <View style={detailStyles.shareButton}>
+              <Icon.Button onPress={this._onLike}
+                name="heart-o" backgroundColor="transparent"
+                underlayColor="gray" color={gui.blue1}
+                style={detailStyles.search} >
+              </Icon.Button>
+              <Icon.Button onPress={this._onShare}
+                name="share-alt" backgroundColor="transparent"
+                underlayColor="gray" color={gui.blue1}
+                style={detailStyles.search} >
+              </Icon.Button>
             </View>
           </View>
-        </ScrollView>
+        </View>
         <SearchResultDetailFooter mobile={mobile}/>
 			</View>
 		)
@@ -306,10 +311,10 @@ class SearchResultDetail extends Component {
     if (prop) {
       return (
         <View style={styles.searchDetailRowAlign}>
-          <Text style={detailStyles.textHalfWidth}>
+          <Text style={detailStyles.textHalfWidth2}>
             {title}
           </Text>
-          <Text style={detailStyles.textHalfWidthBold}>
+          <Text style={detailStyles.textHalfWidthBold2}>
             {prop}
           </Text>
         </View>
@@ -344,8 +349,16 @@ class SearchResultDetail extends Component {
 }
 
 var detailStyles = StyleSheet.create({
+  mainView: {
+    flex: 1,
+    paddingLeft: 0,
+    paddingRight: 0,
+    backgroundColor : "transparent"
+  },
   scrollView: {
-      flex: 1,
+    flex: 1,
+    position: 'absolute',
+    height: Dimensions.get('window').height-45
   },
   shareButton: {
       flexDirection: 'row',
@@ -402,7 +415,7 @@ var detailStyles = StyleSheet.create({
           backgroundColor: 'transparent', marginTop: 15
   },
   price: {
-    fontSize: 18,
+    fontSize: 22,
     fontWeight: 'bold',
     textAlign: 'left',
     backgroundColor: 'transparent',
@@ -427,8 +440,8 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     fontSize: 14,
     color: 'black',
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 8,
+    marginBottom: 8,
     marginLeft: 0,
     marginRight: 0,
     width: Dimensions.get('window').width/2-10
@@ -440,8 +453,33 @@ var detailStyles = StyleSheet.create({
     fontSize: 14,
     fontWeight: 'bold',
     color: 'black',
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 8,
+    marginBottom: 8,
+    marginLeft: 0,
+    marginRight: 0,
+    width: Dimensions.get('window').width/2-10
+  },
+  textHalfWidth2: {
+    textAlign: 'left',
+    alignItems: 'flex-start',
+    backgroundColor: 'transparent',
+    fontSize: 12,
+    color: 'black',
+    marginTop: 3,
+    marginBottom: 3,
+    marginLeft: 0,
+    marginRight: 0,
+    width: Dimensions.get('window').width/2-10
+  },
+  textHalfWidthBold2: {
+    textAlign: 'left',
+    alignItems: 'flex-start',
+    backgroundColor: 'transparent',
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: 'black',
+    marginTop: 3,
+    marginBottom: 3,
     marginLeft: 0,
     marginRight: 0,
     width: Dimensions.get('window').width/2-10
@@ -452,8 +490,8 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     fontSize: 14,
     color: 'black',
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 8,
+    marginBottom: 8,
     marginLeft: 0,
     marginRight: 0,
   },

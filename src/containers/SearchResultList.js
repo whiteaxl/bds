@@ -160,7 +160,7 @@ class SearchResultList extends Component {
     }
     if (!this.state.dataSource && !this.state.errormsg) {
       setTimeout((function() {
-        this.setState({ progress: this.state.progress + (0.4 * Math.random())});
+        this.setState({ progress: this.state.progress + (0.1 * Math.random())});
       }).bind(this), 1000);
       return (
   			<View style={styles.fullWidthContainer}>
@@ -178,6 +178,9 @@ class SearchResultList extends Component {
           <SearchResultFooter />
   			</View>
       )
+    }
+    if (this.state.progress) {
+      this.state.progress = 0;
     }
     if (this.state.errormsg) {
       return (
@@ -227,65 +230,57 @@ class SearchResultList extends Component {
     if (soPhongNgu) {
       soPhongNgu = " " + soPhongNgu + " p.ngủ";
     }
+    var soPhongTam = rowData.soPhongTam;
+    if (soPhongTam) {
+      soPhongTam = " " + soPhongTam + " p.tắm";
+    }
     var imageItems = [];
     var imageIndex = 0;
     rowData.images_small.map(function(imageSmallUrl) {
       var imageUrl = imageSmallUrl.replace("80x60", "745x510");
       imageItems.push(
         <View style={myStyles.slide} key={"img"+(imageIndex++)}>
-        <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
-          <Image style={myStyles.thumb} source={{uri: `${imageUrl}`}} >
-            <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
-            style={myStyles.linearGradient}>
-
-            <View style={myStyles.searchListViewRowAlign}>
-              <View>
-                <Text style={myStyles.price}>{rowData.price_value} {rowData.price_unit}</Text>
-                <Text style={myStyles.text}>{diaChi}{soPhongNgu}</Text>
-              </View>
-              <Icon.Button name="heart-o" backgroundColor="transparent"
-                underlayColor="transparent" style={myStyles.heartButton}/>
-            </View>
-            </LinearGradient>
-
-          </Image>
-        </TouchableHighlight>
+          <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
+            <Image style={myStyles.thumb} source={{uri: `${imageUrl}`}} >
+            </Image>
+          </TouchableHighlight>
         </View>
       );
     });
     if (imageItems.length == 0) {
       imageItems.push(
         <View style={myStyles.slide} key={"img"+(imageIndex)}>
-        <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
-          <Image style={myStyles.thumb} source={{uri: `${rowData.cover}`}} >
-            <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
-            style={myStyles.linearGradient}>
-
-            <View style={myStyles.searchListViewRowAlign}>
-              <View>
-                <Text style={myStyles.price}>{rowData.price_value} {rowData.price_unit}</Text>
-                <Text style={myStyles.text}>{diaChi}{soPhongNgu}</Text>
-              </View>
-              <Icon.Button name="heart-o" backgroundColor="transparent"
-                underlayColor="transparent" style={myStyles.heartButton}/>
-            </View>
-            </LinearGradient>
-
-          </Image>
-        </TouchableHighlight>
+          <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
+            <Image style={myStyles.thumb} source={{uri: `${rowData.cover}`}} >
+            </Image>
+          </TouchableHighlight>
         </View>
       );
     }
     return (
         <View>
 
-          <Swiper style={myStyles.wrapper} height={imgHeight}
-                  showsButtons={false} autoplay={false} loop={false}
-                  dot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]} />}
-                  activeDot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]}/>}
-          >
-            {imageItems}
-          </Swiper>
+          <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
+          style={myStyles.linearGradient}>
+
+            <Swiper style={myStyles.wrapper} height={imgHeight}
+                    showsButtons={false} autoplay={false} loop={false}
+                    dot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]} />}
+                    activeDot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]}/>}
+            >
+              {imageItems}
+            </Swiper>
+
+            <View style={myStyles.searchListViewRowAlign}>
+              <View>
+                <Text style={myStyles.price}>{rowData.price_value} {rowData.price_unit}</Text>
+                <Text style={myStyles.text}>{diaChi}{soPhongNgu}{soPhongTam}</Text>
+              </View>
+              <Icon.Button name="heart-o" backgroundColor="transparent"
+                underlayColor="transparent" style={myStyles.heartButton}/>
+            </View>
+
+          </LinearGradient>
 
         </View>
     );
@@ -329,10 +324,12 @@ var myStyles = StyleSheet.create({
   },
 
   searchListViewRowAlign: {
+    position: 'absolute',
     backgroundColor: 'transparent',
     flexDirection: 'row',
     justifyContent: 'space-between',
     top: imgHeight-60,
+    width: Dimensions.get('window').width
   },
   price: {
     fontSize: 16,

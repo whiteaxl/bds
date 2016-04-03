@@ -15,7 +15,7 @@ class CollapsiblePanel extends Component{
 
         this.state = {       //Step 3
             title       : props.title,
-            expanded    : true,
+            expanded    : props.expanded,
             animation   : new Animated.Value()
         };
     }
