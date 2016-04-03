@@ -20,6 +20,7 @@
     "react-native-maps": "^0.3.1",
     "react-native-multiple-choice": "0.0.5",
     "react-native-picker": "^2.0.4",
+    "react-native-progress-bar": "^0.1.2",
     "react-native-router-flux": "^2.3.6",
     "react-native-simpledialog-android": "^1.0.2",
     "react-native-swiper": "^1.4.3",

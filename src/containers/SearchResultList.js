@@ -31,6 +31,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import Swiper from 'react-native-swiper';
 import SearchHeader from '../components/SearchHeader';
+import ProgressBar from 'react-native-progress-bar';
 
 /**
 * ## Redux boilerplate
@@ -63,6 +64,12 @@ var imgHeight = Dimensions.get('window').height/3 - 39;
 class SearchResultList extends Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      progress: 0,
+      dataSource: null,
+      errormsg: null
+    };
   }
   isChangeSearchFilter() {
     var _loaiTin = this.props.search.form.fields.loaiTin;
@@ -149,20 +156,28 @@ class SearchResultList extends Component {
     if (this.isChangeSearchFilter()) {
       this.refreshListData();
     }
-    if (!this.state) {
+    if (!this.state.dataSource && !this.state.errormsg) {
+      setTimeout((function() {
+        this.setState({ progress: this.state.progress + (0.4 * Math.random())});
+      }).bind(this), 1000);
       return (
   			<View style={styles.fullWidthContainer}>
           <View style={myStyles.search}>
             <SearchHeader />
           </View>
           <View style={styles.searchContent}>
-            <Text style={styles.welcome}>Đang tải dữ liệu!</Text>
+            <ProgressBar
+              fillStyle={{}}
+              backgroundStyle={{backgroundColor: '#cccccc', borderRadius: 2}}
+              style={{marginTop: 10, width: 300}}
+              progress={this.state.progress}
+            />
           </View>
           <SearchResultFooter />
   			</View>
       )
     }
-    if (!this.state.dataSource) {
+    if (this.state.errormsg) {
       return (
   			<View style={styles.fullWidthContainer}>
           <View style={myStyles.search}>
