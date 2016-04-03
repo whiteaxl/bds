@@ -160,7 +160,7 @@ class SearchResultList extends Component {
     }
     if (!this.state.dataSource && !this.state.errormsg) {
       setTimeout((function() {
-        this.setState({ progress: this.state.progress + (0.1 * Math.random())});
+        this.setState({ progress: this.state.progress + (0.4 * Math.random())});
       }).bind(this), 1000);
       return (
   			<View style={styles.fullWidthContainer}>
