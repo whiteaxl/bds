@@ -65,7 +65,7 @@ class CollapsiblePanel extends Component{
                     onPress={this.toggle.bind(this)}>
                     <View style={styles.titleContainer} onLayout={this._setMinHeight.bind(this)}>
                         <Text style={styles.title}>{this.state.title}</Text>
-                        <Icon.Button
+                        <Icon.Button onPress={this.toggle.bind(this)}
                             name={icon} backgroundColor="transparent"
                             underlayColor="#f1f1f1" color={'gray'}
                             style={styles.button} />
@@ -87,7 +87,7 @@ class CollapsiblePanel extends Component{
                     onPress={this.toggle.bind(this)}>
                     <View style={styles.titleContainer} onLayout={this._setMinHeight.bind(this)}>
                         <Text style={styles.title}>{this.state.title}</Text>
-                        <Icon.Button
+                        <Icon.Button onPress={this.toggle.bind(this)}
                             name={icon} backgroundColor="transparent"
                             underlayColor="#f1f1f1" color={'gray'}
                             style={styles.button} />
