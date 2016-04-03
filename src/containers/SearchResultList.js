@@ -135,6 +135,11 @@ class SearchResultList extends Component {
     var dienTich = this.props.search.form.fields.dienTich;
     var orderBy = this.props.search.form.fields.orderBy;
     var dataBlob = [];
+    this.state = {
+      progress: 0,
+      dataSource: null,
+      errormsg: null
+    };
     Api.getItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy)
       .then((data) => {
         if (data.list) {
