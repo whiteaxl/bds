@@ -231,6 +231,32 @@ class SearchResultDetail extends Component {
                 {this.renderTitleProps("Ngày đăng tin", ngayDangTin)}
                 {this.renderTitleProps("Địa chỉ", diaChi)}
               </CollapsiblePanel>
+              <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
+              <CollapsiblePanel title="Chia sẻ">
+                <View style={detailStyles.shareButton}>
+                  <Icon.Button onPress={this._onShare}
+                    name="twitter" backgroundColor="transparent"
+                    underlayColor="gray" color={gui.blue1}
+                    style={detailStyles.wrapper} >
+                  </Icon.Button>
+                  <Icon.Button onPress={this._onShare}
+                    name="facebook" backgroundColor="transparent"
+                    underlayColor="gray" color={gui.blue1}
+                    style={detailStyles.wrapper} >
+                  </Icon.Button>
+                  <Icon.Button onPress={this._onShare}
+                    name="link" backgroundColor="transparent"
+                    underlayColor="gray" color={gui.blue1}
+                    style={detailStyles.wrapper} >
+                  </Icon.Button>
+                  <Icon.Button onPress={this._onShare}
+                    name="share-alt" backgroundColor="transparent"
+                    underlayColor="gray" color={gui.blue1}
+                    style={detailStyles.wrapper} >
+                  </Icon.Button>
+                </View>
+              </CollapsiblePanel>
+              <View style={[detailStyles.lineBorder, {marginTop: 10}]} />
               <View style={detailStyles.searchMapView}>
                 <Image style={detailStyles.imgMapView}
                    source={{uri: `${mapUrl}`}}>

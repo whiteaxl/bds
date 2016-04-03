@@ -132,7 +132,7 @@ class SearchResultList extends Component {
       .then((data) => {
         if (data.list) {
           data.list.map(function(aRow) {
-              console.log(aRow.value);
+              //console.log(aRow.value);
               dataBlob.push(aRow.value);
             }
           );
