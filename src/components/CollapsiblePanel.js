@@ -1,4 +1,4 @@
-import React,{Component,StyleSheet,Text,View,Image,TouchableHighlight,Animated,Dimensions} from 'react-native'; //Step 1
+import React,{Component,StyleSheet,Text,View,Image,TouchableHighlight,Animated,Dimensions,TouchableOpacity} from 'react-native'; //Step 1
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
@@ -56,25 +56,48 @@ class CollapsiblePanel extends Component{
 
         if(this.state.expanded){
             icon = this.icons['up'];   //Step 4
+
+            //Step 5
+            return (
+                <Animated.View style={[styles.container,{height: this.state.animation}]} >
+
+                  <TouchableOpacity
+                    onPress={this.toggle.bind(this)}>
+                    <View style={styles.titleContainer} onLayout={this._setMinHeight.bind(this)}>
+                        <Text style={styles.title}>{this.state.title}</Text>
+                        <Icon.Button
+                            name={icon} backgroundColor="transparent"
+                            underlayColor="#f1f1f1" color={'gray'}
+                            style={styles.button} />
+                    </View>
+                  </TouchableOpacity>
+
+                    <View style={styles.body} onLayout={this._setMaxHeight.bind(this)}>
+                        {this.props.children}
+                    </View>
+
+                </Animated.View>
+            );
+        } else {
+            //Step 5
+            return (
+                <Animated.View style={[styles.container,{height: this.state.animation}]} >
+
+                  <TouchableOpacity
+                    onPress={this.toggle.bind(this)}>
+                    <View style={styles.titleContainer} onLayout={this._setMinHeight.bind(this)}>
+                        <Text style={styles.title}>{this.state.title}</Text>
+                        <Icon.Button
+                            name={icon} backgroundColor="transparent"
+                            underlayColor="#f1f1f1" color={'gray'}
+                            style={styles.button} />
+                    </View>
+                  </TouchableOpacity>
+
+                </Animated.View>
+            );
         }
 
-        //Step 5
-        return (
-            <Animated.View style={[styles.container,{height: this.state.animation}]} >
-                <View style={styles.titleContainer} onLayout={this._setMinHeight.bind(this)}>
-                    <Text style={styles.title}>{this.state.title}</Text>
-                    <Icon.Button onPress={this.toggle.bind(this)}
-                        name={icon} backgroundColor="transparent"
-                        underlayColor="#f1f1f1" color={'gray'}
-                        style={styles.button} />
-                </View>
-
-                <View style={styles.body} onLayout={this._setMaxHeight.bind(this)}>
-                    {this.props.children}
-                </View>
-
-            </Animated.View>
-        );
     }
 }
 

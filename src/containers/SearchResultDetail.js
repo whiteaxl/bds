@@ -197,13 +197,13 @@ class SearchResultDetail extends Component {
                 {this.renderTwoNormalProps(dienTich, soPhongNgu)}
                 {this.renderTwoNormalProps(soPhongTam, ngayDangTin)}
                 <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
-                <CollapsiblePanel title="Chi Tiết" expanded={true}>
+                <CollapsiblePanel title="Chi Tiết" expanded={false}>
                   <Text style={[detailStyles.textFullWidth,{marginBottom: 15}]}>
                     {chiTiet}
                   </Text>
                 </CollapsiblePanel>
                 <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
-                <CollapsiblePanel title="Đặc Điểm" expanded={true}>
+                <CollapsiblePanel title="Đặc Điểm" expanded={false}>
                   {this.renderTitleProps("Loại tin rao", loaiNhaDat)}
                   {this.renderTitleProps("Giá", gia)}
                   {this.renderTitleProps("Phòng ngủ", soPhongNguVal)}
