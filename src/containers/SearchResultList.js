@@ -214,18 +214,6 @@ class SearchResultList extends Component {
 	}
   renderRow(rowData, sectionID, rowID) {
     var diaChi = rowData.diaChi;
-    var index = diaChi.indexOf(',', 20);
-    var length = 0;
-    if (index !== -1 && index <= 25) {
-      length = index;
-    } else {
-      index = diaChi.indexOf(' ', 20);
-      length = index !== -1 && index <= 25 ? index : 25;
-    }
-    diaChi = diaChi.substring(0,length);
-    if (diaChi.length < rowData.diaChi.length) {
-      diaChi = diaChi + '...';
-    }
     var soPhongNgu = rowData.soPhongNgu;
     if (soPhongNgu) {
       soPhongNgu = " " + soPhongNgu + " p.ngủ";
@@ -233,6 +221,25 @@ class SearchResultList extends Component {
     var soPhongTam = rowData.soPhongTam;
     if (soPhongTam) {
       soPhongTam = " " + soPhongTam + " p.tắm";
+    }
+    var maxDiaChiLength = 30;
+    if (soPhongNgu) {
+      maxDiaChiLength = maxDiaChiLength - 5;
+    }
+    if (soPhongTam) {
+      maxDiaChiLength = maxDiaChiLength - 5;
+    }
+    var index = diaChi.indexOf(',', maxDiaChiLength-5);
+    var length = 0;
+    if (index !== -1 && index <= maxDiaChiLength) {
+      length = index;
+    } else {
+      index = diaChi.indexOf(' ', maxDiaChiLength-5);
+      length = index !== -1 && index <= maxDiaChiLength ? index : maxDiaChiLength;
+    }
+    diaChi = diaChi.substring(0,length);
+    if (diaChi.length < rowData.diaChi.length) {
+      diaChi = diaChi + '...';
     }
     var imageItems = [];
     var imageIndex = 0;
