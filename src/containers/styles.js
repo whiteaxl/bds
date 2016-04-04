@@ -24,7 +24,7 @@ module.exports = StyleSheet.create({
 			flexDirection: 'row',
 			alignItems: 'flex-start',
 			justifyContent: 'space-between',
-			backgroundColor: '#f44336',
+			backgroundColor: gui.blue1,
 	},
 	customPageTitle: {
 			marginTop: 35,
@@ -42,14 +42,14 @@ module.exports = StyleSheet.create({
 	pageHeader: {
 	    alignItems: 'center',
 			justifyContent: 'center',
-			backgroundColor: '#f44336',
+			backgroundColor: gui.blue1,
 	},
 	search: {
-			marginTop: 25,
+		marginTop: 25,
 	    flexDirection: 'row',
 	    alignItems: 'center',
-			justifyContent: 'center',
-			backgroundColor: '#f44336',
+		justifyContent: 'center',
+		backgroundColor: gui.blue1,
 	},
   row: {
     justifyContent: 'center',

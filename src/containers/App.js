@@ -168,10 +168,10 @@ class App extends Component {
 				<Route name='Register' component={Register} schema='main' title="Register Screen" />
 		        <Route name='Search' component={Search} schema='main' title="Tìm kiếm" hideNavBar={true} />
         		<Route name='SearchResultList' component={SearchResultList} schema='main' title="Danh sách" hideNavBar={true} />
-            <Route name='SearchResultMap' component={SearchResultMap} schema='main' title="Bản đồ" hideNavBar={true} />
+            	<Route name='SearchResultMap' component={SearchResultMap} schema='main' title="Bản đồ" hideNavBar={true} />
         		<Route name='PropertyTypes' component={PropertyTypes} schema='main' title="Loại nhà đất" hideNavBar={true} />
         		<Route name='OrderPicker' component={OrderPicker} schema='main' title="Sắp xếp" hideNavBar={true} />
-            <Route name='SearchResultDetail' component={SearchResultDetail} schema='main' title="Chi tiết" hideNavBar={true} />
+            	<Route name='SearchResultDetail' component={SearchResultDetail} schema='main' title="Chi tiết" hideNavBar={true} />
 
 				<Route name='Home' hideNavBar={true} type='replace'>
 			        <Tabbar>

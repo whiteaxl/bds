@@ -14,7 +14,7 @@ import * as searchActions from '../reducers/search/searchActions';
 import {Map} from 'immutable';
 
 
-import React, { Text, View, Component, StyleSheet } from 'react-native'
+import React, { Text, View, Component, StyleSheet, Navigator, TouchableOpacity } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 
@@ -27,6 +27,8 @@ import gui from '../lib/gui';
 
 import MapView from 'react-native-maps';
 import MMapMarker from '../components/MMapMarker';
+
+import TopModal from '../components/TopModal';
 
 /**
 * ## Redux boilerplate
@@ -55,8 +57,13 @@ function mapDispatchToProps(dispatch) {
 }
 
 class SearchResultMap extends Component {
+
   constructor(props) {
     super(props);
+    this.state ={
+      modal: false,
+      mapType: "standard",
+    }
   }
 
   render() {
@@ -93,37 +100,56 @@ class SearchResultMap extends Component {
       region = this.state.region;
     }
 
+    var mapType = this.state.mapType;
+
     return (
       <View style={styles.fullWidthContainer}>
         <View style={myStyles.search}>
             <SearchHeader />
-          </View>
-        <MapView
+        </View>
+        <View  style={myStyles.map}>
+        <MapView 
           region={region}
           onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
-          style={myStyles.map}
+          onPress={this._onPress()}
+          onMarkerPress={this._onMarkerPress.bind(this)}
+          onMarkerSelect={this.props.openModal}
+          style={myStyles.mapView}
+          mapType={this.state.mapType}
         >
           {markerList.map( marker =>(
             <MMapMarker marker={marker}>
             </MMapMarker>
           ))}
         </MapView>
+        <View style={myStyles.buttonContainer}>
+          <TouchableOpacity onPress={this._onSatellitePress.bind(this)} style={[myStyles.bubble, myStyles.button]}>
+            <Text style={myStyles.text}>Satellite</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this._onHybridPress.bind(this)} style={[myStyles.bubble, myStyles.button]}>
+            <Text style={myStyles.text}>Hybrid</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this._onStandardPress.bind(this)} style={[myStyles.bubble, myStyles.button]}>
+            <Text style={myStyles.text}>Standard</Text>
+          </TouchableOpacity>
+        </View>
+        </View>
 
         <View style={myStyles.searchButton}>
           <View style={myStyles.searchListButton}>
-            <Icon.Button onPress={this.onLocalInfo}
+            <Icon.Button onPress={this._onLocalInfoPressed}
               name="location-arrow" backgroundColor="white"
               underlayColor="gray" color={gui.blue1}
               style={myStyles.searchListButtonText} >
               Local Info
             </Icon.Button>
-            <Icon.Button onPress={this.onSaveSearch}
+            <Icon.Button onPress={this._onSaveSearchPressed}
               name="hdd-o" backgroundColor="white"
               underlayColor="gray" color={gui.blue1}
               style={myStyles.searchListButtonText} >
               Lưu tìm kiếm
             </Icon.Button>
-            <Icon.Button onPress={this.onList}
+            <Icon.Button onPress={this._onListPressed}
               name="list" backgroundColor="white"
               underlayColor="gray" color={gui.blue1}
               style={myStyles.searchListButtonText} >
@@ -131,36 +157,88 @@ class SearchResultMap extends Component {
             </Icon.Button>
           </View>
         </View>
-			</View>
-		)
-	}
+
+        {this.state.modal ? <TopModal closeModal={() => this.setState({modal: false}) }/> : null }
+      </View>
+    )
+  }
+
   onRegionChangeComplete(region) {
+    console.log("Region changed");
+    console.log(region);
+    
+    var latMax = region.latitude + region.latitudeDelta/2;
+    var lonMax = region.longitude + region.longitudeDelta/2;
+    var latMin = latMax - region.latitudeDelta;
+    var lonMin = lonMax - region.longitudeDelta;
+
+    console.log(latMin + "," + lonMin + ',' + latMax + "," + lonMax);   
+
     this.setState({
       region: region
     });
-    MapApi(region.latitude, region.longitude)
-      .then((data) => {
-        //console.log(data);
-        this.setState(data);
-      });
   }
-  onLocalInfo() {
-    console.log("On Local Info pressed!");
 
+  _onSatellitePress(){
+    this.setState({
+      mapType: "satellite"
+    });
   }
-  onSaveSearch() {
+
+  _onHybridPress(){
+    this.setState({
+      mapType: "hybrid"
+    });
+  }
+
+  _onStandardPress(){
+   this.setState({
+      mapType: "standard"
+    });
+  }  
+
+  _onMarkerSelect() {
+    console.log("marker select") 
+    this.setState({modal: true});
+  }
+
+  _onMarkerPress(event) {
+    console.log("marker presssssss") ;
+    //console.log(event) 
+    this.setState({modal: true});
+  }
+
+  _onPress(event){
+    //console.log(event);
+  }
+
+  _onLocalInfoPressed() {
+    console.log("On Local Info pressed!");
+  }
+
+  _onSaveSearchPressed() {
     console.log("On Save Search pressed!");
   }
-  onList() {
+
+  _onListPressed() {
     Actions.pop();
   }
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultMap);
 
-
 // Later on in your styles..
 var myStyles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+  },
   searchListButtonText: {
       marginLeft: 15,
       marginRight: 15,
@@ -174,6 +252,12 @@ var myStyles = StyleSheet.create({
     marginBottom: 0
   },
 
+  mapView: {
+    flex: 1,
+    marginTop: 0,
+    marginBottom: 0
+  },
+
   searchListButton: {
       flexDirection: 'row',
       justifyContent: 'space-around',
@@ -184,9 +268,32 @@ var myStyles = StyleSheet.create({
       alignItems: 'stretch',
       justifyContent: 'flex-end',
   },
+
   search: {
       top:0,
       alignItems: 'stretch',
       justifyContent: 'flex-start',
+  },
+  bubble: {
+    backgroundColor: gui.blue1,
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+    borderRadius: 10,
+  },
+  button: {
+    width: 70,
+    paddingHorizontal: 5,
+    alignItems: 'center',
+    marginHorizontal: 10,
+  },
+  text: {
+    color: 'white',
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginVertical: 5,
+    backgroundColor: 'transparent',
   },
 });

@@ -33,6 +33,8 @@ import PostAd from '../containers/Screen1';
 import Inbox from '../containers/Screen2';
 import Activity from '../test/ViewAsMarker';
 
+import gui from '../lib/gui';
+
 /**
  * ## Styles
  */
@@ -70,8 +72,8 @@ let Tabbar = React.createClass({
     return(
       <TabNavigator.Item selected={this.state.selectedTab === name}
                            title={title}
-                           renderIcon={() => <Icon name={iconName} size={30} color="#FFB3B3" />}
-                           renderSelectedIcon={() => <Icon name={iconName} size={30} color="#FF3366" />}
+                           renderIcon={() => <Icon name={iconName} size={30} color="#A7BBF2" />}
+                           renderSelectedIcon={() => <Icon name={iconName} size={30} color="#007aff" />}
                            onPress={() => this.setState({ selectedTab: name })}>
           <View style={styles.container}>
             <Component  />

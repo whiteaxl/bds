@@ -53,7 +53,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-
 class Home extends Component {
 
   render() {
@@ -63,7 +62,7 @@ class Home extends Component {
       <View style={styles.fullWidthContainer}>
         <View style={styles.pageHeader}>
           <Icon.Button onPress={this.handleSearchButton}
-            name="search" backgroundColor="#f44336"
+            name="search" 
             underlayColor="gray"
             style={styles.search}>
             Tìm kiếm
@@ -249,7 +248,7 @@ var homeStyles = StyleSheet.create({
     flex:1,
     alignItems: 'flex-start',
     width: Dimensions.get('window').width/2-10,
-    height:80
+    height:82
   },
   slideImgItem: {
     flex:1,

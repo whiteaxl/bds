@@ -9,13 +9,6 @@ class PriceMarker extends React.Component{
   constructor(){
     super();
   }
-
-  getDefaultProps() {
-    return {
-      fontSize: 11,
-      color: '#FF5A5F'
-    };
-  }
   
   render() {
     return (
