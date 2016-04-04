@@ -4,20 +4,22 @@ import ApiUtils from './ApiUtils';
 import RangeUtils from "../lib/RangeUtils"
 
 //var rootUrl = 'http://203.162.13.101:5000/api/find';
-var rootUrl = 'http://localhost:5000/api/find';
+var rootUrl = 'http://localhost:5000/api';
+var findUrl = rootUrl + "/find";
+var placeUrl = rootUrl + "/findPlace";
 
 var maxRows = 200;
 
 var Api = {
-  getItems: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy) {
-    var fullParams = this.createFullParams(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy);
+  getItems: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName) {
+    var fullParams = this.createFullParams(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName);
     var params = {};
     fullParams.map(function(oneParam) {
       params[oneParam.key] = oneParam.value;
     })
     params['limit'] = maxRows;
     //console.log(rootUrl + "?" + JSON.stringify(params));
-    return fetch(`${rootUrl}`, {
+    return fetch(`${findUrl}`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
@@ -40,7 +42,7 @@ var Api = {
     });
     return val;
   },
-  createFullParams: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy) {
+  createFullParams: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName) {
       var params = [];
       var loaiTinVal = null;
       if ('ban' === loaiTin) {
@@ -74,8 +76,31 @@ var Api = {
       if (orderBy) {
         params.push({key: 'orderBy', value: orderBy});
       }
+
+      if (placeName) {
+          params.push({key: 'placeName', value: placeName});
+      }
+
       return params;
-  }
+  },
+    //return result = {length:1, list=[{name:'', geo:{lon, lat}]}
+    getPlaces(queryText) {
+        return fetch(`${placeUrl}`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(
+                {
+                    text: queryText
+                }
+            )
+        })
+            .then(ApiUtils.checkStatus)
+            .then(response => response.json())
+            .catch(e => e);
+    }
 };
 
 export { Api as default };

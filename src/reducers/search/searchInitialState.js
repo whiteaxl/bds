@@ -36,7 +36,17 @@ const SearchForm = Record({
     giaPicker : RangeUtils.sellPriceRange.getPickerData(),
     orderBy:'',
     listData: [],
-    marker: {}
+    marker: {},
+    place:{
+      "placeID":"Place_Tinh_1",
+      "placeName":"Hà Nội",
+      "placeType":"Tinh",
+      "geo" : {
+        "lat" : 21.0226823,
+        "lon" : 105.7669236
+      },
+      fullName : "Hà Nội"
+    }
   }))
 });
 
