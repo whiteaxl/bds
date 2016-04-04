@@ -35,7 +35,8 @@ const SearchForm = Record({
     gia:RangeUtils.BAT_KY_RANGE,
     giaPicker : RangeUtils.sellPriceRange.getPickerData(),
     orderBy:'',
-    listData: []
+    listData: [],
+    marker: {}
   }))
 });
 

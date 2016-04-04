@@ -58,7 +58,7 @@ class MMapMarker extends Component {
 		if (this.state && this.state.mcolor){
 			mcolor = this.state.mcolor;
 		}
-
+    
 		return(
 			<MapView.Marker
             	coordinate={this.props.marker.coordinate}
@@ -72,7 +72,9 @@ class MMapMarker extends Component {
 	}
 
 	_onMarkerSelect(event) {
-		console.log(JSON.stringify(event.nativeEvent ? event.nativeEvent : event));
+    this.props.actions.onSearchFieldChange("marker", this.props.marker);
+    console.log("seleled marker");
+    console.log(this.props.search.form.fields.marker);
 		this.setState({mcolor: "grey"});
 	}
 };
