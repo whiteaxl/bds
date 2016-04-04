@@ -225,7 +225,7 @@ class Search extends Component {
               />
         </View>
 
-         <SearchInput />
+        <SearchInput placeName={this.props.search.form.fields.place.fullName}/>
       </View>
     );
   }

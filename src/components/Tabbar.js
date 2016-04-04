@@ -32,6 +32,9 @@ import Profile from '../containers/Profile';
 import PostAd from '../containers/Screen1';
 import Inbox from '../containers/Screen2';
 import Activity from '../test/ViewAsMarker';
+import TestListView from '../test/TestListView';
+
+
 
 import gui from '../lib/gui';
 
@@ -93,7 +96,7 @@ let Tabbar = React.createClass({
         {this._renderOneTab(Home, 'home', 'Home' ,'home')}
         {this._renderOneTab(Inbox, 'inbox', 'Inbox','inbox')}
         {this._renderOneTab(PostAd, 'postAd', 'Post Ad', 'plus-square-o')}
-        {this._renderOneTab(Activity, 'activity', 'Activity','bell-o')}
+        {this._renderOneTab(TestListView, 'activity', 'TestListView','bell-o')}
         {this._renderOneTab(Profile, 'profile', 'Profile' , 'gear')}
       </TabNavigator>
 

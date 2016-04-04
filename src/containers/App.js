@@ -80,9 +80,12 @@ import PropertyTypes from '../components/PropertyTypes';
 import OrderPicker from '../components/OrderPicker';
 import SearchResultDetail from './SearchResultDetail';
 
+
 import Profile from './Profile';
 import Tabbar from '../components/Tabbar';
 
+import SearchSuggestion from '../components/SearchSuggestion';
+import TestListView from '../test/TestListView';
 
 
 /** Optional Redux section ******************************************/
@@ -172,6 +175,10 @@ class App extends Component {
         		<Route name='PropertyTypes' component={PropertyTypes} schema='main' title="Loại nhà đất" hideNavBar={true} />
         		<Route name='OrderPicker' component={OrderPicker} schema='main' title="Sắp xếp" hideNavBar={true} />
             	<Route name='SearchResultDetail' component={SearchResultDetail} schema='main' title="Chi tiết" hideNavBar={true} />
+				<Route name='SearchSuggestion' component={SearchSuggestion} schema='main' title="Serch Text" hideNavBar={true} />
+				<Route name='TestListView' component={TestListView} schema='main' title="Serch Text" hideNavBar={true} />
+
+
 
 				<Route name='Home' hideNavBar={true} type='replace'>
 			        <Tabbar>

@@ -203,10 +203,11 @@ class SearchResultMap extends Component {
     var soTang = this.props.search.form.fields.soTang;
     var dienTich = this.props.search.form.fields.dienTich;
     var orderBy = this.props.search.form.fields.orderBy;
+    var placeName = null;
     var dataBlob = [];
     this.state.dataSource = null;
     this.state.errormsg = null;
-    Api.getMapItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, bbox)
+    Api.getMapItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName, bbox)
       .then((data) => {
         if (data.list) {
           data.list.map(function(aRow) {
