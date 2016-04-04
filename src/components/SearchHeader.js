@@ -14,18 +14,18 @@ var CommonHeader = React.createClass({
     return <View style={mStyles.container}>
       <View style={mStyles.home}>
       <Icon.Button onPress={this._onHome}
-        name="home" backgroundColor="transparent"
-        underlayColor="transparent" color={gui.blue1}
+        name="home" backgroundColor={gui.blue1}
+        underlayColor="gray" color="white"
         >
       </Icon.Button>
       </View>
       <View style={mStyles.text}>
-        <SearchInput />
+        <SearchInput placeName={this.props.placeName}/>
       </View>
       <View style={mStyles.search}>
       <Icon.Button onPress={this._onSearch}
-        name="search" backgroundColor="transparent"
-        underlayColor="transparent" color={gui.blue1}
+        name="search" backgroundColor={gui.blue1}
+        underlayColor="gray" color="white"
         >
       </Icon.Button>
       </View>
@@ -46,21 +46,21 @@ var mStyles = StyleSheet.create({
   container: {
       top: 0,
       flexDirection: 'row',
-      alignItems: 'center',
+      alignItems: 'stretch',
       justifyContent: 'space-between',
-      backgroundColor: 'transparent',
+      backgroundColor: gui.blue1,
   },
   search: {
-      top: 22,
+      top: 23,
       alignItems: 'flex-end',
       justifyContent: 'center',
-      backgroundColor: 'transparent',
+      backgroundColor: gui.blue1,
   },
   home: {
-      top: 22,
+      top: 23,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: 'transparent',
+      backgroundColor: gui.blue1,
   },
   text: {
     backgroundColor: '#F5FCFF',

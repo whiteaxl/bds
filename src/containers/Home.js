@@ -267,9 +267,10 @@ var homeStyles = StyleSheet.create({
     textAlign: 'left',
     backgroundColor: 'transparent',
     marginLeft: 5,
-    marginRight: 5,
+    marginRight: 15,
     marginTop: 5,
     color: 'white',
+    width: Dimensions.get('window').width/2-20,
   },
   boldLabel: {
     fontSize: 16,

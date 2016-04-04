@@ -33,6 +33,8 @@ import Swiper from 'react-native-swiper';
 import SearchHeader from '../components/SearchHeader';
 import ProgressBar from 'react-native-progress-bar';
 
+import gui from '../lib/gui';
+
 /**
 * ## Redux boilerplate
 */
@@ -134,12 +136,10 @@ class SearchResultList extends Component {
     var soTang = this.props.search.form.fields.soTang;
     var dienTich = this.props.search.form.fields.dienTich;
     var orderBy = this.props.search.form.fields.orderBy;
-    var placeName = this.props.search.form.fields.place.fullName;
-
     var dataBlob = [];
     this.state.dataSource = null;
     this.state.errormsg = null;
-    Api.getItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName)
+    Api.getItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy)
       .then((data) => {
         if (data.list) {
           data.list.map(function(aRow) {
@@ -167,7 +167,7 @@ class SearchResultList extends Component {
       return (
   			<View style={styles.fullWidthContainer}>
           <View style={myStyles.search}>
-            <SearchHeader />
+            <SearchHeader placeName={this.props.search.form.fields.place.fullName}/>
           </View>
           <View style={styles.searchContent}>
             <ProgressBar
@@ -188,7 +188,7 @@ class SearchResultList extends Component {
       return (
   			<View style={styles.fullWidthContainer}>
           <View style={myStyles.search}>
-            <SearchHeader />
+            <SearchHeader placeName={this.props.search.form.fields.place.fullName}/>
           </View>
           <View style={styles.searchContent}>
             <Text style={styles.welcome}>{this.state.errormsg}</Text>
@@ -200,7 +200,7 @@ class SearchResultList extends Component {
     return (
       <View style={styles.fullWidthContainer}>
         <View style={myStyles.search}>
-          <SearchHeader />
+          <SearchHeader placeName={this.props.search.form.fields.place.fullName}/>
         </View>
 
         <ListView
@@ -251,6 +251,9 @@ class SearchResultList extends Component {
         <View style={myStyles.slide} key={"img"+(imageIndex++)}>
           <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
             <Image style={myStyles.thumb} source={{uri: `${imageUrl}`}} >
+              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
+              style={myStyles.linearGradient}>
+              </LinearGradient>
             </Image>
           </TouchableHighlight>
         </View>
@@ -261,6 +264,9 @@ class SearchResultList extends Component {
         <View style={myStyles.slide} key={"img"+(imageIndex)}>
           <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
             <Image style={myStyles.thumb} source={{uri: `${rowData.cover}`}} >
+              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
+              style={myStyles.linearGradient}>
+              </LinearGradient>
             </Image>
           </TouchableHighlight>
         </View>
@@ -269,8 +275,7 @@ class SearchResultList extends Component {
     return (
         <View>
 
-          <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
-          style={myStyles.linearGradient}>
+          <View style={myStyles.linearGradient}>
 
             <Swiper style={myStyles.wrapper} height={imgHeight}
                     showsButtons={false} autoplay={false} loop={false}
@@ -289,7 +294,7 @@ class SearchResultList extends Component {
                 underlayColor="transparent" style={myStyles.heartButton}/>
             </View>
 
-          </LinearGradient>
+          </View>
 
         </View>
     );
@@ -298,6 +303,10 @@ class SearchResultList extends Component {
 
 // Later on in your styles..
 var myStyles = StyleSheet.create({
+  search: {
+    backgroundColor: gui.blue1,
+    height: 30
+  },
   wrapper: {
   },
   slide: {

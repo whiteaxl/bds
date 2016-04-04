@@ -115,7 +115,7 @@ class SearchResultMap extends Component {
     return (
       <View style={styles.fullWidthContainer}>
         <View style={myStyles.search}>
-            <SearchHeader />
+            <SearchHeader placeName={this.props.search.form.fields.place.fullName}/>
         </View>
         <View  style={myStyles.map}>
         <MapView 
@@ -291,6 +291,7 @@ var myStyles = StyleSheet.create({
       marginRight: 15,
       marginTop: 10,
       marginBottom: 10,
+      flexDirection: 'column',
   },
 
   map: {
