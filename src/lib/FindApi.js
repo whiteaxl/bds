@@ -81,6 +81,7 @@ var Api = {
           params.push({key: 'placeName', value: placeName});
       }
 
+      
       return params;
   },
 

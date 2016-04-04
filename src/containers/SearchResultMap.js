@@ -32,6 +32,8 @@ import TopModal from '../components/TopModal';
 
 import Api from '../lib/FindApi';
 
+import ApiUtils from '../lib/ApiUtils';
+
 /**
 * ## Redux boilerplate
 */
@@ -108,10 +110,7 @@ class SearchResultMap extends Component {
       });
 
     }
-
     
-    var mapType = this.state.mapType;
-
     return (
       <View style={styles.fullWidthContainer}>
         <View style={myStyles.search}>
@@ -178,16 +177,7 @@ class SearchResultMap extends Component {
   }
 
   onRegionChangeComplete(region) {
-    console.log("Region changed");
-    console.log(region);
-    
-    var latMax = region.latitude + region.latitudeDelta/2;
-    var lonMax = region.longitude + region.longitudeDelta/2;
-    var latMin = latMax - region.latitudeDelta;
-    var lonMin = lonMax - region.longitudeDelta;
-
-    var bbox = [lonMin, latMin, lonMax, latMax]
-
+    var bbox = ApiUtils.getBbox(region);
     this.refreshListData(bbox);
 
     this.setState({
@@ -203,27 +193,21 @@ class SearchResultMap extends Component {
     var soTang = this.props.search.form.fields.soTang;
     var dienTich = this.props.search.form.fields.dienTich;
     var orderBy = this.props.search.form.fields.orderBy;
-    var placeName = null;
+    var placeName = this.props.search.form.fields.placeName;
     var dataBlob = [];
-    this.state.dataSource = null;
-    this.state.errormsg = null;
     Api.getMapItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName, bbox)
       .then((data) => {
         if (data.list) {
           data.list.map(function(aRow) {
-              //console.log(aRow.value);
               dataBlob.push(aRow.value);
             }
           );
           this.props.actions.onSearchFieldChange("listData", dataBlob);
           this.setState({allMarker: this.props.search.form.fields.listData.length});
-          console.log("Cap nhat du lieu thanh cong");
         } else {
           console.log("Lỗi kết nối đến máy chủ!");
         }
       });
-      console.log("Du lieu sau khi cap nhat");
-      console.log(this.props.search.form.fields.listData);
   }
 
   _onSatellitePress(){

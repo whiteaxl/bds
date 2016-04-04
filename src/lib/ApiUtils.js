@@ -9,6 +9,13 @@ var ApiUtils = {
       error.response = response;
       throw error;
     }
+  },
+  getBbox: function(region){
+  	var latMax = region.latitude + region.latitudeDelta/2;
+    var lonMax = region.longitude + region.longitudeDelta/2;
+    var latMin = latMax - region.latitudeDelta;
+    var lonMin = lonMax - region.longitudeDelta;
+    return [lonMin, latMin, lonMax, latMax];
   }
 };
 

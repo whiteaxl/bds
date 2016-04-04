@@ -37,6 +37,7 @@ const SearchForm = Record({
     orderBy:'',
     listData: [],
     marker: {},
+    bbox: [],
     place:{
       "placeID":"Place_Tinh_1",
       "placeName":"Hà Nội",
