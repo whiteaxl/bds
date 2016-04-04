@@ -136,10 +136,11 @@ class SearchResultList extends Component {
     var soTang = this.props.search.form.fields.soTang;
     var dienTich = this.props.search.form.fields.dienTich;
     var orderBy = this.props.search.form.fields.orderBy;
+     var placeName = this.props.search.form.fields.place.fullName;
     var dataBlob = [];
     this.state.dataSource = null;
     this.state.errormsg = null;
-    Api.getItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy)
+    Api.getItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName)
       .then((data) => {
         if (data.list) {
           data.list.map(function(aRow) {
