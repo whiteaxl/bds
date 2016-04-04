@@ -77,8 +77,24 @@ class TopModal extends React.Component {
 
   render() {
     var diaChi = this.props.search.form.fields.marker.diaChi;
+    var originDiaChi = this.props.search.form.fields.marker.diaChi;
     var price = this.props.search.form.fields.marker.price;
     var unit = this.props.search.form.fields.marker.unit;
+    if (diaChi) {
+      var maxDiaChiLength = 35;
+      var index = diaChi.indexOf(',', maxDiaChiLength-5);
+      var length = 0;
+      if (index !== -1 && index <= maxDiaChiLength) {
+        length = index;
+      } else {
+        index = diaChi.indexOf(' ', maxDiaChiLength-5);
+        length = index !== -1 && index <= maxDiaChiLength ? index : maxDiaChiLength;
+      }
+      diaChi = diaChi.substring(0,length);
+      if (diaChi.length < originDiaChi.length) {
+        diaChi = diaChi + '...';
+      }
+    }
  
     return (
         <Animated.View style={[myStyles.modal, myStyles.flexCenter, {transform: [{translateY: this.state.offset}]}]}>
