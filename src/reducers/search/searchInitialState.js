@@ -36,7 +36,7 @@ const SearchForm = Record({
     giaPicker : RangeUtils.sellPriceRange.getPickerData(),
     orderBy:'',
     listData: [],
-    marker: {}
+    marker: {},
   }))
 });
 

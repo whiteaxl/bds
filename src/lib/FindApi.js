@@ -75,7 +75,41 @@ var Api = {
         params.push({key: 'orderBy', value: orderBy});
       }
       return params;
-  }
+  },
+  getMapItems: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, bbox) {
+    var fullParams = this.createFullParams(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy);
+    if (bbox){
+      fullParams.push({key:'geoBox', value: bbox});
+    }
+    var params = {};
+    fullParams.map(function(oneParam) {
+      params[oneParam.key] = oneParam.value;
+    })
+    params['limit'] = maxRows;
+    //console.log(rootUrl + "?" + JSON.stringify(params));
+    return fetch(`${rootUrl}`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(params)
+    })
+    .then(ApiUtils.checkStatus)
+    .then(response => response.json())
+    .catch(e => e);
+  },
+  arrayToString: function(arr) {
+    var val = "";
+    arr.map(function(one) {
+      if ("" === val) {
+        val = one;
+      } else {
+        val = val + ',' + one;
+      }
+    });
+    return val;
+  },
 };
 
 export { Api as default };

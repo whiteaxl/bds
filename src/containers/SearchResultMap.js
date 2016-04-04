@@ -14,7 +14,7 @@ import * as searchActions from '../reducers/search/searchActions';
 import {Map} from 'immutable';
 
 
-import React, { Text, View, Component, StyleSheet, Navigator, TouchableOpacity } from 'react-native'
+import React, { Text, View, Component, StyleSheet, Navigator, TouchableOpacity, Dimensions } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 
@@ -29,6 +29,8 @@ import MapView from 'react-native-maps';
 import MMapMarker from '../components/MMapMarker';
 
 import TopModal from '../components/TopModal';
+
+import Api from '../lib/FindApi';
 
 /**
 * ## Redux boilerplate
@@ -56,13 +58,31 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+var { width, height } = Dimensions.get('window');
+
+const ASPECT_RATIO = width / (height-40);
+const LATITUDE = 10.75759410858154;
+const LONGITUDE = 106.7169036865234;
+const LATITUDE_DELTA = 0.0465;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+
 class SearchResultMap extends Component {
 
   constructor(props) {
     super(props);
+
+    var marker = this.props.search.form.fields.listData;
+    
     this.state ={
       modal: false,
       mapType: "standard",
+      allMarker: this.props.search.form.fields.listData ? this.props.search.form.fields.listData.length : 0,
+      region: {
+        latitude: this.props.search.form.fields.listData[0] ? this.props.search.form.fields.listData[0].hdLat : LATITUDE,
+        longitude: this.props.search.form.fields.listData[0] ? this.props.search.form.fields.listData[0].hdLong : LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      },
     }
   }
 
@@ -89,17 +109,7 @@ class SearchResultMap extends Component {
 
     }
 
-    var region = {
-      latitude: (markerList[0] ? markerList[0].coordinate.latitude : 10.75759410858154),
-      longitude: (markerList[0] ? markerList[0].coordinate.longitude : 106.7169036865234),
-      latitudeDelta: 0.0461,
-      longitudeDelta: 0.0211,
-    };
-
-    if (this.state && this.state.region) {
-      region = this.state.region;
-    }
-
+    
     var mapType = this.state.mapType;
 
     return (
@@ -109,7 +119,7 @@ class SearchResultMap extends Component {
         </View>
         <View  style={myStyles.map}>
         <MapView 
-          region={region}
+          region={this.state.region}
           onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
           onPress={this._onPress()}
           onMarkerPress={this._onMarkerPress.bind(this)}
@@ -123,6 +133,9 @@ class SearchResultMap extends Component {
           ))}
         </MapView>
         <View style={myStyles.buttonContainer}>
+          <View style={[myStyles.bubble, myStyles.button, {width: 80}]}>
+            <Text style={myStyles.text}> Sum = {this.state.allMarker} </Text>
+          </View>
           <TouchableOpacity onPress={this._onSatellitePress.bind(this)} style={[myStyles.bubble, myStyles.button]}>
             <Text style={myStyles.text}>Satellite</Text>
           </TouchableOpacity>
@@ -137,6 +150,7 @@ class SearchResultMap extends Component {
 
         <View style={myStyles.searchButton}>
           <View style={myStyles.searchListButton}>
+
             <Icon.Button onPress={this._onLocalInfoPressed}
               name="location-arrow" backgroundColor="white"
               underlayColor="gray" color={gui.blue1}
@@ -172,11 +186,43 @@ class SearchResultMap extends Component {
     var latMin = latMax - region.latitudeDelta;
     var lonMin = lonMax - region.longitudeDelta;
 
-    console.log(latMin + "," + lonMin + ',' + latMax + "," + lonMax);   
+    var bbox = [lonMin, latMin, lonMax, latMax]
+
+    this.refreshListData(bbox);
 
     this.setState({
       region: region
     });
+  }
+
+  refreshListData(bbox) {
+    var loaiTin = this.props.search.form.fields.loaiTin;
+    var loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
+    var gia = this.props.search.form.fields.gia;
+    var soPhongNgu = this.props.search.form.fields.soPhongNgu;
+    var soTang = this.props.search.form.fields.soTang;
+    var dienTich = this.props.search.form.fields.dienTich;
+    var orderBy = this.props.search.form.fields.orderBy;
+    var dataBlob = [];
+    this.state.dataSource = null;
+    this.state.errormsg = null;
+    Api.getMapItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, bbox)
+      .then((data) => {
+        if (data.list) {
+          data.list.map(function(aRow) {
+              //console.log(aRow.value);
+              dataBlob.push(aRow.value);
+            }
+          );
+          this.props.actions.onSearchFieldChange("listData", dataBlob);
+          this.setState({allMarker: this.props.search.form.fields.listData.length});
+          console.log("Cap nhat du lieu thanh cong");
+        } else {
+          console.log("Lỗi kết nối đến máy chủ!");
+        }
+      });
+      console.log("Du lieu sau khi cap nhat");
+      console.log(this.props.search.form.fields.listData);
   }
 
   _onSatellitePress(){
