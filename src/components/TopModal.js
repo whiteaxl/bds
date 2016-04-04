@@ -1,4 +1,4 @@
-import React, { AppRegistry, StyleSheet, Text, TouchableOpacity, Animated, Dimensions, Component} from 'react-native';
+import React, { AppRegistry, View, Image, StyleSheet, Text, TouchableOpacity, Animated, Dimensions, Component} from 'react-native';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -17,6 +17,10 @@ import {Map} from 'immutable';
 import {Actions} from 'react-native-router-flux';
 
 import gui from '../lib/gui';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+import LinearGradient from 'react-native-linear-gradient';
 
 /**
 * ## Redux boilerplate
@@ -45,7 +49,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 var {
-  height: deviceHeight
+  height: deviceHeight,
+  width: deviceWidth
 } = Dimensions.get('window');
 
 class TopModal extends React.Component {
@@ -71,10 +76,28 @@ class TopModal extends React.Component {
   }
 
   render() {
+    var diaChi = this.props.search.form.fields.marker.diaChi;
+    var price = this.props.search.form.fields.marker.price;
+    var unit = this.props.search.form.fields.marker.unit;
+ 
     return (
         <Animated.View style={[myStyles.modal, myStyles.flexCenter, {transform: [{translateY: this.state.offset}]}]}>
           <TouchableOpacity onPress={this.closeModal.bind(this)}>
-            <Text style={{color: '#FFF'}}>{this.props.search.form.fields.marker.diaChi}</Text>
+            
+            <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']} 
+              style={myStyles.linearGradient}>
+            <Image style={myStyles.thumb} source={{uri: `${this.props.search.form.fields.marker.cover}`}} >
+            </Image>
+            <View style={myStyles.detail}>
+              <View>
+                <Text style={myStyles.price}>{price} {unit}</Text>
+                <Text style={myStyles.text}>{diaChi}</Text>
+              </View>
+              <Icon.Button name="heart-o" backgroundColor="transparent"
+                underlayColor="transparent" style={myStyles.heartButton}/>
+            </View>
+            </LinearGradient>
+
           </TouchableOpacity>
         </Animated.View>
     )
@@ -88,12 +111,53 @@ var myStyles = StyleSheet.create({
     alignItems: 'center'
   },
   modal: {
-    backgroundColor: 'grey',
+    backgroundColor: 'white',
     position: 'absolute',
     top: 2*deviceHeight/3,
     right: 0,
     bottom: 0,
     left: 0
+  },
+  thumb: {
+    justifyContent: 'flex-end',
+    alignItems: 'stretch',
+    height: deviceHeight/3,
+    width: deviceWidth,
+    alignSelf: 'auto',
+  },
+  linearGradient: {
+    flex: 1,
+    paddingLeft: 0,
+    paddingRight: 0,
+    backgroundColor : "transparent"
+  },
+  price: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'left',
+    backgroundColor: 'transparent',
+    marginLeft: 10,
+    color: 'white',
+  },
+  text: {
+    fontSize: 14,
+    textAlign: 'left',
+    backgroundColor: 'transparent',
+    marginLeft: 10,
+    marginBottom: 15,
+    margin: 5,
+    color: 'white',
+  },
+  heartButton: {
+    marginBottom: 10,
+  },
+  detail: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    top: deviceHeight/3-60,
+    width: deviceWidth
   }
 });
 
