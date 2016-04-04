@@ -273,8 +273,8 @@ var myStyles = StyleSheet.create({
   searchListButtonText: {
       marginLeft: 15,
       marginRight: 15,
-      marginTop: 10,
-      marginBottom: 10,
+      marginTop: 0,
+      marginBottom: 0,
       flexDirection: 'column',
   },
 
@@ -326,6 +326,7 @@ var myStyles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: 5,
+    marginBottom: 0,
     backgroundColor: 'transparent',
   },
 });
