@@ -84,19 +84,19 @@ class TopModal extends React.Component {
         <Animated.View style={[myStyles.modal, myStyles.flexCenter, {transform: [{translateY: this.state.offset}]}]}>
           <TouchableOpacity onPress={this.closeModal.bind(this)}>
             
-            <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']} 
-              style={myStyles.linearGradient}>
             <Image style={myStyles.thumb} source={{uri: `${this.props.search.form.fields.marker.cover}`}} >
-            </Image>
-            <View style={myStyles.detail}>
-              <View>
-                <Text style={myStyles.price}>{price} {unit}</Text>
-                <Text style={myStyles.text}>{diaChi}</Text>
+              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']} 
+                style={myStyles.linearGradient}>
+              <View style={myStyles.detail}>
+                <View>
+                  <Text style={myStyles.price}>{price} {unit}</Text>
+                  <Text style={myStyles.text}>{diaChi}</Text>
+                </View>
+                <Icon.Button name="heart-o" backgroundColor="transparent"
+                  underlayColor="transparent" style={myStyles.heartButton}/>
               </View>
-              <Icon.Button name="heart-o" backgroundColor="transparent"
-                underlayColor="transparent" style={myStyles.heartButton}/>
-            </View>
-            </LinearGradient>
+              </LinearGradient>
+            </Image>
 
           </TouchableOpacity>
         </Animated.View>
@@ -152,7 +152,6 @@ var myStyles = StyleSheet.create({
     marginBottom: 10,
   },
   detail: {
-    position: 'absolute',
     backgroundColor: 'transparent',
     flexDirection: 'row',
     justifyContent: 'space-between',
