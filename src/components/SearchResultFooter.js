@@ -5,31 +5,25 @@ import gui from '../lib/gui';
 
 import {Actions} from 'react-native-router-flux';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Button from 'react-native-button';
 
 // Create our component
 var SearchResultFooter = React.createClass({
   render: function() {
     return <View style={myStyles.searchButton}>
       <View style={myStyles.searchListButton}>
-        <Icon.Button onPress={this.onSort}
-          name="sort" backgroundColor="white"
-          underlayColor="gray" color={gui.blue1}
+        <Button onPress={this.onSort}
           style={myStyles.searchListButtonText} >
           Sắp xếp
-        </Icon.Button>
-        <Icon.Button onPress={this.onSaveSearch}
-          name="hdd-o" backgroundColor="white"
-          underlayColor="gray" color={gui.blue1}
+        </Button>
+        <Button onPress={this.onSaveSearch}
           style={myStyles.searchListButtonText} >
           Lưu tìm kiếm
-        </Icon.Button>
-        <Icon.Button onPress={this.onMap}
-          name="map-o" backgroundColor="white"
-          underlayColor="gray" color={gui.blue1}
+        </Button>
+        <Button onPress={this.onMap}
           style={myStyles.searchListButtonText} >
           Bản đồ
-        </Icon.Button>
+        </Button>
       </View>
     </View>
   },
@@ -51,9 +45,10 @@ var myStyles = StyleSheet.create({
   searchListButtonText: {
       marginLeft: 15,
       marginRight: 15,
-      marginTop: 0,
-      marginBottom: 0,
-      flexDirection: 'column',
+      marginTop: 10,
+      marginBottom: 10,
+      color: gui.blue1,
+      fontWeight : 'normal'
   },
 
   searchListButton: {
