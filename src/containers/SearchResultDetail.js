@@ -144,8 +144,7 @@ class SearchResultDetail extends Component {
     var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=12&size='+mapSize+'x'+((mapSize-mapSize%2)/2)+'&markers=color:red|'+rowData.hdLat+','+rowData.hdLong+'&sensor=false';
     var imageItems = [];
     var imageIndex = 0;
-    rowData.images_small.map(function(imageSmallUrl) {
-      var imageUrl = imageSmallUrl.replace("80x60", "745x510");
+    rowData.images_small.map(function(imageUrl) {
       imageItems.push(
         <View style={detailStyles.slide} key={"img"+(imageIndex++)}>
           <Image style={detailStyles.imgItem}

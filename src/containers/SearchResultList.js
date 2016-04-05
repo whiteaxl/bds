@@ -246,8 +246,7 @@ class SearchResultList extends Component {
     }
     var imageItems = [];
     var imageIndex = 0;
-    rowData.images_small.map(function(imageSmallUrl) {
-      var imageUrl = imageSmallUrl.replace("80x60", "745x510");
+    rowData.images_small.map(function(imageUrl) {
       imageItems.push(
         <View style={myStyles.slide} key={"img"+(imageIndex++)}>
           <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
