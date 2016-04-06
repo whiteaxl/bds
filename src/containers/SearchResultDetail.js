@@ -15,7 +15,7 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component, Image, Dimensions, ScrollView, StyleSheet } from 'react-native'
+import React, { Text, View, Component, Image, Dimensions, ScrollView, StyleSheet, StatusBarIOS } from 'react-native'
 
 var ShareManager = React.NativeModules.ShareManager;
 
@@ -88,6 +88,8 @@ var LoaiTin = [
 
 var mapSize = Dimensions.get('window').width-30;
 
+var imgHeight = 256;
+
 var url = '';
 
 var text = '';
@@ -95,6 +97,12 @@ var text = '';
 class SearchResultDetail extends Component {
   constructor(props) {
     super(props);
+
+    StatusBarIOS.setStyle('light-content');
+
+    this.state = {
+      headerButtonColor: 'white'
+    }
   }
   render() {
     //console.log(this.props);
@@ -175,10 +183,12 @@ class SearchResultDetail extends Component {
             ref={(scrollView) => { _scrollView = scrollView; }}
             automaticallyAdjustContentInsets={false}
             vertical={true}
-            style={detailStyles.scrollView}>
+            style={detailStyles.scrollView}
+            onScroll={this.handleScroll.bind(this)}
+            scrollEventThrottle={1}>
             <View style={detailStyles.searchContent}>
 
-              <Swiper style={detailStyles.wrapper} height={256}
+              <Swiper style={detailStyles.wrapper} height={imgHeight}
                       showsButtons={false} autoplay={false} loop={false}
                       dot={<View style={[detailStyles.dot, {backgroundColor: 'transparent'}]} />}
                       activeDot={<View style={[detailStyles.dot, {backgroundColor: 'transparent'}]}/>}
@@ -263,18 +273,18 @@ class SearchResultDetail extends Component {
               <View style={detailStyles.customPageHeader}>
                 <Icon.Button onPress={this._onBack}
                   name="angle-left" backgroundColor="transparent"
-                  underlayColor="transparent" color="white"
+                  underlayColor="transparent" color={this.state.headerButtonColor}
                   style={detailStyles.search} >
                 </Icon.Button>
                 <View style={detailStyles.shareButton}>
                   <Icon.Button onPress={this._onLike}
                     name="heart-o" backgroundColor="transparent"
-                    underlayColor="transparent" color="white"
+                    underlayColor="transparent" color={this.state.headerButtonColor}
                     style={detailStyles.search} >
                   </Icon.Button>
                   <Icon.Button onPress={this._onShare}
                     name="share-alt" backgroundColor="transparent"
-                    underlayColor="transparent" color="white"
+                    underlayColor="transparent" color={this.state.headerButtonColor}
                     style={detailStyles.search} >
                   </Icon.Button>
                 </View>
@@ -322,6 +332,20 @@ class SearchResultDetail extends Component {
           </Text>
         </View>
       )
+    }
+  }
+
+  handleScroll(event: Object) {
+    if (event.nativeEvent.contentOffset.y <= imgHeight-30 && this.state.headerButtonColor != 'white') {
+      StatusBarIOS.setStyle('light-content');
+      this.setState({
+        headerButtonColor: 'white'
+      });
+    } else if (event.nativeEvent.contentOffset.y > imgHeight-30 && this.state.headerButtonColor != gui.blue1) {
+      StatusBarIOS.setStyle('default');
+      this.setState({
+        headerButtonColor: gui.blue1
+      });
     }
   }
 
@@ -486,9 +510,9 @@ var detailStyles = StyleSheet.create({
     color: 'gray',
     marginTop: 8,
     marginBottom: 8,
-    marginLeft: 15,
-    marginRight: 15,
-    width: Dimensions.get('window').width/2-30
+    marginLeft: 10,
+    marginRight: 10,
+    width: Dimensions.get('window').width/2-20
   },
   textHalfWidthBold: {
     textAlign: 'left',
@@ -500,9 +524,9 @@ var detailStyles = StyleSheet.create({
     color: 'black',
     marginTop: 8,
     marginBottom: 8,
-    marginLeft: 15,
-    marginRight: 15,
-    width: Dimensions.get('window').width/2-30
+    marginLeft: 10,
+    marginRight: 10,
+    width: Dimensions.get('window').width/2-20
   },
   textHalfWidth2: {
     textAlign: 'left',
@@ -513,9 +537,9 @@ var detailStyles = StyleSheet.create({
     color: 'gray',
     marginTop: 3,
     marginBottom: 3,
-    marginLeft: 15,
-    marginRight: 15,
-    width: Dimensions.get('window').width/2-30
+    marginLeft: 10,
+    marginRight: 10,
+    width: Dimensions.get('window').width/2-20
   },
   textHalfWidthBold2: {
     textAlign: 'left',
@@ -527,9 +551,9 @@ var detailStyles = StyleSheet.create({
     color: 'black',
     marginTop: 3,
     marginBottom: 3,
-    marginLeft: 15,
-    marginRight: 15,
-    width: Dimensions.get('window').width/2-30
+    marginLeft: 10,
+    marginRight: 10,
+    width: Dimensions.get('window').width/2-20
   },
   textFullWidth: {
     textAlign: 'left',

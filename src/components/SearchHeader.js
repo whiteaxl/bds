@@ -51,16 +51,18 @@ var mStyles = StyleSheet.create({
       backgroundColor: gui.blue1,
   },
   search: {
-      top: 23,
-      alignItems: 'flex-end',
-      justifyContent: 'center',
-      backgroundColor: gui.blue1,
-  },
-  home: {
-      top: 23,
+      marginTop: 8,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: gui.blue1,
+      height: 60
+  },
+  home: {
+      marginTop: 8,
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: gui.blue1,
+      height: 60
   },
   text: {
     backgroundColor: '#F5FCFF',

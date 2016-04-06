@@ -15,7 +15,7 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component, Image, ListView, Dimensions
+import React, { Text, View, Component, Image, ListView, Dimensions, StatusBarIOS
   , RecyclerViewBackedScrollView, TouchableHighlight , StyleSheet} from 'react-native'
 
 import Button from 'react-native-button';
@@ -61,7 +61,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-var imgHeight = Dimensions.get('window').height/3 - 39;
+var imgHeight = 181;
 
 class SearchResultList extends Component {
   constructor(props) {
@@ -72,6 +72,8 @@ class SearchResultList extends Component {
       dataSource: null,
       errormsg: null
     };
+
+    StatusBarIOS.setStyle('light-content');
   }
   isChangeSearchFilter() {
     var _loaiTin = this.props.search.form.fields.loaiTin;
@@ -261,8 +263,8 @@ class SearchResultList extends Component {
         <View style={myStyles.slide} key={"img"+(imageIndex++)}>
           <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
             <Image style={myStyles.thumb} source={{uri: `${imageUrl}`}} >
-              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
-              style={myStyles.linearGradient}>
+              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.8)']}
+              style={myStyles.linearGradient2}>
               </LinearGradient>
             </Image>
           </TouchableHighlight>
@@ -274,8 +276,8 @@ class SearchResultList extends Component {
         <View style={myStyles.slide} key={"img"+(imageIndex)}>
           <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
             <Image style={myStyles.thumb} source={{uri: `${rowData.cover}`}} >
-              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
-              style={myStyles.linearGradient}>
+              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.8)']}
+              style={myStyles.linearGradient2}>
               </LinearGradient>
             </Image>
           </TouchableHighlight>
@@ -285,7 +287,7 @@ class SearchResultList extends Component {
     return (
         <View>
 
-          <View style={myStyles.linearGradient}>
+          <View style={myStyles.detail}>
 
             <Swiper style={myStyles.wrapper} height={imgHeight}
                     showsButtons={false} autoplay={false} loop={false}
@@ -334,8 +336,15 @@ var myStyles = StyleSheet.create({
     marginBottom: 3,
     bottom: 32
   },
-  linearGradient: {
+  detail: {
     flex: 1,
+    paddingLeft: 0,
+    paddingRight: 0,
+    backgroundColor : "transparent"
+  },
+  linearGradient2: {
+    marginTop: imgHeight/2,
+    height: imgHeight/2,
     paddingLeft: 0,
     paddingRight: 0,
     backgroundColor : "transparent"
@@ -356,7 +365,7 @@ var myStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    top: imgHeight-60,
+    top: imgHeight-53,
     width: Dimensions.get('window').width
   },
   price: {
@@ -364,16 +373,17 @@ var myStyles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'left',
     backgroundColor: 'transparent',
-    marginLeft: 10,
+    marginLeft: 15,
     color: 'white',
   },
   text: {
     fontSize: 14,
     textAlign: 'left',
     backgroundColor: 'transparent',
-    marginLeft: 10,
+    marginLeft: 15,
     marginBottom: 15,
     margin: 5,
+    marginTop: 2,
     color: 'white',
   },
   heartButton: {
