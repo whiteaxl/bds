@@ -81,6 +81,7 @@ class SearchResultList extends Component {
     var _soTang = this.props.search.form.fields.soTang;
     var _dienTich = this.props.search.form.fields.dienTich;
     var _orderBy = this.props.search.form.fields.orderBy;
+    var _placeFullName = this.props.search.form.fields.place.fullName;
 
     var loaiTin = null;
     var loaiNhaDat = null;
@@ -90,6 +91,8 @@ class SearchResultList extends Component {
     var dienTich = null;
     var orderBy = null;
     var loaded = false;
+    var placeFullName = null;
+
     if (this.state) {
       loaiTin = this.state.loaiTin;
       loaiNhaDat = this.state.loaiNhaDat;
@@ -99,10 +102,12 @@ class SearchResultList extends Component {
       dienTich = this.state.dienTich;
       orderBy = this.state.orderBy;
       loaded = this.state.loaded;
+      placeFullName = this.state.placeFullName;
     }
     if (loaded && _loaiTin === loaiTin && _loaiNhaDat === loaiNhaDat
       && _gia === gia && _soPhongNgu === soPhongNgu && _soTang === soTang
-      && _dienTich === dienTich && _orderBy === orderBy) {
+      && _dienTich === dienTich && _orderBy === orderBy
+        && _placeFullName == placeFullName) {
       return false;
     }
     return true;
@@ -115,6 +120,8 @@ class SearchResultList extends Component {
     var _soTang = this.props.search.form.fields.soTang;
     var _dienTich = this.props.search.form.fields.dienTich;
     var _orderBy = this.props.search.form.fields.orderBy;
+    var _placeFullName = this.props.search.form.fields.place.fullName;
+
     this.setState({
       loaiTin: _loaiTin,
       loaiNhaDat: _loaiNhaDat,
@@ -123,8 +130,10 @@ class SearchResultList extends Component {
       soTang: _soTang,
       dienTich: _dienTich,
       orderBy: _orderBy,
+      placeFullName : _placeFullName,
       dataSource: dataSource,
       errormsg: errormsg,
+
       loaded: true
     })
   }
@@ -136,7 +145,8 @@ class SearchResultList extends Component {
     var soTang = this.props.search.form.fields.soTang;
     var dienTich = this.props.search.form.fields.dienTich;
     var orderBy = this.props.search.form.fields.orderBy;
-     var placeName = this.props.search.form.fields.place.fullName;
+    var placeName = this.props.search.form.fields.place.fullName;
+
     var dataBlob = [];
     this.state.dataSource = null;
     this.state.errormsg = null;

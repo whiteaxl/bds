@@ -1,15 +1,79 @@
 'use strict';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
 
-var React = require('react-native');
+/**
+ * The actions we need
+ */
+import * as globalActions from '../reducers/global/globalActions';
+import * as searchActions from '../reducers/search/searchActions';
 
-var {View,StyleSheet} = React;
+/**
+ * Immutable Map
+ */
+import {Map} from 'immutable';
 
+
+
+import React, { Text, View, Component, ListView
+    , TextInput, StyleSheet,RecyclerViewBackedScrollView
+    , TouchableHighlight} from 'react-native'
+
+import Button from 'react-native-button';
+import {Actions} from 'react-native-router-flux';
+
+
+//import styles from '../containers/styles';
+
+import api from '../lib/FindApi';
+
+/**
+ * ## Redux boilerplate
+ */
+const actions = [
+    globalActions,
+    searchActions
+];
+
+function mapStateToProps(state) {
+    return {
+        ...state
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    const creators = Map()
+        .merge(...actions)
+        .filter(value => typeof value === 'function')
+        .toObject();
+
+    return {
+        actions: bindActionCreators(creators, dispatch),
+        dispatch
+    };
+}
 
 var {GooglePlacesAutocomplete} = require('react-native-google-places-autocomplete');
 
 //const homePlace = {description: 'Home', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } }};
 
-var PlacesAutoComplete = React.createClass({
+class PlacesAutoComplete extends React.Component {
+    _onPress(data, details = null) {
+        //console.log(data);
+        console.log("You selected: " + details.formatted_address);
+        console.log(details);
+        let value = details;
+        value.fullName = details.formatted_address;
+        this.props.actions.onSearchFieldChange("place", value);
+
+        Actions.pop();
+        if (Actions.currentRouter._stack.indexOf("Search")!==-1) {
+            //perform search
+        }
+
+        //console.log(Actions.currentRouter._stack.indexOf("Search"));
+    }
+
     render() {
         return (
 
@@ -18,9 +82,9 @@ var PlacesAutoComplete = React.createClass({
                 minLength={2} // minimum length of text to search
                 autoFocus={false}
                 fetchDetails={true}
-                onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-          console.log(data);
-          console.log(details);
+                onPress = {this._onPress.bind(this)}
+                onPress_original={(data, details = null) => { // 'details' is provided when fetchDetails = true
+
         }}
                 getDefaultValue={() => {
           return ''; // text input default value
@@ -30,7 +94,7 @@ var PlacesAutoComplete = React.createClass({
           key: 'AIzaSyAnioOM0qiWwUoCz8hNS8B2YuzKiYYaDdU',
           language: 'en', // language of the results
           types: '(regions)', // default: 'geocode', cities,regions
-          componentRestrictions: {country: "vn"}
+          components:'country:vn' //restrict to VN
 
         }}
                 styles={{
@@ -67,7 +131,6 @@ var PlacesAutoComplete = React.createClass({
             />
         );
     }
-});
+};
 
-
-module.exports = PlacesAutoComplete;
+export default connect(mapStateToProps, mapDispatchToProps)(PlacesAutoComplete);
