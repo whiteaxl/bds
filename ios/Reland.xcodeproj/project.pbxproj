@@ -27,6 +27,16 @@
 		75F3DF311C57537D009B3BDF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75F3DF301C57537D009B3BDF /* StoreKit.framework */; };
 		75F3DF331C575387009B3BDF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75F3DF321C575387009B3BDF /* SystemConfiguration.framework */; };
 		75F3DF351C575397009B3BDF /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 75F3DF341C575397009B3BDF /* libz.tbd */; };
+		75F9DF481CB4C47D0075C3DD /* OpenSans-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75F9DF3E1CB4C47D0075C3DD /* OpenSans-Bold.ttf */; };
+		75F9DF491CB4C47D0075C3DD /* OpenSans-BoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75F9DF3F1CB4C47D0075C3DD /* OpenSans-BoldItalic.ttf */; };
+		75F9DF4A1CB4C47D0075C3DD /* OpenSans-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75F9DF401CB4C47D0075C3DD /* OpenSans-ExtraBold.ttf */; };
+		75F9DF4B1CB4C47D0075C3DD /* OpenSans-ExtraBoldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75F9DF411CB4C47D0075C3DD /* OpenSans-ExtraBoldItalic.ttf */; };
+		75F9DF4C1CB4C47D0075C3DD /* OpenSans-Italic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75F9DF421CB4C47D0075C3DD /* OpenSans-Italic.ttf */; };
+		75F9DF4D1CB4C47D0075C3DD /* OpenSans-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75F9DF431CB4C47D0075C3DD /* OpenSans-Light.ttf */; };
+		75F9DF4E1CB4C47D0075C3DD /* OpenSans-LightItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75F9DF441CB4C47D0075C3DD /* OpenSans-LightItalic.ttf */; };
+		75F9DF4F1CB4C47D0075C3DD /* OpenSans-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75F9DF451CB4C47D0075C3DD /* OpenSans-Regular.ttf */; };
+		75F9DF501CB4C47D0075C3DD /* OpenSans-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75F9DF461CB4C47D0075C3DD /* OpenSans-Semibold.ttf */; };
+		75F9DF511CB4C47D0075C3DD /* OpenSans-SemiboldItalic.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75F9DF471CB4C47D0075C3DD /* OpenSans-SemiboldItalic.ttf */; };
 		75FCEBB51CA7BF4E00CDD307 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75FCEBB41CA7BF4E00CDD307 /* MaterialIcons.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		DD0F5DB41CAF074C000A3365 /* RCTShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2320B7901CAECF9D000861AD /* RCTShareManager.m */; };
@@ -134,7 +144,7 @@
 		00C302DF1ABCB9EE00DB3ED1 /* RCTVibration.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTVibration.xcodeproj; path = "../node_modules/react-native/Libraries/Vibration/RCTVibration.xcodeproj"; sourceTree = "<group>"; };
 		139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTSettings.xcodeproj; path = "../node_modules/react-native/Libraries/Settings/RCTSettings.xcodeproj"; sourceTree = "<group>"; };
 		139FDEE61B06529A00C62182 /* RCTWebSocket.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTWebSocket.xcodeproj; path = "../node_modules/react-native/Libraries/WebSocket/RCTWebSocket.xcodeproj"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* RewayBDS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = RewayBDS.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Reland.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Reland.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = bds/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = bds/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = bds/Images.xcassets; sourceTree = "<group>"; };
@@ -151,6 +161,16 @@
 		75F3DF301C57537D009B3BDF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		75F3DF321C575387009B3BDF /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		75F3DF341C575397009B3BDF /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
+		75F9DF3E1CB4C47D0075C3DD /* OpenSans-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Bold.ttf"; path = "../src/assets/font/OpenSans-Bold.ttf"; sourceTree = "<group>"; };
+		75F9DF3F1CB4C47D0075C3DD /* OpenSans-BoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-BoldItalic.ttf"; path = "../src/assets/font/OpenSans-BoldItalic.ttf"; sourceTree = "<group>"; };
+		75F9DF401CB4C47D0075C3DD /* OpenSans-ExtraBold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-ExtraBold.ttf"; path = "../src/assets/font/OpenSans-ExtraBold.ttf"; sourceTree = "<group>"; };
+		75F9DF411CB4C47D0075C3DD /* OpenSans-ExtraBoldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-ExtraBoldItalic.ttf"; path = "../src/assets/font/OpenSans-ExtraBoldItalic.ttf"; sourceTree = "<group>"; };
+		75F9DF421CB4C47D0075C3DD /* OpenSans-Italic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Italic.ttf"; path = "../src/assets/font/OpenSans-Italic.ttf"; sourceTree = "<group>"; };
+		75F9DF431CB4C47D0075C3DD /* OpenSans-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Light.ttf"; path = "../src/assets/font/OpenSans-Light.ttf"; sourceTree = "<group>"; };
+		75F9DF441CB4C47D0075C3DD /* OpenSans-LightItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-LightItalic.ttf"; path = "../src/assets/font/OpenSans-LightItalic.ttf"; sourceTree = "<group>"; };
+		75F9DF451CB4C47D0075C3DD /* OpenSans-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Regular.ttf"; path = "../src/assets/font/OpenSans-Regular.ttf"; sourceTree = "<group>"; };
+		75F9DF461CB4C47D0075C3DD /* OpenSans-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-Semibold.ttf"; path = "../src/assets/font/OpenSans-Semibold.ttf"; sourceTree = "<group>"; };
+		75F9DF471CB4C47D0075C3DD /* OpenSans-SemiboldItalic.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = "OpenSans-SemiboldItalic.ttf"; path = "../src/assets/font/OpenSans-SemiboldItalic.ttf"; sourceTree = "<group>"; };
 		75FCEBB41CA7BF4E00CDD307 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
@@ -325,6 +345,16 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				75F9DF3E1CB4C47D0075C3DD /* OpenSans-Bold.ttf */,
+				75F9DF3F1CB4C47D0075C3DD /* OpenSans-BoldItalic.ttf */,
+				75F9DF401CB4C47D0075C3DD /* OpenSans-ExtraBold.ttf */,
+				75F9DF411CB4C47D0075C3DD /* OpenSans-ExtraBoldItalic.ttf */,
+				75F9DF421CB4C47D0075C3DD /* OpenSans-Italic.ttf */,
+				75F9DF431CB4C47D0075C3DD /* OpenSans-Light.ttf */,
+				75F9DF441CB4C47D0075C3DD /* OpenSans-LightItalic.ttf */,
+				75F9DF451CB4C47D0075C3DD /* OpenSans-Regular.ttf */,
+				75F9DF461CB4C47D0075C3DD /* OpenSans-Semibold.ttf */,
+				75F9DF471CB4C47D0075C3DD /* OpenSans-SemiboldItalic.ttf */,
 				758115AD1CA7C14F001D4DBC /* FontAwesome.ttf */,
 				75FCEBB41CA7BF4E00CDD307 /* MaterialIcons.ttf */,
 				75F3DF341C575397009B3BDF /* libz.tbd */,
@@ -342,7 +372,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* RewayBDS.app */,
+				13B07F961A680F5B00A75B9A /* Reland.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -350,9 +380,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* RewayBDS */ = {
+		13B07F861A680F5B00A75B9A /* Reland */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RewayBDS" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Reland" */;
 			buildPhases = (
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
@@ -363,9 +393,9 @@
 			);
 			dependencies = (
 			);
-			name = RewayBDS;
+			name = Reland;
 			productName = "Hello World";
-			productReference = 13B07F961A680F5B00A75B9A /* RewayBDS.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Reland.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -378,11 +408,11 @@
 				ORGANIZATIONNAME = Facebook;
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = 8P47SEGLAF;
+						DevelopmentTeam = X53CFF85RT;
 					};
 				};
 			};
-			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "RewayBDS" */;
+			buildConfigurationList = 83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Reland" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -449,7 +479,7 @@
 			);
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* RewayBDS */,
+				13B07F861A680F5B00A75B9A /* Reland */,
 			);
 		};
 /* End PBXProject section */
@@ -553,9 +583,19 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75F9DF501CB4C47D0075C3DD /* OpenSans-Semibold.ttf in Resources */,
+				75F9DF511CB4C47D0075C3DD /* OpenSans-SemiboldItalic.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
+				75F9DF4F1CB4C47D0075C3DD /* OpenSans-Regular.ttf in Resources */,
+				75F9DF4C1CB4C47D0075C3DD /* OpenSans-Italic.ttf in Resources */,
+				75F9DF4B1CB4C47D0075C3DD /* OpenSans-ExtraBoldItalic.ttf in Resources */,
 				75FCEBB51CA7BF4E00CDD307 /* MaterialIcons.ttf in Resources */,
+				75F9DF4E1CB4C47D0075C3DD /* OpenSans-LightItalic.ttf in Resources */,
+				75F9DF481CB4C47D0075C3DD /* OpenSans-Bold.ttf in Resources */,
 				758115AE1CA7C14F001D4DBC /* FontAwesome.ttf in Resources */,
+				75F9DF4D1CB4C47D0075C3DD /* OpenSans-Light.ttf in Resources */,
+				75F9DF491CB4C47D0075C3DD /* OpenSans-BoldItalic.ttf in Resources */,
+				75F9DF4A1CB4C47D0075C3DD /* OpenSans-ExtraBold.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -613,8 +653,8 @@
 				INFOPLIST_FILE = bds/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.rwg.RewayBDS.nguyen;
-				PRODUCT_NAME = RewayBDS;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rwg.reland.hoai;
+				PRODUCT_NAME = Reland;
 				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
@@ -640,8 +680,8 @@
 				INFOPLIST_FILE = bds/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.rwg.RewayBDS.nguyen;
-				PRODUCT_NAME = RewayBDS;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rwg.reland.hoai;
+				PRODUCT_NAME = Reland;
 				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
@@ -736,7 +776,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "RewayBDS" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "Reland" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -745,7 +785,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "RewayBDS" */ = {
+		83CBB9FA1A601CBA00E9B192 /* Build configuration list for PBXProject "Reland" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				83CBBA201A601CBA00E9B192 /* Debug */,

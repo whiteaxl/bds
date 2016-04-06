@@ -84,7 +84,7 @@ import SearchResultDetail from './SearchResultDetail';
 import Profile from './Profile';
 import Tabbar from '../components/Tabbar';
 
-import SearchSuggestion from '../components/SearchSuggestion';
+import SearchSuggestion from '../containers/PlacesAutoComplete';
 import TestListView from '../test/TestListView';
 
 

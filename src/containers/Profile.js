@@ -54,11 +54,19 @@ class Profile extends Component {
     return (
 			<View style={styles.container}>
 				<Text style={styles.welcome}>........Profile screen........</Text>
+                <Text style={{fontFamily: 'Open Sans'}}>
+                    Very long text to test new font that we will use for all app
+                    Spacious, Move In Condition, 2 bedroom corner apartment that has 2 exposures. There are
+                    plenty of closets. Walk to train, bus, shopping, dining, beach, marina and NewRoc Center.
+                    Exercise room and laundry in building
+                </Text>
 				<Text style={styles.stuff}>Welcome: {this.props.global.currentUser.userID}</Text>
 			</View>
 		)
 	}
 }
+
+
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 
