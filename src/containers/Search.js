@@ -13,9 +13,11 @@ import * as searchActions from '../reducers/search/searchActions';
  */
 import {Map} from 'immutable';
 
+import gui from '../lib/gui';
 
 
-import React, { Text, View, Component, Navigator, TouchableOpacity
+
+import React, { Text, View, Component, Navigator, TouchableOpacity, Dimensions
   , SegmentedControlIOS, ScrollView, StyleSheet } from 'react-native'
 
 import Button from 'react-native-button';
@@ -223,7 +225,9 @@ class Search extends Component {
               />
         </View>
 
+       <View style={myStyles.pageHeader}>
         <SearchInput placeName={this.props.search.form.fields.place.fullName}/>
+       </View>
       </View>
     );
   }
@@ -413,6 +417,15 @@ class Search extends Component {
  * ## Styles
  */
 var myStyles = StyleSheet.create({
+  pageHeader: {
+      top: 0,
+      position: 'absolute',
+      alignItems: 'stretch',
+      justifyContent: 'center',
+      backgroundColor: gui.blue1,
+      width: Dimensions.get('window').width,
+      height: 60
+  },
   searchAttributeLabelBold : {
     fontSize: 15,
     color: 'black',

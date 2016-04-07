@@ -132,7 +132,7 @@ class SearchResultList extends Component {
     var _placeFullName = this.props.search.form.fields.place.fullName;
     var _bbox = this.props.search.form.fields.bbox;
 
-    this.setState({
+    this.state = {
       loaiTin: _loaiTin,
       loaiNhaDat: _loaiNhaDat,
       gia: _gia,
@@ -145,7 +145,7 @@ class SearchResultList extends Component {
       errormsg: errormsg,
       bbox: _bbox,
       loaded: true
-    })
+    }
   }
 
   refreshListData() {

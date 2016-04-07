@@ -25,6 +25,8 @@ import styles from './styles';
 
 import LinearGradient from 'react-native-linear-gradient';
 
+import gui from '../lib/gui';
+
 
 /**
 * ## Redux boilerplate
@@ -60,10 +62,10 @@ class Home extends Component {
 
     return (
       <View style={styles.fullWidthContainer}>
-        <View style={styles.pageHeader}>
+        <View style={homeStyles.pageHeader}>
           <Icon.Button onPress={this.handleSearchButton}
-            name="search" 
-            underlayColor="gray"
+            name="search" backgroundColor={gui.blue1}
+            underlayColor="transparent"
             style={styles.search}>
             Tìm kiếm
           </Icon.Button>
@@ -238,6 +240,12 @@ class HotDeal extends React.Component{
 }
 
 var homeStyles = StyleSheet.create({
+  pageHeader: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: gui.blue1,
+      height: 60
+  },
   linearGradient: {
     flex: 1,
     paddingLeft: 0,

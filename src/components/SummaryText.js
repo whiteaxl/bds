@@ -129,7 +129,7 @@ var styles = StyleSheet.create({
     },
     text       : {
         flex    : 1,
-        color   :'gray',
+        color   :'black',
         fontFamily: 'Open Sans',
         fontSize: 14,
         textAlign: 'left',

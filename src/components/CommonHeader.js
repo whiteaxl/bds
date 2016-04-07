@@ -36,6 +36,7 @@ customPageHeader: {
       alignItems: 'flex-start',
       justifyContent: 'space-between',
       backgroundColor: 'transparent',
+      height: 60
   },
   customPageTitle: {
       marginTop: 35,

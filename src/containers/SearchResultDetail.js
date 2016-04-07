@@ -99,10 +99,6 @@ class SearchResultDetail extends Component {
     super(props);
 
     StatusBarIOS.setStyle('light-content');
-
-    this.state = {
-      headerButtonColor: 'white'
-    }
   }
   render() {
     //console.log(this.props);
@@ -178,14 +174,34 @@ class SearchResultDetail extends Component {
         + loaiNhaDat + '\n' + diaChi + '\n' + gia + '\n' + soPhongNgu + ', ' + dienTich + '\n';
     return (
 			<View style={detailStyles.fullWidthContainer}>
+        <View style={detailStyles.customPageHeader}>
+          <Icon.Button onPress={this._onBack}
+            name="chevron-left" backgroundColor="transparent"
+            underlayColor="transparent" color="white"
+            style={detailStyles.search} >
+          </Icon.Button>
+          <View style={detailStyles.shareButton}>
+            <Icon.Button onPress={this._onLike}
+              name="heart-o" backgroundColor="transparent"
+              underlayColor="transparent" color="white"
+              style={detailStyles.search} >
+            </Icon.Button>
+            <Icon.Button onPress={this._onShare}
+              name="share-alt" backgroundColor="transparent"
+              underlayColor="transparent" color="white"
+              style={detailStyles.search} >
+            </Icon.Button>
+          </View>
+        </View>
         <View style={detailStyles.mainView}>
           <ScrollView
             ref={(scrollView) => { _scrollView = scrollView; }}
             automaticallyAdjustContentInsets={false}
             vertical={true}
             style={detailStyles.scrollView}
-            onScroll={this.handleScroll.bind(this)}
-            scrollEventThrottle={1}>
+            //onScroll={this.handleScroll.bind(this)}
+            //scrollEventThrottle={1}
+            >
             <View style={detailStyles.searchContent}>
 
               <Swiper style={detailStyles.wrapper} height={imgHeight}
@@ -267,30 +283,6 @@ class SearchResultDetail extends Component {
             </View>
           </ScrollView>
 
-          <View>
-            <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
-            style={detailStyles.linearGradient}>
-              <View style={detailStyles.customPageHeader}>
-                <Icon.Button onPress={this._onBack}
-                  name="angle-left" backgroundColor="transparent"
-                  underlayColor="transparent" color={this.state.headerButtonColor}
-                  style={detailStyles.search} >
-                </Icon.Button>
-                <View style={detailStyles.shareButton}>
-                  <Icon.Button onPress={this._onLike}
-                    name="heart-o" backgroundColor="transparent"
-                    underlayColor="transparent" color={this.state.headerButtonColor}
-                    style={detailStyles.search} >
-                  </Icon.Button>
-                  <Icon.Button onPress={this._onShare}
-                    name="share-alt" backgroundColor="transparent"
-                    underlayColor="transparent" color={this.state.headerButtonColor}
-                    style={detailStyles.search} >
-                  </Icon.Button>
-                </View>
-              </View>
-            </LinearGradient>
-          </View>
         </View>
         <SearchResultDetailFooter mobile={mobile}/>
 			</View>
@@ -335,19 +327,19 @@ class SearchResultDetail extends Component {
     }
   }
 
-  handleScroll(event: Object) {
-    if (event.nativeEvent.contentOffset.y <= imgHeight-30 && this.state.headerButtonColor != 'white') {
-      StatusBarIOS.setStyle('light-content');
-      this.setState({
-        headerButtonColor: 'white'
-      });
-    } else if (event.nativeEvent.contentOffset.y > imgHeight-30 && this.state.headerButtonColor != gui.blue1) {
-      StatusBarIOS.setStyle('default');
-      this.setState({
-        headerButtonColor: gui.blue1
-      });
-    }
-  }
+ // handleScroll(event: Object) {
+ //   if (event.nativeEvent.contentOffset.y <= imgHeight-30 && this.state.headerButtonColor != 'white') {
+ //     StatusBarIOS.setStyle('light-content');
+ //     this.setState({
+ //       headerButtonColor: 'white'
+ //     });
+ //   } else if (event.nativeEvent.contentOffset.y > imgHeight-30 && this.state.headerButtonColor != gui.blue1) {
+ //     StatusBarIOS.setStyle('default');
+ //     this.setState({
+ //       headerButtonColor: gui.blue1
+ //     });
+ //   }
+ // }
 
   getValueByKey(hashArr, key) {
     var value = '';
@@ -390,8 +382,6 @@ var detailStyles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    position: 'absolute',
-    height: Dimensions.get('window').height-45
   },
   fullWidthContainer: {
       flex: 1,
@@ -423,19 +413,15 @@ var detailStyles = StyleSheet.create({
       flexDirection: 'row',
       alignItems: 'flex-start',
       justifyContent: 'space-between',
-      backgroundColor: 'transparent',
+      backgroundColor: gui.blue1,
+      height: 60
   },
 	search: {
-			marginTop: 25,
+			marginTop: 20,
 	    flexDirection: 'row',
 	    alignItems: 'center',
 			justifyContent: 'center',
 			backgroundColor: 'transparent',
-      width: 30,
-      height: 20,
-      marginLeft: 0,
-      marginRight: 0,
-      marginBottom: 10
 	},
   wrapper: {
     marginTop: 0,
@@ -507,7 +493,7 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     fontSize: 14,
     fontFamily: 'Open Sans',
-    color: 'gray',
+    color: 'black',
     marginTop: 8,
     marginBottom: 8,
     marginLeft: 10,
@@ -534,7 +520,7 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     fontSize: 13,
     fontFamily: 'Open Sans',
-    color: 'gray',
+    color: 'black',
     marginTop: 3,
     marginBottom: 3,
     marginLeft: 10,
@@ -561,7 +547,7 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     fontSize: 14,
     fontFamily: 'Open Sans',
-    color: 'gray',
+    color: 'black',
     marginTop: 8,
     marginBottom: 8,
     marginLeft: 0,

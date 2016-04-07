@@ -49,20 +49,19 @@ var mStyles = StyleSheet.create({
       alignItems: 'stretch',
       justifyContent: 'space-between',
       backgroundColor: gui.blue1,
+      height: 60
   },
   search: {
-      marginTop: 8,
+      marginTop: 15,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: gui.blue1,
-      height: 60
   },
   home: {
-      marginTop: 8,
+      marginTop: 15,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: gui.blue1,
-      height: 60
   },
   text: {
     backgroundColor: '#F5FCFF',

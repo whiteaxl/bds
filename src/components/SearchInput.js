@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left:0, 
     right:0,
-    height: 60,
+    height: 50,
   },
   textInput : {
     fontSize: 15, 
