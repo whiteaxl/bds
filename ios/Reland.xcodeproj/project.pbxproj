@@ -653,7 +653,7 @@
 				INFOPLIST_FILE = bds/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.rwg.reland.hoai;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rwg.reland;
 				PRODUCT_NAME = Reland;
 				PROVISIONING_PROFILE = "";
 			};
@@ -680,7 +680,7 @@
 				INFOPLIST_FILE = bds/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_LDFLAGS = "-ObjC";
-				PRODUCT_BUNDLE_IDENTIFIER = com.rwg.reland.hoai;
+				PRODUCT_BUNDLE_IDENTIFIER = com.rwg.reland;
 				PRODUCT_NAME = Reland;
 				PROVISIONING_PROFILE = "";
 			};

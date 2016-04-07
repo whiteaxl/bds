@@ -26,6 +26,8 @@ import {Actions} from 'react-native-router-flux';
 //import styles from '../containers/styles';
 
 import api from '../lib/FindApi';
+var gui = require("../lib/gui");
+
 
 /**
  * ## Redux boilerplate
@@ -53,7 +55,7 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-var {GooglePlacesAutocomplete} = require('react-native-google-places-autocomplete');
+var {GooglePlacesAutocomplete} = require('../components/GooglePlacesAutocomplete');
 
 //const homePlace = {description: 'Home', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } }};
 
@@ -67,11 +69,17 @@ class PlacesAutoComplete extends React.Component {
         this.props.actions.onSearchFieldChange("place", value);
 
         Actions.pop();
+        /*
         if (Actions.currentRouter._stack.indexOf("Search")!==-1) {
             //perform search
         }
+        */
 
         //console.log(Actions.currentRouter._stack.indexOf("Search"));
+    }
+
+    _onCancelPress() {
+        Actions.pop();
     }
 
     render() {
@@ -83,6 +91,7 @@ class PlacesAutoComplete extends React.Component {
                 autoFocus={false}
                 fetchDetails={true}
                 onPress = {this._onPress.bind(this)}
+                onCancelPress = {this._onCancelPress.bind(this)}
                 onPress_original={(data, details = null) => { // 'details' is provided when fetchDetails = true
 
         }}
@@ -93,19 +102,31 @@ class PlacesAutoComplete extends React.Component {
           // available options: https://developers.google.com/places/web-service/autocomplete
           key: 'AIzaSyAnioOM0qiWwUoCz8hNS8B2YuzKiYYaDdU',
           language: 'en', // language of the results
-          types: '(regions)', // default: 'geocode', cities,regions
+          types: 'geocode', // default: 'geocode', cities,regions
           components:'country:vn' //restrict to VN
 
         }}
                 styles={{
           description: {
-            fontWeight: 'bold',
+            //fontWeight: 'bold',
+            fontFamily : gui.fontFamily,
+            fontSize: 15,
+            marginLeft:20,
+            marginRight: 20
           },
           predefinedPlacesDescription: {
             color: '#1faadb',
           },
           container: {
             top:20
+          },
+          row : {
+            height: 44
+          },
+          separator:{
+            backgroundColor: "lightgray",
+            marginLeft: 20,
+            marginRight: 20
           }
         }}
 
