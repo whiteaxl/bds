@@ -70,6 +70,27 @@ class SearchResultMap extends Component {
   constructor(props) {
     super(props);
 
+    var marker = this.props.search.form.fields.listData;
+
+    var region = {};
+    if (marker && marker.length >0 ){
+      region =  {
+        latitude: marker[0].hdLat,
+        longitude:marker[0].hdLong,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      }
+    } else{
+      region = ApiUtils.getRegion(this.props.search.form.fields.bbox);
+    }
+
+    this.state ={
+      modal: false,
+      mapType: "standard",
+      allMarker: this.props.search.form.fields.listData ? this.props.search.form.fields.listData.length : 0,
+      region: region,
+    }
+    /*
     var region = {latitude : 21.0226823,
                   longitude: 105.7669236,
                   latituDelta: LATITUDE_DELTA,
@@ -85,6 +106,7 @@ class SearchResultMap extends Component {
       allMarker: this.props.search.form.fields.listData ? this.props.search.form.fields.listData.length : 0,
       region: region,
     }
+    */
   }
 
   render() {
@@ -287,7 +309,7 @@ var myStyles = StyleSheet.create({
 
   map: {
     flex: 1,
-    marginTop: 30,
+    marginTop: 0,
     marginBottom: 50
   },
   mapView: {
