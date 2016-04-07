@@ -214,7 +214,7 @@ class SearchResultDetail extends Component {
                   </SummaryText>
                 </View>
                 <View style={detailStyles.lineBorder} />
-                <CollapsiblePanel title="Đặc Điểm" expanded={false}>
+                <CollapsiblePanel title="Đặc Điểm" expanded={true}>
                   {this.renderTitleProps("Loại tin rao", loaiNhaDat)}
                   {this.renderTitleProps("Giá", gia)}
                   {this.renderTitleProps("Phòng ngủ", soPhongNguVal)}
