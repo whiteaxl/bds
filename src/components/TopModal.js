@@ -63,14 +63,14 @@ class TopModal extends React.Component {
 
   componentDidMount() {
     Animated.timing(this.state.offset, {
-      duration: 500,
+      duration: 1000,
       toValue: 0
     }).start();
   }
 
   closeModal() {
     Animated.timing(this.state.offset, {
-      duration: 500,
+      duration: 1000,
       toValue: deviceHeight
     }).start(this.props.closeModal);
   }
@@ -97,19 +97,19 @@ class TopModal extends React.Component {
     }
  
     return (
-        <Animated.View style={[myStyles.modal, myStyles.flexCenter, {transform: [{translateY: this.state.offset}]}]}>
+        <Animated.View style={[styles.modal, styles.flexCenter, {transform: [{translateY: this.state.offset}]}]}>
           <TouchableOpacity onPress={this.closeModal.bind(this)}>
             
-            <Image style={myStyles.thumb} source={{uri: `${this.props.search.form.fields.marker.cover}`}} >
+            <Image style={styles.thumb} source={{uri: `${this.props.search.form.fields.marker.cover}`}} >
               <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']} 
-                style={myStyles.linearGradient}>
-              <View style={myStyles.detail}>
+                style={styles.linearGradient}>
+              <View style={styles.detail}>
                 <View>
-                  <Text style={myStyles.price}>{price} {unit}</Text>
-                  <Text style={myStyles.text}>{diaChi}</Text>
+                  <Text style={styles.price}>{price} {unit}</Text>
+                  <Text style={styles.text}>{diaChi}</Text>
                 </View>
                 <Icon.Button name="heart-o" backgroundColor="transparent"
-                  underlayColor="transparent" style={myStyles.heartButton}/>
+                  underlayColor="transparent" style={styles.heartButton}/>
               </View>
               </LinearGradient>
             </Image>
@@ -120,7 +120,7 @@ class TopModal extends React.Component {
   }
 };
 
-var myStyles = StyleSheet.create({
+var styles = StyleSheet.create({
   flexCenter: {
     flex: 1,
     justifyContent: 'center', 

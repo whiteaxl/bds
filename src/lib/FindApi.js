@@ -11,26 +11,6 @@ var placeUrl = rootUrl + "/findPlace";
 var maxRows = 200;
 
 var Api = {
-  getItems: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName) {
-    var fullParams = this.createFullParams(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName);
-    var params = {};
-    fullParams.map(function(oneParam) {
-      params[oneParam.key] = oneParam.value;
-    })
-    params['limit'] = maxRows;
-    //console.log(rootUrl + "?" + JSON.stringify(params));
-    return fetch(`${findUrl}`, {
-      method: 'POST',
-      headers: {
-        'Accept': 'application/json',
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(params)
-    })
-    .then(ApiUtils.checkStatus)
-    .then(response => response.json())
-    .catch(e => e);
-  },
   arrayToString: function(arr) {
     var val = "";
     arr.map(function(one) {
@@ -42,7 +22,7 @@ var Api = {
     });
     return val;
   },
-  createFullParams: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName) {
+  createFullParams: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName, bbox) {
       var params = [];
       var loaiTinVal = null;
       if ('ban' === loaiTin) {
@@ -81,19 +61,17 @@ var Api = {
           params.push({key: 'placeName', value: placeName});
       }
 
+      if (bbox && bbox.length==4){
+          params.push({key:'geoBox', value: bbox});
+      }
       
       return params;
   },
 
-  getMapItems: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName, bbox) {
-    var fullParams = this.createFullParams(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName);
+  getItems: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName, bbox) {
+    var fullParams = this.createFullParams(loaiTin, loaiNhaDat, gia, soPhongNgu,
+                                            soTang, dienTich, orderBy, placeName, bbox);
 
-    console.log("===========get Map Item");
-    console.log(bbox);
-    
-    if (bbox && bbox.length==4){
-      fullParams.push({key:'geoBox', value: bbox});
-    }
     var params = {};
     fullParams.map(function(oneParam) {
       params[oneParam.key] = oneParam.value;

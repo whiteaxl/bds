@@ -1,4 +1,5 @@
 'use strict';
+
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
@@ -11,27 +12,21 @@ import * as searchActions from '../reducers/search/searchActions';
 /**
  * Immutable Map
  */
+
 import {Map} from 'immutable';
 
-
 import React, { Text, View, Component, StyleSheet, Navigator, TouchableOpacity, Dimensions } from 'react-native'
-
 import {Actions} from 'react-native-router-flux';
-
 import Icon from 'react-native-vector-icons/FontAwesome';
+import MapView from 'react-native-maps';
 
 import SearchHeader from '../components/SearchHeader';
-
-import gui from '../lib/gui';
-
-import MapView from 'react-native-maps';
 import MMapMarker from '../components/MMapMarker';
-
 import TopModal from '../components/TopModal';
 
-import Api from '../lib/FindApi';
-
-import ApiUtils from '../lib/ApiUtils';
+import gui from '../lib/gui';
+import api from '../lib/FindApi';
+import apiUtils from '../lib/ApiUtils';
 
 /**
 * ## Redux boilerplate
@@ -68,6 +63,8 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 class SearchResultMap extends Component {
 
   constructor(props) {
+    console.log("SearchResultMap.constructor");
+
     super(props);
 
     var marker = this.props.search.form.fields.listData;
@@ -78,17 +75,18 @@ class SearchResultMap extends Component {
         latitude: marker[0].hdLat,
         longitude:marker[0].hdLong,
         latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
       }
     } else{
-      region = ApiUtils.getRegion(this.props.search.form.fields.bbox);
+      region = apiUtils.getRegion(this.props.search.form.fields.bbox);
+      region.longitudeDelta = region.latitudeDelta * ASPECT_RATIO;
     }
 
-    this.state ={
+    this.state = {
       modal: false,
       mapType: "standard",
       allMarker: this.props.search.form.fields.listData ? this.props.search.form.fields.listData.length : 0,
-      region: region,
+      region: region
     }
     /*
     var region = {latitude : 21.0226823,
@@ -97,7 +95,7 @@ class SearchResultMap extends Component {
                   longitudeDelta: LONGITUDE_DELTA};
 
     if ( this.props.search.form.fields.bbox && this.props.search.form.fields.bbox.length == 4){
-      region = ApiUtils.getRegion(this.props.search.form.fields.bbox);
+      region = apiUtils.getRegion(this.props.search.form.fields.bbox);
       region.longitudeDelta = region.latitudeDelta * ASPECT_RATIO;
     }
     this.state ={
@@ -110,6 +108,9 @@ class SearchResultMap extends Component {
   }
 
   render() {
+    console.log("SearchResultMap.render");
+    console.log("SearchResultMap: number of data " + this.props.search.form.fields.listData.length);
+
     var markerList = [];
 
     if (this.props.search.form.fields.listData) {
@@ -132,60 +133,60 @@ class SearchResultMap extends Component {
     }
 
     return (
-      <View style={myStyles.fullWidthContainer}>
-        <View style={myStyles.search}>
+      <View style={styles.fullWidthContainer}>
+        <View style={styles.search}>
             <SearchHeader placeName={this.props.search.form.fields.place.fullName}/>
         </View>
-        <View style={myStyles.map}>
+        <View style={styles.map}>
           <MapView 
             region={this.state.region}
-            onRegionChange={this.onRegionChange.bind(this)}
-            onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
+            onRegionChange={this._onRegionChange.bind(this)}
+            onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
             onPress={this._onPress()}
             onMarkerPress={this._onMarkerPress.bind(this)}
             onMarkerSelect={this.props.openModal}
-            style={myStyles.mapView}
+            style={styles.mapView}
             mapType={this.state.mapType}
           >
             {markerList.map( marker =>(
-              <MMapMarker marker={marker}>
+              <MMapMarker key={marker.id} marker={marker}>
               </MMapMarker>
             ))}
           </MapView>
-          <View style={myStyles.buttonContainer}>
-            <View style={[myStyles.bubble, myStyles.button, {width: 80}]}>
-              <Text style={myStyles.text}> Sum = {this.state.allMarker} </Text>
+          <View style={styles.buttonContainer}>
+            <View style={[styles.bubble, styles.button, {width: 80}]}>
+              <Text style={styles.text}> Sum = {this.state.allMarker} </Text>
             </View>
-            <TouchableOpacity onPress={this._onSatellitePress.bind(this)} style={[myStyles.bubble, myStyles.button]}>
-              <Text style={myStyles.text}>Satellite</Text>
+            <TouchableOpacity onPress={this._onSatellitePress.bind(this)} style={[styles.bubble, styles.button]}>
+              <Text style={styles.text}>Satellite</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={this._onHybridPress.bind(this)} style={[myStyles.bubble, myStyles.button]}>
-              <Text style={myStyles.text}>Hybrid</Text>
+            <TouchableOpacity onPress={this._onHybridPress.bind(this)} style={[styles.bubble, styles.button]}>
+              <Text style={styles.text}>Hybrid</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={this._onStandardPress.bind(this)} style={[myStyles.bubble, myStyles.button]}>
-              <Text style={myStyles.text}>Standard</Text>
+            <TouchableOpacity onPress={this._onStandardPress.bind(this)} style={[styles.bubble, styles.button]}>
+              <Text style={styles.text}>Standard</Text>
             </TouchableOpacity>
           </View>
         </View>
 
-        <View style={myStyles.tabbar}>
-          <View style={myStyles.searchListButton}>
+        <View style={styles.tabbar}>
+          <View style={styles.searchListButton}>
             <Icon.Button onPress={this._onLocalInfoPressed}
               name="location-arrow" backgroundColor="white"
               underlayColor="gray" color={gui.blue1}
-              style={myStyles.searchListButtonText} >
+              style={styles.searchListButtonText} >
               Local Info
             </Icon.Button>
             <Icon.Button onPress={this._onSaveSearchPressed}
               name="hdd-o" backgroundColor="white"
               underlayColor="gray" color={gui.blue1}
-              style={myStyles.searchListButtonText} >
+              style={styles.searchListButtonText} >
               Lưu tìm kiếm
             </Icon.Button>
             <Icon.Button onPress={this._onListPressed}
               name="list" backgroundColor="white"
               underlayColor="gray" color={gui.blue1}
-              style={myStyles.searchListButtonText} >
+              style={styles.searchListButtonText} >
               Danh sách
             </Icon.Button>
           </View>
@@ -196,19 +197,22 @@ class SearchResultMap extends Component {
     )
   }
 
-  onRegionChange(region) {
+  _onRegionChange(region) {
+    console.log("SearhResultMap._onRegionChange");
     this.setState({
       region: region
     });
   }
 
-  onRegionChangeComplete(region) {
-    var bbox = ApiUtils.getBbox(this.state.region);
+  _onRegionChangeComplete(region) {
+    console.log("SearhResultMap._onRegionChangeComplete");
+    var bbox = apiUtils.getBbox(this.state.region);
     this.props.actions.onSearchFieldChange("bbox", bbox);
     this.refreshListData();
   }
 
   refreshListData() {
+    console.log("SearhResultMap.refreshListData");
     var loaiTin = this.props.search.form.fields.loaiTin;
     var loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
     var gia = this.props.search.form.fields.gia;
@@ -216,16 +220,17 @@ class SearchResultMap extends Component {
     var soTang = this.props.search.form.fields.soTang;
     var dienTich = this.props.search.form.fields.dienTich;
     var orderBy = this.props.search.form.fields.orderBy;
-    var placeName = this.props.search.form.fields.placeName;
+    var placeName = this.props.search.form.fields.place.fullName;
     var bbox = this.props.search.form.fields.bbox;
     var dataBlob = [];
-    Api.getMapItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName, bbox)
+    api.getItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName, bbox)
       .then((data) => {
         if (data.list) {
           data.list.map(function(aRow) {
               dataBlob.push(aRow.value);
             }
           );
+          console.log("SearchResultMap: number of refresh data " + dataBlob.length);
           this.props.actions.onSearchFieldChange("listData", dataBlob);
           this.setState({allMarker: this.props.search.form.fields.listData.length});
         } else {
@@ -253,13 +258,10 @@ class SearchResultMap extends Component {
   }  
 
   _onMarkerSelect() {
-    console.log("marker select") 
     this.setState({modal: true});
   }
 
   _onMarkerPress(event) {
-    console.log("marker presssssss") ;
-    //console.log(event) 
     this.setState({modal: true});
   }
 
@@ -276,7 +278,7 @@ class SearchResultMap extends Component {
   }
 
   _onListPressed() {
-    Actions.SearchResultList();
+    Actions.pop();
   }
 
 }
@@ -284,7 +286,7 @@ class SearchResultMap extends Component {
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultMap);
 
 // Later on in your styles..
-var myStyles = StyleSheet.create({
+var styles = StyleSheet.create({
   fullWidthContainer: {
     flex: 1,
     alignItems: 'stretch',

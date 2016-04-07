@@ -18,13 +18,11 @@ import {Map} from 'immutable';
 import React, { Text, View, Component, Image, ListView, Dimensions, StatusBarIOS
   , RecyclerViewBackedScrollView, TouchableHighlight , StyleSheet} from 'react-native'
 
-import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
 import Api from '../lib/FindApi';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
-import CommonHeader from '../components/CommonHeader';
 import SearchResultFooter from '../components/SearchResultFooter';
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -77,7 +75,6 @@ class SearchResultList extends Component {
   }
   
   isChangeSearchFilter() {
-    console.log("Is changed search filter");
     var _loaiTin = this.props.search.form.fields.loaiTin;
     var _loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
     var _gia = this.props.search.form.fields.gia;
@@ -87,7 +84,7 @@ class SearchResultList extends Component {
     var _orderBy = this.props.search.form.fields.orderBy;
     var _placeFullName = this.props.search.form.fields.place.fullName;
     var _bbox = this.props.search.form.fields.bbox;
-    console.log(_bbox);
+
     var loaiTin = null;
     var loaiNhaDat = null;
     var gia = null;
@@ -110,14 +107,15 @@ class SearchResultList extends Component {
       loaded = this.state.loaded;
       placeFullName = this.state.placeFullName;
       bbox = this.state.bbox;
-      console.log(bbox);
     }
     if (loaded && _loaiTin === loaiTin && _loaiNhaDat === loaiNhaDat
       && _gia === gia && _soPhongNgu === soPhongNgu && _soTang === soTang
       && _dienTich === dienTich && _orderBy === orderBy
       && _placeFullName == placeFullName && _bbox == bbox) {
+      console.log("SearhResultList: Didn't change search filter");
       return false;
     }
+    console.log("SearhResultList: Changed search filter");
     return true;
   }
 
@@ -149,6 +147,7 @@ class SearchResultList extends Component {
   }
 
   refreshListData() {
+    console.log("SearchResultList update list of Data")
     var loaiTin = this.props.search.form.fields.loaiTin;
     var loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
     var gia = this.props.search.form.fields.gia;
@@ -157,12 +156,12 @@ class SearchResultList extends Component {
     var dienTich = this.props.search.form.fields.dienTich;
     var orderBy = this.props.search.form.fields.orderBy;
     var placeName = this.props.search.form.fields.place.fullName;
-    var _bbox = this.props.search.form.fields.bbox;
+    var bbox = this.props.search.form.fields.bbox;
     
     var dataBlob = [];
     this.state.dataSource = null;
     this.state.errormsg = null;
-    Api.getMapItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName, _bbox)
+    Api.getItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName, bbox)
       .then((data) => {
         if (data.list) {
           data.list.map(function(aRow) {
@@ -170,7 +169,7 @@ class SearchResultList extends Component {
               dataBlob.push(aRow.value);
             }
           );
-          this.props.actions.onSearchFieldChange("listData", dataBlob);
+          console.log("SearchResultList: Number of result " + dataBlob.length);
           var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
           var dataSource = ds.cloneWithRows(dataBlob);
           this.updateSearchFilterState(dataSource, null);
@@ -181,6 +180,9 @@ class SearchResultList extends Component {
   }
 
   render() {
+    console.log("SearchResultList render");
+    console.log(this.state.dataSource);
+
     if (this.isChangeSearchFilter()) {
       this.refreshListData();
     }
@@ -189,20 +191,20 @@ class SearchResultList extends Component {
         this.setState({ progress: this.state.progress + (0.4 * Math.random())});
       }).bind(this), 1000);
       return (
-  			<View style={styles.fullWidthContainer}>
-          <View style={myStyles.search}>
-            <SearchHeader placeName={this.props.search.form.fields.place.fullName}/>
+  		  <View style={styles.fullWidthContainer}>
+            <View style={myStyles.search}>
+              <SearchHeader placeName={this.props.search.form.fields.place.fullName}/>
+            </View>
+            <View style={styles.searchContent}>
+              <ProgressBar
+                fillStyle={{}}
+                backgroundStyle={{backgroundColor: '#cccccc', borderRadius: 2}}
+                style={{marginTop: 10, width: 300}}
+                progress={this.state.progress}
+              />
+            </View>
+            <SearchResultFooter />
           </View>
-          <View style={styles.searchContent}>
-            <ProgressBar
-              fillStyle={{}}
-              backgroundStyle={{backgroundColor: '#cccccc', borderRadius: 2}}
-              style={{marginTop: 10, width: 300}}
-              progress={this.state.progress}
-            />
-          </View>
-          <SearchResultFooter />
-  			</View>
       )
     }
     if (this.state.progress) {
@@ -210,15 +212,15 @@ class SearchResultList extends Component {
     }
     if (this.state.errormsg) {
       return (
-  			<View style={styles.fullWidthContainer}>
-          <View style={myStyles.search}>
-            <SearchHeader placeName={this.props.search.form.fields.place.fullName}/>
+          <View style={styles.fullWidthContainer}>
+            <View style={myStyles.search}>
+              <SearchHeader placeName={this.props.search.form.fields.place.fullName}/>
+            </View>
+            <View style={styles.searchContent}>
+              <Text style={styles.welcome}>{this.state.errormsg}</Text>
+            </View>
+            <SearchResultFooter />
           </View>
-          <View style={styles.searchContent}>
-            <Text style={styles.welcome}>{this.state.errormsg}</Text>
-          </View>
-          <SearchResultFooter />
-  			</View>
       )
     }
 
@@ -227,7 +229,6 @@ class SearchResultList extends Component {
         <View style={myStyles.search}>
           <SearchHeader placeName={this.props.search.form.fields.place.fullName}/>
         </View>
-
         <ListView
           dataSource={this.state.dataSource}
           renderRow={this.renderRow}
@@ -236,7 +237,7 @@ class SearchResultList extends Component {
           style={myStyles.searchListView}
         />
         <SearchResultFooter />
-			</View>
+      </View>
 		)
 	}
 

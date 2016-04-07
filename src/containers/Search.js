@@ -118,12 +118,9 @@ class Search extends Component {
     var _scrollView: ScrollView;
     return (
       <View style={styles.fullWidthContainer}>
-
-
         <View style={[styles.searchFilter, {top: 60}]}>
 
           <View style={[styles.searchFilterButton]}>
-
             <View style = {{flex:1, flexDirection: 'row'}}>
               <LikeTabButton name={'ban'}
                 onPress={this._onLoaiTinChange.bind(this)}
@@ -132,8 +129,8 @@ class Search extends Component {
                 onPress={this._onLoaiTinChange.bind(this)}
                 selected={this.props.search.form.fields.loaiTin === 'thue'}>CHO THUÊ</LikeTabButton>
             </View>
-
           </View>
+
           <ScrollView
             ref={(scrollView) => { _scrollView = scrollView; }}
             automaticallyAdjustContentInsets={false}
@@ -160,7 +157,7 @@ class Search extends Component {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={this._onPropertyTypesChoosed}>
+                onPress={this._onPropertyTypesPressed}>
                 <View style={styles.searchFilterAttribute}>
                   <Text style={styles.searchAttributeLabel}>
                   Loại nhà đất
@@ -201,6 +198,7 @@ class Search extends Component {
 
             </ScrollView>
         </View>
+
         <View style={styles.searchButton}>
           <View style={styles.searchButtonWrapper}>
             <Button onPress={this.onCancel}
@@ -237,6 +235,7 @@ class Search extends Component {
   }
 
   onApply() {
+    console.log("Search.onApply");
     this.props.actions.onSearchFieldChange("listData", []);
     console.log("Search cridential:");
     console.log(this.props.search.form.fields);
@@ -249,7 +248,6 @@ class Search extends Component {
       var bbox = [lon1, lat1, lon2, lat2];
       this.props.actions.onSearchFieldChange("bbox", bbox);
     }
-
     Actions.SearchResultList();
   }
 
@@ -267,7 +265,7 @@ class Search extends Component {
     this.props.actions.onSearchFieldChange("orderBy", '');
   }
 
-  _onPropertyTypesChoosed() {
+  _onPropertyTypesPressed() {
     Actions.PropertyTypes();
   }
 

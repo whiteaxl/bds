@@ -52,30 +52,27 @@ function mapDispatchToProps(dispatch) {
 }
 
 class MMapMarker extends Component {
+  constructor(props){
+    super(props);
+    this.state = { mcolor: gui.blue1};
+  }
 	
 	render() {
-		var mcolor = this.props.marker.color ? this.props.marker.color : gui.blue1;
-		if (this.state && this.state.mcolor){
-			mcolor = this.state.mcolor;
-		}
-    
 		return(
 			<MapView.Marker
-            	coordinate={this.props.marker.coordinate}
-            	onSelect={this._onMarkerSelect.bind(this)}
+              coordinate={this.props.marker.coordinate}
+            	onSelect={this._onSelect.bind(this)}
           	>
-            	<PriceMarker color={mcolor} 
-            		amount={this.props.marker.price} 
+            	<PriceMarker color={this.state.mcolor} 
+            		amount={this.props.marker.price}
             		unit={this.props.marker.unit}/>
           	</MapView.Marker>
 		);
 	}
 
-	_onMarkerSelect(event) {
-    this.props.actions.onSearchFieldChange("marker", this.props.marker);
-    console.log("seleled marker");
-    console.log(this.props.search.form.fields.marker);
-		this.setState({mcolor: "grey"});
+	_onSelect(event) {
+        this.props.actions.onSearchFieldChange("marker", this.props.marker);
+	    this.setState({mcolor: "grey"});
 	}
 };
 
