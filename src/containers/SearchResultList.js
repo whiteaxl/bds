@@ -73,7 +73,9 @@ class SearchResultList extends Component {
       errormsg: null
     };
   }
+  
   isChangeSearchFilter() {
+    console.log("Is changed search filter");
     var _loaiTin = this.props.search.form.fields.loaiTin;
     var _loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
     var _gia = this.props.search.form.fields.gia;
@@ -82,7 +84,8 @@ class SearchResultList extends Component {
     var _dienTich = this.props.search.form.fields.dienTich;
     var _orderBy = this.props.search.form.fields.orderBy;
     var _placeFullName = this.props.search.form.fields.place.fullName;
-
+    var _bbox = this.props.search.form.fields.bbox;
+    console.log(_bbox);
     var loaiTin = null;
     var loaiNhaDat = null;
     var gia = null;
@@ -92,6 +95,7 @@ class SearchResultList extends Component {
     var orderBy = null;
     var loaded = false;
     var placeFullName = null;
+    var bbox = null;
 
     if (this.state) {
       loaiTin = this.state.loaiTin;
@@ -103,15 +107,18 @@ class SearchResultList extends Component {
       orderBy = this.state.orderBy;
       loaded = this.state.loaded;
       placeFullName = this.state.placeFullName;
+      bbox = this.state.bbox;
+      console.log(bbox);
     }
     if (loaded && _loaiTin === loaiTin && _loaiNhaDat === loaiNhaDat
       && _gia === gia && _soPhongNgu === soPhongNgu && _soTang === soTang
       && _dienTich === dienTich && _orderBy === orderBy
-        && _placeFullName == placeFullName) {
+      && _placeFullName == placeFullName && _bbox == bbox) {
       return false;
     }
     return true;
   }
+
   updateSearchFilterState(dataSource, errormsg) {
     var _loaiTin = this.props.search.form.fields.loaiTin;
     var _loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
@@ -121,6 +128,7 @@ class SearchResultList extends Component {
     var _dienTich = this.props.search.form.fields.dienTich;
     var _orderBy = this.props.search.form.fields.orderBy;
     var _placeFullName = this.props.search.form.fields.place.fullName;
+    var _bbox = this.props.search.form.fields.bbox;
 
     this.setState({
       loaiTin: _loaiTin,
@@ -133,10 +141,11 @@ class SearchResultList extends Component {
       placeFullName : _placeFullName,
       dataSource: dataSource,
       errormsg: errormsg,
-
+      bbox: _bbox,
       loaded: true
     })
   }
+
   refreshListData() {
     var loaiTin = this.props.search.form.fields.loaiTin;
     var loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
@@ -146,11 +155,12 @@ class SearchResultList extends Component {
     var dienTich = this.props.search.form.fields.dienTich;
     var orderBy = this.props.search.form.fields.orderBy;
     var placeName = this.props.search.form.fields.place.fullName;
-
+    var _bbox = this.props.search.form.fields.bbox;
+    
     var dataBlob = [];
     this.state.dataSource = null;
     this.state.errormsg = null;
-    Api.getItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName)
+    Api.getMapItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName, _bbox)
       .then((data) => {
         if (data.list) {
           data.list.map(function(aRow) {
@@ -167,6 +177,7 @@ class SearchResultList extends Component {
         }
       });
   }
+
   render() {
     if (this.isChangeSearchFilter()) {
       this.refreshListData();
@@ -208,6 +219,7 @@ class SearchResultList extends Component {
   			</View>
       )
     }
+
     return (
       <View style={styles.fullWidthContainer}>
         <View style={myStyles.search}>
@@ -225,6 +237,7 @@ class SearchResultList extends Component {
 			</View>
 		)
 	}
+
   renderRow(rowData, sectionID, rowID) {
     var diaChi = rowData.diaChi;
     var soPhongNgu = rowData.soPhongNgu;
@@ -282,6 +295,7 @@ class SearchResultList extends Component {
         </View>
       );
     }
+
     return (
         <View>
 

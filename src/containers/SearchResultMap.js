@@ -19,8 +19,7 @@ import React, { Text, View, Component, StyleSheet, Navigator, TouchableOpacity, 
 import {Actions} from 'react-native-router-flux';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
-import MapApi from '../lib/MapApi';
-import styles from './styles';
+
 import SearchHeader from '../components/SearchHeader';
 
 import gui from '../lib/gui';
@@ -63,8 +62,6 @@ function mapDispatchToProps(dispatch) {
 var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / (height-40);
-const LATITUDE = 10.75759410858154;
-const LONGITUDE = 106.7169036865234;
 const LATITUDE_DELTA = 0.0465;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
@@ -73,18 +70,20 @@ class SearchResultMap extends Component {
   constructor(props) {
     super(props);
 
-    var marker = this.props.search.form.fields.listData;
-    
+    var region = {latitude : 21.0226823,
+                  longitude: 105.7669236,
+                  latituDelta: LATITUDE_DELTA,
+                  longitudeDelta: LONGITUDE_DELTA};
+
+    if ( this.props.search.form.fields.bbox && this.props.search.form.fields.bbox.length == 4){
+      region = ApiUtils.getRegion(this.props.search.form.fields.bbox);
+      region.longitudeDelta = region.latitudeDelta * ASPECT_RATIO;
+    }
     this.state ={
       modal: false,
       mapType: "standard",
       allMarker: this.props.search.form.fields.listData ? this.props.search.form.fields.listData.length : 0,
-      region: {
-        latitude: this.props.search.form.fields.listData[0] ? this.props.search.form.fields.listData[0].hdLat : LATITUDE,
-        longitude: this.props.search.form.fields.listData[0] ? this.props.search.form.fields.listData[0].hdLong : LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA,
-      },
+      region: region,
     }
   }
 
@@ -108,48 +107,47 @@ class SearchResultMap extends Component {
           i++;
         }
       });
-
     }
-    
+
     return (
-      <View style={styles.fullWidthContainer}>
+      <View style={myStyles.fullWidthContainer}>
         <View style={myStyles.search}>
             <SearchHeader placeName={this.props.search.form.fields.place.fullName}/>
         </View>
-        <View  style={myStyles.map}>
-        <MapView 
-          region={this.state.region}
-          onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
-          onPress={this._onPress()}
-          onMarkerPress={this._onMarkerPress.bind(this)}
-          onMarkerSelect={this.props.openModal}
-          style={myStyles.mapView}
-          mapType={this.state.mapType}
-        >
-          {markerList.map( marker =>(
-            <MMapMarker marker={marker}>
-            </MMapMarker>
-          ))}
-        </MapView>
-        <View style={myStyles.buttonContainer}>
-          <View style={[myStyles.bubble, myStyles.button, {width: 80}]}>
-            <Text style={myStyles.text}> Sum = {this.state.allMarker} </Text>
+        <View style={myStyles.map}>
+          <MapView 
+            region={this.state.region}
+            onRegionChange={this.onRegionChange.bind(this)}
+            onRegionChangeComplete={this.onRegionChangeComplete.bind(this)}
+            onPress={this._onPress()}
+            onMarkerPress={this._onMarkerPress.bind(this)}
+            onMarkerSelect={this.props.openModal}
+            style={myStyles.mapView}
+            mapType={this.state.mapType}
+          >
+            {markerList.map( marker =>(
+              <MMapMarker marker={marker}>
+              </MMapMarker>
+            ))}
+          </MapView>
+          <View style={myStyles.buttonContainer}>
+            <View style={[myStyles.bubble, myStyles.button, {width: 80}]}>
+              <Text style={myStyles.text}> Sum = {this.state.allMarker} </Text>
+            </View>
+            <TouchableOpacity onPress={this._onSatellitePress.bind(this)} style={[myStyles.bubble, myStyles.button]}>
+              <Text style={myStyles.text}>Satellite</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this._onHybridPress.bind(this)} style={[myStyles.bubble, myStyles.button]}>
+              <Text style={myStyles.text}>Hybrid</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={this._onStandardPress.bind(this)} style={[myStyles.bubble, myStyles.button]}>
+              <Text style={myStyles.text}>Standard</Text>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={this._onSatellitePress.bind(this)} style={[myStyles.bubble, myStyles.button]}>
-            <Text style={myStyles.text}>Satellite</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this._onHybridPress.bind(this)} style={[myStyles.bubble, myStyles.button]}>
-            <Text style={myStyles.text}>Hybrid</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={this._onStandardPress.bind(this)} style={[myStyles.bubble, myStyles.button]}>
-            <Text style={myStyles.text}>Standard</Text>
-          </TouchableOpacity>
-        </View>
         </View>
 
-        <View style={myStyles.searchButton}>
+        <View style={myStyles.tabbar}>
           <View style={myStyles.searchListButton}>
-
             <Icon.Button onPress={this._onLocalInfoPressed}
               name="location-arrow" backgroundColor="white"
               underlayColor="gray" color={gui.blue1}
@@ -176,16 +174,19 @@ class SearchResultMap extends Component {
     )
   }
 
-  onRegionChangeComplete(region) {
-    var bbox = ApiUtils.getBbox(region);
-    this.refreshListData(bbox);
-
+  onRegionChange(region) {
     this.setState({
       region: region
     });
   }
 
-  refreshListData(bbox) {
+  onRegionChangeComplete(region) {
+    var bbox = ApiUtils.getBbox(this.state.region);
+    this.props.actions.onSearchFieldChange("bbox", bbox);
+    this.refreshListData();
+  }
+
+  refreshListData() {
     var loaiTin = this.props.search.form.fields.loaiTin;
     var loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
     var gia = this.props.search.form.fields.gia;
@@ -194,6 +195,7 @@ class SearchResultMap extends Component {
     var dienTich = this.props.search.form.fields.dienTich;
     var orderBy = this.props.search.form.fields.orderBy;
     var placeName = this.props.search.form.fields.placeName;
+    var bbox = this.props.search.form.fields.bbox;
     var dataBlob = [];
     Api.getMapItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName, bbox)
       .then((data) => {
@@ -252,7 +254,7 @@ class SearchResultMap extends Component {
   }
 
   _onListPressed() {
-    Actions.pop();
+    Actions.SearchResultList();
   }
 
 }
@@ -261,6 +263,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(SearchResultMap);
 
 // Later on in your styles..
 var myStyles = StyleSheet.create({
+  fullWidthContainer: {
+    flex: 1,
+    alignItems: 'stretch',
+    backgroundColor: '#F5FCFF',
+  },
   container: {
     position: 'absolute',
     top: 0,
@@ -281,26 +288,13 @@ var myStyles = StyleSheet.create({
   map: {
     flex: 1,
     marginTop: 30,
-    marginBottom: 0
+    marginBottom: 50
   },
-
   mapView: {
     flex: 1,
     marginTop: 0,
     marginBottom: 0
   },
-
-  searchListButton: {
-      flexDirection: 'row',
-      justifyContent: 'space-around',
-      backgroundColor: 'white',
-  },
-
-  searchButton: {
-      alignItems: 'stretch',
-      justifyContent: 'flex-end',
-  },
-
   search: {
       top:0,
       alignItems: 'stretch',
@@ -328,5 +322,18 @@ var myStyles = StyleSheet.create({
     marginVertical: 5,
     marginBottom: 0,
     backgroundColor: 'transparent',
+  },
+
+  tabbar: {
+    position: 'absolute',
+    top: height-50,
+    left: 0,
+    right: 0,
+    bottom: 0,
+  },
+  searchListButton: {
+      flexDirection: 'row',
+      justifyContent: 'space-around',
+      backgroundColor: 'white',
   },
 });

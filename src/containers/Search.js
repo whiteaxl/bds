@@ -23,13 +23,11 @@ import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
-import CommonHeader from '../components/CommonHeader';
 
 import LikeTabButton from '../components/LikeTabButton';
 import RangeUtils from "../lib/RangeUtils"
 import RangePicker from "../components/RangePicker"
 
-import CommonUtils from "../lib/CommonUtils"
 import LoaiNhaDat from "../assets/DanhMuc"
 
 import SearchInput from '../components/SearchInput';
@@ -238,6 +236,16 @@ class Search extends Component {
     this.props.actions.onSearchFieldChange("listData", []);
     console.log("Search cridential:");
     console.log(this.props.search.form.fields);
+
+    if (this.props.search.form.fields.place.geometry) {
+      var lon1 = this.props.search.form.fields.place.geometry.viewport.southwest.lng;
+      var lat1 = this.props.search.form.fields.place.geometry.viewport.southwest.lat;
+      var lon2 = this.props.search.form.fields.place.geometry.viewport.northeast.lng;
+      var lat2 = this.props.search.form.fields.place.geometry.viewport.northeast.lat;
+      var bbox = [lon1, lat1, lon2, lat2];
+      this.props.actions.onSearchFieldChange("bbox", bbox);
+    }
+
     Actions.SearchResultList();
   }
 

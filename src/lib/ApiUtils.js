@@ -16,6 +16,15 @@ var ApiUtils = {
     var latMin = latMax - region.latitudeDelta;
     var lonMin = lonMax - region.longitudeDelta;
     return [lonMin, latMin, lonMax, latMax];
+  },
+
+  getRegion: function(bbox){
+    var latitudeDelta = bbox[3] - bbox[1];
+    var longitudeDelta = bbox[2] - bbox[0];
+    var latitude = bbox[3] - latitudeDelta/2;
+    var longitude = bbox[2] - longitudeDelta/2;
+
+    return {latitude: latitude, longitude: longitude, latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta};
   }
 };
 

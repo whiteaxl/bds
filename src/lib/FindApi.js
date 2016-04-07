@@ -86,8 +86,12 @@ var Api = {
   },
 
   getMapItems: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName, bbox) {
-    var fullParams = this.createFullParams(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, placeName, orderBy);
-    if (bbox){
+    var fullParams = this.createFullParams(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName);
+
+    console.log("===========get Map Item");
+    console.log(bbox);
+    
+    if (bbox && bbox.length==4){
       fullParams.push({key:'geoBox', value: bbox});
     }
     var params = {};
@@ -95,7 +99,7 @@ var Api = {
       params[oneParam.key] = oneParam.value;
     })
     params['limit'] = maxRows;
-    //console.log(rootUrl + "?" + JSON.stringify(params));
+    console.log(rootUrl + "?" + JSON.stringify(params));
     return fetch(`${findUrl}`, {
       method: 'POST',
       headers: {
