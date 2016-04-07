@@ -1,7 +1,7 @@
 // Import some code we need
 import React, {View, Component, Text, StyleSheet, Dimensions, AlertIOS } from 'react-native';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Button from 'react-native-button';
 
 var Communications = require('react-native-communications');
 
@@ -11,28 +11,22 @@ var SearchResultDetailFooter = React.createClass({
     return <View style={myStyles.searchButton}>
       <View style={myStyles.searchListButton}>
         <View style={myStyles.searchListButtonItem1}>
-          <Icon.Button onPress={this.onCall}
-            name="phone" backgroundColor="white"
-            underlayColor="gray" color='gray'
-            style={myStyles.searchListButtonText} >
-            Call
-          </Icon.Button>
+          <Button onPress={this.onCall}
+            style={[myStyles.searchListButtonText, {color: 'gray'}]} >
+            Gọi điện
+          </Button>
         </View>
         <View style={myStyles.searchListButtonItem2}>
-          <Icon.Button onPress={this.onChat}
-            name="commenting-o" backgroundColor="gray"
-            underlayColor="white" color='white'
-            style={myStyles.searchListButtonText} >
+          <Button onPress={this.onChat}
+            style={[myStyles.searchListButtonText, {color: 'white'}]} >
             Chat
-          </Icon.Button>
+          </Button>
         </View>
         <View style={myStyles.searchListButtonItem3}>
-          <Icon.Button onPress={this.onAlertComment}
-            name="comment-o" backgroundColor='#0070C0'
-            underlayColor="white" color='white'
-            style={myStyles.searchListButtonText} >
-            Comment
-          </Icon.Button>
+          <Button onPress={this.onAlertComment}
+            style={[myStyles.searchListButtonText, {color: 'white'}]} >
+            Lưu tin
+          </Button>
         </View>
       </View>
     </View>
@@ -76,8 +70,7 @@ var myStyles = StyleSheet.create({
       width: Dimensions.get('window').width/3,
   },
   searchListButtonText: {
-      margin: 0,
-      flexDirection: 'column',
+      margin: 10,
       alignItems: 'center',
       width: Dimensions.get('window').width/3,
   },

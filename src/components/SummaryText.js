@@ -4,17 +4,25 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import gui from '../lib/gui';
 
-class CollapsiblePanel extends Component{
+class SummaryText extends Component{
     constructor(props){
         super(props);
 
         this.icons = {     //Step 2
-            'up'    : 'angle-up',
-            'down'  : 'angle-down'
+            'up'    : '\nThu gọn',
+            'down'  : '... Xem thêm'
         };
 
+        var maxDiaChiLength = 80;
+        var longText = props.longText;
+        var length = longText.length;
+        if (length > maxDiaChiLength) {
+          length = maxDiaChiLength;
+        }
+        var shortText = longText.substring(0,length);
         this.state = {       //Step 3
-            title       : props.title,
+            shortText       : shortText,
+            longText       : longText,
             expanded    : props.expanded,
             animation   : new Animated.Value()
         };
@@ -52,6 +60,14 @@ class CollapsiblePanel extends Component{
 
 
     render(){
+        if (this.state.shortText == this.state.longText) {
+            return (
+                <View>
+                    <Text style={styles.text}>{this.state.shortText} </Text>
+                </View>
+            )
+        }
+
         let icon = this.icons['down'];
 
         if(this.state.expanded){
@@ -63,16 +79,10 @@ class CollapsiblePanel extends Component{
 
                   <TouchableOpacity
                     onPress={this.toggle.bind(this)}>
-                    <View style={styles.titleContainer} onLayout={this._setMinHeight.bind(this)}>
-                        <Text style={styles.title}>{this.state.title}</Text>
-                        <Icon.Button onPress={this.toggle.bind(this)}
-                            name={icon} backgroundColor="transparent"
-                            underlayColor="transparent" color={'gray'}
-                            style={styles.button} />
-                    </View>
-
-                    <View style={styles.body} onLayout={this._setMaxHeight.bind(this)}>
-                        {this.props.children}
+                    <View style={styles.minContainer} onLayout={this._setMinHeight.bind(this)}>
+                        <Text style={styles.text}>{this.state.shortText}
+                            <Text style={styles.button}>{icon}</Text>
+                        </Text>
                     </View>
                   </TouchableOpacity>
 
@@ -85,12 +95,10 @@ class CollapsiblePanel extends Component{
 
                   <TouchableOpacity
                     onPress={this.toggle.bind(this)}>
-                    <View style={styles.titleContainer} onLayout={this._setMinHeight.bind(this)}>
-                        <Text style={styles.title}>{this.state.title}</Text>
-                        <Icon.Button onPress={this.toggle.bind(this)}
-                            name={icon} backgroundColor="transparent"
-                            underlayColor="transparent" color={'gray'}
-                            style={styles.button} />
+                    <View style={styles.maxContainer} onLayout={this._setMaxHeight.bind(this)}>
+                        <Text style={styles.text}>{this.state.longText}
+                            <Text style={styles.button}>{icon}</Text>
+                        </Text>
                     </View>
                   </TouchableOpacity>
 
@@ -104,40 +112,43 @@ class CollapsiblePanel extends Component{
 var styles = StyleSheet.create({
     container   : {
         backgroundColor: 'transparent',
-        marginLeft: 15,
-        marginRight: 15,
-        marginTop: 10,
-        marginBottom: 10,
+        margin: 0,
         overflow:'hidden',
-        width: Dimensions.get('window').width-30
     },
-    titleContainer : {
+    maxContainer : {
         flexDirection: 'row',
 		alignItems: 'flex-start',
-        justifyContent: 'space-between',
+        justifyContent: 'flex-start',
         margin: 0
     },
-    title       : {
+    minContainer : {
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        margin: 0
+    },
+    text       : {
         flex    : 1,
-        color   :'black',
-        fontSize: 16,
+        color   :'gray',
+        fontFamily: 'Open Sans',
+        fontSize: 14,
+        textAlign: 'left',
+        backgroundColor: 'transparent',
+        width: Dimensions.get('window').width-20,
+        marginLeft: 0,
+    },
+    button      : {
+        flex    : 1,
+        color   :'blue',
+        fontFamily: 'Open Sans',
+        fontSize: 14,
         fontWeight: 'bold',
         textAlign: 'left',
         backgroundColor: 'transparent',
         marginLeft: 0,
-        width: Dimensions.get('window').width-60
-    },
-    button      : {
-        marginTop: 0,
-        marginBottom: 0,
-        justifyContent: 'flex-end',
-        height: 20,
-        width: 30,
-    },
-    body        : {
-        margin: 0,
-        marginTop: 10,
+        alignItems: 'flex-start',
+        marginBottom: 0
     }
 });
 
-export default CollapsiblePanel;
+export default SummaryText;
