@@ -215,12 +215,11 @@ class Home extends Component {
   }
 
   _onHotDealPressed(loaiTin, loaiNhaDat){
-    /*this.props.actions.onSearchFieldChange("loaiTin", loaiTin)
+    this.props.actions.onSearchFieldChange("loaiTin", loaiTin)
     this.props.actions.onSearchFieldChange("loaiNhaDat", loaiNhaDat);
     console.log("Search cridential:");
     console.log(this.props.search.form.fields);
     Actions.SearchResultList();
-    */
   }
 }
 

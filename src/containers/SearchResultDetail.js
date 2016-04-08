@@ -15,7 +15,7 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component, Image, Dimensions, ScrollView, StyleSheet, StatusBarIOS } from 'react-native'
+import React, { Text, View, Component, Image, Dimensions, ScrollView, StyleSheet, StatusBarIOS, TouchableHighlight } from 'react-native'
 
 var ShareManager = React.NativeModules.ShareManager;
 
@@ -265,9 +265,12 @@ class SearchResultDetail extends Component {
                 </View>
                 <View style={detailStyles.lineBorder2} />
                 <View style={detailStyles.searchMapView}>
-                  <Image style={detailStyles.imgMapView}
-                     source={{uri: `${mapUrl}`}}>
-                  </Image>
+                  <TouchableHighlight onPress={() => this._onMapPressed()}
+                    style={detailStyles.mapViewButton}>
+                    <Image style={detailStyles.imgMapView}
+                       source={{uri: `${mapUrl}`}}>
+                    </Image>
+                  </TouchableHighlight>
                 </View>
                 <View style={detailStyles.lineBorder2} />
                 <CollapsiblePanel title="Liên Hệ" expanded={false}>
@@ -288,6 +291,10 @@ class SearchResultDetail extends Component {
 			</View>
 		)
 	}
+
+  _onMapPressed() {
+    Actions.SearchMapDetail();
+  }
 
   renderTwoNormalProps(prop1, prop2) {
     if (prop1 && prop2) {
@@ -458,6 +465,10 @@ var detailStyles = StyleSheet.create({
   imgMapView: {
     width: mapSize,
     height: mapSize/2,
+  },
+  mapViewButton: {
+    backgroundColor: 'transparent',
+    width: mapSize,
     marginLeft: 15,
     marginRight: 15
   },

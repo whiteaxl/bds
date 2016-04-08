@@ -68,7 +68,8 @@ class SearchResultList extends Component {
     this.state = {
       progress: 0,
       dataSource: null,
-      errormsg: null
+      errormsg: null,
+      loading: false
     };
 
     StatusBarIOS.setStyle('light-content');
@@ -92,7 +93,7 @@ class SearchResultList extends Component {
     var soTang = null;
     var dienTich = null;
     var orderBy = null;
-    var loaded = false;
+    var loading = false;
     var placeFullName = null;
     var bbox = null;
 
@@ -104,14 +105,14 @@ class SearchResultList extends Component {
       soTang = this.state.soTang;
       dienTich = this.state.dienTich;
       orderBy = this.state.orderBy;
-      loaded = this.state.loaded;
+      loading = this.state.loading;
       placeFullName = this.state.placeFullName;
       bbox = this.state.bbox;
     }
-    if (loaded && _loaiTin === loaiTin && _loaiNhaDat === loaiNhaDat
+    if (loading || (_loaiTin === loaiTin && _loaiNhaDat === loaiNhaDat
       && _gia === gia && _soPhongNgu === soPhongNgu && _soTang === soTang
       && _dienTich === dienTich && _orderBy === orderBy
-      && _placeFullName == placeFullName && _bbox == bbox) {
+      && _placeFullName == placeFullName && _bbox == bbox)) {
       console.log("SearhResultList: Didn't change search filter");
       return false;
     }
@@ -142,12 +143,14 @@ class SearchResultList extends Component {
       dataSource: dataSource,
       errormsg: errormsg,
       bbox: _bbox,
-      loaded: true
+      loading: false
     }
   }
 
   refreshListData() {
-    console.log("SearchResultList update list of Data")
+    console.log("SearchResultList update list of Data");
+    this.state.loading = true;
+
     var loaiTin = this.props.search.form.fields.loaiTin;
     var loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
     var gia = this.props.search.form.fields.gia;
@@ -307,6 +310,7 @@ class SearchResultList extends Component {
 
             <Swiper style={myStyles.wrapper} height={imgHeight}
                     showsButtons={false} autoplay={false} loop={false}
+                    onMomentumScrollEnd={function(e, state, context){console.log('index:', state.index)}}
                     dot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]} />}
                     activeDot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]}/>}
             >

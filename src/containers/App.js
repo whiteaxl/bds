@@ -79,6 +79,7 @@ import SearchResultMap from './SearchResultMap';
 import PropertyTypes from '../components/PropertyTypes';
 import OrderPicker from '../components/OrderPicker';
 import SearchResultDetail from './SearchResultDetail';
+import SearchMapDetail from './SearchMapDetail';
 
 
 import Profile from './Profile';
@@ -177,7 +178,7 @@ class App extends Component {
             	<Route name='SearchResultDetail' component={SearchResultDetail} schema='main' title="Chi tiết" hideNavBar={true} />
 				<Route name='SearchSuggestion' component={SearchSuggestion} schema='main' title="Serch Text" hideNavBar={true} />
 				<Route name='TestListView' component={TestListView} schema='main' title="Serch Text" hideNavBar={true} />
-
+				<Route name='SearchMapDetail' component={SearchMapDetail} schema='main' title="Bản đồ" hideNavBar={true} />
 
 
 				<Route name='Home' hideNavBar={true} type='replace'>
