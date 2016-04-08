@@ -23,6 +23,8 @@
 		753605FC1CABB6D600E17AEA /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 753605EF1CABB6BF00E17AEA /* libAirMaps.a */; };
 		758115AE1CA7C14F001D4DBC /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 758115AD1CA7C14F001D4DBC /* FontAwesome.ttf */; };
 		75B73F751C81672D0088D254 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75B73F741C8166C60088D254 /* libRNDeviceInfo.a */; };
+		75E263B11CB799C800313ADE /* RelandIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75E263B01CB799C800313ADE /* RelandIcon.ttf */; };
+		75E263B31CB7A42600313ADE /* TruliaIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75E263B21CB7A42600313ADE /* TruliaIcon.ttf */; };
 		75F3DF2F1C575378009B3BDF /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75F3DF2E1C575378009B3BDF /* AddressBook.framework */; };
 		75F3DF311C57537D009B3BDF /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75F3DF301C57537D009B3BDF /* StoreKit.framework */; };
 		75F3DF331C575387009B3BDF /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75F3DF321C575387009B3BDF /* SystemConfiguration.framework */; };
@@ -157,6 +159,8 @@
 		753605EA1CABB6BF00E17AEA /* AirMaps.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
 		758115AD1CA7C14F001D4DBC /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		75B73F651C8166C60088D254 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
+		75E263B01CB799C800313ADE /* RelandIcon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = RelandIcon.ttf; path = ../src/assets/font/RelandIcon.ttf; sourceTree = "<group>"; };
+		75E263B21CB7A42600313ADE /* TruliaIcon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = TruliaIcon.ttf; path = ../src/assets/font/TruliaIcon.ttf; sourceTree = "<group>"; };
 		75F3DF2E1C575378009B3BDF /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
 		75F3DF301C57537D009B3BDF /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		75F3DF321C575387009B3BDF /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
@@ -345,6 +349,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				75E263B21CB7A42600313ADE /* TruliaIcon.ttf */,
+				75E263B01CB799C800313ADE /* RelandIcon.ttf */,
 				75F9DF3E1CB4C47D0075C3DD /* OpenSans-Bold.ttf */,
 				75F9DF3F1CB4C47D0075C3DD /* OpenSans-BoldItalic.ttf */,
 				75F9DF401CB4C47D0075C3DD /* OpenSans-ExtraBold.ttf */,
@@ -595,7 +601,9 @@
 				758115AE1CA7C14F001D4DBC /* FontAwesome.ttf in Resources */,
 				75F9DF4D1CB4C47D0075C3DD /* OpenSans-Light.ttf in Resources */,
 				75F9DF491CB4C47D0075C3DD /* OpenSans-BoldItalic.ttf in Resources */,
+				75E263B31CB7A42600313ADE /* TruliaIcon.ttf in Resources */,
 				75F9DF4A1CB4C47D0075C3DD /* OpenSans-ExtraBold.ttf in Resources */,
+				75E263B11CB799C800313ADE /* RelandIcon.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

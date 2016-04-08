@@ -12,7 +12,7 @@ var CommonHeader = React.createClass({
     return <View style={myStyles.customPageHeader}>
       <Icon.Button onPress={this._onBack}
         name="angle-left" backgroundColor="transparent"
-        underlayColor="transparent" color={gui.blue1}
+        underlayColor="transparent" color={gui.mainColor}
         style={myStyles.search} >
       </Icon.Button>
       <View style={myStyles.customPageTitle}>
@@ -46,7 +46,7 @@ customPageHeader: {
       alignItems: 'stretch',
   },
   customPageTitleText: {
-      color: gui.blue1,
+      color: gui.mainColor,
       fontSize: 14,
       fontWeight: 'bold',
       textAlign: 'center',

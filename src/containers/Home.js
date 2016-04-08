@@ -64,7 +64,7 @@ class Home extends Component {
       <View style={styles.fullWidthContainer}>
         <View style={homeStyles.pageHeader}>
           <Icon.Button onPress={this.handleSearchButton}
-            name="search" backgroundColor={gui.blue1}
+            name="search" backgroundColor={gui.mainColor}
             underlayColor="transparent"
             style={styles.search}>
             Tìm kiếm
@@ -244,7 +244,7 @@ var homeStyles = StyleSheet.create({
   pageHeader: {
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: gui.blue1,
+      backgroundColor: gui.mainColor,
       height: 60
   },
   linearGradient: {

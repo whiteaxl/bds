@@ -3,8 +3,8 @@
 import ApiUtils from './ApiUtils';
 import RangeUtils from "../lib/RangeUtils"
 
-var rootUrl = 'http://203.162.13.101:5000/api';
-//var rootUrl = 'http://localhost:5000/api';
+//var rootUrl = 'http://203.162.13.101:5000/api';
+var rootUrl = 'http://localhost:5000/api';
 var findUrl = rootUrl + "/find";
 var placeUrl = rootUrl + "/findPlace";
 

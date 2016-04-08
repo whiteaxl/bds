@@ -34,7 +34,7 @@ const defaultStyles = {
   },
   cancel: {
     fontSize: 15,
-    color: gui.blue1,
+    color: gui.mainColor,
     width: 70,
     paddingTop: 4.5,
     paddingBottom: 4.5,

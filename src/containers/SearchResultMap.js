@@ -135,7 +135,7 @@ class SearchResultMap extends Component {
     return (
       <View style={styles.fullWidthContainer}>
         <View style={styles.title}>
-          <Text style={{color: gui.blue1}}> Số bất động sản trên bản đồ : {this.state.allMarker}</Text>
+          <Text style={{color: gui.mainColor}}> Số bất động sản trên bản đồ : {this.state.allMarker}</Text>
         </View>
         <View style={styles.search}>
           <SearchHeader placeName={this.props.search.form.fields.place.fullName}/>
@@ -170,19 +170,19 @@ class SearchResultMap extends Component {
           <View style={styles.searchListButton}>
             <Icon.Button onPress={this._onLocalInfoPressed}
               name="location-arrow" backgroundColor="white"
-              underlayColor="gray" color={gui.blue1}
+              underlayColor="gray" color={gui.mainColor}
               style={styles.searchListButtonText} >
               Local Info
             </Icon.Button>
             <Icon.Button onPress={this._onSaveSearchPressed}
               name="hdd-o" backgroundColor="white"
-              underlayColor="gray" color={gui.blue1}
+              underlayColor="gray" color={gui.mainColor}
               style={styles.searchListButtonText} >
               Lưu tìm kiếm
             </Icon.Button>
             <Icon.Button onPress={this._onListPressed}
               name="list" backgroundColor="white"
-              underlayColor="gray" color={gui.blue1}
+              underlayColor="gray" color={gui.mainColor}
               style={styles.searchListButtonText} >
               Danh sách
             </Icon.Button>
@@ -335,7 +335,7 @@ var styles = StyleSheet.create({
       justifyContent: 'flex-start',
   },
   bubble: {
-    backgroundColor: gui.blue1,
+    backgroundColor: gui.mainColor,
     paddingHorizontal: 5,
     paddingVertical: 5,
     borderRadius: 10,

@@ -420,7 +420,7 @@ var myStyles = StyleSheet.create({
       position: 'absolute',
       alignItems: 'stretch',
       justifyContent: 'center',
-      backgroundColor: gui.blue1,
+      backgroundColor: gui.mainColor,
       width: Dimensions.get('window').width,
       height: 60
   },

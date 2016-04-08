@@ -14,7 +14,7 @@ var CommonHeader = React.createClass({
     return <View style={mStyles.container}>
       <View style={mStyles.home}>
       <Icon.Button onPress={this._onHome}
-        name="home" backgroundColor={gui.blue1}
+        name="home" backgroundColor={gui.mainColor}
         underlayColor="gray" color="white"
         >
       </Icon.Button>
@@ -24,7 +24,7 @@ var CommonHeader = React.createClass({
       </View>
       <View style={mStyles.search}>
       <Icon.Button onPress={this._onSearch}
-        name="search" backgroundColor={gui.blue1}
+        name="search" backgroundColor={gui.mainColor}
         underlayColor="gray" color="white"
         >
       </Icon.Button>
@@ -48,20 +48,20 @@ var mStyles = StyleSheet.create({
       flexDirection: 'row',
       alignItems: 'stretch',
       justifyContent: 'space-between',
-      backgroundColor: gui.blue1,
+      backgroundColor: gui.mainColor,
       height: 60
   },
   search: {
       marginTop: 15,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: gui.blue1,
+      backgroundColor: gui.mainColor,
   },
   home: {
       marginTop: 15,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: gui.blue1,
+      backgroundColor: gui.mainColor,
   },
   text: {
     backgroundColor: '#F5FCFF',

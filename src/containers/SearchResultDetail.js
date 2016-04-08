@@ -244,22 +244,22 @@ class SearchResultDetail extends Component {
                 <View style={detailStyles.shareButton}>
                   <Icon.Button onPress={this._onShare}
                     name="twitter" backgroundColor="transparent"
-                    underlayColor="gray" color={gui.blue1}
+                    underlayColor="gray" color={gui.mainColor}
                     style={detailStyles.wrapper} >
                   </Icon.Button>
                   <Icon.Button onPress={this._onShare}
                     name="facebook" backgroundColor="transparent"
-                    underlayColor="gray" color={gui.blue1}
+                    underlayColor="gray" color={gui.mainColor}
                     style={detailStyles.wrapper} >
                   </Icon.Button>
                   <Icon.Button onPress={this._onShare}
                     name="envelope-o" backgroundColor="transparent"
-                    underlayColor="gray" color={gui.blue1}
+                    underlayColor="gray" color={gui.mainColor}
                     style={detailStyles.wrapper} >
                   </Icon.Button>
                   <Icon.Button onPress={this._onShare}
                     name="share-alt" backgroundColor="transparent"
-                    underlayColor="gray" color={gui.blue1}
+                    underlayColor="gray" color={gui.mainColor}
                     style={detailStyles.wrapper} >
                   </Icon.Button>
                 </View>
@@ -333,10 +333,10 @@ class SearchResultDetail extends Component {
  //     this.setState({
  //       headerButtonColor: 'white'
  //     });
- //   } else if (event.nativeEvent.contentOffset.y > imgHeight-30 && this.state.headerButtonColor != gui.blue1) {
+ //   } else if (event.nativeEvent.contentOffset.y > imgHeight-30 && this.state.headerButtonColor != gui.mainColor) {
  //     StatusBarIOS.setStyle('default');
  //     this.setState({
- //       headerButtonColor: gui.blue1
+ //       headerButtonColor: gui.mainColor
  //     });
  //   }
  // }
@@ -413,7 +413,7 @@ var detailStyles = StyleSheet.create({
       flexDirection: 'row',
       alignItems: 'flex-start',
       justifyContent: 'space-between',
-      backgroundColor: gui.blue1,
+      backgroundColor: gui.mainColor,
       height: 60
   },
 	search: {

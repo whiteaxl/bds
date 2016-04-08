@@ -24,7 +24,7 @@ module.exports = StyleSheet.create({
 			flexDirection: 'row',
 			alignItems: 'flex-start',
 			justifyContent: 'space-between',
-			backgroundColor: gui.blue1,
+			backgroundColor: gui.mainColor,
 	},
 	customPageTitle: {
 			marginTop: 35,
@@ -42,14 +42,14 @@ module.exports = StyleSheet.create({
 	pageHeader: {
 	    alignItems: 'center',
 			justifyContent: 'center',
-			backgroundColor: gui.blue1,
+			backgroundColor: gui.mainColor,
 	},
 	search: {
 		marginTop: 25,
 	    flexDirection: 'row',
 	    alignItems: 'center',
 		justifyContent: 'center',
-		backgroundColor: gui.blue1,
+		backgroundColor: gui.mainColor,
 	},
   row: {
     justifyContent: 'center',
@@ -76,7 +76,7 @@ module.exports = StyleSheet.create({
 			marginRight: 15,
 			marginTop: 10,
 			marginBottom: 10,
-			color: gui.blue1
+			color: gui.mainColor
 	},
 	searchListViewRowAlign: {
 		backgroundColor: 'transparent',
@@ -160,7 +160,7 @@ module.exports = StyleSheet.create({
   searchButtonWrapper: {
 	    flexDirection: 'row',
 	    justifyContent: 'space-between',
-			backgroundColor: gui.blue1,
+			backgroundColor: gui.mainColor,
   },
 	searchButtonText: {
 			marginLeft: 15,

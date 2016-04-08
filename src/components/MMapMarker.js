@@ -54,7 +54,7 @@ function mapDispatchToProps(dispatch) {
 class MMapMarker extends Component {
   constructor(props){
     super(props);
-    this.state = { mcolor: gui.blue1};
+    this.state = { mcolor: gui.mainColor};
   }
 	
 	render() {

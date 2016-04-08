@@ -332,7 +332,7 @@ class SearchResultList extends Component {
 // Later on in your styles..
 var myStyles = StyleSheet.create({
   search: {
-    backgroundColor: gui.blue1,
+    backgroundColor: gui.mainColor,
     height: 30
   },
   wrapper: {

@@ -29,7 +29,7 @@ export default class SearchInput extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: gui.blue1,
+    backgroundColor: gui.mainColor,
     top: 0,
     position: 'absolute',
     left:0, 
