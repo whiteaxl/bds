@@ -156,15 +156,12 @@ class SearchResultMap extends Component {
               </MMapMarker>
             ))}
           </MapView>
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity onPress={this._onSatellitePress.bind(this)} style={[styles.bubble, styles.button]}>
-              <Text style={styles.text}>Satellite</Text>
+          <View style={styles.mapButtonContainer}>
+            <TouchableOpacity onPress={this._onDrawPressed.bind(this)} style={[styles.bubble, styles.button]}>
+                <Text style={styles.mapIcon}>Draw</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={this._onHybridPress.bind(this)} style={[styles.bubble, styles.button]}>
-              <Text style={styles.text}>Hybrid</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this._onStandardPress.bind(this)} style={[styles.bubble, styles.button]}>
-              <Text style={styles.text}>Standard</Text>
+            <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} style={[styles.bubble, styles.button]}>
+                <Icon name="location-arrow" style={styles.mapIcon} size={20}></Icon>
             </TouchableOpacity>
           </View>
         </View>
@@ -239,6 +236,13 @@ class SearchResultMap extends Component {
       });
   }
 
+  _onCurrentLocationPress(){
+    console.log("SearchResultMap._onCurrentLocationPress");
+  }
+
+    _onDrawPressed(){
+    console.log("SearchResultMap._onDrawPressed");
+  }
   _onSatellitePress(){
     this.setState({
       mapType: "satellite"
@@ -337,16 +341,23 @@ var styles = StyleSheet.create({
     borderRadius: 10,
   },
   button: {
-    width: 70,
-    paddingHorizontal: 5,
+    width: 50,
+    paddingVertical: 5,
     alignItems: 'center',
-    marginHorizontal: 10,
+    marginVertical: 10,
+    backgroundColor: 'white',
+    marginLeft: 15
+  },
+  mapIcon: {
+    color: 'black',
   },
   text: {
     color: 'white',
   },
-  buttonContainer: {
-    flexDirection: 'row',
+  mapButtonContainer: {
+    position: 'absolute',
+    top: height-250,
+    flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     marginVertical: 5,
