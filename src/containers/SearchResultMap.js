@@ -134,8 +134,11 @@ class SearchResultMap extends Component {
 
     return (
       <View style={styles.fullWidthContainer}>
+        <View style={styles.title}>
+          <Text style={{color: gui.blue1}}> Số bất động sản trên bản đồ : {this.state.allMarker}</Text>
+        </View>
         <View style={styles.search}>
-            <SearchHeader placeName={this.props.search.form.fields.place.fullName}/>
+          <SearchHeader placeName={this.props.search.form.fields.place.fullName}/>
         </View>
         <View style={styles.map}>
           <MapView 
@@ -154,9 +157,6 @@ class SearchResultMap extends Component {
             ))}
           </MapView>
           <View style={styles.buttonContainer}>
-            <View style={[styles.bubble, styles.button, {width: 80}]}>
-              <Text style={styles.text}> Sum = {this.state.allMarker} </Text>
-            </View>
             <TouchableOpacity onPress={this._onSatellitePress.bind(this)} style={[styles.bubble, styles.button]}>
               <Text style={styles.text}>Satellite</Text>
             </TouchableOpacity>
@@ -318,6 +318,12 @@ var styles = StyleSheet.create({
     flex: 1,
     marginTop: 0,
     marginBottom: 0
+  },
+  title: {
+      top:0,
+      alignItems: 'stretch',
+      justifyContent: 'flex-start',
+      backgroundColor: 'white'
   },
   search: {
       top:0,

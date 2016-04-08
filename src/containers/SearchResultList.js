@@ -170,6 +170,7 @@ class SearchResultList extends Component {
             }
           );
           console.log("SearchResultList: Number of result " + dataBlob.length);
+          this.props.actions.onSearchFieldChange("listData", dataBlob);
           var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
           var dataSource = ds.cloneWithRows(dataBlob);
           this.updateSearchFilterState(dataSource, null);
