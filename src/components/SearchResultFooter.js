@@ -39,7 +39,9 @@ var myStyles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-around',
       backgroundColor: 'white',
-      height: 45
+      height: 45,
+      borderTopWidth: 1,
+      borderColor : 'lightgray'
   },
 
   searchButton: {

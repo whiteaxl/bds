@@ -25,8 +25,10 @@ import MMapMarker from '../components/MMapMarker';
 import TopModal from '../components/TopModal';
 
 import gui from '../lib/gui';
+
 import api from '../lib/FindApi';
 import apiUtils from '../lib/ApiUtils';
+
 
 /**
 * ## Redux boilerplate
@@ -72,8 +74,8 @@ class SearchResultMap extends Component {
     var region = {};
     if (marker && marker.length >0 ){
       region =  {
-        latitude: marker[0].hdLat,
-        longitude:marker[0].hdLong,
+        latitude: marker[0].place.geo.lat,
+        longitude:marker[0].place.geo.lon,
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA
       }
@@ -87,7 +89,7 @@ class SearchResultMap extends Component {
       mapType: "standard",
       allMarker: this.props.search.form.fields.listData ? this.props.search.form.fields.listData.length : 0,
       region: region
-    }
+    };
     /*
     var region = {latitude : 21.0226823,
                   longitude: 105.7669236,
@@ -116,16 +118,16 @@ class SearchResultMap extends Component {
     if (this.props.search.form.fields.listData) {
       let i = 0;
       this.props.search.form.fields.listData.map(function(item){
-        if (item.hdLat && item.hdLong) {
+        if (item.place.geo.lat && item.place.geo.lon) {
           let marker = {
-            coordinate: {latitude: item.hdLat, longitude: item.hdLong},
-            price: item.price_value,
-            unit: item.price_unit,
+            coordinate: {latitude: item.place.geo.lat, longitude: item.place.geo.lon},
+            price: item.giaDisplay,
+            //unit: item.price_unit,
             id: i,
             cover: item.cover,
             diaChi: item.diaChi,
             dienTich: item.dienTich
-          }
+          };
           markerList.push(marker);
           i++;
         }
@@ -371,6 +373,8 @@ var styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+    borderTopWidth: 1,
+    borderColor : 'lightgray'
   },
   searchListButton: {
       flexDirection: 'row',

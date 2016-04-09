@@ -117,17 +117,15 @@ class SearchResultDetail extends Component {
     }
     var rowData = listData[rowIndex];
     //console.log(rowData);
-    //var imageUrl = rowData.cover;
-    //console.log(imageUrl);
+
     var loaiTin = this.getValueByKey(LoaiTin, rowData.loaiTin);
     var loaiNhaDatArr = rowData.loaiTin ? LoaiNhaDatThue : LoaiNhaDatBan;
     var loaiNhaDat = this.getValueByKey(loaiNhaDatArr, rowData.loaiNhaDat);
-    var diaChi = rowData.diaChi;
+    var diaChi = rowData.place.diaChi;
     var dienTich = '';
-    if (rowData.dienTich) {
-      dienTich = rowData.dienTich + ' m²';
-    }
-    var gia = rowData.price_value + ' ' + rowData.price_unit;
+    dienTich = rowData.dienTichDisplay;
+
+    var gia = rowData.giaDiplay;
     var soTang = rowData.soTang;
     var soPhongNguVal = rowData.soPhongNgu;
     var soPhongNgu = soPhongNguVal;
@@ -140,18 +138,18 @@ class SearchResultDetail extends Component {
       soPhongTam = soPhongTam + ' phòng tắm';
     }
     var ngayDangTin = rowData.ngayDangTin;
-    var chiTiet = rowData.loc;
-    var dangBoi = rowData.cust_dangBoi;
-    var email = rowData.cust_email;
-    var mobile = rowData.cust_mobile;
-    if (!mobile) {
-      mobile = rowData.cust_phone;
-    }
+    var soNgayDaDangTin = "Tin đã đăng " + rowData.soNgayDaDangTin + " ngày";
+
+    var chiTiet = rowData.chiTiet;
+    var dangBoi = rowData.dangBoi.name;
+    var email = rowData.dangBoi.email;
+    var mobile = rowData.dangBoi.phone;
+
     var _scrollView: ScrollView;
-    var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=12&size='+mapSize+'x'+((mapSize-mapSize%2)/2)+'&markers=color:red|'+rowData.hdLat+','+rowData.hdLong+'&sensor=false';
+    var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=12&size='+mapSize+'x'+((mapSize-mapSize%2)/2)+'&markers=color:red|'+rowData.place.geo.lat+','+rowData.place.geo.lon+'&sensor=false';
     var imageItems = [];
     var imageIndex = 0;
-    rowData.images_small.map(function(imageUrl) {
+    rowData.image.images.map(function(imageUrl) {
       imageItems.push(
         <View style={detailStyles.slide} key={"img"+(imageIndex++)}>
           <Image style={detailStyles.imgItem}
@@ -169,7 +167,7 @@ class SearchResultDetail extends Component {
         </View>
       );
     }
-    url = rowData.cover;
+    url = rowData.image.cover;
     text = 'Check out this property | found using the Reway Mobile app\n\n'
         + loaiNhaDat + '\n' + diaChi + '\n' + gia + '\n' + soPhongNgu + ', ' + dienTich + '\n';
     return (
@@ -223,7 +221,7 @@ class SearchResultDetail extends Component {
                 </View>
                 {this.renderTwoNormalProps(loaiTin, loaiNhaDat)}
                 {this.renderTwoNormalProps(dienTich, soPhongNgu)}
-                {this.renderTwoNormalProps(soPhongTam, ngayDangTin)}
+                {this.renderTwoNormalProps(soPhongTam, soNgayDaDangTin)}
                 <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
                 <View style={detailStyles.chiTietText}>
                   <SummaryText longText={chiTiet} expanded={false}>

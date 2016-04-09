@@ -178,7 +178,7 @@ class SearchResultList extends Component {
           var dataSource = ds.cloneWithRows(dataBlob);
           this.updateSearchFilterState(dataSource, null);
         } else {
-          this.updateSearchFilterState(null, "Lỗi kết nối đến máy chủ!");
+          this.updateSearchFilterState(null, gui.ERR_LoiKetNoiMayChu);
         }
       });
   }
@@ -246,7 +246,7 @@ class SearchResultList extends Component {
 	}
 
   renderRow(rowData, sectionID, rowID) {
-    var diaChi = rowData.diaChi;
+    var diaChi = rowData.place.diaChi;
     var soPhongNgu = rowData.soPhongNgu;
     if (soPhongNgu) {
       soPhongNgu = " " + soPhongNgu + " p.ngủ";
@@ -271,12 +271,12 @@ class SearchResultList extends Component {
       length = index !== -1 && index <= maxDiaChiLength ? index : maxDiaChiLength;
     }
     diaChi = diaChi.substring(0,length);
-    if (diaChi.length < rowData.diaChi.length) {
+    if (diaChi.length < rowData.place.diaChi.length) {
       diaChi = diaChi + '...';
     }
     var imageItems = [];
     var imageIndex = 0;
-    rowData.images_small.map(function(imageUrl) {
+    rowData.image.images.map(function(imageUrl) {
       imageItems.push(
         <View style={myStyles.slide} key={"img"+(imageIndex++)}>
           <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
@@ -293,7 +293,7 @@ class SearchResultList extends Component {
       imageItems.push(
         <View style={myStyles.slide} key={"img"+(imageIndex)}>
           <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
-            <Image style={myStyles.thumb} source={{uri: `${rowData.cover}`}} >
+            <Image style={myStyles.thumb} source={{uri: `${rowData.image.cover}`}} >
               <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.8)']}
               style={myStyles.linearGradient2}>
               </LinearGradient>
