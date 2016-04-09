@@ -151,20 +151,10 @@ class SearchResultList extends Component {
     console.log("SearchResultList update list of Data");
     this.state.loading = true;
 
-    var loaiTin = this.props.search.form.fields.loaiTin;
-    var loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
-    var gia = this.props.search.form.fields.gia;
-    var soPhongNgu = this.props.search.form.fields.soPhongNgu;
-    var soTang = this.props.search.form.fields.soTang;
-    var dienTich = this.props.search.form.fields.dienTich;
-    var orderBy = this.props.search.form.fields.orderBy;
-    var placeName = this.props.search.form.fields.place.fullName;
-    var bbox = this.props.search.form.fields.bbox;
-    
     var dataBlob = [];
     this.state.dataSource = null;
     this.state.errormsg = null;
-    Api.getItems(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName, bbox)
+    Api.getItems(this.props.search.form.fields)
       .then((data) => {
         if (data.list) {
           data.list.map(function(aRow) {

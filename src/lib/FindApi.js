@@ -13,7 +13,8 @@ var maxRows = 200;
 var Api = {
 
 
-  getItems: function(loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, placeName, bbox) {
+  getItems: function(fields) {
+      var {loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, place, bbox} = fields;
 
     var params = {
         'loaiTin' : 'ban' === loaiTin ? 0 : 1,
@@ -23,7 +24,7 @@ var Api = {
         'soTangGREATER' : soTang || undefined,
         'dienTichBETWEEN' : dienTich ? RangeUtils.dienTichRange.toValRange(dienTich).join() : undefined,
         'orderBy' : orderBy || undefined,
-        'placeName':placeName || undefined,
+        'placeName':place.placeName || undefined,
         'geoBox' : bbox.length===4 ? bbox : undefined,
         'limit' : maxRows || undefined
     };
