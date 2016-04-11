@@ -266,12 +266,12 @@ class SearchResultList extends Component {
     }
     var imageItems = [];
     var imageIndex = 0;
-    rowData.image.images.map(function(imageUrl) {
+    rowData.images_small.map(function(imageUrl) {
       imageItems.push(
         <View style={myStyles.slide} key={"img"+(imageIndex++)}>
           <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
             <Image style={myStyles.thumb} source={{uri: `${imageUrl}`}} >
-              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.8)']}
+              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.9)']}
               style={myStyles.linearGradient2}>
               </LinearGradient>
             </Image>
@@ -282,9 +282,9 @@ class SearchResultList extends Component {
     if (imageItems.length == 0) {
       imageItems.push(
         <View style={myStyles.slide} key={"img"+(imageIndex)}>
-          <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
-            <Image style={myStyles.thumb} source={{uri: `${rowData.image.cover}`}} >
-              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.8)']}
+          <TouchableHighlight onPress={() => this._onImagePressed(rowID)}>
+            <Image style={myStyles.thumb} source={{uri: `${rowData.cover}`}} >
+              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.9)']}
               style={myStyles.linearGradient2}>
               </LinearGradient>
             </Image>
@@ -320,6 +320,10 @@ class SearchResultList extends Component {
 
         </View>
     );
+  }
+
+  _onImagePressed(rowID) {
+    Actions.SearchResultDetail(rowID);
   }
 }
 

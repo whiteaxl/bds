@@ -86,7 +86,7 @@ var LoaiTin = [
     {key: 1, value: "Cho thuê"}
 ];
 
-var mapSize = Dimensions.get('window').width-30;
+var mapSize = Dimensions.get('window').width-36;
 
 var imgHeight = 256;
 
@@ -140,16 +140,16 @@ class SearchResultDetail extends Component {
     var ngayDangTin = rowData.ngayDangTin;
     var soNgayDaDangTin = "Tin đã đăng " + rowData.soNgayDaDangTin + " ngày";
 
-    var chiTiet = rowData.chiTiet;
-    var dangBoi = rowData.dangBoi.name;
-    var email = rowData.dangBoi.email;
-    var mobile = rowData.dangBoi.phone;
+    var chiTiet = rowData.loc;
+    var dangBoi = rowData.cust_dangBoi;
+    var email = rowData.cust_email;
+    var mobile = rowData.cust_mobile;
 
     var _scrollView: ScrollView;
     var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=12&size='+mapSize+'x'+((mapSize-mapSize%2)/2)+'&markers=color:red|'+rowData.place.geo.lat+','+rowData.place.geo.lon+'&sensor=false';
     var imageItems = [];
     var imageIndex = 0;
-    rowData.image.images.map(function(imageUrl) {
+    rowData.images_small.map(function(imageUrl) {
       imageItems.push(
         <View style={detailStyles.slide} key={"img"+(imageIndex++)}>
           <Image style={detailStyles.imgItem}
@@ -167,28 +167,28 @@ class SearchResultDetail extends Component {
         </View>
       );
     }
-    url = rowData.image.cover;
+    url = rowData.cover;
     text = 'Check out this property | found using the Reway Mobile app\n\n'
         + loaiNhaDat + '\n' + diaChi + '\n' + gia + '\n' + soPhongNgu + ', ' + dienTich + '\n';
     return (
 			<View style={detailStyles.fullWidthContainer}>
         <View style={detailStyles.customPageHeader}>
-          <Icon.Button onPress={this._onBack}
-            name="chevron-left" backgroundColor="transparent"
+          <Icon onPress={this._onBack}
+            name="angle-left" backgroundColor="transparent"
             underlayColor="transparent" color="white"
-            style={detailStyles.search} >
-          </Icon.Button>
+            style={detailStyles.search} size={32} >
+          </Icon>
           <View style={detailStyles.shareButton}>
-            <Icon.Button onPress={this._onLike}
+            <Icon onPress={this._onLike}
               name="heart-o" backgroundColor="transparent"
               underlayColor="transparent" color="white"
-              style={detailStyles.search} >
-            </Icon.Button>
-            <Icon.Button onPress={this._onShare}
+              style={detailStyles.search2} size={18} >
+            </Icon>
+            <Icon onPress={this._onShare}
               name="share-alt" backgroundColor="transparent"
               underlayColor="transparent" color="white"
-              style={detailStyles.search} >
-            </Icon.Button>
+              style={detailStyles.search2} size={20} >
+            </Icon>
           </View>
         </View>
         <View style={detailStyles.mainView}>
@@ -237,6 +237,19 @@ class SearchResultDetail extends Component {
                   {this.renderTitleProps("Số tầng", soTang)}
                   {this.renderTitleProps("Ngày đăng tin", ngayDangTin)}
                   {this.renderTitleProps("Địa chỉ", diaChi)}
+                  <View style={detailStyles.viTriTitle}>
+                    <Text style={detailStyles.viTriText}>
+                      Vị Trí
+                    </Text>
+                  </View>
+                  <View style={detailStyles.searchMapView}>
+                    <TouchableHighlight onPress={() => this._onMapPressed()}
+                      style={detailStyles.mapViewButton}>
+                      <Image style={detailStyles.imgMapView}
+                         source={{uri: `${mapUrl}`}}>
+                      </Image>
+                    </TouchableHighlight>
+                  </View>
                 </CollapsiblePanel>
                 <View style={detailStyles.lineBorder2} />
                 <View style={detailStyles.shareButton}>
@@ -260,15 +273,6 @@ class SearchResultDetail extends Component {
                     underlayColor="gray" color={gui.mainColor}
                     style={detailStyles.wrapper} >
                   </Icon.Button>
-                </View>
-                <View style={detailStyles.lineBorder2} />
-                <View style={detailStyles.searchMapView}>
-                  <TouchableHighlight onPress={() => this._onMapPressed()}
-                    style={detailStyles.mapViewButton}>
-                    <Image style={detailStyles.imgMapView}
-                       source={{uri: `${mapUrl}`}}>
-                    </Image>
-                  </TouchableHighlight>
                 </View>
                 <View style={detailStyles.lineBorder2} />
                 <CollapsiblePanel title="Liên Hệ" expanded={false}>
@@ -403,6 +407,21 @@ var detailStyles = StyleSheet.create({
       alignItems: 'flex-start',
       justifyContent: 'space-around',
   },
+  viTriTitle: {
+      alignItems: 'flex-start',
+      justifyContent: 'flex-start'
+  },
+  viTriText: {
+    textAlign: 'left',
+    alignItems: 'flex-start',
+    backgroundColor: 'transparent',
+    fontSize: 13,
+    fontFamily: 'Open Sans',
+    color: 'black',
+    marginTop: 3,
+    marginBottom: 3,
+    marginLeft: 3
+  },
   chiTietText: {
       marginBottom: 15,
       marginLeft: 15
@@ -422,12 +441,22 @@ var detailStyles = StyleSheet.create({
       height: 60
   },
 	search: {
+      marginLeft: 15,
 			marginTop: 20,
 	    flexDirection: 'row',
 	    alignItems: 'center',
 			justifyContent: 'center',
 			backgroundColor: 'transparent',
 	},
+  search2: {
+      marginLeft: 10,
+      marginTop: 28,
+      marginRight: 5,
+      flexDirection: 'row',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: 'transparent',
+  },
   wrapper: {
     marginTop: 0,
     marginBottom: 0

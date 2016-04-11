@@ -15,11 +15,14 @@ class SummaryText extends Component{
 
         var maxDiaChiLength = 80;
         var longText = props.longText;
-        var length = longText.length;
-        if (length > maxDiaChiLength) {
-          length = maxDiaChiLength;
+        var shortText = '';
+        if (longText) {
+            var length = longText.length;
+            if (length > maxDiaChiLength) {
+              length = maxDiaChiLength;
+            }
+            shortText = longText.substring(0,length);
         }
-        var shortText = longText.substring(0,length);
         this.state = {       //Step 3
             shortText       : shortText,
             longText       : longText,
