@@ -22,7 +22,6 @@ import {Actions} from 'react-native-router-flux';
 import Api from '../lib/FindApi';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
-import styles from './styles';
 import SearchResultFooter from '../components/SearchResultFooter';
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -185,11 +184,11 @@ class SearchResultList extends Component {
         this.setState({ progress: this.state.progress + (0.4 * Math.random())});
       }).bind(this), 1000);
       return (
-  		  <View style={styles.fullWidthContainer}>
+  		  <View style={myStyles.fullWidthContainer}>
             <View style={myStyles.search}>
               <SearchHeader placeName={this.props.search.form.fields.place.fullName}/>
             </View>
-            <View style={styles.searchContent}>
+            <View style={myStyles.searchContent}>
               <ProgressBar
                 fillStyle={{}}
                 backgroundStyle={{backgroundColor: '#cccccc', borderRadius: 2}}
@@ -206,12 +205,12 @@ class SearchResultList extends Component {
     }
     if (this.state.errormsg) {
       return (
-          <View style={styles.fullWidthContainer}>
+          <View style={myStyles.fullWidthContainer}>
             <View style={myStyles.search}>
               <SearchHeader placeName={this.props.search.form.fields.place.fullName}/>
             </View>
-            <View style={styles.searchContent}>
-              <Text style={styles.welcome}>{this.state.errormsg}</Text>
+            <View style={myStyles.searchContent}>
+              <Text style={myStyles.welcome}>{this.state.errormsg}</Text>
             </View>
             <SearchResultFooter />
           </View>
@@ -219,7 +218,7 @@ class SearchResultList extends Component {
     }
 
     return (
-      <View style={styles.fullWidthContainer}>
+      <View style={myStyles.fullWidthContainer}>
         <View style={myStyles.search}>
           <SearchHeader placeName={this.props.search.form.fields.place.fullName}/>
         </View>
@@ -227,7 +226,7 @@ class SearchResultList extends Component {
           dataSource={this.state.dataSource}
           renderRow={this.renderRow}
           renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
-          renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
+          renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={myStyles.separator} />}
           style={myStyles.searchListView}
         />
         <SearchResultFooter />
@@ -266,24 +265,38 @@ class SearchResultList extends Component {
     }
     var imageItems = [];
     var imageIndex = 0;
-    rowData.images_small.map(function(imageUrl) {
-      imageItems.push(
-        <View style={myStyles.slide} key={"img"+(imageIndex++)}>
-          <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
-            <Image style={myStyles.thumb} source={{uri: `${imageUrl}`}} >
-              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.9)']}
-              style={myStyles.linearGradient2}>
-              </LinearGradient>
-            </Image>
-          </TouchableHighlight>
-        </View>
-      );
-    });
-    if (imageItems.length == 0) {
+    if (rowData.image) {
+      rowData.image.images.map(function(imageUrl) {
+        imageItems.push(
+          <View style={myStyles.slide} key={"img"+(imageIndex++)}>
+            <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
+              <Image style={myStyles.thumb} source={{uri: `${imageUrl}`}} >
+                <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.9)']}
+                style={myStyles.linearGradient2}>
+                </LinearGradient>
+              </Image>
+            </TouchableHighlight>
+          </View>
+        );
+      });
+      if (imageItems.length == 0) {
+        imageItems.push(
+          <View style={myStyles.slide} key={"img"+(imageIndex)}>
+            <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
+              <Image style={myStyles.thumb} source={{uri: `${rowData.image.cover}`}} >
+                <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.9)']}
+                style={myStyles.linearGradient2}>
+                </LinearGradient>
+              </Image>
+            </TouchableHighlight>
+          </View>
+        );
+      }
+    } else {
       imageItems.push(
         <View style={myStyles.slide} key={"img"+(imageIndex)}>
-          <TouchableHighlight onPress={() => this._onImagePressed(rowID)}>
-            <Image style={myStyles.thumb} source={{uri: `${rowData.cover}`}} >
+          <TouchableHighlight onPress={() => Actions.SearchResultDetail(rowID)}>
+            <Image style={myStyles.thumb} >
               <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.9)']}
               style={myStyles.linearGradient2}>
               </LinearGradient>
@@ -309,7 +322,7 @@ class SearchResultList extends Component {
 
             <View style={myStyles.searchListViewRowAlign}>
               <View>
-                <Text style={myStyles.price}>{rowData.price_value} {rowData.price_unit}</Text>
+                <Text style={myStyles.price}>{rowData.giaDisplay}</Text>
                 <Text style={myStyles.text}>{diaChi}{soPhongNgu}{soPhongTam}</Text>
               </View>
               <Icon.Button name="heart-o" backgroundColor="transparent"
@@ -321,17 +334,30 @@ class SearchResultList extends Component {
         </View>
     );
   }
-
-  _onImagePressed(rowID) {
-    Actions.SearchResultDetail(rowID);
-  }
 }
 
 // Later on in your styles..
 var myStyles = StyleSheet.create({
+  welcome: {
+      marginTop: -50,
+      marginBottom: 50,
+      fontSize: 16,
+      textAlign: 'center',
+      margin: 10,
+  },
+  fullWidthContainer: {
+      flex: 1,
+      alignItems: 'stretch',
+      backgroundColor: '#F5FCFF',
+  },
   search: {
     backgroundColor: gui.mainColor,
     height: 30
+  },
+  searchContent: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   wrapper: {
   },
@@ -339,6 +365,10 @@ var myStyles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: 'transparent',
     //
+  },
+  separator: {
+    height: 0.5,
+    backgroundColor: 'transparent',
   },
   dot : {
     width: 8,
@@ -372,6 +402,7 @@ var myStyles = StyleSheet.create({
   searchListView: {
     marginTop: 30,
     margin: 0,
+    backgroundColor: 'gray'
   },
 
   searchListViewRowAlign: {

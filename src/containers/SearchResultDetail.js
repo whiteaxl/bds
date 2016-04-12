@@ -106,10 +106,10 @@ class SearchResultDetail extends Component {
     var listData = this.props.search.form.fields.listData;
     if (!listData) {
   			return (
-          <View style={styles.fullWidthContainer}>
+          <View style={detailStyles.fullWidthContainer}>
             <CommonHeader headerTitle={"Chi tiết"} />
-            <View style={styles.searchContent}>
-              <Text style={styles.welcome}>"Lỗi kết nối đến máy chủ!"</Text>
+            <View style={detailStyles.searchContent}>
+              <Text style={detailStyles.welcome}>"Lỗi kết nối đến máy chủ!"</Text>
             </View>
             <SearchResultDetailFooter />
     			</View>
@@ -117,6 +117,16 @@ class SearchResultDetail extends Component {
     }
     var rowData = listData[rowIndex];
     //console.log(rowData);
+    if (!rowData) {
+        return (
+          <View style={detailStyles.fullWidthContainer}>
+            <CommonHeader headerTitle={"Chi tiết"} />
+            <View style={detailStyles.searchContent}>
+            </View>
+            <SearchResultDetailFooter />
+          </View>
+        )
+    }
 
     var loaiTin = this.getValueByKey(LoaiTin, rowData.loaiTin);
     var loaiNhaDatArr = rowData.loaiTin ? LoaiNhaDatThue : LoaiNhaDatBan;
@@ -140,34 +150,41 @@ class SearchResultDetail extends Component {
     var ngayDangTin = rowData.ngayDangTin;
     var soNgayDaDangTin = "Tin đã đăng " + rowData.soNgayDaDangTin + " ngày";
 
-    var chiTiet = rowData.loc;
-    var dangBoi = rowData.cust_dangBoi;
-    var email = rowData.cust_email;
-    var mobile = rowData.cust_mobile;
+    var chiTiet = rowData.chiTiet;
+    var dangBoi = '';
+    var email = '';
+    var mobile = '';
+    if (rowData.dangBoi) {
+      dangBoi = rowData.dangBoi.name;
+      email = rowData.dangBoi.email;
+      mobile = rowData.dangBoi.phone;
+    }
 
     var _scrollView: ScrollView;
     var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=12&size='+mapSize+'x'+((mapSize-mapSize%2)/2)+'&markers=color:red|'+rowData.place.geo.lat+','+rowData.place.geo.lon+'&sensor=false';
     var imageItems = [];
     var imageIndex = 0;
-    rowData.images_small.map(function(imageUrl) {
-      imageItems.push(
-        <View style={detailStyles.slide} key={"img"+(imageIndex++)}>
-          <Image style={detailStyles.imgItem}
-             source={{uri: `${imageUrl}`}}>
-          </Image>
-        </View>
-      );
-    });
-    if (imageItems.length == 0) {
-      imageItems.push(
-        <View style={detailStyles.slide} key={"img"+(imageIndex)}>
-          <Image style={detailStyles.imgItem}
-             source={{uri: `${rowData.cover}`}}>
-          </Image>
-        </View>
-      );
+    if (rowData.image) {
+      rowData.image.images.map(function(imageUrl) {
+        imageItems.push(
+          <View style={detailStyles.slide} key={"img"+(imageIndex++)}>
+            <Image style={detailStyles.imgItem}
+               source={{uri: `${imageUrl}`}}>
+            </Image>
+          </View>
+        );
+      });
+      if (imageItems.length == 0) {
+        imageItems.push(
+          <View style={detailStyles.slide} key={"img"+(imageIndex)}>
+            <Image style={detailStyles.imgItem}
+               source={{uri: `${rowData.image.cover}`}}>
+            </Image>
+          </View>
+        );
+      }
+      url = rowData.image.cover;
     }
-    url = rowData.cover;
     text = 'Check out this property | found using the Reway Mobile app\n\n'
         + loaiNhaDat + '\n' + diaChi + '\n' + gia + '\n' + soPhongNgu + ', ' + dienTich + '\n';
     return (
@@ -202,7 +219,7 @@ class SearchResultDetail extends Component {
             >
             <View style={detailStyles.searchContent}>
 
-              <Swiper style={detailStyles.wrapper} height={imgHeight}
+              <Swiper style={[detailStyles.wrapper,{backgroundColor: 'gray'}]} height={imgHeight}
                       showsButtons={false} autoplay={false} loop={false}
                       dot={<View style={[detailStyles.dot, {backgroundColor: 'transparent'}]} />}
                       activeDot={<View style={[detailStyles.dot, {backgroundColor: 'transparent'}]}/>}
@@ -377,6 +394,13 @@ class SearchResultDetail extends Component {
 }
 
 var detailStyles = StyleSheet.create({
+  welcome: {
+      marginTop: -50,
+      marginBottom: 50,
+      fontSize: 16,
+      textAlign: 'center',
+      margin: 10,
+  },
   linearGradient: {
     flex: 1,
     paddingLeft: 0,

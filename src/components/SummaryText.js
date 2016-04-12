@@ -9,14 +9,15 @@ class SummaryText extends Component{
         super(props);
 
         this.icons = {     //Step 2
-            'up'    : '\nThu gọn',
+            'up'    : 'Thu gọn',
             'down'  : '... Xem thêm'
         };
 
         var maxDiaChiLength = 80;
-        var longText = props.longText;
+        var longText = '';
         var shortText = '';
-        if (longText) {
+        if (props.longText) {
+            longText = props.longText.trim();
             var length = longText.length;
             if (length > maxDiaChiLength) {
               length = maxDiaChiLength;
@@ -33,8 +34,8 @@ class SummaryText extends Component{
 
     toggle(){
       //Step 1
-      let initialValue    = this.state.expanded? this.state.maxHeight + this.state.minHeight : this.state.minHeight,
-          finalValue      = this.state.expanded? this.state.minHeight : this.state.maxHeight + this.state.minHeight;
+      let initialValue    = this.state.expanded? this.state.maxHeight : this.state.minHeight,
+          finalValue      = this.state.expanded? this.state.minHeight : this.state.maxHeight;
 
       this.setState({
           expanded : !this.state.expanded  //Step 2
@@ -82,10 +83,9 @@ class SummaryText extends Component{
 
                   <TouchableOpacity
                     onPress={this.toggle.bind(this)}>
-                    <View style={styles.minContainer} onLayout={this._setMinHeight.bind(this)}>
-                        <Text style={styles.text}>{this.state.shortText}
-                            <Text style={styles.button}>{icon}</Text>
-                        </Text>
+                    <View style={styles.minContainer} onLayout={this._setMaxHeight.bind(this)}>
+                        <Text style={styles.text}>{this.state.longText}</Text>
+                        <Text style={styles.button}>{icon}</Text>
                     </View>
                   </TouchableOpacity>
 
@@ -98,8 +98,8 @@ class SummaryText extends Component{
 
                   <TouchableOpacity
                     onPress={this.toggle.bind(this)}>
-                    <View style={styles.maxContainer} onLayout={this._setMaxHeight.bind(this)}>
-                        <Text style={styles.text}>{this.state.longText}
+                    <View style={styles.maxContainer} onLayout={this._setMinHeight.bind(this)}>
+                        <Text style={styles.text}>{this.state.shortText}
                             <Text style={styles.button}>{icon}</Text>
                         </Text>
                     </View>
@@ -118,7 +118,7 @@ var styles = StyleSheet.create({
         margin: 0,
         overflow:'hidden',
     },
-    maxContainer : {
+    maxContainer: {
         flexDirection: 'row',
 		alignItems: 'flex-start',
         justifyContent: 'flex-start',
@@ -131,17 +131,15 @@ var styles = StyleSheet.create({
         margin: 0
     },
     text       : {
-        flex    : 1,
         color   :'black',
         fontFamily: 'Open Sans',
         fontSize: 14,
         textAlign: 'left',
         backgroundColor: 'transparent',
-        width: Dimensions.get('window').width-20,
-        marginLeft: 0,
+        width: Dimensions.get('window').width-30,
+        marginLeft: 0
     },
     button      : {
-        flex    : 1,
         color   :'blue',
         fontFamily: 'Open Sans',
         fontSize: 14,
@@ -150,7 +148,7 @@ var styles = StyleSheet.create({
         backgroundColor: 'transparent',
         marginLeft: 0,
         alignItems: 'flex-start',
-        marginBottom: 0
+        justifyContent: 'flex-start'
     }
 });
 
