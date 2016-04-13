@@ -26,6 +26,7 @@ import styles from './styles';
 import LinearGradient from 'react-native-linear-gradient';
 
 import gui from '../lib/gui';
+import Tabbar from '../components/Tabbar';
 
 
 /**
@@ -158,12 +159,13 @@ class Home extends Component {
           </ScrollView>
         </View>
 
+       
       </View>
 		)
 	}
 
   handleSearchButton() {
-    Actions.Search();
+    Actions.SearchContainer();
   }
 
   _onBanCanHoChungCuPressed() {

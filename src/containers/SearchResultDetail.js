@@ -15,7 +15,7 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component, Image, Dimensions, ScrollView, StyleSheet, StatusBarIOS, TouchableHighlight } from 'react-native'
+import React, { Text, View, Component, Image, Dimensions, ScrollView, StyleSheet, StatusBar, TouchableHighlight } from 'react-native'
 
 var ShareManager = React.NativeModules.ShareManager;
 
@@ -98,24 +98,14 @@ class SearchResultDetail extends Component {
   constructor(props) {
     super(props);
 
-    StatusBarIOS.setStyle('light-content');
+    StatusBar.setBarStyle('light-content');
   }
   render() {
-    //console.log(this.props);
-    var rowIndex = this.props.data;
-    var listData = this.props.search.form.fields.listData;
-    if (!listData) {
-  			return (
-          <View style={detailStyles.fullWidthContainer}>
-            <CommonHeader headerTitle={"Chi tiết"} />
-            <View style={detailStyles.searchContent}>
-              <Text style={detailStyles.welcome}>"Lỗi kết nối đến máy chủ!"</Text>
-            </View>
-            <SearchResultDetailFooter />
-    			</View>
-        )
-    }
-    var rowData = listData[rowIndex];
+    console.log(this.props);
+    var rowData = this.props.data;
+    //var listData = this.props.search.form.fields.listData;
+
+    //var rowData = listData[rowIndex];
     //console.log(rowData);
     if (!rowData) {
         return (

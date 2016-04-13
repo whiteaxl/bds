@@ -1,77 +1,11 @@
 'use strict';
 
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-
-/**
- * Immutable Map
- */
-import {Map} from 'immutable';
-/**
- * Project actions
- */
-import * as deviceActions from '../reducers/device/deviceActions';
-import * as globalActions from '../reducers/global/globalActions';
-
-/**
- * ## Actions
- * 2 of our actions will be available as ```actions```
- */
-const actions = [
-  deviceActions,
-  globalActions
-];
-
-/**
- *  Save that state
- */
-function mapStateToProps(state) {
-  return {
-      ...state
-  };
-};
-
-/*
- * Bind all the functions from the ```actions``` and bind them with
- * ```dispatch```
-
- */
-function mapDispatchToProps(dispatch) {
-
-  const creators = Map()
-          .merge(...actions)
-          .filter(value => typeof value === 'function')
-          .toObject();
-
-  return {
-    actions: bindActionCreators(creators, dispatch),
-    dispatch
-  };
-}
-
-
-/**
- * We only have one state to worry about
- */
-
-const {
-  LOGIN_STATE_LOGOUT
-} = require('../lib/constants').default;
-
-
-
-
 import React, { View, Text, Navigator, Platform, StyleSheet, Component } from 'react-native';
-import { Router, Route, Schema, Animations, TabBar} from 'react-native-router-flux';
+import { Scene, Router, TabBar, Modal, Schema, Actions, Reducer} from 'react-native-router-flux';
 
 import Login from './Login';
 import Launch from './Launch';
 import Register from './Register';
-
-import Home from './Home';
-
-import Screen1 from './Screen1';
-import Screen2 from './Screen2';
 
 import Search from './Search';
 import SearchResultList from './SearchResultList';
@@ -83,123 +17,83 @@ import SearchMapDetail from './SearchMapDetail';
 
 
 import Profile from './Profile';
-import Tabbar from '../components/Tabbar';
+
 
 import SearchSuggestion from '../containers/PlacesAutoComplete';
+
+import Home from '../containers/Home';
+
+import PostAd from '../containers/Screen1';
+import Inbox from '../containers/Screen2';
 import TestListView from '../test/TestListView';
 
 
-/** Optional Redux section ******************************************/
-/*  npm uninstall react-redux --save && npm uninstall redux --save  */
 
-// var RNRF = require('react-native-router-flux');
-// var {Route, Schema, Animations, Actions, TabBar} = RNRF;
+import Icon from 'react-native-vector-icons/FontAwesome';
 
-
-// import { createStore } from 'redux'
-// import { Provider, connect } from 'react-redux'
-//
-// function reducer(state = {}, action) {
-//     switch (action.type) {
-//         case Actions.BEFORE_ROUTE:
-//             //console.log("BEFORE_ROUTE:", action);
-//             return state;
-//         case Actions.AFTER_ROUTE:
-//             //console.log("AFTER_ROU
-//             return state;
-//         case Actions.AFTER_POP:
-//             //console.log("AFTER_POP:", action);
-//             return state;
-//         case Actions.BEFORE_POP:
-//             //console.log("BEFORE_POP:", action);
-//             return state;
-//         case Actions.AFTER_DISMISS:
-//             //console.log("AFTER_DISMISS:", action);
-//             return state;
-//         case Actions.BEFORE_DISMISS:
-//             //console.log("BEFORE_DISMISS:", action);
-//             return state;
-//         default:
-//             return state;
-//     }
-//
-// }
-// let store = createStore(reducer);
-// const Router = connect()(RNRF.Router);
-
-/********************************************************************/
-
-
-
+class TabIcon extends React.Component {
+    render(){
+        var color = this.props.selected ? '#FF3366' : '#FFB3B3';
+        return (
+            <View style={{flex:1, flexDirection:'column', alignItems:'center', alignSelf:'center'}}>
+                <Icon style={{color: color}} name={this.props.iconName} size={30} />
+                <Text style={{color: color}}>{this.props.title}</Text>
+            </View>
+        );
+    }
+}
 
 const hideNavBar = Platform.OS === 'android'
 const paddingTop = Platform.OS === 'android' ? 0 : 8
 
+const reducerCreate = params=>{
+    const defaultReducer = Reducer(params);
+    return (state, action)=>{
+        console.log("ACTION:", action);
+        return defaultReducer(state, action);
+    }
+};
+
 class App extends Component {
-
-	// Used for to pass the drawer to the all children
-	static childContextTypes = {
-		drawer: React.PropTypes.object,
-	};
-
-	constructor (props) {
-		super(props);
-		this.state = {
-			drawer: null,
-			loggedIn: false
-		};
-	}
-
   render() {
-		const { drawer } = this.state;
 
     return (
-			<Router name='root'>
-				<Schema
-					name='boot'
-					sceneConfig={Navigator.SceneConfigs.FadeAndroid}
-					hideNavBar={true}
-					type='replace'
-				/>
-				<Schema
-					name='main'
-					sceneConfig={Navigator.SceneConfigs.FadeAndroid}
-					hideNavBar={hideNavBar}
-				/>
+        <Router createReducer={reducerCreate}>
+            <Scene key="root" hideNavBar={true}>
 
-				<Route name='Launch' component={Launch} schema='boot' initial hideNavBar title="Welcome" />
+				<Scene key='Launch' component={Launch} initial={true} title="Welcome" type="replace" />
 
-				<Route name='Register' component={Register} schema='main' title="Register Screen" />
-		        <Route name='Search' component={Search} schema='main' title="Tìm kiếm" hideNavBar={true} />
-        		<Route name='SearchResultList' component={SearchResultList} schema='main' title="Danh sách" hideNavBar={true} />
-            	<Route name='SearchResultMap' component={SearchResultMap} schema='main' title="Bản đồ" hideNavBar={true} />
-        		<Route name='PropertyTypes' component={PropertyTypes} schema='main' title="Loại nhà đất" hideNavBar={true} />
-        		<Route name='OrderPicker' component={OrderPicker} schema='main' title="Sắp xếp" hideNavBar={true} />
-            	<Route name='SearchResultDetail' component={SearchResultDetail} schema='main' title="Chi tiết" hideNavBar={true} />
-				<Route name='SearchSuggestion' component={SearchSuggestion} schema='main' title="Serch Text" hideNavBar={true} />
-				<Route name='TestListView' component={TestListView} schema='main' title="Serch Text" hideNavBar={true} />
-				<Route name='SearchMapDetail' component={SearchMapDetail} schema='main' title="Bản đồ" hideNavBar={true} />
+				<Scene key='Register' component={Register} title="Register Screen" />
+
+                <Scene key="SearchContainer" >
+                    <Scene key='Search' component={Search} title="Tìm kiếm" hideNavBar={true} />
+                    <Scene key='SearchResultList' component={SearchResultList} title="Danh sách" hideNavBar={true} />
+                    <Scene key='SearchResultMap' component={SearchResultMap}  title="Bản đồ" hideNavBar={true} />
+                    <Scene key='PropertyTypes' component={PropertyTypes} title="Loại nhà đất" hideNavBar={true} />
+
+                    <Scene key='OrderPicker' component={OrderPicker} title="Sắp xếp" hideNavBar={true} />
+                    <Scene key='SearchResultDetail' component={SearchResultDetail} title="Chi tiết" hideNavBar={true} />
+                    <Scene key='SearchSuggestion' component={SearchSuggestion} title="Serch Text" hideNavBar={true} />
+                    <Scene key='SearchMapDetail' component={SearchMapDetail} title="Bản đồ" hideNavBar={true} />
+                </Scene>
+
+                <Scene key='TestListView' component={TestListView} title="Serch Text" hideNavBar={true} />
+
+                <Scene key="Home" tabs={true} default="Main" type="replace">
+                    <Scene key="Main" title="home" iconName={"home"} icon={TabIcon}
+                           component={Home}
+                           hideNavBar={true} initial={true} />
+
+                    <Scene key="Inbox" component={Inbox} title="Inbox" iconName={"inbox"} icon={TabIcon} />
+                    <Scene key="activity" component={TestListView} title="activity" iconName={"bell-o"} icon={TabIcon} />
+                    <Scene key="Profile" component={Profile} title="Profile" iconName={"gear"} icon={TabIcon} />
+
+                </Scene>
 
 
-				<Route name='Home' hideNavBar={true} type='replace'>
-			        <Tabbar>
-						{/*
-						<Router
-							sceneStyle={styles.routerScene}
-							navigationBarStyle={styles.navBar}
-							titleStyle={styles.navTitle}
-						>
-							<Route name='Home' component={Home} schema='main' title='Home' />
-							<Route name='Screen1' component={Screen1} schema='main' title='Screen1' />
-							<Route name='Screen2' component={Screen2} schema='main' title='Screen2' />
-							<Route name='Profile' component={Profile} schema='main' title='Profile' />
+            </Scene>
 
-						</Router>
-						*/}
-	     			</Tabbar>
-				</Route>
-
-			</Router>
+		</Router>
     );
   }
 }
@@ -222,4 +116,6 @@ const styles = StyleSheet.create({
 })
 
 //connect the props
-export default connect(mapStateToProps, mapDispatchToProps) (App);
+//export default connect(mapStateToProps, mapDispatchToProps) (App);
+//hoailt: no need to connect
+export default App;

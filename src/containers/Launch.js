@@ -28,13 +28,6 @@ import * as authActions from '../reducers/auth/authActions';
  */
 import {Map} from 'immutable';
 
-
-
-/**
- * The ErrorAlert displays an alert for both ios & android
- */
-import ErrorAlert from '../components/ErrorAlert';
-
 //intro swiper
 import IntroSwiper from '../components/IntroSwiper';
 
@@ -81,8 +74,6 @@ var topHeight = function() {
 class Launch extends React.Component {
   constructor(props) {
     super(props);
-    this.errorAlert = new ErrorAlert();
-
     this.state = {
       user:null
     }

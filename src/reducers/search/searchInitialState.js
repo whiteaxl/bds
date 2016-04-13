@@ -23,8 +23,6 @@ import RangeUtils from "../../lib/RangeUtils"
  * This Record contains the state of the seach form
  */
 const SearchForm = Record({
-  state: SEARCH_STATE_INPUT,
-
   fields: new (Record({
     loaiTin:'ban',
     loaiNhaDat:'',
@@ -48,7 +46,8 @@ const SearchForm = Record({
       },
       fullName : "Hà Nội"
     }
-  }))
+  })),
+
 });
 
 /**
@@ -56,6 +55,13 @@ const SearchForm = Record({
  * The form is set
  */
 var InitialState = Record({
-  form: new SearchForm
+  state: SEARCH_STATE_INPUT,
+
+  form: new SearchForm,
+
+  result : new (Record({
+    listAds : [],
+    errorMsg : ""
+  }))
 });
 export default InitialState;

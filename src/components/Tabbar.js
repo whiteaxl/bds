@@ -19,10 +19,6 @@ import React,
 from 'react-native';
 
 /**
- * A tab bar that switches between scenes, written in JS for cross-platform support
- */
-import TabNavigator from 'react-native-tab-navigator';
-/**
  * Font awesome icon
  */
 import Icon from 'react-native-vector-icons/FontAwesome';

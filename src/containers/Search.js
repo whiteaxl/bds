@@ -16,7 +16,6 @@ import {Map} from 'immutable';
 import gui from '../lib/gui';
 
 
-
 import React, { Text, View, Component, Navigator, TouchableOpacity, Dimensions
   , SegmentedControlIOS, ScrollView, StyleSheet } from 'react-native'
 
@@ -33,7 +32,6 @@ import RangePicker from "../components/RangePicker"
 import LoaiNhaDat from "../assets/DanhMuc"
 
 import SearchInput from '../components/SearchInput';
-
 
 /**
 * ## Redux boilerplate
@@ -67,19 +65,7 @@ class Search extends Component {
   }
 
   _onLoaiTinChange(value) {
-    let pickerData = null;
-
-    if (value=='ban') {
-      pickerData = RangeUtils.sellPriceRange.getPickerData();
-    } else {
-      pickerData = RangeUtils.rentPriceRange.getPickerData();
-    }
-
-    this.props.actions.onSearchFieldChange("gia", RangeUtils.BAT_KY_RANGE);
-
-    this.props.actions.onSearchFieldChange("giaPicker", pickerData);
-
-    this.props.actions.onSearchFieldChange("loaiTin", value);
+    this.props.actions.setSearchLoaiTin(value);
   }
 
   _onPressGiaHandle(){
@@ -114,6 +100,11 @@ class Search extends Component {
 
   render() {
     //console.log(RangeUtils.sellPriceRange.getPickerData());
+    console.log("CALL Search.render");
+    console.log(this.props);
+    console.log(Actions);
+
+    let loaiTin = this.props.search.form.fields.loaiTin;
 
     var _scrollView: ScrollView;
     return (
@@ -124,10 +115,10 @@ class Search extends Component {
             <View style = {{flex:1, flexDirection: 'row'}}>
               <LikeTabButton name={'ban'}
                 onPress={this._onLoaiTinChange.bind(this)}
-                selected={this.props.search.form.fields.loaiTin === 'ban'}>BÁN</LikeTabButton>
+                selected={loaiTin === 'ban'}>BÁN</LikeTabButton>
               <LikeTabButton name={'thue'}
                 onPress={this._onLoaiTinChange.bind(this)}
-                selected={this.props.search.form.fields.loaiTin === 'thue'}>CHO THUÊ</LikeTabButton>
+                selected={loaiTin === 'thue'}>CHO THUÊ</LikeTabButton>
             </View>
           </View>
 
@@ -235,7 +226,8 @@ class Search extends Component {
   }
 
   onApply() {
-    console.log("Search.onApply");
+    console.log("Call Search.onApply");
+/*
     this.props.actions.onSearchFieldChange("listData", []);
     console.log("Search cridential:");
     console.log(this.props.search.form.fields);
@@ -248,7 +240,12 @@ class Search extends Component {
       var bbox = [lon1, lat1, lon2, lat2];
       this.props.actions.onSearchFieldChange("bbox", bbox);
     }
-    Actions.SearchResultList();
+    Actions.SearchResultList({type:'reset'});
+    */
+
+    this.props.actions.search(
+        this.props.search.form.fields
+        , this.props.search.state);
   }
 
   onMoreOption() {

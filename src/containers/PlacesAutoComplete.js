@@ -102,7 +102,7 @@ class PlacesAutoComplete extends React.Component {
           // available options: https://developers.google.com/places/web-service/autocomplete
           key: 'AIzaSyAnioOM0qiWwUoCz8hNS8B2YuzKiYYaDdU',
           language: 'en', // language of the results
-          types: 'geocode', // default: 'geocode', cities,regions
+          types: '(regions)', // default: 'geocode', cities,regions
           components:'country:vn' //restrict to VN
 
         }}
