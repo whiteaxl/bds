@@ -197,9 +197,18 @@ class SearchResultList extends Component {
                         {this._renderImageStack(rowData)}
                     </Swiper>
 
-                    <View style={myStyles.searchListViewRowAlign}>
-                        <View>
-                            <Text style={myStyles.price}>{rowData.giaDisplay}</Text>
+                    <View style={myStyles.searchListViewRowAlign}
+                          onStartShouldSetResponder={(evt) => false}
+                          onMoveShouldSetResponder={(evt) => false}
+                    >
+                        <View
+                            onStartShouldSetResponder={(evt) => false}
+                            onMoveShouldSetResponder={(evt) => false}
+                        >
+                            <Text style={myStyles.price}
+                                  onStartShouldSetResponder={(evt) => false}
+                                  onMoveShouldSetResponder={(evt) => false}
+                            >{rowData.giaDisplay}</Text>
                             <Text style={myStyles.text}>{diaChi}{soPhongNgu}{soPhongTam}</Text>
                         </View>
                         <Icon.Button name="heart-o" backgroundColor="transparent"
