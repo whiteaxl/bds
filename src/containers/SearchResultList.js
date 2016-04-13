@@ -67,6 +67,8 @@ function mapDispatchToProps(dispatch) {
 
 var imgHeight = 181;
 
+var myDs = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
 class SearchResultList extends Component {
     constructor(props) {
         super(props);
@@ -74,14 +76,6 @@ class SearchResultList extends Component {
         StatusBar.setBarStyle('light-content');
 
         console.log(props);
-
-        var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
-
-        console.log("props.search.result.listAds : " + props.listAds.length);
-
-        this.state = {
-            dataSource: ds.cloneWithRows(props.listAds)
-        }
     }
 
     _getListContent() {
@@ -104,7 +98,7 @@ class SearchResultList extends Component {
             )
         }
 
-        let ds = this.state.dataSource.cloneWithRows(myProps.listAds);
+        let ds = myDs.cloneWithRows(myProps.listAds);
         //this.setState({dataSource:ds});
 
         return (
