@@ -63,9 +63,10 @@ class PlacesAutoComplete extends React.Component {
     _onPress(data, details = null) {
         //console.log(data);
         console.log("You selected: " + details.formatted_address);
-        console.log(details);
+        //console.log(details);
         let value = details;
-        value.fullName = details.short_name;
+        value.fullName = details.name;
+        console.log(value);
 
         this.props.actions.onSearchFieldChange("place", value);
 
