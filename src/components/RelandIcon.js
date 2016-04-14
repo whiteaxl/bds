@@ -29,10 +29,10 @@ class RelandIconButton extends React.Component {
 
 var styles = StyleSheet.create({
     container: {
-        flexDirection: 'row',
+        flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        padding: 12,
+        padding: 5
     },
     touchable: {
         overflow: 'hidden',

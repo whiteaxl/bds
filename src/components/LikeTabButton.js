@@ -40,21 +40,22 @@ var styles = StyleSheet.create({
     //width: 60, 
     height: 3, 
     marginLeft: 5,
-    marginRight: 5,
+    marginRight: 5
 
   }, 
 
   wrapper: {
     flex: 1,
     flexDirection: 'column',
-    justifyContent: 'center', 
+    justifyContent: 'center'
     
   },
 
   buttonText: {
     flex: 1, 
     alignSelf:'center',
-    fontSize: 15, 
+    fontSize: 12,
+    fontFamily: 'Open Sans',
     padding: 10,
     color: 'black',
     fontWeight : 'normal'
@@ -63,9 +64,10 @@ var styles = StyleSheet.create({
   buttonTextSelected: {
     flex: 1, 
     alignSelf:'center',
-    fontSize: 15, 
+    fontSize: 12,
+    fontFamily: 'Open Sans',
     padding: 10,
     color: gui.mainColor,
     fontWeight : 'bold'
-  },
+  }
 });

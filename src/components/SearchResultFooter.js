@@ -14,9 +14,9 @@ var SearchResultFooter = React.createClass({
   render: function() {
     return <View style={myStyles.searchButton}>
       <View style={myStyles.searchListButton}>
-        <RelandIcon onPress={this.onSort} name="sort" text="Sắp xếp"/>
-        <RelandIcon onPress={this.onSaveSearch} name="save" text="Lưu tìm kiếm"/>
-        <RelandIcon onPress={this.onMap} name="map" size={16} text="Bản đồ"/>
+        <RelandIcon onPress={this.onSort} name="sort" size={16} text="Sắp xếp" textProps={myStyles.buttonText}/>
+        <RelandIcon onPress={this.onSaveSearch} name="save" size={16} text="Lưu tìm kiếm" textProps={myStyles.buttonText}/>
+        <RelandIcon onPress={this.onMap} name="map" size={12} iconProps={{style: {marginTop: 4}}} text="Bản đồ" textProps={myStyles.buttonText}/>
       </View>
     </View>
   },
@@ -39,7 +39,6 @@ var myStyles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-around',
       backgroundColor: 'white',
-      height: 45,
       borderTopWidth: 1,
       borderColor : 'lightgray'
   },
@@ -47,6 +46,11 @@ var myStyles = StyleSheet.create({
   searchButton: {
       alignItems: 'stretch',
       justifyContent: 'flex-end',
+  },
+
+  buttonText: {
+      fontSize: 11,
+      fontFamily: 'Open Sans'
   }
 });
 

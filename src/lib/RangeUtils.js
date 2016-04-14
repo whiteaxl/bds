@@ -90,7 +90,9 @@ var RangeUtils = {
 	    return fromVal + " - " + toVal;
 	}, 
 
-	BAT_KY_RANGE : [BAT_KY, BAT_KY]
+	BAT_KY_RANGE : [BAT_KY, BAT_KY],
+	
+	BAT_KY: BAT_KY
 };
 
 
