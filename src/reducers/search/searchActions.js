@@ -53,7 +53,7 @@ export function changeToLoadingSearchResult(listAds) {
 }
 
 
-export function search(credential, currentSearchState) {
+export function search(credential, successCallback) {
     return dispatch => {
 
         return Api.getItems(credential)
@@ -69,12 +69,7 @@ export function search(credential, currentSearchState) {
 
                     dispatch(fetchSearchResultSuccess(listAds));
 
-                    //
-                    if (currentSearchState === SEARCH_STATE_INPUT) {
-                        Actions.SearchResultList({type: "reset"});
-                    } else {
-                        Actions.pop();
-                    }
+                    successCallback();
                 } else {
                     dispatch(fetchSearchResultFail(gui.ERR_LoiKetNoiMayChu));
                     //Alert.alert(gui.ERR_LoiKetNoiMayChu);

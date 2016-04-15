@@ -205,7 +205,17 @@ const GooglePlacesAutocomplete = React.createClass({
     getCurrentLocation() {
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                this._requestNearby(position.coords.latitude, position.coords.longitude);
+                //this._requestNearby(position.coords.latitude, position.coords.longitude);
+                let data = {name: "Current Location"};
+
+                let details = {
+                    "geometry": {
+                        "location": {"lat": position.coords.latitude, "lng": position.coords.longitude}
+                    },
+                    "name": "Current Location",
+                    "types": ["CurrentLocation"]
+                };
+                this.props.onPress(data, details);
             },
             (error) => {
                 this._disableRowLoaders();
@@ -267,6 +277,7 @@ const GooglePlacesAutocomplete = React.createClass({
                 if (request.status === 200) {
                     const responseJSON = JSON.parse(request.responseText);
                     if (responseJSON.status === 'OK') {
+
                         if (this.isMounted()) {
                             const details = responseJSON.result;
                             this._disableRowLoaders();
@@ -400,18 +411,21 @@ const GooglePlacesAutocomplete = React.createClass({
             };
 
             let url = '';
-            if (this.props.nearbyPlacesAPI === 'GoogleReverseGeocoding') {
+
+
+            if (this.props.nearbyPlacesAPI === 'GooglePlacesSearch') {
+                url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + Qs.stringify({
+                        location: latitude + ',' + longitude,
+                        key: this.props.query.key,
+                        ...this.props.GooglePlacesSearchQuery,
+                    });
+
+            } else {
                 // your key must be allowed to use Google Maps Geocoding API
                 url = 'https://maps.googleapis.com/maps/api/geocode/json?' + Qs.stringify({
                         latlng: latitude + ',' + longitude,
                         key: this.props.query.key,
                         ...this.props.GoogleReverseGeocodingQuery,
-                    });
-            } else {
-                url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + Qs.stringify({
-                        location: latitude + ',' + longitude,
-                        key: this.props.query.key,
-                        ...this.props.GooglePlacesSearchQuery,
                     });
             }
 

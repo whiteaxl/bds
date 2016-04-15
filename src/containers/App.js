@@ -50,6 +50,7 @@ const reducerCreate = params=>{
     const defaultReducer = Reducer(params);
     return (state, action)=>{
         console.log("ACTION:", action);
+        console.log(state);
         return defaultReducer(state, action);
     }
 };
@@ -73,7 +74,7 @@ class App extends Component {
 
                     <Scene key='OrderPicker' component={OrderPicker} title="Sắp xếp" hideNavBar={true} />
                     <Scene key='SearchResultDetail' component={SearchResultDetail} title="Chi tiết" hideNavBar={true} />
-                    <Scene key='SearchSuggestion' component={SearchSuggestion} title="Serch Text" hideNavBar={true} />
+                    <Scene key='SearchSuggestion' duration={20} direction="vertical" component={SearchSuggestion} title="Serch Text" hideNavBar={true} />
                     <Scene key='SearchMapDetail' component={SearchMapDetail} title="Bản đồ" hideNavBar={true} />
                 </Scene>
 

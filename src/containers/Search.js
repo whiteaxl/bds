@@ -253,7 +253,13 @@ class Search extends Component {
 
     this.props.actions.search(
         this.props.search.form.fields
-        , this.props.search.state);
+        , () => {
+          if (this.props.needBack) {
+            Actions.pop();
+          } else {
+            Actions.SearchResultList({type: "reset"});
+          }
+        });
   }
 
   onMoreOption() {

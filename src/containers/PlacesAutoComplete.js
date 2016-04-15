@@ -60,17 +60,32 @@ var {GooglePlacesAutocomplete} = require('../components/GooglePlacesAutocomplete
 //const homePlace = {description: 'Home', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } }};
 
 class PlacesAutoComplete extends React.Component {
+    constructor(props) {
+        super(props);
+    }
     _onPress(data, details = null) {
         //console.log(data);
         console.log("You selected: " + details.formatted_address);
         //console.log(details);
         let value = details;
         value.fullName = details.name;
+        //console.log(data);
         console.log(value);
 
         this.props.actions.onSearchFieldChange("place", value);
 
-        Actions.pop();
+
+        //if not call from Search page, then need perform action
+        if (this.props.needReload) {
+            this.props.actions.search(
+                this.props.search.form.fields
+                , () => {
+                    Actions.pop();
+                }
+            );
+        } else {
+            Actions.pop();
+        }
     }
 
     _onCancelPress() {
@@ -127,7 +142,7 @@ class PlacesAutoComplete extends React.Component {
 
                 currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
                 currentLocationLabel="Current location"
-                nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+                nearbyPlacesAPI='GoogleReverseGeocoding' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
                 GoogleReverseGeocodingQuery={{
           // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
         }}

@@ -6,7 +6,7 @@ import {Actions} from 'react-native-router-flux';
 
 import gui from '../lib/gui';
 
-import SearchInput from './SearchInput';
+import HeaderSearchInput from './HeaderSearchInput';
 
 // Create our component
 var CommonHeader = React.createClass({
@@ -20,7 +20,7 @@ var CommonHeader = React.createClass({
       </Icon.Button>
       </View>
       <View style={mStyles.text}>
-        <SearchInput placeName={this.props.placeName}/>
+        <HeaderSearchInput placeName={this.props.placeName}/>
       </View>
       <View style={mStyles.search}>
       <Icon.Button onPress={this._onSearch}
@@ -32,10 +32,10 @@ var CommonHeader = React.createClass({
     </View>
   },
   _onHome: function() {
-    Actions.Home();
+    Actions.Home({type:"reset"});
   },
   _onSearch: function(){
-    Actions.Search();
+    Actions.Search({needBack:true});
   }
 });
 

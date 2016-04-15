@@ -97,7 +97,13 @@ class OrderPicker extends Component {
   }
   handleOrderTypeChosen(option) {
     this.props.actions.onSearchFieldChange("orderBy", this.getKeyByValue(option));
-    Actions.pop();
+
+    this.props.actions.search(
+      this.props.search.form.fields
+      , () => {
+          Actions.pop();
+      }
+    );
   }
 
   getValueByKey(key) {
