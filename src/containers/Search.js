@@ -431,7 +431,7 @@ var myStyles = StyleSheet.create({
       height: 60
   },
   searchAttributeLabelBold : {
-    fontSize: 14,
+    fontSize: gui.normalFontSize,
     fontFamily: 'Open Sans',
     color: 'black',
     fontWeight: 'bold'
@@ -443,7 +443,7 @@ var myStyles = StyleSheet.create({
       marginTop: 10,
       marginBottom: 10,
       color: 'white',
-      fontSize: 15,
+      fontSize: gui.normalFontSize,
       fontFamily: 'Open Sans',
       fontWeight : 'normal'
   },
@@ -457,28 +457,28 @@ var myStyles = StyleSheet.create({
   },
   searchResetText: {
     color: 'red',
-    fontSize: 15,
+    fontSize: 16,
     fontFamily: 'Open Sans',
     fontWeight: 'normal'
   },
   searchMoreText: {
-    fontSize: 15,
+    fontSize: 16,
     fontFamily: 'Open Sans',
     fontWeight: 'normal',
     color: gui.mainColor
   },
   searchAttributeLabel : {
-    fontSize: 14,
+    fontSize: gui.normalFontSize,
     fontFamily: 'Open Sans',
     color: 'black'
   },
   searchAttributeValue : {
-    fontSize: 14,
+    fontSize: gui.normalFontSize,
     fontFamily: 'Open Sans',
     color: 'gray'
   },
   searchAttributeValue2 : {
-    fontSize: 14,
+    fontSize: gui.normalFontSize,
     fontFamily: 'Open Sans',
     color: 'gray',
     marginRight: 6

@@ -12,7 +12,7 @@ import gui from '../lib/gui';
 export default class LikeTabButton extends React.Component {
   render() {
     var selected = this.props.selected;
-    var myStyle = selected? 'buttonTextSelected' : 'buttonText'
+    var myStyle = selected? 'buttonTextSelected' : 'buttonText';
 
     return (
       <View style={styles.wrapper}>
@@ -54,7 +54,7 @@ var styles = StyleSheet.create({
   buttonText: {
     flex: 1, 
     alignSelf:'center',
-    fontSize: 12,
+    fontSize: 14,
     fontFamily: 'Open Sans',
     padding: 10,
     color: 'black',
@@ -64,7 +64,7 @@ var styles = StyleSheet.create({
   buttonTextSelected: {
     flex: 1, 
     alignSelf:'center',
-    fontSize: 12,
+    fontSize: gui.capitalizeFontSize,
     fontFamily: 'Open Sans',
     padding: 10,
     color: gui.mainColor,
