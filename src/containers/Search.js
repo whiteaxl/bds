@@ -465,7 +465,7 @@ var myStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     backgroundColor: gui.mainColor,
-    height: 45
+    height: 44
   },
   searchButtonText: {
       marginLeft: 15,
