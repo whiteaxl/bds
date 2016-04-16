@@ -13,21 +13,21 @@ var CommonHeader = React.createClass({
   render: function() {
     return <View style={mStyles.container}>
       <View style={mStyles.home}>
-      <Icon.Button onPress={this._onHome}
-        name="home" backgroundColor={gui.mainColor}
-        underlayColor="gray" color="white"
+      <Icon onPress={this._onHome}
+        name="bars" backgroundColor={gui.mainColor}
+        underlayColor="gray" color="white" size={20}
         >
-      </Icon.Button>
+      </Icon>
       </View>
       <View style={mStyles.text}>
         <HeaderSearchInput placeName={this.props.placeName}/>
       </View>
       <View style={mStyles.search}>
-      <Icon.Button onPress={this._onSearch}
+      <Icon onPress={this._onSearch}
         name="search" backgroundColor={gui.mainColor}
-        underlayColor="gray" color="white" size={16}
+        underlayColor="gray" color="white" size={18}
         >
-      </Icon.Button>
+      </Icon>
       </View>
     </View>
   },
@@ -56,16 +56,19 @@ var mStyles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: gui.mainColor,
+      marginRight: 16
   },
   home: {
-      marginTop: 15,
+      marginTop: 16,
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: gui.mainColor,
+      marginLeft: 16
   },
   text: {
     backgroundColor: '#F5FCFF',
     position: 'absolute',
-    left:30, 
-    right:35, }
+    left:36,
+    right:35
+  }
 });

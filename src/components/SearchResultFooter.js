@@ -36,8 +36,8 @@ var myStyles = StyleSheet.create({
       justifyContent: 'space-around',
       backgroundColor: 'white',
       borderTopWidth: 1,
-      borderColor : 'lightgray'
-
+      borderColor : 'lightgray',
+      height: 44
   },
 
   searchButton: {

@@ -19,7 +19,6 @@ import React, {
 } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
-import Api from '../lib/FindApi';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import styles from './styles';
@@ -119,7 +118,7 @@ class SearchResultList extends Component {
         console.log("Call SearchResultList render");
         console.log(this.props);
         return (
-            <View style={styles.fullWidthContainer}>
+            <View style={myStyles.fullWidthContainer}>
                 <View style={myStyles.search}>
                     <SearchHeader placeName={this.props.placeFullName}/>
                 </View>
@@ -242,12 +241,12 @@ var myStyles = StyleSheet.create({
         marginBottom: 50,
         fontSize: 16,
         textAlign: 'center',
-        margin: 10,
+        margin: 10
     },
     fullWidthContainer: {
         flex: 1,
         alignItems: 'stretch',
-        backgroundColor: '#F5FCFF',
+        backgroundColor: 'white'
     },
     search: {
         backgroundColor: gui.mainColor,
@@ -261,12 +260,12 @@ var myStyles = StyleSheet.create({
     wrapper: {},
     slide: {
         justifyContent: 'center',
-        backgroundColor: 'transparent',
+        backgroundColor: 'transparent'
         //
     },
     separator: {
         height: 0.5,
-        backgroundColor: 'transparent',
+        backgroundColor: 'transparent'
     },
     dot: {
         width: 8,

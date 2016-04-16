@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
         position: 'absolute',
         left:0,
         right:0,
-        height: 50,
+        height: 50
     },
     searchIcon: {
         marginLeft: 10
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
         left: 0,
         position: 'absolute',
         right: 0,
-        top: 15,
+        top: 15
 
     },
     inputContainerStyle: {
@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
     },
     info: {
         paddingTop: 60,
-        flex:4,
+        flex:4
     },
     infoText: {
         textAlign: 'center'
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
         color: 'grey',
         fontSize: 12,
         marginBottom: 10,
-        textAlign: 'center',
+        textAlign: 'center'
     },
     openingText: {
         textAlign: 'left'

@@ -78,6 +78,7 @@ var myStyles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-around',
       backgroundColor: 'white',
+      height: 44
   },
   searchButton: {
       alignItems: 'stretch',

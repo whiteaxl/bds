@@ -66,7 +66,7 @@ class Home extends Component {
         <View style={homeStyles.pageHeader}>
           <Icon.Button onPress={this.handleSearchButton}
             name="search" backgroundColor={gui.mainColor}
-            underlayColor="transparent" size={16}
+            underlayColor="transparent" size={18}
             style={styles.search}>
             Tìm kiếm
           </Icon.Button>
