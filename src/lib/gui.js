@@ -4,8 +4,9 @@ module.exports = {
 	mainColor : '#00a8e6',
 	searchHeaderBg: '#adadad',
 	separatorLine: '#DFDFE2',
+	arrowColor: '#BBBBBB',
 	fontFamily: 'Open Sans',
-	normalFontSize : 15,
+	normalFontSize : 16,
 	buttonFontSize: 16,
 	capitalizeFontSize: 13,
 

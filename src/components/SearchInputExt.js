@@ -45,10 +45,10 @@ const styles = StyleSheet.create({
         height: 50,
     },
     searchIcon: {
-        marginLeft: 25
+        marginLeft: 10
     },
     searchContainer: {
-        marginTop: 28,
+        marginTop: 26,
         marginBottom: 20,
         flexDirection: 'row',
         justifyContent: 'flex-start',

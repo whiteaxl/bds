@@ -145,7 +145,7 @@ class Search extends Component {
 
                 <View style={{flexDirection: "row", alignItems: "flex-end"}}>
                   <Text style={myStyles.searchAttributeValue}> {this._getGiaValue()} </Text>
-                  <Icon name="angle-down" style = { {color:'gray'} } size={20} />
+                  <Icon name="angle-down" style = { {color:gui.arrowColor} } size={20} />
                 </View>
               </TouchableOpacity>
 
@@ -157,7 +157,7 @@ class Search extends Component {
                   </Text>
                   <View style={{flexDirection: "row", alignItems: "flex-end"}}>
                     <Text style={myStyles.searchAttributeValue2}> {this._getLoaiNhatDatValue()} </Text>
-                    <Icon name="angle-right" style = { {color:'gray'} } size={20} />
+                    <Icon name="angle-right" style = { {color:gui.arrowColor} } size={20} />
                   </View>
                 </View>
               </TouchableOpacity>
@@ -176,7 +176,7 @@ class Search extends Component {
 
                 <View style={{flexDirection: "row", alignItems: "flex-end"}}>
                   <Text style={myStyles.searchAttributeValue}>{this._getDienTichValue()} </Text>
-                  <Icon name="angle-down" style = { {color:'gray'} } size={20} />
+                  <Icon name="angle-down" style = { {color:gui.arrowColor} } size={20} />
                 </View>
               </TouchableOpacity>
               </View>
@@ -300,7 +300,7 @@ class Search extends Component {
     if (this.showSoPhongNgu(loaiTin, loaiNhaDat)){
       return (
         <View style={[myStyles.searchFilterAttributeExt2, {flexDirection: "column"}]}>
-          <View style={{paddingBottom: 6, paddingTop: 3}}>
+          <View style={{paddingBottom: 4, paddingTop: 3}}>
             <Text style={myStyles.searchAttributeLabel}>
               Số phòng ngủ
             </Text>
@@ -327,12 +327,12 @@ class Search extends Component {
     if (this.showSoTang(loaiTin, loaiNhaDat)){
       return (
         <View style={[myStyles.searchFilterAttributeExt2, {flexDirection: "column"}]}>
-          <View style={{paddingBottom: 6, paddingTop: 3}}>
+          <View style={{paddingBottom: 4, paddingTop: 3}}>
             <Text style={myStyles.searchAttributeLabel}>
               Số tầng
             </Text>
           </View>
-          <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 10}}>
+          <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 9}}>
             <SegmentedControlIOS
               values={[RangeUtils.BAT_KY,"1+","2+","3+","4+","5+"]}
               selectedIndex={this.props.search.form.fields.soTang}
@@ -354,12 +354,12 @@ class Search extends Component {
     if (this.showSoNhaTam(loaiTin, loaiNhaDat)){
       return (
         <View style={[myStyles.searchFilterAttributeExt2, {flexDirection: "column"}]}>
-          <View style={{paddingBottom: 6, paddingTop: 3}}>
+          <View style={{paddingBottom: 4, paddingTop: 3}}>
             <Text style={myStyles.searchAttributeLabel}>
               Số nhà tắm
             </Text>
           </View>
-          <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 10}}>
+          <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 9}}>
             <SegmentedControlIOS
               values={[RangeUtils.BAT_KY,"1+","2+","3+","4+","5+"]}
               selectedIndex={this.props.search.form.fields.soNhaTam}
@@ -555,7 +555,7 @@ var myStyles = StyleSheet.create({
     //borderWidth:1,
     //borderColor: "red",
     justifyContent :'space-between',
-    paddingTop: 12,
+    paddingTop: 10,
     paddingLeft: 15,
     paddingRight: 15,
     paddingBottom: 10,
@@ -570,7 +570,7 @@ var myStyles = StyleSheet.create({
     padding: 10,
     paddingTop: 5,
     paddingLeft: 15,
-    paddingBottom: 8,
+    paddingBottom: 7,
     borderTopWidth: 1,
     borderTopColor: gui.separatorLine
   },
