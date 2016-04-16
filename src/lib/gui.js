@@ -6,6 +6,7 @@ module.exports = {
 	separatorLine: '#DFDFE2',
 	fontFamily: 'Open Sans',
 	normalFontSize : 15,
+	buttonFontSize: 16,
 	capitalizeFontSize: 13,
 
 	//Error msg

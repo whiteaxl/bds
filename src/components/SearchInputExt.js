@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
         height: 50,
     },
     searchContainer: {
-        marginTop: 25,
+        marginTop: 28,
         marginBottom: 20,
         flexDirection: 'row',
         justifyContent: 'center',
@@ -53,7 +53,7 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         marginLeft: 10,
         marginRight: 10,
-        height: 25
+        height: 30
     },
     textInput : {
         fontSize: 15,

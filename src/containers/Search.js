@@ -110,7 +110,7 @@ class Search extends Component {
     var _scrollView: ScrollView;
     return (
       <View style={styles.fullWidthContainer}>
-        <View style={[myStyles.searchFilter, {top: 55}]}>
+        <View style={[myStyles.searchFilter, {top: 66}]}>
 
           <View style={[myStyles.searchFilterButton]}>
             <View style = {{flex:1, flexDirection: 'row'}}>
@@ -300,17 +300,17 @@ class Search extends Component {
     if (this.showSoPhongNgu(loaiTin, loaiNhaDat)){
       return (
         <View style={[myStyles.searchFilterAttribute2, {flexDirection: "column"}]}>
-          <View style={{paddingBottom: 6}}>
+          <View style={{paddingBottom: 6, paddingTop: 3}}>
             <Text style={myStyles.searchAttributeLabel}>
               Số phòng ngủ
             </Text>
           </View>
-          <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 5}}>
+          <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 9}}>
             <SegmentedControlIOS
               values={[RangeUtils.BAT_KY,"1+","2+","3+","4+","5+"]}
               selectedIndex={this.props.search.form.fields.soPhongNgu}
               onChange={this._onSoPhongNguChanged.bind(this)}
-              tintColor={gui.mainColor}
+              tintColor={gui.mainColor} height={28}
             >
             </SegmentedControlIOS>
           </View>
@@ -327,17 +327,17 @@ class Search extends Component {
     if (this.showSoTang(loaiTin, loaiNhaDat)){
       return (
         <View style={[myStyles.searchFilterAttribute2, {flexDirection: "column"}]}>
-          <View style={{paddingBottom: 6}}>
+          <View style={{paddingBottom: 6, paddingTop: 3}}>
             <Text style={myStyles.searchAttributeLabel}>
               Số tầng
             </Text>
           </View>
-          <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 5}}>
+          <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 10}}>
             <SegmentedControlIOS
               values={[RangeUtils.BAT_KY,"1+","2+","3+","4+","5+"]}
               selectedIndex={this.props.search.form.fields.soTang}
               onChange={this._onSoTangChanged.bind(this)}
-              tintColor={gui.mainColor}
+              tintColor={gui.mainColor} height={28}
              >
              </SegmentedControlIOS>
           </View>
@@ -354,17 +354,17 @@ class Search extends Component {
     if (this.showSoNhaTam(loaiTin, loaiNhaDat)){
       return (
         <View style={[myStyles.searchFilterAttribute2, {flexDirection: "column"}]}>
-          <View style={{paddingBottom: 6}}>
+          <View style={{paddingBottom: 6, paddingTop: 3}}>
             <Text style={myStyles.searchAttributeLabel}>
               Số nhà tắm
             </Text>
           </View>
-          <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 5}}>
+          <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 10}}>
             <SegmentedControlIOS
               values={[RangeUtils.BAT_KY,"1+","2+","3+","4+","5+"]}
               selectedIndex={this.props.search.form.fields.soNhaTam}
               onChange={this._onSoNhaTamChanged.bind(this)}
-              tintColor={gui.mainColor}
+              tintColor={gui.mainColor} height={28}
              >
              </SegmentedControlIOS>
           </View>
@@ -410,9 +410,11 @@ class Search extends Component {
 
     let thueCanHoChungCu = 1;
     if (loaiTin == 'thue' && [thueCanHoChungCu].indexOf(loaiNhaDatKey)!=-1)
-      return false;*/
+      return false;
 
-    return true;
+    return true;*/
+
+    return false;
   }
 
   showSoNhaTam(loaiTin, loaiNhaDatKey){
@@ -456,7 +458,7 @@ var myStyles = StyleSheet.create({
       marginTop: 10,
       marginBottom: 10,
       color: 'white',
-      fontSize: gui.normalFontSize,
+      fontSize: gui.buttonFontSize,
       fontFamily: 'Open Sans',
       fontWeight : 'normal'
   },
@@ -470,12 +472,12 @@ var myStyles = StyleSheet.create({
   },
   searchResetText: {
     color: 'red',
-    fontSize: 16,
+    fontSize: gui.buttonFontSize,
     fontFamily: 'Open Sans',
     fontWeight: 'normal'
   },
   searchMoreText: {
-    fontSize: 16,
+    fontSize: gui.buttonFontSize,
     fontFamily: 'Open Sans',
     fontWeight: 'normal',
     color: gui.mainColor
@@ -509,8 +511,8 @@ var myStyles = StyleSheet.create({
     justifyContent :'space-between',
     padding: 8,
     paddingLeft: 15,
-    paddingTop: 10,
-    paddingBottom: 3,
+    paddingTop: 12,
+    paddingBottom: 5,
     borderTopWidth: 1,
     borderTopColor: '#f8f8f8',
     backgroundColor: '#f8f8f8'
@@ -538,10 +540,10 @@ var myStyles = StyleSheet.create({
     //borderWidth:1,
     //borderColor: "red",
     justifyContent :'space-between',
-    padding: 10,
+    paddingTop: 12,
     paddingLeft: 15,
     paddingRight: 15,
-    paddingBottom: 8,
+    paddingBottom: 10,
     borderTopWidth: 1,
     borderTopColor: gui.separatorLine
   },
@@ -559,6 +561,7 @@ var myStyles = StyleSheet.create({
   },
   searchMoreFilterAttribute: {
     padding: 10,
+    paddingBottom: 11,
     borderTopWidth: 1,
     borderTopColor: gui.separatorLine
   }
