@@ -8,6 +8,7 @@ export default keyMirror({
   SEARCH_STATE_FAILURE: null,
   CHANGE_TO_LOADING_SEARCH_RESULT:null,
 
+  
   SET_SEARCH_LOAI_TIN : null,
 
 
@@ -65,5 +66,8 @@ export default keyMirror({
   SET_LISTRESULT_DATASOURCE:null,
   CHANGE_LISTRESULT_TO_LOADING:null,
   FETCH_SEARCH_RESULT_FAIL: null,
-  FETCH_SEARCH_RESULT_SUCCESS : null
+  FETCH_SEARCH_RESULT_SUCCESS : null,
+  
+  //search - map
+  MAP_STATE_LOADING: null,
 });

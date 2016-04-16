@@ -16,7 +16,7 @@ var Api = {
 
 
   getItems: function(fields) {
-      var {loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, place, bbox} = fields;
+      var {loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, place, geoBox} = fields;
 
       var params = {
           'loaiTin' : 'ban' === loaiTin ? 0 : 1,
@@ -27,7 +27,7 @@ var Api = {
           'dienTichBETWEEN' : dienTich ? RangeUtils.dienTichRange.toValRange(dienTich).join() : undefined,
           'orderBy' : orderBy || undefined,
           'place':place || undefined,
-          'geoBox' : bbox.length===4 ? bbox : undefined,
+          'geoBox' : geoBox.length===4 ? geoBox : undefined,
           'limit' : maxRows || undefined
       };
 
@@ -71,8 +71,6 @@ var Api = {
             .then(response => response.json())
             .catch(e => e);
     },
-
-
 
 };
 

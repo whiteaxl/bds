@@ -45,6 +45,9 @@ const actions = [
 ];
 
 function mapStateToProps(state) {
+    console.log("Call SearchResultList.mapStateToProps");
+    console.log(state);
+
     return {
         listAds: state.search.result.listAds,
         searchState: state.search.state,

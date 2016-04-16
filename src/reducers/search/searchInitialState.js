@@ -35,7 +35,7 @@ const SearchForm = Record({
         orderBy: '',
         listData: [],
         marker: {},
-        bbox: [],
+        geoBox: [],
         place: {
             "address_components": [{
                 "long_name": "Hanoi",

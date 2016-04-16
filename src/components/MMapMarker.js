@@ -1,6 +1,6 @@
 'use strict';
 
-import React, {Component} from 'react-native'
+import React, {Component, PropTypes} from 'react-native'
 
 import MapView from 'react-native-maps';
 
@@ -52,12 +52,18 @@ function mapDispatchToProps(dispatch) {
 }
 
 class MMapMarker extends Component {
+   /**
+     * Callback that is called when the user presses on the marker
+   */
+
+   onPress: PropTypes.func
+
   constructor(props){
     super(props);
     this.state = { mcolor: gui.mainColor};
   }
-	
-	render() {
+
+  render() {
 		return(
 			<MapView.Marker
               coordinate={this.props.marker.coordinate}
@@ -68,12 +74,12 @@ class MMapMarker extends Component {
             		unit={this.props.marker.unit}/>
           	</MapView.Marker>
 		);
-	}
+  }
 
-	_onSelect(event) {
+  _onSelect(event) {
         this.props.actions.onSearchFieldChange("marker", this.props.marker);
 	    this.setState({mcolor: "grey"});
-	}
+  }
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(MMapMarker);

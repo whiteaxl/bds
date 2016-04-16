@@ -21,13 +21,17 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import MapView from 'react-native-maps';
 
 import SearchHeader from '../components/SearchHeader';
-import MMapMarker from '../components/MMapMarker';
+import PriceMarker from '../components/PriceMarker';
 import TopModal from '../components/TopModal';
 
 import gui from '../lib/gui';
 
 import api from '../lib/FindApi';
 import apiUtils from '../lib/ApiUtils';
+
+const {
+    MAP_STATE_LOADING,
+} = require('../lib/constants').default;
 
 
 /**
@@ -39,8 +43,37 @@ const actions = [
 ];
 
 function mapStateToProps(state) {
+  console.log("SearchResultMap.mapStateToProps");
+  console.log(state.search.state);
+  console.log(state.search.form.fields.geoBox);
+  console.log(state.search.form.fields.place);
+
+  let listAds = state.search.result.listAds;
+  var place = state.search.form.fields.place;
+  // var geoBox = [place.geometry.viewport.southwest.lng, place.geometry.viewport.southwest.lat,
+  //               place.geometry.viewport.northeast.lng, place.geometry.viewport.northeast.lat];
+
+  var region = {};
+
+  if (listAds && listAds.length >0 ){
+    region =  {
+      latitude: listAds[0].place.geo.lat,
+      longitude: listAds[0].place.geo.lon,
+      latitudeDelta: LATITUDE_DELTA,
+      longitudeDelta: LONGITUDE_DELTA
+    }
+  } else {
+    region = apiUtils.getRegion(state.search.form.fields.geoBox);
+    region.longitudeDelta = region.latitudeDelta * ASPECT_RATIO;
+  }
+
   return {
-      ...state
+    listAds: listAds,
+    mapState: state.search.state,
+    errorMsg: state.search.result.errorMsg,
+    placeFullName: state.search.form.fields.place.fullName,
+    allMarker: listAds ? listAds.length : 0,
+    region: region
   };
 }
 
@@ -65,67 +98,36 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 class SearchResultMap extends Component {
 
   constructor(props) {
-    console.log("SearchResultMap.constructor");
-
+    console.log("Call SearchResultMap.constructor");
     super(props);
-
-    var marker = this.props.search.form.fields.listData;
-
-    var region = {};
-    if (marker && marker.length >0 ){
-      region =  {
-        latitude: marker[0].place.geo.lat,
-        longitude:marker[0].place.geo.lon,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
-      }
-    } else{
-      region = apiUtils.getRegion(this.props.search.form.fields.bbox);
-      region.longitudeDelta = region.latitudeDelta * ASPECT_RATIO;
-    }
 
     this.state = {
       modal: false,
       mapType: "standard",
-      allMarker: this.props.search.form.fields.listData ? this.props.search.form.fields.listData.length : 0,
-      region: region
-    };
-    /*
-    var region = {latitude : 21.0226823,
-                  longitude: 105.7669236,
-                  latituDelta: LATITUDE_DELTA,
-                  longitudeDelta: LONGITUDE_DELTA};
-
-    if ( this.props.search.form.fields.bbox && this.props.search.form.fields.bbox.length == 4){
-      region = apiUtils.getRegion(this.props.search.form.fields.bbox);
-      region.longitudeDelta = region.latitudeDelta * ASPECT_RATIO;
+      mmarker:{}
     }
-    this.state ={
-      modal: false,
-      mapType: "standard",
-      allMarker: this.props.search.form.fields.listData ? this.props.search.form.fields.listData.length : 0,
-      region: region,
-    }
-    */
   }
 
   render() {
-    console.log("SearchResultMap.render");
-    console.log("SearchResultMap: number of data " + this.props.search.form.fields.listData.length);
+    console.log("Call SearchResultMap.render");
+    console.log(this.props.region);
+
+    let listAds = this.props.listAds;
+
+    console.log("SearchResultMap: number of data " + listAds.length);
 
     var markerList = [];
 
-    if (this.props.search.form.fields.listData) {
+    if (listAds) {
       let i = 0;
-      this.props.search.form.fields.listData.map(function(item){
+      listAds.map(function(item){
         if (item.place.geo.lat && item.place.geo.lon) {
           let marker = {
             coordinate: {latitude: item.place.geo.lat, longitude: item.place.geo.lon},
             price: item.giaDisplay,
-            //unit: item.price_unit,
             id: i,
-            cover: item.cover,
-            diaChi: item.diaChi,
+            cover: item.image.cover,
+            diaChi: item.place.diaChi,
             dienTich: item.dienTich
           };
           markerList.push(marker);
@@ -137,26 +139,30 @@ class SearchResultMap extends Component {
     return (
       <View style={styles.fullWidthContainer}>
         <View style={styles.title}>
-          <Text style={{color: gui.mainColor}}> Số bất động sản trên bản đồ : {this.state.allMarker}</Text>
+          <Text style={{color: gui.mainColor}}> Số bất động sản trên bản đồ : {this.props.allMarker}</Text>
         </View>
         <View style={styles.search}>
-          <SearchHeader placeName={this.props.search.form.fields.place.fullName}/>
+          <SearchHeader placeName={this.props.placeFullName}/>
         </View>
         <View style={styles.map}>
           <MapView 
-            region={this.state.region}
-            onRegionChange={this._onRegionChange.bind(this)}
+            region={this.props.region}
             onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
-            onPress={this._onPress()}
-            onMarkerPress={this._onMarkerPress.bind(this)}
             onMarkerSelect={this.props.openModal}
             style={styles.mapView}
             mapType={this.state.mapType}
           >
             {markerList.map( marker =>(
-              <MMapMarker key={marker.id} marker={marker}>
-              </MMapMarker>
-            ))}
+              <MapView.Marker
+                key={marker.id}
+                coordinate={marker.coordinate}
+                onPress={()=>this._onMarkerPress(marker)}
+              >
+                <PriceMarker color={gui.mainColor}
+                           amount={marker.price}
+                />
+              </MapView.Marker>
+             ))}
           </MapView>
           <View style={styles.mapButtonContainer}>
             <TouchableOpacity onPress={this._onDrawPressed.bind(this)} style={[styles.bubble, styles.button]}>
@@ -191,52 +197,47 @@ class SearchResultMap extends Component {
           </View>
         </View>
 
-        {this.state.modal ? <TopModal closeModal={() => this.setState({modal: false}) }/> : null }
+        {this.state.modal ? <TopModal marker={this.state.mmarker} closeModal={() => this.setState({modal: false}) }/> : null }
       </View>
     )
   }
 
-  _onRegionChange(region) {
-    console.log("SearhResultMap._onRegionChange");
-    this.setState({
-      region: region
-    });
-  }
-
   _onRegionChangeComplete(region) {
-    console.log("SearhResultMap._onRegionChangeComplete");
-    var bbox = apiUtils.getBbox(this.state.region);
-    this.props.actions.onSearchFieldChange("bbox", bbox);
+    console.log("Call SearhResultMap._onRegionChangeComplete");
+    console.log(region);
+    var geoBox = apiUtils.getBbox(region);
+    this.props.actions.onSearchFieldChange("geoBox", geoBox);
     this.refreshListData();
   }
 
   refreshListData() {
-    console.log("SearhResultMap.refreshListData");
+    console.log("Call SearhResultMap.refreshListData");
     
-    var dataBlob = [];
-    api.getItems(this.props.search.form.fields)
-      .then((data) => {
-        if (data.list) {
-          data.list.map(function(aRow) {
-              dataBlob.push(aRow.value);
-            }
-          );
-          console.log("SearchResultMap: number of refresh data " + dataBlob.length);
-          this.props.actions.onSearchFieldChange("listData", dataBlob);
-          this.setState({allMarker: this.props.search.form.fields.listData.length});
-        } else {
-          console.log("Lỗi kết nối đến máy chủ!");
-        }
-      });
+    // var dataBlob = [];
+    // api.getItems(this.props.search.form.fields)
+    //   .then((data) => {
+    //     if (data.list) {
+    //       data.list.map(function(aRow) {
+    //           dataBlob.push(aRow.value);
+    //         }
+    //       );
+    //       console.log("SearchResultMap: number of refresh data " + dataBlob.length);
+    //       this.props.actions.onSearchFieldChange("listData", dataBlob);
+    //       this.setState({allMarker: this.props.listAds.length});
+    //     } else {
+    //       console.log("Lỗi kết nối đến máy chủ!");
+    //     }
+    //   });
   }
 
   _onCurrentLocationPress(){
-    console.log("SearchResultMap._onCurrentLocationPress");
+    console.log("Call SearchResultMap._onCurrentLocationPress");
   }
 
-    _onDrawPressed(){
-    console.log("SearchResultMap._onDrawPressed");
+  _onDrawPressed(){
+    console.log("Call SearchResultMap._onDrawPressed");
   }
+
   _onSatellitePress(){
     this.setState({
       mapType: "satellite"
@@ -259,12 +260,16 @@ class SearchResultMap extends Component {
     this.setState({modal: true});
   }
 
-  _onMarkerPress(event) {
-    this.setState({modal: true});
+  _onMarkerPress(marker) {
+    console.log("Call SearchResultMap._onMarkerPress");
+    this.setState({
+      modal: true,
+      mmarker: marker
+    });
   }
 
-  _onPress(event){
-    //console.log(event);
+  _onMarkerDeselect(){
+    this.setState({modal: false});
   }
 
   _onLocalInfoPressed() {

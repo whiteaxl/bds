@@ -10,6 +10,7 @@ var ApiUtils = {
       throw error;
     }
   },
+
   getBbox: function(region){
   	var latMax = region.latitude + region.latitudeDelta/2;
     var lonMax = region.longitude + region.longitudeDelta/2;
@@ -18,12 +19,11 @@ var ApiUtils = {
     return [lonMin, latMin, lonMax, latMax];
   },
 
-  getRegion: function(bbox){
-    var latitudeDelta = bbox[3] - bbox[1];
-    var longitudeDelta = bbox[2] - bbox[0];
-    var latitude = bbox[3] - latitudeDelta/2;
-    var longitude = bbox[2] - longitudeDelta/2;
-
+  getRegion: function(geoBox){
+    var latitudeDelta = geoBox[3] - geoBox[1];
+    var longitudeDelta = geoBox[2] - geoBox[0];
+    var latitude = geoBox[3] - latitudeDelta/2;
+    var longitude = geoBox[2] - longitudeDelta/2;
     return {latitude: latitude, longitude: longitude, latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta};
   }
 };

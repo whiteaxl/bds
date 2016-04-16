@@ -15,7 +15,6 @@ class PriceMarker extends React.Component{
       <View style={styles.container}>
         <View style={[styles.bubble, {backgroundColor: this.props.color, borderColor: this.props.color}]}>
           <Text style={[styles.amount, { fontSize: this.props.fontSize }]}>{this.props.amount} </Text>
-          {/*<Text style={styles.unit}>{this.props.unit ? this.props.unit : " $"}</Text> */}
         </View>
         <View style={[styles.arrowBorder,{borderTopColor: this.props.color}]} />
         <View style={[styles.arrow, {borderTopColor: this.props.color}]} />

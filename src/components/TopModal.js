@@ -1,52 +1,19 @@
-import React, { AppRegistry, View, Image, StyleSheet, Text, TouchableOpacity, Animated, Dimensions, Component} from 'react-native';
-
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-
-/**
- * The actions we need
- */
-import * as globalActions from '../reducers/global/globalActions';
-import * as searchActions from '../reducers/search/searchActions';
-
-/**
- * Immutable Mapn
- */
-import {Map} from 'immutable';
-
-import {Actions} from 'react-native-router-flux';
-
-import gui from '../lib/gui';
+import React,
+{ AppRegistry,
+  View,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  Animated,
+  Dimensions,
+  Component
+}
+from 'react-native';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import LinearGradient from 'react-native-linear-gradient';
-
-/**
-* ## Redux boilerplate
-*/
-const actions = [
-  globalActions,
-  searchActions
-];
-
-function mapStateToProps(state) {
-  return {
-      ...state
-  };
-}
-
-function mapDispatchToProps(dispatch) {
-  const creators = Map()
-          .merge(...actions)
-          .filter(value => typeof value === 'function')
-          .toObject();
-
-  return {
-    actions: bindActionCreators(creators, dispatch),
-    dispatch
-  };
-}
 
 var {
   height: deviceHeight,
@@ -63,61 +30,62 @@ class TopModal extends React.Component {
 
   componentDidMount() {
     Animated.timing(this.state.offset, {
-      duration: 1000,
+      duration: 500,
       toValue: 0
     }).start();
   }
 
   closeModal() {
     Animated.timing(this.state.offset, {
-      duration: 1000,
+      duration: 500,
       toValue: deviceHeight
     }).start(this.props.closeModal);
   }
 
   render() {
-    var diaChi = this.props.search.form.fields.marker.diaChi;
-    var originDiaChi = this.props.search.form.fields.marker.diaChi;
-    var price = this.props.search.form.fields.marker.price;
-    var unit = this.props.search.form.fields.marker.unit;
-    if (diaChi) {
-      var maxDiaChiLength = 35;
-      var index = diaChi.indexOf(',', maxDiaChiLength-5);
-      var length = 0;
-      if (index !== -1 && index <= maxDiaChiLength) {
-        length = index;
-      } else {
-        index = diaChi.indexOf(' ', maxDiaChiLength-5);
-        length = index !== -1 && index <= maxDiaChiLength ? index : maxDiaChiLength;
-      }
-      diaChi = diaChi.substring(0,length);
-      if (diaChi.length < originDiaChi.length) {
-        diaChi = diaChi + '...';
-      }
-    }
- 
+    console.log("Call TopModal.render");
+
     return (
         <Animated.View style={[styles.modal, styles.flexCenter, {transform: [{translateY: this.state.offset}]}]}>
           <TouchableOpacity onPress={this.closeModal.bind(this)}>
-            
-            <Image style={styles.thumb} source={{uri: `${this.props.search.form.fields.marker.cover}`}} >
+            <Image style={styles.thumb} source={{uri: `${this.props.marker.cover}`}} >
               <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']} 
                 style={styles.linearGradient}>
               <View style={styles.detail}>
                 <View>
-                  <Text style={styles.price}>{price} {unit}</Text>
-                  <Text style={styles.text}>{diaChi}</Text>
+                  <Text style={styles.price}>{this.props.marker.price}</Text>
+                  <Text style={styles.text}>{this.getDiaChi(this.props.marker.diaChi)}</Text>
                 </View>
                 <Icon.Button name="heart-o" backgroundColor="transparent"
                   underlayColor="transparent" style={styles.heartButton}/>
               </View>
               </LinearGradient>
             </Image>
-
           </TouchableOpacity>
         </Animated.View>
     )
   }
+
+  getDiaChi(param){
+    var diaChi = param;
+    var originDiaChi = param;
+    if (diaChi) {
+        var maxDiaChiLength = 35;
+        var index = diaChi.indexOf(',', maxDiaChiLength-5);
+        var length = 0;
+        if (index !== -1 && index <= maxDiaChiLength) {
+          length = index;
+        } else {
+          index = diaChi.indexOf(' ', maxDiaChiLength-5);
+          length = index !== -1 && index <= maxDiaChiLength ? index : maxDiaChiLength;
+        }
+        diaChi = diaChi.substring(0,length);
+        if (diaChi.length < originDiaChi.length) {
+                  diaChi = diaChi + '...';
+              }
+    }
+    return diaChi;
+   }
 };
 
 var styles = StyleSheet.create({
@@ -139,7 +107,7 @@ var styles = StyleSheet.create({
     alignItems: 'stretch',
     height: deviceHeight/3,
     width: deviceWidth,
-    alignSelf: 'auto',
+    alignSelf: 'auto'
   },
   linearGradient: {
     flex: 1,
@@ -153,7 +121,7 @@ var styles = StyleSheet.create({
     textAlign: 'left',
     backgroundColor: 'transparent',
     marginLeft: 10,
-    color: 'white',
+    color: 'white'
   },
   text: {
     fontSize: 14,
@@ -162,10 +130,10 @@ var styles = StyleSheet.create({
     marginLeft: 10,
     marginBottom: 15,
     margin: 5,
-    color: 'white',
+    color: 'white'
   },
   heartButton: {
-    marginBottom: 10,
+    marginBottom: 10
   },
   detail: {
     backgroundColor: 'transparent',
@@ -176,4 +144,5 @@ var styles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopModal);
+
+export default TopModal;

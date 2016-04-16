@@ -1,11 +1,7 @@
 // Import some code we need
 import React, {View, Component, Text, StyleSheet} from 'react-native';
 
-import gui from '../lib/gui';
-
 import {Actions} from 'react-native-router-flux';
-
-import Button from 'react-native-button';
 
 import RelandIcon from './RelandIcon'
 
