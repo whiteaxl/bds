@@ -113,7 +113,7 @@ class Search extends Component {
         <View style={[myStyles.searchFilter, {top: 65}]}>
 
           <View style={[myStyles.searchFilterButton]}>
-            <View style = {{flex:1, flexDirection: 'row'}}>
+            <View style = {{flex:1, flexDirection: 'row', paddingLeft: 5, paddingRight: 5}}>
               <LikeTabButton name={'ban'}
                 onPress={this._onLoaiTinChange.bind(this)}
                 selected={loaiTin === 'ban'}>BÁN</LikeTabButton>
