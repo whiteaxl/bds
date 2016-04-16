@@ -37,6 +37,7 @@ var myStyles = StyleSheet.create({
       backgroundColor: 'white',
       borderTopWidth: 1,
       borderColor : 'lightgray'
+
   },
 
   searchButton: {

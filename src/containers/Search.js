@@ -110,7 +110,7 @@ class Search extends Component {
     var _scrollView: ScrollView;
     return (
       <View style={myStyles.fullWidthContainer}>
-        <View style={[myStyles.searchFilter, {top: 66}]}>
+        <View style={[myStyles.searchFilter, {top: 65}]}>
 
           <View style={[myStyles.searchFilterButton]}>
             <View style = {{flex:1, flexDirection: 'row'}}>
@@ -151,7 +151,7 @@ class Search extends Component {
 
               <TouchableOpacity
                 onPress={this._onPropertyTypesPressed}>
-                <View style={myStyles.searchFilterAttribute}>
+                <View style={myStyles.searchFilterAttributeExt}>
                   <Text style={myStyles.searchAttributeLabel}>
                   Loại nhà đất
                   </Text>
@@ -168,7 +168,7 @@ class Search extends Component {
 
               {this._renderSoNhaTam()}
 
-              <TouchableOpacity style={myStyles.searchFilterAttribute}
+              <TouchableOpacity style={myStyles.searchFilterAttributeExt}
                   onPress={this._onPressDienTichHandle.bind(this)}>
                 <Text style={myStyles.searchAttributeLabel}>
                   Diện tích
@@ -200,8 +200,8 @@ class Search extends Component {
             </ScrollView>
         </View>
 
-        <View style={styles.searchButton}>
-          <View style={styles.searchButtonWrapper}>
+        <View style={myStyles.searchButton}>
+          <View style={myStyles.searchButtonWrapper}>
             <Button onPress={this.onCancel}
             style={myStyles.searchButtonText}>Thoát</Button>
             <Button onPress={this.onApply.bind(this)}
@@ -299,7 +299,7 @@ class Search extends Component {
     let loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
     if (this.showSoPhongNgu(loaiTin, loaiNhaDat)){
       return (
-        <View style={[myStyles.searchFilterAttribute2, {flexDirection: "column"}]}>
+        <View style={[myStyles.searchFilterAttributeExt2, {flexDirection: "column"}]}>
           <View style={{paddingBottom: 6, paddingTop: 3}}>
             <Text style={myStyles.searchAttributeLabel}>
               Số phòng ngủ
@@ -326,7 +326,7 @@ class Search extends Component {
     let loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
     if (this.showSoTang(loaiTin, loaiNhaDat)){
       return (
-        <View style={[myStyles.searchFilterAttribute2, {flexDirection: "column"}]}>
+        <View style={[myStyles.searchFilterAttributeExt2, {flexDirection: "column"}]}>
           <View style={{paddingBottom: 6, paddingTop: 3}}>
             <Text style={myStyles.searchAttributeLabel}>
               Số tầng
@@ -353,7 +353,7 @@ class Search extends Component {
     let loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
     if (this.showSoNhaTam(loaiTin, loaiNhaDat)){
       return (
-        <View style={[myStyles.searchFilterAttribute2, {flexDirection: "column"}]}>
+        <View style={[myStyles.searchFilterAttributeExt2, {flexDirection: "column"}]}>
           <View style={{paddingBottom: 6, paddingTop: 3}}>
             <Text style={myStyles.searchAttributeLabel}>
               Số nhà tắm
@@ -457,6 +457,16 @@ var myStyles = StyleSheet.create({
     fontWeight: 'bold'
   },
 
+  searchButton: {
+    alignItems: 'stretch',
+    justifyContent: 'flex-end',
+  },
+  searchButtonWrapper: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    backgroundColor: gui.mainColor,
+    height: 45
+  },
   searchButtonText: {
       marginLeft: 15,
       marginRight: 15,
@@ -562,6 +572,32 @@ var myStyles = StyleSheet.create({
     paddingLeft: 15,
     paddingBottom: 8,
     borderTopWidth: 1,
+    borderTopColor: gui.separatorLine
+  },
+  searchFilterAttributeExt: {
+    flexDirection : "row",
+    //borderWidth:1,
+    //borderColor: "red",
+    justifyContent :'space-between',
+    paddingTop: 12,
+    paddingLeft: 0,
+    paddingRight: 15,
+    paddingBottom: 10,
+    borderTopWidth: 1,
+    marginLeft: 15,
+    borderTopColor: gui.separatorLine
+  },
+  searchFilterAttributeExt2: {
+    flexDirection : "row",
+    //borderWidth:1,
+    //borderColor: "red",
+    justifyContent :'space-between',
+    padding: 10,
+    paddingTop: 5,
+    paddingLeft: 0,
+    paddingBottom: 8,
+    borderTopWidth: 1,
+    marginLeft: 15,
     borderTopColor: gui.separatorLine
   },
   searchMoreFilterAttribute: {

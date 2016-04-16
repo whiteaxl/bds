@@ -25,7 +25,7 @@ var CommonHeader = React.createClass({
       <View style={mStyles.search}>
       <Icon.Button onPress={this._onSearch}
         name="search" backgroundColor={gui.mainColor}
-        underlayColor="gray" color="white"
+        underlayColor="gray" color="white" size={16}
         >
       </Icon.Button>
       </View>
