@@ -310,6 +310,7 @@ class Search extends Component {
               values={[RangeUtils.BAT_KY,"1+","2+","3+","4+","5+"]}
               selectedIndex={this.props.search.form.fields.soPhongNgu}
               onChange={this._onSoPhongNguChanged.bind(this)}
+              tintColor={gui.mainColor}
             >
             </SegmentedControlIOS>
           </View>
@@ -336,6 +337,7 @@ class Search extends Component {
               values={[RangeUtils.BAT_KY,"1+","2+","3+","4+","5+"]}
               selectedIndex={this.props.search.form.fields.soTang}
               onChange={this._onSoTangChanged.bind(this)}
+              tintColor={gui.mainColor}
              >
              </SegmentedControlIOS>
           </View>
@@ -362,6 +364,7 @@ class Search extends Component {
               values={[RangeUtils.BAT_KY,"1+","2+","3+","4+","5+"]}
               selectedIndex={this.props.search.form.fields.soNhaTam}
               onChange={this._onSoNhaTamChanged.bind(this)}
+              tintColor={gui.mainColor}
              >
              </SegmentedControlIOS>
           </View>
