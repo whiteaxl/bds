@@ -109,7 +109,7 @@ class Launch extends React.Component {
 				</View>
 				<View style={styles.buttonControl} >
 
-          <View style={{flexDirection: 'row'}}>
+          <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
             <Icon.Button style={styles.button} name="sign-in" backgroundColor="#f44336"
                 onPress={this.login.bind(this)}>
               Đăng Nhập
@@ -121,7 +121,7 @@ class Launch extends React.Component {
             </Icon.Button>
           </View>
 
-          <Text style={{height: 10}}> </Text>
+          <Text style={{height: 10, backgroundColor: 'transparent'}}> </Text>
 
           <Icon.Button style={{width: 250}} name="play" backgroundColor="#004306"
               onPress={this.loginWithoutUser.bind(this)}>
@@ -189,7 +189,8 @@ var styles = StyleSheet.create({
   termLine : {
     fontSize:11,
     paddingTop: 10,
-    color: 'white'
+    color: 'white',
+    backgroundColor: 'transparent'
   }
 });
 

@@ -109,7 +109,7 @@ class Search extends Component {
 
     var _scrollView: ScrollView;
     return (
-      <View style={styles.fullWidthContainer}>
+      <View style={myStyles.fullWidthContainer}>
         <View style={[myStyles.searchFilter, {top: 66}]}>
 
           <View style={[myStyles.searchFilterButton]}>
@@ -436,6 +436,11 @@ class Search extends Component {
  * ## Styles
  */
 var myStyles = StyleSheet.create({
+  fullWidthContainer: {
+    flex: 1,
+    alignItems: 'stretch',
+    backgroundColor: 'white',
+  },
   pageHeader: {
       top: 0,
       position: 'absolute',

@@ -21,8 +21,9 @@ export default class SearchInputExt extends Component {
                     onPress={Actions.SearchSuggestion}
                 >
                     <View style={styles.searchContainer}>
-                            <Icon name="search" backgroundColor="transparent"
+                            <Icon name="search" backgroundColor="transparent" size={14}
                                          underlayColor="transparent" color="white"
+                                  style={styles.searchIcon}
                             >
                             </Icon>
                             <Text style={styles.titleText}> {this.props.placeName}</Text>
@@ -43,11 +44,14 @@ const styles = StyleSheet.create({
         right:0,
         height: 50,
     },
+    searchIcon: {
+        marginLeft: 25
+    },
     searchContainer: {
         marginTop: 28,
         marginBottom: 20,
         flexDirection: 'row',
-        justifyContent: 'center',
+        justifyContent: 'flex-start',
         alignItems: 'center',
         backgroundColor: gui.searchHeaderBg,
         borderRadius: 5,
@@ -84,7 +88,7 @@ const styles = StyleSheet.create({
         textAlign: 'center'
     },
     titleText: {
-        fontSize: 15,
+        fontSize: 16,
         fontFamily: 'Open Sans',
         fontWeight: 'normal',
         textAlign: 'center',
@@ -98,6 +102,6 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
     openingText: {
-        textAlign: 'center'
+        textAlign: 'left'
     }
 });
