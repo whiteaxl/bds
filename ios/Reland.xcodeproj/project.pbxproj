@@ -21,6 +21,7 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		750484731C9EC50E00730C8B /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 750484721C9EC4DE00730C8B /* libBVLinearGradient.a */; };
 		753605FC1CABB6D600E17AEA /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 753605EF1CABB6BF00E17AEA /* libAirMaps.a */; };
+		755A3FB61CC1332B0082A467 /* cauDien.gpx in Resources */ = {isa = PBXBuildFile; fileRef = 755A3FB51CC1332B0082A467 /* cauDien.gpx */; };
 		758115AE1CA7C14F001D4DBC /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 758115AD1CA7C14F001D4DBC /* FontAwesome.ttf */; };
 		75B73F751C81672D0088D254 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75B73F741C8166C60088D254 /* libRNDeviceInfo.a */; };
 		75E263B11CB799C800313ADE /* RelandIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75E263B01CB799C800313ADE /* RelandIcon.ttf */; };
@@ -157,6 +158,7 @@
 		2320B7901CAECF9D000861AD /* RCTShareManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTShareManager.m; path = bds/RCTShareManager.m; sourceTree = "<group>"; };
 		7504846D1C9EC4DE00730C8B /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		753605EA1CABB6BF00E17AEA /* AirMaps.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
+		755A3FB51CC1332B0082A467 /* cauDien.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = cauDien.gpx; path = "../../../../Google Drive/muaban/dev/04_data/cauDien.gpx"; sourceTree = "<group>"; };
 		758115AD1CA7C14F001D4DBC /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		75B73F651C8166C60088D254 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		75E263B01CB799C800313ADE /* RelandIcon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = RelandIcon.ttf; path = ../src/assets/font/RelandIcon.ttf; sourceTree = "<group>"; };
@@ -349,6 +351,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				755A3FB51CC1332B0082A467 /* cauDien.gpx */,
 				75E263B21CB7A42600313ADE /* TruliaIcon.ttf */,
 				75E263B01CB799C800313ADE /* RelandIcon.ttf */,
 				75F9DF3E1CB4C47D0075C3DD /* OpenSans-Bold.ttf */,
@@ -590,6 +593,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75F9DF501CB4C47D0075C3DD /* OpenSans-Semibold.ttf in Resources */,
+				755A3FB61CC1332B0082A467 /* cauDien.gpx in Resources */,
 				75F9DF511CB4C47D0075C3DD /* OpenSans-SemiboldItalic.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				75F9DF4F1CB4C47D0075C3DD /* OpenSans-Regular.ttf in Resources */,

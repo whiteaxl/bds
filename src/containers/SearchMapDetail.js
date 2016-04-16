@@ -214,10 +214,16 @@ class SearchMapDetail extends Component {
     api.getItems(this.props.search.form.fields)
       .then((data) => {
         if (data.list) {
+          /*
           data.list.map(function(aRow) {
               dataBlob.push(aRow.value);
             }
           );
+          */
+
+          dataBlob = data.list;
+
+
           console.log("SearchResultMap: number of refresh data " + dataBlob.length);
           this.props.actions.onSearchFieldChange("listData", dataBlob);
           this.setState({allMarker: this.props.search.form.fields.listData.length});

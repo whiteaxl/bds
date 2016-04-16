@@ -60,10 +60,7 @@ export function search(credential, successCallback) {
             .then((data) => {
                 let dataBlob = [];
                 if (data.list) {
-                    let listAds = data.list.map(function (aRow) {
-                            return aRow.value;
-                        }
-                    );
+                    let listAds = data.list;
 
                     console.log("Number of result: " + listAds.length);
 
