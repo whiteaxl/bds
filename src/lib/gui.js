@@ -2,6 +2,8 @@ module.exports = {
 	green : "#66c03f", 
 	green1 : "#4db62c",
 	mainColor : '#00a8e6',
+	searchHeaderBg: '#adadad',
+	separatorLine: '#DFDFE2',
 	fontFamily: 'Open Sans',
 	normalFontSize : 15,
 	capitalizeFontSize: 13,

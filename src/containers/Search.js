@@ -17,7 +17,7 @@ import gui from '../lib/gui';
 
 
 import React, { Text, View, Component, Navigator, TouchableOpacity, Dimensions
-  , SegmentedControlIOS, ScrollView, StyleSheet } from 'react-native'
+  , SegmentedControlIOS, ScrollView, StyleSheet, StatusBar } from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -31,7 +31,7 @@ import RangePicker from "../components/RangePicker"
 
 import LoaiNhaDat from "../assets/DanhMuc"
 
-import SearchInput from '../components/SearchInput';
+import SearchInput from '../components/SearchInputExt';
 
 /**
 * ## Redux boilerplate
@@ -62,6 +62,7 @@ function mapDispatchToProps(dispatch) {
 class Search extends Component {
   constructor() {
     super();
+    StatusBar.setBarStyle('default');
   }
 
   _onLoaiTinChange(value) {
@@ -109,7 +110,7 @@ class Search extends Component {
     var _scrollView: ScrollView;
     return (
       <View style={styles.fullWidthContainer}>
-        <View style={[myStyles.searchFilter, {top: 60}]}>
+        <View style={[myStyles.searchFilter, {top: 55}]}>
 
           <View style={[myStyles.searchFilterButton]}>
             <View style = {{flex:1, flexDirection: 'row'}}>
@@ -167,7 +168,7 @@ class Search extends Component {
 
               {this._renderSoNhaTam()}
 
-              <TouchableOpacity style={styles.searchFilterAttribute}
+              <TouchableOpacity style={myStyles.searchFilterAttribute}
                   onPress={this._onPressDienTichHandle.bind(this)}>
                 <Text style={myStyles.searchAttributeLabel}>
                   Diện tích
@@ -180,7 +181,7 @@ class Search extends Component {
               </TouchableOpacity>
               </View>
 
-              <View style={styles.searchMoreFilterButton}>
+              <View style={myStyles.searchMoreFilterButton}>
                 <View style={[myStyles.searchMoreFilterAttribute, myStyles.searchMoreSeparator]}>
                   <Text />
                 </View>
@@ -193,6 +194,7 @@ class Search extends Component {
                 <View style={myStyles.searchMoreFilterAttribute}>
                   <Button onPress={this.onResetFilters.bind(this)} style={myStyles.searchResetText}>Thiết lập lại</Button>
                 </View>
+                <View style={myStyles.searchMoreFilterAttribute} />
               </View>
 
             </ScrollView>
@@ -297,13 +299,13 @@ class Search extends Component {
     let loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
     if (this.showSoPhongNgu(loaiTin, loaiNhaDat)){
       return (
-        <View style={[myStyles.searchFilterAttribute, {flexDirection: "column"}]}>
-          <View style={{padding: 10}}>
+        <View style={[myStyles.searchFilterAttribute2, {flexDirection: "column"}]}>
+          <View style={{paddingBottom: 6}}>
             <Text style={myStyles.searchAttributeLabel}>
               Số phòng ngủ
             </Text>
           </View>
-          <View style={{paddingLeft: 10, paddingRight: 10, paddingBottom: 10}}>
+          <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 5}}>
             <SegmentedControlIOS
               values={[RangeUtils.BAT_KY,"1+","2+","3+","4+","5+"]}
               selectedIndex={this.props.search.form.fields.soPhongNgu}
@@ -323,13 +325,13 @@ class Search extends Component {
     let loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
     if (this.showSoTang(loaiTin, loaiNhaDat)){
       return (
-        <View style={[myStyles.searchFilterAttribute, {flexDirection: "column"}]}>
-          <View style={{padding: 10}}>
+        <View style={[myStyles.searchFilterAttribute2, {flexDirection: "column"}]}>
+          <View style={{paddingBottom: 6}}>
             <Text style={myStyles.searchAttributeLabel}>
               Số tầng
             </Text>
           </View>
-          <View style={{paddingLeft: 10, paddingRight: 10, paddingBottom: 10}}>
+          <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 5}}>
             <SegmentedControlIOS
               values={[RangeUtils.BAT_KY,"1+","2+","3+","4+","5+"]}
               selectedIndex={this.props.search.form.fields.soTang}
@@ -349,13 +351,13 @@ class Search extends Component {
     let loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
     if (this.showSoNhaTam(loaiTin, loaiNhaDat)){
       return (
-        <View style={[myStyles.searchFilterAttribute, {flexDirection: "column"}]}>
-          <View style={{padding: 10}}>
+        <View style={[myStyles.searchFilterAttribute2, {flexDirection: "column"}]}>
+          <View style={{paddingBottom: 6}}>
             <Text style={myStyles.searchAttributeLabel}>
               Số nhà tắm
             </Text>
           </View>
-          <View style={{paddingLeft: 10, paddingRight: 10, paddingBottom: 10}}>
+          <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 5}}>
             <SegmentedControlIOS
               values={[RangeUtils.BAT_KY,"1+","2+","3+","4+","5+"]}
               selectedIndex={this.props.search.form.fields.soNhaTam}
@@ -385,33 +387,33 @@ class Search extends Component {
   }
 
   showSoPhongNgu(loaiTin, loaiNhaDatKey){
-    let banDat = 5;
+    /*let banDat = 5;
     if (loaiTin == 'ban' && [banDat].indexOf(loaiNhaDatKey)!=-1)
       return false;
 
     let thueVanPhong = 4;
     let thueCuaHang = 5;
     if (loaiTin == 'thue' && [thueVanPhong, thueCuaHang].indexOf(loaiNhaDatKey)!=-1)
-      return false;
+      return false;*/
 
     return true;
   }
 
   showSoTang(loaiTin, loaiNhaDatKey){
-    let banDat = 5;
+    /*let banDat = 5;
     let banCanHoChungCu = 1;
     if (loaiTin == 'ban' && [banCanHoChungCu, banDat].indexOf(loaiNhaDatKey)!=-1)
       return false;
 
     let thueCanHoChungCu = 1;
     if (loaiTin == 'thue' && [thueCanHoChungCu].indexOf(loaiNhaDatKey)!=-1)
-      return false;
+      return false;*/
 
     return true;
   }
 
   showSoNhaTam(loaiTin, loaiNhaDatKey){
-    let banCanHoChungCu = 1;
+    /*let banCanHoChungCu = 1;
     if (loaiTin == 'ban' && [banCanHoChungCu].indexOf(loaiNhaDatKey)!=-1)
       return true;
 
@@ -419,7 +421,9 @@ class Search extends Component {
     if (loaiTin == 'thue' && [thueCanHoChungCu].indexOf(loaiNhaDatKey)!=-1)
       return true;
 
-    return false;
+    return false;*/
+
+    return true;
   }
 }
 
@@ -432,7 +436,7 @@ var myStyles = StyleSheet.create({
       position: 'absolute',
       alignItems: 'stretch',
       justifyContent: 'center',
-      backgroundColor: gui.mainColor,
+      backgroundColor: 'white',
       width: Dimensions.get('window').width,
       height: 60
   },
@@ -500,9 +504,12 @@ var myStyles = StyleSheet.create({
     //borderWidth:1,
     //borderColor: "red",
     justifyContent :'space-between',
-    padding: 10,
+    padding: 8,
+    paddingLeft: 15,
+    paddingTop: 10,
+    paddingBottom: 3,
     borderTopWidth: 1,
-    borderTopColor: 'lightgray',
+    borderTopColor: '#f8f8f8',
     backgroundColor: '#f8f8f8'
   },
   searchFilterDetail: {
@@ -517,10 +524,11 @@ var myStyles = StyleSheet.create({
   cacDieuKienText: {
     fontSize: 12,
     fontFamily: 'Open Sans',
+    color: '#606060',
     justifyContent :'space-between',
     padding: 0,
     borderTopWidth: 1,
-    borderTopColor: 'lightgray'
+    borderTopColor: gui.separatorLine
   },
   searchFilterAttribute: {
     flexDirection : "row",
@@ -528,13 +536,28 @@ var myStyles = StyleSheet.create({
     //borderColor: "red",
     justifyContent :'space-between',
     padding: 10,
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 8,
     borderTopWidth: 1,
-    borderTopColor: 'lightgray'
+    borderTopColor: gui.separatorLine
+  },
+  searchFilterAttribute2: {
+    flexDirection : "row",
+    //borderWidth:1,
+    //borderColor: "red",
+    justifyContent :'space-between',
+    padding: 10,
+    paddingTop: 5,
+    paddingLeft: 15,
+    paddingBottom: 8,
+    borderTopWidth: 1,
+    borderTopColor: gui.separatorLine
   },
   searchMoreFilterAttribute: {
     padding: 10,
     borderTopWidth: 1,
-    borderTopColor: 'lightgray'
+    borderTopColor: gui.separatorLine
   }
 });
 
