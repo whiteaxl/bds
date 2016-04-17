@@ -2,7 +2,8 @@
 
 import ApiUtils from './ApiUtils';
 import RangeUtils from "../lib/RangeUtils"
-import _ from "lodash"
+
+import DanhMuc from "../assets/DanhMuc"
 
 //var rootUrl = 'http://203.162.13.101:5000/api';
 var rootUrl = 'http://localhost:5000/api';
@@ -16,19 +17,20 @@ var Api = {
 
 
   getItems: function(fields) {
-      var {loaiTin, loaiNhaDat, gia, soPhongNgu, soTang, dienTich, orderBy, place, geoBox} = fields;
+      var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, radiusInKmSelectedIdx, dienTich, orderBy, place, geoBox} = fields;
 
       var params = {
           'loaiTin' : 'ban' === loaiTin ? 0 : 1,
           'loaiNhaDat' : loaiNhaDat || undefined,
           'giaBETWEEN' : gia ? RangeUtils.sellPriceRange.toValRange(gia).join() : gia,
-          'soPhongNguGREATER' : soPhongNgu || undefined,
-          'soTangGREATER' : soTang || undefined,
+          'soPhongNguGREATER' : DanhMuc.getSoPhongByIndex(soPhongNguSelectedIdx) || undefined,
+          'soTangGREATER' : DanhMuc.getSoTangByIndex(soTangSelectedIdx) || undefined,
           'dienTichBETWEEN' : dienTich ? RangeUtils.dienTichRange.toValRange(dienTich).join() : undefined,
           'orderBy' : orderBy || undefined,
           'place':place || undefined,
           'geoBox' : geoBox.length===4 ? geoBox : undefined,
-          'limit' : maxRows || undefined
+          'limit' : maxRows || undefined,
+          'radiusInKm' : DanhMuc.getRadiusInKmByIndex(radiusInKmSelectedIdx) || undefined
       };
 
  

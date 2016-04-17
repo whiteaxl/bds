@@ -17,7 +17,6 @@ import {Map} from 'immutable';
 import React, {View, Component, SegmentedControlIOS, Text, StyleSheet} from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 import CommonHeader from '../components/CommonHeader';
 import DanhMuc from '../assets/DanhMuc';
@@ -59,31 +58,13 @@ var LoaiNhaDatKey = [
     99
 ];
 
-var LoaiNhaDatBan = [
-    DanhMuc['ban'][LoaiNhaDatKey[0]],
-    DanhMuc['ban'][LoaiNhaDatKey[1]],
-    DanhMuc['ban'][LoaiNhaDatKey[2]],
-    DanhMuc['ban'][LoaiNhaDatKey[3]],
-    DanhMuc['ban'][LoaiNhaDatKey[4]],
-    DanhMuc['ban'][LoaiNhaDatKey[5]]
-];
-
-var LoaiNhaDatThue = [
-    DanhMuc['thue'][LoaiNhaDatKey[0]],
-    DanhMuc['thue'][LoaiNhaDatKey[1]],
-    DanhMuc['thue'][LoaiNhaDatKey[2]],
-    DanhMuc['thue'][LoaiNhaDatKey[3]],
-    DanhMuc['thue'][LoaiNhaDatKey[4]],
-    DanhMuc['thue'][LoaiNhaDatKey[5]]
-];
-
 class PropertyTypes extends Component {
   constructor() {
     super();
   }
 
   render() {
-    var values = this.props.search.form.fields.loaiTin=='ban' ? LoaiNhaDatBan : LoaiNhaDatThue ;
+    var values = this.props.search.form.fields.loaiTin=='ban' ? DanhMuc.getLoaiNhaDatBanValues() : DanhMuc.getLoaiNhaDatThueValues() ;
     var loaiNhaDat = this.getValueByKey(values, this.props.search.form.fields.loaiNhaDat);
     return (
       <View style={myStyles.fullWidthContainer}>
@@ -105,7 +86,7 @@ class PropertyTypes extends Component {
   }
 
   _onPropertyTypeSelected(option) {
-    var values = this.props.search.form.fields.loaiTin=='ban' ? LoaiNhaDatBan : LoaiNhaDatThue ;
+    var values = this.props.search.form.fields.loaiTin=='ban' ? DanhMuc.getLoaiNhaDatBanValues() : DanhMuc.getLoaiNhaDatThueValues() ;
     this.props.actions.onSearchFieldChange("loaiNhaDat", this.getKeyByValue(values, option));
     Actions.pop();
   }

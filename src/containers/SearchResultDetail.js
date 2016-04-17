@@ -63,24 +63,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-var LoaiNhaDatBan = [
-    {key: 1, value: DanhMuc['ban'][1]},
-    {key: 2, value: DanhMuc['ban'][2]},
-    {key: 3, value: DanhMuc['ban'][3]},
-    {key: 4, value: DanhMuc['ban'][4]},
-    {key: 5, value: DanhMuc['ban'][5]},
-    {key: 99, value: DanhMuc['ban'][99]}
-];
-
-var LoaiNhaDatThue = [
-    {key: 1, value: DanhMuc['thue'][1]},
-    {key: 2, value: DanhMuc['thue'][2]},
-    {key: 3, value: DanhMuc['thue'][3]},
-    {key: 4, value: DanhMuc['thue'][4]},
-    {key: 5, value: DanhMuc['thue'][5]},
-    {key: 99, value: DanhMuc['thue'][99]}
-];
-
 var LoaiTin = [
     {key: 0, value: "Bán"},
     {key: 1, value: "Cho thuê"}
@@ -119,8 +101,7 @@ class SearchResultDetail extends Component {
     }
 
     var loaiTin = this.getValueByKey(LoaiTin, rowData.loaiTin);
-    var loaiNhaDatArr = rowData.loaiTin ? LoaiNhaDatThue : LoaiNhaDatBan;
-    var loaiNhaDat = this.getValueByKey(loaiNhaDatArr, rowData.loaiNhaDat);
+    var loaiNhaDat = rowData.loaiTin ? DanhMuc.LoaiNhaDatThue[rowData.loaiNhaDat] :  DanhMuc.LoaiNhaDatBan[rowData.loaiNhaDat];
     var diaChi = rowData.place.diaChi;
     var dienTich = '';
     dienTich = rowData.dienTichDisplay;

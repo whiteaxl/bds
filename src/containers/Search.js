@@ -27,11 +27,13 @@ import LikeTabButton from '../components/LikeTabButton';
 import RangeUtils from "../lib/RangeUtils"
 import RangePicker from "../components/RangePicker"
 
-import LoaiNhaDat from "../assets/DanhMuc"
+import DanhMuc from "../assets/DanhMuc"
 
 import SearchInput from '../components/SearchInputExt';
 
 import PlaceUtil from '../lib/PlaceUtil';
+
+import SegmentedControl from '../components/SegmentedControl';
 
 /**
 * ## Redux boilerplate
@@ -58,8 +60,6 @@ function mapDispatchToProps(dispatch) {
     dispatch
   };
 }
-
-var radiusInKmValues = [0.5, 1, 2, 3, 4, 5];
 
 class Search extends Component {
   constructor() {
@@ -97,7 +97,7 @@ class Search extends Component {
   }
 
   _getLoaiNhatDatValue() {
-    return this.getLoaiNhaDatForDisplay(this.props.search.form.fields.loaiTin ,
+    return DanhMuc.getLoaiNhaDatForDisplay(this.props.search.form.fields.loaiTin ,
                                                this.props.search.form.fields.loaiNhaDat);
   }
 
@@ -276,13 +276,13 @@ class Search extends Component {
 
   onResetFilters() {
     this.props.actions.onSearchFieldChange("loaiNhaDat", '');
-    this.props.actions.onSearchFieldChange("soPhongNgu", 0);
-    this.props.actions.onSearchFieldChange("soTang", 0);
-    this.props.actions.onSearchFieldChange("soNhaTam", 0);
+    this.props.actions.onSearchFieldChange("soPhongNguSelectedIdx", 0);
+    this.props.actions.onSearchFieldChange("soTangSelectedIdx", 0);
+    this.props.actions.onSearchFieldChange("soNhaTamSelectedIdx", 0);
     this.props.actions.onSearchFieldChange("dienTich", RangeUtils.BAT_KY_RANGE);
     this.props.actions.onSearchFieldChange("gia", RangeUtils.BAT_KY_RANGE);
     this.props.actions.onSearchFieldChange("orderBy", '');
-    this.props.actions.onSearchFieldChange("radiusInKm", 0.5);
+    this.props.actions.onSearchFieldChange("radiusInKmSelectedIdx", 0);
   }
 
   _onPropertyTypesPressed() {
@@ -290,215 +290,74 @@ class Search extends Component {
   }
 
   _onSoPhongNguChanged(event) {
-    this.props.actions.onSearchFieldChange("soPhongNgu", event.nativeEvent.selectedSegmentIndex);
+    this.props.actions.onSearchFieldChange("soPhongNguSelectedIdx", event.nativeEvent.selectedSegmentIndex);
   }
 
   _onSoTangChanged(event) {
-    this.props.actions.onSearchFieldChange("soTang", event.nativeEvent.selectedSegmentIndex);
+    this.props.actions.onSearchFieldChange("soTangSelectedIdx", event.nativeEvent.selectedSegmentIndex);
   }
 
   _onSoNhaTamChanged(event) {
-    this.props.actions.onSearchFieldChange("soNhaTam", event.nativeEvent.selectedSegmentIndex);
+    this.props.actions.onSearchFieldChange("soNhaTamSelectedIdx", event.nativeEvent.selectedSegmentIndex);
   }
 
     _onBanKinhTimKiemChanged(event) {
-        var value = radiusInKmValues[event.nativeEvent.selectedSegmentIndex];
-        this.props.actions.onSearchFieldChange("radiusInKm", value);
-    }
-
-    _selectedBanKinhTimKiemIndex() {
-        var key = this.props.search.form.fields.radiusInKm;
-        for (var i = 0; i < radiusInKmValues.length; i++) {
-            var one = radiusInKmValues[i];
-            if (key == one) {
-                return i;
-            }
-        }
-        return -1;
+        this.props.actions.onSearchFieldChange("radiusInKmSelectedIdx", event.nativeEvent.selectedSegmentIndex);
     }
 
   _renderSoPhongNgu(){
-    let loaiTin = this.props.search.form.fields.loaiTin;
-    let loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
-    if (this.showSoPhongNgu(loaiTin, loaiNhaDat)){
-      return (
-        <View style={[myStyles.searchFilterAttributeExt2, {flexDirection: "column"}]}>
-          <View style={{paddingBottom: 4, paddingTop: 3}}>
-            <Text style={myStyles.searchAttributeLabel}>
-              Số phòng ngủ
-            </Text>
-          </View>
-          <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 9}}>
-            <SegmentedControlIOS
-              values={[RangeUtils.BAT_KY,"1+","2+","3+","4+","5+"]}
-              selectedIndex={this.props.search.form.fields.soPhongNgu}
-              onChange={this._onSoPhongNguChanged.bind(this)}
-              tintColor={gui.mainColor} height={28}
-            >
-            </SegmentedControlIOS>
-          </View>
-        </View>
-      );
-    } else if (0 != this.props.search.form.fields.soPhongNgu) {
-      this.props.actions.onSearchFieldChange("soPhongNgu", 0);
+    if (this.showSoPhongNgu()){
+        return this._renderSegment("Số phòng ngủ", DanhMuc.getSoPhongNguValues(),
+            this.props.search.form.fields["soPhongNguSelectedIdx"], this._onSoPhongNguChanged.bind(this));
+    } else if (0 != this.props.search.form.fields.soPhongNguSelectedIdx) {
+      this.props.actions.onSearchFieldChange("soPhongNguSelectedIdx", 0);
     }
   }
 
   _renderSoTang() {
-    let loaiTin = this.props.search.form.fields.loaiTin;
-    let loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
-    if (this.showSoTang(loaiTin, loaiNhaDat)){
-      return (
-        <View style={[myStyles.searchFilterAttributeExt2, {flexDirection: "column"}]}>
-          <View style={{paddingBottom: 4, paddingTop: 3}}>
-            <Text style={myStyles.searchAttributeLabel}>
-              Số tầng
-            </Text>
-          </View>
-          <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 9}}>
-            <SegmentedControlIOS
-              values={[RangeUtils.BAT_KY,"1+","2+","3+","4+","5+"]}
-              selectedIndex={this.props.search.form.fields.soTang}
-              onChange={this._onSoTangChanged.bind(this)}
-              tintColor={gui.mainColor} height={28}
-             >
-             </SegmentedControlIOS>
-          </View>
-        </View>
-      );
-    }else if (0 != this.props.search.form.fields.soTang) {
-      this.props.actions.onSearchFieldChange("soTang", 0);
+    if (this.showSoTang()){
+        return this._renderSegment("Số tầng", DanhMuc.getSoTangValues(),
+            this.props.search.form.fields["soTangSelectedIdx"], this._onSoTangChanged.bind(this));
+    }else if (0 != this.props.search.form.fields.soTangSelectedIdx) {
+      this.props.actions.onSearchFieldChange("soTangSelectedIdx", 0);
     }
   }
 
-    _renderSegment(label, values, selectedIndexAttribute, onChange) {
-        return (
-            <View style={[myStyles.searchFilterAttributeExt2, {flexDirection: "column"}]}>
-                <View style={{paddingBottom: 4, paddingTop: 3}}>
-                    <Text style={myStyles.searchAttributeLabel}>
-                        {label}
-                    </Text>
-                </View>
-                <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 9}}>
-                    <SegmentedControlIOS
-                        values={values}
-                        selectedIndex={this.props.search.form.fields[selectedIndexAttribute]}
-                        onChange={onChange}
-                        tintColor={gui.mainColor} height={28}
-                    >
-                    </SegmentedControlIOS>
-                </View>
-            </View>
-        );
-    }
-
   _renderSoNhaTam() {
-    let loaiTin = this.props.search.form.fields.loaiTin;
-    let loaiNhaDat = this.props.search.form.fields.loaiNhaDat;
-    if (this.showSoNhaTam(loaiTin, loaiNhaDat)){
-      return (
-        <View style={[myStyles.searchFilterAttributeExt2, {flexDirection: "column"}]}>
-          <View style={{paddingBottom: 4, paddingTop: 3}}>
-            <Text style={myStyles.searchAttributeLabel}>
-              Số nhà tắm
-            </Text>
-          </View>
-          <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 9}}>
-            <SegmentedControlIOS
-              values={[RangeUtils.BAT_KY,"1+","2+","3+","4+","5+"]}
-              selectedIndex={this.props.search.form.fields.soNhaTam}
-              onChange={this._onSoNhaTamChanged.bind(this)}
-              tintColor={gui.mainColor} height={28}
-             >
-             </SegmentedControlIOS>
-          </View>
-        </View>
-      );
-    }else if (0 != this.props.search.form.fields.soNhaTam) {
-      this.props.actions.onSearchFieldChange("soNhaTam", 0);
+    if (this.showSoNhaTam()){
+        return this._renderSegment("Số nhà tắm", DanhMuc.getSoPhongTamValues(),
+            this.props.search.form.fields["soNhaTamSelectedIdx"], this._onSoNhaTamChanged.bind(this));
+    }else if (0 != this.props.search.form.fields.soNhaTamSelectedIdx) {
+      this.props.actions.onSearchFieldChange("soNhaTamSelectedIdx", 0);
     }
   }
 
   _renderBanKinhTimKiem() {
         let place = this.props.search.form.fields.place;
         if (this.showBanKinhTimKiem(place)){
-            var selectedIndex = this._selectedBanKinhTimKiemIndex();
-            return (
-                <View style={[myStyles.searchFilterAttributeExt2, {flexDirection: "column"}]}>
-                    <View style={{paddingBottom: 4, paddingTop: 3}}>
-                        <Text style={myStyles.searchAttributeLabel}>
-                            Bán kính tìm kiếm (Km)
-                        </Text>
-                    </View>
-                    <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 9}}>
-                        <SegmentedControlIOS
-                            values={["0.5","1","2","3","4","5"]}
-                            selectedIndex={selectedIndex}
-                            onChange={this._onBanKinhTimKiemChanged.bind(this)}
-                            tintColor={gui.mainColor} height={28}
-                        >
-                        </SegmentedControlIOS>
-                    </View>
-                </View>
-            );
-        }else if (0.5 != this.props.search.form.fields.radiusInKm) {
-            this.props.actions.onSearchFieldChange("radiusInKm", 0.5);
+            return this._renderSegment("Bán kính tìm kiếm (Km)", DanhMuc.getRadiusInKmValues(),
+                this.props.search.form.fields["radiusInKmSelectedIdx"], this._onBanKinhTimKiemChanged.bind(this));
+        }else if (0 != this.props.search.form.fields.radiusInKmSelectedIdx) {
+            this.props.actions.onSearchFieldChange("radiusInKmSelectedIdx", 0);
         }
     }
 
-  getLoaiNhaDatForDisplay(loaiTin, loaiNhaDatKey){
-    var value = '';
-    if (loaiTin == 'ban')
-      value = LoaiNhaDat.ban[loaiNhaDatKey];
+    _renderSegment(label, values, selectedIndexAttribute, onChange) {
+        return (
+            <SegmentedControl label={label} values={values} selectedIndexAttribute={selectedIndexAttribute}
+                              onChange={onChange} />
+        );
+    }
 
-    if (loaiTin == 'thue')
-      value = LoaiNhaDat.thue[loaiNhaDatKey];
-
-    if (!value)
-      value = RangeUtils.BAT_KY;
-
-    return value;
-  }
-
-  showSoPhongNgu(loaiTin, loaiNhaDatKey){
-    /*let banDat = 5;
-    if (loaiTin == 'ban' && [banDat].indexOf(loaiNhaDatKey)!=-1)
-      return false;
-
-    let thueVanPhong = 4;
-    let thueCuaHang = 5;
-    if (loaiTin == 'thue' && [thueVanPhong, thueCuaHang].indexOf(loaiNhaDatKey)!=-1)
-      return false;*/
-
+  showSoPhongNgu(){
     return true;
   }
 
-  showSoTang(loaiTin, loaiNhaDatKey){
-    /*let banDat = 5;
-    let banCanHoChungCu = 1;
-    if (loaiTin == 'ban' && [banCanHoChungCu, banDat].indexOf(loaiNhaDatKey)!=-1)
-      return false;
-
-    let thueCanHoChungCu = 1;
-    if (loaiTin == 'thue' && [thueCanHoChungCu].indexOf(loaiNhaDatKey)!=-1)
-      return false;
-
-    return true;*/
-
+  showSoTang(){
     return false;
   }
 
-  showSoNhaTam(loaiTin, loaiNhaDatKey){
-    /*let banCanHoChungCu = 1;
-    if (loaiTin == 'ban' && [banCanHoChungCu].indexOf(loaiNhaDatKey)!=-1)
-      return true;
-
-    let thueCanHoChungCu = 1;
-    if (loaiTin == 'thue' && [thueCanHoChungCu].indexOf(loaiNhaDatKey)!=-1)
-      return true;
-
-    return false;*/
-
+  showSoNhaTam(){
     return true;
   }
 

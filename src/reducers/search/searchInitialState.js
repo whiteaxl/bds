@@ -26,9 +26,8 @@ const SearchForm = Record({
     fields: new (Record({
         loaiTin: 'ban',
         loaiNhaDat: '',
-        soPhongNgu: 0,
-        soTangSeletedIdx: 0,
-        //soNhaTam: 0,
+        soPhongNguSelectedIdx: 0,
+        soTangSelectedIdx: 0,
         soNhaTamSelectedIdx : 0,
         dienTich: RangeUtils.BAT_KY_RANGE,
         gia: RangeUtils.BAT_KY_RANGE,
@@ -62,7 +61,7 @@ const SearchForm = Record({
             "url": "https://maps.google.com/?q=Hanoi,+Vietnam&ftid=0x3135008e13800a29:0x2987e416210b90d",
             "fullName": "Hanoi"
         },
-        radiusInKm: 0.5
+        radiusInKmSelectedIdx: 0
     })),
 
 });
