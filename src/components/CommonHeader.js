@@ -13,7 +13,8 @@ var CommonHeader = React.createClass({
     return <View style={myStyles.customPageHeader}>
       <TruliaIcon onPress={this._onBack}
         name="arrow-left" color={gui.mainColor} size={25}
-        mainProps={myStyles.search} >
+        mainProps={myStyles.backButton} text={this.props.backTitle}
+        textProps={myStyles.backButtonText} >
       </TruliaIcon>
       <View style={myStyles.customPageTitle}>
         <Text style={myStyles.customPageTitleText}>
@@ -34,29 +35,37 @@ var myStyles = StyleSheet.create({
 customPageHeader: {
       flexDirection: 'row',
       alignItems: 'flex-start',
-      justifyContent: 'space-between',
+      justifyContent: 'flex-start',
       backgroundColor: 'transparent',
       height: 60
   },
   customPageTitle: {
-      marginTop: 35,
-      marginLeft: 15,
-      marginRight: 15,
+      left:36,
+      right:36,
+      marginTop: 28,
       marginBottom: 10,
-      alignItems: 'stretch',
+      position: 'absolute'
   },
   customPageTitleText: {
-      color: gui.mainColor,
-      fontSize: 14,
+      color: 'black',
+      fontSize: gui.normalFontSize,
       fontWeight: 'bold',
-      textAlign: 'center',
+      fontFamily: gui.fontFamily,
+      textAlign: 'center'
   },
-  search: {
+  backButton: {
       marginTop: 25,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'transparent',
-      marginLeft: 16
+      marginLeft: 18
   },
+  backButtonText: {
+      color: gui.mainColor,
+      fontSize: gui.normalFontSize,
+      fontFamily: gui.fontFamily,
+      textAlign: 'left',
+      marginLeft: 7
+  }
 });

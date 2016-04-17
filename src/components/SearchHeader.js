@@ -68,6 +68,6 @@ var mStyles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
     position: 'absolute',
     left:36,
-    right:35
+    right:36
   }
 });
