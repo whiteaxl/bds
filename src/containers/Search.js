@@ -147,7 +147,7 @@ class Search extends Component {
 
                 <View style={{flexDirection: "row", alignItems: "flex-end"}}>
                   <Text style={myStyles.searchAttributeValue}> {this._getGiaValue()} </Text>
-                  <TruliaIcon name="arrow-down" color={gui.arrowColor} size={20} />
+                  <TruliaIcon name="arrow-down" color={gui.arrowColor} size={19} />
                 </View>
               </TouchableOpacity>
 
@@ -159,7 +159,7 @@ class Search extends Component {
                   </Text>
                   <View style={{flexDirection: "row", alignItems: "flex-end"}}>
                     <Text style={myStyles.searchAttributeValue2}> {this._getLoaiNhatDatValue()} </Text>
-                    <TruliaIcon name="arrow-right" color={gui.arrowColor} size={20} />
+                    <TruliaIcon name="arrow-right" color={gui.arrowColor} size={19} />
                   </View>
                 </View>
               </TouchableOpacity>
@@ -180,7 +180,7 @@ class Search extends Component {
 
                 <View style={{flexDirection: "row", alignItems: "flex-end"}}>
                   <Text style={myStyles.searchAttributeValue}>{this._getDienTichValue()} </Text>
-                  <TruliaIcon name="arrow-down" color={gui.arrowColor} size={20} />
+                  <TruliaIcon name="arrow-down" color={gui.arrowColor} size={19} />
                 </View>
               </TouchableOpacity>
               </View>
@@ -348,7 +348,7 @@ class Search extends Component {
     if (this.showSoTang(loaiTin, loaiNhaDat)){
       return (
         <View style={[myStyles.searchFilterAttributeExt2, {flexDirection: "column"}]}>
-          <View style={{paddingBottom: 4, paddingTop: 7}}>
+          <View style={{paddingBottom: 4, paddingTop: 3}}>
             <Text style={myStyles.searchAttributeLabel}>
               Số tầng
             </Text>
@@ -375,7 +375,7 @@ class Search extends Component {
     if (this.showSoNhaTam(loaiTin, loaiNhaDat)){
       return (
         <View style={[myStyles.searchFilterAttributeExt2, {flexDirection: "column"}]}>
-          <View style={{paddingBottom: 4, paddingTop: 8}}>
+          <View style={{paddingBottom: 4, paddingTop: 3}}>
             <Text style={myStyles.searchAttributeLabel}>
               Số nhà tắm
             </Text>
@@ -402,7 +402,7 @@ class Search extends Component {
             var selectedIndex = this._selectedBanKinhTimKiemIndex();
             return (
                 <View style={[myStyles.searchFilterAttributeExt2, {flexDirection: "column"}]}>
-                    <View style={{paddingBottom: 4, paddingTop: 9}}>
+                    <View style={{paddingBottom: 4, paddingTop: 3}}>
                         <Text style={myStyles.searchAttributeLabel}>
                             Bán kính tìm kiếm (Km)
                         </Text>
