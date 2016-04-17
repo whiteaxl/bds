@@ -147,7 +147,7 @@ class Search extends Component {
 
                 <View style={{flexDirection: "row", alignItems: "flex-end"}}>
                   <Text style={myStyles.searchAttributeValue}> {this._getGiaValue()} </Text>
-                  <TruliaIcon name="arrow-down" color={gui.arrowColor} size={19} />
+                  <TruliaIcon name="arrow-down" color={gui.arrowColor} size={18} />
                 </View>
               </TouchableOpacity>
 
@@ -159,7 +159,7 @@ class Search extends Component {
                   </Text>
                   <View style={{flexDirection: "row", alignItems: "flex-end"}}>
                     <Text style={myStyles.searchAttributeValue2}> {this._getLoaiNhatDatValue()} </Text>
-                    <TruliaIcon name="arrow-right" color={gui.arrowColor} size={19} />
+                    <TruliaIcon name="arrow-right" color={gui.arrowColor} size={18} />
                   </View>
                 </View>
               </TouchableOpacity>
@@ -180,7 +180,7 @@ class Search extends Component {
 
                 <View style={{flexDirection: "row", alignItems: "flex-end"}}>
                   <Text style={myStyles.searchAttributeValue}>{this._getDienTichValue()} </Text>
-                  <TruliaIcon name="arrow-down" color={gui.arrowColor} size={19} />
+                  <TruliaIcon name="arrow-down" color={gui.arrowColor} size={18} />
                 </View>
               </TouchableOpacity>
               </View>
