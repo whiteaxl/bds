@@ -31,14 +31,7 @@ var Api = {
           'limit' : maxRows || undefined
       };
 
-      //go by political first
-      if (_.indexOf(place.types, "political") !== -1 || _.indexOf(place.types, "route")!==-1) {
-
-      } else {
-
-      }
-
-
+ 
     console.log(rootUrl + "?" + JSON.stringify(params));
     return fetch(`${findUrl}`, {
       method: 'POST',

@@ -263,7 +263,9 @@ class Search extends Component {
           if (this.props.needBack) {
             Actions.pop();
           } else {
-            Actions.SearchResultList({type: "reset"});
+              console.log("Call open SearchResultList in reset mode");
+
+              Actions.SearchResultList({type: "reset"});
           }
         });
   }
@@ -368,6 +370,27 @@ class Search extends Component {
       this.props.actions.onSearchFieldChange("soTang", 0);
     }
   }
+
+    _renderSegment(label, values, selectedIndexAttribute, onChange) {
+        return (
+            <View style={[myStyles.searchFilterAttributeExt2, {flexDirection: "column"}]}>
+                <View style={{paddingBottom: 4, paddingTop: 3}}>
+                    <Text style={myStyles.searchAttributeLabel}>
+                        {label}
+                    </Text>
+                </View>
+                <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 9}}>
+                    <SegmentedControlIOS
+                        values={values}
+                        selectedIndex={this.props.search.form.fields[selectedIndexAttribute]}
+                        onChange={onChange}
+                        tintColor={gui.mainColor} height={28}
+                    >
+                    </SegmentedControlIOS>
+                </View>
+            </View>
+        );
+    }
 
   _renderSoNhaTam() {
     let loaiTin = this.props.search.form.fields.loaiTin;

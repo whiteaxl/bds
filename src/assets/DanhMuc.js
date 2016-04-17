@@ -1,4 +1,6 @@
-var LoaiNhaDatBan = {
+var danhMuc = {};
+
+danhMuc.LoaiNhaDatBan = {
     1  : "Bán căn hộ chung cư",
     2  : "Bán nhà riêng",
     3  : "Bán nhà mặt phố", 
@@ -7,7 +9,7 @@ var LoaiNhaDatBan = {
     99 : "Bán các bds khác"
 }
 
-var LoaiNhaDatThue = {
+danhMuc.LoaiNhaDatThue = {
     1 : "Cho Thuê căn hộ chung cư",
     2 : "Cho Thuê nhà riêng",
     3 : "Cho Thuê nhà mặt phố", 
@@ -16,9 +18,16 @@ var LoaiNhaDatThue = {
     99: "Cho Thuê các bds khác"
 }
 
-var LoaiNhaDat = {
+danhMuc.LoaiNhaDat = {
     ban: LoaiNhaDatBan, 
     thue: LoaiNhaDatThue
 }
 
-module.exports = LoaiNhaDat;
+danhMuc.SoPhongTam = {
+
+}
+
+module.exports = danhMuc;
+
+
+//import {LoaiNhaDatBan} from "danhMuc"...

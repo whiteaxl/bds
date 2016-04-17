@@ -161,7 +161,7 @@ class Home extends Component {
 	}
 
   handleSearchButton() {
-    Actions.SearchContainer();
+    Actions.Search();
   }
 
   _onBanCanHoChungCuPressed() {
