@@ -1,6 +1,7 @@
 // Import some code we need
 import React, {View, Component, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import TruliaIcon from './TruliaIcon';
 
 import {Actions} from 'react-native-router-flux';
 
@@ -10,11 +11,10 @@ import gui from '../lib/gui';
 var CommonHeader = React.createClass({
   render: function() {
     return <View style={myStyles.customPageHeader}>
-      <Icon.Button onPress={this._onBack}
-        name="angle-left" backgroundColor="transparent"
-        underlayColor="transparent" color={gui.mainColor}
-        style={myStyles.search} >
-      </Icon.Button>
+      <TruliaIcon onPress={this._onBack}
+        name="arrow-left" color={gui.mainColor} size={25}
+        mainProps={myStyles.search} >
+      </TruliaIcon>
       <View style={myStyles.customPageTitle}>
         <Text style={myStyles.customPageTitleText}>
         {this.props.headerTitle}
@@ -57,5 +57,6 @@ customPageHeader: {
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'transparent',
+      marginLeft: 16
   },
 });
