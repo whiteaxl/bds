@@ -19,7 +19,6 @@ import React, { Text, View, Component, Image, Dimensions, ScrollView, StyleSheet
 
 var ShareManager = React.NativeModules.ShareManager;
 
-import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -34,8 +33,6 @@ import gui from '../lib/gui';
 
 import CollapsiblePanel from '../components/CollapsiblePanel';
 import SummaryText from '../components/SummaryText';
-
-import LinearGradient from 'react-native-linear-gradient';
 
 /**
 * ## Redux boilerplate

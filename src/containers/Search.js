@@ -158,7 +158,7 @@ class Search extends Component {
                   Loại nhà đất
                   </Text>
                   <View style={{flexDirection: "row", alignItems: "flex-end"}}>
-                    <Text style={myStyles.searchAttributeValue2}> {this._getLoaiNhatDatValue()} </Text>
+                    <Text style={myStyles.searchAttributeValue}> {this._getLoaiNhatDatValue()} </Text>
                     <TruliaIcon name="arrow-right" color={gui.arrowColor} size={18} />
                   </View>
                 </View>
@@ -172,7 +172,7 @@ class Search extends Component {
 
                 {this._renderBanKinhTimKiem()}
 
-              <TouchableOpacity style={myStyles.searchFilterAttributeExt}
+              <TouchableOpacity style={myStyles.searchFilterAttribute}
                   onPress={this._onPressDienTichHandle.bind(this)}>
                 <Text style={myStyles.searchAttributeLabel}>
                   Diện tích
@@ -402,8 +402,8 @@ var myStyles = StyleSheet.create({
     height: 44
   },
   searchButtonText: {
-      marginLeft: 15,
-      marginRight: 15,
+      marginLeft: 17,
+      marginRight: 17,
       marginTop: 10,
       marginBottom: 10,
       color: 'white',
@@ -439,13 +439,8 @@ var myStyles = StyleSheet.create({
   searchAttributeValue : {
     fontSize: gui.normalFontSize,
     fontFamily: 'Open Sans',
-    color: gui.arrowColor
-  },
-  searchAttributeValue2 : {
-    fontSize: gui.normalFontSize,
-    fontFamily: 'Open Sans',
     color: gui.arrowColor,
-    marginRight: 6
+    marginRight: 3
   },
   searchFilterButton: {
     flexDirection: 'row'
@@ -458,8 +453,8 @@ var myStyles = StyleSheet.create({
     //borderWidth:1,
     //borderColor: "red",
     justifyContent :'space-between',
-    padding: 8,
-    paddingLeft: 15,
+    paddingRight: 8,
+    paddingLeft: 17,
     paddingTop: 12,
     paddingBottom: 5,
     borderTopWidth: 1,
@@ -490,8 +485,8 @@ var myStyles = StyleSheet.create({
     //borderColor: "red",
     justifyContent :'space-between',
     paddingTop: 10,
-    paddingLeft: 15,
-    paddingRight: 15,
+    paddingLeft: 17,
+    paddingRight: 13,
     paddingBottom: 10,
     borderTopWidth: 1,
     borderTopColor: gui.separatorLine
@@ -501,9 +496,9 @@ var myStyles = StyleSheet.create({
     //borderWidth:1,
     //borderColor: "red",
     justifyContent :'space-between',
-    padding: 10,
+    paddingRight: 8,
     paddingTop: 5,
-    paddingLeft: 15,
+    paddingLeft: 17,
     paddingBottom: 7,
     borderTopWidth: 1,
     borderTopColor: gui.separatorLine
@@ -515,10 +510,10 @@ var myStyles = StyleSheet.create({
     justifyContent :'space-between',
     paddingTop: 12,
     paddingLeft: 0,
-    paddingRight: 15,
+    paddingRight: 19,
     paddingBottom: 10,
     borderTopWidth: 1,
-    marginLeft: 15,
+    marginLeft: 17,
     borderTopColor: gui.separatorLine
   },
   searchFilterAttributeExt2: {
@@ -526,12 +521,12 @@ var myStyles = StyleSheet.create({
     //borderWidth:1,
     //borderColor: "red",
     justifyContent :'space-between',
-    padding: 10,
+    paddingRight: 10,
     paddingTop: 5,
     paddingLeft: 0,
     paddingBottom: 8,
     borderTopWidth: 1,
-    marginLeft: 15,
+    marginLeft: 17,
     borderTopColor: gui.separatorLine
   },
   searchMoreFilterAttribute: {

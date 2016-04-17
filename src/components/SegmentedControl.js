@@ -34,12 +34,12 @@ var myStyles = StyleSheet.create({
         //borderWidth:1,
         //borderColor: "red",
         justifyContent :'space-between',
-        padding: 10,
+        paddingRight: 8,
         paddingTop: 5,
         paddingLeft: 0,
         paddingBottom: 8,
         borderTopWidth: 1,
-        marginLeft: 15,
+        marginLeft: 17,
         borderTopColor: gui.separatorLine
     },
     searchAttributeLabel: {
