@@ -208,7 +208,7 @@ class SearchResultList extends Component {
                             >{rowData.giaDisplay}</Text>
                             <Text style={myStyles.text}>{diaChi}{soPhongNgu}{soPhongTam}</Text>
                         </View>
-                        <TruliaIcon name="heart-o" mainProps={myStyles.heartButton}/>
+                        <TruliaIcon name="heart-o" mainProps={myStyles.heartButton} color={'white'} size={23}/>
                     </View>
 
                 </View>
@@ -330,6 +330,7 @@ var myStyles = StyleSheet.create({
     },
     heartButton: {
         marginBottom: 10,
+        paddingRight: 18
     },
 });
 
