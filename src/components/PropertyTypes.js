@@ -156,7 +156,7 @@ var myStyles = StyleSheet.create({
   fullWidthContainer: {
       flex: 1,
       alignItems: 'stretch',
-      backgroundColor: '#F5FCFF'
+      backgroundColor: 'white'
   },
     choiceList: {
         paddingTop: 10,
@@ -180,7 +180,7 @@ var myStyles = StyleSheet.create({
         marginBottom: 10,
         color: 'white',
         fontSize: gui.buttonFontSize,
-        fontFamily: 'Open Sans',
+        fontFamily: gui.fontFamily,
         fontWeight : 'normal'
     },
     headerSeparator: {

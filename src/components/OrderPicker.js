@@ -14,13 +14,17 @@ import * as searchActions from '../reducers/search/searchActions';
 import {Map} from 'immutable';
 
 
-import React, {View, Component, Text, StyleSheet} from 'react-native'
+import React, {View, Component, Text, StyleSheet, StatusBar } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 
 import CommonHeader from '../components/CommonHeader';
 
 import MultipleChoice from './MultipleChoice';
+
+import Button from 'react-native-button';
+
+import gui from '../lib/gui';
 
 /**
 * ## Redux boilerplate
@@ -67,42 +71,67 @@ const orderKeys = [
         ];
 
 class OrderPicker extends Component {
-  constructor() {
+  constructor(props) {
     super();
+    StatusBar.setBarStyle('default');
+      var orderBy = this.getValueByKey(props.search.form.fields.orderBy);
+      if (!orderBy) {
+          orderBy = orderTypes[0];
+      }
+      this.state = {
+          orderBy: orderBy
+      };
   }
 
   render() {
-    var orderBy = this.getValueByKey(this.props.search.form.fields.orderBy);
-    if (!orderBy) {
-      orderBy = orderTypes[0];
-    }
     return (
       <View style={myStyles.fullWidthContainer}>
-        <CommonHeader headerTitle={"Sắp xếp"} />
+        <CommonHeader headerTitle={"Sắp xếp"} backTitle={"Danh sách"} />
+        <View style={myStyles.headerSeparator} />
 
         <MultipleChoice
           options={orderTypes}
-          style={{paddingTop: 10, paddingLeft: 20}}
-          selectedOptions={[orderBy]}
+          style={myStyles.choiceList}
+          selectedOptions={[this.state.orderBy]}
           maxSelectedOptions={1}
           onSelection={(option)=>this.handleOrderTypeChosen(option)}
         />
+
+        <View style={myStyles.searchButton}>
+          <View style={myStyles.searchButtonWrapper}>
+              <Button onPress={this._onBack}
+                      style={myStyles.searchButtonText}>Thoát</Button>
+              <Button onPress={this._onApply.bind(this)}
+                      style={myStyles.searchButtonText}>Thực hiện</Button>
+          </View>
+        </View>
+
       </View>
     );
   }
   _onBack() {
     Actions.pop();
   }
-  handleOrderTypeChosen(option) {
-    this.props.actions.onSearchFieldChange("orderBy", this.getKeyByValue(option));
 
-    this.props.actions.search(
-      this.props.search.form.fields
-      , () => {
-          Actions.pop();
-      }
-    );
-  }
+    _onApply() {
+        var {orderBy} = this.state;
+        this.props.actions.onSearchFieldChange("orderBy", this.getKeyByValue(orderBy));
+
+        this.props.actions.search(
+            this.props.search.form.fields
+            , () => {
+                Actions.pop();
+            }
+        );
+    }
+
+    handleOrderTypeChosen(option) {
+        if (this.state.orderBy == option) {
+            this.setState({orderBy: ''});
+        } else {
+            this.setState({orderBy: option});
+        }
+    }
 
   getValueByKey(key) {
     var value = '';
@@ -140,6 +169,36 @@ var myStyles = StyleSheet.create({
   fullWidthContainer: {
       flex: 1,
       alignItems: 'stretch',
-      backgroundColor: '#F5FCFF'
-  }
+      backgroundColor: 'white'
+  },
+    choiceList: {
+        paddingTop: 10,
+        paddingLeft: 26,
+        paddingRight: 0
+    },
+    searchButton: {
+        alignItems: 'stretch',
+        justifyContent: 'flex-end'
+    },
+    searchButtonWrapper: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        backgroundColor: gui.mainColor,
+        height: 44
+    },
+    searchButtonText: {
+        marginLeft: 17,
+        marginRight: 17,
+        marginTop: 10,
+        marginBottom: 10,
+        color: 'white',
+        fontSize: gui.buttonFontSize,
+        fontFamily: gui.fontFamily,
+        fontWeight : 'normal'
+    },
+    headerSeparator: {
+        marginTop: 2,
+        borderTopWidth: 1,
+        borderTopColor: gui.separatorLine
+    }
 });
