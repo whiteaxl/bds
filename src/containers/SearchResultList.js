@@ -31,10 +31,7 @@ import SearchHeader from '../components/SearchHeader';
 
 import gui from '../lib/gui';
 
-const {
-    SEARCH_STATE_LOADING,
-} = require('../lib/constants').default;
-
+import GiftedSpinner from "../components/GiftedSpinner";
 
 /**
  * ## Redux boilerplate
@@ -49,7 +46,7 @@ function mapStateToProps(state) {
 
     return {
         listAds: state.search.result.listAds,
-        searchState: state.search.state,
+        loading: state.search.loadingFromServer,
         errorMsg: state.search.result.errorMsg,
         placeFullName: state.search.form.fields.place.fullName
     };
@@ -84,18 +81,27 @@ class SearchResultList extends Component {
         console.log("Call SearchResultList._getListContent");
 
         let myProps = this.props;
-        if (myProps.searchState === SEARCH_STATE_LOADING) {
+        if (myProps.loading) {
             return (
-                <View style={{flex:1, alignItems:'center', justifyContent:'center'}}>
-                    <Text> Loading ... </Text>
+                <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
+                    {/*<Text> Loading ... </Text>*/}
+                    <GiftedSpinner />
                 </View>
             )
         }
 
         if (myProps.errorMsg) {
             return (
-                <View style={styles.searchContent}>
+                <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
                     <Text style={styles.welcome}>{myProps.errorMsg}</Text>
+                </View>
+            )
+        }
+
+        if (myProps.listAds.length === 0 ) {
+            return (
+                <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
+                    <Text style = {gui.styles.defaultText}> {gui.INF_KhongCoKetQua} </Text>
                 </View>
             )
         }

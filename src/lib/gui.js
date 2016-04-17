@@ -1,4 +1,6 @@
-module.exports = {
+import {StyleSheet} from 'react-native'
+
+var gui = {
 	green : "#66c03f", 
 	green1 : "#4db62c",
 	mainColor : '#00a8e6',
@@ -11,6 +13,18 @@ module.exports = {
 	capitalizeFontSize: 13,
 
 	//Error msg
-	ERR_LoiKetNoiMayChu : "Lỗi kết nối đến máy chủ!"
+	ERR_LoiKetNoiMayChu : "Lỗi kết nối đến máy chủ!",
+	INF_KhongCoKetQua : "Không có kết quả nào!"
 };
 
+var styles = StyleSheet.create({
+    defaultText: {
+        fontFamily: gui.fontFamily,
+        fontSize: gui.normalFontSize
+    }
+});
+
+gui.styles = styles;
+
+
+module.exports = gui;

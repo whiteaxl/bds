@@ -74,6 +74,7 @@ var InitialState = Record({
     state: SEARCH_STATE_INPUT,
 
     form: new SearchForm,
+    loadingFromServer : false,
 
     result: new (Record({
         listAds: [],

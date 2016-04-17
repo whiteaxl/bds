@@ -10,7 +10,7 @@ const {
     SET_SEARCH_LOAI_TIN,
     FETCH_SEARCH_RESULT_FAIL,
     FETCH_SEARCH_RESULT_SUCCESS,
-    CHANGE_TO_LOADING_SEARCH_RESULT,
+    CHANGE_LOADING_SEARCH_RESULT,
     SEARCH_STATE_INPUT
 
 } = require('../../lib/constants').default;
@@ -45,16 +45,18 @@ export function fetchSearchResultSuccess(listAds) {
     }
 }
 
-export function changeToLoadingSearchResult(listAds) {
+export function changeLoadingSearchResult(loading) {
     return {
-        type: CHANGE_TO_LOADING_SEARCH_RESULT,
-        payload: null
+        type: CHANGE_LOADING_SEARCH_RESULT,
+        payload: loading
     }
 }
 
 
 export function search(credential, successCallback) {
     return dispatch => {
+
+        dispatch(changeLoadingSearchResult(true));
 
         return Api.getItems(credential)
             .then((data) => {

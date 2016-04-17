@@ -13,7 +13,7 @@ const {
     SEARCH_STATE_FAILURE,
     FETCH_SEARCH_RESULT_FAIL,
     FETCH_SEARCH_RESULT_SUCCESS,
-    CHANGE_TO_LOADING_SEARCH_RESULT
+    CHANGE_LOADING_SEARCH_RESULT
 
 } = require('../../lib/constants').default;
 
@@ -52,16 +52,17 @@ export default function searchReducer(state = initialState, action) {
     }
 
     case FETCH_SEARCH_RESULT_FAIL:
-      return state.setIn(['result','errorMsg'], action.payload);
-          //.set("state", SEARCH_STATE_FAILURE);
+      return state.setIn(['result','errorMsg'], action.payload)
+          .set("loadingFromServer", false);
 
     case FETCH_SEARCH_RESULT_SUCCESS :
       return state.setIn(['result',"listAds"], action.payload)
           .set("state", SEARCH_STATE_SUCCESS)
-          .setIn(['result', "errorMsg"], null);
+          .setIn(['result', "errorMsg"], null)
+          .set("loadingFromServer", false);
 
-    case CHANGE_TO_LOADING_SEARCH_RESULT : {
-      return state.set("state", SEARCH_STATE_LOADING)
+    case CHANGE_LOADING_SEARCH_RESULT : {
+      return state.set("loadingFromServer", action.payload)
     }
 
   }

@@ -257,17 +257,17 @@ class Search extends Component {
     Actions.SearchResultList({type:'reset'});
     */
 
+    if (this.props.needBack) {
+      Actions.pop();
+    } else {
+      console.log("Call open SearchResultList in reset mode");
+
+      Actions.SearchResultList({type: "reset"});
+    }
+
     this.props.actions.search(
         this.props.search.form.fields
-        , () => {
-          if (this.props.needBack) {
-            Actions.pop();
-          } else {
-              console.log("Call open SearchResultList in reset mode");
-
-              Actions.SearchResultList({type: "reset"});
-          }
-        });
+        , () => {});
   }
 
   onMoreOption() {

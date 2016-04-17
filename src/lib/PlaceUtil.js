@@ -56,7 +56,9 @@ placeUtil.getTypeName = function(place) {
 
 
 placeUtil.isOnePoint = function(place) {
-    return  placeUtil.getTypeName(place) === placeUtil.typeName.DIA_DIEM;
+    let name = place.relandTypeName || placeUtil.getTypeName(place);
+
+    return  name === placeUtil.typeName.DIA_DIEM;
 };
 
 export default placeUtil;
