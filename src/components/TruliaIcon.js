@@ -5,7 +5,8 @@ import gui from '../lib/gui';
 
 var { createIconSet } = require('react-native-vector-icons');
 var glyphMap = { 'heart':59457, 'heart-o':59458,'arrow-left': 59463,'map':59468, 'menu': 59470, 'arrow-right' : 59492,
-    'search' : 59494, 'twitter' : 59503, 'arrow-up' : 59505, 'arrow-down' : 59445, 'facebook' : 59400, 'phone' : 59404};
+    'search' : 59494, 'twitter' : 59503, 'arrow-up' : 59505, 'arrow-down' : 59445, 'facebook' : 59400, 'phone' : 59404,
+    'check' : 59431};
 var Icon = createIconSet(glyphMap, 'TruliaIcon');
 
 class TruliaIconButton extends React.Component {

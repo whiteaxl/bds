@@ -42,7 +42,7 @@ customPageHeader: {
   customPageTitle: {
       left:36,
       right:36,
-      marginTop: 28,
+      marginTop: 31,
       marginBottom: 10,
       position: 'absolute'
   },
@@ -54,7 +54,7 @@ customPageHeader: {
       textAlign: 'center'
   },
   backButton: {
-      marginTop: 25,
+      marginTop: 28,
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',

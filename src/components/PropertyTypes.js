@@ -21,7 +21,7 @@ import {Actions} from 'react-native-router-flux';
 import CommonHeader from '../components/CommonHeader';
 import DanhMuc from '../assets/DanhMuc';
 
-import MultipleChoice from 'react-native-multiple-choice';
+import MultipleChoice from './MultipleChoice';
 
 import Button from 'react-native-button';
 
@@ -78,10 +78,11 @@ class PropertyTypes extends Component {
     return (
       <View style={myStyles.fullWidthContainer}>
         <CommonHeader headerTitle={"Loại nhà đất"} backTitle={"Tìm kiếm"} />
+        <View style={myStyles.headerSeparator} />
 
         <MultipleChoice
           options={loaiNhaDatValues}
-          style={{paddingTop: 10, paddingLeft: 20, paddingRight: 20}}
+          style={myStyles.choiceList}
           selectedOptions={[this.state.loaiNhaDat]}
           maxSelectedOptions={1}//{this.props.search.form.fields.loaiTin=='ban' ? nhaDatBan.length : nhaDatChoThue.length}
           onSelection={(option)=>this._onPropertyTypeSelected(option)}
@@ -157,6 +158,11 @@ var myStyles = StyleSheet.create({
       alignItems: 'stretch',
       backgroundColor: '#F5FCFF'
   },
+    choiceList: {
+        paddingTop: 10,
+        paddingLeft: 26,
+        paddingRight: 0
+    },
     searchButton: {
         alignItems: 'stretch',
         justifyContent: 'flex-end'
@@ -176,6 +182,11 @@ var myStyles = StyleSheet.create({
         fontSize: gui.buttonFontSize,
         fontFamily: 'Open Sans',
         fontWeight : 'normal'
+    },
+    headerSeparator: {
+        marginTop: 2,
+        borderTopWidth: 1,
+        borderTopColor: gui.separatorLine
     }
 });
 

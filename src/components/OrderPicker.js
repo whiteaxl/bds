@@ -16,13 +16,11 @@ import {Map} from 'immutable';
 
 import React, {View, Component, Text, StyleSheet} from 'react-native'
 
-import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 import CommonHeader from '../components/CommonHeader';
 
-import MultipleChoice from 'react-native-multiple-choice';
+import MultipleChoice from './MultipleChoice';
 
 /**
 * ## Redux boilerplate
