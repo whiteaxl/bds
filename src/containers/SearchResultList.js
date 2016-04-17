@@ -19,7 +19,7 @@ import React, {
 } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import TruliaIcon from '../components/TruliaIcon';
 
 import styles from './styles';
 import SearchResultFooter from '../components/SearchResultFooter';
@@ -208,8 +208,7 @@ class SearchResultList extends Component {
                             >{rowData.giaDisplay}</Text>
                             <Text style={myStyles.text}>{diaChi}{soPhongNgu}{soPhongTam}</Text>
                         </View>
-                        <Icon.Button name="heart-o" backgroundColor="transparent"
-                                     underlayColor="transparent" style={myStyles.heartButton}/>
+                        <TruliaIcon name="heart-o" mainProps={myStyles.heartButton}/>
                     </View>
 
                 </View>

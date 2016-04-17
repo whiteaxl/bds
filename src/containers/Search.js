@@ -21,9 +21,7 @@ import React, { Text, View, Component, Navigator, TouchableOpacity, Dimensions
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/FontAwesome';
-
-import styles from './styles';
+import TruliaIcon from '../components/TruliaIcon'
 
 import LikeTabButton from '../components/LikeTabButton';
 import RangeUtils from "../lib/RangeUtils"
@@ -32,6 +30,8 @@ import RangePicker from "../components/RangePicker"
 import LoaiNhaDat from "../assets/DanhMuc"
 
 import SearchInput from '../components/SearchInputExt';
+
+import PlaceUtil from '../lib/PlaceUtil';
 
 /**
 * ## Redux boilerplate
@@ -58,6 +58,8 @@ function mapDispatchToProps(dispatch) {
     dispatch
   };
 }
+
+var radiusInKmValues = [0.5, 1, 2, 3, 4, 5];
 
 class Search extends Component {
   constructor() {
@@ -145,7 +147,7 @@ class Search extends Component {
 
                 <View style={{flexDirection: "row", alignItems: "flex-end"}}>
                   <Text style={myStyles.searchAttributeValue}> {this._getGiaValue()} </Text>
-                  <Icon name="angle-down" style = { {color:gui.arrowColor} } size={20} />
+                  <TruliaIcon name="arrow-down" color={gui.arrowColor} size={20} />
                 </View>
               </TouchableOpacity>
 
@@ -157,7 +159,7 @@ class Search extends Component {
                   </Text>
                   <View style={{flexDirection: "row", alignItems: "flex-end"}}>
                     <Text style={myStyles.searchAttributeValue2}> {this._getLoaiNhatDatValue()} </Text>
-                    <Icon name="angle-right" style = { {color:gui.arrowColor} } size={20} />
+                    <TruliaIcon name="arrow-right" color={gui.arrowColor} size={20} />
                   </View>
                 </View>
               </TouchableOpacity>
@@ -168,6 +170,8 @@ class Search extends Component {
 
               {this._renderSoNhaTam()}
 
+                {this._renderBanKinhTimKiem()}
+
               <TouchableOpacity style={myStyles.searchFilterAttributeExt}
                   onPress={this._onPressDienTichHandle.bind(this)}>
                 <Text style={myStyles.searchAttributeLabel}>
@@ -176,7 +180,7 @@ class Search extends Component {
 
                 <View style={{flexDirection: "row", alignItems: "flex-end"}}>
                   <Text style={myStyles.searchAttributeValue}>{this._getDienTichValue()} </Text>
-                  <Icon name="angle-down" style = { {color:gui.arrowColor} } size={20} />
+                  <TruliaIcon name="arrow-down" color={gui.arrowColor} size={20} />
                 </View>
               </TouchableOpacity>
               </View>
@@ -276,6 +280,7 @@ class Search extends Component {
     this.props.actions.onSearchFieldChange("dienTich", RangeUtils.BAT_KY_RANGE);
     this.props.actions.onSearchFieldChange("gia", RangeUtils.BAT_KY_RANGE);
     this.props.actions.onSearchFieldChange("orderBy", '');
+    this.props.actions.onSearchFieldChange("radiusInKm", 0.5);
   }
 
   _onPropertyTypesPressed() {
@@ -293,6 +298,22 @@ class Search extends Component {
   _onSoNhaTamChanged(event) {
     this.props.actions.onSearchFieldChange("soNhaTam", event.nativeEvent.selectedSegmentIndex);
   }
+
+    _onBanKinhTimKiemChanged(event) {
+        var value = radiusInKmValues[event.nativeEvent.selectedSegmentIndex];
+        this.props.actions.onSearchFieldChange("radiusInKm", value);
+    }
+
+    _selectedBanKinhTimKiemIndex() {
+        var key = this.props.search.form.fields.radiusInKm;
+        for (var i = 0; i < radiusInKmValues.length; i++) {
+            var one = radiusInKmValues[i];
+            if (key == one) {
+                return i;
+            }
+        }
+        return -1;
+    }
 
   _renderSoPhongNgu(){
     let loaiTin = this.props.search.form.fields.loaiTin;
@@ -375,6 +396,33 @@ class Search extends Component {
     }
   }
 
+  _renderBanKinhTimKiem() {
+        let place = this.props.search.form.fields.place;
+        if (this.showBanKinhTimKiem(place)){
+            var selectedIndex = this._selectedBanKinhTimKiemIndex();
+            return (
+                <View style={[myStyles.searchFilterAttributeExt2, {flexDirection: "column"}]}>
+                    <View style={{paddingBottom: 4, paddingTop: 3}}>
+                        <Text style={myStyles.searchAttributeLabel}>
+                            Bán kính tìm kiếm (Km)
+                        </Text>
+                    </View>
+                    <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 9}}>
+                        <SegmentedControlIOS
+                            values={["0.5","1","2","3","4","5"]}
+                            selectedIndex={selectedIndex}
+                            onChange={this._onBanKinhTimKiemChanged.bind(this)}
+                            tintColor={gui.mainColor} height={28}
+                        >
+                        </SegmentedControlIOS>
+                    </View>
+                </View>
+            );
+        }else if (0.5 != this.props.search.form.fields.radiusInKm) {
+            this.props.actions.onSearchFieldChange("radiusInKm", 0.5);
+        }
+    }
+
   getLoaiNhaDatForDisplay(loaiTin, loaiNhaDatKey){
     var value = '';
     if (loaiTin == 'ban')
@@ -429,6 +477,10 @@ class Search extends Component {
     return false;*/
 
     return true;
+  }
+
+  showBanKinhTimKiem(place){
+    return PlaceUtil.isOnePoint(place);
   }
 }
 
@@ -505,12 +557,12 @@ var myStyles = StyleSheet.create({
   searchAttributeValue : {
     fontSize: gui.normalFontSize,
     fontFamily: 'Open Sans',
-    color: 'gray'
+    color: gui.arrowColor
   },
   searchAttributeValue2 : {
     fontSize: gui.normalFontSize,
     fontFamily: 'Open Sans',
-    color: 'gray',
+    color: gui.arrowColor,
     marginRight: 6
   },
   searchFilterButton: {

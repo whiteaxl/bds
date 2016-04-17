@@ -10,7 +10,7 @@ import React, {
 
 import gui from "../lib/gui";
 import {Actions} from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import TruliaIcon from './TruliaIcon';
 
 
 export default class SearchInputExt extends Component {
@@ -21,11 +21,10 @@ export default class SearchInputExt extends Component {
                     onPress={Actions.SearchSuggestion}
                 >
                     <View style={styles.searchContainer}>
-                            <Icon name="search" backgroundColor="transparent" size={14}
-                                         underlayColor="transparent" color="white"
-                                  style={styles.searchIcon}
+                            <TruliaIcon name="search" size={14} color="white"
+                                        mainProps={styles.searchIcon}
                             >
-                            </Icon>
+                            </TruliaIcon>
                             <Text style={styles.titleText}> {this.props.placeName}</Text>
                     </View>
                 </TouchableOpacity>

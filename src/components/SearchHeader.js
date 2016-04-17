@@ -1,6 +1,7 @@
 // Import some code we need
 import React, {View, Component, Text, StyleSheet} from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import TruliaIcon from './TruliaIcon';
 
 import {Actions} from 'react-native-router-flux';
 
@@ -13,21 +14,19 @@ var CommonHeader = React.createClass({
   render: function() {
     return <View style={mStyles.container}>
       <View style={mStyles.home}>
-      <Icon onPress={this._onHome}
-        name="bars" backgroundColor={gui.mainColor}
-        underlayColor="gray" color="white" size={20}
+      <TruliaIcon onPress={this._onHome}
+        name="menu" color="white" size={20}
         >
-      </Icon>
+      </TruliaIcon>
       </View>
       <View style={mStyles.text}>
         <HeaderSearchInput placeName={this.props.placeName}/>
       </View>
       <View style={mStyles.search}>
-      <Icon onPress={this._onSearch}
-        name="search" backgroundColor={gui.mainColor}
-        underlayColor="gray" color="white" size={18}
+      <TruliaIcon onPress={this._onSearch}
+        name="search" color="white" size={18}
         >
-      </Icon>
+      </TruliaIcon>
       </View>
     </View>
   },

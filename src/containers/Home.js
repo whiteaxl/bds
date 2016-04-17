@@ -17,16 +17,14 @@ import {Map} from 'immutable';
 
 import React, { Text, StyleSheet, View, Component, ScrollView, Image, Dimensions, TouchableOpacity } from 'react-native'
 
-import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import TruliaIcon from '../components/TruliaIcon';
 
 import styles from './styles';
 
 import LinearGradient from 'react-native-linear-gradient';
 
 import gui from '../lib/gui';
-import Tabbar from '../components/Tabbar';
 
 
 /**
@@ -64,12 +62,10 @@ class Home extends Component {
     return (
       <View style={styles.fullWidthContainer}>
         <View style={homeStyles.pageHeader}>
-          <Icon.Button onPress={this.handleSearchButton}
-            name="search" backgroundColor={gui.mainColor}
-            underlayColor="transparent" size={18}
-            style={styles.search}>
-            Tìm kiếm
-          </Icon.Button>
+          <TruliaIcon onPress={this.handleSearchButton}
+            name="search" size={18} color={'white'}
+            mainProps={styles.search} textProps={{paddingLeft: 10}}
+            text="Tìm kiếm" />
         </View>
 
         <View style={styles.homeDetailInfo}>
