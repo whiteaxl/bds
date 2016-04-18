@@ -17,7 +17,7 @@ var Api = {
 
 
   getItems: function(fields) {
-      var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, radiusInKmSelectedIdx, dienTich, orderBy, place, geoBox} = fields;
+      var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, radiusInKmSelectedIdx, dienTich, orderBy, place, geoBox, huongNha, ngayDaDang} = fields;
 
       var params = {
           'loaiTin' : 'ban' === loaiTin ? 0 : 1,
@@ -30,7 +30,9 @@ var Api = {
           'place':place || undefined,
           'geoBox' : geoBox.length===4 ? geoBox : undefined,
           'limit' : maxRows || undefined,
-          'radiusInKm' : DanhMuc.getRadiusInKmByIndex(radiusInKmSelectedIdx) || undefined
+          'radiusInKm' : DanhMuc.getRadiusInKmByIndex(radiusInKmSelectedIdx) || undefined,
+          'huongNha' : huongNha || undefined,
+          'ngayDaDang' : ngayDaDang || undefined
       };
 
  

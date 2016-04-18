@@ -199,7 +199,8 @@ var Styles = StyleSheet.create({
         width: 40,
         height: 30,
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginRight: 15
     },
 
     optionIndicatorIcon: {

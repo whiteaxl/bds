@@ -3,6 +3,7 @@ import RangeUtils from "../lib/RangeUtils"
 var danhMuc = {};
 
 danhMuc.LoaiNhaDatBan = {
+    0 : RangeUtils.BAT_KY,
     1  : "Bán căn hộ chung cư",
     2  : "Bán nhà riêng",
     3  : "Bán nhà mặt phố", 
@@ -12,6 +13,7 @@ danhMuc.LoaiNhaDatBan = {
 }
 
 danhMuc.LoaiNhaDatThue = {
+    0 : RangeUtils.BAT_KY,
     1 : "Cho Thuê căn hộ chung cư",
     2 : "Cho Thuê nhà riêng",
     3 : "Cho Thuê nhà mặt phố", 
@@ -65,6 +67,36 @@ danhMuc.RadiusInKmKey = [
     5
 ]
 
+danhMuc.NgayDaDang = {
+    0: RangeUtils.BAT_KY,
+    1: "1",
+    7: "7",
+    14: "14",
+    30: "30",
+    90: "90"
+}
+
+danhMuc.NgayDaDangKey = [
+    0,
+    1,
+    7,
+    14,
+    30,
+    90
+]
+
+danhMuc.HuongNha = {
+    0: RangeUtils.BAT_KY,
+    1: "Đông",
+    2: "Tây",
+    3: "Nam",
+    4: "Bắc",
+    5: "Đông-Bắc",
+    6: "Tây-Bắc",
+    7: "Đông-Nam",
+    8: "Tây-Nam"
+}
+
 
 danhMuc.getDanhMucKeys = function (hashDanhMuc) {
     var result = [];
@@ -102,8 +134,16 @@ danhMuc.getSoPhongTamValues = function () {
     return danhMuc.getDanhMucValues(danhMuc.SoPhongTam);
 }
 
+danhMuc.getHuongNhaValues = function () {
+    return danhMuc.getDanhMucValues(danhMuc.HuongNha);
+}
+
 danhMuc.getRadiusInKmValues = function () {
     return ["0.5", "1", "2", "3", "4", "5"];
+}
+
+danhMuc.getNgayDaDangValues = function () {
+    return danhMuc.NgayDaDangKey;
 }
 
 danhMuc.getLoaiNhaDatForDisplay = function(loaiTin, loaiNhaDatKey){

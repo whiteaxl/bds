@@ -61,8 +61,10 @@ const SearchForm = Record({
             "url": "https://maps.google.com/?q=Hanoi,+Vietnam&ftid=0x3135008e13800a29:0x2987e416210b90d",
             "fullName": "Hanoi"
         },
-        radiusInKmSelectedIdx: 0
-    })),
+        radiusInKmSelectedIdx: 0,
+        huongNha: '',
+        ngayDaDang: 0
+    }))
 
 });
 

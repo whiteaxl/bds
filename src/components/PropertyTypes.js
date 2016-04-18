@@ -54,6 +54,7 @@ function mapDispatchToProps(dispatch) {
 }
 
 var LoaiNhaDatKey = [
+    0,
     1,
     2,
     3,
@@ -112,7 +113,8 @@ class PropertyTypes extends Component {
     }
 
   _onPropertyTypeSelected(option) {
-      if (this.state.loaiNhaDat == option) {
+      var {loaiNhaDat} = this.state;
+      if (loaiNhaDat == option) {
           this.setState({loaiNhaDat: ''});
       } else {
           this.setState({loaiNhaDat: option});

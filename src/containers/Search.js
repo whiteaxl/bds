@@ -17,7 +17,7 @@ import gui from '../lib/gui';
 
 
 import React, { Text, View, Component, Navigator, TouchableOpacity, Dimensions
-  , SegmentedControlIOS, ScrollView, StyleSheet, StatusBar } from 'react-native'
+  , SegmentedControlIOS, ScrollView, StyleSheet, StatusBar, PickerIOS } from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -65,6 +65,11 @@ class Search extends Component {
   constructor() {
     super();
     StatusBar.setBarStyle('default');
+
+    this.state = {
+      showMore: false,
+      showNgayDaDang: false
+    };
   }
 
   _onLoaiTinChange(value) {
@@ -78,6 +83,12 @@ class Search extends Component {
   _onPressDienTichHandle(){
     this.pickerDienTich.toggle();
   }
+
+  _onPressNgayDaDangHandle() {
+    var {showNgayDaDang} = this.state;
+    this.setState({showNgayDaDang: !showNgayDaDang});
+  }
+
   _onGiaChanged(pickedValue) {
     let value = pickedValue;
     this.props.actions.onSearchFieldChange("gia", value);
@@ -85,6 +96,11 @@ class Search extends Component {
   _onDienTichChanged(pickedValue) {
     let value = pickedValue;
     this.props.actions.onSearchFieldChange("dienTich", value);
+  }
+
+  _onNgayDaDangChanged(pickedValue) {
+    let value = pickedValue;
+    this.props.actions.onSearchFieldChange("ngayDaDang", value);
   }
 
   _getGiaValue() {
@@ -99,6 +115,22 @@ class Search extends Component {
   _getLoaiNhatDatValue() {
     return DanhMuc.getLoaiNhaDatForDisplay(this.props.search.form.fields.loaiTin ,
                                                this.props.search.form.fields.loaiNhaDat);
+  }
+  
+  _getHuongNhaValue() {
+    var huongNha = this.props.search.form.fields.huongNha;
+    if (!huongNha) {
+      return RangeUtils.BAT_KY;
+    }
+    return DanhMuc.HuongNha[huongNha];
+  }
+
+  _getNgayDaDangValue() {
+    var ngayDaDang = this.props.search.form.fields.ngayDaDang;
+    if (!ngayDaDang) {
+      return RangeUtils.BAT_KY;
+    }
+    return ngayDaDang + " ngày";
   }
 
   render() {
@@ -189,9 +221,7 @@ class Search extends Component {
                 <View style={[myStyles.searchMoreFilterAttribute, myStyles.searchMoreSeparator]}>
                   <Text />
                 </View>
-                <View style={myStyles.searchMoreFilterAttribute}>
-                  <Button onPress={this.onMoreOption} style={myStyles.searchMoreText}>Mở rộng</Button>
-                </View>
+                {this._renderMoreComponent()}
                 <View style={[myStyles.searchMoreFilterAttribute, myStyles.searchMoreSeparator]}>
                   <Text />
                 </View>
@@ -271,7 +301,7 @@ class Search extends Component {
   }
 
   onMoreOption() {
-    console.log("On More Option pressed!");
+    this.setState({showMore: true});
   }
 
   onResetFilters() {
@@ -283,10 +313,16 @@ class Search extends Component {
     this.props.actions.onSearchFieldChange("gia", RangeUtils.BAT_KY_RANGE);
     this.props.actions.onSearchFieldChange("orderBy", '');
     this.props.actions.onSearchFieldChange("radiusInKmSelectedIdx", 0);
+    this.props.actions.onSearchFieldChange("huongNha", '');
+    this.props.actions.onSearchFieldChange("ngayDaDang", '');
   }
 
   _onPropertyTypesPressed() {
     Actions.PropertyTypes();
+  }
+
+  _onHuongNhaPressed() {
+    Actions.HuongNha();
   }
 
   _onSoPhongNguChanged(event) {
@@ -348,6 +384,91 @@ class Search extends Component {
                               onChange={onChange} />
         );
     }
+
+  _renderMoreComponent() {
+    var {showMore} = this.state;
+    if (!showMore) {
+      return (
+          <View>
+            {this._renderMoreButton()}
+          </View>
+      );
+    } else {
+      return (
+          <View>
+            {this._renderHuongNha()}
+            {this._renderNgayDaDang()}
+          </View>
+      );
+    }
+  }
+
+  _renderMoreButton() {
+    return (
+        <View style={myStyles.searchMoreFilterAttribute}>
+          <Button onPress={() => this.onMoreOption()} style={myStyles.searchMoreText}>Mở rộng</Button>
+        </View>
+    );
+  }
+
+  _renderHuongNha() {
+    return (
+        <TouchableOpacity
+            onPress={() => this._onHuongNhaPressed()}>
+          <View style={myStyles.searchFilterAttributeExt}>
+            <Text style={myStyles.searchAttributeLabel}>
+              Hướng nhà
+            </Text>
+            <View style={{flexDirection: "row", alignItems: "flex-end"}}>
+              <Text style={myStyles.searchAttributeValue}> {this._getHuongNhaValue()} </Text>
+              <TruliaIcon name="arrow-right" color={gui.arrowColor} size={18} />
+            </View>
+          </View>
+        </TouchableOpacity>
+    );
+  }
+
+  _renderNgayDaDang() {
+    var {showNgayDaDang} = this.state;
+    var iconName = showNgayDaDang ? "arrow-up" : "arrow-down";
+    return (
+        <View>
+          <TouchableOpacity
+                            onPress={() => this._onPressNgayDaDangHandle()}>
+            <View style={myStyles.searchFilterAttribute}>
+              <Text style={myStyles.searchAttributeLabel}>
+                Ngày đã đăng
+              </Text>
+
+              <View style={{flexDirection: "row", alignItems: "flex-end"}}>
+                <Text style={myStyles.searchAttributeValue}> {this._getNgayDaDangValue()} </Text>
+                <TruliaIcon name={iconName} color={gui.arrowColor} size={18} />
+              </View>
+             </View>
+            {this._renderNgayDaDangPicker()}
+          </TouchableOpacity>
+        </View>
+    );
+  }
+
+  _renderNgayDaDangPicker() {
+    var {showNgayDaDang} = this.state;
+    if (showNgayDaDang) {
+      return (
+          <PickerIOS ref={pickerNgayDaDang => this.pickerNgayDaDang = pickerNgayDaDang}
+                 selectedValue={this.props.search.form.fields.ngayDaDang}
+                 onValueChange={(pickedValue) => {this._onNgayDaDangChanged(pickedValue)}}
+                 itemStyle={myStyles.ngayDaDangItem}
+          >
+            {DanhMuc.getNgayDaDangValues().map((ngayDaDangKey) => (
+                <PickerIOS.Item key={ngayDaDangKey}
+                                value={ngayDaDangKey}
+                                label={DanhMuc.NgayDaDang[ngayDaDangKey]} />
+            ))}
+          </PickerIOS>
+      );
+    }
+  }
 
   showSoPhongNgu(){
     return true;
@@ -534,6 +655,9 @@ var myStyles = StyleSheet.create({
     paddingBottom: 11,
     borderTopWidth: 1,
     borderTopColor: gui.separatorLine
+  },
+  ngayDaDangItem: {
+
   }
 });
 
