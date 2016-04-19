@@ -630,11 +630,10 @@ var myStyles = StyleSheet.create({
     //borderColor: "red",
     justifyContent :'space-between',
     paddingTop: 12,
-    paddingLeft: 0,
+    paddingLeft: 17,
     paddingRight: 19,
     paddingBottom: 10,
     borderTopWidth: 1,
-    marginLeft: 17,
     borderTopColor: gui.separatorLine
   },
   searchFilterAttributeExt2: {
