@@ -65,15 +65,20 @@ class PlacesAutoComplete extends React.Component {
     }
     _onPress(data, details = null) {
         //console.log(data);
-        console.log("You selected: " + details.formatted_address);
+        console.log("You selected: " + data.fullName);
         //console.log(details);
-        let value = details;
-        value.fullName = details.name;
+        //let value = details;
+        let value = {
+            placeId : data.place_id,
+            relandTypeName : data.relandTypeName,
+            fullName: data.fullName
+        };
+
+        //value.fullName = details.name;
         //console.log(data);
         console.log(value);
 
         this.props.actions.onSearchFieldChange("place", value);
-
 
         //if not call from Search page, then need perform action
         if (this.props.needReload) {
@@ -99,7 +104,7 @@ class PlacesAutoComplete extends React.Component {
                 placeholder='Search'
                 minLength={2} // minimum length of text to search
                 autoFocus={false}
-                fetchDetails={true}
+                fetchDetails={false}
                 onPress = {this._onPress.bind(this)}
                 onCancelPress = {this._onCancelPress.bind(this)}
                 onPress_original={(data, details = null) => { // 'details' is provided when fetchDetails = true

@@ -1,13 +1,11 @@
 'use strict';
 
-var BAT_KY = "Bất kỳ";
+import danhMuc from "../assets/DanhMuc";
+
+
 var BIG = 9999999;
 
-var sellStepValues = [0, 1000, 2000, 3000, 5000, 7000, 10000, 20000, 30000];
-
-var rentStepValues = [0, 2, 5, 10, 20, 50, 100, 500]; //by month
-
-var dienTichStepValues = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 400, 500]; //by month
+var {sellStepValues,rentStepValues,dienTichStepValues, BAT_KY} = danhMuc;
 
 function getPriceStepsDisplay(val) {
 	if (val == 0 ) {

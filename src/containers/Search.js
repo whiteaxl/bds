@@ -483,7 +483,7 @@ class Search extends Component {
   }
 
   showBanKinhTimKiem(place){
-    return PlaceUtil.isOnePoint(place);
+    return PlaceUtil.isDiaDiem(place);
   }
 }
 

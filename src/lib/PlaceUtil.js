@@ -6,13 +6,15 @@ placeUtil.type = {
     TINH : "administrative_area_level_1",
     HUYEN : "administrative_area_level_2",
     XA : "administrative_area_level_3",
-    XA2 : "sublocality_level_1"
+    XA2 : "sublocality_level_1",
+    DUONG : "route"
 };
 
 placeUtil.typeName = {
     TINH : "Tinh",
     HUYEN : "Huyen",
     XA : "Xa",
+    DUONG : "Duong",
     DIA_DIEM: "Dia diem"
 };
 
@@ -29,8 +31,6 @@ placeUtil.isHuyen = function(place) {
        ) {
         return true;
     }
-
-
 };
 
 placeUtil.getTypeName = function(place) {
@@ -51,14 +51,18 @@ placeUtil.getTypeName = function(place) {
         return placeUtil.typeName.XA;
     }
 
+    if (_.indexOf(placeTypes, placeUtil.type.DUONG) > -1) {
+        return placeUtil.typeName.DUONG;
+    }
+
     return placeUtil.typeName.DIA_DIEM;
 };
 
-
-placeUtil.isOnePoint = function(place) {
+//Not Xa, Huyen, Tinh is DiaDiem
+placeUtil.isDiaDiem = function(place) {
     let name = place.relandTypeName || placeUtil.getTypeName(place);
 
-    return  name === placeUtil.typeName.DIA_DIEM;
+    return  name === placeUtil.typeName.DIA_DIEM || name === placeUtil.typeName.DUONG;
 };
 
 export default placeUtil;

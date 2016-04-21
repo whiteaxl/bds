@@ -5,8 +5,8 @@ import RangeUtils from "../lib/RangeUtils"
 
 import DanhMuc from "../assets/DanhMuc"
 
-var rootUrl = 'http://203.162.13.101:5000/api';
-//var rootUrl = 'http://localhost:5000/api';
+//var rootUrl = 'http://203.162.13.101:5000/api';
+var rootUrl = 'http://localhost:5000/api';
 var findUrl = rootUrl + "/find";
 var placeUrl = rootUrl + "/findPlace";
 
@@ -19,18 +19,21 @@ var Api = {
   getItems: function(fields) {
       var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, radiusInKmSelectedIdx, dienTich, orderBy, place, geoBox, huongNha, ngayDaDang} = fields;
 
+      if (place) {
+          place.radiusInKm = DanhMuc.getRadiusInKmByIndex(radiusInKmSelectedIdx) || undefined;
+      }
+
       var params = {
           'loaiTin' : 'ban' === loaiTin ? 0 : 1,
           'loaiNhaDat' : loaiNhaDat || undefined,
-          'giaBETWEEN' : gia ? RangeUtils.sellPriceRange.toValRange(gia).join() : gia,
+          'giaBETWEEN' : gia ? RangeUtils.sellPriceRange.toValRange(gia) : gia,
           'soPhongNguGREATER' : DanhMuc.getSoPhongByIndex(soPhongNguSelectedIdx) || undefined,
           'soTangGREATER' : DanhMuc.getSoTangByIndex(soTangSelectedIdx) || undefined,
-          'dienTichBETWEEN' : dienTich ? RangeUtils.dienTichRange.toValRange(dienTich).join() : undefined,
+          'dienTichBETWEEN' : dienTich ? RangeUtils.dienTichRange.toValRange(dienTich) : undefined,
           'orderBy' : orderBy || undefined,
           'place':place || undefined,
           'geoBox' : geoBox.length===4 ? geoBox : undefined,
           'limit' : maxRows || undefined,
-          'radiusInKm' : DanhMuc.getRadiusInKmByIndex(radiusInKmSelectedIdx) || undefined,
           'huongNha' : huongNha || undefined,
           'ngayDaDang' : ngayDaDang || undefined
       };

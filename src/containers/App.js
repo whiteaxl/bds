@@ -61,7 +61,7 @@ class App extends Component {
 
     return (
         <Router createReducer={reducerCreate}>
-            <Scene key="modal" component={Modal} >
+
             <Scene key="root" hideNavBar={true}>
 
 				<Scene key='Launch' component={Launch} initial={true} title="Welcome" type="replace" />
@@ -94,7 +94,7 @@ class App extends Component {
 
 
             </Scene>
-            </Scene>
+            
 
 		</Router>
     );

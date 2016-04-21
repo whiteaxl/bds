@@ -1,9 +1,16 @@
-import RangeUtils from "../lib/RangeUtils"
-
 var danhMuc = {};
 
+danhMuc.BAT_KY = "Bất kỳ";
+var {BAT_KY} = danhMuc;
+
+danhMuc.sellStepValues = [0, 1000, 2000, 3000, 5000, 7000, 10000, 20000, 30000]; //trieu
+
+danhMuc.rentStepValues = [0, 2, 5, 10, 20, 50, 100, 500]; //by month
+
+danhMuc.dienTichStepValues = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 400, 500];
+
 danhMuc.LoaiNhaDatBan = {
-    0 : RangeUtils.BAT_KY,
+    0 : BAT_KY,
     1  : "Bán căn hộ chung cư",
     2  : "Bán nhà riêng",
     3  : "Bán nhà mặt phố", 
@@ -13,7 +20,7 @@ danhMuc.LoaiNhaDatBan = {
 }
 
 danhMuc.LoaiNhaDatThue = {
-    0 : RangeUtils.BAT_KY,
+    0 : BAT_KY,
     1 : "Cho Thuê căn hộ chung cư",
     2 : "Cho Thuê nhà riêng",
     3 : "Cho Thuê nhà mặt phố", 
@@ -23,7 +30,7 @@ danhMuc.LoaiNhaDatThue = {
 }
 
 danhMuc.SoPhongNgu = {
-    0: RangeUtils.BAT_KY,
+    0: BAT_KY,
     1: "1+",
     2: "2+",
     3: "3+",
@@ -32,7 +39,7 @@ danhMuc.SoPhongNgu = {
 }
 
 danhMuc.SoTang = {
-    0: RangeUtils.BAT_KY,
+    0: BAT_KY,
     1: "1+",
     2: "2+",
     3: "3+",
@@ -41,7 +48,7 @@ danhMuc.SoTang = {
 }
 
 danhMuc.SoPhongTam = {
-    0: RangeUtils.BAT_KY,
+    0: BAT_KY,
     1: "1+",
     2: "2+",
     3: "3+",
@@ -68,7 +75,7 @@ danhMuc.RadiusInKmKey = [
 ]
 
 danhMuc.NgayDaDang = {
-    0: RangeUtils.BAT_KY,
+    0: BAT_KY,
     1: "1",
     7: "7",
     14: "14",
@@ -86,7 +93,7 @@ danhMuc.NgayDaDangKey = [
 ]
 
 danhMuc.HuongNha = {
-    0: RangeUtils.BAT_KY,
+    0: BAT_KY,
     1: "Đông",
     2: "Tây",
     3: "Nam",
@@ -155,7 +162,7 @@ danhMuc.getLoaiNhaDatForDisplay = function(loaiTin, loaiNhaDatKey){
         value = danhMuc.LoaiNhaDatThue[loaiNhaDatKey];
 
     if (!value)
-        value = RangeUtils.BAT_KY;
+        value = BAT_KY;
 
     return value;
 }

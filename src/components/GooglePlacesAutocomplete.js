@@ -254,6 +254,14 @@ const GooglePlacesAutocomplete = React.createClass({
         return desc ? desc.replace(", Vietnam", "") : "";
     },
     _onPress(rowData) {
+
+        rowData.fullName = this._rewayDesc(rowData.description);
+
+        this.setState({
+            text:rowData.fullName
+        });
+
+        
         if (rowData.isPredefinedPlace !== true && this.props.fetchDetails === true) {
             if (rowData.isLoading === true) {
                 // already requesting
@@ -285,6 +293,7 @@ const GooglePlacesAutocomplete = React.createClass({
                             this._onBlur();
 
                             details.relandTypeName = rowData.relandTypeName;
+
 
                             this.setState({
                                 text: this._rewayDesc(rowData.description)
@@ -539,6 +548,9 @@ const GooglePlacesAutocomplete = React.createClass({
     },
 
     _renderRow(rowData = {}) {
+
+        console.log(rowData);
+
         rowData.description = rowData.description || rowData.formatted_address || rowData.name;
 
         rowData.relandTypeName = this._getPlaceType(rowData);
