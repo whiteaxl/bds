@@ -71,7 +71,8 @@ class PlacesAutoComplete extends React.Component {
         let value = {
             placeId : data.place_id,
             relandTypeName : data.relandTypeName,
-            fullName: data.fullName
+            fullName: data.fullName,
+            currentLocation : data.currentLocation
         };
 
         //value.fullName = details.name;

@@ -56,7 +56,9 @@ export default function searchReducer(state = initialState, action) {
           .set("loadingFromServer", false);
 
     case FETCH_SEARCH_RESULT_SUCCESS :
-      return state.setIn(['result',"listAds"], action.payload)
+
+      return state.setIn(['result',"listAds"], action.payload.list)
+          .setIn(['result',"viewport"], action.payload.viewport)
           .set("state", SEARCH_STATE_SUCCESS)
           .setIn(['result', "errorMsg"], null)
           .set("loadingFromServer", false);

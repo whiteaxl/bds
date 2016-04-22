@@ -38,10 +38,10 @@ export function fetchSearchResultFail(error) {
     };
 }
 
-export function fetchSearchResultSuccess(listAds) {
+export function fetchSearchResultSuccess(data) {
     return {
         type: FETCH_SEARCH_RESULT_SUCCESS,
-        payload: listAds
+        payload: data
     }
 }
 
@@ -62,11 +62,12 @@ export function search(credential, successCallback) {
             .then((data) => {
                 let dataBlob = [];
                 if (data.list) {
-                    let listAds = data.list;
+                    //let listAds = data.list;
 
-                    console.log("Number of result: " + listAds.length);
+                    //console.log("Number of result: " + data.length);
+                    console.log(data);
 
-                    dispatch(fetchSearchResultSuccess(listAds));
+                    dispatch(fetchSearchResultSuccess(data));
 
                     successCallback();
                 } else {
