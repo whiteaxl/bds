@@ -15,16 +15,26 @@ class TruliaIconButton extends React.Component {
     }
 
     render() {
-        var {touchableProps, iconProps, textProps, mainProps, color, text, name,size} = this.props;
+        var {touchableProps, iconProps, textProps, mainProps, color, text, name,size,noAction} = this.props;
+        if (!noAction) {
+            return(
+                <TouchableHighlight underlayColor='transparent' style={[styles.touchable]} onPress={this.props.onPress}>
+                    <View style={[styles.container, mainProps]} >
+                        <Icon color={color||gui.mainColor} name={name} size={size||22} {...iconProps} />
+                        <Text style={[styles.text, {color:color||gui.mainColor}, textProps]}>
+                            {text}
+                        </Text>
+                    </View>
+                </TouchableHighlight>
+            );
+        }
         return(
-            <TouchableHighlight underlayColor='transparent' style={[styles.touchable]} onPress={this.props.onPress}>
-                <View style={[styles.container, mainProps]} >
-                    <Icon color={color||gui.mainColor} name={name} size={size||22} {...iconProps} />
-                    <Text style={[styles.text, {color:color||gui.mainColor}, textProps]}>
-                        {text}
-                    </Text>
-                </View>
-            </TouchableHighlight>
+            <View style={[styles.container, mainProps]} >
+                <Icon color={color||gui.mainColor} name={name} size={size||22} {...iconProps} />
+                <Text style={[styles.text, {color:color||gui.mainColor}, textProps]}>
+                    {text}
+                </Text>
+            </View>
         );
     }
 }

@@ -11,18 +11,27 @@ class RelandIconButton extends React.Component {
     constructor(props) {
         super(props);
     }
-
     render() {
-        var {touchableProps, iconProps, textProps, text, name,size} = this.props;
+        var {touchableProps, iconProps, textProps, text, name,size, noAction} = this.props;
+        if (!noAction) {
+            return(
+                <TouchableHighlight underlayColor='transparent' style={[styles.touchable]} onPress={this.props.onPress}>
+                    <View style={[styles.container]} >
+                        <Icon color={gui.mainColor} name={name} size={size||22} {...iconProps} />
+                        <Text style={[styles.text, textProps]}>
+                            {text}
+                        </Text>
+                    </View>
+                </TouchableHighlight>
+            );
+        }
         return(
-        <TouchableHighlight underlayColor='transparent' style={[styles.touchable]} onPress={this.props.onPress}>
             <View style={[styles.container]} >
                 <Icon color={gui.mainColor} name={name} size={size||22} {...iconProps} />
                 <Text style={[styles.text, textProps]}>
                     {text}
                 </Text>
             </View>
-        </TouchableHighlight>
         );
     }
 }

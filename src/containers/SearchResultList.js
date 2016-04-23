@@ -35,6 +35,8 @@ import DanhMuc from '../assets/DanhMuc';
 
 import GiftedSpinner from "../components/GiftedSpinner";
 
+import Menu, { MenuContext, MenuOptions, MenuOption, MenuTrigger } from 'react-native-menu';
+
 /**
  * ## Redux boilerplate
  */
@@ -49,7 +51,8 @@ function mapStateToProps(state) {
         listAds: state.search.result.listAds,
         loading: state.search.loadingFromServer,
         errorMsg: state.search.result.errorMsg,
-        placeFullName: state.search.form.fields.place.fullName
+        placeFullName: state.search.form.fields.place.fullName,
+        place: state.search.form.fields.place
     };
 }
 
@@ -125,6 +128,7 @@ class SearchResultList extends Component {
         console.log("Call SearchResultList render");
         console.log(this.props);
         return (
+            <MenuContext style={{ flex : 1 }}>
             <View style={myStyles.fullWidthContainer}>
                 <View style={myStyles.search}>
                     <SearchHeader placeName={this.props.placeFullName}/>
@@ -132,8 +136,9 @@ class SearchResultList extends Component {
 
                 {this._getListContent()}
 
-                <SearchResultFooter placeName={this.props.placeFullName} />
+                <SearchResultFooter place={this.props.place} />
             </View>
+            </MenuContext>
         )
     }
 

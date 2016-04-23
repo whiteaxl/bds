@@ -3,14 +3,20 @@ import React, {View, Component, Text, StyleSheet, AlertIOS} from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
 
-import RelandIcon from './RelandIcon'
+import RelandIcon from './RelandIcon';
+
+import SortMenu from './SortMenu';
+
+import PlaceUtil from '../lib/PlaceUtil';
+
+import gui from '../lib/gui';
 
 // Create our component
 var SearchResultFooter = React.createClass({
   render: function() {
     return <View style={myStyles.searchButton}>
       <View style={myStyles.searchListButton}>
-        <RelandIcon onPress={this._onSort} name="sort" size={16} text="Sắp xếp" textProps={myStyles.buttonText}/>
+        <SortMenu isDiaDiem={PlaceUtil.isDiaDiem(this.props.place)}/>
         <RelandIcon onPress={this._onAlertSaveSearch} name="save" size={16} text="Lưu tìm kiếm" textProps={myStyles.buttonText}/>
         <RelandIcon onPress={this._onMap} name="map" size={12} iconProps={{style: {marginTop: 4}}} text="Bản đồ" textProps={myStyles.buttonText}/>
       </View>
@@ -29,7 +35,7 @@ var SearchResultFooter = React.createClass({
         }, {
             text: 'Thoát',
             style: 'cancel'
-        }], 'plain-text', this.props.placeName);
+        }], 'plain-text', this.props.place.fullName);
   },
 
   _onSaveSearch() {
@@ -61,7 +67,7 @@ var myStyles = StyleSheet.create({
 
   buttonText: {
       fontSize: 11,
-      fontFamily: 'Open Sans'
+      fontFamily: gui.fontFamily
   }
 });
 
