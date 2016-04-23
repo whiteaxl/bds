@@ -14,10 +14,10 @@ var CommonHeader = React.createClass({
   render: function() {
     return <View style={mStyles.container}>
       <View style={mStyles.home}>
-      <TruliaIcon onPress={this._onHome}
-        name="menu" color="white" size={20}
+      <Icon onPress={this._onHome}
+        name="home" color="white" size={20}
         >
-      </TruliaIcon>
+      </Icon>
       </View>
       <View style={mStyles.text}>
         <HeaderSearchInput placeName={this.props.placeName}/>
