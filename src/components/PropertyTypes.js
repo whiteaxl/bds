@@ -53,16 +53,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-var LoaiNhaDatKey = [
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    99
-];
-
 var loaiNhaDatValues = [];
 
 class PropertyTypes extends Component {
@@ -78,7 +68,7 @@ class PropertyTypes extends Component {
   render() {
     return (
       <View style={myStyles.fullWidthContainer}>
-        <CommonHeader headerTitle={"Loại nhà đất"} backTitle={"Tìm kiếm"} />
+        <CommonHeader headerTitle={"Loại nhà đất"} />
         <View style={myStyles.headerSeparator} />
 
         <MultipleChoice
@@ -123,8 +113,8 @@ class PropertyTypes extends Component {
 
   getValueByKey(values, key) {
     var value = '';
-    for (var i = 0; i < LoaiNhaDatKey.length; i++) {
-      var loaiKey = LoaiNhaDatKey[i];
+    for (var i = 0; i < DanhMuc.LoaiNhaDatKey.length; i++) {
+      var loaiKey = DanhMuc.LoaiNhaDatKey[i];
       if (key === loaiKey) {
         value = values[i];
         break;
@@ -139,7 +129,7 @@ class PropertyTypes extends Component {
     for (var i = 0; i < values.length; i++) {
       var oneValue = values[i];
       if (value === oneValue) {
-        key = LoaiNhaDatKey[i];
+        key = DanhMuc.LoaiNhaDatKey[i];
         break;
       }
     }

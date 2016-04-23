@@ -31,6 +31,8 @@ import SearchHeader from '../components/SearchHeader';
 
 import gui from '../lib/gui';
 
+import DanhMuc from '../assets/DanhMuc';
+
 import GiftedSpinner from "../components/GiftedSpinner";
 
 /**
@@ -156,14 +158,24 @@ class SearchResultList extends Component {
     }
 
     renderRow(rowData, sectionID, rowID) {
+        
         var diaChi = rowData.place.diaChi;
-        var soPhongNgu = rowData.soPhongNgu;
-        if (soPhongNgu) {
-            soPhongNgu = " " + soPhongNgu + " p.ngủ";
+        var loaiNhaDat = rowData.loaiNhaDat;
+        var dienTich = '';
+        if (rowData.dienTich) {
+            dienTich = rowData.dienTich + "m²";
         }
-        var soPhongTam = rowData.soPhongTam;
-        if (soPhongTam) {
-            soPhongTam = " " + soPhongTam + " p.tắm";
+        var soPhongNgu = '';
+        if (rowData.soPhongNgu) {
+            soPhongNgu = "-" + rowData.soPhongNgu + "pn";
+        }
+        var soPhongTam = '';
+        if (rowData.soPhongTam) {
+            soPhongTam = "-" + rowData.soPhongTam + "pt";
+        }
+        var soTang = '';
+        if (rowData.soTang) {
+            soTang = "-" + rowData.soTang + "t";
         }
         var maxDiaChiLength = 30;
         if (soPhongNgu) {
@@ -182,8 +194,9 @@ class SearchResultList extends Component {
         }
         diaChi = diaChi.substring(0, length);
         if (diaChi.length < rowData.place.diaChi.length) {
-            diaChi = diaChi + '...';
+            diaChi = diaChi + ' ...';
         }
+        var moreInfo = this.getMoreInfo(loaiNhaDat, dienTich, soPhongNgu, soTang);
 
 
         return (
@@ -210,7 +223,7 @@ class SearchResultList extends Component {
                                   onStartShouldSetResponder={(evt) => false}
                                   onMoveShouldSetResponder={(evt) => false}
                             >{rowData.giaDisplay}</Text>
-                            <Text style={myStyles.text}>{diaChi}{soPhongNgu}{soPhongTam}</Text>
+                            <Text style={myStyles.text}>{diaChi}{moreInfo}</Text>
                         </View>
                         <TruliaIcon name="heart-o" mainProps={myStyles.heartButton} color={'white'} size={23}/>
                     </View>
@@ -219,6 +232,23 @@ class SearchResultList extends Component {
 
             </View>
         );
+    }
+
+    getMoreInfo(loaiNhaDat, dienTich, soPhongNgu, soTang) {
+        var moreInfo = '';
+        if (loaiNhaDat == DanhMuc.LoaiNhaDatKey[1]) {
+            moreInfo = ' ' + dienTich + soPhongNgu;
+        }
+        if ((loaiNhaDat == DanhMuc.LoaiNhaDatKey[2])
+            || (loaiNhaDat == DanhMuc.LoaiNhaDatKey[3])
+            || (loaiNhaDat == DanhMuc.LoaiNhaDatKey[4])) {
+            moreInfo = ' ' + dienTich + soTang;
+        }
+        if ((loaiNhaDat == DanhMuc.LoaiNhaDatKey[5])
+            || (loaiNhaDat == DanhMuc.LoaiNhaDatKey[6])) {
+            moreInfo = ' ' + dienTich;
+        }
+        return moreInfo;
     }
 }
 
@@ -298,7 +328,7 @@ var myStyles = StyleSheet.create({
         justifyContent: 'flex-end',
         alignItems: 'stretch',
         height: imgHeight,
-        alignSelf: 'auto',
+        alignSelf: 'auto'
     },
     searchListView: {
         marginTop: 30,
@@ -320,7 +350,7 @@ var myStyles = StyleSheet.create({
         textAlign: 'left',
         backgroundColor: 'transparent',
         marginLeft: 15,
-        color: 'white',
+        color: 'white'
     },
     text: {
         fontSize: 14,
@@ -330,12 +360,12 @@ var myStyles = StyleSheet.create({
         marginBottom: 15,
         margin: 5,
         marginTop: 2,
-        color: 'white',
+        color: 'white'
     },
     heartButton: {
         marginBottom: 10,
         paddingRight: 18
-    },
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultList);

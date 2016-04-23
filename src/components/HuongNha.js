@@ -53,18 +53,6 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-var HuongNhaKey = [
-    0,
-    1,
-    2,
-    3,
-    4,
-    5,
-    6,
-    7,
-    8
-];
-
 var huongNhaValues = DanhMuc.getHuongNhaValues();
 
 class HuongNha extends Component {
@@ -79,7 +67,7 @@ class HuongNha extends Component {
     render() {
         return (
             <View style={myStyles.fullWidthContainer}>
-                <CommonHeader headerTitle={"Hướng nhà"} backTitle={"Tìm kiếm"} />
+                <CommonHeader headerTitle={"Hướng nhà"} />
                 <View style={myStyles.headerSeparator} />
 
                 <MultipleChoice
@@ -124,8 +112,8 @@ class HuongNha extends Component {
 
     getValueByKey(values, key) {
         var value = '';
-        for (var i = 0; i < HuongNhaKey.length; i++) {
-            var loaiKey = HuongNhaKey[i];
+        for (var i = 0; i < DanhMuc.HuongNhaKey.length; i++) {
+            var loaiKey = DanhMuc.HuongNhaKey[i];
             if (key === loaiKey) {
                 value = values[i];
                 break;
@@ -140,7 +128,7 @@ class HuongNha extends Component {
         for (var i = 0; i < values.length; i++) {
             var oneValue = values[i];
             if (value === oneValue) {
-                key = HuongNhaKey[i];
+                key = DanhMuc.HuongNhaKey[i];
                 break;
             }
         }

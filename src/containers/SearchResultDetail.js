@@ -60,11 +60,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-var LoaiTin = [
-    {key: 0, value: "Bán"},
-    {key: 1, value: "Cho thuê"}
-];
-
 var mapSize = Dimensions.get('window').width-36;
 
 var imgHeight = 256;
@@ -97,7 +92,7 @@ class SearchResultDetail extends Component {
         )
     }
 
-    var loaiTin = this.getValueByKey(LoaiTin, rowData.loaiTin);
+    var loaiTin = DanhMuc.getLoaiTinValue(rowData.loaiTin);
     var loaiNhaDat = rowData.loaiTin ? DanhMuc.LoaiNhaDatThue[rowData.loaiNhaDat] :  DanhMuc.LoaiNhaDatBan[rowData.loaiNhaDat];
     var diaChi = rowData.place.diaChi;
     var dienTich = '';
@@ -334,19 +329,6 @@ class SearchResultDetail extends Component {
  //     });
  //   }
  // }
-
-  getValueByKey(hashArr, key) {
-    var value = '';
-    for (var i = 0; i < hashArr.length; i++) {
-      var attr = hashArr[i];
-      if (key == attr["key"]) {
-        value = attr["value"];
-        break;
-      }
-    }
-    //console.log(value);
-    return value;
-  }
 
   _onBack() {
     Actions.pop();

@@ -29,6 +29,16 @@ danhMuc.LoaiNhaDatThue = {
     99: "Cho Thuê các bds khác"
 }
 
+danhMuc.LoaiNhaDatKey = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    99
+];
+
 danhMuc.SoPhongNgu = {
     0: BAT_KY,
     1: "1+",
@@ -103,6 +113,23 @@ danhMuc.HuongNha = {
     7: "Đông-Nam",
     8: "Tây-Nam"
 }
+
+danhMuc.HuongNhaKey = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+];
+
+danhMuc.LoaiTin = {
+    0: "Bán",
+    1: "Cho thuê"
+};
 
 
 danhMuc.getDanhMucKeys = function (hashDanhMuc) {
@@ -194,6 +221,10 @@ danhMuc.getSoPhongTamByIndex = function (index) {
 
 danhMuc.getRadiusInKmByIndex = function(index) {
     return danhMuc.RadiusInKmKey[index];
+}
+
+danhMuc.getLoaiTinValue = function (key) {
+    return danhMuc.LoaiTin[key];
 }
 
 module.exports = danhMuc;
