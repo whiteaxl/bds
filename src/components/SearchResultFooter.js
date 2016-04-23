@@ -1,5 +1,5 @@
 // Import some code we need
-import React, {View, Component, Text, StyleSheet} from 'react-native';
+import React, {View, Component, Text, StyleSheet, AlertIOS} from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
 
@@ -11,7 +11,7 @@ var SearchResultFooter = React.createClass({
     return <View style={myStyles.searchButton}>
       <View style={myStyles.searchListButton}>
         <RelandIcon onPress={this._onSort} name="sort" size={16} text="Sắp xếp" textProps={myStyles.buttonText}/>
-        <RelandIcon onPress={this._onSaveSearch} name="save" size={16} text="Lưu tìm kiếm" textProps={myStyles.buttonText}/>
+        <RelandIcon onPress={this._onAlertSaveSearch} name="save" size={16} text="Lưu tìm kiếm" textProps={myStyles.buttonText}/>
         <RelandIcon onPress={this._onMap} name="map" size={12} iconProps={{style: {marginTop: 4}}} text="Bản đồ" textProps={myStyles.buttonText}/>
       </View>
     </View>
@@ -19,6 +19,17 @@ var SearchResultFooter = React.createClass({
 
   _onSort() {
     Actions.OrderPicker();
+  },
+
+  _onAlertSaveSearch() {
+    AlertIOS.prompt('Tên tìm kiếm cần lưu', 'Ví dụ: Gần chỗ làm, gần bệnh viện',
+        [{
+            text: 'Lưu lại',
+            onPress: this._onSaveSearch
+        }, {
+            text: 'Thoát',
+            style: 'cancel'
+        }], 'plain-text', this.props.placeName);
   },
 
   _onSaveSearch() {

@@ -132,7 +132,7 @@ class SearchResultList extends Component {
 
                 {this._getListContent()}
 
-                <SearchResultFooter />
+                <SearchResultFooter placeName={this.props.placeFullName} />
             </View>
         )
     }

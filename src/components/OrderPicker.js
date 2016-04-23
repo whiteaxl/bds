@@ -26,6 +26,8 @@ import Button from 'react-native-button';
 
 import gui from '../lib/gui';
 
+import PlaceUtil from '../lib/PlaceUtil';
+
 /**
 * ## Redux boilerplate
 */
@@ -52,38 +54,68 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const orderTypes = [
+const orderTypes1 = [
           'Mặc định',
-          'Ngày nhập',
-          'Giá (Giảm dần)',
+          'Ngày đăng',
           'Giá (Tăng dần)',
+          'Giá (Giảm dần)',
+          'Giá/m²',
           'Số phòng ngủ',
           'Diện tích'
         ];
 
-const orderKeys = [
+const orderKeys1 = [
           '',
           'ngayDangTinDESC',
-          'giaDESC',
           'giaASC',
+          'giaDESC',
+          '',
           'soPhongNguASC',
           'dienTichDESC'
         ];
+
+const orderTypes2 = [
+    'Mặc định',
+    'Ngày đăng',
+    'Giá (Tăng dần)',
+    'Giá (Giảm dần)',
+    'Giá/m²',
+    'Số phòng ngủ',
+    'Khoảng cách',
+    'Diện tích'
+];
+
+const orderKeys2 = [
+    '',
+    'ngayDangTinDESC',
+    'giaASC',
+    'giaDESC',
+    'giaDESC',
+    'soPhongNguASC',
+    '',
+    'dienTichDESC'
+];
 
 class OrderPicker extends Component {
   constructor(props) {
     super();
     StatusBar.setBarStyle('default');
-      var orderBy = this.getValueByKey(props.search.form.fields.orderBy);
+      var place = props.search.form.fields.place;
+      var isDiaDiem = PlaceUtil.isDiaDiem(place);
+      var orderBy = this.getValueByKey(props.search.form.fields.orderBy, isDiaDiem);
       if (!orderBy) {
           orderBy = orderTypes[0];
       }
       this.state = {
-          orderBy: orderBy
+          orderBy: orderBy,
+          isDiaDiem: isDiaDiem
       };
   }
 
   render() {
+    var {isDiaDiem} = this.state;
+    var orderTypes = isDiaDiem ? orderTypes2 : orderTypes1;
+
     return (
       <View style={myStyles.fullWidthContainer}>
         <CommonHeader headerTitle={"Sắp xếp"} backTitle={"Danh sách"} />
@@ -114,8 +146,8 @@ class OrderPicker extends Component {
   }
 
     _onApply() {
-        var {orderBy} = this.state;
-        this.props.actions.onSearchFieldChange("orderBy", this.getKeyByValue(orderBy));
+        var {orderBy, isDiaDiem} = this.state;
+        this.props.actions.onSearchFieldChange("orderBy", this.getKeyByValue(orderBy, isDiaDiem));
 
         this.props.actions.search(
             this.props.search.form.fields
@@ -133,7 +165,9 @@ class OrderPicker extends Component {
         }
     }
 
-  getValueByKey(key) {
+  getValueByKey(key, isDiaDiem) {
+    var orderTypes = isDiaDiem ? orderTypes2 : orderTypes1;
+    var orderKeys = isDiaDiem ? orderKeys2 : orderKeys1;
     var value = '';
     for (var i = 0; i < orderKeys.length; i++) {
       var orderKey = orderKeys[i];
@@ -146,7 +180,9 @@ class OrderPicker extends Component {
     return value;
   }
 
-  getKeyByValue(value) {
+  getKeyByValue(value, isDiaDiem) {
+    var orderTypes = isDiaDiem ? orderTypes2 : orderTypes1;
+    var orderKeys = isDiaDiem ? orderKeys2 : orderKeys1;
     var key = '';
     for (var i = 0; i < orderTypes.length; i++) {
       var orderType = orderTypes[i];
