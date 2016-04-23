@@ -22,8 +22,6 @@ import CommonHeader from '../components/CommonHeader';
 
 import MultipleChoice from './MultipleChoice';
 
-import Button from 'react-native-button';
-
 import gui from '../lib/gui';
 
 import PlaceUtil from '../lib/PlaceUtil';
@@ -118,7 +116,7 @@ class OrderPicker extends Component {
 
     return (
       <View style={myStyles.fullWidthContainer}>
-        <CommonHeader headerTitle={"Sắp xếp"} backTitle={"Danh sách"} />
+        <CommonHeader headerTitle={"Sắp xếp"} />
         <View style={myStyles.headerSeparator} />
 
         <MultipleChoice
@@ -126,17 +124,8 @@ class OrderPicker extends Component {
           style={myStyles.choiceList}
           selectedOptions={[this.state.orderBy]}
           maxSelectedOptions={1}
-          onSelection={(option)=>this.handleOrderTypeChosen(option)}
+          onSelection={(option)=>this._onApply(option)}
         />
-
-        <View style={myStyles.searchButton}>
-          <View style={myStyles.searchButtonWrapper}>
-              <Button onPress={this._onBack}
-                      style={myStyles.searchButtonText}>Thoát</Button>
-              <Button onPress={this._onApply.bind(this)}
-                      style={myStyles.searchButtonText}>Thực hiện</Button>
-          </View>
-        </View>
 
       </View>
     );
@@ -145,9 +134,9 @@ class OrderPicker extends Component {
     Actions.pop();
   }
 
-    _onApply() {
-        var {orderBy, isDiaDiem} = this.state;
-        this.props.actions.onSearchFieldChange("orderBy", this.getKeyByValue(orderBy, isDiaDiem));
+    _onApply(option) {
+        var {isDiaDiem} = this.state;
+        this.props.actions.onSearchFieldChange("orderBy", this.getKeyByValue(option, isDiaDiem));
 
         this.props.actions.search(
             this.props.search.form.fields
@@ -155,14 +144,6 @@ class OrderPicker extends Component {
                 Actions.pop();
             }
         );
-    }
-
-    handleOrderTypeChosen(option) {
-        if (this.state.orderBy == option) {
-            this.setState({orderBy: ''});
-        } else {
-            this.setState({orderBy: option});
-        }
     }
 
   getValueByKey(key, isDiaDiem) {
