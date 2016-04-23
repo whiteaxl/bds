@@ -208,20 +208,13 @@ const GooglePlacesAutocomplete = React.createClass({
                 //this._requestNearby(position.coords.latitude, position.coords.longitude);
                 let data = {
                     name: "Current Location",
+                    fullName: "Current Location",
                     currentLocation : {
                         "lat": position.coords.latitude,
                         "lon": position.coords.longitude
                     }
                 };
-
-                let details = {
-                    "geometry": {
-                        "location": {"lat": position.coords.latitude, "lng": position.coords.longitude}
-                    },
-                    "name": "Current Location",
-                    "types": ["CurrentLocation"]
-                };
-                this.props.onPress(data, details);
+                this.props.onPress(data, null);
             },
             (error) => {
                 this._disableRowLoaders();
