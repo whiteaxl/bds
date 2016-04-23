@@ -11,16 +11,16 @@ import gui from '../lib/gui';
 var CommonHeader = React.createClass({
   render: function() {
     return <View style={myStyles.customPageHeader}>
-      <TruliaIcon onPress={this._onBack}
-        name="arrow-left" color={gui.mainColor} size={25}
-        mainProps={myStyles.backButton} text={this.props.backTitle}
-        textProps={myStyles.backButtonText} >
-      </TruliaIcon>
       <View style={myStyles.customPageTitle}>
         <Text style={myStyles.customPageTitleText}>
         {this.props.headerTitle}
         </Text>
       </View>
+      <TruliaIcon onPress={this._onBack}
+                name="arrow-left" color={gui.mainColor} size={25}
+                mainProps={myStyles.backButton} text={this.props.backTitle}
+                textProps={myStyles.backButtonText} >
+      </TruliaIcon>
     </View>
   },
   _onBack: function() {
