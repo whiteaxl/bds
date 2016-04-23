@@ -271,21 +271,6 @@ class Search extends Component {
 
   onApply() {
     console.log("Call Search.onApply");
-/*
-    this.props.actions.onSearchFieldChange("listData", []);
-    console.log("Search cridential:");
-    console.log(this.props.search.form.fields);
-
-    if (this.props.search.form.fields.place.geometry) {
-      var lon1 = this.props.search.form.fields.place.geometry.viewport.southwest.lng;
-      var lat1 = this.props.search.form.fields.place.geometry.viewport.southwest.lat;
-      var lon2 = this.props.search.form.fields.place.geometry.viewport.northeast.lng;
-      var lat2 = this.props.search.form.fields.place.geometry.viewport.northeast.lat;
-      var bbox = [lon1, lat1, lon2, lat2];
-      this.props.actions.onSearchFieldChange("bbox", bbox);
-    }
-    Actions.SearchResultList({type:'reset'});
-    */
 
     if (this.props.needBack) {
       Actions.pop();
@@ -294,7 +279,7 @@ class Search extends Component {
 
       Actions.SearchResultList({type: "reset"});
     }
-
+    this.props.actions.onSearchFieldChange("geoBox", []);
     this.props.actions.search(
         this.props.search.form.fields
         , () => {});

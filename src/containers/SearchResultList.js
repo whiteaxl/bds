@@ -43,7 +43,6 @@ const actions = [
 function mapStateToProps(state) {
     console.log("Call SearchResultList.mapStateToProps");
     console.log(state);
-
     return {
         listAds: state.search.result.listAds,
         loading: state.search.loadingFromServer,
@@ -157,7 +156,6 @@ class SearchResultList extends Component {
     }
 
     renderRow(rowData, sectionID, rowID) {
-        console.log(rowData);
         var diaChi = rowData.place.diaChi;
         var soPhongNgu = rowData.soPhongNgu;
         if (soPhongNgu) {

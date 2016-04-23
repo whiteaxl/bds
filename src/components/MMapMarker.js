@@ -52,12 +52,6 @@ function mapDispatchToProps(dispatch) {
 }
 
 class MMapMarker extends Component {
-   /**
-     * Callback that is called when the user presses on the marker
-   */
-
-   onPress: PropTypes.func
-
   constructor(props){
     super(props);
     this.state = { mcolor: gui.mainColor};
@@ -80,7 +74,7 @@ class MMapMarker extends Component {
         this.props.actions.onSearchFieldChange("marker", this.props.marker);
 	    this.setState({mcolor: "grey"});
   }
-};
+}
 
 export default connect(mapStateToProps, mapDispatchToProps)(MMapMarker);
 

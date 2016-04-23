@@ -10,19 +10,22 @@ var SearchResultFooter = React.createClass({
   render: function() {
     return <View style={myStyles.searchButton}>
       <View style={myStyles.searchListButton}>
-        <RelandIcon onPress={this.onSort} name="sort" size={16} text="Sắp xếp" textProps={myStyles.buttonText}/>
-        <RelandIcon onPress={this.onSaveSearch} name="save" size={16} text="Lưu tìm kiếm" textProps={myStyles.buttonText}/>
-        <RelandIcon onPress={this.onMap} name="map" size={12} iconProps={{style: {marginTop: 4}}} text="Bản đồ" textProps={myStyles.buttonText}/>
+        <RelandIcon onPress={this._onSort} name="sort" size={16} text="Sắp xếp" textProps={myStyles.buttonText}/>
+        <RelandIcon onPress={this._onSaveSearch} name="save" size={16} text="Lưu tìm kiếm" textProps={myStyles.buttonText}/>
+        <RelandIcon onPress={this._onMap} name="map" size={12} iconProps={{style: {marginTop: 4}}} text="Bản đồ" textProps={myStyles.buttonText}/>
       </View>
     </View>
   },
-  onSort() {
+
+  _onSort() {
     Actions.OrderPicker();
   },
-  onSaveSearch() {
+
+  _onSaveSearch() {
     console.log("On Save Search pressed!");
   },
-  onMap() {
+
+  _onMap() {
     Actions.SearchResultMap();
   }
 });

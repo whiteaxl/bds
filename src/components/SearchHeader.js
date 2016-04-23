@@ -30,9 +30,11 @@ var CommonHeader = React.createClass({
       </View>
     </View>
   },
+
   _onHome: function() {
     Actions.Home({type:"reset"});
   },
+
   _onSearch: function(){
     Actions.Search({needBack:true});
   }

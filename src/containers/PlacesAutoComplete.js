@@ -66,6 +66,8 @@ class PlacesAutoComplete extends React.Component {
     _onPress(data, details = null) {
         //console.log(data);
         console.log("You selected: " + data.fullName);
+        console.log(data);
+        console.log(details);
         //console.log(details);
         //let value = details;
         let value = {
@@ -105,7 +107,7 @@ class PlacesAutoComplete extends React.Component {
                 placeholder='Search'
                 minLength={2} // minimum length of text to search
                 autoFocus={false}
-                fetchDetails={false}
+                fetchDetails={true}
                 onPress = {this._onPress.bind(this)}
                 onCancelPress = {this._onCancelPress.bind(this)}
                 onPress_original={(data, details = null) => { // 'details' is provided when fetchDetails = true

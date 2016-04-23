@@ -22,6 +22,7 @@ import MapView from 'react-native-maps';
 
 import SearchHeader from '../components/SearchHeader';
 import PriceMarker from '../components/PriceMarker';
+import MMapMarker from '../components/MMapMarker';
 import TopModal from '../components/TopModal';
 
 import gui from '../lib/gui';
@@ -33,6 +34,9 @@ const {
     MAP_STATE_LOADING,
 } = require('../lib/constants').default;
 
+var { width, height } = Dimensions.get('window');
+
+const ASPECT_RATIO = width / (height-110);
 
 /**
 * ## Redux boilerplate
@@ -44,35 +48,23 @@ const actions = [
 
 function mapStateToProps(state) {
   console.log("SearchResultMap.mapStateToProps");
-  console.log(state.search.state);
-  console.log(state.search.form.fields.geoBox);
-  console.log(state.search.form.fields.place);
 
-  let listAds = state.search.result.listAds;
-  var place = state.search.form.fields.place;
-  // var geoBox = [place.geometry.viewport.southwest.lng, place.geometry.viewport.southwest.lat,
-  //               place.geometry.viewport.northeast.lng, place.geometry.viewport.northeast.lat];
 
-  var region = {};
+  var listAds = state.search.result.listAds;
 
-  if (listAds && listAds.length >0 ){
-    region =  {
-      latitude: listAds[0].place.geo.lat,
-      longitude: listAds[0].place.geo.lon,
-      latitudeDelta: LATITUDE_DELTA,
-      longitudeDelta: LONGITUDE_DELTA
-    }
-  } else {
-    region = apiUtils.getRegion(state.search.form.fields.geoBox);
-    region.longitudeDelta = region.latitudeDelta * ASPECT_RATIO;
-  }
+  var viewport = state.search.result.viewport;
+  console.log(viewport);
+  var geoBox = [viewport.southwest.lon, viewport.southwest.lat,
+                viewport.northeast.lon, viewport.northeast.lat];
+
+  var region = apiUtils.getRegion(geoBox);
+  region.longitudeDelta = region.latitudeDelta * ASPECT_RATIO;
 
   return {
+    ... state,
     listAds: listAds,
-    mapState: state.search.state,
     errorMsg: state.search.result.errorMsg,
     placeFullName: state.search.form.fields.place.fullName,
-    allMarker: listAds ? listAds.length : 0,
     region: region
   };
 }
@@ -88,12 +80,6 @@ function mapDispatchToProps(dispatch) {
     dispatch
   };
 }
-
-var { width, height } = Dimensions.get('window');
-
-const ASPECT_RATIO = width / (height-40);
-const LATITUDE_DELTA = 0.0465;
-const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 class SearchResultMap extends Component {
 
@@ -111,6 +97,7 @@ class SearchResultMap extends Component {
   render() {
     console.log("Call SearchResultMap.render");
     console.log(this.props.region);
+    var region = this.props.region;
 
     let listAds = this.props.listAds;
 
@@ -119,7 +106,7 @@ class SearchResultMap extends Component {
     var markerList = [];
 
     if (listAds) {
-      let i = 0;
+      var i = 0;
       listAds.map(function(item){
         if (item.place.geo.lat && item.place.geo.lon) {
           let marker = {
@@ -138,30 +125,22 @@ class SearchResultMap extends Component {
 
     return (
       <View style={styles.fullWidthContainer}>
-        <View style={styles.title}>
-          <Text style={{color: gui.mainColor}}> Số bất động sản trên bản đồ : {this.props.allMarker}</Text>
-        </View>
+
         <View style={styles.search}>
           <SearchHeader placeName={this.props.placeFullName}/>
         </View>
+
         <View style={styles.map}>
-          <MapView 
+          <MapView
             region={this.props.region}
             onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
-            onMarkerSelect={this.props.openModal}
             style={styles.mapView}
             mapType={this.state.mapType}
           >
             {markerList.map( marker =>(
-              <MapView.Marker
-                key={marker.id}
-                coordinate={marker.coordinate}
-                onPress={()=>this._onMarkerPress(marker)}
-              >
-                <PriceMarker color={gui.mainColor}
-                           amount={marker.price}
-                />
-              </MapView.Marker>
+                <MapView.Marker key={marker.id} coordinate={marker.coordinate} onPress={()=>this._onMarkerPress(marker)}>
+                  <PriceMarker color={gui.mainColor} amount={marker.price}/>
+                </MapView.Marker>
              ))}
           </MapView>
           <View style={styles.mapButtonContainer}>
@@ -171,27 +150,30 @@ class SearchResultMap extends Component {
             <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} style={[styles.bubble, styles.button]}>
                 <Icon name="location-arrow" style={styles.mapIcon} size={20}></Icon>
             </TouchableOpacity>
+            <View style={[styles.bubble, styles.button, {width: 100}]}>
+              <Text style={styles.mapIcon}>Tổng số: {listAds.length}</Text>
+            </View>
           </View>
         </View>
 
         <View style={styles.tabbar}>
           <View style={styles.searchListButton}>
             <Icon.Button onPress={this._onLocalInfoPressed}
-              name="location-arrow" backgroundColor="white"
-              underlayColor="gray" color={gui.mainColor}
-              style={styles.searchListButtonText} >
+                         name="location-arrow" backgroundColor="white"
+                         underlayColor="gray" color={gui.mainColor}
+                         style={styles.searchListButtonText} >
               Local Info
             </Icon.Button>
             <Icon.Button onPress={this._onSaveSearchPressed}
-              name="hdd-o" backgroundColor="white"
-              underlayColor="gray" color={gui.mainColor}
-              style={styles.searchListButtonText} >
+                         name="hdd-o" backgroundColor="white"
+                         underlayColor="gray" color={gui.mainColor}
+                         style={styles.searchListButtonText} >
               Lưu tìm kiếm
             </Icon.Button>
             <Icon.Button onPress={this._onListPressed}
-              name="list" backgroundColor="white"
-              underlayColor="gray" color={gui.mainColor}
-              style={styles.searchListButtonText} >
+                         name="list" backgroundColor="white"
+                         underlayColor="gray" color={gui.mainColor}
+                         style={styles.searchListButtonText} >
               Danh sách
             </Icon.Button>
           </View>
@@ -205,34 +187,52 @@ class SearchResultMap extends Component {
   _onRegionChangeComplete(region) {
     console.log("Call SearhResultMap._onRegionChangeComplete");
     console.log(region);
+
     var geoBox = apiUtils.getBbox(region);
     this.props.actions.onSearchFieldChange("geoBox", geoBox);
+
     this.refreshListData();
   }
 
   refreshListData() {
     console.log("Call SearhResultMap.refreshListData");
-    
-    // var dataBlob = [];
-    // api.getItems(this.props.search.form.fields)
-    //   .then((data) => {
-    //     if (data.list) {
-    //       data.list.map(function(aRow) {
-    //           dataBlob.push(aRow.value);
-    //         }
-    //       );
-    //       console.log("SearchResultMap: number of refresh data " + dataBlob.length);
-    //       this.props.actions.onSearchFieldChange("listData", dataBlob);
-    //       this.setState({allMarker: this.props.listAds.length});
-    //     } else {
-    //       console.log("Lỗi kết nối đến máy chủ!");
-    //     }
-    //   });
+    this.props.actions.search(
+        this.props.search.form.fields
+        , () => {});
   }
 
   _onCurrentLocationPress(){
     console.log("Call SearchResultMap._onCurrentLocationPress");
+
+    // navigator.geolocation.getCurrentPosition(
+    //     (position) => {
+    //       //this._requestNearby(position.coords.latitude, position.coords.longitude);
+    //       let data = {
+    //         currentLocation : {
+    //           "lat": position.coords.latitude,
+    //           "lon": position.coords.longitude
+    //         }
+    //       };
+    //
+    //       var region = {
+    //         latitude: data.currentLocation.lat,
+    //         longitude: data.currentLocation.lon,
+    //         latitudeDelta: this.props.region.latitudeDelta,
+    //         longitudeDelta: this.props.region.longitudeDelta
+    //       };
+    //
+    //       var geoBox = apiUtils.getBbox(this.state.region);
+    //       this.props.actions.onSearchFieldChange("geoBox", geoBox);
+    //       this.refreshListData();
+    //
+    //     },
+    //     (error) => {
+    //       alert(error.message);
+    //     },
+    //     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    // );
   }
+
 
   _onDrawPressed(){
     console.log("Call SearchResultMap._onDrawPressed");
@@ -281,12 +281,12 @@ class SearchResultMap extends Component {
   }
 
   _onListPressed() {
+    console.log("On List pressed!");
     Actions.pop();
+    console.log("On List pressed completed!");
   }
 
 }
-
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResultMap);
 
 // Later on in your styles..
 var styles = StyleSheet.create({
@@ -343,7 +343,7 @@ var styles = StyleSheet.create({
     width: 50,
     paddingVertical: 5,
     alignItems: 'center',
-    marginVertical: 10,
+    marginVertical: 5,
     backgroundColor: 'white',
     marginLeft: 15
   },
@@ -357,7 +357,7 @@ var styles = StyleSheet.create({
     position: 'absolute',
     top: height-250,
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'flex-start',
     justifyContent: 'center',
     marginVertical: 5,
     marginBottom: 0,
@@ -378,4 +378,11 @@ var styles = StyleSheet.create({
       justifyContent: 'space-around',
       backgroundColor: 'white',
   },
+  sumBds: {
+    marginBottom: 10,
+    paddingLeft: 20,
+    color: 'white',
+  }
 });
+
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResultMap);

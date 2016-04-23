@@ -42,6 +42,7 @@
 		75FCEBB51CA7BF4E00CDD307 /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75FCEBB41CA7BF4E00CDD307 /* MaterialIcons.ttf */; };
 		832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 832341B51AAA6A8300B99B32 /* libRCTText.a */; };
 		DD0F5DB41CAF074C000A3365 /* RCTShareManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 2320B7901CAECF9D000861AD /* RCTShareManager.m */; };
+		DDD3019E1CCB246600283FDC /* cauDien.gpx in Resources */ = {isa = PBXBuildFile; fileRef = DDD3019D1CCB246600283FDC /* cauDien.gpx */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -178,6 +179,7 @@
 		75FCEBB41CA7BF4E00CDD307 /* MaterialIcons.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTLinking.xcodeproj; path = "../node_modules/react-native/Libraries/LinkingIOS/RCTLinking.xcodeproj"; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
+		DDD3019D1CCB246600283FDC /* cauDien.gpx */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = cauDien.gpx; path = ../src/test/cauDien.gpx; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -349,6 +351,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				DDD3019D1CCB246600283FDC /* cauDien.gpx */,
 				75E263B21CB7A42600313ADE /* TruliaIcon.ttf */,
 				75E263B01CB799C800313ADE /* RelandIcon.ttf */,
 				75F9DF3E1CB4C47D0075C3DD /* OpenSans-Bold.ttf */,
@@ -590,6 +593,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				75F9DF501CB4C47D0075C3DD /* OpenSans-Semibold.ttf in Resources */,
+				DDD3019E1CCB246600283FDC /* cauDien.gpx in Resources */,
 				75F9DF511CB4C47D0075C3DD /* OpenSans-SemiboldItalic.ttf in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				75F9DF4F1CB4C47D0075C3DD /* OpenSans-Regular.ttf in Resources */,
