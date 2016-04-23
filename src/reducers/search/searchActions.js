@@ -70,10 +70,13 @@ export function search(credential, successCallback) {
                     dispatch(fetchSearchResultSuccess(data));
 
                     successCallback();
-                } else {
+                } else if (data.error) {
+                    dispatch(fetchSearchResultFail(data.error));
+                }
+
+                else {
                     dispatch(fetchSearchResultFail(gui.ERR_LoiKetNoiMayChu));
-                    //Alert.alert(gui.ERR_LoiKetNoiMayChu);
-                    Alert.alert(gui.ERR_LoiKetNoiMayChu)
+                    //Alert.alert(gui.ERR_LoiKetNoiMayChu)
                 }
             });
     }
