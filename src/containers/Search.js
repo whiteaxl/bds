@@ -480,7 +480,7 @@ var myStyles = StyleSheet.create({
   fullWidthContainer: {
     flex: 1,
     alignItems: 'stretch',
-    backgroundColor: 'white',
+    backgroundColor: 'white'
   },
   pageHeader: {
       top: 0,
@@ -500,7 +500,7 @@ var myStyles = StyleSheet.create({
 
   searchButton: {
     alignItems: 'stretch',
-    justifyContent: 'flex-end',
+    justifyContent: 'flex-end'
   },
   searchButtonWrapper: {
     flexDirection: 'row',
@@ -575,7 +575,8 @@ var myStyles = StyleSheet.create({
     //borderColor: "green"
   },
   scrollView: {
-    flex: 1
+    flex: 1,
+    marginBottom: 44
   },
   cacDieuKienText: {
     fontSize: 12,
