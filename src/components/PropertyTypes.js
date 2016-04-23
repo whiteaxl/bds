@@ -60,6 +60,9 @@ class PropertyTypes extends Component {
     super();
     loaiNhaDatValues = props.search.form.fields.loaiTin=='ban' ? DanhMuc.getLoaiNhaDatBanValues() : DanhMuc.getLoaiNhaDatThueValues() ;
     var loaiNhaDat = this.getValueByKey(loaiNhaDatValues, props.search.form.fields.loaiNhaDat);
+    if (!loaiNhaDat) {
+        loaiNhaDat = loaiNhaDatValues[0];
+    }
     this.state = {
         loaiNhaDat: loaiNhaDat
     };
@@ -76,18 +79,8 @@ class PropertyTypes extends Component {
           style={myStyles.choiceList}
           selectedOptions={[this.state.loaiNhaDat]}
           maxSelectedOptions={1}//{this.props.search.form.fields.loaiTin=='ban' ? nhaDatBan.length : nhaDatChoThue.length}
-          onSelection={(option)=>this._onPropertyTypeSelected(option)}
+          onSelection={(option)=>this._onApply(option)}
         />
-
-        <View style={myStyles.searchButton}>
-          <View style={myStyles.searchButtonWrapper}>
-              <Button onPress={this._onBack}
-                      style={myStyles.searchButtonText}>Thoát</Button>
-              <Button onPress={this._onApply.bind(this)}
-                      style={myStyles.searchButtonText}>Thực hiện</Button>
-          </View>
-        </View>
-
       </View>
     );
   }
@@ -96,20 +89,10 @@ class PropertyTypes extends Component {
     Actions.pop();
   }
 
-    _onApply() {
-        var {loaiNhaDat} = this.state;
-        this.props.actions.onSearchFieldChange("loaiNhaDat", this.getKeyByValue(loaiNhaDatValues, loaiNhaDat));
+    _onApply(option) {
+        this.props.actions.onSearchFieldChange("loaiNhaDat", this.getKeyByValue(loaiNhaDatValues, option));
         Actions.pop();
     }
-
-  _onPropertyTypeSelected(option) {
-      var {loaiNhaDat} = this.state;
-      if (loaiNhaDat == option) {
-          this.setState({loaiNhaDat: ''});
-      } else {
-          this.setState({loaiNhaDat: option});
-      }
-  }
 
   getValueByKey(values, key) {
     var value = '';

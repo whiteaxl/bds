@@ -59,6 +59,9 @@ class HuongNha extends Component {
     constructor(props) {
         super();
         var huongNha = this.getValueByKey(huongNhaValues, props.search.form.fields.huongNha);
+        if (!huongNha) {
+            huongNha = huongNhaValues[0];
+        }
         this.state = {
             huongNha: huongNha
         };
@@ -75,17 +78,8 @@ class HuongNha extends Component {
                     style={myStyles.choiceList}
                     selectedOptions={[this.state.huongNha]}
                     maxSelectedOptions={1}//{this.props.search.form.fields.loaiTin=='ban' ? nhaDatBan.length : nhaDatChoThue.length}
-                    onSelection={(option)=>this._onPropertyTypeSelected(option)}
+                    onSelection={(option)=>this._onApply(option)}
                 />
-
-                <View style={myStyles.searchButton}>
-                    <View style={myStyles.searchButtonWrapper}>
-                        <Button onPress={this._onBack}
-                                style={myStyles.searchButtonText}>Thoát</Button>
-                        <Button onPress={this._onApply.bind(this)}
-                                style={myStyles.searchButtonText}>Thực hiện</Button>
-                    </View>
-                </View>
 
             </View>
         );
@@ -95,19 +89,9 @@ class HuongNha extends Component {
         Actions.pop();
     }
 
-    _onApply() {
-        var {huongNha} = this.state;
-        this.props.actions.onSearchFieldChange("huongNha", this.getKeyByValue(huongNhaValues, huongNha));
+    _onApply(option) {
+        this.props.actions.onSearchFieldChange("huongNha", this.getKeyByValue(huongNhaValues, option));
         Actions.pop();
-    }
-
-    _onPropertyTypeSelected(option) {
-        var {huongNha} = this.state;
-        if (huongNha == option) {
-            this.setState({huongNha: ''});
-        } else {
-            this.setState({huongNha: option});
-        }
     }
 
     getValueByKey(values, key) {

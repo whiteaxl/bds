@@ -300,6 +300,7 @@ class Search extends Component {
     this.props.actions.onSearchFieldChange("radiusInKmSelectedIdx", 0);
     this.props.actions.onSearchFieldChange("huongNha", '');
     this.props.actions.onSearchFieldChange("ngayDaDang", '');
+    this.setState({showMore: false});
   }
 
   _onPropertyTypesPressed() {
