@@ -335,7 +335,7 @@ class SearchResultDetail extends Component {
   }
 
   _onShare() {
-    ShareManager.share({text: text, url: url});
+    ShareManager.share({text: text, url: url, imageUrl: url});
   }
 
   _onLike() {

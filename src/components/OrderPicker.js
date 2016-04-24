@@ -53,24 +53,24 @@ function mapDispatchToProps(dispatch) {
 }
 
 const orderTypes1 = [
-          'Mặc định',
-          'Ngày đăng',
-          'Giá (Tăng dần)',
-          'Giá (Giảm dần)',
-          'Giá/m²',
-          'Số phòng ngủ',
-          'Diện tích'
-        ];
+    'Mặc định',
+    'Ngày đăng',
+    'Giá (Tăng dần)',
+    'Giá (Giảm dần)',
+    'Giá/m²',
+    'Số phòng ngủ',
+    'Diện tích'
+];
 
 const orderKeys1 = [
-          '',
-          'ngayDangTinDESC',
-          'giaASC',
-          'giaDESC',
-          '',
-          'soPhongNguASC',
-          'dienTichDESC'
-        ];
+    '',
+    'ngayDangTinDESC',
+    'giaASC',
+    'giaDESC',
+    'giaM2',
+    'soPhongNguASC',
+    'dienTichDESC'
+];
 
 const orderTypes2 = [
     'Mặc định',
@@ -88,9 +88,9 @@ const orderKeys2 = [
     'ngayDangTinDESC',
     'giaASC',
     'giaDESC',
-    'giaDESC',
+    'giaM2',
     'soPhongNguASC',
-    '',
+    'khoangCach',
     'dienTichDESC'
 ];
 

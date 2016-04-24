@@ -67,7 +67,7 @@ const orderKeys1 = [
     'ngayDangTinDESC',
     'giaASC',
     'giaDESC',
-    '',
+    'giaM2',
     'soPhongNguASC',
     'dienTichDESC'
 ];
@@ -88,9 +88,9 @@ const orderKeys2 = [
     'ngayDangTinDESC',
     'giaASC',
     'giaDESC',
-    'giaDESC',
+    'giaM2',
     'soPhongNguASC',
-    '',
+    'khoangCach',
     'dienTichDESC'
 ];
 
