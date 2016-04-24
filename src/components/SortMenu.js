@@ -124,7 +124,7 @@ class SortMenu extends Component {
             <View>
                 <Menu onSelect={(option) => this._onApply(option)}>
                     <MenuTrigger>
-                        <RelandIcon name="sort" size={16} text="Sắp xếp" textProps={myStyles.sortText} noAction={true}/>
+                        <RelandIcon name="sort" size={24} text="Sắp xếp" textProps={myStyles.sortText} noAction={true}/>
                     </MenuTrigger>
                     <MenuOptions optionsContainerStyle={isDiaDiem ? myStyles.dropdownOptions : myStyles.dropdownOptions2}>
                         {optionList}
@@ -223,17 +223,20 @@ var myStyles = StyleSheet.create({
     dropdownOptions: {
         borderColor: '#ccc',
         borderWidth: 1,
-        marginTop: -314,
-        left: 10
+        marginTop: -320,
+        left: 10,
+        overflow: 'hidden'
     },
     dropdownOptions2: {
         borderColor: '#ccc',
         borderWidth: 1,
-        marginTop: -274,
-        left: 10
+        marginTop: -280,
+        left: 10,
+        overflow: 'hidden'
     },
     sortText: {
         fontSize: 11
-        , fontFamily: gui.fontFamily
+        , fontFamily: gui.fontFamily,
+        paddingLeft: 0
     }
 });

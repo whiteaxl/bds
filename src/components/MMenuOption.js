@@ -80,13 +80,13 @@ module.exports = MMenuOption;
 
 var Styles = StyleSheet.create({
     container: {
-        paddingTop: 0,
-        paddingBottom: 0,
-        paddingLeft: 10
+        padding: 0
     },
     row: {
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        paddingLeft: 10,
+        paddingRight: 10
     },
 
     optionLabel: {
@@ -110,6 +110,6 @@ var Styles = StyleSheet.create({
         height: 1,
         marginTop: 8,
         marginBottom: 8,
-        backgroundColor: gui.separatorLine
+        backgroundColor: '#F2F2F2'
     }
 });

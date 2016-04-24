@@ -41,7 +41,7 @@ var styles = StyleSheet.create({
         flexDirection: 'column',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        padding: 5
+        padding: 0
     },
     touchable: {
         overflow: 'hidden',
