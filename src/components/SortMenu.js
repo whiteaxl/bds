@@ -106,19 +106,15 @@ class SortMenu extends Component {
         var optionList = [];
         for (var i = 0; i < orderTypes.length; i++) {
             var orderType = orderTypes[i];
-            var isSelected = orderType == orderBy;
-            if (i == 0) {
-                optionList.push(
-                    <MMenuOption text={orderType} isSelected={isSelected}
-                                 onPress={(orderType) => this._onApply(orderType)}
-                                 optionProps={{marginTop: 10}}/>
-                );
-            } else {
-                optionList.push(
-                    <MMenuOption text={orderType} isSelected={isSelected}
-                                 onPress={(orderType) => this._onApply(orderType)} />
-                );
-            }
+            var isSelected = (orderType == orderBy);
+            var isLastRow = (i == orderTypes.length-1);
+            var optionProps = (i == 0) ? {marginTop: 10} : (isLastRow ? {marginBottom: 10} : {});
+            optionList.push(
+                <MMenuOption text={orderType} isSelected={isSelected} isLastRow={isLastRow}
+                             onPress={(orderType) => this._onApply(orderType)}
+                             optionProps={optionProps}
+                />
+            );
         }
         return (
             <View>

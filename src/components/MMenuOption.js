@@ -36,8 +36,10 @@ class MMenuOption extends Component {
         if(typeof this.props.renderSeparator === 'function') {
             return this.props.renderSeparator(option);
         }
-
-        return (<View style={Styles.separator}></View>);
+        var {isLastRow} = this.props;
+        if (!isLastRow) {
+            return (<View style={Styles.separator}></View>);
+        }
     }
 
     _renderText(option) {
