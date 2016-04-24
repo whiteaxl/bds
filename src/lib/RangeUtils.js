@@ -3,7 +3,7 @@
 import danhMuc from "../assets/DanhMuc";
 
 
-var BIG = 9999999;
+var BIG = danhMuc.BIG;
 
 var {sellStepValues,rentStepValues,dienTichStepValues, BAT_KY} = danhMuc;
 

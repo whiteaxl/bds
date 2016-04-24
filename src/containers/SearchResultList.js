@@ -164,31 +164,23 @@ class SearchResultList extends Component {
 
     renderRow(rowData, sectionID, rowID) {
         
-        var diaChi = rowData.place.diaChi;
+        var diaChi = rowData.diaChi;
         var loaiNhaDat = rowData.loaiNhaDat;
         var dienTich = '';
         if (rowData.dienTich) {
-            dienTich = '· ' + rowData.dienTich + "m²";
+            dienTich = '· ' + rowData.dienTichFmt;
         }
         var soPhongNgu = '';
-        if (rowData.soPhongNgu) {
-            soPhongNgu = " " + rowData.soPhongNgu + "pn";
+        if (rowData.soPhongNguFmt) {
+            soPhongNgu = " " + rowData.soPhongNguFmt;
         }
-        var soPhongTam = '';
-        if (rowData.soPhongTam) {
-            soPhongTam = " " + rowData.soPhongTam + "pt";
-        }
+
         var soTang = '';
-        if (rowData.soTang) {
-            soTang = " " + rowData.soTang + "t";
+        if (rowData.soTangFmt) {
+            soTang = " " + rowData.soTangFmt;
         }
-        var maxDiaChiLength = 30;
-        if (soPhongNgu) {
-            maxDiaChiLength = maxDiaChiLength - 5;
-        }
-        if (soPhongTam) {
-            maxDiaChiLength = maxDiaChiLength - 5;
-        }
+        var maxDiaChiLength = 25;
+
         var index = diaChi.indexOf(',', maxDiaChiLength - 5);
         var length = 0;
         if (index !== -1 && index <= maxDiaChiLength) {
@@ -198,11 +190,10 @@ class SearchResultList extends Component {
             length = index !== -1 && index <= maxDiaChiLength ? index : maxDiaChiLength;
         }
         diaChi = diaChi.substring(0, length);
-        if (diaChi.length < rowData.place.diaChi.length) {
+        if (diaChi.length < rowData.diaChi.length) {
             diaChi = diaChi + '...';
         }
         var moreInfo = this.getMoreInfo(loaiNhaDat, dienTich, soPhongNgu, soTang);
-
 
         return (
             <View>
@@ -227,7 +218,7 @@ class SearchResultList extends Component {
                             <Text style={myStyles.price}
                                   onStartShouldSetResponder={(evt) => false}
                                   onMoveShouldSetResponder={(evt) => false}
-                            >{rowData.giaDisplay}</Text>
+                            >{rowData.giaFmt}</Text>
                             <Text style={myStyles.text}>{diaChi}{moreInfo}</Text>
                         </View>
                         <TruliaIcon name="heart-o" mainProps={myStyles.heartButton} color={'white'} size={23}/>

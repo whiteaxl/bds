@@ -107,7 +107,7 @@ class PlacesAutoComplete extends React.Component {
                 placeholder='Search'
                 minLength={2} // minimum length of text to search
                 autoFocus={false}
-                fetchDetails={true}
+                fetchDetails={false}
                 onPress = {this._onPress.bind(this)}
                 onCancelPress = {this._onCancelPress.bind(this)}
                 onPress_original={(data, details = null) => { // 'details' is provided when fetchDetails = true

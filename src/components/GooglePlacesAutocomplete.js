@@ -272,6 +272,8 @@ const GooglePlacesAutocomplete = React.createClass({
             // display loader
             this._enableRowLoader(rowData);
 
+            console.log("Call FETCH DETAIL");
+
             // fetch details
             const request = new XMLHttpRequest();
             this._requests.push(request);
