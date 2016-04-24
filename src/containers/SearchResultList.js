@@ -168,19 +168,19 @@ class SearchResultList extends Component {
         var loaiNhaDat = rowData.loaiNhaDat;
         var dienTich = '';
         if (rowData.dienTich) {
-            dienTich = rowData.dienTich + "m²";
+            dienTich = '· ' + rowData.dienTich + "m²";
         }
         var soPhongNgu = '';
         if (rowData.soPhongNgu) {
-            soPhongNgu = "-" + rowData.soPhongNgu + "pn";
+            soPhongNgu = " " + rowData.soPhongNgu + "pn";
         }
         var soPhongTam = '';
         if (rowData.soPhongTam) {
-            soPhongTam = "-" + rowData.soPhongTam + "pt";
+            soPhongTam = " " + rowData.soPhongTam + "pt";
         }
         var soTang = '';
         if (rowData.soTang) {
-            soTang = "-" + rowData.soTang + "t";
+            soTang = " " + rowData.soTang + "t";
         }
         var maxDiaChiLength = 30;
         if (soPhongNgu) {
@@ -199,7 +199,7 @@ class SearchResultList extends Component {
         }
         diaChi = diaChi.substring(0, length);
         if (diaChi.length < rowData.place.diaChi.length) {
-            diaChi = diaChi + ' ...';
+            diaChi = diaChi + '...';
         }
         var moreInfo = this.getMoreInfo(loaiNhaDat, dienTich, soPhongNgu, soTang);
 
