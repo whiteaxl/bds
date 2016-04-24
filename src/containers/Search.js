@@ -171,7 +171,7 @@ class Search extends Component {
                 </Text>
               </View>
 
-              <TouchableOpacity style={myStyles.searchFilterAttribute}
+              <TouchableOpacity style={myStyles.searchFilterAttribute3}
                 onPress={this._onPressGiaHandle.bind(this)}>
                 <Text style={myStyles.searchAttributeLabel}>
                   Mức giá
@@ -401,7 +401,7 @@ class Search extends Component {
     return (
         <TouchableOpacity
             onPress={() => this._onHuongNhaPressed()}>
-          <View style={myStyles.searchFilterAttributeExt}>
+          <View style={myStyles.searchFilterAttributeExt3}>
             <Text style={myStyles.searchAttributeLabel}>
               Hướng nhà
             </Text>
@@ -421,7 +421,7 @@ class Search extends Component {
         <View>
           <TouchableOpacity
                             onPress={() => this._onPressNgayDaDangHandle()}>
-            <View style={myStyles.searchFilterAttribute}>
+            <View style={myStyles.searchFilterAttribute3}>
               <Text style={myStyles.searchAttributeLabel}>
                 Ngày đã đăng
               </Text>
@@ -593,10 +593,11 @@ var myStyles = StyleSheet.create({
     //borderColor: "red",
     justifyContent :'space-between',
     paddingTop: 10,
-    paddingLeft: 17,
+    paddingLeft: 0,
     paddingRight: 13,
     paddingBottom: 10,
     borderTopWidth: 1,
+    marginLeft: 17,
     borderTopColor: gui.separatorLine
   },
   searchFilterAttribute2: {
@@ -611,16 +612,29 @@ var myStyles = StyleSheet.create({
     borderTopWidth: 1,
     borderTopColor: gui.separatorLine
   },
+  searchFilterAttribute3: {
+    flexDirection : "row",
+    //borderWidth:1,
+    //borderColor: "red",
+    justifyContent :'space-between',
+    paddingTop: 10,
+    paddingLeft: 17,
+    paddingRight: 13,
+    paddingBottom: 10,
+    borderTopWidth: 1,
+    borderTopColor: gui.separatorLine
+  },
   searchFilterAttributeExt: {
     flexDirection : "row",
     //borderWidth:1,
     //borderColor: "red",
     justifyContent :'space-between',
     paddingTop: 12,
-    paddingLeft: 17,
+    paddingLeft: 0,
     paddingRight: 19,
     paddingBottom: 10,
     borderTopWidth: 1,
+    marginLeft: 17,
     borderTopColor: gui.separatorLine
   },
   searchFilterAttributeExt2: {
@@ -634,6 +648,18 @@ var myStyles = StyleSheet.create({
     paddingBottom: 8,
     borderTopWidth: 1,
     marginLeft: 17,
+    borderTopColor: gui.separatorLine
+  },
+  searchFilterAttributeExt3: {
+    flexDirection : "row",
+    //borderWidth:1,
+    //borderColor: "red",
+    justifyContent :'space-between',
+    paddingTop: 12,
+    paddingLeft: 17,
+    paddingRight: 19,
+    paddingBottom: 10,
+    borderTopWidth: 1,
     borderTopColor: gui.separatorLine
   },
   searchMoreFilterAttribute: {
