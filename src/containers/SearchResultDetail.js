@@ -34,6 +34,10 @@ import gui from '../lib/gui';
 import CollapsiblePanel from '../components/CollapsiblePanel';
 import SummaryText from '../components/SummaryText';
 
+import GiftedSpinner from "../components/GiftedSpinner";
+
+import Api from "../lib/FindApi";
+
 /**
 * ## Redux boilerplate
 */
@@ -68,15 +72,53 @@ var url = '';
 
 var text = '';
 
+var adsID = '';
+
 class SearchResultDetail extends Component {
   constructor(props) {
     super(props);
 
     StatusBar.setBarStyle('light-content');
+    var rowData = props.data;
+    adsID = rowData.adsID;
+
+    this.state = {
+      'data' : null,
+      loaded: false
+    }
+  }
+  fetchData() {
+    //console.log("adsID: " + adsID);
+    Api.getDetail({'adsID' : adsID})
+        .then((data) => {
+          this.refreshRowData(data)
+        });
+  }
+  refreshRowData(data) {
+    this.setState({
+      'data' : data.ads,
+      loaded: true
+    });
+  }
+  componentWillMount() {
+    this.fetchData();
+  }
+  renderLoadingView() {
+    return (
+        <View style={detailStyles.fullWidthContainer}>
+          <CommonHeader headerTitle={"Chi tiết"} />
+          <View style={detailStyles.searchContent}>
+            <GiftedSpinner />
+          </View>
+          <SearchResultDetailFooter />
+        </View>
+    )
   }
   render() {
-    console.log(this.props);
-    var rowData = this.props.data;
+    if (!this.state.loaded) {
+      return this.renderLoadingView();
+    }
+    var rowData = this.state.data;
     //var listData = this.props.search.form.fields.listData;
 
     //var rowData = listData[rowIndex];

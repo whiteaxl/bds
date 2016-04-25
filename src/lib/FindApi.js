@@ -9,6 +9,7 @@ import DanhMuc from "../assets/DanhMuc"
 var rootUrl = 'http://localhost:5000/api';
 var findUrl = rootUrl + "/find";
 var placeUrl = rootUrl + "/findPlace";
+var detailUrl = rootUrl + "/detail";
 
 
 var maxRows = 200;
@@ -72,6 +73,23 @@ var Api = {
             .catch(e => e);
     },
 
+    getDetail(fields) {
+        var {adsID} = fields;
+        var params = {
+            'adsID' : adsID
+        };
+        return fetch(`${detailUrl}`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(params)
+        })
+            .then(ApiUtils.checkStatus)
+            .then(response => response.json())
+            .catch(e => e);
+    }
 };
 
 export { Api as default };
