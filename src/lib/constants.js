@@ -8,6 +8,9 @@ export default keyMirror({
   SEARCH_STATE_FAILURE: null,
   CHANGE_LOADING_SEARCH_RESULT:null,
 
+  FETCH_DETAIL_FAIL: null,
+  FETCH_DETAIL_SUCCESS: null,
+  SET_LOADING_DETAIL: null,
   
   SET_SEARCH_LOAI_TIN : null,
 

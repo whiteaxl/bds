@@ -89,8 +89,9 @@ class SearchResultDetail extends Component {
   }
   fetchData() {
     //console.log("adsID: " + adsID);
-    Api.getDetail({'adsID' : adsID})
-        .then((data) => {
+    this.props.actions.getDetail(
+        {'adsID' : adsID}
+        , (data) => {
           this.refreshRowData(data)
         });
   }
