@@ -36,7 +36,7 @@ import SummaryText from '../components/SummaryText';
 
 import GiftedSpinner from "../components/GiftedSpinner";
 
-import Api from "../lib/FindApi";
+import TruliaIcon from '../components/TruliaIcon';
 
 /**
 * ## Redux boilerplate
@@ -72,15 +72,11 @@ var url = '';
 
 var text = '';
 
-var adsID = '';
-
 class SearchResultDetail extends Component {
   constructor(props) {
     super(props);
 
     StatusBar.setBarStyle('light-content');
-    var rowData = props.data;
-    adsID = rowData.adsID;
 
     this.state = {
       'data' : null,
@@ -90,7 +86,7 @@ class SearchResultDetail extends Component {
   fetchData() {
     //console.log("adsID: " + adsID);
     this.props.actions.getDetail(
-        {'adsID' : adsID}
+        {'adsID' : this.props.adsID}
         , (data) => {
           this.refreshRowData(data)
         });
@@ -250,6 +246,17 @@ class SearchResultDetail extends Component {
                   <SummaryText longText={chiTiet} expanded={false}>
                   </SummaryText>
                 </View>
+                <TouchableHighlight onPress={() => this._onDanDuongPressed()}>
+                  <View style={[detailStyles.lineBorder,detailStyles.danDuongView]}>
+                      <View style={detailStyles.danDuongLeftView}>
+                        <TruliaIcon name={"car"} size={20} color={gui.mainColor} text={"Dẫn đường"}
+                                    textProps={detailStyles.danDuongText} />
+                      </View>
+                      <View style={detailStyles.danDuongRightView}>
+                        <TruliaIcon name={"arrow-right"} size={20} color={"gray"} />
+                      </View>
+                  </View>
+                </TouchableHighlight>
                 <View style={detailStyles.lineBorder} />
                 <CollapsiblePanel title="Đặc Điểm" expanded={true}>
                   {this.renderTitleProps("Loại tin rao", loaiNhaDat)}
@@ -298,14 +305,14 @@ class SearchResultDetail extends Component {
                   </Icon.Button>
                 </View>
                 <View style={detailStyles.lineBorder2} />
-                <CollapsiblePanel title="Liên Hệ" expanded={false}>
+                <CollapsiblePanel title="Liên Hệ" expanded={true}>
                   {this.renderTitleProps("Tên liên lạc", dangBoi)}
                   {this.renderTitleProps("Điện thoại", mobile)}
                   {this.renderTitleProps("Email", email)}
                   <Text style={{fontSize: 5}} />
                 </CollapsiblePanel>
                 <View style={detailStyles.lineBorder2} />
-                <CollapsiblePanel title="Danh Sách Comments" expanded={false}>
+                <CollapsiblePanel title="Danh Sách Comments" expanded={true}>
                 </CollapsiblePanel>
               </View>
             </View>
@@ -319,6 +326,10 @@ class SearchResultDetail extends Component {
 
   _onMapPressed() {
     Actions.SearchMapDetail();
+  }
+
+  _onDanDuongPressed() {
+    console.log("On dan duong pressed!");
   }
 
   renderTwoNormalProps(prop1, prop2) {
@@ -522,7 +533,7 @@ var detailStyles = StyleSheet.create({
   },
   price: {
     fontSize: 22,
-    fontFamily: 'Open Sans',
+    fontFamily: gui.fontFamily,
     fontWeight: 'bold',
     textAlign: 'left',
     backgroundColor: 'transparent',
@@ -533,7 +544,7 @@ var detailStyles = StyleSheet.create({
   },
   textTitle: {
     fontSize: 16,
-    fontFamily: 'Open Sans',
+    fontFamily: gui.fontFamily,
     fontWeight: 'bold',
     textAlign: 'left',
     backgroundColor: 'transparent',
@@ -547,7 +558,7 @@ var detailStyles = StyleSheet.create({
     alignItems: 'flex-start',
     backgroundColor: 'transparent',
     fontSize: 14,
-    fontFamily: 'Open Sans',
+    fontFamily: gui.fontFamily,
     color: 'black',
     marginTop: 8,
     marginBottom: 8,
@@ -560,7 +571,7 @@ var detailStyles = StyleSheet.create({
     alignItems: 'flex-start',
     backgroundColor: 'transparent',
     fontSize: 14,
-    fontFamily: 'Open Sans',
+    fontFamily: gui.fontFamily,
     fontWeight: 'bold',
     color: 'black',
     marginTop: 8,
@@ -574,7 +585,7 @@ var detailStyles = StyleSheet.create({
     alignItems: 'flex-start',
     backgroundColor: 'transparent',
     fontSize: 13,
-    fontFamily: 'Open Sans',
+    fontFamily: gui.fontFamily,
     color: 'black',
     marginTop: 3,
     marginBottom: 3,
@@ -587,7 +598,7 @@ var detailStyles = StyleSheet.create({
     alignItems: 'flex-start',
     backgroundColor: 'transparent',
     fontSize: 13,
-    fontFamily: 'Open Sans',
+    fontFamily: gui.fontFamily,
     fontWeight: 'bold',
     color: 'black',
     marginTop: 3,
@@ -601,7 +612,7 @@ var detailStyles = StyleSheet.create({
     alignItems: 'flex-start',
     backgroundColor: 'transparent',
     fontSize: 14,
-    fontFamily: 'Open Sans',
+    fontFamily: gui.fontFamily,
     color: 'black',
     marginTop: 8,
     marginBottom: 8,
@@ -620,6 +631,30 @@ var detailStyles = StyleSheet.create({
     width: Dimensions.get('window').width,
     marginLeft: 0,
     marginRight: 0
+  },
+  danDuongView: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    justifyContent: 'space-between',
+    paddingTop: 8,
+    marginBottom: 8
+  },
+  danDuongLeftView: {
+    alignItems: 'center',
+    justifyContent: 'flex-start'
+  },
+  danDuongRightView: {
+    alignItems: 'center',
+    justifyContent: 'flex-end',
+    marginRight: 16
+  },
+  danDuongText: {
+    marginLeft: 10,
+    fontSize: 14,
+    fontFamily: gui.fontFamily,
+    fontWeight: 'normal',
+    color: 'black',
+    textAlign: 'left'
   }
 });
 
