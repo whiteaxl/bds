@@ -13,7 +13,8 @@
 const {
   SET_STORE,
   SET_STATE,
-  GET_STATE
+  GET_STATE,
+    INIT_LOCAL_DB
 } = require('../../lib/constants').default;
 
 /**
@@ -50,4 +51,12 @@ export function getState(toggle) {
     payload: toggle
   };
 }
+
+export function initLocalDB() {
+  return {
+    type: INIT_LOCAL_DB,
+    payload: null
+  };
+}
+
 

@@ -12,6 +12,8 @@ import { Provider } from 'react-redux';
 import App from './containers/App';
 import configureStore from './lib/configureStore';
 
+import db from "./lib/localDB";
+
 /**
  * ## Actions
  *  The necessary actions for dispatching our bootstrap values
@@ -65,6 +67,10 @@ function getInitialState() {
 export default function native(platform) {
 
   let MainBDS = React.createClass( {
+    componentDidMount() {
+
+    },
+
     render() {
       let _initState = getInitialState();
    
@@ -72,6 +78,7 @@ export default function native(platform) {
       store.dispatch(setPlatform(platform));
       store.dispatch(setVersion(VERSION));
       store.dispatch(setStore(store));
+
       /**
        * Provider wrap the ```App``` with a ```Provider``` and both
        * have a ```store```

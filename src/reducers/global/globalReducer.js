@@ -7,7 +7,8 @@ const {
 
   GET_STATE,
   SET_STATE,
-  SET_STORE
+  SET_STORE,
+  INIT_LOCAL_DB
   
 } = require('../../lib/constants').default;
 
@@ -91,6 +92,13 @@ export default function globalReducer(state = initialState, action) {
     var next = state.set('currentUser', global.currentUser)
           .set('showState', false)
           .set('currentState', null);
+    return next;
+
+  case INIT_LOCAL_DB:
+      var global = JSON.parse(action.payload).global;
+    var next = state.set('currentUser', global.currentUser)
+        .set('showState', false)
+        .set('currentState', null);
     return next;
 
   }

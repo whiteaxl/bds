@@ -23,6 +23,13 @@
 		753605FC1CABB6D600E17AEA /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 753605EF1CABB6BF00E17AEA /* libAirMaps.a */; };
 		758115AE1CA7C14F001D4DBC /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 758115AD1CA7C14F001D4DBC /* FontAwesome.ttf */; };
 		75B73F751C81672D0088D254 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75B73F741C8166C60088D254 /* libRNDeviceInfo.a */; };
+		75D9A9BA1CCDB15500CD638E /* libReactCBLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75D9A9B91CCDB0CC00CD638E /* libReactCBLite.a */; };
+		75D9A9BC1CCDB17F00CD638E /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 75D9A9BB1CCDB17F00CD638E /* libsqlite3.0.tbd */; };
+		75D9A9BE1CCDB18D00CD638E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75D9A9BD1CCDB18D00CD638E /* Security.framework */; };
+		75D9A9C01CCDB19500CD638E /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75D9A9BF1CCDB19500CD638E /* CFNetwork.framework */; };
+		75D9A9C21CCDB34700CD638E /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75D9A9C11CCDB34700CD638E /* CouchbaseLite.framework */; };
+		75D9A9C41CCDB35C00CD638E /* CouchbaseLiteListener.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75D9A9C31CCDB35C00CD638E /* CouchbaseLiteListener.framework */; };
+		75D9A9C71CCDB3CC00CD638E /* libCBLJSViewCompiler.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75D9A9C61CCDB3CC00CD638E /* libCBLJSViewCompiler.a */; };
 		75E263B11CB799C800313ADE /* RelandIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75E263B01CB799C800313ADE /* RelandIcon.ttf */; };
 		75E263B31CB7A42600313ADE /* TruliaIcon.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 75E263B21CB7A42600313ADE /* TruliaIcon.ttf */; };
 		75F3DF2F1C575378009B3BDF /* AddressBook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75F3DF2E1C575378009B3BDF /* AddressBook.framework */; };
@@ -123,6 +130,13 @@
 			remoteGlobalIDString = DA5891D81BA9A9FC002B4DB2;
 			remoteInfo = RNDeviceInfo;
 		};
+		75D9A9B81CCDB0CC00CD638E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 75D9A9B41CCDB0CC00CD638E /* ReactCBLite.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = BE8EFD251C0E6C6B00627BBA;
+			remoteInfo = ReactCBLite;
+		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -160,6 +174,14 @@
 		753605EA1CABB6BF00E17AEA /* AirMaps.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
 		758115AD1CA7C14F001D4DBC /* FontAwesome.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		75B73F651C8166C60088D254 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
+		75D9A9B41CCDB0CC00CD638E /* ReactCBLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactCBLite.xcodeproj; path = "../node_modules/react-native-couchbase-lite/ios/ReactCBLite.xcodeproj"; sourceTree = "<group>"; };
+		75D9A9BB1CCDB17F00CD638E /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
+		75D9A9BD1CCDB18D00CD638E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
+		75D9A9BF1CCDB19500CD638E /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
+		75D9A9C11CCDB34700CD638E /* CouchbaseLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CouchbaseLite.framework; sourceTree = "<group>"; };
+		75D9A9C31CCDB35C00CD638E /* CouchbaseLiteListener.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CouchbaseLiteListener.framework; sourceTree = "<group>"; };
+		75D9A9C51CCDB3C600CD638E /* CBLRegisterJSViewCompiler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CBLRegisterJSViewCompiler.h; sourceTree = "<group>"; };
+		75D9A9C61CCDB3CC00CD638E /* libCBLJSViewCompiler.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libCBLJSViewCompiler.a; sourceTree = "<group>"; };
 		75E263B01CB799C800313ADE /* RelandIcon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = RelandIcon.ttf; path = ../src/assets/font/RelandIcon.ttf; sourceTree = "<group>"; };
 		75E263B21CB7A42600313ADE /* TruliaIcon.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = TruliaIcon.ttf; path = ../src/assets/font/TruliaIcon.ttf; sourceTree = "<group>"; };
 		75F3DF2E1C575378009B3BDF /* AddressBook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AddressBook.framework; path = System/Library/Frameworks/AddressBook.framework; sourceTree = SDKROOT; };
@@ -187,11 +209,16 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				75F3DF331C575387009B3BDF /* SystemConfiguration.framework in Frameworks */,
+				75D9A9C01CCDB19500CD638E /* CFNetwork.framework in Frameworks */,
+				75D9A9BE1CCDB18D00CD638E /* Security.framework in Frameworks */,
+				75D9A9BC1CCDB17F00CD638E /* libsqlite3.0.tbd in Frameworks */,
+				75F3DF351C575397009B3BDF /* libz.tbd in Frameworks */,
+				75D9A9BA1CCDB15500CD638E /* libReactCBLite.a in Frameworks */,
 				753605FC1CABB6D600E17AEA /* libAirMaps.a in Frameworks */,
 				750484731C9EC50E00730C8B /* libBVLinearGradient.a in Frameworks */,
+				75D9A9C71CCDB3CC00CD638E /* libCBLJSViewCompiler.a in Frameworks */,
 				75B73F751C81672D0088D254 /* libRNDeviceInfo.a in Frameworks */,
-				75F3DF351C575397009B3BDF /* libz.tbd in Frameworks */,
-				75F3DF331C575387009B3BDF /* SystemConfiguration.framework in Frameworks */,
 				75F3DF311C57537D009B3BDF /* StoreKit.framework in Frameworks */,
 				75F3DF2F1C575378009B3BDF /* AddressBook.framework in Frameworks */,
 				146834051AC3E58100842450 /* libReact.a in Frameworks */,
@@ -202,7 +229,9 @@
 				00C302E91ABCBA2D00DB3ED1 /* libRCTNetwork.a in Frameworks */,
 				139105C61AF99C1200B5F7CC /* libRCTSettings.a in Frameworks */,
 				832341BD1AAA6AB300B99B32 /* libRCTText.a in Frameworks */,
+				75D9A9C41CCDB35C00CD638E /* CouchbaseLiteListener.framework in Frameworks */,
 				00C302EA1ABCBA2D00DB3ED1 /* libRCTVibration.a in Frameworks */,
+				75D9A9C21CCDB34700CD638E /* CouchbaseLite.framework in Frameworks */,
 				139FDEF61B0652A700C62182 /* libRCTWebSocket.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -312,6 +341,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		75D9A9B51CCDB0CC00CD638E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				75D9A9B91CCDB0CC00CD638E /* libReactCBLite.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -323,6 +360,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				75D9A9B41CCDB0CC00CD638E /* ReactCBLite.xcodeproj */,
 				753605EA1CABB6BF00E17AEA /* AirMaps.xcodeproj */,
 				7504846D1C9EC4DE00730C8B /* BVLinearGradient.xcodeproj */,
 				75B73F651C8166C60088D254 /* RNDeviceInfo.xcodeproj */,
@@ -351,6 +389,9 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				75D9A9BF1CCDB19500CD638E /* CFNetwork.framework */,
+				75D9A9BD1CCDB18D00CD638E /* Security.framework */,
+				75D9A9BB1CCDB17F00CD638E /* libsqlite3.0.tbd */,
 				DDD3019D1CCB246600283FDC /* cauDien.gpx */,
 				75E263B21CB7A42600313ADE /* TruliaIcon.ttf */,
 				75E263B01CB799C800313ADE /* RelandIcon.ttf */,
@@ -367,6 +408,10 @@
 				758115AD1CA7C14F001D4DBC /* FontAwesome.ttf */,
 				75FCEBB41CA7BF4E00CDD307 /* MaterialIcons.ttf */,
 				75F3DF341C575397009B3BDF /* libz.tbd */,
+				75D9A9C51CCDB3C600CD638E /* CBLRegisterJSViewCompiler.h */,
+				75D9A9C61CCDB3CC00CD638E /* libCBLJSViewCompiler.a */,
+				75D9A9C31CCDB35C00CD638E /* CouchbaseLiteListener.framework */,
+				75D9A9C11CCDB34700CD638E /* CouchbaseLite.framework */,
 				75F3DF321C575387009B3BDF /* SystemConfiguration.framework */,
 				75F3DF301C57537D009B3BDF /* StoreKit.framework */,
 				75F3DF2E1C575378009B3BDF /* AddressBook.framework */,
@@ -482,6 +527,10 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
+					ProductGroup = 75D9A9B51CCDB0CC00CD638E /* Products */;
+					ProjectRef = 75D9A9B41CCDB0CC00CD638E /* ReactCBLite.xcodeproj */;
+				},
+				{
 					ProductGroup = 75B73F661C8166C60088D254 /* Products */;
 					ProjectRef = 75B73F651C8166C60088D254 /* RNDeviceInfo.xcodeproj */;
 				},
@@ -571,6 +620,13 @@
 			remoteRef = 75B73F731C8166C60088D254 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		75D9A9B91CCDB0CC00CD638E /* libReactCBLite.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libReactCBLite.a;
+			remoteRef = 75D9A9B81CCDB0CC00CD638E /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -656,6 +712,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/RNGoogleSignin",
+					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -664,6 +721,10 @@
 				);
 				INFOPLIST_FILE = bds/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rwg.reland;
 				PRODUCT_NAME = Reland;
@@ -683,6 +744,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/RNGoogleSignin",
+					"$(PROJECT_DIR)",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -691,6 +753,10 @@
 				);
 				INFOPLIST_FILE = bds/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)",
+				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rwg.reland;
 				PRODUCT_NAME = Reland;
