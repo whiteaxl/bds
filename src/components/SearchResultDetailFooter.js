@@ -78,7 +78,7 @@ var myStyles = StyleSheet.create({
       color: 'white',
       fontFamily: gui.fontFamily,
       fontWeight: 'normal',
-      fontSize: bui.normalFontSize
+      fontSize: gui.normalFontSize
   },
   searchListButtonText2: {
       margin: 10,
@@ -88,7 +88,7 @@ var myStyles = StyleSheet.create({
       color: 'white',
       fontFamily: gui.fontFamily,
       fontWeight: 'normal',
-      fontSize: bui.normalFontSize
+      fontSize: gui.normalFontSize
   },
   searchListButtonText3: {
       margin: 10,
@@ -98,7 +98,7 @@ var myStyles = StyleSheet.create({
       color: 'white',
       fontFamily: gui.fontFamily,
       fontWeight: 'normal',
-      fontSize: bui.normalFontSize
+      fontSize: gui.normalFontSize
   },
   searchListButton: {
       flexDirection: 'row',
