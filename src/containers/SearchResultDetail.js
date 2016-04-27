@@ -15,7 +15,7 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component, Image, Dimensions, ScrollView, StyleSheet, StatusBar, TouchableHighlight } from 'react-native'
+import React, { Text, View, Component, Image, Dimensions, ScrollView, StyleSheet, StatusBar, TouchableHighlight, Linking } from 'react-native'
 
 var ShareManager = React.NativeModules.ShareManager;
 
@@ -84,7 +84,7 @@ class SearchResultDetail extends Component {
     }
   }
   fetchData() {
-    //console.log("adsID: " + adsID);
+    //console.log("adsID: " + this.props.adsID);
     this.props.actions.getDetail(
         {'adsID' : this.props.adsID}
         , (data) => {
@@ -92,8 +92,10 @@ class SearchResultDetail extends Component {
         });
   }
   refreshRowData(data) {
+    var geoUrl = 'http://maps.apple.com/?daddr='+data.ads.place.diaChi+'&dirflg=d&t=s';
     this.setState({
       'data' : data.ads,
+      'geoUrl' : geoUrl,
       loaded: true
     });
   }
@@ -329,7 +331,13 @@ class SearchResultDetail extends Component {
   }
 
   _onDanDuongPressed() {
-    console.log("On dan duong pressed!");
+    Linking.canOpenURL(this.state.geoUrl).then(supported => {
+      if (supported) {
+        Linking.openURL(this.state.geoUrl);
+      } else {
+        console.log('Don\'t know how to open URI: ' + this.state.geoUrl);
+      }
+    });
   }
 
   renderTwoNormalProps(prop1, prop2) {
