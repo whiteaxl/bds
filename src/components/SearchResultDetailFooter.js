@@ -54,26 +54,34 @@ module.exports = SearchResultDetailFooter;
 var myStyles = StyleSheet.create({
   searchListButtonItem1: {
       backgroundColor: '#FB0007',
-      width: Dimensions.get('window').width/3,
-      borderRadius: 2,
-      borderColor: '#E2E2E2'
+      width: Dimensions.get('window').width/3-10,
+      borderRadius: 5,
+      borderColor: '#E2E2E2',
+      height: 34,
+      margin: 5,
+      justifyContent: 'center'
   },
   searchListButtonItem2: {
       backgroundColor: '#EA9409',
-      width: Dimensions.get('window').width/3,
-      borderRadius: 2,
-      borderColor: '#E2E2E2'
+      width: Dimensions.get('window').width/3-10,
+      borderRadius: 5,
+      borderColor: '#E2E2E2',
+      height: 34,
+      margin: 5,
+      justifyContent: 'center'
   },
   searchListButtonItem3: {
       backgroundColor: '#1396E0',
-      width: Dimensions.get('window').width/3,
-      borderRadius: 2,
-      borderColor: '#E2E2E2'
+      width: Dimensions.get('window').width/3-10,
+      borderRadius: 5,
+      borderColor: '#E2E2E2',
+      height: 34,
+      margin: 5,
+      justifyContent: 'center'
   },
   searchListButtonText1: {
-      margin: 10,
+      marginLeft: 10,
       alignItems: 'center',
-      width: Dimensions.get('window').width/3,
       backgroundColor: '#FB0007',
       color: 'white',
       fontFamily: gui.fontFamily,
@@ -81,9 +89,8 @@ var myStyles = StyleSheet.create({
       fontSize: gui.normalFontSize
   },
   searchListButtonText2: {
-      margin: 10,
+      marginLeft: 10,
       alignItems: 'center',
-      width: Dimensions.get('window').width/3,
       backgroundColor: '#EA9409',
       color: 'white',
       fontFamily: gui.fontFamily,
@@ -91,9 +98,8 @@ var myStyles = StyleSheet.create({
       fontSize: gui.normalFontSize
   },
   searchListButtonText3: {
-      margin: 10,
+      marginLeft: 10,
       alignItems: 'center',
-      width: Dimensions.get('window').width/3,
       backgroundColor: '#1396E0',
       color: 'white',
       fontFamily: gui.fontFamily,
@@ -102,12 +108,13 @@ var myStyles = StyleSheet.create({
   },
   searchListButton: {
       flexDirection: 'row',
-      justifyContent: 'space-around',
+      justifyContent: 'space-between',
       backgroundColor: '#E2E2E2',
+      width: Dimensions.get('window').width,
       height: 44
   },
   searchButton: {
-      alignItems: 'stretch',
+      alignItems: 'center',
       justifyContent: 'flex-end'
   },
 });

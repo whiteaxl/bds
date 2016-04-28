@@ -121,7 +121,7 @@ class SearchResultDetail extends Component {
     //var listData = this.props.search.form.fields.listData;
 
     //var rowData = listData[rowIndex];
-    //console.log(rowData);
+    console.log(rowData);
     if (!rowData) {
         return (
           <View style={detailStyles.fullWidthContainer}>
@@ -137,9 +137,9 @@ class SearchResultDetail extends Component {
     var loaiNhaDat = rowData.loaiTin ? DanhMuc.LoaiNhaDatThue[rowData.loaiNhaDat] :  DanhMuc.LoaiNhaDatBan[rowData.loaiNhaDat];
     var diaChi = rowData.place.diaChi;
     var dienTich = '';
-    dienTich = rowData.dienTichDisplay;
+    dienTich = rowData.dienTichFmt;
 
-    var gia = rowData.giaDiplay;
+    var gia = rowData.giaFmt;
     var soTang = rowData.soTang;
     var soPhongNguVal = rowData.soPhongNgu;
     var soPhongNgu = soPhongNguVal;
@@ -653,8 +653,7 @@ var detailStyles = StyleSheet.create({
   },
   danDuongRightView: {
     alignItems: 'center',
-    justifyContent: 'flex-end',
-    marginRight: 16
+    justifyContent: 'flex-end'
   },
   danDuongText: {
     marginLeft: 10,

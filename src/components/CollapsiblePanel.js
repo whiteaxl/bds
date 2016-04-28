@@ -4,13 +4,15 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import gui from '../lib/gui';
 
+import TruliaIcon from './TruliaIcon';
+
 class CollapsiblePanel extends Component{
     constructor(props){
         super(props);
 
         this.icons = {     //Step 2
-            'up'    : 'angle-up',
-            'down'  : 'angle-down'
+            'up'    : 'arrow-up',
+            'down'  : 'arrow-down'
         };
 
         this.state = {       //Step 3
@@ -65,10 +67,9 @@ class CollapsiblePanel extends Component{
                     onPress={this.toggle.bind(this)}>
                     <View style={styles.titleContainer} onLayout={this._setMinHeight.bind(this)}>
                         <Text style={styles.title}>{this.state.title}</Text>
-                        <Icon.Button onPress={this.toggle.bind(this)}
-                            name={icon} backgroundColor="transparent"
-                            underlayColor="transparent" color={'gray'}
-                            style={styles.button} />
+                        <TruliaIcon onPress={this.toggle.bind(this)}
+                            name={icon} color={'gray'}
+                            mainProps={styles.button} size={20} />
                     </View>
 
                     <View style={styles.body} onLayout={this._setMaxHeight.bind(this)}>
@@ -87,10 +88,9 @@ class CollapsiblePanel extends Component{
                     onPress={this.toggle.bind(this)}>
                     <View style={styles.titleContainer} onLayout={this._setMinHeight.bind(this)}>
                         <Text style={styles.title}>{this.state.title}</Text>
-                        <Icon.Button onPress={this.toggle.bind(this)}
-                            name={icon} backgroundColor="transparent"
-                            underlayColor="transparent" color={'gray'}
-                            style={styles.button} />
+                        <TruliaIcon onPress={this.toggle.bind(this)}
+                            name={icon} color={'gray'}
+                            mainProps={styles.button} size={20} />
                     </View>
                   </TouchableOpacity>
 
