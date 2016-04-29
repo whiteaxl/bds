@@ -204,7 +204,7 @@ class SearchResultDetail extends Component {
             mainProps={detailStyles.backButton} size={25} >
           </TruliaIcon>
           <View style={detailStyles.shareButton}>
-            <RelandIcon onPress={this._onLike}
+            <RelandIcon onPress={this._onShare}
               name="share-o" color="white"
               iconProps={{style: detailStyles.heartButton}} size={26} >
             </RelandIcon>
