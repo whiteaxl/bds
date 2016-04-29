@@ -38,6 +38,8 @@ import GiftedSpinner from "../components/GiftedSpinner";
 
 import TruliaIcon from '../components/TruliaIcon';
 
+import RelandIcon from '../components/RelandIcon';
+
 /**
 * ## Redux boilerplate
 */
@@ -152,7 +154,7 @@ class SearchResultDetail extends Component {
       soPhongTam = soPhongTam + ' phòng tắm';
     }
     var ngayDangTin = rowData.ngayDangTin;
-    var soNgayDaDangTin = "Tin đã đăng " + rowData.soNgayDaDangTin + " ngày";
+    var soNgayDaDangTin = rowData.soNgayDaDangTinFmt;
 
     var chiTiet = rowData.chiTiet;
     var dangBoi = '';
@@ -262,9 +264,9 @@ class SearchResultDetail extends Component {
                 <View style={detailStyles.lineBorder} />
                 <CollapsiblePanel title="Đặc Điểm" expanded={true}>
                   {this.renderTitleProps("Loại tin rao", loaiNhaDat)}
-                  {this.renderTitleProps("Giá", gia)}
-                  {this.renderTitleProps("Phòng ngủ", soPhongNguVal)}
-                  {this.renderTitleProps("Phòng tắm", soPhongTamVal)}
+                  {this.renderTitleProps("Giá/m²", gia)}
+                  {this.renderTitleProps("Số phòng ngủ", soPhongNguVal)}
+                  {this.renderTitleProps("Số phòng tắm", soPhongTamVal)}
                   {this.renderTitleProps("Diện tích", dienTich)}
                   {this.renderTitleProps("Số tầng", soTang)}
                   {this.renderTitleProps("Ngày đăng tin", ngayDangTin)}
@@ -285,26 +287,42 @@ class SearchResultDetail extends Component {
                 </CollapsiblePanel>
                 <View style={detailStyles.lineBorder2} />
                 <View style={detailStyles.shareButton}>
-                  <Icon.Button onPress={this._onShare}
-                    name="twitter" backgroundColor="transparent"
-                    underlayColor="gray" color={gui.mainColor}
-                    style={detailStyles.wrapper} >
-                  </Icon.Button>
-                  <Icon.Button onPress={this._onShare}
-                    name="facebook" backgroundColor="transparent"
-                    underlayColor="gray" color={gui.mainColor}
-                    style={detailStyles.wrapper} >
-                  </Icon.Button>
-                  <Icon.Button onPress={this._onShare}
-                    name="envelope-o" backgroundColor="transparent"
-                    underlayColor="gray" color={gui.mainColor}
-                    style={detailStyles.wrapper} >
-                  </Icon.Button>
-                  <Icon.Button onPress={this._onShare}
-                    name="share-alt" backgroundColor="transparent"
-                    underlayColor="gray" color={gui.mainColor}
-                    style={detailStyles.wrapper} >
-                  </Icon.Button>
+                  <View style={detailStyles.shareLeft}>
+                    <View style={[detailStyles.circleContainer, {backgroundColor: '#0A5594'}]} >
+                      <Icon.Button onPress={this._onShare}
+                                   name="facebook" backgroundColor="transparent"
+                                   underlayColor="transparent" color={'white'}
+                                   style={{marginLeft: 5}} size={20} >
+                      </Icon.Button>
+                    </View>
+                    <View style={[detailStyles.circleContainer, {backgroundColor: '#EA9409'}]} >
+                      <Icon.Button onPress={this._onShare}
+                                   name="share-alt" backgroundColor="transparent"
+                                   underlayColor="transparent" color={'white'}
+                                   style={{marginLeft: 0}} size={20} >
+                      </Icon.Button>
+                    </View>
+                    <View style={[detailStyles.circleContainer, {marginTop: 0, backgroundColor: 'white'}]} >
+                      <RelandIcon onPress={this._onShare}
+                                  name="zalo" color={'#1E7AC0'}
+                                  size={48} iconProps={{style: [detailStyles.shareIcon,{marginTop: 0}]}}>
+                      </RelandIcon>
+                    </View>
+                    <View style={[detailStyles.circleContainer, {backgroundColor: '#CE0005'}]} >
+                      <RelandIcon onPress={this._onShare}
+                                  name="email" color={'white'}
+                                  size={26} iconProps={{style: detailStyles.shareIcon}}>
+                      </RelandIcon>
+                    </View>
+                  </View>
+                  <View style={detailStyles.shareRight}>
+                    <View style={detailStyles.circleContainer} >
+                      <RelandIcon onPress={this._onShare}
+                                   name="share-o" color={'white'}
+                                   size={26} iconProps={{style: detailStyles.shareIcon}}>
+                      </RelandIcon>
+                    </View>
+                  </View>
                 </View>
                 <View style={detailStyles.lineBorder2} />
                 <CollapsiblePanel title="Liên Hệ" expanded={true}>
@@ -341,24 +359,22 @@ class SearchResultDetail extends Component {
   }
 
   renderTwoNormalProps(prop1, prop2) {
-    if (prop1 && prop2) {
+    if (prop1 || prop2) {
       return (
-        <View style={[detailStyles.searchDetailRowAlign,detailStyles.lineBorder]}>
-          <Text style={detailStyles.textHalfWidth}>
-            {prop1}
-          </Text>
-          <Text style={detailStyles.textHalfWidth}>
-            {prop2}
-          </Text>
-        </View>
-      )
-    } else if (prop1 || prop2) {
-      return (
-        <View style={detailStyles.lineBorder}>
-          <Text style={detailStyles.textFullWidth}>
-            {prop1 ? prop1 : prop2}
-          </Text>
-        </View>
+          <View style={[detailStyles.searchDetailRowAlign,detailStyles.lineBorder]}>
+            <View style={{flexDirection: 'row'}}>
+              <View style={detailStyles.dot2} />
+              <Text style={detailStyles.textHalfWidth}>
+                {prop1}
+              </Text>
+            </View>
+            <View style={{flexDirection: 'row'}}>
+              <View style={detailStyles.dot2} />
+              <Text style={detailStyles.textHalfWidth}>
+                {prop2}
+              </Text>
+            </View>
+          </View>
       )
     }
   }
@@ -406,6 +422,30 @@ class SearchResultDetail extends Component {
 }
 
 var detailStyles = StyleSheet.create({
+  circleContainer: {
+    marginTop: 5,
+    marginBottom: 5,
+    marginRight: 10,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    backgroundColor: '#A8A8A8'
+  },
+  shareIcon: {
+    marginTop: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent'
+  },
+  shareLeft: {
+    width: Dimensions.get('window').width/2-10,
+    flexDirection: 'row',
+    alignItems: 'flex-start'
+  },
+  shareRight: {
+    width: Dimensions.get('window').width/2-10,
+    alignItems: 'flex-end'
+  },
   welcome: {
       marginTop: -50,
       marginBottom: 50,
@@ -512,6 +552,15 @@ var detailStyles = StyleSheet.create({
     marginBottom: 3,
     bottom: 32
   },
+  dot2 : {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginTop: 14,
+    marginLeft: 20,
+    marginRight: 0,
+    backgroundColor: '#C1C1C1'
+  },
   imgItem: {
     flex:1,
     justifyContent: 'center',
@@ -545,7 +594,7 @@ var detailStyles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'left',
     backgroundColor: 'transparent',
-    color: 'black',
+    color: '#BE0004',
     marginBottom: 10,
     marginLeft: 15,
     marginRight: 15,
@@ -570,7 +619,7 @@ var detailStyles = StyleSheet.create({
     color: 'black',
     marginTop: 8,
     marginBottom: 8,
-    marginLeft: 10,
+    marginLeft: 5,
     marginRight: 10,
     width: Dimensions.get('window').width/2-20
   },

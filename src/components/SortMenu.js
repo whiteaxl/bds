@@ -120,7 +120,7 @@ class SortMenu extends Component {
             <View>
                 <Menu onSelect={(option) => this._onApply(option)}>
                     <MenuTrigger>
-                        <RelandIcon name="sort" size={24} text="Sắp xếp" textProps={myStyles.sortText} noAction={true}/>
+                        <RelandIcon name="sort-alt" size={24} text="Sắp xếp" textProps={myStyles.sortText} noAction={true}/>
                     </MenuTrigger>
                     <MenuOptions optionsContainerStyle={isDiaDiem ? myStyles.dropdownOptions : myStyles.dropdownOptions2}>
                         {optionList}
