@@ -143,6 +143,10 @@ class SearchResultDetail extends Component {
 
     var gia = rowData.giaFmt;
     var soTang = rowData.soTang;
+    var huongNha = rowData.huongNha;
+    var duAn = rowData.duAn;
+    var radiusInKm = rowData.radiusInKm;
+    var luotXem = rowData.luotXem;
     var soPhongNguVal = rowData.soPhongNgu;
     var soPhongNgu = soPhongNguVal;
     if (soPhongNgu) {
@@ -196,22 +200,19 @@ class SearchResultDetail extends Component {
     return (
 			<View style={detailStyles.fullWidthContainer}>
         <View style={detailStyles.customPageHeader}>
-          <Icon onPress={this._onBack}
-            name="angle-left" backgroundColor="transparent"
-            underlayColor="transparent" color="white"
-            style={detailStyles.search} size={32} >
-          </Icon>
+          <TruliaIcon onPress={this._onBack}
+            name="arrow-left" color="white"
+            mainProps={detailStyles.backButton} size={25} >
+          </TruliaIcon>
           <View style={detailStyles.shareButton}>
-            <Icon onPress={this._onLike}
-              name="heart-o" backgroundColor="transparent"
-              underlayColor="transparent" color="white"
-              style={detailStyles.search2} size={18} >
-            </Icon>
-            <Icon onPress={this._onShare}
-              name="share-alt" backgroundColor="transparent"
-              underlayColor="transparent" color="white"
-              style={detailStyles.search2} size={20} >
-            </Icon>
+            <RelandIcon onPress={this._onLike}
+              name="share-o" color="white"
+              iconProps={{style: detailStyles.heartButton}} size={26} >
+            </RelandIcon>
+            <RelandIcon onPress={this._onShare}
+              name="more" color="white"
+              iconProps={{style: detailStyles.heartButton}} size={30} >
+            </RelandIcon>
           </View>
         </View>
         <View style={detailStyles.mainView}>
@@ -247,6 +248,7 @@ class SearchResultDetail extends Component {
                 {this.renderTwoNormalProps(soPhongTam, soNgayDaDangTin)}
                 <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
                 <View style={detailStyles.chiTietText}>
+                  <Text style={[detailStyles.textTitle, {marginLeft: 0}]}>Chi Tiết</Text>
                   <SummaryText longText={chiTiet} expanded={false}>
                   </SummaryText>
                 </View>
@@ -268,8 +270,11 @@ class SearchResultDetail extends Component {
                   {this.renderTitleProps("Số phòng ngủ", soPhongNguVal)}
                   {this.renderTitleProps("Số phòng tắm", soPhongTamVal)}
                   {this.renderTitleProps("Diện tích", dienTich)}
-                  {this.renderTitleProps("Số tầng", soTang)}
+                  {this.renderTitleProps("Hướng nhà", huongNha)}
+                  {this.renderTitleProps("Thuộc dự án", duAn)}
+                  {this.renderTitleProps("Khoảng cách tìm kiếm", radiusInKm)}
                   {this.renderTitleProps("Ngày đăng tin", ngayDangTin)}
+                  {this.renderTitleProps("Lượt xem", luotXem)}
                   {this.renderTitleProps("Địa chỉ", diaChi)}
                   <View style={detailStyles.viTriTitle}>
                     <Text style={detailStyles.viTriText}>
@@ -289,18 +294,16 @@ class SearchResultDetail extends Component {
                 <View style={detailStyles.shareButton}>
                   <View style={detailStyles.shareLeft}>
                     <View style={[detailStyles.circleContainer, {backgroundColor: '#0A5594'}]} >
-                      <Icon.Button onPress={this._onShare}
-                                   name="facebook" backgroundColor="transparent"
-                                   underlayColor="transparent" color={'white'}
-                                   style={{marginLeft: 5}} size={20} >
-                      </Icon.Button>
+                      <RelandIcon onPress={this._onShare}
+                                  name="facebook" color={'white'}
+                                  size={26} iconProps={{style: detailStyles.shareIcon}}>
+                      </RelandIcon>
                     </View>
                     <View style={[detailStyles.circleContainer, {backgroundColor: '#EA9409'}]} >
-                      <Icon.Button onPress={this._onShare}
-                                   name="share-alt" backgroundColor="transparent"
-                                   underlayColor="transparent" color={'white'}
-                                   style={{marginLeft: 0}} size={20} >
-                      </Icon.Button>
+                      <RelandIcon onPress={this._onShare}
+                                  name="sms" color={'white'}
+                                  size={26} iconProps={{style: detailStyles.shareIcon}}>
+                      </RelandIcon>
                     </View>
                     <View style={[detailStyles.circleContainer, {marginTop: 0, backgroundColor: 'white'}]} >
                       <RelandIcon onPress={this._onShare}
@@ -425,6 +428,23 @@ class SearchResultDetail extends Component {
 }
 
 var detailStyles = StyleSheet.create({
+  heartButton: {
+    marginLeft: 10,
+    marginTop: 24,
+    marginRight: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent'
+  },
+  backButton: {
+    marginLeft: 15,
+    marginTop: 25,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'transparent'
+  },
   circleContainer: {
     marginTop: 5,
     marginBottom: 5,
@@ -443,11 +463,15 @@ var detailStyles = StyleSheet.create({
   shareLeft: {
     width: Dimensions.get('window').width/2-10,
     flexDirection: 'row',
-    alignItems: 'flex-start'
+    alignItems: 'flex-start',
+    marginTop: 8,
+    marginBottom: 8
   },
   shareRight: {
     width: Dimensions.get('window').width/2-10,
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
+    marginTop: 8,
+    marginBottom: 8
   },
   welcome: {
       marginTop: -50,
@@ -556,11 +580,11 @@ var detailStyles = StyleSheet.create({
     bottom: 32
   },
   dot2 : {
-    width: 8,
-    height: 8,
-    borderRadius: 4,
-    marginTop: 14,
-    marginLeft: 20,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    marginTop: 16,
+    marginLeft: 18,
     marginRight: 0,
     backgroundColor: '#C1C1C1'
   },

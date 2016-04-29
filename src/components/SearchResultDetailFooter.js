@@ -5,6 +5,8 @@ import Button from 'react-native-button';
 
 import TruliaIcon from './TruliaIcon';
 
+import RelandIcon from './RelandIcon';
+
 import gui from '../lib/gui';
 
 var Communications = require('react-native-communications');
@@ -17,8 +19,9 @@ var SearchResultDetailFooter = React.createClass({
           <TruliaIcon onPress={this.onCall} name="phone" color={'white'} size={18}
                       mainProps={myStyles.searchListButtonItem1} textProps={myStyles.searchListButtonText1}
                       text={'Gọi điện'} />
-          <TruliaIcon onPress={this.onChat} name="chat" color={'white'} size={18}
-                      mainProps={myStyles.searchListButtonItem2} textProps={myStyles.searchListButtonText2}
+          <RelandIcon onPress={this.onChat} name="chat" color={'white'} size={22}
+                      mainProps={[myStyles.searchListButtonItem2,{flexDirection: 'row'}]}
+                      textProps={[myStyles.searchListButtonText2,{paddingLeft: 0}]}
                       text={'Chat'} />
           <TruliaIcon onPress={this.onAlertComment} name="heart" color={'white'} size={18}
                       mainProps={myStyles.searchListButtonItem3} textProps={myStyles.searchListButtonText3}
