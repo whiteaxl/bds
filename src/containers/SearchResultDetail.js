@@ -332,7 +332,10 @@ class SearchResultDetail extends Component {
                   <Text style={{fontSize: 5}} />
                 </CollapsiblePanel>
                 <View style={detailStyles.lineBorder2} />
-                <CollapsiblePanel title="Danh Sách Comments" expanded={true}>
+                <CollapsiblePanel title="Môi giới" expanded={true}>
+                  <Text style={[detailStyles.textFullWidth,{marginTop: 0}]}>
+                    Các môi giới đang bán nhà tương tự
+                  </Text>
                 </CollapsiblePanel>
               </View>
             </View>
