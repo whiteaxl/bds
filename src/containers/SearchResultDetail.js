@@ -145,7 +145,6 @@ class SearchResultDetail extends Component {
     var soTang = rowData.soTang;
     var huongNha = rowData.huongNha;
     var duAn = rowData.duAn;
-    var radiusInKm = rowData.radiusInKm;
     var luotXem = rowData.luotXem;
     var soPhongNguVal = rowData.soPhongNgu;
     var soPhongNgu = soPhongNguVal;
@@ -272,7 +271,6 @@ class SearchResultDetail extends Component {
                   {this.renderTitleProps("Diện tích", dienTich)}
                   {this.renderTitleProps("Hướng nhà", huongNha)}
                   {this.renderTitleProps("Thuộc dự án", duAn)}
-                  {this.renderTitleProps("Khoảng cách tìm kiếm", radiusInKm)}
                   {this.renderTitleProps("Ngày đăng tin", ngayDangTin)}
                   {this.renderTitleProps("Lượt xem", luotXem)}
                   {this.renderTitleProps("Địa chỉ", diaChi)}
