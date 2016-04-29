@@ -250,7 +250,7 @@ class SearchResultDetail extends Component {
                   <SummaryText longText={chiTiet} expanded={false}>
                   </SummaryText>
                 </View>
-                <TouchableHighlight onPress={() => this._onDanDuongPressed()}>
+                <TouchableHighlight onPress={() => this._onDanDuongPressed()} underlayColor="transparent" >
                   <View style={[detailStyles.lineBorder,detailStyles.danDuongView]}>
                       <View style={detailStyles.danDuongLeftView}>
                         <TruliaIcon name={"car"} size={20} color={gui.mainColor} text={"Dẫn đường"}
