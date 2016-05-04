@@ -21,7 +21,6 @@ var ShareManager = React.NativeModules.ShareManager;
 
 import {Actions} from 'react-native-router-flux';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
 import DanhMuc from '../assets/DanhMuc';
 
 import SearchResultDetailFooter from '../components/SearchResultDetailFooter';
@@ -39,6 +38,10 @@ import GiftedSpinner from "../components/GiftedSpinner";
 import TruliaIcon from '../components/TruliaIcon';
 
 import RelandIcon from '../components/RelandIcon';
+
+import Button from 'react-native-button';
+
+var Communications = require('react-native-communications');
 
 /**
 * ## Redux boilerplate
@@ -196,6 +199,34 @@ class SearchResultDetail extends Component {
     }
     text = 'Check out this property | found using the Reway Mobile app\n\n'
         + loaiNhaDat + '\n' + diaChi + '\n' + gia + '\n' + soPhongNgu + ', ' + dienTich + '\n';
+    var moiGioiTuongTu = [];
+    if (rowData.moiGioiTuongTu) {
+      for (var i=0; i < rowData.moiGioiTuongTu.length; i++) {
+        var oneMoiGioi = rowData.moiGioiTuongTu[i];
+        var diemDanhGia = this._drawDiemDanhGia(oneMoiGioi.diemDanhGia);
+        var numberOfAds = (<Text style={detailStyles.moiGioiNumberOfAds}>{'Có ' + oneMoiGioi.numberOfAds + ' bất động sản đang bán'}</Text>);
+        var phone = oneMoiGioi.phone;
+        var userID = oneMoiGioi.userID;
+        moiGioiTuongTu.push(<View>
+          <View style={[detailStyles.moiGioiRow, {marginTop: 10}]}>
+            <View style={detailStyles.moiGioiRowLeft}>
+              <Image source={{uri: `${oneMoiGioi.cover}`}} style={detailStyles.moiGioiImage}></Image>
+              <View style={detailStyles.moiGioiInfo}>
+                <Text style={detailStyles.moiGioiName}>{oneMoiGioi.name}</Text>
+                {diemDanhGia}
+                {numberOfAds}
+              </View>
+            </View>
+            <View style={detailStyles.moiGioiButtons}>
+              <Button onPress={(phone) => this._onChat(phone)} style={detailStyles.moiGioiChatButton}>CHAT</Button>
+              <Button onPress={(phone) => this._onCall(phone)} style={detailStyles.moiGioiCallButton}>GỌI</Button>
+            </View>
+          </View>
+          <View style={[detailStyles.lineBorder2, {marginTop: 10}]} />
+        </View>);
+      }
+    }
+
     return (
 			<View style={detailStyles.fullWidthContainer}>
         <View style={detailStyles.customPageHeader}>
@@ -203,14 +234,14 @@ class SearchResultDetail extends Component {
             name="arrow-left" color="white"
             mainProps={detailStyles.backButton} size={25} >
           </TruliaIcon>
-          <View style={detailStyles.shareButton}>
+          <View style={detailStyles.shareMainView}>
             <RelandIcon onPress={this._onShare}
               name="share-o" color="white"
-              iconProps={{style: detailStyles.heartButton}} size={26} >
+              iconProps={{style: detailStyles.shareButton}} size={26} >
             </RelandIcon>
             <RelandIcon onPress={this._onShare}
               name="more" color="white"
-              iconProps={{style: detailStyles.heartButton}} size={30} >
+              iconProps={{style: detailStyles.shareButton}} size={30} >
             </RelandIcon>
           </View>
         </View>
@@ -229,6 +260,10 @@ class SearchResultDetail extends Component {
                       showsButtons={false} autoplay={false} loop={false}
                       dot={<View style={[detailStyles.dot, {backgroundColor: 'transparent'}]} />}
                       activeDot={<View style={[detailStyles.dot, {backgroundColor: 'transparent'}]}/>}
+                      renderPagination={this._renderPagination}
+                      paginationStyle={{
+                        bottom: 20, left: 20, right: null,
+                      }}
               >
                 {imageItems}
               </Swiper>
@@ -289,7 +324,7 @@ class SearchResultDetail extends Component {
                   </View>
                 </CollapsiblePanel>
                 <View style={detailStyles.lineBorder2} />
-                <View style={detailStyles.shareButton}>
+                <View style={detailStyles.shareMainView}>
                   <View style={detailStyles.shareLeft}>
                     <View style={[detailStyles.circleContainer, {backgroundColor: '#0A5594'}]} >
                       <RelandIcon onPress={this._onShare}
@@ -337,6 +372,7 @@ class SearchResultDetail extends Component {
                   <Text style={[detailStyles.textFullWidth,{marginTop: 0}]}>
                     Các môi giới đang bán nhà tương tự
                   </Text>
+                  {moiGioiTuongTu}
                 </CollapsiblePanel>
               </View>
             </View>
@@ -348,8 +384,52 @@ class SearchResultDetail extends Component {
 		)
 	}
 
+  _renderPagination(index, total, context) {
+    return (
+        <View style={{
+      position: 'absolute',
+      bottom: 20,
+      left: 20,
+    }}>
+          <RelandIcon name="camera" color="black"
+                 iconProps={{style: detailStyles.pagingIcon}} size={16}
+                 textProps={detailStyles.pagingText}
+                 mainProps={detailStyles.pagingView}
+                 text={(index + 1) + '/' + (total)}
+          >
+          </RelandIcon>
+        </View>
+    )
+  }
+
+  _onCall(phone) {
+    Communications.phonecall(phone, true);
+  }
+
+  _onChat(phone) {
+    Communications.text(phone);
+  }
+
   _onMapPressed() {
     Actions.SearchMapDetail();
+  }
+
+  _drawDiemDanhGia(diemDanhGia) {
+    var diemDanhGiaItems = [];
+    var i = 0;
+    for(i = 0; i < diemDanhGia; i++) {
+      diemDanhGiaItems.push(
+          <TruliaIcon name="star" mainProps={detailStyles.moiGioiStar} color={'#FEBC0A'} size={16}/>);
+    }
+    for(i = 0; i < 5-diemDanhGia; i++) {
+      diemDanhGiaItems.push(
+          <TruliaIcon name="star-o" mainProps={detailStyles.moiGioiStarO} color={'#FEBC0A'} size={16}/>);
+    }
+    return (
+        <View style={detailStyles.moiGioiStarView}>
+          {diemDanhGiaItems}
+        </View>
+    );
   }
 
   _onDanDuongPressed() {
@@ -426,7 +506,102 @@ class SearchResultDetail extends Component {
 }
 
 var detailStyles = StyleSheet.create({
-  heartButton: {
+  pagingText: {
+    fontSize: 14,
+    fontFamily: gui.fontFamily,
+    fontWeight: 'normal',
+    color: 'black',
+    marginRight: 10,
+    marginBottom: 2,
+    marginTop: 2
+  },
+  pagingIcon: {
+    borderRadius: 5,
+    marginLeft: 10,
+    marginBottom: 2,
+    marginTop: 2
+  },
+  pagingView: {
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    borderRadius: 5
+  },
+  moiGioiStar: {
+    marginRight: 5
+  },
+  moiGioiStarO: {
+    marginRight: 5
+  },
+  moiGioiStarView: {
+    flexDirection: 'row',
+    marginTop: 5,
+    marginBottom: 5
+  },
+  moiGioiRowLeft: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-start'
+  },
+  moiGioiRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between'
+  },
+  moiGioiInfo: {
+    flexDirection: 'column',
+    marginLeft: 8
+  },
+  moiGioiImage: {
+    width: 60,
+    height: 60
+  },
+  moiGioiName: {
+    fontSize: 13,
+    fontFamily: gui.fontFamily,
+    fontWeight: 'bold',
+    color: 'black'
+  },
+  moiGioiNumberOfAds: {
+    fontSize: 13,
+    fontFamily: gui.fontFamily,
+    fontWeight: 'normal',
+    color: 'black'
+  },
+  moiGioiButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'flex-end'
+  },
+  moiGioiChatButton: {
+    backgroundColor: 'transparent',
+    color: '#EA9409',
+    borderColor: '#EA9409',
+    fontFamily: gui.fontFamily,
+    fontWeight: 'normal',
+    fontSize: 14,
+    textAlign: 'center',
+    borderWidth: 2,
+    borderRadius: 5,
+    padding: 5,
+    paddingTop: 3,
+    paddingBottom: 0
+  },
+  moiGioiCallButton: {
+    backgroundColor: 'transparent',
+    color: '#FB0007',
+    borderColor: '#FB0007',
+    fontFamily: gui.fontFamily,
+    fontWeight: 'normal',
+    fontSize: 14,
+    textAlign: 'center',
+    borderWidth: 2,
+    borderRadius: 5,
+    marginLeft: 5,
+    padding: 5,
+    paddingTop: 3,
+    paddingBottom: 0
+  },
+  shareButton: {
     marginLeft: 10,
     marginTop: 24,
     marginRight: 5,
@@ -436,7 +611,8 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   backButton: {
-    marginLeft: 15,
+    paddingLeft: 15,
+    paddingRight: 15,
     marginTop: 25,
     flexDirection: 'row',
     alignItems: 'center',
@@ -527,7 +703,7 @@ var detailStyles = StyleSheet.create({
       marginBottom: 15,
       marginLeft: 15
   },
-  shareButton: {
+  shareMainView: {
       flexDirection: 'row',
       marginTop: 0,
       marginBottom: 0,

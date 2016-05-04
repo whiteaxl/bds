@@ -17,7 +17,7 @@ var CommonHeader = React.createClass({
       <View style={mStyles.home}>
       <RelandIcon onPress={this._onHome}
         name="home" color="white" size={20}
-        mainProps={{marginTop: 16}}
+        mainProps={{marginTop: 16, paddingLeft: 16, paddingRight: 16}}
         >
       </RelandIcon>
       </View>
@@ -27,6 +27,7 @@ var CommonHeader = React.createClass({
       <View style={mStyles.search}>
       <TruliaIcon onPress={this._onSearch}
         name="search" color="white" size={18}
+        mainProps={{paddingLeft: 16, paddingRight: 16}}
         >
       </TruliaIcon>
       </View>
@@ -58,20 +59,18 @@ var mStyles = StyleSheet.create({
       marginTop: 15,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: gui.mainColor,
-      marginRight: 16
+      backgroundColor: gui.mainColor
   },
   home: {
       marginTop: 16,
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: gui.mainColor,
-      marginLeft: 16
+      backgroundColor: gui.mainColor
   },
   text: {
     backgroundColor: '#F5FCFF',
     position: 'absolute',
-    left:36,
-    right:36
+    left:52,
+    right:52
   }
 });

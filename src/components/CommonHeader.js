@@ -59,7 +59,8 @@ customPageHeader: {
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: 'transparent',
-      marginLeft: 18
+      paddingLeft: 18,
+      paddingRight: 18
   },
   backButtonText: {
       color: gui.mainColor,
