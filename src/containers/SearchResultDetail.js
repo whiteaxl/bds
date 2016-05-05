@@ -97,7 +97,7 @@ class SearchResultDetail extends Component {
         });
   }
   refreshRowData(data) {
-    var geoUrl = 'http://maps.apple.com/?daddr='+data.ads.place.diaChi+'&dirflg=d&t=s';
+    var geoUrl = 'http://maps.apple.com/?daddr='+data.ads.place.geo.lat+','+data.ads.place.geo.lon+'&dirflg=d&t=s';
     this.setState({
       'data' : data.ads,
       'geoUrl' : geoUrl,
@@ -218,8 +218,8 @@ class SearchResultDetail extends Component {
               </View>
             </View>
             <View style={detailStyles.moiGioiButtons}>
-              <Button onPress={(phone) => this._onChat(phone)} style={detailStyles.moiGioiChatButton}>CHAT</Button>
-              <Button onPress={(phone) => this._onCall(phone)} style={detailStyles.moiGioiCallButton}>GỌI</Button>
+              <Button onPress={() => this._onChat(phone)} style={detailStyles.moiGioiChatButton}>CHAT</Button>
+              <Button onPress={() => this._onCall(phone)} style={detailStyles.moiGioiCallButton}>GỌI</Button>
             </View>
           </View>
           <View style={[detailStyles.lineBorder2, {marginTop: 10}]} />
@@ -234,14 +234,14 @@ class SearchResultDetail extends Component {
             name="arrow-left" color="white"
             mainProps={detailStyles.backButton} size={25} >
           </TruliaIcon>
-          <View style={detailStyles.shareMainView}>
+          <View style={[detailStyles.shareMainView, {marginRight: 0, marginLeft: 0}]}>
             <RelandIcon onPress={this._onShare}
               name="share-o" color="white"
-              iconProps={{style: detailStyles.shareButton}} size={26} >
+              iconProps={{style: [detailStyles.shareButton, {paddingLeft: 25}]}} size={26} >
             </RelandIcon>
             <RelandIcon onPress={this._onShare}
               name="more" color="white"
-              iconProps={{style: detailStyles.shareButton}} size={30} >
+              iconProps={{style: [detailStyles.shareButton, {paddingRight: 20}]}} size={30} >
             </RelandIcon>
           </View>
         </View>
@@ -602,9 +602,9 @@ var detailStyles = StyleSheet.create({
     paddingBottom: 0
   },
   shareButton: {
-    marginLeft: 10,
+    paddingLeft: 10,
     marginTop: 24,
-    marginRight: 5,
+    paddingRight: 5,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
