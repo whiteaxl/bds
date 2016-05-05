@@ -97,12 +97,20 @@ class SearchResultDetail extends Component {
         });
   }
   refreshRowData(data) {
-    var geoUrl = 'http://maps.apple.com/?daddr='+data.ads.place.geo.lat+','+data.ads.place.geo.lon+'&dirflg=d&t=s';
-    this.setState({
-      'data' : data.ads,
-      'geoUrl' : geoUrl,
-      loaded: true
-    });
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+          var geoUrl = 'http://maps.apple.com/?saddr='+position.coords.latitude+','+position.coords.longitude+'&daddr='+data.ads.place.geo.lat+','+data.ads.place.geo.lon+'&dirflg=d&t=s';
+          this.setState({
+            'data' : data.ads,
+            'geoUrl' : geoUrl,
+            loaded: true
+          });
+        },
+        (error) => {
+          alert(error.message);
+        },
+        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
   }
   componentWillMount() {
     this.fetchData();
