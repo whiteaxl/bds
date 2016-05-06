@@ -124,7 +124,7 @@ class Profile extends Component {
                 <Button onPress={this.onStopAutoSync.bind(this)}>Stop Sync each 100ms</Button>
 
 
-                <Text style={{fontFamily: 'Open Sans'}}>Number of my ads: {this.state.myAds.length}</Text>
+                <Text style={{fontFamily: 'Open Sans'}}>Number of my ads: {this.state.myAds ? this.state.myAds.length : 0}</Text>
             </View>
         )
     }
