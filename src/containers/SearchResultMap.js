@@ -289,7 +289,7 @@ class SearchResultMap extends Component {
 
   _onListPressed() {
     console.log("On List pressed!");
-    Actions.pop();
+    Actions.SearchResultList({type: "reset"});
     console.log("On List pressed completed!");
   }
 
