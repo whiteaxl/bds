@@ -69,7 +69,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-var mapSize = Dimensions.get('window').width-36;
+var mapSize = Dimensions.get('window').width-30;
 
 var imgHeight = 256;
 
@@ -212,7 +212,14 @@ class SearchResultDetail extends Component {
       url = rowData.image.cover;
     }
     text = 'Check out this property | found using the Reway Mobile app\n\n'
-        + loaiNhaDat + '\n' + diaChi + '\n' + gia + '\n' + soPhongNgu + ', ' + dienTich + '\n';
+        + loaiNhaDat + '\n' + diaChi + '\n' + gia + ', ' + dienTich;
+    if (soPhongNgu) {
+      text = text + '\n' + soPhongNgu;
+    }
+    if (soPhongTam) {
+      text = text + '\n' + soPhongTam;
+    }
+    text = text + '\n';
     var moiGioiTuongTu = [];
     if (rowData.moiGioiTuongTu) {
       for (var i=0; i < rowData.moiGioiTuongTu.length; i++) {
@@ -347,7 +354,7 @@ class SearchResultDetail extends Component {
                       </RelandIcon>
                     </View>
                     <View style={[detailStyles.circleContainer, {backgroundColor: '#EA9409'}]} >
-                      <RelandIcon onPress={this._onShare}
+                      <RelandIcon onPress={() => this._onChat(mobile)}
                                   name="sms" color={'white'}
                                   size={26} iconProps={{style: detailStyles.shareIcon}}>
                       </RelandIcon>
@@ -366,7 +373,7 @@ class SearchResultDetail extends Component {
                     </View>
                   </View>
                   <View style={detailStyles.shareRight}>
-                    <View style={detailStyles.circleContainer} >
+                    <View style={[detailStyles.circleContainer, {marginRight: 0}]} >
                       <RelandIcon onPress={this._onShare}
                                    name="share-o" color={'white'}
                                    size={26} iconProps={{style: detailStyles.shareIcon}}>
@@ -511,7 +518,7 @@ class SearchResultDetail extends Component {
   }
 
   _onShare() {
-    ShareManager.share({text: text, url: url, imageUrl: url});
+    ShareManager.share({text: text, url: url});
   }
 
   _onLike() {
@@ -650,14 +657,13 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   shareLeft: {
-    width: Dimensions.get('window').width/2-10,
+    width: Dimensions.get('window').width-66,
     flexDirection: 'row',
     alignItems: 'flex-start',
     marginTop: 8,
     marginBottom: 8
   },
   shareRight: {
-    width: Dimensions.get('window').width/2-10,
     alignItems: 'flex-end',
     marginTop: 8,
     marginBottom: 8
