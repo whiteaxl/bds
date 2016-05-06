@@ -13,17 +13,18 @@ const defaultStyles = {
         flex: 1,
     },
     textInputContainer: {
-        backgroundColor: '#C9C9CE',
+        backgroundColor: 'white',
         height: 44,
-        borderTopColor: '#7e7e7e',
-        borderBottomColor: '#b5b5b5',
+        borderTopColor: 'white',
+        borderBottomColor: 'white',
         borderTopWidth: 0.5,
         borderBottomWidth: 0.5,
         flexDirection: 'row',
         alignItems: 'center',
     },
     textInput: {
-        backgroundColor: '#FFFFFF',
+        backgroundColor: '#1396E0',
+        color: 'white',
         height: 28,
         borderRadius: 5,
         paddingTop: 4.5,
@@ -38,7 +39,7 @@ const defaultStyles = {
     },
     cancel: {
         fontSize: 15,
-        color: 'blue',
+        color: '#1396E0',
         width: 70,
         paddingTop: 4.5,
         paddingBottom: 4.5,
@@ -62,7 +63,7 @@ const defaultStyles = {
     },
     separator: {
         height: 1,
-        backgroundColor: 'lightgray',
+        backgroundColor: '#E9E9E9',
     },
     description: {},
     loader: {
@@ -177,6 +178,10 @@ const GooglePlacesAutocomplete = React.createClass({
 
     componentWillUnmount() {
         this._abortRequests();
+    },
+
+    componentDidMount() {
+        this.triggerFocus();
     },
 
     _abortRequests() {
@@ -654,7 +659,7 @@ const GooglePlacesAutocomplete = React.createClass({
 
                     <TouchableHighlight underlayColor="transparent" onPress={this.props.onCancelPress}>
                         <Text style={defaultStyles.cancel}>
-                            Cancel
+                            Thoát
                         </Text>
                     </TouchableHighlight>
 

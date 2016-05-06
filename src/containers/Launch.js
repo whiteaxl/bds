@@ -98,8 +98,12 @@ class Launch extends React.Component {
   }
 
   login() {
-
+      Actions.Login();
   }
+
+    register() {
+        Actions.Register();
+    }
 
   render() {
 		return (
@@ -114,9 +118,10 @@ class Launch extends React.Component {
                 onPress={this.login.bind(this)}>
               Đăng Nhập
             </Icon.Button>
+
             <Text style={{width: 10}}> </Text>
             <Icon.Button style={styles.button} name="book" backgroundColor="#f44336"
-                onPress={this.login.bind(this)}>
+                onPress={this.register.bind(this)}>
               Đăng Ký
             </Icon.Button>
           </View>

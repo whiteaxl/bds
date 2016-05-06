@@ -36,8 +36,8 @@ export default function globalReducer(state = initialState, action) {
   case GET_PROFILE_SUCCESS:
   case SIGNUP_SUCCESS:
   case LOGIN_SUCCESS:
-    let tmp = Immutable.fromJS({currentUser:action.payload});
-    let newState = state.mergeDeep(tmp);
+    //let tmp = Immutable.fromJS({currentUser:action.payload});
+    let newState = state.setIn(["currentUser", "phone"], action.payload.phone);
 
     /*
       let newState1 = state.setIn(['currentUser', 'userID'], action.payload.userID)

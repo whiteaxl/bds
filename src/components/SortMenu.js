@@ -67,7 +67,7 @@ const orderKeys1 = [
     'ngayDangTinDESC',
     'giaASC',
     'giaDESC',
-    'giaM2',
+    'giaM2DESC',
     'soPhongNguASC',
     'dienTichDESC'
 ];
@@ -88,9 +88,9 @@ const orderKeys2 = [
     'ngayDangTinDESC',
     'giaASC',
     'giaDESC',
-    'giaM2',
+    'giaM2DESC',
     'soPhongNguASC',
-    'khoangCach',
+    'khoangCachDESC',
     'dienTichDESC'
 ];
 
@@ -99,14 +99,14 @@ class SortMenu extends Component {
         console.log("Call SortMenu render");
         var {isDiaDiem} = this.props;
         var orderBy = this.getValueByKey(this.props.search.form.fields.orderBy, isDiaDiem);
+        var orderTypes = isDiaDiem ? orderTypes2 : orderTypes1;
         if (!orderBy) {
             orderBy = orderTypes[0];
         }
-        var orderTypes = isDiaDiem ? orderTypes2 : orderTypes1;
         var optionList = [];
         for (var i = 0; i < orderTypes.length; i++) {
             var orderType = orderTypes[i];
-            var isSelected = (orderType == orderBy);
+            var isSelected = (this._getOrderKey(orderType) == this._getOrderKey(orderBy));
             var isLastRow = (i == orderTypes.length-1);
             var optionProps = (i == 0) ? {marginTop: 10} : (isLastRow ? {marginBottom: 10} : {});
             optionList.push(
@@ -134,9 +134,30 @@ class SortMenu extends Component {
         Actions.pop();
     }
 
+    _getOrderKey(key) {
+        return key.indexOf("DESC") !== -1 ? key.substring(0, key.length-4) :
+            key.substring(0, key.length-3);
+    }
+
+    _getSortType(key) {
+        return (key && key.indexOf("ASC") !== -1) ? "ASC" : "DESC";
+    }
+
     _onApply(option) {
         var {isDiaDiem} = this.props;
-        this.props.actions.onSearchFieldChange("orderBy", this.getKeyByValue(option, isDiaDiem));
+        var oldOrderBy = this.props.search.form.fields.orderBy;
+        var oldSortType = this._getSortType(oldOrderBy);
+        var newOrderBy = this.getKeyByValue(option, isDiaDiem);
+        if (this._getOrderKey(newOrderBy) == this._getOrderKey(oldOrderBy) &&
+            (newOrderBy.indexOf("ngayDangTin") !== -1
+            || newOrderBy.indexOf("giaM2") !== -1
+            || newOrderBy.indexOf("soPhongNgu") !== -1
+            || newOrderBy.indexOf("khoangCach") !== -1
+            || newOrderBy.indexOf("dienTich") !== -1)) {
+            newOrderBy = this._getOrderKey(newOrderBy);
+            newOrderBy = (oldSortType == "ASC") ? newOrderBy + "DESC" : newOrderBy + "ASC";
+        }
+        this.props.actions.onSearchFieldChange("orderBy", newOrderBy);
 
         this.props.actions.search(
             this.props.search.form.fields
@@ -145,12 +166,14 @@ class SortMenu extends Component {
     }
 
     getValueByKey(key, isDiaDiem) {
+        var findKey = this._getOrderKey(key);
         var orderTypes = isDiaDiem ? orderTypes2 : orderTypes1;
         var orderKeys = isDiaDiem ? orderKeys2 : orderKeys1;
         var value = '';
         for (var i = 0; i < orderKeys.length; i++) {
             var orderKey = orderKeys[i];
-            if (key === orderKey) {
+            orderKey = this._getOrderKey(orderKey);
+            if (findKey == orderKey) {
                 value = orderTypes[i];
                 break;
             }

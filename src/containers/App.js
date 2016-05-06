@@ -50,8 +50,8 @@ const paddingTop = Platform.OS === 'android' ? 0 : 8
 const reducerCreate = params=>{
     const defaultReducer = Reducer(params);
     return (state, action)=>{
-        console.log("ACTION:", action);
-        console.log(state);
+        //console.log("ACTION:", action);
+        //console.log(state);
         return defaultReducer(state, action);
     }
 };
@@ -67,17 +67,18 @@ class App extends Component {
 				<Scene key='Launch' component={Launch} initial={true} title="Welcome" type="replace" />
 
 				<Scene key='Register' component={Register} title="Register Screen" />
+                <Scene key='Login' component={Login} title="Login Screen" type="replace" />
 
-                    <Scene key='Search' component={Search} title="Tìm kiếm" hideNavBar={true} direction="vertical" />
-                    <Scene key='SearchResultList' component={SearchResultList} title="Danh sách" hideNavBar={true} />
-                    <Scene key='SearchResultMap' component={SearchResultMap}  title="Bản đồ" hideNavBar={true} />
-                    <Scene key='PropertyTypes' component={PropertyTypes} title="Loại nhà đất" hideNavBar={true} />
-                    <Scene key='HuongNha' component={HuongNha} title="Hướng nhà" hideNavBar={true} />
+                <Scene key='Search' component={Search} title="Tìm kiếm" hideNavBar={true} direction="vertical" />
+                <Scene key='SearchResultList' component={SearchResultList} title="Danh sách" hideNavBar={true} />
+                <Scene key='SearchResultMap' component={SearchResultMap}  title="Bản đồ" hideNavBar={true} />
+                <Scene key='PropertyTypes' component={PropertyTypes} title="Loại nhà đất" hideNavBar={true} />
+                <Scene key='HuongNha' component={HuongNha} title="Hướng nhà" hideNavBar={true} />
 
-                    <Scene key='OrderPicker' component={OrderPicker} title="Sắp xếp" hideNavBar={true} />
-                    <Scene key='SearchResultDetail' component={SearchResultDetail} title="Chi tiết" hideNavBar={true} />
-                    <Scene key='SearchSuggestion' duration={20} direction="vertical" component={SearchSuggestion} title="Serch Text" hideNavBar={true} />
-                    <Scene key='SearchMapDetail' component={SearchMapDetail} title="Bản đồ" hideNavBar={true} />
+                <Scene key='OrderPicker' component={OrderPicker} title="Sắp xếp" hideNavBar={true} />
+                <Scene key='SearchResultDetail' component={SearchResultDetail} title="Chi tiết" hideNavBar={true} />
+                <Scene key='SearchSuggestion' duration={20} direction="vertical" component={SearchSuggestion} title="Serch Text" hideNavBar={true} />
+                <Scene key='SearchMapDetail' component={SearchMapDetail} title="Bản đồ" hideNavBar={true} />
 
                 <Scene key='TestListView' component={TestListView} title="Serch Text" hideNavBar={true} />
 

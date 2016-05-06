@@ -4,7 +4,7 @@ import gui from '../lib/gui';
 
 
 var { createIconSet } = require('react-native-vector-icons');
-var glyphMap = { 'inbox':'1','camera': 59397,'map':59392, 'sort': 59398, 'save' : 59399, 'share-o': 59400, 'share': 59401,
+var glyphMap = { 'inbox':'1','camera': 59396,'camera-o': 59397,'map':59392, 'sort': 59398, 'save' : 59399, 'share-o': 59400, 'share': 59401,
                 'phone-o': 59402, 'phone': 59403, 'more': 59404, 'down': 59405, 'left': 59406, 'right': 59407, 'up': 59408,
                 'chat': 59409, 'email': 59410, 'home': 59411, 'dot': 59412, 'search': 59413, 'zalo': 59414, 'sort-alt': 59415,
                 'facebook-o': 59416, 'facebook': 59417, 'google': 59418, 'google-alt': 59419, 'skype-o': 59420, 'skype': 59421,

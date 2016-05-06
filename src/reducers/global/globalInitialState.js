@@ -19,7 +19,8 @@ var InitialState = Record({
   currentUser: new (Record({
   	userID : '',
   	name : 'unknown',
-  	isDevice : true
+  	isDevice : true,
+      phone : ''
   })),
   
   showState: false,

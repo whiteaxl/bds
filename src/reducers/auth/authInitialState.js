@@ -14,39 +14,22 @@
  */
 const {Record} = require('immutable');
 const {
-  LOGIN_STATE_REGISTER
+  LOGIN_STATE_REGISTER,
+    LOGIN_STATE_LOGOUT
 } = require('../../lib/constants').default;
 
-/**
- * ## Form
- * This Record contains the state of the form and the
- * fields it contains.
- */
-const Form = Record({
-  state: LOGIN_STATE_REGISTER,
-  disabled: false,
-  error: null,
-  isValid: false,
-  isFetching: false,
-  fields: new (Record({
-    username: '',
-    usernameHasError: false,
-    email: '',
-    emailHasError: false,
-    password: '',
-    passwordHasError: false,
-    passwordAgain: '',
-    passwordAgainHasError: false,
-    showPassword: false
-  }))
-});
 
 /**
  * ## InitialState
  * The form is set 
  */
 var InitialState = Record({
-  form: new Form
+    phone: "0982969669",
+    password:"123",
+    isFetching : false,
+    error: "",
+    sessionCookie:"",
+    state: LOGIN_STATE_LOGOUT
 });
 export default InitialState;
 
