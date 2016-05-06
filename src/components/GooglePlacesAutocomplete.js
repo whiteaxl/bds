@@ -26,18 +26,22 @@ const defaultStyles = {
         flexDirection: 'row',
         alignItems: 'center',
     },
-    textInput: {
+    inputView: {
         backgroundColor: '#1396E0',
-        color: 'white',
         height: 28,
         borderRadius: 5,
         paddingTop: 4.5,
         paddingBottom: 4.5,
         paddingLeft: 10,
         paddingRight: 10,
-        marginTop: 7.5,
-        marginLeft: 8,
+        marginLeft: 15,
         marginRight: 8,
+        flex: 1,
+        flexDirection: 'row'
+    },
+    textInput: {
+        backgroundColor: '#1396E0',
+        color: 'white',
         fontSize: 15,
         flex: 1
     },
@@ -108,7 +112,7 @@ const GooglePlacesAutocomplete = React.createClass({
 
     getDefaultProps() {
         return {
-            placeholder: 'Search',
+            placeholder: 'Tìm kiếm',
             onPress: () => {
             },
             minLength: 0,
@@ -587,7 +591,7 @@ const GooglePlacesAutocomplete = React.createClass({
                     <View style={[defaultStyles.row, this.props.styles.row
           , rowData.isPredefinedPlace ? this.props.styles.specialItemRow : {}]}>
 
-                        <View style={{flex:1, flexDirection:'row',alignItems:'center', marginLeft: 15, marginRight: 15}}>
+                        <View style={{flex:1, flexDirection:'row',alignItems:'center', marginLeft: 25, marginRight: 25}}>
                             {placeIcon}
                             <Text
                                 style={[{flex: 1}, defaultStyles.description
@@ -604,9 +608,15 @@ const GooglePlacesAutocomplete = React.createClass({
 
                         {this._renderLoader(rowData)}
                     </View>
-                    <View style={[defaultStyles.separator, this.props.styles.separator]}/>
                 </View>
             </TouchableHighlight>
+        );
+    },
+
+    _renderSeparator(sectionID, rowID, isLastRow) {
+        var separatorStypeExt = isLastRow ? {marginLeft: 15} : {marginLeft: 44};
+        return (
+            <View key={`${sectionID}-${rowID}`} style={[defaultStyles.separator, this.props.styles.separator, separatorStypeExt]} />
         );
     },
 
@@ -628,6 +638,7 @@ const GooglePlacesAutocomplete = React.createClass({
                     style={[defaultStyles.listView, this.props.styles.listView]}
                     dataSource={this.state.dataSource}
                     renderRow={this._renderRow}
+                    renderSeparator={(sectionID, rowID) => this._renderSeparator(sectionID, rowID, (rowID == (this.state.dataSource._dataBlob.s1.length-1)))}
                     automaticallyAdjustContentInsets={false}
 
                     {...this.props}
@@ -660,17 +671,21 @@ const GooglePlacesAutocomplete = React.createClass({
                 <View
                     style={[defaultStyles.textInputContainer, this.props.styles.textInputContainer]}
                 >
-                    <TextInput
-                        { ...userProps }
-                        ref="textInput"
-                        autoFocus={this.props.autoFocus}
-                        style={[defaultStyles.textInput, this.props.styles.textInput]}
-                        onChangeText={onChangeText ? text => {this._onChangeText(text); onChangeText(text)} : this._onChangeText}
-                        value={this.state.text}
-                        placeholder={this.props.placeholder}
-                        onFocus={onFocus ? () => {this._onFocus(); onFocus()} : this._onFocus}
-                        clearButtonMode="while-editing"
-                    />
+                    <View style={defaultStyles.inputView}>
+                        <TruliaIcon name="search" size={14} color={'white'}
+                            mainProps={{marginRight: 5}}></TruliaIcon>
+                        <TextInput
+                            { ...userProps }
+                            ref="textInput"
+                            autoFocus={this.props.autoFocus}
+                            style={[defaultStyles.textInput, this.props.styles.textInput]}
+                            onChangeText={onChangeText ? text => {this._onChangeText(text); onChangeText(text)} : this._onChangeText}
+                            value={this.state.text}
+                            placeholder={this.props.placeholder}
+                            onFocus={onFocus ? () => {this._onFocus(); onFocus()} : this._onFocus}
+                            clearButtonMode="while-editing"
+                        />
+                    </View>
 
                     <TouchableHighlight underlayColor="transparent" onPress={this.props.onCancelPress}>
                         <Text style={defaultStyles.cancel}>
@@ -679,6 +694,7 @@ const GooglePlacesAutocomplete = React.createClass({
                     </TouchableHighlight>
 
                 </View>
+                <View style={[defaultStyles.separator, this.props.styles.separator]}/>
                 {this._getListView()}
             </View>
         );
