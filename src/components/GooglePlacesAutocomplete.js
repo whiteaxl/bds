@@ -614,7 +614,7 @@ const GooglePlacesAutocomplete = React.createClass({
     },
 
     _renderSeparator(sectionID, rowID, isLastRow) {
-        var separatorStypeExt = isLastRow ? {marginLeft: 15} : {marginLeft: 44};
+        var separatorStypeExt = isLastRow ? {marginLeft: 15} : {marginLeft: 54};
         return (
             <View key={`${sectionID}-${rowID}`} style={[defaultStyles.separator, this.props.styles.separator, separatorStypeExt]} />
         );
