@@ -144,8 +144,8 @@ class PlacesAutoComplete extends React.Component {
           },
           separator:{
             backgroundColor: "#E9E9E9",
-            marginLeft: 15,
-            marginRight: 15
+            marginLeft: 10,
+            marginRight: 10
           }
         }}
 
