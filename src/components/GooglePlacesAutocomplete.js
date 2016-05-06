@@ -8,6 +8,10 @@ import placeUtil from "../lib/PlaceUtil";
 var gui = require("../lib/gui");
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import TruliaIcon from './TruliaIcon';
+
+import RelandIcon from './RelandIcon';
+
 const defaultStyles = {
     container: {
         flex: 1,
@@ -40,7 +44,7 @@ const defaultStyles = {
     cancel: {
         fontSize: 15,
         color: '#1396E0',
-        width: 70,
+        paddingRight: 15,
         paddingTop: 4.5,
         paddingBottom: 4.5,
         height: 28
@@ -552,6 +556,10 @@ const GooglePlacesAutocomplete = React.createClass({
     _getPlaceType(place) {
         return placeUtil.getTypeName(place);
     },
+    
+    _isDiaDiem(place) {
+        return placeUtil.isDiaDiem(place);
+    },
 
     _renderRow(rowData = {}) {
 
@@ -560,6 +568,13 @@ const GooglePlacesAutocomplete = React.createClass({
         rowData.description = rowData.description || rowData.formatted_address || rowData.name;
 
         rowData.relandTypeName = this._getPlaceType(rowData);
+        
+        var placeIcon = this._isDiaDiem(rowData) ?
+            (<RelandIcon name={"location"} size={26} color={'#ACACAC'}
+                         mainProps={{flexDirection: 'row'}}
+                         iconProps={{style: {marginRight: 0, paddingRight: 4.5}}}
+                         textProps={{paddingLeft: 0}}></RelandIcon>) :
+            (<TruliaIcon name={"star"} size={18} color={'#DD0006'}></TruliaIcon>);
 
         return (
             <TouchableHighlight
@@ -572,8 +587,8 @@ const GooglePlacesAutocomplete = React.createClass({
                     <View style={[defaultStyles.row, this.props.styles.row
           , rowData.isPredefinedPlace ? this.props.styles.specialItemRow : {}]}>
 
-                        <View style={{flex:1, flexDirection:'row',alignItems:'center', marginLeft: 20, marginRight: 20}}>
-                            <Icon name="globe" style = { {color:'gray'} } size={15} />
+                        <View style={{flex:1, flexDirection:'row',alignItems:'center', marginLeft: 15, marginRight: 15}}>
+                            {placeIcon}
                             <Text
                                 style={[{flex: 1}, defaultStyles.description
               , this.props.styles.description

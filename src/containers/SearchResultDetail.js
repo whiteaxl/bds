@@ -359,10 +359,10 @@ class SearchResultDetail extends Component {
                                   size={26} iconProps={{style: detailStyles.shareIcon}}>
                       </RelandIcon>
                     </View>
-                    <View style={[detailStyles.circleContainer, {marginTop: 0, backgroundColor: 'white'}]} >
+                    <View style={[detailStyles.circleContainer, {backgroundColor: '#1E7AC0'}]} >
                       <RelandIcon onPress={this._onShare}
-                                  name="zalo" color={'#1E7AC0'}
-                                  size={48} iconProps={{style: [detailStyles.shareIcon,{marginTop: 0}]}}>
+                                  name="zalo" color={'white'}
+                                  size={32} iconProps={{style: [detailStyles.shareIcon,{marginLeft: 2, marginTop: 0.5}]}}>
                       </RelandIcon>
                     </View>
                     <View style={[detailStyles.circleContainer, {backgroundColor: '#CE0005'}]} >

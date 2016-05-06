@@ -129,8 +129,8 @@ class PlacesAutoComplete extends React.Component {
             //fontWeight: 'bold',
             fontFamily : gui.fontFamily,
             fontSize: 15,
-            marginLeft:20,
-            marginRight: 20
+            marginLeft:10,
+            marginRight: 10
           },
           predefinedPlacesDescription: {
             color: '#1faadb'
@@ -144,8 +144,8 @@ class PlacesAutoComplete extends React.Component {
           },
           separator:{
             backgroundColor: "#E9E9E9",
-            marginLeft: 20,
-            marginRight: 20
+            marginLeft: 15,
+            marginRight: 15
           }
         }}
 
