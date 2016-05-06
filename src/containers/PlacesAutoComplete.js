@@ -17,9 +17,8 @@ import {Map} from 'immutable';
 
 import React, { Text, View, Component, ListView
     , TextInput, StyleSheet,RecyclerViewBackedScrollView
-    , TouchableHighlight} from 'react-native'
+    , TouchableHighlight, StatusBar} from 'react-native'
 
-import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
 
 
@@ -62,6 +61,7 @@ var {GooglePlacesAutocomplete} = require('../components/GooglePlacesAutocomplete
 class PlacesAutoComplete extends React.Component {
     constructor(props) {
         super(props);
+        StatusBar.setBarStyle('default');
     }
     _onPress(data, details = null) {
         //console.log(data);
@@ -136,7 +136,7 @@ class PlacesAutoComplete extends React.Component {
             color: '#1faadb'
           },
           container: {
-            top:20,
+            paddingTop:20,
             backgroundColor: 'white'
           },
           row : {
