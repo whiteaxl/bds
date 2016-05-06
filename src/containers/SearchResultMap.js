@@ -90,15 +90,16 @@ class SearchResultMap extends Component {
     this.state = {
       modal: false,
       mapType: "standard",
-      mmarker:{}
+      mmarker:{},
+      region: this.props.region
     }
   }
 
   render() {
     console.log("Call SearchResultMap.render");
-    console.log(this.props.region);
-    var region = this.props.region;
 
+    var region = this.props.region;
+    console.log(region);
     let listAds = this.props.listAds;
 
     console.log("SearchResultMap: number of data " + listAds.length);
@@ -111,7 +112,7 @@ class SearchResultMap extends Component {
         if (item.place.geo.lat && item.place.geo.lon) {
           let marker = {
             coordinate: {latitude: item.place.geo.lat, longitude: item.place.geo.lon},
-            price: item.giaDisplay,
+            price: item.giaFmt,
             id: i,
             cover: item.image.cover,
             diaChi: item.place.diaChi,
@@ -132,7 +133,7 @@ class SearchResultMap extends Component {
 
         <View style={styles.map}>
           <MapView
-            region={this.props.region}
+            region={this.state.region}
             onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
             style={styles.mapView}
             mapType={this.state.mapType}
@@ -188,6 +189,10 @@ class SearchResultMap extends Component {
     console.log("Call SearhResultMap._onRegionChangeComplete");
     console.log(region);
 
+    this.setState({
+      region: region
+    });
+
     var geoBox = apiUtils.getBbox(region);
     this.props.actions.onSearchFieldChange("geoBox", geoBox);
 
@@ -204,33 +209,35 @@ class SearchResultMap extends Component {
   _onCurrentLocationPress(){
     console.log("Call SearchResultMap._onCurrentLocationPress");
 
-    // navigator.geolocation.getCurrentPosition(
-    //     (position) => {
-    //       //this._requestNearby(position.coords.latitude, position.coords.longitude);
-    //       let data = {
-    //         currentLocation : {
-    //           "lat": position.coords.latitude,
-    //           "lon": position.coords.longitude
-    //         }
-    //       };
-    //
-    //       var region = {
-    //         latitude: data.currentLocation.lat,
-    //         longitude: data.currentLocation.lon,
-    //         latitudeDelta: this.props.region.latitudeDelta,
-    //         longitudeDelta: this.props.region.longitudeDelta
-    //       };
-    //
-    //       var geoBox = apiUtils.getBbox(this.state.region);
-    //       this.props.actions.onSearchFieldChange("geoBox", geoBox);
-    //       this.refreshListData();
-    //
-    //     },
-    //     (error) => {
-    //       alert(error.message);
-    //     },
-    //     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    // );
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+          //this._requestNearby(position.coords.latitude, position.coords.longitude);
+          let data = {
+            currentLocation : {
+              "lat": position.coords.latitude,
+              "lon": position.coords.longitude
+            }
+          };
+
+          var region = {
+            latitude: data.currentLocation.lat,
+            longitude: data.currentLocation.lon,
+            latitudeDelta: this.props.region.latitudeDelta,
+            longitudeDelta: this.props.region.longitudeDelta
+          };
+          this.setState({region: region});
+
+          var geoBox = apiUtils.getBbox(region);
+
+          this.props.actions.onSearchFieldChange("geoBox", geoBox);
+
+          this.refreshListData();
+        },
+        (error) => {
+          alert(error.message);
+        },
+        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
   }
 
 
