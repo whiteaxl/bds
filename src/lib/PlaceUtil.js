@@ -11,11 +11,11 @@ placeUtil.type = {
 };
 
 placeUtil.typeName = {
-    TINH : "Tinh",
-    HUYEN : "Huyen",
-    XA : "Xa",
-    DUONG : "Duong",
-    DIA_DIEM: "Dia diem"
+    TINH : "Tỉnh",
+    HUYEN : "Huyện",
+    XA : "Xã",
+    DUONG : "Đường",
+    DIA_DIEM: "Địa điểm"
 };
 
 placeUtil.isHuyen = function(place) {
