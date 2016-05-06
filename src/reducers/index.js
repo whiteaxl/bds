@@ -14,6 +14,7 @@
 import device from './device/deviceReducer';
 import global from './global/globalReducer';
 import search from './search/searchReducer';
+import auth from './auth/authReducer';
 
 
 
@@ -26,7 +27,7 @@ import { combineReducers } from 'redux';
  * EVERY TIME there is a basic action
  */ 
 const rootReducer = combineReducers({
-  //auth,
+  auth,
   device,
   global,
   search

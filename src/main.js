@@ -28,7 +28,7 @@ import {setStore} from './reducers/global/globalActions';
  * initial state
  */
 
-//import authInitialState from './reducers/auth/authInitialState';
+import authInitialState from './reducers/auth/authInitialState';
 import deviceInitialState from './reducers/device/deviceInitialState';
 import globalInitialState from './reducers/global/globalInitialState';
 import searchInitialState from './reducers/search/searchInitialState';
@@ -48,7 +48,7 @@ var VERSION='0.0.1';
  */
 function getInitialState() {
   const _initState = {
-    //auth: new authInitialState,
+    auth: new authInitialState,
     device: (new deviceInitialState).set('isMobile',true),
     global: (new globalInitialState),
     search: (new searchInitialState),
