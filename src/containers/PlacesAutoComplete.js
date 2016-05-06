@@ -133,16 +133,17 @@ class PlacesAutoComplete extends React.Component {
             marginRight: 20
           },
           predefinedPlacesDescription: {
-            color: '#1faadb',
+            color: '#1faadb'
           },
           container: {
-            top:20
+            top:20,
+            backgroundColor: 'white'
           },
           row : {
             height: 44
           },
           separator:{
-            backgroundColor: "lightgray",
+            backgroundColor: "#E9E9E9",
             marginLeft: 20,
             marginRight: 20
           }

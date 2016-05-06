@@ -107,6 +107,12 @@ class SearchResultDetail extends Component {
           });
         },
         (error) => {
+          var geoUrl = 'http://maps.apple.com/?daddr='+data.ads.place.geo.lat+','+data.ads.place.geo.lon+'&dirflg=d&t=s';
+          this.setState({
+            'data' : data.ads,
+            'geoUrl' : geoUrl,
+            loaded: true
+          });
           alert(error.message);
         },
         {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
@@ -557,7 +563,8 @@ var detailStyles = StyleSheet.create({
   },
   moiGioiInfo: {
     flexDirection: 'column',
-    marginLeft: 8
+    marginLeft: 8,
+    width: Dimensions.get('window').width - 192
   },
   moiGioiImage: {
     width: 60,
