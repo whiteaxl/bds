@@ -136,7 +136,7 @@ const GooglePlacesAutocomplete = React.createClass({
             enablePoweredByContainer: true,
             predefinedPlaces: [],
             currentLocation: false,
-            currentLocationLabel: 'Current location',
+            currentLocationLabel: 'Vị trí Hiện tại',
             nearbyPlacesAPI: 'GooglePlacesSearch',
             filterReverseGeocodingByTypes: [],
             predefinedPlacesAlwaysVisible: false,
@@ -188,10 +188,6 @@ const GooglePlacesAutocomplete = React.createClass({
         this._abortRequests();
     },
 
-    componentDidMount() {
-        this.triggerFocus();
-    },
-
     _abortRequests() {
         for (let i = 0; i < this._requests.length; i++) {
             this._requests[i].abort();
@@ -220,8 +216,8 @@ const GooglePlacesAutocomplete = React.createClass({
             (position) => {
                 //this._requestNearby(position.coords.latitude, position.coords.longitude);
                 let data = {
-                    name: "Current Location",
-                    fullName: "Current Location",
+                    name: "Vị trí Hiện tại",
+                    fullName: "Vị trí Hiện tại",
                     currentLocation : {
                         "lat": position.coords.latitude,
                         "lon": position.coords.longitude

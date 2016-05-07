@@ -104,9 +104,9 @@ class PlacesAutoComplete extends React.Component {
         return (
 
         <GooglePlacesAutocomplete
-                placeholder='Search'
+                placeholder='Tìm kiếm'
                 minLength={2} // minimum length of text to search
-                autoFocus={false}
+                autoFocus={true}
                 fetchDetails={false}
                 onPress = {this._onPress.bind(this)}
                 onCancelPress = {this._onCancelPress.bind(this)}
@@ -149,8 +149,8 @@ class PlacesAutoComplete extends React.Component {
           }
         }}
 
-                currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
-                currentLocationLabel="Current location"
+                currentLocation={true} // Will add a 'Vị trí Hiện tại' button at the top of the predefined places list
+                currentLocationLabel="Vị trí Hiện tại"
                 nearbyPlacesAPI='GoogleReverseGeocoding' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
                 GoogleReverseGeocodingQuery={{
           // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro

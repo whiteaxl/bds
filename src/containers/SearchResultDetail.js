@@ -211,7 +211,7 @@ class SearchResultDetail extends Component {
       }
       url = rowData.image.cover;
     }
-    text = 'Check out this property | found using the Reway Mobile app\n\n'
+    text = 'Check out this property | found using the Reland Mobile app\n\n'
         + loaiNhaDat + '\n' + diaChi + '\n' + gia + ', ' + dienTich;
     if (soPhongNgu) {
       text = text + '\n' + soPhongNgu;
