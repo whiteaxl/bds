@@ -160,7 +160,7 @@ class SearchResultDetail extends Component {
 
     var gia = rowData.giaFmt;
     var soTang = rowData.soTang;
-    var huongNha = rowData.huongNha;
+    var huongNha = DanhMuc.HuongNha[rowData.huongNha];
     var duAn = rowData.duAn;
     var luotXem = rowData.luotXem;
     var soPhongNguVal = rowData.soPhongNgu;

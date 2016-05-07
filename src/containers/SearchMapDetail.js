@@ -84,24 +84,25 @@ function mapDispatchToProps(dispatch) {
 class SearchMapDetail extends Component {
 
   constructor(props) {
-    console.log("Call SearchResultMap.constructor");
+    console.log("Call SearchMapDetail.constructor");
     super(props);
 
     this.state = {
       modal: false,
       mapType: "standard",
-      mmarker:{}
+      mmarker:{},
+      region: this.props.region
     }
   }
 
   render() {
-    console.log("Call SearchResultMap.render");
-    console.log(this.props.region);
+    console.log("Call SearchMapDetail.render");
+
     var region = this.props.region;
 
     let listAds = this.props.listAds;
 
-    console.log("SearchResultMap: number of data " + listAds.length);
+    console.log("SearchMapDetail: number of data " + listAds.length);
 
     var markerList = [];
 
@@ -111,7 +112,7 @@ class SearchMapDetail extends Component {
         if (item.place.geo.lat && item.place.geo.lon) {
           let marker = {
             coordinate: {latitude: item.place.geo.lat, longitude: item.place.geo.lon},
-            price: item.giaDisplay,
+            price: item.giaFmt,
             id: i,
             cover: item.image.cover,
             diaChi: item.place.diaChi,
@@ -132,7 +133,7 @@ class SearchMapDetail extends Component {
 
           <View style={styles.map}>
             <MapView
-                region={this.props.region}
+                region={this.state.region}
                 onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
                 style={styles.mapView}
                 mapType={this.state.mapType}
@@ -174,7 +175,7 @@ class SearchMapDetail extends Component {
                            name="list" backgroundColor="white"
                            underlayColor="gray" color={gui.mainColor}
                            style={styles.searchListButtonText} >
-                Danh sách
+                Chi tiết
               </Icon.Button>
             </View>
           </View>
@@ -185,8 +186,11 @@ class SearchMapDetail extends Component {
   }
 
   _onRegionChangeComplete(region) {
-    console.log("Call SearhResultMap._onRegionChangeComplete");
-    console.log(region);
+    console.log("Call SearchMapDetail._onRegionChangeComplete");
+
+    this.setState({
+      region: region
+    });
 
     var geoBox = apiUtils.getBbox(region);
     this.props.actions.onSearchFieldChange("geoBox", geoBox);
@@ -195,47 +199,49 @@ class SearchMapDetail extends Component {
   }
 
   refreshListData() {
-    console.log("Call SearhResultMap.refreshListData");
+    console.log("Call SearchMapDetail.refreshListData");
     this.props.actions.search(
         this.props.search.form.fields
         , () => {});
   }
 
   _onCurrentLocationPress(){
-    console.log("Call SearchResultMap._onCurrentLocationPress");
+    console.log("Call SearchMapDetail._onCurrentLocationPress");
 
-    // navigator.geolocation.getCurrentPosition(
-    //     (position) => {
-    //       //this._requestNearby(position.coords.latitude, position.coords.longitude);
-    //       let data = {
-    //         currentLocation : {
-    //           "lat": position.coords.latitude,
-    //           "lon": position.coords.longitude
-    //         }
-    //       };
-    //
-    //       var region = {
-    //         latitude: data.currentLocation.lat,
-    //         longitude: data.currentLocation.lon,
-    //         latitudeDelta: this.props.region.latitudeDelta,
-    //         longitudeDelta: this.props.region.longitudeDelta
-    //       };
-    //
-    //       var geoBox = apiUtils.getBbox(this.state.region);
-    //       this.props.actions.onSearchFieldChange("geoBox", geoBox);
-    //       this.refreshListData();
-    //
-    //     },
-    //     (error) => {
-    //       alert(error.message);
-    //     },
-    //     {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
-    // );
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+          //this._requestNearby(position.coords.latitude, position.coords.longitude);
+          let data = {
+            currentLocation : {
+              "lat": position.coords.latitude,
+              "lon": position.coords.longitude
+            }
+          };
+
+          var region = {
+            latitude: data.currentLocation.lat,
+            longitude: data.currentLocation.lon,
+            latitudeDelta: this.props.region.latitudeDelta,
+            longitudeDelta: this.props.region.longitudeDelta
+          };
+          this.setState({region: region});
+
+          var geoBox = apiUtils.getBbox(region);
+
+          this.props.actions.onSearchFieldChange("geoBox", geoBox);
+
+          this.refreshListData();
+        },
+        (error) => {
+          alert(error.message);
+        },
+        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
   }
 
 
   _onDrawPressed(){
-    console.log("Call SearchResultMap._onDrawPressed");
+    console.log("Call SearchMapDetail._onDrawPressed");
   }
 
   _onSatellitePress(){
@@ -261,7 +267,7 @@ class SearchMapDetail extends Component {
   }
 
   _onMarkerPress(marker) {
-    console.log("Call SearchResultMap._onMarkerPress");
+    console.log("Call SearchMapDetail._onMarkerPress");
     this.setState({
       modal: true,
       mmarker: marker
