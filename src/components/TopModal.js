@@ -95,9 +95,9 @@ var styles = StyleSheet.create({
     alignItems: 'center'
   },
   modal: {
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     position: 'absolute',
-    top: 2*deviceHeight/3,
+    top: 0,
     right: 0,
     bottom: 0,
     left: 0
@@ -105,6 +105,7 @@ var styles = StyleSheet.create({
   thumb: {
     justifyContent: 'flex-end',
     alignItems: 'stretch',
+    marginTop: 2*deviceHeight/3,
     height: deviceHeight/3,
     width: deviceWidth,
     alignSelf: 'auto'

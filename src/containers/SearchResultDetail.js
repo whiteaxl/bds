@@ -103,6 +103,7 @@ class SearchResultDetail extends Component {
           this.setState({
             'data' : data.ads,
             'geoUrl' : geoUrl,
+            'coords' : position.coords,
             loaded: true
           });
         },
@@ -111,6 +112,7 @@ class SearchResultDetail extends Component {
           this.setState({
             'data' : data.ads,
             'geoUrl' : geoUrl,
+            'coords' : {},
             loaded: true
           });
           alert(error.message);
@@ -432,7 +434,23 @@ class SearchResultDetail extends Component {
   }
 
   _onMapPressed() {
-    Actions.SearchMapDetail();
+    var {geo} = this.state.data.place;
+    let data = {
+      currentLocation : {
+        "lat": geo.lat,
+        "lon": geo.lon
+      }
+    };
+
+    var region = {
+      latitude: data.currentLocation.lat,
+      longitude: data.currentLocation.lon,
+      latitudeDelta: 0.021,
+      longitudeDelta: 0.0144
+    };
+    let listAds = [];
+    listAds.push(this.state.data);
+    Actions.SearchMapDetail({region: region, listAds: listAds, coords: this.state.coords});
   }
 
   _drawDiemDanhGia(diemDanhGia) {

@@ -38,7 +38,7 @@ const SearchForm = Record({
         geoBox: [],
         place: {
             placeId: "ChIJKQqAE44ANTERDbkQYkF-mAI",
-            relandTypeName : "Tinh",
+            relandTypeName : "Tỉnh",
             fullName: "Hanoi",
             currentLocation : ''
         },
