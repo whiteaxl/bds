@@ -1,121 +1,119 @@
-console.log("Call localDB include...");
-
 var ReactCBLite = require('react-native').NativeModules.ReactCBLite;
-ReactCBLite.init(5984, 'admin', '321', e => {
-    console.log('initialized');
-});
-
 var {manager} = require('react-native-couchbase-lite');
-var dbName = 'default';
-var remoteDbUrl = 'http://localhost:4984/' + dbName;
 
+import log from "../lib/logUtil";
+import cfg from "../cfg";
 
-var dbService = {};
+class DBService {
+    constructor() {
+        this.adsDesignDocName = "ads";
+        this.dbName = 'default';
+        this.remoteDbUrl = `http://${cfg.server}:4984/${this.dbName}`;
 
-//dbService.database = database;
+        ReactCBLite.init(5984, 'admin', '321', e => {
+            log.warn('initialized localDB!');
+        });
+    }
 
-dbService.loginAndStartSync = function (username, password) {
+    //may be need check connection when close...
+    db() {
+        if (!this.database) {
+            log.warn("Create db manager for local database!");
+            this.database = new manager('http://admin:321@localhost:5984/', this.dbName);
+        }
 
-    var settings = {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-            name: username,
-            password: password
-        })
+        return this.database
     };
 
-    return fetch(remoteDbUrl + "/_session", settings)
-        .then((res) => {
-            switch (res.status) {
-                case 200:
-                {
-                    console.log("Login success to setup sync 1112");
+    _createDesignDoc() {
+        log.enter("localDB._createDesignDoc");
 
-                    var database = new manager('http://admin:321@localhost:5984/', dbName);
-                    /*
-                    var remoteDbUrl = 'http://0982969669:123@localhost:4984/' + dbName;
-                    database.replicate(dbName, remoteDbUrl, true);
-                    database.replicate(remoteDbUrl, dbName, true);
-                    */
-
-                    /*
-                    var adsViews = {
-                        listAll: {
-                            "map": function (doc) {
-                                emit(doc.adsID, doc);
-                            }.toString()
-                        },
-                        list2: {
-                            "map": function (doc) {
-                                emit(null, doc);
-                            }.toString()
-                        }
-                    };
-                    console.log("create view _design_ads2");
-                    database.createDesignDocument("_design_ads2", adsViews)
-                        .then((res) => {
-                            console.log("created design doc", res);
-                        });
-                        */
-
-                    let sessionCookie = res.headers.map['set-cookie'][0];
-
-                    console.log(sessionCookie);
-
-
-                    database.createDatabase()
-                        .then((res) => {
-                            database.replicate(
-                                dbName,
-                                {headers: {Cookie: sessionCookie}, url: remoteDbUrl},
-                                true
-                            );
-
-                            database.replicate(
-                                {headers: {Cookie: sessionCookie}, url: remoteDbUrl},
-                                dbName,
-                                true
-                            );
-
-                            var adsViews = {
-                                all_ads: {
-                                    "map": function (doc) {
-                                        emit(doc.adsID, doc);
-                                    }.toString()
-                                }
-                            };
-                            console.log("create view ads");
-                            database.createDesignDocument("ads", adsViews)
-                                .then((res) => {
-                                    console.log("created design doc", res);
-                                });
-
-                        }).catch((e) => {
-                            console.log(e);
-                        });
-
-
-                    return {status: 0, sessionCookie: sessionCookie};
-                    //return 1
-                }
-                default:
-                {
-                    console.log("Bad user", res);
-
-                    return {status: 1, error: res};
-                }
+        var adsViews = {
+            all_ads: {
+                "map": function (doc) {
+                    if (doc.type == 'Ads')
+                        emit(doc.adsID, doc);
+                }.toString()
             }
-        });
-};
+        };
 
-dbService.getAllDocuments = function () {
-    console.log("aaaaaaa");
-    return database.getAllDocuments();
-};
+        this.db().createDesignDocument(this.adsDesignDocName, adsViews)
+            .then((res) => {
+                console.log("created design doc", res);
+            });
+    }
 
+    startSync(sessionCookie) {
+        this.db().replicate(
+            this.dbName,
+            {headers: {Cookie: sessionCookie}, url: this.remoteDbUrl},
+            true
+        );
+
+        this.db().replicate(
+            {headers: {Cookie: sessionCookie}, url: this.remoteDbUrl},
+            this.dbName,
+            true
+        );
+    }
+
+    loginAndStartSync(username, password) {
+
+        var settings = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({name: username, password: password})
+        };
+
+        return fetch(this.remoteDbUrl + "/_session", settings)
+            .then((res) => {
+                switch (res.status) {
+                    case 200:
+                    {
+                        log.info("Login success, starting sync...");
+                        let sessionCookie = res.headers.map['set-cookie'][0];
+                        //console.log(sessionCookie);
+
+                        this.db().createDatabase()
+                            .then((res) => {
+                                this.startSync(sessionCookie);
+
+                                this.db().getDesignDocument(this.adsDesignDocName)
+                                    .then((res) => {
+                                        this._createDesignDoc();
+                                    })
+                                    .catch((e) => {
+                                        log.error("error when getDesignDocument:", e);
+                                    });
+                            })
+                            .catch((e) => {
+                                log.error(e);
+                            });
+
+                        return {status: 0, sessionCookie: sessionCookie};
+                    }
+                    default:
+                    {
+                        log.error("Bad user", res);
+                        return {status: 1, error: res};
+                    }
+                }
+            });
+    }
+
+    getAllDocuments() {
+        return this.db().getAllDocuments();
+    }
+
+    getAllAds() {
+        return this.db().queryView(this.adsDesignDocName, 'all_ads')
+            .then((res) => {
+                return res.rows || [];
+            });
+    }
+}
+
+let dbService = new DBService();
 
 export default dbService;
 

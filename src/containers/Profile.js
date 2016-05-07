@@ -13,12 +13,13 @@ import * as globalActions from '../reducers/global/globalActions';
 import {Map} from 'immutable';
 
 
-import React, {Text, View, Component} from 'react-native'
+import React, {Text, View, Component, StyleSheet} from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
 
-import styles from './styles';
+import log from "../lib/logUtil";
+import gui from "../lib/gui";
 
 
 /**
@@ -46,7 +47,7 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-//import dbService from "../lib/localDB";
+import dbService from "../lib/localDB";
 
 
 var {manager} = require('react-native-couchbase-lite');
@@ -56,26 +57,23 @@ var database = new manager('http://admin:321@localhost:5984/', localDbName);
 class Profile extends Component {
     constructor() {
         super();
-        console.log("call mee1111")
         this.state = {
             myAds:[]
         };
     }
     componentDidMount() {
-        console.log("Call componentDidMount");
+        log.enter("componentDidMount");
 
         database.getAllDocuments()
             .then((all) => {
-                console.log(all);
+                log.info(all);
                 this.setState({
                     myAds: all.rows
                 })
             })
             .catch((e) => {
-                console.log(e);
+                log.error(e);
             });
-
-
     }
 
     onStopAutoSync() {
@@ -90,41 +88,34 @@ class Profile extends Component {
     }
 
     onTestSync() {
-        /*
-        var dbName = 'default';
-        var remoteDbUrl = 'http://0982969669:123@localhost:4984/' + dbName;
-        database.replicate(dbName, remoteDbUrl, true);
-        database.replicate(remoteDbUrl, dbName, true);
-        */
-        database.queryView('ads', 'all_ads')
+        dbService.getAllAds()
             .then((res) => {
-                console.log("by view:" , res);
+                console.log(res.rows);
 
                 this.setState({
                     myAds: res.rows
                 })
             });
-
     }
 
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.welcome}>........Profile screen........</Text>
-                <Text style={{fontFamily: 'Open Sans'}}>
+                <Text style={styles.text}>........Profile screen........</Text>
+                <Text style={styles.text}>
                     Very long text to test new font that we will use for all app
                     Spacious, Move In Condition, 2 bedroom corner apartment that has 2 exposures. There are
                     plenty of closets. Walk to train, bus, shopping, dining, beach, marina and NewRoc Center.
                     Exercise room and laundry in building
                 </Text>
-                <Text style={styles.stuff}>Welcome: {this.props.global.currentUser.userID}</Text>
+                <Text style={styles.text}>Welcome: {this.props.global.currentUser.userID}</Text>
 
                 <Button onPress={this.onTestSync.bind(this)}>TestSync</Button>
                 <Button onPress={this.onAutoSync.bind(this)}>Auto Sync each 100ms</Button>
                 <Button onPress={this.onStopAutoSync.bind(this)}>Stop Sync each 100ms</Button>
 
 
-                <Text style={{fontFamily: 'Open Sans'}}>Number of my ads: {this.state.myAds ? this.state.myAds.length : 0}</Text>
+                <Text style={styles.text}>Number of my ads: {this.state.myAds ? this.state.myAds.length : 0}</Text>
             </View>
         )
     }
@@ -133,3 +124,13 @@ class Profile extends Component {
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 
+
+var styles = StyleSheet.create({
+    container :{
+        flex: 1
+    },
+    text : {
+        fontFamily: gui.fontFamily,
+        fontSize: gui.fontSize
+    }
+});

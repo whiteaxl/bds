@@ -312,7 +312,6 @@ export function login(username, password) {
 
         return dbService.loginAndStartSync(username, password)
             .then(function (json) {
-                console.log(json);
                 if (json.status===0) {
                     json.phone = username;
 

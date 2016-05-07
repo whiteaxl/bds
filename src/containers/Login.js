@@ -19,6 +19,8 @@ import * as authActions from '../reducers/auth/authActions';
  */
 import {Map} from 'immutable';
 
+import {Alert} from "react-native";
+
 /**
  * ## Redux boilerplate
  */
@@ -56,9 +58,10 @@ export default class Login extends React.Component {
 
         this.props.actions.login(userDto.phone, userDto.password)
             .then((res) => {
-                console.log("done", res);
                 if (res.status ===0) {
                     Actions.Home();
+                } else {
+                    Alert.alert("Invalid username or password!");
                 }
             })
     }

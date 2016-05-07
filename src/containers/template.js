@@ -14,12 +14,15 @@ import {Map} from 'immutable';
 
 
 
-import React, { Text, View, Component } from 'react-native'
+import React, { Text, View, Component, StyleSheet } from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
 
 import styles from './styles';
+
+import log from "../lib/logUtil";
+import gui from "../lib/gui";
 
 
 /** 
