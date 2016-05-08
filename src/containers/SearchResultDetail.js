@@ -577,7 +577,7 @@ var detailStyles = StyleSheet.create({
     marginTop: 2
   },
   pagingIcon: {
-    borderRadius: 5,
+    borderRadius: 0,
     marginLeft: 10,
     marginBottom: 2,
     marginTop: 2

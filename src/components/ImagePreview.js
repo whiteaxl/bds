@@ -20,6 +20,8 @@ import Swiper from 'react-native-swiper';
 
 import gui from '../lib/gui';
 
+import LinearGradient from 'react-native-linear-gradient';
+
 var {
     height: deviceHeight,
     width: deviceWidth
@@ -65,11 +67,14 @@ class ImagePreview extends React.Component {
             this.props.images.map(function (imageUrl) {
                 imageItems.push(
                     <View style={styles.imgView} key={"img"+(imageIndex++)}>
-                        <Image style={styles.imgItem}
-                               source={{uri: `${imageUrl}`}}
-                               resizeMode={Image.resizeMode.contain}
-                        >
-                        </Image>
+                        <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
+                                        style={styles.linearGradient}>
+                            <Image style={styles.imgItem}
+                                   source={{uri: `${imageUrl}`}}
+                                   resizeMode={Image.resizeMode.contain}
+                            >
+                            </Image>
+                        </LinearGradient>
                     </View>
                 );
             });
@@ -89,7 +94,7 @@ class ImagePreview extends React.Component {
                         {imageItems}
                     </Swiper>
                     <View style={styles.closeView}>
-                        <RelandIcon name={"left"} color={gui.mainColor} mainProps={styles.closeBtn}
+                        <RelandIcon name={"close"} color={gui.mainColor} mainProps={styles.closeBtn}
                                     size={20} onPress={this.closeModal.bind(this)}>
                         </RelandIcon>
                     </View>
@@ -129,7 +134,7 @@ var styles = StyleSheet.create({
         marginTop: 2
     },
     pagingIcon: {
-        borderRadius: 5,
+        borderRadius: 0,
         marginLeft: 10,
         marginBottom: 2,
         marginTop: 2
@@ -140,7 +145,7 @@ var styles = StyleSheet.create({
         borderRadius: 5
     },
     container: {
-        backgroundColor: 'lightgray',
+        backgroundColor: 'white',
         flex: 1,
         alignItems: 'flex-start',
         justifyContent: 'flex-start'
