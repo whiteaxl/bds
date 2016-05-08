@@ -48,7 +48,7 @@ class ImagePreview extends React.Component {
     }
 
     componentWillMount() {
-        Orientation.unlockAllOrientations();
+        Orientation.lockToLandscape();
     }
 
     closeModal() {
@@ -82,13 +82,13 @@ class ImagePreview extends React.Component {
         return (
             <Animated.View style={[styles.modal, styles.flexCenter, {transform: [{translateY: this.state.offset}]}]}>
                 <View style={styles.container}>
-                    <Swiper style={styles.imgSlide}
+                    <Swiper style={styles.imgSlide} width={deviceHeight} height={deviceWidth}
                             showsButtons={false} autoplay={false} loop={false}
                             dot={<View style={[styles.dot, {backgroundColor: 'transparent'}]} />}
                             activeDot={<View style={[styles.dot, {backgroundColor: 'transparent'}]}/>}
                             renderPagination={this._renderPagination}
                             paginationStyle={{
-                                top: 28, left: deviceWidth/2-35, right: null,
+                                top: 20, left: deviceHeight/2-35, right: null,
                               }}
                     >
                         {imageItems}
@@ -107,8 +107,8 @@ class ImagePreview extends React.Component {
         return (
             <View style={{
       position: 'absolute',
-      top: 28,
-      left: deviceWidth/2-35,
+      top: 20,
+      left: deviceHeight/2-35,
     }}>
                 <RelandIcon name="camera" color="white"
                             iconProps={{style: styles.pagingIcon}} size={16}
@@ -153,7 +153,7 @@ var styles = StyleSheet.create({
     closeView: {
         position: 'absolute',
         backgroundColor: 'transparent',
-        top: 30
+        top: 22
     },
     closeBtn: {
         flexDirection: 'row',
@@ -185,8 +185,8 @@ var styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'auto',
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height
+        width: deviceHeight,
+        height: deviceWidth
     },
     flexCenter: {
         flex: 1,
@@ -200,14 +200,6 @@ var styles = StyleSheet.create({
         right: 0,
         bottom: 0,
         left: 0
-    },
-    thumb: {
-        justifyContent: 'flex-end',
-        alignItems: 'stretch',
-        marginTop: 2*deviceHeight/3,
-        height: deviceHeight/3,
-        width: deviceWidth,
-        alignSelf: 'auto'
     },
     linearGradient: {
         flex: 1,
@@ -234,13 +226,6 @@ var styles = StyleSheet.create({
     },
     heartButton: {
         marginBottom: 10
-    },
-    detail: {
-        backgroundColor: 'transparent',
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        top: deviceHeight/3-60,
-        width: deviceWidth
     }
 });
 
