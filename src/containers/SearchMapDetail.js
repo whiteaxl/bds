@@ -88,7 +88,8 @@ class SearchMapDetail extends Component {
     this.state = {
       mapType: "standard",
       mmarker:{},
-      region: this.props.region
+      region: this.props.region,
+      mapName: "Satellite"
     }
   }
 
@@ -142,9 +143,22 @@ class SearchMapDetail extends Component {
                   </MapView.Marker>
               ))}
             </MapView>
+            <View style={styles.mapButtonContainer}>
+              <TouchableOpacity onPress={this._onChangeMapPress.bind(this)} style={[styles.bubble, styles.button]}>
+                <Text style={styles.mapIcon}>{this.state.mapName}</Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
     )
+  }
+
+  _onChangeMapPress() {
+    var {mapName} = this.state;
+    this.setState({
+      mapType: "Satellite" == mapName ? "satellite" : "standard",
+      mapName: "Satellite" == mapName ? "Standard" : "Satellite"
+    });
   }
 
   _onSatellitePress(){
@@ -246,31 +260,31 @@ var styles = StyleSheet.create({
     backgroundColor: gui.mainColor,
     paddingHorizontal: 5,
     paddingVertical: 5,
-    borderRadius: 10,
+    borderRadius: 3
   },
   button: {
-    width: 50,
-    paddingVertical: 5,
+    width: 85,
+    paddingTop: 8,
+    paddingBottom: 8,
     alignItems: 'center',
-    marginVertical: 5,
-    backgroundColor: 'white',
-    marginLeft: 15
+    backgroundColor: gui.mainColor,
+    marginLeft: 15,
+    left: width - 105
   },
   mapIcon: {
-    color: 'black',
+    color: 'white',
+    textAlign: 'center'
   },
   text: {
-    color: 'white',
+    color: 'white'
   },
   mapButtonContainer: {
     position: 'absolute',
-    top: height-250,
-    flexDirection: 'column',
+    top: height-105,
+    flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'center',
-    marginVertical: 5,
-    marginBottom: 0,
-    backgroundColor: 'transparent',
+    backgroundColor: 'transparent'
   },
 
   tabbar: {

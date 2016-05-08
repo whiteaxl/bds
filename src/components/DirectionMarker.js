@@ -17,8 +17,10 @@ class DirectionMarker extends React.Component{
     getDiaChi(){
         var diaChi = this.props.diaChi;
         if (diaChi) {
-            if (diaChi.length > 34) {
-                diaChi = diaChi.substring(0, 31) + '...';
+            var {width} = Dimensions.get('window');
+            var maxDiaChiLength = (width-width%12)/12;
+            if (diaChi.length > maxDiaChiLength) {
+                diaChi = diaChi.substring(0, maxDiaChiLength-2) + '...';
             }
         }
         return diaChi;
@@ -70,7 +72,7 @@ var styles = StyleSheet.create({
         fontWeight: 'normal',
         fontSize: 14,
         marginLeft: 15,
-        width: Dimensions.get('window').width-100
+        marginRight: 10
     },
     carIcon: {
         paddingRight: 12,
