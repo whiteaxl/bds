@@ -43,6 +43,8 @@ import Button from 'react-native-button';
 
 var Communications = require('react-native-communications');
 
+import ImagePreview from '../components/ImagePreview';
+
 /**
 * ## Redux boilerplate
 */
@@ -85,7 +87,8 @@ class SearchResultDetail extends Component {
 
     this.state = {
       'data' : null,
-      loaded: false
+      loaded: false,
+      modal: false
     }
   }
   fetchData() {
@@ -191,23 +194,32 @@ class SearchResultDetail extends Component {
     var _scrollView: ScrollView;
     var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=12&size='+mapSize+'x'+((mapSize-mapSize%2)/2)+'&markers=color:red|'+rowData.place.geo.lat+','+rowData.place.geo.lon+'&sensor=false';
     var imageItems = [];
+    var imageDataItems = [];
     var imageIndex = 0;
+    var imagePreviewAction = this._onImagePreviewPressed.bind(this);
     if (rowData.image) {
       rowData.image.images.map(function(imageUrl) {
+        imageDataItems.push(imageUrl);
         imageItems.push(
           <View style={detailStyles.slide} key={"img"+(imageIndex++)}>
+            <TouchableHighlight onPress={imagePreviewAction} underlayColor="transparent" >
             <Image style={detailStyles.imgItem}
                source={{uri: `${imageUrl}`}}>
             </Image>
+            </TouchableHighlight>
           </View>
         );
       });
       if (imageItems.length == 0) {
+        var imageUrl = rowData.image.cover;
+        imageDataItems.push(imageUrl);
         imageItems.push(
           <View style={detailStyles.slide} key={"img"+(imageIndex)}>
+            <TouchableHighlight onPress={imagePreviewAction} underlayColor="transparent" >
             <Image style={detailStyles.imgItem}
-               source={{uri: `${rowData.image.cover}`}}>
+               source={{uri: `${imageUrl}`}}>
             </Image>
+            </TouchableHighlight>
           </View>
         );
       }
@@ -403,9 +415,19 @@ class SearchResultDetail extends Component {
 
         </View>
         <SearchResultDetailFooter mobile={mobile}/>
-			</View>
+        {this.state.modal ? <ImagePreview images={imageDataItems} closeModal={() => this.setState({modal: false}) }/> : null }
+        </View>
 		)
 	}
+
+  _onImagePreviewPressed() {
+    if (this.state.modal) {
+      return;
+    }
+    this.setState({
+      modal: true
+    });
+  }
 
   _renderPagination(index, total, context) {
     return (
@@ -711,7 +733,7 @@ var detailStyles = StyleSheet.create({
   fullWidthContainer: {
       flex: 1,
       alignItems: 'stretch',
-      backgroundColor: '#F5FCFF',
+      backgroundColor: 'white',
   },
   searchContent: {
     flex: 1,

@@ -68,7 +68,7 @@ var mStyles = StyleSheet.create({
       backgroundColor: gui.mainColor
   },
   text: {
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'white',
     position: 'absolute',
     left:52,
     right:52
