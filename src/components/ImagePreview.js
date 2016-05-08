@@ -88,7 +88,7 @@ class ImagePreview extends React.Component {
                             activeDot={<View style={[styles.dot, {backgroundColor: 'transparent'}]}/>}
                             renderPagination={this._renderPagination}
                             paginationStyle={{
-                                top: 20, left: deviceHeight/2-35, right: null,
+                                top: 28, left: deviceHeight/2-35, right: null,
                               }}
                     >
                         {imageItems}
@@ -107,7 +107,7 @@ class ImagePreview extends React.Component {
         return (
             <View style={{
       position: 'absolute',
-      top: 20,
+      top: 28,
       left: deviceHeight/2-35,
     }}>
                 <RelandIcon name="camera" color="white"
@@ -153,7 +153,7 @@ var styles = StyleSheet.create({
     closeView: {
         position: 'absolute',
         backgroundColor: 'transparent',
-        top: 22
+        top: 30
     },
     closeBtn: {
         flexDirection: 'row',
