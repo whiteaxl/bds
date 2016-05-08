@@ -59,7 +59,7 @@ function mapStateToProps(state) {
 
   var region = apiUtils.getRegion(geoBox);
   region.longitudeDelta = region.latitudeDelta * ASPECT_RATIO;
-
+  console.log(region);
   return {
     ... state,
     listAds: listAds,
@@ -88,6 +88,7 @@ class SearchResultMap extends Component {
     super(props);
 
     this.state = {
+      firstLoad: true,
       modal: false,
       mapType: "standard",
       mmarker:{},
@@ -99,7 +100,7 @@ class SearchResultMap extends Component {
     console.log("Call SearchResultMap.render");
 
     var region = this.props.region;
-    console.log(region);
+    console.log(this.state.region);
     let listAds = this.props.listAds;
 
     console.log("SearchResultMap: number of data " + listAds.length);
@@ -133,7 +134,8 @@ class SearchResultMap extends Component {
 
         <View style={styles.map}>
           <MapView
-            region={this.state.region}
+            ref="map"
+            initialRegion={this.state.region}
             onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
             style={styles.mapView}
             mapType={this.state.mapType}
@@ -188,15 +190,26 @@ class SearchResultMap extends Component {
   _onRegionChangeComplete(region) {
     console.log("Call SearhResultMap._onRegionChangeComplete");
     console.log(region);
+    console.log(this.state.firstLoad);
+
+    if (this.state.firstLoad){
+      this.setState({
+        firstLoad: false,
+        region: this.props.region
+      });
+      return;
+    }
 
     this.setState({
-      region: region
+      region: region,
+      firstLoad: false
     });
 
-    var geoBox = apiUtils.getBbox(region);
+    var geoBox = apiUtils.getBbox(this.state.region);
     this.props.actions.onSearchFieldChange("geoBox", geoBox);
 
     this.refreshListData();
+
   }
 
   refreshListData() {
@@ -289,7 +302,7 @@ class SearchResultMap extends Component {
 
   _onListPressed() {
     console.log("On List pressed!");
-    Actions.SearchResultList({type: "reset"});
+    Actions.SearchResultList({type: "replace"});
     console.log("On List pressed completed!");
   }
 
