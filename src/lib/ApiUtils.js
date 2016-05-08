@@ -16,14 +16,15 @@ var ApiUtils = {
     var lonMax = region.longitude + region.longitudeDelta/2;
     var latMin = latMax - region.latitudeDelta;
     var lonMin = lonMax - region.longitudeDelta;
-    return [lonMin, latMin, lonMax, latMax];
+    return [latMin, lonMin, latMax, lonMax];
   },
 
+  //lat1, lon1, lat2, lon2
   getRegion: function(geoBox){
-    var latitudeDelta = geoBox[3] - geoBox[1];
-    var longitudeDelta = geoBox[2] - geoBox[0];
-    var latitude = geoBox[3] - latitudeDelta/2;
-    var longitude = geoBox[2] - longitudeDelta/2;
+    var latitudeDelta = geoBox[2] - geoBox[0];
+    var longitudeDelta = geoBox[3] - geoBox[1];
+    var latitude = geoBox[2] - latitudeDelta/2;
+    var longitude = geoBox[3] - longitudeDelta/2;
     return {latitude: latitude, longitude: longitude, latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta};
   }
 };
