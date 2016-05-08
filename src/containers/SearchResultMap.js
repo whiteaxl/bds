@@ -54,8 +54,8 @@ function mapStateToProps(state) {
 
   var viewport = state.search.result.viewport;
   console.log(viewport);
-  var geoBox = [viewport.southwest.lon, viewport.southwest.lat,
-                viewport.northeast.lon, viewport.northeast.lat];
+  var geoBox = [viewport.southwest.lat, viewport.southwest.lon,
+                viewport.northeast.lat, viewport.northeast.lon];
 
   var region = apiUtils.getRegion(geoBox);
   region.longitudeDelta = region.latitudeDelta * ASPECT_RATIO;
