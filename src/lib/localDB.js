@@ -107,7 +107,10 @@ class DBService {
 
     getAllAds() {
         return this.db().queryView(this.adsDesignDocName, 'all_ads')
+
             .then((res) => {
+                console.log(res);
+
                 return res.rows || [];
             });
     }

@@ -8,7 +8,7 @@ var glyphMap = { 'inbox':'1','camera': 59396,'camera-o': 59397,'map':59392, 'sor
                 'phone-o': 59402, 'phone': 59403, 'more': 59404, 'down': 59405, 'left': 59406, 'right': 59407, 'up': 59408,
                 'chat': 59409, 'email': 59410, 'home': 59411, 'dot': 59412, 'search': 59413, 'zalo': 59414, 'sort-alt': 59415,
                 'facebook-o': 59416, 'facebook': 59417, 'google': 59418, 'google-alt': 59419, 'skype-o': 59420, 'skype': 59421,
-                'twitter-o': 59422, 'twitter': 59423, 'sms': 59424, 'location-o': 59425, 'location': 59426};
+                'twitter-o': 59422, 'twitter': 59423, 'sms': 59424, 'location-o': 59425, 'location': 59426, 'close': 59427};
 var Icon = createIconSet(glyphMap, 'RelandIcon');
 
 class RelandIconButton extends React.Component {

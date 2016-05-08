@@ -313,7 +313,7 @@ var styles = StyleSheet.create({
   fullWidthContainer: {
     flex: 1,
     alignItems: 'stretch',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'white',
   },
   container: {
     position: 'absolute',

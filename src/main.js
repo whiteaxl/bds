@@ -14,6 +14,8 @@ import configureStore from './lib/configureStore';
 
 import db from "./lib/localDB";
 
+var Orientation = React.NativeModules.Orientation;
+
 /**
  * ## Actions
  *  The necessary actions for dispatching our bootstrap values
@@ -67,6 +69,10 @@ function getInitialState() {
 export default function native(platform) {
 
   let MainBDS = React.createClass( {
+    componentWillMount() {
+      Orientation.lockToPortrait();
+    },
+
     componentDidMount() {
 
     },
