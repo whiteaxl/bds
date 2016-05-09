@@ -43,7 +43,9 @@ var SearchResultFooter = React.createClass({
   },
 
   _onMap() {
-    Actions.SearchResultMap();
+    console.log("On Map pressed!");
+    Actions.SearchResultMap({type: "reset"});
+    console.log("On Map pressed completed");
   }
 });
 

@@ -25,9 +25,10 @@ import PriceMarker from '../components/PriceMarker';
 import MMapMarker from '../components/MMapMarker';
 import TopModal from '../components/TopModal';
 
+import GiftedSpinner from "../components/GiftedSpinner";
+
 import gui from '../lib/gui';
 
-import api from '../lib/FindApi';
 import apiUtils from '../lib/ApiUtils';
 
 const {
@@ -49,23 +50,21 @@ const actions = [
 function mapStateToProps(state) {
   console.log("SearchResultMap.mapStateToProps");
 
-
-  var listAds = state.search.result.listAds;
-
   var viewport = state.search.result.viewport;
-  console.log(viewport);
+
   var geoBox = [viewport.southwest.lat, viewport.southwest.lon,
                 viewport.northeast.lat, viewport.northeast.lon];
 
   var region = apiUtils.getRegion(geoBox);
   region.longitudeDelta = region.latitudeDelta * ASPECT_RATIO;
   console.log(region);
+
   return {
     ... state,
-    listAds: listAds,
+    listAds: state.search.result.listAds,
+    region: region,
     errorMsg: state.search.result.errorMsg,
-    placeFullName: state.search.form.fields.place.fullName,
-    region: region
+    placeFullName: state.search.form.fields.place.fullName
   };
 }
 
@@ -99,8 +98,18 @@ class SearchResultMap extends Component {
   render() {
     console.log("Call SearchResultMap.render");
 
-    var region = this.props.region;
+    let myProps = this.props;
+    if (myProps.loading) {
+      return (
+          <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
+            {/*<Text> Loading ... </Text>*/}
+            <GiftedSpinner />
+          </View>
+      )
+    }
+
     console.log(this.state.region);
+
     let listAds = this.props.listAds;
 
     console.log("SearchResultMap: number of data " + listAds.length);
@@ -129,13 +138,14 @@ class SearchResultMap extends Component {
       <View style={styles.fullWidthContainer}>
 
         <View style={styles.search}>
-          <SearchHeader placeName={this.props.placeFullName}/>
+          <SearchHeader placeName={this.props.placeFullName} />
         </View>
+
 
         <View style={styles.map}>
           <MapView
             ref="map"
-            initialRegion={this.state.region}
+            region={this.state.region}
             onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
             style={styles.mapView}
             mapType={this.state.mapType}
@@ -147,15 +157,23 @@ class SearchResultMap extends Component {
              ))}
           </MapView>
           <View style={styles.mapButtonContainer}>
-            <TouchableOpacity onPress={this._onDrawPressed.bind(this)} style={[styles.bubble, styles.button]}>
+            <TouchableOpacity onPress={this._onDrawPressed.bind(this)} >
+              <View style={[styles.bubble, styles.button]}>
                 <Text style={styles.mapIcon}>Draw</Text>
+              </View>
             </TouchableOpacity>
-            <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} style={[styles.bubble, styles.button]}>
+            <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} >
+              <View style={[styles.bubble, styles.button]}>
                 <Icon name="location-arrow" style={styles.mapIcon} size={20}></Icon>
+              </View>
             </TouchableOpacity>
-            <View style={[styles.bubble, styles.button, {width: 100}]}>
-              <Text style={styles.mapIcon}>Tổng số: {listAds.length}</Text>
-            </View>
+
+          </View>
+        </View>
+
+        <View style={styles.resultContainer}>
+          <View style={[styles.resultText]}>
+            <Text style={styles.mapIcon}>  Đang hiển thị {listAds.length} trong tổng số {listAds.length} tin. Zoom để xem thêm </Text>
           </View>
         </View>
 
@@ -365,23 +383,41 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 5,
     backgroundColor: 'white',
+    opacity: 0.75,
     marginLeft: 15
   },
   mapIcon: {
-    color: 'black',
+    color: 'black'
   },
   text: {
     color: 'white',
   },
   mapButtonContainer: {
     position: 'absolute',
-    top: height-250,
+    top: height-200,
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center',
     marginVertical: 5,
     marginBottom: 0,
     backgroundColor: 'transparent',
+  },
+
+  resultContainer: {
+    position: 'absolute',
+    top: 60,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    marginVertical: 0,
+    marginBottom: 0,
+    backgroundColor: 'transparent',
+  },
+  resultText: {
+    width: width,
+    alignItems: 'flex-start',
+    backgroundColor: 'white',
+    opacity: 0.75,
   },
 
   tabbar: {
