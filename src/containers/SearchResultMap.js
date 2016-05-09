@@ -57,7 +57,6 @@ function mapStateToProps(state) {
 
   var region = apiUtils.getRegion(geoBox);
   region.longitudeDelta = region.latitudeDelta * ASPECT_RATIO;
-  console.log(region);
 
   return {
     ... state,
@@ -97,18 +96,6 @@ class SearchResultMap extends Component {
 
   render() {
     console.log("Call SearchResultMap.render");
-
-    let myProps = this.props;
-    if (myProps.loading) {
-      return (
-          <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
-            {/*<Text> Loading ... </Text>*/}
-            <GiftedSpinner />
-          </View>
-      )
-    }
-
-    console.log(this.state.region);
 
     let listAds = this.props.listAds;
 
