@@ -14,7 +14,7 @@ import React,
 
 import RelandIcon from './RelandIcon';
 
-var Orientation = React.NativeModules.Orientation;
+var Orientation = require('react-native-orientation');
 
 import Swiper from 'react-native-swiper';
 

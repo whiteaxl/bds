@@ -14,7 +14,7 @@ import configureStore from './lib/configureStore';
 
 import db from "./lib/localDB";
 
-var Orientation = React.NativeModules.Orientation;
+var Orientation = require('react-native-orientation');
 
 /**
  * ## Actions
