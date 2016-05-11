@@ -1,11 +1,11 @@
 'use strict';
 
-import React, { View, Text, Navigator, Platform, StyleSheet, Component } from 'react-native';
-import { Scene, Router, TabBar, Modal, Schema, Actions, Reducer} from 'react-native-router-flux';
+import React, {View, Text, Navigator, Platform, StyleSheet, Component} from 'react-native';
+import {Scene, Router, TabBar, Modal, Schema, Actions, Reducer} from 'react-native-router-flux';
 
 import Login from './Login';
 import Launch from './Launch';
-import Register from './Register';
+import LoginRegister from './LoginRegister';
 
 import Search from './Search';
 import SearchResultList from './SearchResultList';
@@ -29,75 +29,75 @@ import Inbox from '../containers/Screen2';
 import TestListView from '../test/TestListView';
 
 
-
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 class TabIcon extends React.Component {
-    render(){
-        var color = this.props.selected ? '#FF3366' : '#FFB3B3';
-        return (
-            <View style={{flex:1, flexDirection:'column', alignItems:'center', alignSelf:'center'}}>
-                <Icon style={{color: color}} name={this.props.iconName} size={30} />
-                <Text style={{color: color}}>{this.props.title}</Text>
-            </View>
-        );
-    }
+  render() {
+    var color = this.props.selected ? '#FF3366' : '#FFB3B3';
+    return (
+      <View style={{flex:1, flexDirection:'column', alignItems:'center', alignSelf:'center'}}>
+        <Icon style={{color: color}} name={this.props.iconName} size={30}/>
+        <Text style={{color: color}}>{this.props.title}</Text>
+      </View>
+    );
+  }
 }
 
 const hideNavBar = Platform.OS === 'android'
 const paddingTop = Platform.OS === 'android' ? 0 : 8
 
-const reducerCreate = params=>{
-    const defaultReducer = Reducer(params);
-    return (state, action)=>{
-        //console.log("ACTION:", action);
-        //console.log(state);
-        return defaultReducer(state, action);
-    }
+const reducerCreate = params=> {
+  const defaultReducer = Reducer(params);
+  return (state, action)=> {
+    //console.log("ACTION:", action);
+    //console.log(state);
+    return defaultReducer(state, action);
+  }
 };
 
 class App extends Component {
   render() {
 
     return (
-        <Router createReducer={reducerCreate}>
+      <Router createReducer={reducerCreate}>
 
-            <Scene key="root" hideNavBar={true}>
+        <Scene key="root" hideNavBar={true}>
 
-				<Scene key='Launch' component={Launch} initial={true} title="Welcome" type="replace" />
+          <Scene key='Launch' component={Launch} initial={true} title="Welcome" type="replace"/>
 
-				<Scene key='Register' component={Register} title="Register Screen" />
-                <Scene key='Login' component={Login} title="Login Screen" type="replace" />
+          <Scene key='LoginRegister' component={LoginRegister} title="Register Screen"/>
+          <Scene key='Login' component={Login} title="Login Screen" type="replace"/>
 
-                <Scene key='Search' component={Search} title="Tìm kiếm" hideNavBar={true} direction="vertical" />
-                <Scene key='SearchResultList' component={SearchResultList} title="Danh sách" hideNavBar={true} />
-                <Scene key='SearchResultMap' component={SearchResultMap}  title="Bản đồ" hideNavBar={true} />
-                <Scene key='PropertyTypes' component={PropertyTypes} title="Loại nhà đất" hideNavBar={true} />
-                <Scene key='HuongNha' component={HuongNha} title="Hướng nhà" hideNavBar={true} />
+          <Scene key='Search' component={Search} title="Tìm kiếm" hideNavBar={true} direction="vertical"/>
+          <Scene key='SearchResultList' component={SearchResultList} title="Danh sách" hideNavBar={true}/>
+          <Scene key='SearchResultMap' component={SearchResultMap} title="Bản đồ" hideNavBar={true}/>
+          <Scene key='PropertyTypes' component={PropertyTypes} title="Loại nhà đất" hideNavBar={true}/>
+          <Scene key='HuongNha' component={HuongNha} title="Hướng nhà" hideNavBar={true}/>
 
-                <Scene key='OrderPicker' component={OrderPicker} title="Sắp xếp" hideNavBar={true} />
-                <Scene key='SearchResultDetail' component={SearchResultDetail} title="Chi tiết" hideNavBar={true} />
-                <Scene key='SearchSuggestion' duration={20} direction="vertical" component={SearchSuggestion} title="Serch Text" hideNavBar={true} />
-                <Scene key='SearchMapDetail' component={SearchMapDetail} title="Bản đồ" hideNavBar={true} />
+          <Scene key='OrderPicker' component={OrderPicker} title="Sắp xếp" hideNavBar={true}/>
+          <Scene key='SearchResultDetail' component={SearchResultDetail} title="Chi tiết" hideNavBar={true}/>
+          <Scene key='SearchSuggestion' duration={20} direction="vertical" component={SearchSuggestion}
+                 title="Serch Text" hideNavBar={true}/>
+          <Scene key='SearchMapDetail' component={SearchMapDetail} title="Bản đồ" hideNavBar={true}/>
 
-                <Scene key='TestListView' component={TestListView} title="Serch Text" hideNavBar={true} />
+          <Scene key='TestListView' component={TestListView} title="Serch Text" hideNavBar={true}/>
 
-                <Scene key="Home" tabs={true} default="Main" type="replace">
-                    <Scene key="Main" title="home" iconName={"home"} icon={TabIcon}
-                           component={Home}
-                           hideNavBar={true} initial={true} />
+          <Scene key="Home" tabs={true} default="Main" type="replace">
+            <Scene key="Main" title="home" iconName={"home"} icon={TabIcon}
+                   component={Home}
+                   hideNavBar={true} initial={true}/>
 
-                    <Scene key="Inbox" component={Inbox} title="Inbox" iconName={"inbox"} icon={TabIcon} />
-                    <Scene key="activity" component={TestListView} title="activity" iconName={"bell-o"} icon={TabIcon} />
-                    <Scene key="Profile" component={Profile} title="Profile" iconName={"gear"} icon={TabIcon} />
+            <Scene key="Inbox" component={Inbox} title="Inbox" iconName={"inbox"} icon={TabIcon}/>
+            <Scene key="activity" component={TestListView} title="activity" iconName={"bell-o"} icon={TabIcon}/>
+            <Scene key="Profile" component={Profile} title="Profile" iconName={"gear"} icon={TabIcon}/>
 
-                </Scene>
+          </Scene>
 
 
-            </Scene>
-            
+        </Scene>
 
-		</Router>
+
+      </Router>
     );
   }
 }

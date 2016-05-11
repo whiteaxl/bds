@@ -126,7 +126,7 @@ class Profile extends Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text style={styles.text}>........Profile screen........</Text>
+                <Text style={styles.text}> Welcome {this.props.auth.phone}</Text>
 
                 <Button style={styles.btn} onPress={this.onTestSync.bind(this)}>TestSync</Button>
                 <Button style={styles.btn} onPress={this.onAutoSync.bind(this)}>Auto Sync each 100ms</Button>

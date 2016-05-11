@@ -11,7 +11,7 @@ import Swiper from 'react-native-swiper';
 export default class IntroSwiper extends React.Component {
   render() {
     return (
-      <Swiper style={styles.wrapper} showsButtons={false} autoplay={true} autoplayTimeout={5}
+      <Swiper style={styles.wrapper} showsButtons={false} //autoplay={true} autoplayTimeout={5}
               dot={<View style={[styles.dot, {backgroundColor: 'white'}]} />}
               activeDot={<View style={[styles.dot, {backgroundColor: 'red'}]}/>}
       >

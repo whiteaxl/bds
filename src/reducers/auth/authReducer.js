@@ -72,7 +72,8 @@ export default function authReducer(state = initialState, action) {
 
         case LOGIN_SUCCESS:
         {
-            let nextState = state.set("sessionCookie", action.payload.sessionCookie)
+            let nextState = state.set(
+              "sessionCookie", action.payload.sessionCookie)
                 .set('isFetching', false)
                 .set('state', LOGIN_STATE_LOGIN);
 

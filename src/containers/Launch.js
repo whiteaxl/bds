@@ -102,7 +102,7 @@ class Launch extends React.Component {
   }
 
     register() {
-        Actions.Register();
+        Actions.LoginRegister();
     }
 
   render() {
