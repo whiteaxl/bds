@@ -15,10 +15,50 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 import LinearGradient from 'react-native-linear-gradient';
 
+// import { bindActionCreators } from 'redux';
+// import { connect } from 'react-redux';
+//
+// /**
+//  * The actions we need
+//  */
+// import * as globalActions from '../reducers/global/globalActions';
+// import * as searchActions from '../reducers/search/searchActions';
+//
+// /**
+//  * Immutable Mapn
+//  */
+// import {Map} from 'immutable';
+//
+// import {Actions} from 'react-native-router-flux';
+
 var {
   height: deviceHeight,
   width: deviceWidth
 } = Dimensions.get('window');
+
+
+// const actions = [
+//   globalActions,
+//   searchActions
+// ];
+//
+// function mapStateToProps(state) {
+//   return {
+//     ...state
+//   };
+// }
+//
+// function mapDispatchToProps(dispatch) {
+//   const creators = Map()
+//       .merge(...actions)
+//       .filter(value => typeof value === 'function')
+//       .toObject();
+//
+//   return {
+//     actions: bindActionCreators(creators, dispatch),
+//     dispatch
+//   };
+// }
 
 class TopModal extends React.Component {
   constructor(props) {
@@ -40,6 +80,8 @@ class TopModal extends React.Component {
       duration: 500,
       toValue: deviceHeight
     }).start(this.props.closeModal);
+
+    //Actions.SearchResultDetail({adsID: this.props.adsID});
   }
 
   render() {
@@ -145,5 +187,5 @@ var styles = StyleSheet.create({
   }
 });
 
-
 export default TopModal;
+//export default connect(mapStateToProps, mapDispatchToProps)(TopModal);

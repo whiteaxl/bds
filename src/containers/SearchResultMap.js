@@ -39,6 +39,7 @@ var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / (height-110);
 
+const MAX_VIEWABLE_ADS = 25;
 /**
 * ## Redux boilerplate
 */
@@ -63,7 +64,8 @@ function mapStateToProps(state) {
     listAds: state.search.result.listAds,
     region: region,
     errorMsg: state.search.result.errorMsg,
-    placeFullName: state.search.form.fields.place.fullName
+    placeFullName: state.search.form.fields.place.fullName,
+    loading: state.search.loadingFromServer
   };
 }
 
@@ -95,53 +97,37 @@ class SearchResultMap extends Component {
   }
 
   render() {
+
     console.log("Call SearchResultMap.render");
+    console.log("this.props.loading: " + this.props.loading);
+    console.log();
 
     let listAds = this.props.listAds;
 
     console.log("SearchResultMap: number of data " + listAds.length);
 
-    var markerList = [];
-
-    if (listAds) {
-      var i = 0;
-      listAds.map(function(item){
-        if (item.place.geo.lat && item.place.geo.lon) {
-          let marker = {
-            coordinate: {latitude: item.place.geo.lat, longitude: item.place.geo.lon},
-            price: item.giaFmt,
-            id: i,
-            cover: item.image.cover,
-            diaChi: item.place.diaChi,
-            dienTich: item.dienTich
-          };
-          markerList.push(marker);
-          i++;
-        }
-      });
-    }
+    let viewableList = this.getViewableAds(listAds);
 
     return (
       <View style={styles.fullWidthContainer}>
 
         <View style={styles.search}>
-          <SearchHeader placeName={this.props.placeFullName} />
+          <SearchHeader placeName={this.props.placeFullName} containerForm="SearchResultMap"/>
         </View>
-
 
         <View style={styles.map}>
           <MapView
-            ref="map"
-            region={this.state.region}
-            onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
-            style={styles.mapView}
-            mapType={this.state.mapType}
+              ref="map"
+              region={this.state.region}
+              onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
+              style={styles.mapView}
+              mapType={this.state.mapType}
           >
-            {markerList.map( marker =>(
+            {viewableList.map( marker =>(
                 <MapView.Marker key={marker.id} coordinate={marker.coordinate} onPress={()=>this._onMarkerPress(marker)}>
                   <PriceMarker color={gui.mainColor} amount={marker.price}/>
                 </MapView.Marker>
-             ))}
+            ))}
           </MapView>
           <View style={styles.mapButtonContainer}>
             <TouchableOpacity onPress={this._onDrawPressed.bind(this)} >
@@ -154,15 +140,10 @@ class SearchResultMap extends Component {
                 <Icon name="location-arrow" style={styles.mapIcon} size={20}></Icon>
               </View>
             </TouchableOpacity>
-
           </View>
         </View>
 
-        <View style={styles.resultContainer}>
-          <View style={[styles.resultText]}>
-            <Text style={styles.mapIcon}>  Đang hiển thị {listAds.length} trong tổng số {listAds.length} tin. Zoom để xem thêm </Text>
-          </View>
-        </View>
+        {this.getTotalResultView(listAds.length, this.props.loading)}
 
         <View style={styles.tabbar}>
           <View style={styles.searchListButton}>
@@ -191,6 +172,45 @@ class SearchResultMap extends Component {
       </View>
     )
   }
+
+  getTotalResultView(numberOfAds, loading){
+    if(loading){
+      return (<View style={styles.resultContainer}>
+        <View style={[styles.resultText]}>
+          <Text style={styles.mapIcon}>  Đang tải dữ liệu ... </Text>
+        </View>
+      </View>)
+    }
+
+    return (<View style={styles.resultContainer}>
+      <View style={[styles.resultText]}>
+        <Text style={styles.mapIcon}>  Đang hiển thị {numberOfAds < MAX_VIEWABLE_ADS ? numberOfAds : MAX_VIEWABLE_ADS} trong tổng số {numberOfAds} tin. Zoom để xem thêm </Text>
+      </View>
+    </View>)
+  }
+
+  getViewableAds(listAds){
+      var markerList = [];
+
+      if (listAds) {
+        var i = 0;
+        listAds.map(function(item){
+          if (item.place.geo.lat && item.place.geo.lon && i < MAX_VIEWABLE_ADS) {
+            let marker = {
+              coordinate: {latitude: item.place.geo.lat, longitude: item.place.geo.lon},
+              price: item.giaFmt,
+              id: item.adsID,
+              cover: item.image.cover,
+              diaChi: item.place.diaChi,
+              dienTich: item.dienTich
+                      };
+                      markerList.push(marker);
+                      i++;
+                  }
+              });
+          }
+          return markerList;
+      }
 
   _onRegionChangeComplete(region) {
     console.log("Call SearhResultMap._onRegionChangeComplete");

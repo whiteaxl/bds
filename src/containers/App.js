@@ -12,6 +12,7 @@ import SearchResultList from './SearchResultList';
 import SearchResultMap from './SearchResultMap';
 import PropertyTypes from '../components/PropertyTypes';
 import OrderPicker from '../components/OrderPicker';
+import TopModal from '../components/TopModal';
 import SearchResultDetail from './SearchResultDetail';
 import SearchMapDetail from './SearchMapDetail';
 import HuongNha from '../components/HuongNha';
@@ -72,6 +73,7 @@ class App extends Component {
           <Scene key='SearchResultList' component={SearchResultList} title="Danh sách" hideNavBar={true}/>
           <Scene key='SearchResultMap' component={SearchResultMap} title="Bản đồ" hideNavBar={true}/>
           <Scene key='PropertyTypes' component={PropertyTypes} title="Loại nhà đất" hideNavBar={true}/>
+          
           <Scene key='HuongNha' component={HuongNha} title="Hướng nhà" hideNavBar={true}/>
 
           <Scene key='OrderPicker' component={OrderPicker} title="Sắp xếp" hideNavBar={true}/>
