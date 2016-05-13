@@ -26,6 +26,13 @@ var ApiUtils = {
     var latitude = geoBox[2] - latitudeDelta/2;
     var longitude = geoBox[3] - longitudeDelta/2;
     return {latitude: latitude, longitude: longitude, latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta};
+  },
+
+  getRegionByViewport: function(viewport){
+    var geoBox = [viewport.southwest.lat, viewport.southwest.lon,
+                  viewport.northeast.lat, viewport.northeast.lon];
+
+    return ApiUtils.getRegion(geoBox);
   }
 };
 

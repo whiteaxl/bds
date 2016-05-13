@@ -58,6 +58,13 @@ var InitialState = Record({
 
     form: new SearchForm,
     loadingFromServer : false,
+    map : new (Record({
+        type: "Standard",
+        region: {latitude: 20.95389909999999,
+                 longitude: 105.75490945,
+                 longitudeDelta: 0.06102071125314978,
+                 latitudeDelta: 0.08616620000177733}
+    })),
 
     result: new (Record({
         listAds: [],

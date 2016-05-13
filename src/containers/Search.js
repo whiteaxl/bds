@@ -33,6 +33,8 @@ import SearchInput from '../components/SearchInputExt';
 
 import PlaceUtil from '../lib/PlaceUtil';
 
+import apiUtils from '../lib/ApiUtils';
+
 import SegmentedControl from '../components/SegmentedControl';
 
 /**
@@ -283,7 +285,8 @@ class Search extends Component {
     this.props.actions.search(
         this.props.search.form.fields
         , () => {});
-  }
+
+ }
 
   onMoreOption() {
     this.setState({showMore: true});

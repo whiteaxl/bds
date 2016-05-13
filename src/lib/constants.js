@@ -1,7 +1,8 @@
 import keyMirror from 'key-mirror';
 
 export default keyMirror({
-  ON_SEARCH_FIELD_CHANGE : null, 
+  ON_MAP_CHANGE: null,
+  ON_SEARCH_FIELD_CHANGE : null,
   SEARCH_STATE_INPUT: null,
   SEARCH_STATE_LOADING: null,
   SEARCH_STATE_SUCCESS: null,
@@ -50,7 +51,7 @@ export default keyMirror({
   FETCH_SEARCH_RESULT_SUCCESS : null,
   
   //search - map
-  MAP_STATE_LOADING: null,
 
-  ON_AUTH_FIELD_CHANGE: null, 
+
+  ON_AUTH_FIELD_CHANGE: null
 });

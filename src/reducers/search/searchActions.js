@@ -14,10 +14,17 @@ const {
     FETCH_DETAIL_FAIL,
     FETCH_DETAIL_SUCCESS,
     SET_LOADING_DETAIL,
-    SEARCH_STATE_INPUT
+    SEARCH_STATE_INPUT,
+    ON_MAP_CHANGE
 
 } = require('../../lib/constants').default;
 
+export function onMapChange(field, value){
+    return {
+        type: ON_MAP_CHANGE,
+        payload: {field: field, value: value}
+    };
+}
 
 export function onSearchFieldChange(field, value) {
     return {

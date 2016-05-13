@@ -25,15 +25,9 @@ import PriceMarker from '../components/PriceMarker';
 import MMapMarker from '../components/MMapMarker';
 import TopModal from '../components/TopModal';
 
-import GiftedSpinner from "../components/GiftedSpinner";
-
 import gui from '../lib/gui';
 
 import apiUtils from '../lib/ApiUtils';
-
-const {
-    MAP_STATE_LOADING,
-} = require('../lib/constants').default;
 
 var { width, height } = Dimensions.get('window');
 
@@ -51,18 +45,10 @@ const actions = [
 function mapStateToProps(state) {
   console.log("SearchResultMap.mapStateToProps");
 
-  var viewport = state.search.result.viewport;
-
-  var geoBox = [viewport.southwest.lat, viewport.southwest.lon,
-                viewport.northeast.lat, viewport.northeast.lon];
-
-  var region = apiUtils.getRegion(geoBox);
-  region.longitudeDelta = region.latitudeDelta * ASPECT_RATIO;
-
   return {
     ... state,
     listAds: state.search.result.listAds,
-    region: region,
+    viewport: state.search.result.viewport,
     errorMsg: state.search.result.errorMsg,
     placeFullName: state.search.form.fields.place.fullName,
     loading: state.search.loadingFromServer
@@ -87,20 +73,21 @@ class SearchResultMap extends Component {
     console.log("Call SearchResultMap.constructor");
     super(props);
 
+    var region = this.props.search.map.region;
+    region.longitudeDelta = region.latitudeDelta * ASPECT_RATIO;
+
+    this.props.actions.onMapChange("region", region);
+
     this.state = {
-      firstLoad: true,
+      firstLoad : true,
       modal: false,
       mapType: "standard",
-      mmarker:{},
-      region: this.props.region
+      mmarker:{}
     }
   }
 
   render() {
-
     console.log("Call SearchResultMap.render");
-    console.log("this.props.loading: " + this.props.loading);
-    console.log();
 
     let listAds = this.props.listAds;
 
@@ -118,7 +105,7 @@ class SearchResultMap extends Component {
         <View style={styles.map}>
           <MapView
               ref="map"
-              region={this.state.region}
+              region={this.props.search.map.region}
               onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
               style={styles.mapView}
               mapType={this.state.mapType}
@@ -214,23 +201,17 @@ class SearchResultMap extends Component {
 
   _onRegionChangeComplete(region) {
     console.log("Call SearhResultMap._onRegionChangeComplete");
-    console.log(region);
-    console.log(this.state.firstLoad);
 
     if (this.state.firstLoad){
       this.setState({
-        firstLoad: false,
-        region: this.props.region
+        firstLoad : false
       });
       return;
     }
 
-    this.setState({
-      region: region,
-      firstLoad: false
-    });
+    this.props.actions.onMapChange("region", region);
 
-    var geoBox = apiUtils.getBbox(this.state.region);
+    var geoBox = apiUtils.getBbox(this.props.search.map.region);
     this.props.actions.onSearchFieldChange("geoBox", geoBox);
 
     this.refreshListData();
@@ -263,13 +244,14 @@ class SearchResultMap extends Component {
             latitudeDelta: this.props.region.latitudeDelta,
             longitudeDelta: this.props.region.longitudeDelta
           };
-          this.setState({region: region});
 
           var geoBox = apiUtils.getBbox(region);
 
           this.props.actions.onSearchFieldChange("geoBox", geoBox);
 
           this.refreshListData();
+
+          this.props.actions.onMapChange("region", region);
         },
         (error) => {
           alert(error.message);
