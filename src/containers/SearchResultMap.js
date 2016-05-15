@@ -15,17 +15,29 @@ import * as searchActions from '../reducers/search/searchActions';
 
 import {Map} from 'immutable';
 
-import React, { Text, View, Component, StyleSheet, Navigator, TouchableOpacity, Dimensions } from 'react-native'
+import React, { Text,
+    View,
+    Component,
+    StyleSheet,
+    Navigator,
+    TouchableOpacity,
+    Dimensions,
+    SegmentedControlIOS } from 'react-native';
+
 import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import MapView from 'react-native-maps';
 
 import SearchHeader from '../components/SearchHeader';
 import PriceMarker from '../components/PriceMarker';
-import MMapMarker from '../components/MMapMarker';
+
 import TopModal from '../components/TopModal';
+import Modal from 'react-native-modalbox';
+import SegmentedControl from '../components/SegmentedControl'
+
 
 import gui from '../lib/gui';
+import DanhMuc from '../assets/DanhMuc';
 
 import apiUtils from '../lib/ApiUtils';
 
@@ -82,7 +94,8 @@ class SearchResultMap extends Component {
       firstLoad : true,
       modal: false,
       mapType: "standard",
-      mmarker:{}
+      mmarker:{},
+      openLocalInfo: false
     }
   }
 
@@ -119,7 +132,7 @@ class SearchResultMap extends Component {
           <View style={styles.mapButtonContainer}>
             <TouchableOpacity onPress={this._onDrawPressed.bind(this)} >
               <View style={[styles.bubble, styles.button]}>
-                <Text style={styles.mapIcon}>Draw</Text>
+                <Icon name="hand-o-up" style={styles.mapIcon} size={20}></Icon>
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} >
@@ -134,7 +147,7 @@ class SearchResultMap extends Component {
 
         <View style={styles.tabbar}>
           <View style={styles.searchListButton}>
-            <Icon.Button onPress={this._onLocalInfoPressed}
+            <Icon.Button onPress={this._onLocalInfoPressed.bind(this)}
                          name="location-arrow" backgroundColor="white"
                          underlayColor="gray" color={gui.mainColor}
                          style={styles.searchListButtonText} >
@@ -156,6 +169,27 @@ class SearchResultMap extends Component {
         </View>
 
         {this.state.modal ? <TopModal marker={this.state.mmarker} closeModal={() => this.setState({modal: false}) }/> : null }
+
+        <Modal style={[styles.modal]} isOpen={this.state.openLocalInfo} position={"center"} ref={"modal3"} isDisabled={false}>
+          <View style={styles.modalTitle}>
+            <Text style={styles.modalTitleText}>Local info</Text>
+            <TouchableOpacity style={{flexDirection: "row", alignItems: "flex-end"}}
+                              onPress={this._onCloseLocalInfo.bind(this)}>
+              <Icon name="times" color={gui.arrowColor} size={18} />
+            </TouchableOpacity>
+          </View>
+          <View style={{marginTop: 10}}>
+            <SegmentedControlIOS
+                values={DanhMuc.MapType}
+                selectedIndex={DanhMuc.MapType.indexOf(this.state.mapType)}
+                onChange={this._onMapTypeChange.bind(this)}
+                tintColor={gui.mainColor} height={30} width={width-80}
+            >
+            </SegmentedControlIOS>
+          </View>
+
+        </Modal>
+
       </View>
     )
   }
@@ -281,7 +315,20 @@ class SearchResultMap extends Component {
    this.setState({
       mapType: "standard"
     });
-  }  
+  }
+
+  _onMapTypeChange(event){
+    this.setState({
+      preMapType: event.nativeEvent.selectedSegmentIndex
+    });
+  }
+
+  _onCloseLocalInfo(){
+    this.setState({
+      mapType: DanhMuc.MapType[this.state.preMapType],
+      openLocalInfo: false
+    });
+  }
 
   _onMarkerSelect() {
     this.setState({modal: true});
@@ -301,6 +348,9 @@ class SearchResultMap extends Component {
 
   _onLocalInfoPressed() {
     console.log("On Local Info pressed!");
+    this.setState({
+      openLocalInfo: true
+    });
   }
 
   _onSaveSearchPressed() {
@@ -427,6 +477,39 @@ var styles = StyleSheet.create({
     marginBottom: 10,
     paddingLeft: 20,
     color: 'white',
+  },
+  modal: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    height: 100,
+    width: width-40,
+    marginVertical: 0,
+    borderRadius: 5
+  },
+  modalTitle: {
+    flexDirection : "row",
+    //borderWidth:1,
+    //borderColor: "red",
+    justifyContent :'space-between',
+    paddingRight: 15,
+    paddingLeft: 15,
+    paddingTop: 12,
+    paddingBottom: 5,
+    borderTopWidth: 1,
+    marginVertical: 0,
+    width: width-40,
+    borderTopColor: '#f8f8f8',
+    backgroundColor: '#f8f8f8',
+    borderRadius: 5
+  },
+  modalTitleText: {
+    fontSize: 16,
+    fontFamily: 'Open Sans',
+    color: '#606060',
+    justifyContent :'space-between',
+    padding: 0,
+    borderTopWidth: 1,
+    borderTopColor: gui.separatorLine
   }
 });
 

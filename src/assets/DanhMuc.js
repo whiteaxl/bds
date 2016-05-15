@@ -138,6 +138,11 @@ danhMuc.LoaiTin = {
     1: "Cho thuê"
 };
 
+danhMuc.MapType = [
+    "standard",
+    "satellite",
+    "hybrid"
+];
 
 danhMuc.getDanhMucKeys = function (hashDanhMuc) {
     var result = [];
