@@ -22,6 +22,7 @@ import React, { Text,
     Navigator,
     TouchableOpacity,
     Dimensions,
+    Image,
     SegmentedControlIOS } from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
@@ -33,8 +34,7 @@ import PriceMarker from '../components/PriceMarker';
 
 import TopModal from '../components/TopModal';
 import Modal from 'react-native-modalbox';
-import SegmentedControl from '../components/SegmentedControl'
-
+import LinearGradient from 'react-native-linear-gradient';
 
 import gui from '../lib/gui';
 import DanhMuc from '../assets/DanhMuc';
@@ -95,7 +95,8 @@ class SearchResultMap extends Component {
       modal: false,
       mapType: "standard",
       mmarker:{},
-      openLocalInfo: false
+      openLocalInfo: false,
+      openDetailAdsModal: false
     }
   }
 
@@ -106,7 +107,7 @@ class SearchResultMap extends Component {
 
     console.log("SearchResultMap: number of data " + listAds.length);
 
-    let viewableList = this.getViewableAds(listAds);
+    let viewableList = this._getViewableAds(listAds);
 
     return (
       <View style={styles.fullWidthContainer}>
@@ -143,7 +144,7 @@ class SearchResultMap extends Component {
           </View>
         </View>
 
-        {this.getTotalResultView(listAds.length, this.props.loading)}
+        {this._renderTotalResultView(listAds.length, this.props.loading)}
 
         <View style={styles.tabbar}>
           <View style={styles.searchListButton}>
@@ -168,33 +169,35 @@ class SearchResultMap extends Component {
           </View>
         </View>
 
-        {this.state.modal ? <TopModal marker={this.state.mmarker} closeModal={() => this.setState({modal: false}) }/> : null }
-
-        <Modal style={[styles.modal]} isOpen={this.state.openLocalInfo} position={"center"} ref={"modal3"} isDisabled={false}>
-          <View style={styles.modalTitle}>
-            <Text style={styles.modalTitleText}>Local info</Text>
-            <TouchableOpacity style={{flexDirection: "row", alignItems: "flex-end"}}
-                              onPress={this._onCloseLocalInfo.bind(this)}>
-              <Icon name="times" color={gui.arrowColor} size={18} />
-            </TouchableOpacity>
+        <Modal style={styles.adsModal} isOpen={this.state.openDetailAdsModal} position={"bottom"}
+               ref={"detailAdsModal"} isDisabled={false} onPress={this._onDetailAdsPress.bind(this)}>
+          <View style={styles.detailAdsModal}>
+          <TouchableOpacity onPress={this._onDetailAdsPress.bind(this)}>
+            <Image style={styles.detailAdsModalThumb} source={{uri: `${this.state.mmarker.cover}`}} >
+              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
+                              style={styles.detailAdsModalLinearGradient}>
+                <View style={styles.detailAdsModalDetail}>
+                  <View>
+                    <Text style={styles.detailAdsModalPrice}>{this.state.mmarker.price}</Text>
+                    <Text style={styles.detailAdsModalText}>{this._getDiaChi(this.state.mmarker.diaChi)}</Text>
+                  </View>
+                  <Icon.Button name="heart-o" backgroundColor="transparent"
+                               underlayColor="transparent" style={styles.detailAdsModalTextHeartButton}/>
+                </View>
+              </LinearGradient>
+            </Image>
+          </TouchableOpacity>
           </View>
-          <View style={{marginTop: 10}}>
-            <SegmentedControlIOS
-                values={DanhMuc.MapType}
-                selectedIndex={DanhMuc.MapType.indexOf(this.state.mapType)}
-                onChange={this._onMapTypeChange.bind(this)}
-                tintColor={gui.mainColor} height={30} width={width-80}
-            >
-            </SegmentedControlIOS>
-          </View>
-
         </Modal>
+
+
+        {this._renderLocalInfoModal()}
 
       </View>
     )
   }
 
-  getTotalResultView(numberOfAds, loading){
+  _renderTotalResultView(numberOfAds, loading){
     if(loading){
       return (<View style={styles.resultContainer}>
         <View style={[styles.resultText]}>
@@ -210,7 +213,7 @@ class SearchResultMap extends Component {
     </View>)
   }
 
-  getViewableAds(listAds){
+  _getViewableAds(listAds){
       var markerList = [];
 
       if (listAds) {
@@ -248,15 +251,38 @@ class SearchResultMap extends Component {
     var geoBox = apiUtils.getBbox(this.props.search.map.region);
     this.props.actions.onSearchFieldChange("geoBox", geoBox);
 
-    this.refreshListData();
+    this._refreshListData();
 
   }
 
-  refreshListData() {
-    console.log("Call SearhResultMap.refreshListData");
+  _refreshListData() {
+    console.log("Call SearhResultMap._refreshListData");
     this.props.actions.search(
         this.props.search.form.fields
         , () => {});
+  }
+
+  _renderLocalInfoModal(){
+    return (
+     <Modal style={[styles.modal]} isOpen={this.state.openLocalInfo} position={"center"} ref={"localInfoModal"} isDisabled={false}>
+      <View style={styles.modalTitle}>
+        <Text style={styles.modalTitleText}>Local info</Text>
+        <TouchableOpacity style={{flexDirection: "row", alignItems: "flex-end"}}
+                          onPress={this._onCloseLocalInfo.bind(this)}>
+          <Icon name="times" color={gui.arrowColor} size={18} />
+        </TouchableOpacity>
+      </View>
+      <View style={{marginTop: 10}}>
+        <SegmentedControlIOS
+            values={DanhMuc.MapType}
+            selectedIndex={DanhMuc.MapType.indexOf(this.state.mapType)}
+            onChange={this._onMapTypeChange.bind(this)}
+            tintColor={gui.mainColor} height={30} width={width-80}
+        >
+        </SegmentedControlIOS>
+      </View>
+    </Modal>
+    )
   }
 
   _onCurrentLocationPress(){
@@ -283,7 +309,7 @@ class SearchResultMap extends Component {
 
           this.props.actions.onSearchFieldChange("geoBox", geoBox);
 
-          this.refreshListData();
+          this._refreshListData();
 
           this.props.actions.onMapChange("region", region);
         },
@@ -299,22 +325,10 @@ class SearchResultMap extends Component {
     console.log("Call SearchResultMap._onDrawPressed");
   }
 
-  _onSatellitePress(){
-    this.setState({
-      mapType: "satellite"
-    });
-  }
-
-  _onHybridPress(){
-    this.setState({
-      mapType: "hybrid"
-    });
-  }
-
-  _onStandardPress(){
-   this.setState({
-      mapType: "standard"
-    });
+  _onDetailAdsPress(){
+    console.log("Call SearchResultMap._onDetailAdsPress");
+    console.log(this.state.mmarker.id);
+    Actions.SearchResultDetail({adsID: this.state.mmarker.id});
   }
 
   _onMapTypeChange(event){
@@ -337,13 +351,13 @@ class SearchResultMap extends Component {
   _onMarkerPress(marker) {
     console.log("Call SearchResultMap._onMarkerPress");
     this.setState({
-      modal: true,
+      openDetailAdsModal: true,
       mmarker: marker
     });
   }
 
   _onMarkerDeselect(){
-    this.setState({modal: false});
+    this.setState({openDetailAdsModal: false});
   }
 
   _onLocalInfoPressed() {
@@ -361,6 +375,27 @@ class SearchResultMap extends Component {
     console.log("On List pressed!");
     Actions.SearchResultList({type: "replace"});
     console.log("On List pressed completed!");
+  }
+
+  _getDiaChi(param){
+    var diaChi = param;
+    var originDiaChi = param;
+    if (diaChi) {
+      var maxDiaChiLength = 35;
+      var index = diaChi.indexOf(',', maxDiaChiLength-5);
+      var length = 0;
+      if (index !== -1 && index <= maxDiaChiLength) {
+        length = index;
+      } else {
+        index = diaChi.indexOf(' ', maxDiaChiLength-5);
+        length = index !== -1 && index <= maxDiaChiLength ? index : maxDiaChiLength;
+      }
+      diaChi = diaChi.substring(0,length);
+      if (diaChi.length < originDiaChi.length) {
+        diaChi = diaChi + '...';
+      }
+    }
+    return diaChi;
   }
 
 }
@@ -510,6 +545,61 @@ var styles = StyleSheet.create({
     padding: 0,
     borderTopWidth: 1,
     borderTopColor: gui.separatorLine
+  },
+  adsModal: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: height/3,
+    width: width,
+    marginVertical: 0,
+  },
+  detailAdsModal: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'transparent',
+    height: height/3,
+    width: width
+  },
+  detailAdsModalThumb: {
+    justifyContent: 'flex-end',
+    alignItems: 'stretch',
+    height: height/3,
+    width: width,
+    alignSelf: 'auto'
+  },
+  detailAdsModalLinearGradient: {
+    flex: 1,
+    paddingLeft: 0,
+    paddingRight: 0,
+    backgroundColor : "transparent"
+  },
+  detailAdsModalPrice: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'left',
+    backgroundColor: 'transparent',
+    marginLeft: 10,
+    color: 'white'
+  },
+  detailAdsModalText: {
+    fontSize: 14,
+    textAlign: 'left',
+    backgroundColor: 'transparent',
+    marginLeft: 10,
+    marginBottom: 15,
+    margin: 5,
+    color: 'white'
+  },
+  detailAdsModalTextHeartButton: {
+    marginBottom: 10
+  },
+  detailAdsModalDetail: {
+    backgroundColor: 'transparent',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    top: height/3-60,
+    width: width
   }
 });
 
