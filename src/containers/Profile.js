@@ -66,7 +66,7 @@ class Profile extends Component {
         };
     }
     componentDidMount() {
-        log.enter("componentDidMount");
+        log.enter("Profile screen - calling componentDidMount");
 
         database.getAllDocuments()
             .then((all) => {
@@ -92,9 +92,10 @@ class Profile extends Component {
     }
 
     onTestSync() {
-        dbService.getAllAds()
+        console.log("AAAA");
+        dbService.getAllDocuments()
             .then((res) => {
-                console.log(res);
+                console.log("getAllAds done", res);
 
                 var listAds = res.map((one) => {
                     return one.value;
@@ -104,7 +105,10 @@ class Profile extends Component {
                     myAds: listAds,
                     dataSource: this.state.dataSource.cloneWithRows(listAds)
                 })
-            });
+            })
+          .catch((res) => {
+              console.log("getAllAds fail", res);
+          });
     }
 
     _renderAds(ads) {

@@ -54,6 +54,9 @@ const _ = require('lodash');
 
 import dbService from "../../lib/localDB";
 
+import log from "../../lib/logUtil";
+
+
 export function registerState() {
     return {
         type: LOGIN_STATE_REGISTER
@@ -312,9 +315,14 @@ export function login(username, password) {
 
         return dbService.loginAndStartSync(username, password)
             .then(function (json) {
-                if (json.status===0) {
-                    json.phone = username;
+                log.info("authActions.login", json);
 
+                if (json.status===0) {
+                    if (username.indexOf("@") > -1) {
+                        json.phone = username;
+                    } else {
+                        json.email = username;
+                    }
                     dispatch(loginSuccess(json));
                 } else {
                     dispatch(loginFailure(json.error));

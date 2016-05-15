@@ -2,30 +2,25 @@
 
 import {Record} from 'immutable';
 
-/**
- * ## InitialState
- *  
- * * currentUser - object returned from Backend when validated
- * * showState - toggle for Header to display state
- * * currentState - object in Json format of the entire state
- * * store - the Redux store which is an object w/ 4 initial states
- *   * device
- *   * auth
- *   * global
- *   * profile
- *
- */
 var InitialState = Record({
   currentUser: new (Record({
   	userID : '',
-  	name : 'unknown',
-  	isDevice : true,
-      phone : ''
+  	fullName : '',
+    phone : '',
+    email: '',
   })),
-  
-  showState: false,
-  currentState: null,
-  store: null
 
+  deviceInfo : {
+    ID : null,
+    model: null
+  },
+
+  appInfo : {
+    version : null,
+    platform: null
+  },
+
+  loggedIn : false,
 });
+
 export default InitialState;

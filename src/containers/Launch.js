@@ -4,15 +4,12 @@ import React, {
   StyleSheet,
   Text,
   View,
-  Image
+  Image, TouchableHighlight
 } from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Dimensions from 'Dimensions';
-
-import DeviceInfo from 'react-native-device-info';
-
 
 
 import { bindActionCreators } from 'redux';
@@ -30,6 +27,7 @@ import {Map} from 'immutable';
 
 //intro swiper
 import IntroSwiper from '../components/IntroSwiper';
+import gui from "../lib/gui";
 
 
 /**
@@ -82,18 +80,7 @@ class Launch extends React.Component {
 
   }
 
-  loginWithoutUser() {
-    let uid = DeviceInfo.getUniqueID();
-
-    console.log("Device Unique ID", uid);
-    console.log("Device Model", DeviceInfo.getModel());
-
-    this.props.actions.loginWithoutUser({
-      userID : uid
-      , name : 'Device'
-      , isDevice : true
-    })
-
+  enterApp() {
     Actions.Home()
   }
 
@@ -112,27 +99,10 @@ class Launch extends React.Component {
 		      <IntroSwiper />
 				</View>
 				<View style={styles.buttonControl} >
-
-          <View style={{flexDirection: 'row', backgroundColor: 'transparent'}}>
-            <Icon.Button style={styles.button} name="sign-in" backgroundColor="#f44336"
-                onPress={this.login.bind(this)}>
-              Đăng Nhập
-            </Icon.Button>
-
-            <Text style={{width: 10}}> </Text>
-            <Icon.Button style={styles.button} name="book" backgroundColor="#f44336"
-                onPress={this.register.bind(this)}>
-              Đăng Ký
-            </Icon.Button>
-          </View>
-
-          <Text style={{height: 10, backgroundColor: 'transparent'}}> </Text>
-
-          <Icon.Button style={{width: 250}} name="play" backgroundColor="#004306"
-              onPress={this.loginWithoutUser.bind(this)}>
-            Đăng nhập không cần đăng ký
-          </Icon.Button>
-
+          <TouchableHighlight style={styles.batDauBtn}
+              onPress={this.enterApp.bind(this)}>
+            <Text style={styles.batDauText}> BẮT ĐẦU </Text>
+          </TouchableHighlight>
 
           <Text style={styles.termLine}>
             Bằng việc đăng ký, bạn đồng ý với
@@ -181,14 +151,24 @@ var styles = StyleSheet.create({
   buttonControl : {
   	justifyContent : 'center',
   	alignItems : 'center',
-    padding: 15,
     //position: 'absolute',
-    bottom: 30
+    padding: 15,
+    bottom: 35
   },
 
-  button : {
-    width: 120,
-    //marginLeft: 10
+  batDauBtn : {
+    width: 240,
+    height: 50,
+    backgroundColor: 'red',//gui.mainColor,
+    borderRadius : 5,
+    alignItems: 'center',
+    justifyContent : 'center'
+  },
+
+  batDauText : {
+    fontSize: 18,
+    fontWeight: "normal",
+    color: "white",
   },
 
   termLine : {
@@ -196,7 +176,8 @@ var styles = StyleSheet.create({
     paddingTop: 10,
     color: 'white',
     backgroundColor: 'transparent'
-  }
+  },
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Launch);

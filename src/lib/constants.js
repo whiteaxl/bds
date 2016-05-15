@@ -53,5 +53,7 @@ export default keyMirror({
   //search - map
 
 
-  ON_AUTH_FIELD_CHANGE: null
+  ON_AUTH_FIELD_CHANGE: null,
+
+  LAUNCH_APP:null, //enter application
 });

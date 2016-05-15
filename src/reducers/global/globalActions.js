@@ -11,46 +11,9 @@
  * The actions supported
  */
 const {
-  SET_STORE,
-  SET_STATE,
-  GET_STATE,
-    INIT_LOCAL_DB
+  INIT_LOCAL_DB,
+  LAUNCH_APP,
 } = require('../../lib/constants').default;
-
-/**
- * ## set the store 
- * 
- * this is the Redux store
- *
- * this is here to support Hot Loading
- *
- */
-export function setStore(store) {
-  return {
-    type: SET_STORE,
-    payload: store
-  };
-}
-/**
- * ## set state
- * 
- */
-export function setState(newState) {
-  return {
-    type: SET_STATE,
-    payload: newState
-  };
-}
-/**
- * ## getState
- *
- */
-export function getState(toggle) {
-  return {
-    type: GET_STATE,
-    payload: toggle
-  };
-}
 
 export function initLocalDB() {
   return {
@@ -58,5 +21,13 @@ export function initLocalDB() {
     payload: null
   };
 }
+
+export function lauchApp(data) {
+  return {
+      type: LAUNCH_APP,
+      payload: data
+  }
+}
+
 
 

@@ -1,7 +1,7 @@
 'use strict';
 
 import React, {View, Text, Navigator, Platform, StyleSheet, Component} from 'react-native';
-import {Scene, Router, TabBar, Modal, Schema, Actions, Reducer} from 'react-native-router-flux';
+import {Scene, Router, TabBar, Modal, Schema, Actions, Reducer, Switch} from 'react-native-router-flux';
 
 import Login from './Login';
 import Launch from './Launch';
@@ -26,7 +26,7 @@ import SearchSuggestion from '../containers/PlacesAutoComplete';
 import Home from '../containers/Home';
 
 import PostAd from '../containers/Screen1';
-import Inbox from '../containers/Screen2';
+import Inbox from '../containers/Inbox';
 import TestListView from '../test/TestListView';
 
 
@@ -67,7 +67,6 @@ class App extends Component {
           <Scene key='Launch' component={Launch} initial={true} title="Welcome" type="replace"/>
 
           <Scene key='LoginRegister' component={LoginRegister} title="Register Screen"/>
-          <Scene key='Login' component={Login} title="Login Screen" type="replace"/>
 
           <Scene key='Search' component={Search} title="Tìm kiếm" hideNavBar={true} direction="vertical"/>
           <Scene key='SearchResultList' component={SearchResultList} title="Danh sách" hideNavBar={true}/>
@@ -84,18 +83,17 @@ class App extends Component {
 
           <Scene key='TestListView' component={TestListView} title="Serch Text" hideNavBar={true}/>
 
-          <Scene key="Home" tabs={true} default="Main" type="replace">
+          <Scene key="Home" tabs={true} default="Main" type="replace" >
             <Scene key="Main" title="home" iconName={"home"} icon={TabIcon}
                    component={Home}
                    hideNavBar={true} initial={true}/>
 
-            <Scene key="Inbox" component={Inbox} title="Inbox" iconName={"inbox"} icon={TabIcon}/>
+
+            <Scene key="Inbox" component={Inbox} title="Inbox" iconName={"inbox"} icon={TabIcon} hideNavBar={true}/>
             <Scene key="activity" component={TestListView} title="activity" iconName={"bell-o"} icon={TabIcon}/>
             <Scene key="Profile" component={Profile} title="Profile" iconName={"gear"} icon={TabIcon}/>
 
           </Scene>
-
-
         </Scene>
 
 

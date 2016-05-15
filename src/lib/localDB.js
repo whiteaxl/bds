@@ -1,8 +1,11 @@
 var ReactCBLite = require('react-native').NativeModules.ReactCBLite;
-var {manager} = require('react-native-couchbase-lite');
+//var {manager} = require('react-native-couchbase-lite');
+
+var {manager} = require('./relandCB');
 
 import log from "../lib/logUtil";
 import cfg from "../cfg";
+
 
 class DBService {
     constructor() {
@@ -10,16 +13,19 @@ class DBService {
         this.dbName = 'default';
         this.remoteDbUrl = `http://${cfg.server}:4984/${this.dbName}`;
 
+        this.databaseUrl = 'http://admin:321@localhost:5984/';
+
         ReactCBLite.init(5984, 'admin', '321', e => {
             log.warn('initialized localDB!');
         });
+
     }
 
     //may be need check connection when close...
     db() {
         if (!this.database) {
             log.warn("Create db manager for local database!");
-            this.database = new manager('http://admin:321@localhost:5984/', this.dbName);
+            this.database = new manager(this.databaseUrl, this.dbName);
         }
 
         return this.database
@@ -39,8 +45,15 @@ class DBService {
 
         this.db().createDesignDocument(this.adsDesignDocName, adsViews)
             .then((res) => {
-                console.log("created design doc", res);
-            });
+                if (res.status === 409) {
+                    log.warn("design doc 'all_ads' already exists!");
+                } else {
+                    log.info("Created all_ads design doc!");
+                }
+            })
+          .catch((e) => {
+              log.error("Error when _createDesignDoc",e);
+          })
     }
 
     startSync(sessionCookie) {
@@ -74,21 +87,41 @@ class DBService {
                         let sessionCookie = res.headers.map['set-cookie'][0];
                         //console.log(sessionCookie);
 
-                        this.db().createDatabase()
-                            .then((res) => {
-                                this.startSync(sessionCookie);
+                        this.db().deleteDatabase()
+                          .then((res) => {
+                              console.log('deleted database!', res);
 
-                                this.db().getDesignDocument(this.adsDesignDocName)
+                              this.db().createDatabase()
+                                .then((res) => {
+
+                                  //subscribe event
+                                  this.db().getInfo()
+                                    .then((res) => {
+                                      this.db().listen({since: res.update_seq - 1, feed: 'longpoll', include_docs:true});
+                                    });
+                                  this.db().changesEventEmitter.on('changes', function (e) {
+                                    console.log("DB just changes:",e);
+                                  }.bind(this));
+
+
+                                  this.startSync(sessionCookie);
+
+                                  /*
+                                  this.db().getDesignDocument(this.adsDesignDocName)
                                     .then((res) => {
                                         this._createDesignDoc();
                                     })
                                     .catch((e) => {
                                         log.error("error when getDesignDocument:", e);
                                     });
-                            })
-                            .catch((e) => {
-                                log.error(e);
-                            });
+                                    */
+                                })
+                                .catch((e) => {
+                                    log.error(e);
+                                });
+                          });
+
+
 
                         return {status: 0, sessionCookie: sessionCookie};
                     }
@@ -102,14 +135,13 @@ class DBService {
     }
 
     getAllDocuments() {
-        return this.db().getAllDocuments();
+        return this.db().getAllDocuments({include_docs: true});
     }
 
     getAllAds() {
         return this.db().queryView(this.adsDesignDocName, 'all_ads')
-
             .then((res) => {
-                console.log(res);
+                console.log("getAllAds", res);
 
                 return res.rows || [];
             });

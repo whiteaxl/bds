@@ -10,17 +10,16 @@ import * as globalActions from '../reducers/global/globalActions';
 /**
  * Immutable Map
  */
-import {Map} from 'immutable';
+
 
 
 
 import React, { Text, View, Component, StyleSheet } from 'react-native'
 
 import Button from 'react-native-button';
+
+import {Map} from 'immutable';
 import {Actions} from 'react-native-router-flux';
-
-import styles from './styles';
-
 import log from "../lib/logUtil";
 import gui from "../lib/gui";
 
