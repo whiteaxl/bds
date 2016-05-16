@@ -27,12 +27,12 @@ import React, { Text,
 
 import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import RelandIcon from '../components/RelandIcon';
 import MapView from 'react-native-maps';
 
 import SearchHeader from '../components/SearchHeader';
 import PriceMarker from '../components/PriceMarker';
 
-import TopModal from '../components/TopModal';
 import Modal from 'react-native-modalbox';
 import LinearGradient from 'react-native-linear-gradient';
 
@@ -110,7 +110,8 @@ class SearchResultMap extends Component {
         longitudeDelta: LONGITUDE_DELTA
       },
       polygons: [],
-      editing: null
+      editing: null,
+      drawMode: false
     }
   }
 
@@ -139,7 +140,7 @@ class SearchResultMap extends Component {
               mapType={this.state.mapType}
               onPress={this.onPress.bind(this)}
           >
-            {viewableList.map( marker =>(
+            {!this.state.drawMode && viewableList.map( marker =>(
                 <MapView.Marker key={marker.id} coordinate={marker.coordinate} onPress={()=>this._onMarkerPress(marker)}>
                   <PriceMarker color={gui.mainColor} amount={marker.price}/>
                 </MapView.Marker>
@@ -163,11 +164,15 @@ class SearchResultMap extends Component {
             )}
           </MapView>
           <View style={styles.mapButtonContainer}>
-            <TouchableOpacity onPress={this._onDrawPressed.bind(this)} >
               <View style={[styles.bubble, styles.button]}>
-                <Icon name="hand-o-up" style={styles.mapIcon} size={20}></Icon>
+                {this.state.drawMode ? (
+                    <RelandIcon name="close" color='black' mainProps={{flexDirection: 'row'}}
+                                size={20} textProps={{paddingLeft: 0}}
+                                onPress={this._onDrawPressed.bind(this)}></RelandIcon>) :
+                    (<TouchableOpacity onPress={this._onDrawPressed.bind(this)} >
+                      <Icon name="hand-o-up" style={styles.mapIcon} size={20}></Icon>
+                    </TouchableOpacity>)}
               </View>
-            </TouchableOpacity>
             <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} >
               <View style={[styles.bubble, styles.button]}>
                 <Icon name="location-arrow" style={styles.mapIcon} size={20}></Icon>
@@ -353,6 +358,9 @@ class SearchResultMap extends Component {
   }
 
   onPress(e) {
+    if (!this.state.drawMode || !e.nativeEvent.coordinate) {
+      return;
+    }
     var { editing } = this.state;
     if (!editing) {
       this.setState({
@@ -375,11 +383,23 @@ class SearchResultMap extends Component {
   }
 
   _onDrawPressed(){
+    var {drawMode} = this.state;
     var { editing } = this.state;
+    var polygons = editing ? [editing] : [];
     this.setState({
-      polygons: [editing],
-      editing: null
+      openDetailAdsModal: false,
+      polygons: polygons,
+      editing: null,
+      drawMode: !drawMode
     });
+    if (drawMode && polygons.length > 0) {
+      var geoBox = apiUtils.getPolygonBox(polygons[0]);
+      console.log('geoBox');
+      console.log(geoBox);
+      this.props.actions.onSearchFieldChange("geoBox", geoBox);
+
+      this._refreshListData();
+    }
   }
 
   _onDetailAdsPress(){
@@ -402,11 +422,17 @@ class SearchResultMap extends Component {
   }
 
   _onMarkerSelect() {
+    if (this.state.drawMode) {
+      return;
+    }
     this.setState({modal: true});
   }
 
   _onMarkerPress(marker) {
     console.log("Call SearchResultMap._onMarkerPress");
+    if (this.state.drawMode) {
+      return;
+    }
     this.setState({
       openDetailAdsModal: true,
       mmarker: marker

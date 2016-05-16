@@ -18,6 +18,33 @@ var ApiUtils = {
     var lonMin = lonMax - region.longitudeDelta;
     return [latMin, lonMin, latMax, lonMax];
   },
+  
+  getPolygonBox: function (polygon) {
+    var {coordinates} = polygon;
+    var firstLat = coordinates[0].latitude;
+    var firstLon = coordinates[0].longitude;
+    var latMax = firstLat;
+    var lonMax = firstLon;
+    var latMin = firstLat;
+    var lonMin = firstLon;
+    polygon.coordinates.map(function (coordinate) {
+      var lat = coordinate.latitude;
+      var lon = coordinate.longitude;
+      if (latMax < lat) {
+        latMax = lat;
+      }
+      if (lonMax < lon) {
+        lonMax = lon;
+      }
+      if (latMin > lat) {
+        latMin = lat;
+      }
+      if (lonMin > lon) {
+        lonMin = lon;
+      }
+    })
+    return [latMin, lonMin, latMax, lonMax];
+  },
 
   //lat1, lon1, lat2, lon2
   getRegion: function(geoBox){
