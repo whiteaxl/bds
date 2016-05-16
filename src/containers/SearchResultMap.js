@@ -45,6 +45,12 @@ var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / (height-110);
 
+const LATITUDE = 37.78825;
+const LONGITUDE = -122.4324;
+const LATITUDE_DELTA = 0.0922;
+const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
+var id = 0;
+
 const MAX_VIEWABLE_ADS = 25;
 /**
 * ## Redux boilerplate
@@ -96,7 +102,15 @@ class SearchResultMap extends Component {
       mapType: "standard",
       mmarker:{},
       openLocalInfo: false,
-      openDetailAdsModal: false
+      openDetailAdsModal: false,
+      region: {
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA
+      },
+      polygons: [],
+      editing: null
     }
   }
 
@@ -123,12 +137,30 @@ class SearchResultMap extends Component {
               onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
               style={styles.mapView}
               mapType={this.state.mapType}
+              onPress={this.onPress.bind(this)}
           >
             {viewableList.map( marker =>(
                 <MapView.Marker key={marker.id} coordinate={marker.coordinate} onPress={()=>this._onMarkerPress(marker)}>
                   <PriceMarker color={gui.mainColor} amount={marker.price}/>
                 </MapView.Marker>
             ))}
+            {this.state.polygons.map(polygon => (
+                <MapView.Polygon
+                    key={polygon.id}
+                    coordinates={polygon.coordinates}
+                    strokeColor="#F00"
+                    fillColor="rgba(255,0,0,0.5)"
+                    strokeWidth={1}
+                />
+            ))}
+            {this.state.editing && (
+                <MapView.Polygon
+                    coordinates={this.state.editing.coordinates}
+                    strokeColor="#000"
+                    fillColor="rgba(255,0,0,0.5)"
+                    strokeWidth={1}
+                />
+            )}
           </MapView>
           <View style={styles.mapButtonContainer}>
             <TouchableOpacity onPress={this._onDrawPressed.bind(this)} >
@@ -320,9 +352,34 @@ class SearchResultMap extends Component {
     );
   }
 
+  onPress(e) {
+    var { editing } = this.state;
+    if (!editing) {
+      this.setState({
+        editing: {
+          id: id++,
+          coordinates: [e.nativeEvent.coordinate]
+        }
+      });
+    } else {
+      this.setState({
+        editing: {
+          ...editing,
+          coordinates: [
+            ...editing.coordinates,
+            e.nativeEvent.coordinate
+          ]
+        }
+      });
+    }
+  }
 
   _onDrawPressed(){
-    console.log("Call SearchResultMap._onDrawPressed");
+    var { editing } = this.state;
+    this.setState({
+      polygons: [editing],
+      editing: null
+    });
   }
 
   _onDetailAdsPress(){
