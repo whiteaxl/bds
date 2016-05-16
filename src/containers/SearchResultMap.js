@@ -155,7 +155,7 @@ class SearchResultMap extends Component {
                 />
             ))}
             {this.state.editing && (
-                <MapView.Polygon
+                <MapView.Polyline
                     coordinates={this.state.editing.coordinates}
                     strokeColor="#000"
                     fillColor="rgba(255,0,0,0.5)"
@@ -394,8 +394,6 @@ class SearchResultMap extends Component {
     });
     if (drawMode && polygons.length > 0) {
       var geoBox = apiUtils.getPolygonBox(polygons[0]);
-      console.log('geoBox');
-      console.log(geoBox);
       this.props.actions.onSearchFieldChange("geoBox", geoBox);
 
       this._refreshListData();
