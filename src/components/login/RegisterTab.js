@@ -20,7 +20,8 @@ export default class RegisterTab extends React.Component {
 
     return (
       <View style={styles.wrapper}>
-        <TextInput style={styles.input} autoFocus={true}
+        <TextInput style={styles.input}
+                   //autoFocus={true}
                    ref="username" 
                    placeholder="Số điện thoại hoặc Email"
         />

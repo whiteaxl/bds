@@ -143,9 +143,9 @@ class Profile extends Component {
   }
 
   _logout() {
-    const sessionID = this.props.auth.sessionCookie;
+    //const sessionID = this.props.auth.sessionCookie;
 
-    this.props.actions.logout(sessionID);
+    this.props.actions.logout();
   }
 
   render() {

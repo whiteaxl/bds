@@ -114,13 +114,16 @@ export function logoutFailure(error) {
  * device and logged out there.
  */
 
-export function logout(sessionID) {
+export function logout() {
     return dispatch => {
-
-        dbService.logout(sessionID);
-        dispatch(logoutSuccess());
+        dbService.logout().then((res) => {
+            console.log("Done delete localDB", res);
+            dispatch(logoutSuccess());
+          })
+          .catch((res) => {
+              console.log("Error", res)
+          });
     };
-
 }
 
 /**

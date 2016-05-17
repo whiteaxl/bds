@@ -76,7 +76,8 @@ class LoginTab extends React.Component {
       <View style={styles.wrapper}>
         <TextInput style={styles.input}
                    selectTextOnFocus={true}
-                   ref='username' autoFocus={true}
+                   ref='username'
+                   //autoFocus={true}
                    value={this.props.auth.phone}
                    placeholder="Số điện thoại hoặc Email"
                    onChangeText={(text) => {

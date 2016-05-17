@@ -3,8 +3,6 @@ var ReactCBLite = require('react-native').NativeModules.ReactCBLite;
 
 var {manager} = require('./relandCB');
 
-import cookie from 'cookie';
-
 import log from "../lib/logUtil";
 import cfg from "../cfg";
 
@@ -181,11 +179,8 @@ class DBService {
         });
     }
 
-    logout(sessionCookie) {
-        this.db().deleteDatabase()
-          .then((res) => {
-              console.log("Done delete localDB", res);
-          });
+    logout() {
+        return this.db().deleteDatabase();
     }
 }
 
