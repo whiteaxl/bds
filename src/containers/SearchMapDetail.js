@@ -24,6 +24,8 @@ import CommonHeader from '../components/CommonHeader';
 
 import DirectionMarker from '../components/DirectionMarker';
 
+import LocationMarker from '../components/LocationMarker';
+
 import gui from '../lib/gui';
 
 import api from '../lib/FindApi';
@@ -138,8 +140,11 @@ class SearchMapDetail extends Component {
                 mapType={this.state.mapType}
             >
               {markerList.map( marker =>(
-                  <MapView.Marker key={marker.id} coordinate={marker.coordinate} onPress={()=>this._onMarkerPress(marker)}>
-                    <DirectionMarker fontSize={17} diaChi={marker.diaChi}/>
+                  <MapView.Marker key={marker.id} coordinate={marker.coordinate}>
+                    <LocationMarker/>
+                    <MapView.Callout tooltip height={58}>
+                      <DirectionMarker fontSize={17} diaChi={marker.diaChi} onPress={()=>this._onMarkerPress(marker)}/>
+                    </MapView.Callout>
                   </MapView.Marker>
               ))}
             </MapView>
@@ -269,7 +274,7 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: gui.mainColor,
     marginLeft: 15,
-    left: width - 105
+    left: width - 110
   },
   mapIcon: {
     color: 'white',
