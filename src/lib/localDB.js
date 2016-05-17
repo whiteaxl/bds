@@ -3,6 +3,8 @@ var ReactCBLite = require('react-native').NativeModules.ReactCBLite;
 
 var {manager} = require('./relandCB');
 
+import cookie from 'cookie';
+
 import log from "../lib/logUtil";
 import cfg from "../cfg";
 
@@ -135,7 +137,9 @@ class DBService {
     }
 
     getAllDocuments() {
-        return this.db().getAllDocuments({include_docs: true});
+        return this.db().getAllDocuments({include_docs: true}).then((res) => {
+            return res.rows
+        });
     }
 
     getAllAds() {
@@ -145,6 +149,43 @@ class DBService {
 
                 return res.rows || [];
             });
+    }
+
+    updateFullName(docID, fullName) {
+        var options = {conflicts: true};
+
+        this.db().getDocument(docID, options)
+          .then((doc) => {
+              let documentRevision = doc._rev;
+
+              doc.fullName = fullName;
+
+              this.db().updateDocument(doc, docID, documentRevision)
+                .then((res) => {
+                  console.log("Updated document", res);
+                });
+
+          });
+    }
+
+    sendChat(state) {
+        this.db().createDocument({
+            timestamp: new Date().toISOString(),
+            type: "Chat",
+            msg: state.chatMsg,
+            toUser: state.chatTo,
+            fromUser: state.phone,
+        }).then((res) => {
+            let documentId = res.id;
+            console.log("created document!", documentId);
+        });
+    }
+
+    logout(sessionCookie) {
+        this.db().deleteDatabase()
+          .then((res) => {
+              console.log("Done delete localDB", res);
+          });
     }
 }
 

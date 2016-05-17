@@ -114,24 +114,11 @@ export function logoutFailure(error) {
  * device and logged out there.
  */
 
-export function logout() {
+export function logout(sessionID) {
     return dispatch => {
-        dispatch(logoutRequest());
 
-        return new AppAuthToken().getSessionToken()
-            .then((token) => {
-                return BackendFactory(token).logout();
-            })
-            .then(() => {
-                dispatch(registerState());
-                dispatch(logoutSuccess());
-                dispatch(deleteSessionToken());
-            })
-            .catch((error) => {
-                dispatch(loginState());
-                dispatch(logoutSuccess());
-                dispatch(logoutFailure(error));
-            });
+        dbService.logout(sessionID);
+        dispatch(logoutSuccess());
     };
 
 }

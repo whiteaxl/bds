@@ -5,10 +5,10 @@ const {
   SIGNUP_SUCCESS,
 
   LOGIN_SUCCESS,
+  LOGOUT_SUCCESS,
 
   INIT_LOCAL_DB,
   LAUNCH_APP,
-  
 } = require('../../lib/constants').default;
 
 import InitialState from './globalInitialState';
@@ -26,6 +26,13 @@ export default function globalReducer(state = initialState, action) {
       let newState = state
         .setIn(["currentUser", "phone"], action.payload.phone)
         .set("loggedIn", true);
+
+      return newState;
+    }
+    case LOGOUT_SUCCESS: {
+      let newState = state
+        .setIn(["currentUser", "phone"], '')
+        .set("loggedIn", false);
 
       return newState;
     }

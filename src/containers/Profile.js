@@ -6,6 +6,7 @@ import {connect} from 'react-redux';
  * The actions we need
  */
 import * as globalActions from '../reducers/global/globalActions';
+import * as authActions from '../reducers/auth/authActions';
 
 /**
  * Immutable Map
@@ -13,7 +14,7 @@ import * as globalActions from '../reducers/global/globalActions';
 import {Map} from 'immutable';
 
 
-import React, {Text, View, Component, StyleSheet, ListView, Image} from 'react-native'
+import React, {Text, View, Component, StyleSheet, ListView, Image, TextInput} from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -26,25 +27,26 @@ import gui from "../lib/gui";
  * ## Redux boilerplate
  */
 const actions = [
-    globalActions
+  globalActions,
+  authActions,
 ];
 
 function mapStateToProps(state) {
-    return {
-        ...state
-    };
+  return {
+    ...state
+  };
 }
 
 function mapDispatchToProps(dispatch) {
-    const creators = Map()
-        .merge(...actions)
-        .filter(value => typeof value === 'function')
-        .toObject();
+  const creators = Map()
+    .merge(...actions)
+    .filter(value => typeof value === 'function')
+    .toObject();
 
-    return {
-        actions: bindActionCreators(creators, dispatch),
-        dispatch
-    };
+  return {
+    actions: bindActionCreators(creators, dispatch),
+    dispatch
+  };
 }
 
 import dbService from "../lib/localDB";
@@ -55,140 +57,193 @@ var localDbName = 'default';
 var database = new manager('http://admin:321@localhost:5984/', localDbName);
 
 class Profile extends Component {
-    constructor() {
-        super();
-        this.state = {
-            myAds:[],
+  constructor() {
+    super();
+    this.state = {
+      chatTo: "",
+      chatMsg: "",
+      myAds: [],
+      newFullName: "",
+      userID: "",
+      phone: "",
+      email: "",
+      fullName: "",
+      chatDs: new ListView.DataSource({
+        rowHasChanged: (row1, row2) => row1 !== row2
+      })
+    };
+  }
 
-            dataSource: new ListView.DataSource({
-                rowHasChanged: (row1, row2) => row1 !== row2
-            })
-        };
-    }
-    componentDidMount() {
-        log.enter("Profile screen - calling componentDidMount");
+  componentDidMount() {
+    log.enter("Profile screen - calling componentDidMount");
 
-        database.getAllDocuments()
-            .then((all) => {
-                log.info(all);
-                this.setState({
-                    myAds: all.rows
-                })
-            })
-            .catch((e) => {
-                log.error(e);
-            });
-    }
+    database.getAllDocuments()
+      .then((all) => {
+        log.info(all);
+        this.setState({
+          myAds: all.rows
+        })
+      })
+      .catch((e) => {
+        log.error(e);
+      });
+  }
 
-    onStopAutoSync() {
-        clearInterval(this.interval);
-    }
+  onTestSync() {
+    dbService.getAllDocuments()
+      .then((res) => {
+        const allDoc = res.map(one => one.doc);
+        console.log("getAllAds done", allDoc);
 
-    onAutoSync() {
-        var that = this;
-        this.interval = setInterval(function () {
-            that.onTestSync();
-        }, 100);
-    }
+        var listAds = allDoc;
 
-    onTestSync() {
-        console.log("AAAA");
-        dbService.getAllDocuments()
-            .then((res) => {
-                console.log("getAllAds done", res);
+        let users = allDoc.filter((x) => x.phone === this.props.auth.phone);
+        let chats = allDoc.filter((x) => x.type === 'Chat');
 
-                var listAds = res.map((one) => {
-                    return one.value;
-                });
+        console.log("myUser:", users);
 
-                this.setState({
-                    myAds: listAds,
-                    dataSource: this.state.dataSource.cloneWithRows(listAds)
-                })
-            })
-          .catch((res) => {
-              console.log("getAllAds fail", res);
+        if (users.length > 0) {
+          this.setState({
+            userID: users[0]._id,
+            phone: users[0].phone,
+            fullName: users[0].fullName,
+            newFullName: ""
           });
-    }
+        }
 
-    _renderAds(ads) {
-        //var ads = ads.doc;
-        return (
-            <View style={styles.container}>
-                <Image
-                    source={{uri: ads.image.cover}}
-                    style={styles.thumbnail}/>
-                <View style={styles.rightContainer}>
-                    <Text style={styles.title}>{ads.adsID} - {ads.dangBoi.name}</Text>
-                    <Text style={styles.year}>{ads.place.diaChi}</Text>
+        this.setState({
+          myAds: listAds,
+          chat: chats,
+          chatDs: this.state.chatDs.cloneWithRows(chats)
+        })
+      })
+      .catch((res) => {
+        console.log("getAllAds fail", res);
+      });
+  }
 
-                </View>
-            </View>
-        );
-    }
+  sendChat() {
+    dbService.sendChat(this.state);
+  }
 
-    render() {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.text}> Welcome {this.props.auth.phone}</Text>
+  updateFullName() {
+    console.log(this.state.newFullName, this.state.userID);
 
-                <Button style={styles.btn} onPress={this.onTestSync.bind(this)}>TestSync</Button>
-                <Button style={styles.btn} onPress={this.onAutoSync.bind(this)}>Auto Sync each 100ms</Button>
-                <Button style={styles.btn} onPress={this.onStopAutoSync.bind(this)}>Stop Sync each 100ms</Button>
+    dbService.updateFullName(this.state.userID, this.state.newFullName);
+  }
+
+  _renderChat(ads) {
+    //var ads = ads.doc;
+    const timeFmt = ads.timestamp.toString().substr(11, 8);
+    return (
+      <View style={styles.container}>
+        <Text style={styles.title}>{ads.fromUser} - {ads.msg} - {timeFmt}</Text>
+      </View>
+    );
+  }
+
+  _logout() {
+    const sessionID = this.props.auth.sessionCookie;
+
+    this.props.actions.logout(sessionID);
+  }
+
+  render() {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.text}> Welcome {this.props.auth.phone} - {this.state.fullName}</Text>
+
+        <Button style={styles.btn} onPress={this._logout.bind(this)}>Logout</Button>
+
+        <Button style={styles.btn} onPress={this.onTestSync.bind(this)}>TestSync</Button>
+
+        <Text style={styles.text}> Enter new fullName:</Text>
+
+        <TextInput style={styles.input}
+                   placeholder="New Fullname"
+                   autoFocus={true}
+                   onChangeText={(fullName) => this.setState({newFullName:fullName})}
+        />
+
+        <Button style={styles.btn} onPress={this.updateFullName.bind(this)}>Update</Button>
+
+        <Text style={styles.text}> Send to:</Text>
+        <TextInput style={styles.input}
+                   placeholder="To"
+                   autoFocus={true}
+                   onChangeText={(chatTo) => this.setState({chatTo})}
+        />
+
+        <Text style={styles.text}> Msg:</Text>
+        <TextInput style={styles.input}
+                   placeholder="Msg"
+                   autoFocus={true}
+                   onChangeText={(chatMsg) => this.setState({chatMsg})}
+        />
+
+        <Button style={styles.btn} onPress={this.sendChat.bind(this)}>Send</Button>
+
+        <Text style={styles.text}>Number of my ads: {this.state.myAds ? this.state.myAds.length : 0}</Text>
+
+        <Text style={styles.text}> List of chat msg:</Text>
+        <ListView
+          dataSource={this.state.chatDs}
+          renderRow={this._renderChat}
+          style={styles.listView}/>
 
 
-                <Text style={styles.text}>Number of my ads: {this.state.myAds ? this.state.myAds.length : 0}</Text>
-
-                <ListView
-                    dataSource={this.state.dataSource}
-                    renderRow={this._renderAds}
-                    style={styles.listView}/>
-            </View>
-        )
-    }
+      </View>
+    )
+  }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);
 
-
 var styles = StyleSheet.create({
-    container: {
-        top: 60,
-        flex: 1,
-        //flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center',
-        backgroundColor: 'white'
-    },
+  container: {
+    top: 60,
+    flex: 1,
+    //flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'white'
+  },
 
-    text : {
-        fontFamily: gui.fontFamily,
-        fontSize: gui.fontSize
-    },
-    btn: {
-        margin: 10
-    },
+  text: {
+    fontFamily: gui.fontFamily,
+    fontSize: gui.fontSize
+  },
+  btn: {
+    margin: 10
+  },
 
-    thumbnail: {
-        width: 120,
-        height: 60
-    },
-    rightContainer: {
-        flex: 1
-    },
-    title: {
-        fontSize: 20,
-        marginBottom: 8,
-        textAlign: 'center'
-    },
-    year: {
-        textAlign: 'center'
-    },
-    listView: {
-        paddingTop: 0,
-        backgroundColor: 'white',
-        flex : 1,
-        marginBottom: 140
-    }
+  thumbnail: {
+    width: 120,
+    height: 60
+  },
+  rightContainer: {
+    flex: 1
+  },
+  title: {
+    fontSize: 20,
+    marginBottom: 8,
+    textAlign: 'center'
+  },
+  input: {
+    fontSize: 15,
+    height: 30,
+    borderRadius: 5,
+    backgroundColor: 'yellow',
+  },
+  year: {
+    textAlign: 'center'
+  },
+  listView: {
+    paddingTop: 0,
+    backgroundColor: 'white',
+    flex: 1,
+    marginBottom: 140,
+    borderWidth: 1,
+    borderColor: 'green'
+  }
 });

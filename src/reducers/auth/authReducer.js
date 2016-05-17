@@ -72,8 +72,8 @@ export default function authReducer(state = initialState, action) {
 
         case LOGIN_SUCCESS:
         {
-            let nextState = state.set(
-              "sessionCookie", action.payload.sessionCookie)
+            let nextState = state
+                .set("sessionCookie", action.payload.sessionCookie)
                 .set('isFetching', false)
                 .set('state', LOGIN_STATE_LOGIN);
 
@@ -87,7 +87,9 @@ export default function authReducer(state = initialState, action) {
         case SIGNUP_SUCCESS:
         case LOGOUT_SUCCESS:
         case RESET_PASSWORD_SUCCESS:
-            return state.set('isFetching', false);
+            return state.set('isFetching', false)
+              .set("sessionCookie", '');
+
 
         /**
          * ### Access to Parse.com denied or failed
