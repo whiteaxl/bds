@@ -23,7 +23,8 @@ import React, { Text,
     TouchableOpacity,
     Dimensions,
     Image,
-    SegmentedControlIOS } from 'react-native';
+    SegmentedControlIOS,
+    PanResponder } from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -50,6 +51,8 @@ const LONGITUDE = -122.4324;
 const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 var id = 0;
+
+var CIRCLE_SIZE = 10;
 
 const MAX_VIEWABLE_ADS = 25;
 /**
@@ -86,6 +89,22 @@ function mapDispatchToProps(dispatch) {
 }
 
 class SearchResultMap extends Component {
+  _panResponder = {}
+  _previousLeft = 0
+  _previousTop = 0
+
+  componentWillMount() {
+    this._panResponder = PanResponder.create({
+      onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder.bind(this),
+      onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder.bind(this),
+      onPanResponderGrant: this._handlePanResponderGrant.bind(this),
+      onPanResponderMove: this._handlePanResponderMove.bind(this),
+      onPanResponderRelease: this._handlePanResponderEnd.bind(this),
+      onPanResponderTerminate: this._handlePanResponderEnd.bind(this),
+    });
+    this._previousLeft = 20;
+    this._previousTop = 84;
+  }
 
   constructor(props) {
     console.log("Call SearchResultMap.constructor");
@@ -102,6 +121,7 @@ class SearchResultMap extends Component {
       mapType: "standard",
       mmarker:{},
       openLocalInfo: false,
+      openDraw: false,
       openDetailAdsModal: false,
       region: {
         latitude: LATITUDE,
@@ -138,9 +158,8 @@ class SearchResultMap extends Component {
               onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
               style={styles.mapView}
               mapType={this.state.mapType}
-              onPress={this.onPress.bind(this)}
           >
-            {!this.state.drawMode && viewableList.map( marker =>(
+            {(!this.state.drawMode || (this.state.polygons && this.state.polygons.length > 0)) && viewableList.map( marker =>(
                 <MapView.Marker key={marker.id} coordinate={marker.coordinate} onPress={()=>this._onMarkerPress(marker)}>
                   <PriceMarker color={gui.mainColor} amount={marker.price}/>
                 </MapView.Marker>
@@ -165,12 +184,13 @@ class SearchResultMap extends Component {
           </MapView>
           <View style={styles.mapButtonContainer}>
               <View style={[styles.bubble, styles.button]}>
-                {this.state.drawMode ? (
+                {this.state.polygons && this.state.polygons.length > 0 ? (
                     <RelandIcon name="close" color='black' mainProps={{flexDirection: 'row'}}
                                 size={20} textProps={{paddingLeft: 0}}
                                 onPress={this._onDrawPressed.bind(this)}></RelandIcon>) :
                     (<TouchableOpacity onPress={this._onDrawPressed.bind(this)} >
-                      <Icon name="hand-o-up" style={styles.mapIcon} size={20}></Icon>
+                      <Icon name="hand-o-up" style={styles.mapIcon} color={this.state.drawMode ? gui.mainColor : 'black'}
+                            size={20}></Icon>
                     </TouchableOpacity>)}
               </View>
             <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} >
@@ -230,6 +250,8 @@ class SearchResultMap extends Component {
 
         {this._renderLocalInfoModal()}
 
+        {this._renderDrawModal()}
+        
       </View>
     )
   }
@@ -322,6 +344,17 @@ class SearchResultMap extends Component {
     )
   }
 
+  _renderDrawModal(){
+    return (
+        <Modal style={[styles.drawModel]} isOpen={this.state.openDraw} position={"center"} ref={"drawModal"}
+               isDisabled={false} backdrop={false} onClosingState={this._onCloseDraw.bind(this)}>
+          <View style={{width: width, height: height, backgroundColor: 'transparent'}}
+              {...this._panResponder.panHandlers}>
+          </View>
+        </Modal>
+    )
+  }
+
   _onCurrentLocationPress(){
     console.log("Call SearchResultMap._onCurrentLocationPress");
 
@@ -357,47 +390,15 @@ class SearchResultMap extends Component {
     );
   }
 
-  onPress(e) {
-    if (!this.state.drawMode || !e.nativeEvent.coordinate) {
-      return;
-    }
-    var { editing } = this.state;
-    if (!editing) {
-      this.setState({
-        editing: {
-          id: id++,
-          coordinates: [e.nativeEvent.coordinate]
-        }
-      });
-    } else {
-      this.setState({
-        editing: {
-          ...editing,
-          coordinates: [
-            ...editing.coordinates,
-            e.nativeEvent.coordinate
-          ]
-        }
-      });
-    }
-  }
-
   _onDrawPressed(){
-    var {drawMode} = this.state;
-    var { editing } = this.state;
-    var polygons = editing ? [editing] : [];
+    var {polygons} = this.state;
     this.setState({
       openDetailAdsModal: false,
-      polygons: polygons,
+      polygons: [],
       editing: null,
-      drawMode: !drawMode
+      openDraw: !polygons || polygons.length === 0,
+      drawMode: !polygons || polygons.length === 0
     });
-    if (drawMode && polygons.length > 0) {
-      var geoBox = apiUtils.getPolygonBox(polygons[0]);
-      this.props.actions.onSearchFieldChange("geoBox", geoBox);
-
-      this._refreshListData();
-    }
   }
 
   _onDetailAdsPress(){
@@ -419,18 +420,22 @@ class SearchResultMap extends Component {
     });
   }
 
+  _onCloseDraw(){
+    this.setState({
+      openDetailAdsModal: false,
+      polygons: [],
+      editing: null,
+      openDraw: false,
+      drawMode: false
+    });
+  }
+
   _onMarkerSelect() {
-    if (this.state.drawMode) {
-      return;
-    }
     this.setState({modal: true});
   }
 
   _onMarkerPress(marker) {
     console.log("Call SearchResultMap._onMarkerPress");
-    if (this.state.drawMode) {
-      return;
-    }
     this.setState({
       openDetailAdsModal: true,
       mmarker: marker
@@ -479,6 +484,77 @@ class SearchResultMap extends Component {
     return diaChi;
   }
 
+  _handleStartShouldSetPanResponder(e: Object, gestureState: Object): boolean {
+    // Should we become active when the user presses down on the circle?
+    return true;
+  }
+
+  _handleMoveShouldSetPanResponder(e: Object, gestureState: Object): boolean {
+    // Should we become active when the user moves a touch over the circle?
+    return true;
+  }
+
+  _handlePanResponderGrant(e: Object, gestureState: Object) {
+    var radius = CIRCLE_SIZE / 2;
+    this._previousLeft = gestureState.x0-radius;
+    this._previousTop = gestureState.y0-radius;
+  }
+
+  _handlePanResponderMove(e: Object, gestureState: Object) {
+    this._refreshPolygons(gestureState);
+  }
+
+  _handlePanResponderEnd(e: Object, gestureState: Object) {
+    this._previousLeft += gestureState.dx;
+    this._previousTop += gestureState.dy;
+
+    var { editing } = this.state;
+    var polygons = editing ? [editing] : [];
+    this.setState({
+        openDetailAdsModal: false,
+        polygons: polygons,
+        editing: null,
+        openDraw: false,
+        drawMode: false
+    });
+    if (polygons.length > 0) {
+        var geoBox = apiUtils.getPolygonBox(polygons[0]);
+        this.props.actions.onSearchFieldChange("geoBox", geoBox);
+
+        this._refreshListData();
+    }
+  }
+
+  _refreshPolygons(gestureState) {
+    if (gestureState.dx <= 15 && gestureState.dy <= 27) {
+        return;
+    }
+    var region = this.props.search.map.region;
+    var x0 = this._previousLeft + gestureState.dx;
+    var y0 = this._previousTop + gestureState.dy;
+    var lat = region.latitude + region.latitudeDelta*(0.5-y0/(height-40));
+    var lon = region.longitude + region.longitudeDelta*(x0/width-0.5);
+    var coordinate = {latitude: lat, longitude: lon};
+    var { editing } = this.state;
+    if (!editing) {
+      this.setState({
+        editing: {
+          id: id++,
+          coordinates: [coordinate]
+        }
+      });
+    } else {
+      this.setState({
+        editing: {
+          ...editing,
+          coordinates: [
+            ...editing.coordinates,
+            coordinate
+          ]
+        }
+      });
+    }
+  }
 }
 
 // Later on in your styles..
@@ -542,7 +618,6 @@ var styles = StyleSheet.create({
     marginLeft: 15
   },
   mapIcon: {
-    color: 'black'
   },
   text: {
     color: 'white',
@@ -593,6 +668,15 @@ var styles = StyleSheet.create({
     marginBottom: 10,
     paddingLeft: 20,
     color: 'white',
+  },
+  drawModel: {
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    height: height,
+    width: width,
+    marginVertical: 0,
+    borderRadius: 5,
+    backgroundColor: 'transparent'
   },
   modal: {
     justifyContent: 'flex-start',

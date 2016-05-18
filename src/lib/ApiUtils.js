@@ -43,7 +43,7 @@ var ApiUtils = {
         lonMin = lon;
       }
     })
-    return [latMin, lonMin, latMax, lonMax];
+    return [latMin-0.025, lonMin-0.017, latMax+0.025, lonMax+0.017];
   },
 
   //lat1, lon1, lat2, lon2
