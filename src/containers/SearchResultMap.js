@@ -523,14 +523,11 @@ class SearchResultMap extends Component {
   }
 
   _refreshPolygons(gestureState) {
-    if (gestureState.dx <= 15 && gestureState.dy <= 27) {
-        return;
-    }
     var region = this.props.search.map.region;
     var x0 = this._previousLeft + gestureState.dx;
     var y0 = this._previousTop + gestureState.dy;
-    var lat = region.latitude + region.latitudeDelta*(0.5-y0/(height-40));
-    var lon = region.longitude + region.longitudeDelta*(x0/width-0.5);
+    var lat = region.latitude + region.latitudeDelta*(0.5-(y0-5)/height)*1.17;
+    var lon = region.longitude + region.longitudeDelta*(x0/width-0.5)*1.07;
     var coordinate = {latitude: lat, longitude: lon};
     var { editing } = this.state;
     if (!editing) {
