@@ -52,8 +52,6 @@ const LATITUDE_DELTA = 0.0922;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 var id = 0;
 
-var CIRCLE_SIZE = 10;
-
 const MAX_VIEWABLE_ADS = 25;
 /**
 * ## Redux boilerplate
@@ -495,9 +493,8 @@ class SearchResultMap extends Component {
   }
 
   _handlePanResponderGrant(e: Object, gestureState: Object) {
-    var radius = CIRCLE_SIZE / 2;
-    this._previousLeft = gestureState.x0-radius;
-    this._previousTop = gestureState.y0-radius;
+    this._previousLeft = gestureState.x0;
+    this._previousTop = gestureState.y0;
   }
 
   _handlePanResponderMove(e: Object, gestureState: Object) {
