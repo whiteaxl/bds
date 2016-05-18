@@ -28,6 +28,8 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 
 import gui from "../lib/gui";
 
+import LoginRegisterTabBar from "../components/login/LoginRegisterTabBar"
+
 /**
  * ## Redux boilerplate
  */
@@ -57,11 +59,11 @@ function mapDispatchToProps(dispatch) {
 export default class LoginRegister extends React.Component {
   onChangeTab(data) {
 
-    //change focus
+    //change focus, not now
     if (data.i===0) {
-      this.usernameRegister.focus();
+      //this.usernameRegister.focus();
     } else {
-      this.usernameLogin.focus();
+      //this.usernameLogin.focus();
     }
   }
 
@@ -73,18 +75,28 @@ export default class LoginRegister extends React.Component {
     this.usernameRegister = usernameInput
   }
 
+  onClose() {
+    console.log("AAAAAAA")
+    Actions.pop();
+  }
+
+  renderTabBar() {
+    return <LoginRegisterTabBar onClose={this.onClose}/>
+  }
+
   render(){
     return (
-      <ScrollableTabView style={styles.container}
-                         tabBarUnderlineColor="white"
-                         tabBarBackgroundColor={gui.mainColor}
-                         tabBarActiveTextColor="white"
+      <ScrollableTabView
+        renderTabBar={this.renderTabBar}
+        style={styles.container}
+                         tabBarUnderlineColor={gui.mainColor}
+                         tabBarActiveTextColor={gui.mainColor}
                          onChangeTab={this.onChangeTab.bind(this)}
       >
-        <RegisterTab tabLabel="Đăng ký" ref="registerTab"
+        <RegisterTab tabLabel="ĐĂNG KÝ" ref="registerTab"
                      onDidMount={this.onDidMountRegisterTab.bind(this)}
         />
-        <LoginTab tabLabel="Đăng nhập" ref="loginTab"
+        <LoginTab tabLabel="ĐĂNG NHẬP" ref="loginTab"
                   onDidMount={this.onDidMountLoginTab.bind(this)}
         />
       </ScrollableTabView>
@@ -96,8 +108,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(LoginRegister);
 
 var styles = StyleSheet.create({
     container: {
-        paddingTop: 15,
-        backgroundColor: gui.mainColor
+        backgroundColor: "#f2f2f2"
     },
 
     label: {

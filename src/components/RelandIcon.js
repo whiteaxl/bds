@@ -64,6 +64,7 @@ var styles = StyleSheet.create({
     },
 });
 
+RelandIconButton.Icon = Icon;
 
 
 export default RelandIconButton;
