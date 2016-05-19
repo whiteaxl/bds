@@ -139,9 +139,9 @@ danhMuc.LoaiTin = {
 };
 
 danhMuc.MapType = [
-    "standard",
-    "satellite",
-    "hybrid"
+    "Standard",
+    "Satellite",
+    "Hybrid"
 ];
 
 danhMuc.getDanhMucKeys = function (hashDanhMuc) {

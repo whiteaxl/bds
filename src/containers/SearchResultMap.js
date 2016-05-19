@@ -116,7 +116,7 @@ class SearchResultMap extends Component {
     this.state = {
       firstLoad : true,
       modal: false,
-      mapType: "standard",
+      mapType: "Standard",
       mmarker:{},
       openLocalInfo: false,
       openDraw: false,
@@ -155,7 +155,7 @@ class SearchResultMap extends Component {
               region={this.props.search.map.region}
               onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
               style={styles.mapView}
-              mapType={this.state.mapType}
+              mapType={this.state.mapType.toLowerCase()}
           >
             {(!this.state.drawMode || (this.state.polygons && this.state.polygons.length > 0)) && viewableList.map( marker =>(
                 <MapView.Marker key={marker.id} coordinate={marker.coordinate} onPress={()=>this._onMarkerPress(marker)}>
@@ -322,19 +322,22 @@ class SearchResultMap extends Component {
   _renderLocalInfoModal(){
     return (
      <Modal style={[styles.modal]} isOpen={this.state.openLocalInfo} position={"center"} ref={"localInfoModal"} isDisabled={false}>
-      <View style={styles.modalTitle}>
-        <Text style={styles.modalTitleText}>Local info</Text>
-        <TouchableOpacity style={{flexDirection: "row", alignItems: "flex-end"}}
+      <View style={styles.modalHeader}>
+        <TouchableOpacity style={{flexDirection: "row", alignItems: "flex-start",position:'absolute', left:15}}
                           onPress={this._onCloseLocalInfo.bind(this)}>
-          <Icon name="times" color={gui.arrowColor} size={18} />
+          <RelandIcon name="close" color={gui.mainColor} />
         </TouchableOpacity>
+        <Text style={styles.modalHeaderText}>Local info</Text>
+      </View>
+      <View style={styles.modalTitle}>
+         <Text style={styles.modalTitleText}>Loại bản đồ</Text>
       </View>
       <View style={{marginTop: 10}}>
         <SegmentedControlIOS
             values={DanhMuc.MapType}
             selectedIndex={DanhMuc.MapType.indexOf(this.state.mapType)}
             onChange={this._onMapTypeChange.bind(this)}
-            tintColor={gui.mainColor} height={30} width={width-80}
+            tintColor={gui.mainColor} height={30} width={width-70}
         >
         </SegmentedControlIOS>
       </View>
@@ -407,13 +410,13 @@ class SearchResultMap extends Component {
 
   _onMapTypeChange(event){
     this.setState({
-      preMapType: event.nativeEvent.selectedSegmentIndex
+      mapType: DanhMuc.MapType[event.nativeEvent.selectedSegmentIndex],
+      openLocalInfo: false
     });
   }
 
   _onCloseLocalInfo(){
     this.setState({
-      mapType: DanhMuc.MapType[this.state.preMapType],
       openLocalInfo: false
     });
   }
@@ -675,16 +678,44 @@ var styles = StyleSheet.create({
   modal: {
     justifyContent: 'flex-start',
     alignItems: 'center',
-    height: 100,
+    height: 150,
     width: width-40,
     marginVertical: 0,
     borderRadius: 5
+  },
+  modalHeader: {
+    flexDirection : "row",
+    //borderWidth:1,
+    //borderColor: "red",
+    justifyContent :'center',
+    alignItems: 'center',
+    paddingRight: 15,
+    paddingLeft: 15,
+    paddingTop: 10,
+    paddingBottom: 10,
+    borderTopWidth: 1,
+    marginVertical: 0,
+    width: width-40,
+    borderTopColor: '#f8f8f8',
+    borderRadius: 5
+  },
+  modalHeaderText: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    fontFamily: 'Open Sans',
+    color: '#606060',
+    justifyContent :'center',
+    alignItems: 'center',
+    padding: 0,
+    borderTopWidth: 1,
+    borderTopColor: gui.separatorLine
   },
   modalTitle: {
     flexDirection : "row",
     //borderWidth:1,
     //borderColor: "red",
     justifyContent :'space-between',
+    alignItems: 'center',
     paddingRight: 15,
     paddingLeft: 15,
     paddingTop: 12,
@@ -693,14 +724,14 @@ var styles = StyleSheet.create({
     marginVertical: 0,
     width: width-40,
     borderTopColor: '#f8f8f8',
-    backgroundColor: '#f8f8f8',
-    borderRadius: 5
+    backgroundColor: '#f8f8f8'
   },
   modalTitleText: {
     fontSize: 16,
     fontFamily: 'Open Sans',
     color: '#606060',
     justifyContent :'space-between',
+    alignItems: 'center',
     padding: 0,
     borderTopWidth: 1,
     borderTopColor: gui.separatorLine
