@@ -12,7 +12,6 @@ import SearchResultList from './SearchResultList';
 import SearchResultMap from './SearchResultMap';
 import PropertyTypes from '../components/PropertyTypes';
 import OrderPicker from '../components/OrderPicker';
-import TopModal from '../components/TopModal';
 import SearchResultDetail from './SearchResultDetail';
 import SearchMapDetail from './SearchMapDetail';
 import HuongNha from '../components/HuongNha';

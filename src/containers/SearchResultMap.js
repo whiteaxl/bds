@@ -127,6 +127,7 @@ class SearchResultMap extends Component {
         latitudeDelta: LATITUDE_DELTA,
         longitudeDelta: LONGITUDE_DELTA
       },
+      markedList:[],
       polygons: [],
       editing: null,
       drawMode: false
@@ -158,8 +159,10 @@ class SearchResultMap extends Component {
               mapType={this.state.mapType.toLowerCase()}
           >
             {(!this.state.drawMode || (this.state.polygons && this.state.polygons.length > 0)) && viewableList.map( marker =>(
-                <MapView.Marker key={marker.id} coordinate={marker.coordinate} onPress={()=>this._onMarkerPress(marker)}>
-                  <PriceMarker color={gui.mainColor} amount={marker.price}/>
+                <MapView.Marker key={marker.id} coordinate={marker.coordinate}
+                                onSelect={()=>this._onMarkerPress(marker)}
+                                onDeselect={this._onMarkerDeselect.bind(this)}>
+                  <PriceMarker color={this.state.markedList.indexOf(marker.id)>=0 ? "grey" : gui.mainColor} amount={marker.price}/>
                 </MapView.Marker>
             ))}
             {this.state.polygons.map(polygon => (
@@ -298,10 +301,12 @@ class SearchResultMap extends Component {
 
     if (this.state.firstLoad){
       this.setState({
-        firstLoad : false
+        firstLoad : false,
+        openDetailAdsModal: false
       });
       return;
     }
+
 
     this.props.actions.onMapChange("region", region);
 
@@ -317,6 +322,7 @@ class SearchResultMap extends Component {
     this.props.actions.search(
         this.props.search.form.fields
         , () => {});
+    this.setState({openDetailAdsModal: false});
   }
 
   _renderLocalInfoModal(){
@@ -404,7 +410,6 @@ class SearchResultMap extends Component {
 
   _onDetailAdsPress(){
     console.log("Call SearchResultMap._onDetailAdsPress");
-    console.log(this.state.mmarker.id);
     Actions.SearchResultDetail({adsID: this.state.mmarker.id});
   }
 
@@ -431,19 +436,24 @@ class SearchResultMap extends Component {
     });
   }
 
-  _onMarkerSelect() {
-    this.setState({modal: true});
-  }
-
   _onMarkerPress(marker) {
     console.log("Call SearchResultMap._onMarkerPress");
+    console.log(marker.id);
+    console.log(this.state.markedList);
+    var markedList = this.state.markedList
+
+    markedList.push(marker.id);
+
+    console.log(markedList);
     this.setState({
       openDetailAdsModal: true,
-      mmarker: marker
+      mmarker: marker,
+      markedList: markedList
     });
   }
 
   _onMarkerDeselect(){
+    console.log("Call SearchResultMap._onMarkerDeselect");
     this.setState({openDetailAdsModal: false});
   }
 
