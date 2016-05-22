@@ -75,13 +75,8 @@ export default class LoginRegister extends React.Component {
     this.usernameRegister = usernameInput
   }
 
-  onClose() {
-    console.log("AAAAAAA")
-    Actions.pop();
-  }
-
   renderTabBar() {
-    return <LoginRegisterTabBar onClose={this.onClose}/>
+    return <LoginRegisterTabBar />
   }
 
   render(){

@@ -179,6 +179,21 @@ class DBService {
         });
     }
 
+    getUser() {
+        return this.db().getAllDocuments({include_docs: true}).then((res) => {
+            let rows = res.rows;
+
+            for (var i in rows) {
+                let doc = rows[i].doc;
+                if (doc.type === 'User') {
+                    return  doc;
+                }
+            }
+
+            return null;
+        });
+    }
+
     logout() {
         return this.db().deleteDatabase();
     }

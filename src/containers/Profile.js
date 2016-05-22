@@ -90,6 +90,7 @@ class Profile extends Component {
   }
 
   onTestSync() {
+    /*
     dbService.getAllDocuments()
       .then((res) => {
         const allDoc = res.map(one => one.doc);
@@ -120,6 +121,14 @@ class Profile extends Component {
       .catch((res) => {
         console.log("getAllAds fail", res);
       });
+      */
+
+    //print user:
+
+    dbService.getUser().then((user) => {
+      console.log("User doc:", user);
+    })
+
   }
 
   sendChat() {
