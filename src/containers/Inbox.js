@@ -1,6 +1,8 @@
 'use strict';
 
-import React, { View, Text, Component, StyleSheet} from 'react-native';
+import  React, {Component} from 'react';
+
+import { View, Text, StyleSheet} from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
 import log from "../lib/logUtil";

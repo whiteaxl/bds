@@ -1,10 +1,11 @@
-var React = require('react-native');
+import React, {Component} from 'react';
+
 var {
-    StyleSheet,
-    View,
-    Text,
-    TouchableHighlight
-} = React;
+  StyleSheet,
+  View,
+  Text,
+  TouchableHighlight
+}  = require('react-native');
 
 import gui from '../lib/gui';
 import TruliaIcon from './TruliaIcon';

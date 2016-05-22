@@ -2,21 +2,11 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-/**
- * The actions we need
- */
 import * as globalActions from '../reducers/global/globalActions';
 
-/**
- * Immutable Map
- */
+import React, {Component} from 'react';
 
-
-
-
-import React, { Text, View, Component, StyleSheet } from 'react-native'
-
-import Button from 'react-native-button';
+import { Text, View, StyleSheet } from 'react-native'
 
 import {Map} from 'immutable';
 import {Actions} from 'react-native-router-flux';
@@ -24,9 +14,6 @@ import log from "../lib/logUtil";
 import gui from "../lib/gui";
 
 
-/** 
-* ## Redux boilerplate
-*/
 const actions = [
   globalActions
 ];

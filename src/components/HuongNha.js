@@ -2,19 +2,14 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-/**
- * The actions we need
- */
 import * as globalActions from '../reducers/global/globalActions';
 import * as searchActions from '../reducers/search/searchActions';
 
-/**
- * Immutable Mapn
- */
 import {Map} from 'immutable';
 
+import React, {Component} from 'react';
 
-import React, {View, Component, SegmentedControlIOS, Text, StyleSheet} from 'react-native'
+import {View, SegmentedControlIOS, Text, StyleSheet} from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 
@@ -23,13 +18,8 @@ import DanhMuc from '../assets/DanhMuc';
 
 import MultipleChoice from './MultipleChoice';
 
-import Button from 'react-native-button';
-
 import gui from '../lib/gui';
 
-/**
- * ## Redux boilerplate
- */
 const actions = [
     globalActions,
     searchActions

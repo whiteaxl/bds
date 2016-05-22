@@ -1,6 +1,6 @@
-import React,{Component,StyleSheet,Text,View,Image,TouchableHighlight,Animated,Dimensions,TouchableOpacity} from 'react-native'; //Step 1
+import React, {Component} from 'react';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
+import {StyleSheet,Text,View,Image,TouchableHighlight,Animated,Dimensions,TouchableOpacity} from 'react-native'; //Step 1
 
 import gui from '../lib/gui';
 

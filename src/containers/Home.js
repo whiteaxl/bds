@@ -13,9 +13,9 @@ import * as searchActions from '../reducers/search/searchActions';
  */
 import {Map} from 'immutable';
 
+import  React, {Component} from 'react';
 
-
-import React, { Text, StyleSheet, View, Component, ScrollView, Image, Dimensions, TouchableOpacity } from 'react-native'
+import { Text, StyleSheet, View, ScrollView, Image, Dimensions, TouchableOpacity } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 import TruliaIcon from '../components/TruliaIcon';

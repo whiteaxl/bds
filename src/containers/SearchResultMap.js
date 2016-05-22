@@ -3,21 +3,16 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-/**
- * The actions we need
- */
 import * as globalActions from '../reducers/global/globalActions';
 import * as searchActions from '../reducers/search/searchActions';
 
-/**
- * Immutable Map
- */
 
 import {Map} from 'immutable';
 
-import React, { Text,
+import React, {Component} from 'react';
+
+import { Text,
     View,
-    Component,
     StyleSheet,
     Navigator,
     TouchableOpacity,

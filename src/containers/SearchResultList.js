@@ -2,19 +2,14 @@
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-/**
- * The actions we need
- */
 import * as globalActions from '../reducers/global/globalActions';
 
-/**
- * Immutable Map
- */
 import {Map} from 'immutable';
 
+import React, {Component} from 'react';
 
-import React, {
-    Text, View, Component, Image, ListView, Dimensions, StatusBar
+import {
+    Text, View, Image, ListView, Dimensions, StatusBar
     , RecyclerViewBackedScrollView, TouchableHighlight, StyleSheet
 } from 'react-native'
 
@@ -35,11 +30,8 @@ import DanhMuc from '../assets/DanhMuc';
 
 import GiftedSpinner from "../components/GiftedSpinner";
 
-import Menu, { MenuContext, MenuOptions, MenuOption, MenuTrigger } from 'react-native-menu';
+import {MenuContext} from '../components/menu';
 
-/**
- * ## Redux boilerplate
- */
 const actions = [
     globalActions
 ];
@@ -152,7 +144,7 @@ class SearchResultList extends Component {
             }
 
             return rowData.image.images.map(imageUrl => {
-                return <MyImage imageIndex={imageIndex++} rowData={rowData} imageUrl={imageUrl} />
+                return <MyImage key={imageIndex} imageIndex={imageIndex++} rowData={rowData} imageUrl={imageUrl} />
             });
 
         } else {
@@ -196,7 +188,7 @@ class SearchResultList extends Component {
         var moreInfo = this.getMoreInfo(loaiNhaDat, dienTich, soPhongNgu, soTang);
 
         return (
-            <View>
+            <View key={rowData.adsID}>
                 <View style={myStyles.detail}>
                     <Swiper style={myStyles.wrapper} height={imgHeight}
                             showsButtons={false} autoplay={false} loop={false}

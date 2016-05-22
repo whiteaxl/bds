@@ -1,5 +1,5 @@
-// Import some code we need
-import React, {View, Component, Text, StyleSheet, SegmentedControlIOS} from 'react-native';
+import React, {Component} from 'react';
+import {View, Text, StyleSheet, SegmentedControlIOS} from 'react-native';
 
 import gui from '../lib/gui';
 

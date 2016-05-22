@@ -1,6 +1,6 @@
 'use strict';
 
-import React from 'react-native';
+import React, {Component} from 'react';
 
 export default class BaseComponent extends React.Component {
     _bind(...methods) {

@@ -1,6 +1,8 @@
 'use strict';
 
-import React, {Component, PropTypes} from 'react-native'
+import React, {Component} from 'react';
+
+import {PropTypes} from 'react-native'
 
 import MapView from 'react-native-maps';
 
@@ -10,24 +12,15 @@ import PriceMarker from './PriceMarker';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-/**
- * The actions we need
- */
 import * as globalActions from '../reducers/global/globalActions';
 import * as searchActions from '../reducers/search/searchActions';
 
-/**
- * Immutable Mapn
- */
 import {Map} from 'immutable';
 
 import {Actions} from 'react-native-router-flux';
 
 import gui from '../lib/gui';
 
-/**
-* ## Redux boilerplate
-*/
 const actions = [
   globalActions,
   searchActions

@@ -1,5 +1,6 @@
 // Import some code we need
-import React, {View, Component, Text, StyleSheet, AlertIOS} from 'react-native';
+import React, {Component} from 'react';
+import {View, Text, StyleSheet, AlertIOS} from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
 

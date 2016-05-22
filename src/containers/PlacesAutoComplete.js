@@ -2,29 +2,19 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-/**
- * The actions we need
- */
 import * as globalActions from '../reducers/global/globalActions';
 import * as searchActions from '../reducers/search/searchActions';
 
-/**
- * Immutable Map
- */
 import {Map} from 'immutable';
 
+import  React, {Component} from 'react';
 
-
-import React, { Text, View, Component, ListView
+import { Text, View, ListView
     , TextInput, StyleSheet,RecyclerViewBackedScrollView
     , TouchableHighlight, StatusBar} from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 
-
-//import styles from '../containers/styles';
-
-import api from '../lib/FindApi';
 var gui = require("../lib/gui");
 
 

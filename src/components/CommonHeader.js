@@ -1,6 +1,6 @@
 // Import some code we need
-import React, {View, Component, Text, StyleSheet} from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
+import React, {Component} from 'react';
+import {View, Text, StyleSheet} from 'react-native';
 import TruliaIcon from './TruliaIcon';
 
 import {Actions} from 'react-native-router-flux';

@@ -1,18 +1,18 @@
 'use strict';
 
-import React from 'react-native';
-var {
+import React, {Component} from 'react';
+
+import {
     Text,
     View,
-    StyleSheet,
-    Component
-} = React;
+    StyleSheet
+} from 'react-native';
 
 import TruliaIcon from './TruliaIcon';
 
 import gui from '../lib/gui';
 
-import Menu, { MenuContext, MenuOptions, MenuOption, MenuTrigger } from 'react-native-menu';
+import Menu, { MenuContext, MenuOptions, MenuOption, MenuTrigger } from './menu';
 
 class MMenuOption extends Component {
     _renderIndicator(option) {

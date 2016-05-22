@@ -1,5 +1,7 @@
 'use strict';
 
-import snowflake from './src/main';
+import { AppRegistry } from 'react-native';
 
-snowflake('ios');
+import MainBDS from './src/main';
+
+AppRegistry.registerComponent('bds', () => MainBDS);

@@ -1,4 +1,6 @@
-import React, {
+import React, {Component} from 'react';
+
+import {
   StyleSheet,
   Text,
   View,
@@ -10,21 +12,13 @@ import React, {
 import gui from '../../lib/gui';
 import {Actions} from 'react-native-router-flux';
 
-/**
- * ## Redux boilerplate
- */
-
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {Map} from 'immutable';
 
-/**
- * The actions we need
- */
 import * as globalActions from '../../reducers/global/globalActions';
 import * as authActions from '../../reducers/auth/authActions';
 
-import Icon from 'react-native-vector-icons/FontAwesome';
 import RelandIcon from '../../components/RelandIcon';
 
 
