@@ -1,9 +1,10 @@
-var React = require('react-native');
+import React, {Component} from 'react';
+
 var {
   StyleSheet,
   View,
   Text,
-} = React;
+} = require('react-native');
 
 class PriceMarker extends React.Component{
   constructor(){

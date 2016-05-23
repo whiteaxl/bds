@@ -1,6 +1,8 @@
 'use strict';
 
-import React, {
+import React, {Component} from 'react';
+
+import {
   StyleSheet,
   Text,
   View,
@@ -9,7 +11,7 @@ import React, {
 } from 'react-native';
 
 
-import Picker from 'react-native-picker';
+import Picker from './picker/Picker';
 
 export default class RangePicker extends React.Component {
 	constructor(props) {
@@ -34,10 +36,3 @@ export default class RangePicker extends React.Component {
 		this.picker.toggle();
 	}
 }
-
-
-
-
-var styles = StyleSheet.create({
- 
- });

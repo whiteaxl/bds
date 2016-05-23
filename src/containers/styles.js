@@ -1,4 +1,6 @@
-import React, {StyleSheet, PixelRatio} from 'react-native';
+import React, {Component} from 'react';
+
+import {StyleSheet, PixelRatio} from 'react-native';
 
 import gui from '../lib/gui';
 

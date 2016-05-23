@@ -2,19 +2,14 @@
 import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
-/**
- * The actions we need
- */
 import * as globalActions from '../reducers/global/globalActions';
 import * as authActions from '../reducers/auth/authActions';
 
-/**
- * Immutable Map
- */
 import {Map} from 'immutable';
 
+import React, {Component} from 'react';
 
-import React, {Text, View, Component, StyleSheet, ListView, Image, TextInput} from 'react-native'
+import {Text, View, StyleSheet, ListView, Image, TextInput} from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -23,9 +18,6 @@ import log from "../lib/logUtil";
 import gui from "../lib/gui";
 
 
-/**
- * ## Redux boilerplate
- */
 const actions = [
   globalActions,
   authActions,
@@ -120,6 +112,13 @@ class Profile extends Component {
       .catch((res) => {
         console.log("getAllAds fail", res);
       });
+
+    //print user:
+
+    dbService.getUser().then((user) => {
+      console.log("User doc:", user);
+    })
+
   }
 
   sendChat() {

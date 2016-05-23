@@ -2,21 +2,16 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-/**
- * The actions we need
- */
 import * as globalActions from '../reducers/global/globalActions';
 import * as searchActions from '../reducers/search/searchActions';
 
-/**
- * Immutable Mapn
- */
 import {Map} from 'immutable';
 
 import gui from '../lib/gui';
 
+import React, {Component} from 'react';
 
-import React, { Text, View, Component, Navigator, TouchableOpacity, Dimensions
+import { Text, View, Navigator, TouchableOpacity, Dimensions
   , SegmentedControlIOS, ScrollView, StyleSheet, StatusBar, PickerIOS } from 'react-native'
 
 import Button from 'react-native-button';
@@ -25,6 +20,7 @@ import TruliaIcon from '../components/TruliaIcon'
 
 import LikeTabButton from '../components/LikeTabButton';
 import RangeUtils from "../lib/RangeUtils"
+
 import RangePicker from "../components/RangePicker"
 
 import DanhMuc from "../assets/DanhMuc"
@@ -37,9 +33,6 @@ import apiUtils from '../lib/ApiUtils';
 
 import SegmentedControl from '../components/SegmentedControl';
 
-/**
-* ## Redux boilerplate
-*/
 const actions = [
   globalActions,
   searchActions

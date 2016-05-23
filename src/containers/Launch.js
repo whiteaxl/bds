@@ -1,45 +1,29 @@
 'use strict';
 
-import React, {
+import React from 'react';
+
+import {
   StyleSheet,
   Text,
   View,
-  Image, TouchableHighlight
+  Image,
+  TouchableHighlight
 } from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Dimensions from 'Dimensions';
-
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-/**
- * The actions we need
- */
+
 import * as globalActions from '../reducers/global/globalActions';
 import * as authActions from '../reducers/auth/authActions';
 
-/**
- * Immutable Mapn
- */
+
 import {Map} from 'immutable';
 
 //intro swiper
 import IntroSwiper from '../components/IntroSwiper';
-import gui from "../lib/gui";
 
-
-/**
- * The 4 states were interested in
- */
-const {
-  LOGIN_STATE_LOGOUT,
-} = require('../lib/constants').default;
-
-/**
- * ## Redux boilerplate
- */
 const actions = [
   globalActions,
   authActions
@@ -63,11 +47,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-
-
-var topHeight = function() {
-  return Dimensions.get('window').height * 4 / 5 - 15;
-}
 
 class Launch extends React.Component {
   constructor(props) {
@@ -112,7 +91,6 @@ class Launch extends React.Component {
 			</View>
 		);
 	}
-
 
 
   signInFail(error) {

@@ -1,25 +1,19 @@
 'use strict';
+import  React, {Component} from 'react';
 
-import React, { View, Text, StyleSheet, Component, TextInput} from 'react-native';
-import Button from 'react-native-button';
+import { View, Text, StyleSheet, TextInput} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-/**
- * The actions we need
- */
 import * as globalActions from '../reducers/global/globalActions';
 import * as authActions from '../reducers/auth/authActions';
 
 import RegisterTab from '../components/login/RegisterTab';
 import LoginTab from '../components/login/LoginTab';
 
-/**
- * Immutable Map
- */
 import {Map} from 'immutable';
 
 import {Alert} from "react-native";
@@ -75,13 +69,8 @@ export default class LoginRegister extends React.Component {
     this.usernameRegister = usernameInput
   }
 
-  onClose() {
-    console.log("AAAAAAA")
-    Actions.pop();
-  }
-
   renderTabBar() {
-    return <LoginRegisterTabBar onClose={this.onClose}/>
+    return <LoginRegisterTabBar />
   }
 
   render(){

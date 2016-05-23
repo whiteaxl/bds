@@ -1,4 +1,7 @@
-import React,
+
+import React, {Component} from 'react';
+
+import
 { AppRegistry,
     View,
     Image,
@@ -7,7 +10,6 @@ import React,
     TouchableOpacity,
     Animated,
     Dimensions,
-    Component,
     StatusBar
 }
     from 'react-native';

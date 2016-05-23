@@ -3,21 +3,15 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-/**
- * The actions we need
- */
 import * as globalActions from '../reducers/global/globalActions';
 import * as searchActions from '../reducers/search/searchActions';
 
-/**
- * Immutable Map
- */
-
 import {Map} from 'immutable';
 
-import React, { Text, View, Component, StyleSheet, Navigator, TouchableOpacity, Dimensions, StatusBar, Linking } from 'react-native'
+import React, {Component} from 'react';
+
+import { Text, View, StyleSheet, Navigator, TouchableOpacity, Dimensions, StatusBar, Linking } from 'react-native'
 import {Actions} from 'react-native-router-flux';
-import Icon from 'react-native-vector-icons/FontAwesome';
 import MapView from 'react-native-maps';
 
 import CommonHeader from '../components/CommonHeader';

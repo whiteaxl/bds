@@ -2,22 +2,16 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-/**
- * The actions we need
- */
 import * as globalActions from '../reducers/global/globalActions';
 import * as searchActions from '../reducers/search/searchActions';
 
-/**
- * Immutable Map
- */
 import {Map} from 'immutable';
 
+import React, {Component} from 'react';
 
+import { Text, View, Image, Dimensions, ScrollView, StyleSheet, StatusBar, TouchableHighlight, Linking } from 'react-native'
 
-import React, { Text, View, Component, Image, Dimensions, ScrollView, StyleSheet, StatusBar, TouchableHighlight, Linking } from 'react-native'
-
-var ShareManager = React.NativeModules.ShareManager;
+var ShareManager = React.ShareManager;
 
 import {Actions} from 'react-native-router-flux';
 
@@ -45,9 +39,6 @@ var Communications = require('react-native-communications');
 
 import ImagePreview from '../components/ImagePreview';
 
-/**
-* ## Redux boilerplate
-*/
 const actions = [
   globalActions,
   searchActions
@@ -242,7 +233,7 @@ class SearchResultDetail extends Component {
         var numberOfAds = (<Text style={detailStyles.moiGioiNumberOfAds}>{'Có ' + oneMoiGioi.numberOfAds + ' bất động sản đang bán'}</Text>);
         var phone = oneMoiGioi.phone;
         var userID = oneMoiGioi.userID;
-        moiGioiTuongTu.push(<View>
+        moiGioiTuongTu.push(<View key={'mg-'+i}>
           <View style={[detailStyles.moiGioiRow, {marginTop: 10}]}>
             <View style={detailStyles.moiGioiRowLeft}>
               <Image source={{uri: `${oneMoiGioi.cover}`}} style={detailStyles.moiGioiImage}></Image>
@@ -480,11 +471,11 @@ class SearchResultDetail extends Component {
     var i = 0;
     for(i = 0; i < diemDanhGia; i++) {
       diemDanhGiaItems.push(
-          <TruliaIcon name="star" mainProps={detailStyles.moiGioiStar} color={'#FEBC0A'} size={16}/>);
+          <TruliaIcon key={'diem-'+i} name="star" mainProps={detailStyles.moiGioiStar} color={'#FEBC0A'} size={16}/>);
     }
     for(i = 0; i < 5-diemDanhGia; i++) {
       diemDanhGiaItems.push(
-          <TruliaIcon name="star-o" mainProps={detailStyles.moiGioiStarO} color={'#FEBC0A'} size={16}/>);
+          <TruliaIcon key={'diem-star-'+i} name="star-o" mainProps={detailStyles.moiGioiStarO} color={'#FEBC0A'} size={16}/>);
     }
     return (
         <View style={detailStyles.moiGioiStarView}>

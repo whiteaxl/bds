@@ -1,5 +1,7 @@
 'use strict';
-import React, {View, Text, StyleSheet, TouchableHighlight} from 'react-native';
+import React, {Component} from 'react';
+
+import {View, Text, StyleSheet, TouchableHighlight} from 'react-native';
 import gui from '../lib/gui';
 
 
@@ -9,7 +11,7 @@ var glyphMap = { 'inbox':'1','camera': 59396,'camera-o': 59397,'map':59392, 'sor
                 'chat': 59409, 'email': 59410, 'home': 59411, 'dot': 59412, 'search': 59413, 'zalo': 59414, 'sort-alt': 59415,
                 'facebook-o': 59416, 'facebook': 59417, 'google': 59418, 'google-alt': 59419, 'skype-o': 59420, 'skype': 59421,
                 'twitter-o': 59422, 'twitter': 59423, 'sms': 59424, 'location-o': 59425, 'location': 59426, 'close': 59427,
-                'home-marker': 59428};
+                'home-marker': 59428, 'close-circle': 59429};
 var Icon = createIconSet(glyphMap, 'RelandIcon');
 
 class RelandIconButton extends React.Component {

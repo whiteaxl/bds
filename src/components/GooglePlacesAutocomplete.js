@@ -1,12 +1,13 @@
-const React = require('react-native');
-const {TextInput, View, ListView, Image, Text, Dimensions, TouchableHighlight, TouchableWithoutFeedback, Platform, ActivityIndicatorIOS, ProgressBarAndroid} = React;
+import React, {Component} from 'react';
+
+const {TextInput, View, ListView, Image, Text, Dimensions, TouchableHighlight, TouchableWithoutFeedback
+  , Platform, ActivityIndicatorIOS, ProgressBarAndroid} = require('react-native');
 const Qs = require('qs');
 
 import placeUtil from "../lib/PlaceUtil";
 
 
 var gui = require("../lib/gui");
-import Icon from 'react-native-vector-icons/FontAwesome';
 
 import TruliaIcon from './TruliaIcon';
 

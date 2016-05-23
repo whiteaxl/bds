@@ -1,10 +1,9 @@
-var React = require('react-native');
+import React, {Component} from 'react';
+
 var {
     StyleSheet,
     View,
-    Text,
-    Dimensions
-} = React;
+} = require('react-native');
 
 import gui from '../lib/gui';
 import RelandIcon from './RelandIcon';

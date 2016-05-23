@@ -2,8 +2,9 @@
 
 //share for Map result and ListResult ?
 
-import React, {
-  Component,
+import React, {Component} from 'react';
+
+import {
   StyleSheet,
   Text,
   TouchableOpacity,

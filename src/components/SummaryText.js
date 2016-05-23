@@ -1,8 +1,6 @@
-import React,{Component,StyleSheet,Text,View,Image,TouchableHighlight,Animated,Dimensions,TouchableOpacity} from 'react-native'; //Step 1
+import React, {Component} from 'react';
+import {StyleSheet,Text,View,Image,TouchableHighlight,Animated,Dimensions,TouchableOpacity} from 'react-native'; //Step 1
 
-import Icon from 'react-native-vector-icons/FontAwesome';
-
-import gui from '../lib/gui';
 
 class SummaryText extends Component{
     constructor(props){

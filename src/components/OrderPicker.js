@@ -2,19 +2,13 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-/**
- * The actions we need
- */
 import * as globalActions from '../reducers/global/globalActions';
 import * as searchActions from '../reducers/search/searchActions';
 
-/**
- * Immutable Mapn
- */
 import {Map} from 'immutable';
 
-
-import React, {View, Component, Text, StyleSheet, StatusBar } from 'react-native'
+import React, {Component} from 'react';
+import {View, Text, StyleSheet, StatusBar } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 

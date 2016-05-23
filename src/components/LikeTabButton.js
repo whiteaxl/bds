@@ -1,4 +1,5 @@
-import React, {
+import React, {Component} from 'react';
+import {
   StyleSheet,
   Text,
   View,
@@ -6,7 +7,6 @@ import React, {
   TouchableOpacity
 } from 'react-native';
 
-import Button from 'react-native-button';
 import gui from '../lib/gui';
 
 export default class LikeTabButton extends React.Component {

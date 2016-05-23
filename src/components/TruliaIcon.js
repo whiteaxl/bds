@@ -1,7 +1,8 @@
 'use strict';
-import React, {View, Text, StyleSheet, TouchableHighlight} from 'react-native';
-import gui from '../lib/gui';
+import React, {Component} from 'react';
 
+import {View, Text, StyleSheet, TouchableHighlight} from 'react-native';
+import gui from '../lib/gui';
 
 var { createIconSet } = require('react-native-vector-icons');
 var glyphMap = { 'heart':59457, 'heart-o':59458,'arrow-left': 59463,'map':59468, 'menu': 59470, 'arrow-right' : 59492,

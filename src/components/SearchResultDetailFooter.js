@@ -1,7 +1,7 @@
 // Import some code we need
-import React, {View, Component, Text, StyleSheet, Dimensions, AlertIOS } from 'react-native';
+import React, {Component} from 'react';
 
-import Button from 'react-native-button';
+import {View, Text, StyleSheet, Dimensions, AlertIOS } from 'react-native';
 
 import TruliaIcon from './TruliaIcon';
 

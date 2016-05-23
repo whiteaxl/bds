@@ -10,21 +10,12 @@ const {
 const Button = require('./Button');
 
 import gui from "../../lib/gui";
-import Icon from 'react-native-vector-icons/MaterialIcons';
+import RelandIcon from '../../components/RelandIcon';
 
 import {Actions} from 'react-native-router-flux';
 
-const LoginRegisterTabBar = React.createClass({
-  propTypes: {
-    goToPage: React.PropTypes.func,
-    activeTab: React.PropTypes.number,
-    tabs: React.PropTypes.array,
-    underlineColor: React.PropTypes.string,
-    backgroundColor: React.PropTypes.string,
-    activeTextColor: React.PropTypes.string,
-    inactiveTextColor: React.PropTypes.string,
-  },
-
+export default class LoginRegisterTabBar extends React.Component {
+ 
   renderTabOption(name, page) {
     const isTabActive = this.props.activeTab === page;
     const activeTextColor = this.props.activeTextColor || 'navy';
@@ -44,12 +35,12 @@ const LoginRegisterTabBar = React.createClass({
         </Text>
       </View>
     </Button>;
-  },
+  }
 
   onClose() {
     //todo: how to back
     Actions.Main();
-  },
+  }
 
   render() {
     const containerWidth = this.props.containerWidth;
@@ -75,12 +66,12 @@ const LoginRegisterTabBar = React.createClass({
         <TouchableOpacity
           style={{position:'absolute',top: 33,right: 10,}}
           onPress={this.onClose}>
-          <Icon style={styles.closeBtn} name="close"/>
+          <RelandIcon.Icon style={styles.closeBtn} name="close-circle"/>
         </TouchableOpacity>
       </View>
     );
-  },
-});
+  }
+};
 
 const styles = StyleSheet.create({
   tab: {
@@ -103,9 +94,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   closeBtn : {
-    borderWidth:1,
-    borderColor: gui.mainColor,
-    borderRadius: 9,
     height: 18,
     paddingLeft:3,
     paddingRight:1,
@@ -115,5 +103,3 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
 });
-
-module.exports = LoginRegisterTabBar;
