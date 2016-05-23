@@ -8,6 +8,7 @@ import {Scene, Router, TabBar, Modal, Schema, Actions, Reducer, Switch} from 're
 import Launch from './Launch';
 import Home from '../containers/Home';
 import Inbox from '../containers/Inbox';
+import PostAds from '../containers/PostAds';
 
 import LoginRegister from './LoginRegister';
 
@@ -67,7 +68,7 @@ class App extends React.Component {
 
 
             <Scene key="Inbox" component={Inbox} title="Inbox" iconName={"inbox"} icon={TabIcon} hideNavBar={true}/>
-            <Scene key="activity" component={Inbox} title="activity" iconName={"bell-o"} icon={TabIcon}/>
+            <Scene key="activity" component={PostAds} title="activity" iconName={"bell-o"} icon={TabIcon}/>
             <Scene key="Profile" component={Profile} title="Profile" iconName={"gear"} icon={TabIcon}/>
 
           </Scene>

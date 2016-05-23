@@ -20,6 +20,7 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		23529A571CDF2A3A00993583 /* Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 23529A561CDF2A3A00993583 /* Orientation.m */; };
+		23E8F5FA1CF3B8360071148B /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E8F5EE1CF3B80A0071148B /* libRCTCamera.a */; };
 		750484731C9EC50E00730C8B /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 750484721C9EC4DE00730C8B /* libBVLinearGradient.a */; };
 		753605FC1CABB6D600E17AEA /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 753605EF1CABB6BF00E17AEA /* libAirMaps.a */; };
 		754A445F1CF199D200B09BFF /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 754A445D1CF199D200B09BFF /* CouchbaseLite.framework */; };
@@ -110,6 +111,13 @@
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
 		};
+		23E8F5ED1CF3B80A0071148B /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 23E8F5E61CF3B80A0071148B /* RCTCamera.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
+			remoteInfo = RCTCamera;
+		};
 		750484711C9EC4DE00730C8B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7504846D1C9EC4DE00730C8B /* BVLinearGradient.xcodeproj */;
@@ -173,6 +181,7 @@
 		2320B7901CAECF9D000861AD /* RCTShareManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTShareManager.m; path = bds/RCTShareManager.m; sourceTree = "<group>"; };
 		23529A551CDF2A3A00993583 /* Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Orientation.h; path = "../node_modules/react-native-orientation/RCTOrientation/Orientation.h"; sourceTree = "<group>"; };
 		23529A561CDF2A3A00993583 /* Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Orientation.m; path = "../node_modules/react-native-orientation/RCTOrientation/Orientation.m"; sourceTree = "<group>"; };
+		23E8F5E61CF3B80A0071148B /* RCTCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RCTCamera.xcodeproj"; sourceTree = "<group>"; };
 		7504846D1C9EC4DE00730C8B /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		753605EA1CABB6BF00E17AEA /* AirMaps.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
 		754A445D1CF199D200B09BFF /* CouchbaseLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CouchbaseLite.framework; sourceTree = "<group>"; };
@@ -212,6 +221,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23E8F5FA1CF3B8360071148B /* libRCTCamera.a in Frameworks */,
 				75F3DF331C575387009B3BDF /* SystemConfiguration.framework in Frameworks */,
 				75D9A9C01CCDB19500CD638E /* CFNetwork.framework in Frameworks */,
 				75D9A9BE1CCDB18D00CD638E /* Security.framework in Frameworks */,
@@ -322,6 +332,14 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		23E8F5E71CF3B80A0071148B /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				23E8F5EE1CF3B80A0071148B /* libRCTCamera.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		7504846E1C9EC4DE00730C8B /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -376,6 +394,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				23E8F5E61CF3B80A0071148B /* RCTCamera.xcodeproj */,
 				75D9A9B41CCDB0CC00CD638E /* ReactCBLite.xcodeproj */,
 				753605EA1CABB6BF00E17AEA /* AirMaps.xcodeproj */,
 				7504846D1C9EC4DE00730C8B /* BVLinearGradient.xcodeproj */,
@@ -504,6 +523,10 @@
 					ProjectRef = 00C302A71ABCB8CE00DB3ED1 /* RCTActionSheet.xcodeproj */;
 				},
 				{
+					ProductGroup = 23E8F5E71CF3B80A0071148B /* Products */;
+					ProjectRef = 23E8F5E61CF3B80A0071148B /* RCTCamera.xcodeproj */;
+				},
+				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
 					ProjectRef = 00C302B51ABCB90400DB3ED1 /* RCTGeolocation.xcodeproj */;
 				},
@@ -610,6 +633,13 @@
 			fileType = archive.ar;
 			path = libReact.a;
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		23E8F5EE1CF3B80A0071148B /* libRCTCamera.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTCamera.a;
+			remoteRef = 23E8F5ED1CF3B80A0071148B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		750484721C9EC4DE00730C8B /* libBVLinearGradient.a */ = {
