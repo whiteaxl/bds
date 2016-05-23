@@ -530,6 +530,7 @@ class SearchResultMap extends Component {
     if (polygons.length > 0) {
         var geoBox = apiUtils.getPolygonBox(polygons[0]);
         this.props.actions.onSearchFieldChange("geoBox", geoBox);
+        this.props.actions.onSearchFieldChange("polygon", apiUtils.convertPolygon(polygons));
 
         this._refreshListData();
     }
