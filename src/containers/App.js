@@ -22,6 +22,11 @@ import SearchResultDetail from './SearchResultDetail';
 import SearchMapDetail from './SearchMapDetail';
 import HuongNha from '../components/HuongNha';
 
+import VerifyPhone from '../components/login/VerifyPhone';
+import RegisterMoreInfor from '../components/login/RegisterMoreInfor';
+
+
+
 import Profile from './Profile';
 
 import SearchSuggestion from '../containers/PlacesAutoComplete';
@@ -89,6 +94,10 @@ class App extends React.Component {
           <Scene key='SearchSuggestion' duration={20} direction="vertical" component={SearchSuggestion}
                  title="Serch Text" hideNavBar={true}/>
           <Scene key='SearchMapDetail' component={SearchMapDetail} title="Bản đồ" hideNavBar={true}/>
+
+          <Scene key='VerifyPhone' component={VerifyPhone} title="Xác minh số điện thoại" hideNavBar={false}/>
+          <Scene key='RegisterMoreInfor' component={RegisterMoreInfor} title="Đăng ký" hideNavBar={false}/>
+
 
         </Scene>
 

@@ -14,7 +14,8 @@ var gui = {
 
 	//Error msg
 	ERR_LoiKetNoiMayChu : "Lỗi kết nối đến máy chủ!",
-	INF_KhongCoKetQua : "Không có kết quả nào!"
+	INF_KhongCoKetQua : "Không có kết quả nào!",
+	ERR_MaXacMinhSai : 'Mã xác minh sai!'
 };
 
 var styles = StyleSheet.create({
