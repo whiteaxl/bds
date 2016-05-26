@@ -56,4 +56,5 @@ export default keyMirror({
   ON_AUTH_FIELD_CHANGE: null,
 
   LAUNCH_APP:null, //enter application
+  ROUTER_FOCUS:null, 
 });

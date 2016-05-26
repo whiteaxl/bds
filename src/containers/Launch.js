@@ -21,7 +21,6 @@ import * as authActions from '../reducers/auth/authActions';
 
 import {Map} from 'immutable';
 
-//intro swiper
 import IntroSwiper from '../components/IntroSwiper';
 
 const actions = [
@@ -53,12 +52,8 @@ class Launch extends React.Component {
     super(props);
     this.state = {
       user:null
-    }
+    };
   }
-  componentDidMount() {
-
-  }
-
   enterApp() {
     Actions.Home()
   }
@@ -91,28 +86,6 @@ class Launch extends React.Component {
 			</View>
 		);
 	}
-
-
-  signInFail(error) {
-    console.log('ERROR signin in:', error);
-    //this.errorAlert.checkError(error);
-  }
-
-  signInSuccess(user) {
-    this.signInService = this._rwGoogleSignIn; //incase auto call when startup
-
-    this.setState({user: user});
-
-    Actions.app({user: user, facade: this });
-  }
-
-  signOut() {
-    console.log("signout:")
-    console.log(this)
-    console.log(this.signInService)
-    return this.signInService.signOut();
-  }
-
 }
 
 var styles = StyleSheet.create({

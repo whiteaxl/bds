@@ -26,6 +26,8 @@ import Profile from './Profile';
 
 import SearchSuggestion from '../containers/PlacesAutoComplete';
 
+import {connect} from 'react-redux';
+const RouterWithRedux = connect()(Router);
 
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -43,10 +45,10 @@ class TabIcon extends React.Component {
 }
 
 const reducerCreate = params=> {
+  //console.log("Calling reducerCreate, params", params);
   const defaultReducer = Reducer(params);
   return (state, action)=> {
-    //console.log("ACTION:", action);
-    //console.log(state);
+    console.log("Calling reducerCreate:", action, state);
     return defaultReducer(state, action);
   }
 };
@@ -55,13 +57,12 @@ class App extends React.Component {
   render() {
 
     return (
-      <Router createReducer={reducerCreate}>
+      <RouterWithRedux >
 
         <Scene key="root" hideNavBar={true}>
+          <Scene key='Launch' component={Launch} initial={true} title="Welcome" />
 
-          <Scene key='Launch' component={Launch} initial={true} title="Welcome" type="replace"/>
-
-          <Scene key="Home" tabs={true} default="Main" type="replace" >
+          <Scene key="Home" tabs={true} default="Main" type="replace">
             <Scene key="Main" title="home" iconName={"home"} icon={TabIcon}
                    component={Home}
                    hideNavBar={true} initial={true}/>
@@ -74,7 +75,7 @@ class App extends React.Component {
           </Scene>
 
 
-          <Scene key='LoginRegister' component={LoginRegister} title="Register Screen"/>
+          <Scene key='LoginRegister' component={LoginRegister} title="Register Screen" direction="vertical"/>
 
           <Scene key='Search' component={Search} title="Tìm kiếm" hideNavBar={true} direction="vertical"/>
           <Scene key='SearchResultList' component={SearchResultList} title="Danh sách" hideNavBar={true}/>
@@ -92,7 +93,7 @@ class App extends React.Component {
         </Scene>
 
 
-      </Router>
+      </RouterWithRedux>
     );
   }
 }
