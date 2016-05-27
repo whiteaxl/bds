@@ -17,7 +17,8 @@ const {
     SEARCH_STATE_INPUT
 } = require('../../lib/constants').default;
 
-import RangeUtils from "../../lib/RangeUtils"
+import RangeUtils from "../../lib/RangeUtils";
+import danhMuc from "../../assets/DanhMuc";
 
 /**
  * This Record contains the state of the seach form
@@ -44,7 +45,7 @@ const SearchForm = Record({
         },
         radiusInKmSelectedIdx: 0,
         huongNha: '',
-        ngayDaDang: 30
+        ngayDaDang: 0 //batky
     }))
 
 });

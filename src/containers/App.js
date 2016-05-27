@@ -8,6 +8,7 @@ import {Scene, Router, TabBar, Modal, Schema, Actions, Reducer, Switch} from 're
 import Launch from './Launch';
 import Home from '../containers/Home';
 import Inbox from '../containers/Inbox';
+import PostAds from '../containers/PostAds';
 
 import LoginRegister from './LoginRegister';
 
@@ -21,10 +22,17 @@ import SearchResultDetail from './SearchResultDetail';
 import SearchMapDetail from './SearchMapDetail';
 import HuongNha from '../components/HuongNha';
 
+import VerifyPhone from '../components/login/VerifyPhone';
+import RegisterMoreInfor from '../components/login/RegisterMoreInfor';
+
+
+
 import Profile from './Profile';
 
 import SearchSuggestion from '../containers/PlacesAutoComplete';
 
+import {connect} from 'react-redux';
+const RouterWithRedux = connect()(Router);
 
 
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -42,10 +50,10 @@ class TabIcon extends React.Component {
 }
 
 const reducerCreate = params=> {
+  //console.log("Calling reducerCreate, params", params);
   const defaultReducer = Reducer(params);
   return (state, action)=> {
-    //console.log("ACTION:", action);
-    //console.log(state);
+    console.log("Calling reducerCreate:", action, state);
     return defaultReducer(state, action);
   }
 };
@@ -54,26 +62,25 @@ class App extends React.Component {
   render() {
 
     return (
-      <Router createReducer={reducerCreate}>
+      <RouterWithRedux >
 
         <Scene key="root" hideNavBar={true}>
+          <Scene key='Launch' component={Launch} initial={true} title="Welcome" />
 
-          <Scene key='Launch' component={Launch} initial={true} title="Welcome" type="replace"/>
-
-          <Scene key="Home" tabs={true} default="Main" type="replace" >
+          <Scene key="Home" tabs={true} default="Main" type="replace">
             <Scene key="Main" title="home" iconName={"home"} icon={TabIcon}
                    component={Home}
                    hideNavBar={true} initial={true}/>
 
 
             <Scene key="Inbox" component={Inbox} title="Inbox" iconName={"inbox"} icon={TabIcon} hideNavBar={true}/>
-            <Scene key="activity" component={Inbox} title="activity" iconName={"bell-o"} icon={TabIcon}/>
+            <Scene key="activity" component={PostAds} title="activity" iconName={"bell-o"} icon={TabIcon}/>
             <Scene key="Profile" component={Profile} title="Profile" iconName={"gear"} icon={TabIcon}/>
 
           </Scene>
 
 
-          <Scene key='LoginRegister' component={LoginRegister} title="Register Screen"/>
+          <Scene key='LoginRegister' component={LoginRegister} title="Register Screen" direction="vertical"/>
 
           <Scene key='Search' component={Search} title="Tìm kiếm" hideNavBar={true} direction="vertical"/>
           <Scene key='SearchResultList' component={SearchResultList} title="Danh sách" hideNavBar={true}/>
@@ -88,10 +95,14 @@ class App extends React.Component {
                  title="Serch Text" hideNavBar={true}/>
           <Scene key='SearchMapDetail' component={SearchMapDetail} title="Bản đồ" hideNavBar={true}/>
 
+          <Scene key='VerifyPhone' component={VerifyPhone} title="Xác minh số điện thoại" hideNavBar={false}/>
+          <Scene key='RegisterMoreInfor' component={RegisterMoreInfor} title="Đăng ký" hideNavBar={false}/>
+
+
         </Scene>
 
 
-      </Router>
+      </RouterWithRedux>
     );
   }
 }

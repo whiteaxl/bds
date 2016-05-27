@@ -11,9 +11,9 @@ import {Map} from 'immutable';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import LoginRegister from './LoginRegister'
-
 import * as globalActions from '../reducers/global/globalActions';
+
+import LoginRegister from './LoginRegister';
 
 const actions = [
 	globalActions
@@ -38,9 +38,12 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default class Inbox extends Component {
-  render() {
+	constructor(props) {
+		super(props);
+	}
 
-		console.log("Calling Inbox.render ..., loggedIn = ", this.props.global.loggedIn);
+  render() {
+		console.log("Calling Inbox.render ..., loggedIn = ", this.props.global.loggedIn, this);
 
 		if (this.props.global.loggedIn) {
 			return (
@@ -48,11 +51,11 @@ export default class Inbox extends Component {
 					<Text style={styles.welcome}>Screen 2 </Text>
 					<Text style={styles.stuff}>Awesome stuffs are here</Text>
 				</View>
-			)
+			);
 		} else {
 			return (
 				<LoginRegister />
-			)
+			);
 		}
 	}
 }

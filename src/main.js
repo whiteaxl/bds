@@ -32,10 +32,8 @@ export default class MainBDS extends React.Component {
       Orientation.lockToPortrait();
     }
 
-    componentDidMount() {
-    }
 
-    render() {
+  render() {
       let _initState = getInitialState();
    
       const store = configureStore(_initState);
@@ -54,7 +52,7 @@ export default class MainBDS extends React.Component {
 
       return (
         <Provider store={store}>
-          <App/>
+          <App />
         </Provider>
       );
 

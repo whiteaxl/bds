@@ -22,7 +22,7 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 
 import gui from "../lib/gui";
 
-import LoginRegisterTabBar from "../components/login/LoginRegisterTabBar"
+import LoginRegisterTabBar from "../components/login/LoginRegisterTabBar";
 
 /**
  * ## Redux boilerplate
@@ -51,6 +51,11 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default class LoginRegister extends React.Component {
+  constructor(props) {
+      super(props);
+    //this.onLoginSuccess = props.onLoginSuccess;
+  }
+
   onChangeTab(data) {
 
     //change focus, not now
@@ -69,14 +74,25 @@ export default class LoginRegister extends React.Component {
     this.usernameRegister = usernameInput
   }
 
+  onClose() {
+    console.log("Call LoginRegister: Action.pop", this.props.global);
+    let sceneName = this.props.global.scene.name;
+
+    if (_.indexOf(['Inbox', 'Profile', 'Home'], sceneName)  > -1 ) {
+      Actions.Main();
+    } else {
+      Actions.pop();
+    }
+  }
+
   renderTabBar() {
-    return <LoginRegisterTabBar />
+    return <LoginRegisterTabBar onClose = {this.onClose.bind(this)} />
   }
 
   render(){
     return (
       <ScrollableTabView
-        renderTabBar={this.renderTabBar}
+        renderTabBar={this.renderTabBar.bind(this)}
         style={styles.container}
                          tabBarUnderlineColor={gui.mainColor}
                          tabBarActiveTextColor={gui.mainColor}
@@ -86,6 +102,7 @@ export default class LoginRegister extends React.Component {
                      onDidMount={this.onDidMountRegisterTab.bind(this)}
         />
         <LoginTab tabLabel="ĐĂNG NHẬP" ref="loginTab"
+                  onLoginSuccess={this.props.onLoginSuccess}
                   onDidMount={this.onDidMountLoginTab.bind(this)}
         />
       </ScrollableTabView>

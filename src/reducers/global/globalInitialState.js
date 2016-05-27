@@ -21,6 +21,8 @@ var InitialState = Record({
   },
 
   loggedIn : false,
+  scene : {},
+  prevScene: {},
 });
 
 export default InitialState;

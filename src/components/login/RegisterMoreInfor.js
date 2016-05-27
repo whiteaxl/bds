@@ -45,103 +45,78 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-class RegisterTab extends React.Component {
-  componentDidMount() {
-    this.props.onDidMount(this.refs.username);
-  }
-
-  onRequestVerifyCodeSuccess() {
-
-    Actions.VerifyPhone();
-  }
-
-  onRequestVerifyCodeFail() {
-    Alert.alert(gui.ERR_LoiKetNoiMayChu);
-  }
-
-  tiepTuc() {
-    let username = this.props.register.username;
-
-    this.props.actions.registerByPhone(username)
-      .then((res) => {
-
-        if (res.status === 0) {
-          this.onRequestVerifyCodeSuccess();
-        } else {
-          this.onRequestVerifyCodeFail();
-        }
-      })
-      .catch((res) => {
-        console.log("Error in registerByPhone:" + res);
-        Alert.alert(res.toString());
-      })
-  }
-
+class RegisterMoreInfor extends React.Component {
   coming() {
+    Alert.alert("Coming soon...");
+  }
+
+  register() {
     Alert.alert("Coming soon...");
   }
 
   render() {
     return (
       <View style={styles.wrapper}>
-        <View style={[styles.line, { marginTop: 36}]}/>
-        <TextInput style={styles.input}
+        <View style={[styles.line, { marginTop: 100}]}/>
+        <View style={styles.phoneLine}>
+          <Text style={styles.phoneText}> {this.props.register.username} </Text>
+        </View>
+        <View style={[styles.line, { marginTop: 0}]}/>
+
+        <View style={[styles.line, { marginTop: 17}]}/>
+        <TextInput style={styles.input} placeholder="Mật khẩu"
                    selectTextOnFocus={true}
-                   ref='username'
-                   clearButtonMode='always'
-                   //autoFocus={true}
-                   value={this.props.register.username}
-                   placeholder="Số điện thoại hoặc Email"
+                   value={this.props.register.password}
                    onChangeText={(text) => {
-                        this.props.actions.onRegisterFieldChange('username',text)
-                   }}
+                      this.props.actions.onRegisterFieldChange('password',text)
+                 }}
         />
         <View style={[styles.line, { marginTop: 0}]}/>
 
+        <View style={[styles.line, { marginTop: 17}]}/>
+        <TextInput style={styles.input} placeholder="Tên đầy đủ"
+                   selectTextOnFocus={true}
+                   value={this.props.register.fullName}
+                   onChangeText={(text) => {
+                      this.props.actions.onRegisterFieldChange('fullName',text)
+                 }}
+        />
+        <View style={[styles.line, { marginTop: 0}]}/>
 
-        <TouchableOpacity style={styles.btn}
-                          onPress={this.tiepTuc.bind(this)}
+        <TouchableOpacity
+                          onPress={this.coming.bind(this)}
         >
-          <Text style={styles.btnText}>Tiếp tục</Text>
+          <View style={styles.avatarLine}>
+            <Image
+              style={styles.avatarIcon}
+              resizeMode={Image.resizeMode.contain}
+              source={require('../../assets/image/register_avatar_icon.png')}
+            />
+            <Text style={styles.avatarText}>Chạm để thêm ảnh đại diện</Text>
+          </View>
         </TouchableOpacity>
 
-        <Text style={styles.quickLoginTitle}>Hoặc đăng ký với</Text>
-        <View style={styles.quickBtnContainer}>
-          <TouchableOpacity
-            style={[styles.quickBtn, {marginLeft:18, marginRight:9, backgroundColor:'#b90000'}]}
-            onPress={this.coming.bind(this)}
-          >
-            <Text style={styles.btnTextQuickLogin}>Google</Text>
-            <RelandIcon.Icon
-              style={{left:15, top: 10, position:'absolute'}}
-              name="google" size={23} color="white"/>
-          </TouchableOpacity>
+        <TouchableOpacity style={styles.btn}
+                          onPress={this.register.bind(this)}
+        >
+          <Text style={styles.btnText}>Đăng ký</Text>
+        </TouchableOpacity>
 
-          <TouchableOpacity
-            style={[styles.quickBtn, {marginLeft:9, marginRight:18, backgroundColor:'#1453a3'}]}
-            onPress={this.coming.bind(this)}
-          >
-            <Text style={styles.btnTextQuickLogin}>Facebook</Text>
-
-            <RelandIcon.Icon
-              name="facebook" color="white"
-              style={{left:15, top: 8, position:'absolute'}}
-              size={25} />
-
-          </TouchableOpacity>
-        </View>
       </View>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterTab);
+export default connect(mapStateToProps, mapDispatchToProps)(RegisterMoreInfor);
 
 
 var styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     flexDirection: 'column',
+    //borderColor: 'red',
+    //borderWidth: 1,
+    backgroundColor: "#f2f2f2"
   },
 
   btnText: {
@@ -178,11 +153,11 @@ var styles = StyleSheet.create({
     fontFamily: 'Open Sans',
     color: '#686868',
     fontWeight : 'normal',
-    marginTop: 204,
+    marginTop: 127,
   },
 
   btn: {
-    marginTop: 17,
+    marginTop: 0,
     backgroundColor: gui.mainColor,
     alignItems:'center',
     height: 39,
@@ -223,5 +198,34 @@ var styles = StyleSheet.create({
 
     height: 39,
     marginTop: 20,
+  },
+  phoneText :{
+    fontSize: 15,
+    fontFamily: 'Open Sans',
+    color: '#686868',
+    fontWeight : 'normal',
+  },
+  phoneLine : {
+    height: 36,
+    marginLeft: 18,
+    justifyContent: 'center',
+    backgroundColor : '#f9f9f9'
+  },
+  avatarIcon : {
+    height: 60,
+    width: 60,
+  },
+  avatarText : {
+    fontSize: 15,
+    fontFamily: 'Open Sans',
+    color: '#686868',
+    fontWeight : 'normal',
+  },
+  avatarLine : {
+    height: 76,
+    marginLeft: 10,
+    alignItems: 'center',
+    flexDirection: 'row'
+    //backgroundColor : '#f9f9f9'
   }
 });

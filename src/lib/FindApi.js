@@ -21,7 +21,10 @@ var Api = {
       var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, radiusInKmSelectedIdx, dienTich, orderBy, place, geoBox, huongNha, ngayDaDang} = fields;
 
       if (place) {
-          place.radiusInKm = DanhMuc.getRadiusInKmByIndex(radiusInKmSelectedIdx) || undefined;
+        place.radiusInKm = DanhMuc.getRadiusInKmByIndex(radiusInKmSelectedIdx) || undefined;
+        if (place.currentLocation==="") {
+          place.currentLocation = undefined;
+        }
       }
 
       var params = {
@@ -40,7 +43,7 @@ var Api = {
       };
 
  
-    console.log(rootUrl + "?" + JSON.stringify(params));
+    console.log(findUrl + "?" + JSON.stringify(params));
     return fetch(`${findUrl}`, {
       method: 'POST',
       headers: {
@@ -51,7 +54,10 @@ var Api = {
     })
     .then(ApiUtils.checkStatus)
     .then(response => response.json())
-    .catch(e => e);
+    .catch(e => {
+      console.log("Error when find: " + findUrl,e);
+      return e;
+    });
   },
 
 //return result = {length:1, list=[{name:'', geo:{lon, lat}]}

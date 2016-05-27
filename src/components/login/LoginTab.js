@@ -59,7 +59,11 @@ class LoginTab extends React.Component {
     this.props.actions.login(userDto.phone, userDto.password)
       .then((res) => {
         if (res.status ===0) {
-          Actions.Home();
+          if (this.props.onLoginSuccess) {
+            this.props.onLoginSuccess();
+          } else {
+            Actions.pop();
+          }
         } else {
           Alert.alert("Invalid username or password!");
         }

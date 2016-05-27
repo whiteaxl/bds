@@ -37,11 +37,6 @@ export default class LoginRegisterTabBar extends React.Component {
     </Button>;
   }
 
-  onClose() {
-    //todo: how to back
-    Actions.Main();
-  }
-
   render() {
     const containerWidth = this.props.containerWidth;
     const numberOfTabs = this.props.tabs.length;
@@ -65,7 +60,7 @@ export default class LoginRegisterTabBar extends React.Component {
         </View>
         <TouchableOpacity
           style={{position:'absolute',top: 33,right: 10,}}
-          onPress={this.onClose}>
+          onPress={this.props.onClose}>
           <RelandIcon.Icon style={styles.closeBtn} name="close-circle"/>
         </TouchableOpacity>
       </View>
@@ -96,10 +91,10 @@ const styles = StyleSheet.create({
   closeBtn : {
     height: 18,
     paddingLeft:3,
-    paddingRight:1,
-    paddingTop: 2,
+    paddingRight:10,
+    paddingTop: 0,
     color: gui.mainColor,
-    fontSize: 13,
+    fontSize: 20,
     backgroundColor: 'white'
   },
 });

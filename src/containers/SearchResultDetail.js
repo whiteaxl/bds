@@ -136,7 +136,7 @@ class SearchResultDetail extends Component {
     //var listData = this.props.search.form.fields.listData;
 
     //var rowData = listData[rowIndex];
-    console.log(rowData);
+    //console.log(rowData);
     if (!rowData) {
         return (
           <View style={detailStyles.fullWidthContainer}>
@@ -155,6 +155,13 @@ class SearchResultDetail extends Component {
     dienTich = rowData.dienTichFmt;
 
     var gia = rowData.giaFmt;
+    if (gia) {
+      gia = gia.replace('TỶ','Tỷ');
+    }
+    var giaM2 = rowData.giaM2;
+    if (giaM2) {
+      giaM2 = Math.round(giaM2) + 'tr/m²';
+    }
     var soTang = rowData.soTang;
     var huongNha = DanhMuc.HuongNha[rowData.huongNha];
     var duAn = rowData.duAn;
@@ -326,7 +333,8 @@ class SearchResultDetail extends Component {
                 <View style={detailStyles.lineBorder} />
                 <CollapsiblePanel title="Đặc Điểm" expanded={true}>
                   {this.renderTitleProps("Loại tin rao", loaiNhaDat)}
-                  {this.renderTitleProps("Giá/m²", gia)}
+                  {this.renderTitleProps("Giá", gia)}
+                  {this.renderTitleProps("Giá/m²", giaM2)}
                   {this.renderTitleProps("Số phòng ngủ", soPhongNguVal)}
                   {this.renderTitleProps("Số phòng tắm", soPhongTamVal)}
                   {this.renderTitleProps("Diện tích", dienTich)}

@@ -45,59 +45,46 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-class RegisterTab extends React.Component {
-  componentDidMount() {
-    this.props.onDidMount(this.refs.username);
+class VerifyPhone extends React.Component {
+  coming() {
+    Alert.alert("Coming soon...");
   }
 
-  onRequestVerifyCodeSuccess() {
-
-    Actions.VerifyPhone();
-  }
-
-  onRequestVerifyCodeFail() {
-    Alert.alert(gui.ERR_LoiKetNoiMayChu);
+  onVerifySuccess() {
+    Actions.RegisterMoreInfor();
   }
 
   tiepTuc() {
-    let username = this.props.register.username;
+    const {clientVerifyCode, serverVerifyCode} = this.props.register;
 
-    this.props.actions.registerByPhone(username)
-      .then((res) => {
-
-        if (res.status === 0) {
-          this.onRequestVerifyCodeSuccess();
-        } else {
-          this.onRequestVerifyCodeFail();
-        }
-      })
-      .catch((res) => {
-        console.log("Error in registerByPhone:" + res);
-        Alert.alert(res.toString());
-      })
-  }
-
-  coming() {
-    Alert.alert("Coming soon...");
+    if (clientVerifyCode==serverVerifyCode) {
+      this.onVerifySuccess();
+    } else {
+      Alert.alert(gui.ERR_MaXacMinhSai);
+    }
   }
 
   render() {
     return (
       <View style={styles.wrapper}>
-        <View style={[styles.line, { marginTop: 36}]}/>
-        <TextInput style={styles.input}
-                   selectTextOnFocus={true}
-                   ref='username'
-                   clearButtonMode='always'
-                   //autoFocus={true}
-                   value={this.props.register.username}
-                   placeholder="Số điện thoại hoặc Email"
-                   onChangeText={(text) => {
-                        this.props.actions.onRegisterFieldChange('username',text)
-                   }}
-        />
+        <View style={[styles.line, { marginTop: 100}]}/>
+        <View style={styles.phoneLine}>
+          <Text style={styles.phoneText}> {this.props.register.username} </Text>
+        </View>
         <View style={[styles.line, { marginTop: 0}]}/>
 
+        <View style={[styles.line, { marginTop: 17}]}/>
+
+          <TextInput style={styles.input} placeholder="Mã xác minh"
+                     selectTextOnFocus={true}
+                     value={this.props.register.clientVerifyCode}
+                     onChangeText={(text) => {
+                        this.props.actions.onRegisterFieldChange('clientVerifyCode',text)
+                   }}
+          />
+
+
+        <View style={[styles.line, { marginTop: 0}]}/>
 
         <TouchableOpacity style={styles.btn}
                           onPress={this.tiepTuc.bind(this)}
@@ -105,43 +92,21 @@ class RegisterTab extends React.Component {
           <Text style={styles.btnText}>Tiếp tục</Text>
         </TouchableOpacity>
 
-        <Text style={styles.quickLoginTitle}>Hoặc đăng ký với</Text>
-        <View style={styles.quickBtnContainer}>
-          <TouchableOpacity
-            style={[styles.quickBtn, {marginLeft:18, marginRight:9, backgroundColor:'#b90000'}]}
-            onPress={this.coming.bind(this)}
-          >
-            <Text style={styles.btnTextQuickLogin}>Google</Text>
-            <RelandIcon.Icon
-              style={{left:15, top: 10, position:'absolute'}}
-              name="google" size={23} color="white"/>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[styles.quickBtn, {marginLeft:9, marginRight:18, backgroundColor:'#1453a3'}]}
-            onPress={this.coming.bind(this)}
-          >
-            <Text style={styles.btnTextQuickLogin}>Facebook</Text>
-
-            <RelandIcon.Icon
-              name="facebook" color="white"
-              style={{left:15, top: 8, position:'absolute'}}
-              size={25} />
-
-          </TouchableOpacity>
-        </View>
       </View>
     );
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RegisterTab);
+export default connect(mapStateToProps, mapDispatchToProps)(VerifyPhone);
 
 
 var styles = StyleSheet.create({
   wrapper: {
     flex: 1,
     flexDirection: 'column',
+    //borderColor: 'red',
+    //borderWidth: 1,
+    backgroundColor: "#f2f2f2"
   },
 
   btnText: {
@@ -178,7 +143,7 @@ var styles = StyleSheet.create({
     fontFamily: 'Open Sans',
     color: '#686868',
     fontWeight : 'normal',
-    marginTop: 204,
+    marginTop: 127,
   },
 
   btn: {
@@ -223,5 +188,17 @@ var styles = StyleSheet.create({
 
     height: 39,
     marginTop: 20,
+  },
+  phoneText :{
+    fontSize: 15,
+    fontFamily: 'Open Sans',
+    color: '#686868',
+    fontWeight : 'normal',
+  },
+  phoneLine : {
+    height: 36,
+    marginLeft: 18,
+    justifyContent: 'center',
+    backgroundColor : '#f9f9f9'
   }
 });
