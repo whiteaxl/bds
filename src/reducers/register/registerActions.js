@@ -16,12 +16,13 @@ export function onRegisterFieldChange(field, value) {
   };
 }
 
-export function registerByPhone(phone) {
+//just for checking
+export function requestRegisterByPhone(phone) {
   return dispatch => {
     //dispatch(loginRequest());
     return userApi.requestVerifyCode(phone)
       .then(function (json) {
-        log.info("registerByPhone.requestVerifyCode:", json);
+        log.info("requestRegisterByPhone.requestVerifyCode:", json);
 
         if (json.status===0) {
           dispatch(onRegisterFieldChange('serverVerifyCode', json.verifyCode));
@@ -31,6 +32,21 @@ export function registerByPhone(phone) {
       });
   };
 }
+
+export function registerUser(dto) {
+  return dispatch => {
+    return userApi.registerUser(dto)
+      .then(function (json) {
+        if (json.status===0) {
+          //dispatch(onRegisterFieldChange('serverVerifyCode', json.verifyCode));
+        }
+
+        return json;
+      });
+  };
+}
+
+
 
 
 

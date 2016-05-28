@@ -50,8 +50,29 @@ class RegisterMoreInfor extends React.Component {
     Alert.alert("Coming soon...");
   }
 
-  register() {
-    Alert.alert("Coming soon...");
+  dataValid() {
+    if (!this.props.register.password) {
+      Alert.alert(gui.ERR_dataRequired + "mật khẩu!");
+      return false;
+    }
+    if (!this.props.register.fullName) {
+      Alert.alert(gui.ERR_dataRequired + "tên đầy đủ!");
+      return false;
+    }
+
+    return true;
+  }
+
+  register()  {
+    if (this.dataValid()) {
+      //Alert.alert("Coming soon...");
+      let userDto = {
+        phone: this.props.register.username,
+        fulLName: this.props.register.fullName,
+        password: this.props.register.password
+      };
+      this.props.actions.registerUser(userDto);
+    }
   }
 
   render() {

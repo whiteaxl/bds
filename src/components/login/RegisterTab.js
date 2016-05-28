@@ -62,7 +62,7 @@ class RegisterTab extends React.Component {
   tiepTuc() {
     let username = this.props.register.username;
 
-    this.props.actions.registerByPhone(username)
+    this.props.actions.requestRegisterByPhone(username)
       .then((res) => {
 
         if (res.status === 0) {
