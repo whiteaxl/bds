@@ -53,10 +53,10 @@ class LoginTab extends React.Component {
   login() {
     let userDto = {
       phone: this.props.auth.phone,
-      password: this.props.auth.password
+      matKhau: this.props.auth.matKhau
     };
 
-    this.props.actions.login(userDto.phone, userDto.password)
+    this.props.actions.login(userDto.phone, userDto.matKhau)
       .then((res) => {
         if (res.status ===0) {
           if (this.props.onLoginSuccess) {
@@ -98,9 +98,9 @@ class LoginTab extends React.Component {
         <View style={[styles.line, { marginTop: 18}]}/>
         <TextInput style={styles.input} placeholder="Mật khẩu"
                    selectTextOnFocus={true}
-                   value={this.props.auth.password}
+                   value={this.props.auth.matKhau}
                    onChangeText={(text) => {
-                        this.props.actions.onAuthFieldChange('password',text)
+                        this.props.actions.onAuthFieldChange('matKhau',text)
                    }}
         />
         <View style={[styles.line, { marginTop: 0}]}/>

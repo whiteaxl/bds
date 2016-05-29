@@ -60,4 +60,5 @@ export default keyMirror({
 
   //register
   ON_REGISTER_FIELD_CHANGE:null,
+  REGISTER_SUCCESS : null,
 });

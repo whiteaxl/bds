@@ -21,6 +21,7 @@ import {Alert} from "react-native";
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
 import gui from "../lib/gui";
+import log from "../lib/logUtil";
 
 import LoginRegisterTabBar from "../components/login/LoginRegisterTabBar";
 
@@ -91,7 +92,7 @@ export default class LoginRegister extends React.Component {
 
   render(){
     return (
-      <ScrollableTabView
+      <ScrollableTabView page={this.props.auth.activeRegisterLoginTab}
         renderTabBar={this.renderTabBar.bind(this)}
         style={styles.container}
                          tabBarUnderlineColor={gui.mainColor}
