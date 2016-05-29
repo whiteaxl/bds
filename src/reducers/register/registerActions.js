@@ -2,6 +2,7 @@
 
 const {
   ON_REGISTER_FIELD_CHANGE,
+  REGISTER_SUCCESS
 } = require('../../lib/constants').default;
 
 const _ = require('lodash');
@@ -45,6 +46,16 @@ export function registerUser(dto) {
       });
   };
 }
+
+export function registerSuccess(userDto) {
+  return {
+    type: REGISTER_SUCCESS,
+    payload: userDto
+  };
+}
+
+
+
 
 
 

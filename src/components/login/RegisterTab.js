@@ -55,8 +55,12 @@ class RegisterTab extends React.Component {
     Actions.VerifyPhone();
   }
 
-  onRequestVerifyCodeFail() {
-    Alert.alert(gui.ERR_LoiKetNoiMayChu);
+  onRequestVerifyCodeFail(res) {
+    if (res.status == 1) { //user existed
+      Alert.alert(gui.ERR_PhoneExisted);
+    } else {
+      Alert.alert(gui.ERR_LoiKetNoiMayChu);
+    }
   }
 
   tiepTuc() {
@@ -68,7 +72,7 @@ class RegisterTab extends React.Component {
         if (res.status === 0) {
           this.onRequestVerifyCodeSuccess();
         } else {
-          this.onRequestVerifyCodeFail();
+          this.onRequestVerifyCodeFail(res);
         }
       })
       .catch((res) => {

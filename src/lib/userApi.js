@@ -4,6 +4,7 @@ import ApiUtils from './ApiUtils';
 
 import cfg from "../cfg";
 import log from "./logUtil";
+import gui from "./gui";
 
 var userApiUrl = cfg.rootUrl + "/user/";
 var requestVerifyCodeUrl = userApiUrl + "requestVerifyCode";
@@ -37,25 +38,30 @@ var userApi = {
     var params = {
       'phone': userDto.phone,
       'fullName' : userDto.fullName,
-      'password' : userDto.password
+      'matKhau' : userDto.matKhau
     };
+
+    log.info("fetch ", params, registerUser);
 
     return fetch(`${registerUser}`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
-        'Content-Type': 'application/json',
+        'Content-Type': 'application/json'
       },
       body: JSON.stringify(params)
     })
       .then(ApiUtils.checkStatus)
       .then(response => {
-        log.info("Error in registerUser", e);
+        log.info("Response of registerUser", response);
         return response.json()
       })
       .catch(e => {
         log.info("Error in registerUser", e);
-        return e
+        return {
+          status : 101,
+          msg: gui.ERR_LoiKetNoiMayChu
+        }
       });
   }
 };

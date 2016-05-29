@@ -223,47 +223,6 @@ export function getSessionToken() {
 export function saveSessionToken(json) {
     return new AppAuthToken().storeSessionToken(json);
 }
-/**
- * ## signup
- * @param {string} username - name of user
- * @param {string} email - user's email
- * @param {string} password - user's password
- *
- * Call Parse.signup and if good, save the sessionToken,
- * set the state to logout and signal success
- *
- * Otherwise, dispatch the error so the user can see
- */
-export function signup(username, email, password) {
-    return dispatch => {
-        dispatch(signupRequest());
-        return BackendFactory().signup({
-                username: username,
-                email: email,
-                password: password
-            })
-            .then(function (json) {
-                return saveSessionToken(json)
-                    .then(function () {
-                        dispatch(signupSuccess(
-                            Object.assign({},
-                                {
-                                    username: username,
-                                    email: email,
-                                    objectId: json.objectId,
-                                    createdAt: json.createdAt,
-                                    sessionToken: json.sessionToken
-                                }
-                            )
-                        ));
-                        dispatch(logoutState());
-                    });
-            })
-            .catch((error) => {
-                dispatch(signupFailure(error));
-            });
-    };
-}
 
 /**
  * ## Login actions
@@ -287,17 +246,7 @@ export function loginFailure(error) {
         payload: error
     };
 }
-/**
- * ## Login
- * @param {string} username - user's name
- * @param {string} password - user's password
- *
- * After calling Backend, if response is good, save the json
- * which is the currentUser which contains the sessionToken
- *
- * If successful, set the state to logout
- * otherwise, dispatch a failure
- */
+
 export function login(username, password) {
 
     return dispatch => {
@@ -320,56 +269,6 @@ export function login(username, password) {
 
                 return json;
             });
-    };
-}
-
-/**
- * ## ResetPassword actions
- */
-export function resetPasswordRequest() {
-    return {
-        type: RESET_PASSWORD_REQUEST
-    };
-}
-
-export function resetPasswordSuccess() {
-    return {
-        type: RESET_PASSWORD_SUCCESS
-    };
-}
-
-export function resetPasswordFailure(error) {
-    return {
-        type: RESET_PASSWORD_FAILURE,
-        payload: error
-    };
-}
-/**
- * ## ResetPassword
- *
- * @param {string} email - the email address to reset password
- * *Note* There's no feedback to the user whether the email
- * address is valid or not.
- *
- * This functionality depends on setting Parse.com
- * up correctly ie, that emails are verified.
- * With that enabled, an email can be sent w/ a
- * form for setting the new password.
- */
-export function resetPassword(email) {
-    return dispatch => {
-        dispatch(resetPasswordRequest());
-        return BackendFactory().resetPassword({
-                email: email
-            })
-            .then(() => {
-                dispatch(loginState());
-                dispatch(resetPasswordSuccess());
-            })
-            .catch((error) => {
-                dispatch(resetPasswordFailure(error));
-            });
-
     };
 }
 

@@ -3,9 +3,9 @@
 const {Record} = require('immutable');
 
 var InitialState = Record({
-  username: "0987654301", //phone or email
+  username: "098001", //phone or email
   error: "",
-  password: "",
+  matKhau: "",
   fullName: "",
   image: null,
   clientVerifyCode: "",

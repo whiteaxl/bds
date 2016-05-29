@@ -51,7 +51,7 @@ class RegisterMoreInfor extends React.Component {
   }
 
   dataValid() {
-    if (!this.props.register.password) {
+    if (!this.props.register.matKhau) {
       Alert.alert(gui.ERR_dataRequired + "mật khẩu!");
       return false;
     }
@@ -68,10 +68,21 @@ class RegisterMoreInfor extends React.Component {
       //Alert.alert("Coming soon...");
       let userDto = {
         phone: this.props.register.username,
-        fulLName: this.props.register.fullName,
-        password: this.props.register.password
+        fullName: this.props.register.fullName,
+        matKhau: this.props.register.matKhau
       };
-      this.props.actions.registerUser(userDto);
+      this.props.actions.registerUser(userDto)
+        .then(res=>{
+          if (res.status) {
+            Alert.alert(res.msg);
+          } else {
+            Alert.alert(gui.INFO_userCreatedSuccessfully);
+            Actions.pop();
+            Actions.pop();
+            this.props.actions.registerSuccess(userDto);
+          }
+
+        })
     }
   }
 
@@ -87,9 +98,9 @@ class RegisterMoreInfor extends React.Component {
         <View style={[styles.line, { marginTop: 17}]}/>
         <TextInput style={styles.input} placeholder="Mật khẩu"
                    selectTextOnFocus={true}
-                   value={this.props.register.password}
+                   value={this.props.register.matKhau}
                    onChangeText={(text) => {
-                      this.props.actions.onRegisterFieldChange('password',text)
+                      this.props.actions.onRegisterFieldChange('matKhau',text)
                  }}
         />
         <View style={[styles.line, { marginTop: 0}]}/>
