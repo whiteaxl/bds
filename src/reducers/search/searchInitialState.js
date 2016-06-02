@@ -45,7 +45,8 @@ const SearchForm = Record({
         },
         radiusInKmSelectedIdx: 0,
         huongNha: '',
-        ngayDaDang: 0 //batky
+        ngayDaDang: 0, //batky
+      //  polygon: []
     }))
 
 });

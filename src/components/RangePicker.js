@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 
 
-import Picker from './picker/Picker';
+import Picker from './picker/picker';
 
 export default class RangePicker extends React.Component {
 	constructor(props) {
