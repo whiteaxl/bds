@@ -21,6 +21,9 @@ import * as registerActions from '../../reducers/register/registerActions';
 
 import RelandIcon from '../../components/RelandIcon';
 
+import GiftedSpinner from "../GiftedSpinner";
+
+
 
 const actions = [
   globalActions,
@@ -46,6 +49,13 @@ function mapDispatchToProps(dispatch) {
 }
 
 class RegisterMoreInfor extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false
+    }
+  }
+
   coming() {
     Alert.alert("Coming soon...");
   }
@@ -71,8 +81,19 @@ class RegisterMoreInfor extends React.Component {
         fullName: this.props.register.fullName,
         matKhau: this.props.register.matKhau
       };
+
+      this.setState({
+        loading: true
+      });
+
+
       this.props.actions.registerUser(userDto)
         .then(res=>{
+          this.setState({
+            loading: false
+          });
+
+
           if (res.status) {
             Alert.alert(res.msg);
           } else {
@@ -87,6 +108,17 @@ class RegisterMoreInfor extends React.Component {
   }
 
   render() {
+    let myProps = this.state;
+    if (myProps.loading) {
+      return (
+        <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
+          {/*<Text> Loading ... </Text>*/}
+          <GiftedSpinner />
+        </View>
+      )
+    }
+
+
     return (
       <View style={styles.wrapper}>
         <View style={[styles.line, { marginTop: 100}]}/>

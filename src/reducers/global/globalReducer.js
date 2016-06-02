@@ -62,7 +62,7 @@ export default function globalReducer(state = initialState, action) {
     }
 
     case ROUTER_FOCUS: { //RNRF action
-      console.log("Call globalReducer.route ", action);
+      console.log("Call globalReducer.route ");
       let prevScene = state.scene;
 
       var next = state

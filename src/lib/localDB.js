@@ -19,16 +19,23 @@ class DBService {
             log.warn('initialized localDB!');
         });
 
+        this.database = new manager(this.databaseUrl, this.dbName);
     }
 
     //may be need check connection when close...
     db() {
-        if (!this.database) {
-            log.warn("Create db manager for local database!");
-            this.database = new manager(this.databaseUrl, this.dbName);
-        }
-
-        return this.database
+        return this.database.getInfo()
+          .then((res) => {
+              console.log("DB infor:", res);
+              return this.database
+          })
+          .catch(res => {
+              console.log("Fail to DB infor, will reinit:", res);
+              return ReactCBLite.init(5984, 'admin', '321', e => {
+                  log.warn('initialized localDB!');
+                  return this.database
+              });
+          });
     };
 
     _createDesignDoc() {
@@ -43,7 +50,7 @@ class DBService {
             }
         };
 
-        this.db().createDesignDocument(this.adsDesignDocName, adsViews)
+        this.database.createDesignDocument(this.adsDesignDocName, adsViews)
             .then((res) => {
                 if (res.status === 409) {
                     log.warn("design doc 'all_ads' already exists!");
@@ -57,13 +64,13 @@ class DBService {
     }
 
     startSync(sessionCookie) {
-        this.db().replicate(
+        this.database.replicate(
             this.dbName,
             {headers: {Cookie: sessionCookie}, url: this.remoteDbUrl},
             true
         );
 
-        this.db().replicate(
+        this.database.replicate(
             {headers: {Cookie: sessionCookie}, url: this.remoteDbUrl},
             this.dbName,
             true
@@ -87,19 +94,19 @@ class DBService {
                         let sessionCookie = res.headers.map['set-cookie'][0];
                         //console.log(sessionCookie);
 
-                        this.db().deleteDatabase()
+                        this.database.deleteDatabase()
                           .then((res) => {
                               console.log('deleted database!', res);
 
-                              this.db().createDatabase()
+                              this.database.createDatabase()
                                 .then((res) => {
 
                                   //subscribe event
-                                  this.db().getInfo()
+                                  this.database.getInfo()
                                     .then((res) => {
-                                      this.db().listen({since: res.update_seq - 1, feed: 'longpoll', include_docs:true});
+                                      this.database.listen({since: res.update_seq - 1, feed: 'longpoll', include_docs:true});
                                     });
-                                  this.db().changesEventEmitter.on('changes', function (e) {
+                                  this.database.changesEventEmitter.on('changes', function (e) {
                                     console.log("DB just changes:",e);
                                   }.bind(this));
 
@@ -135,34 +142,43 @@ class DBService {
     }
 
     getAllDocuments() {
-        return this.db().getAllDocuments({include_docs: true}).then((res) => {
-            return res.rows
+        return this.db().then(db => {
+            return db.getAllDocuments({include_docs: true})
+              .then((res) => {
+                return res.rows
+            });
         });
     }
 
     getAllAds() {
-        return this.db().queryView(this.adsDesignDocName, 'all_ads')
-            .then((res) => {
-                console.log("getAllAds", res);
+        return this.db()
+          .then(db => {
+              return db.queryView(this.adsDesignDocName, 'all_ads')
+                .then((res) => {
+                    console.log("getAllAds", res);
 
-                return res.rows || [];
-            });
+                    return res.rows || [];
+                });
+          });
     }
 
     updateFullName(docID, fullName) {
         var options = {conflicts: true};
 
-        this.db().getDocument(docID, options)
-          .then((doc) => {
-              let documentRevision = doc._rev;
+        this.db()
+          .then(db => {
+              return db.getDocument(docID, options)
+                .then((doc) => {
+                    let documentRevision = doc._rev;
 
-              doc.fullName = fullName;
+                    doc.fullName = fullName;
 
-              this.db().updateDocument(doc, docID, documentRevision)
-                .then((res) => {
-                  console.log("Updated document", res);
+                    db.updateDocument(doc, docID, documentRevision)
+                      .then((res) => {
+                          console.log("Updated document", res);
+                      });
+
                 });
-
           });
     }
 
@@ -180,22 +196,34 @@ class DBService {
     }
 
     getUser() {
-        return this.db().getAllDocuments({include_docs: true}).then((res) => {
-            let rows = res.rows;
+        return this.db()
+          .then(db => {
+              return db.getAllDocuments({include_docs: true}).then((res) => {
+                  let rows = res.rows;
 
-            for (var i in rows) {
-                let doc = rows[i].doc;
-                if (doc.type === 'User') {
-                    return  doc;
-                }
-            }
+                  for (var i in rows) {
+                      let doc = rows[i].doc;
+                      if (doc.type === 'User') {
+                          return  doc;
+                      }
+                  }
 
-            return null;
-        });
+                  return null;
+              });
+          });
     }
 
     logout() {
-        return this.db().deleteDatabase();
+        return this.database.deleteDatabase();
+    }
+
+    initListener() {
+        log.warn("Try to re-open...");
+        ReactCBLite.init(5984, 'admin', '321', e => {
+            log.warn('initialized localDB!');
+        });
+
+
     }
 }
 
