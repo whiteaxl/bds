@@ -43,7 +43,7 @@ export default class Inbox extends Component {
 	}
 
   render() {
-		console.log("Calling Inbox.render ..., loggedIn = ", this.props.global.loggedIn, this);
+		console.log("Calling Inbox.render ..., loggedIn = ", this.props.global.loggedIn);
 
 		if (this.props.global.loggedIn) {
 			return (

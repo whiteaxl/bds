@@ -58,6 +58,7 @@ export default class LoginRegister extends React.Component {
   }
 
   onChangeTab(data) {
+    this.props.actions.onAuthFieldChange('activeRegisterLoginTab',data.i);
 
     //change focus, not now
     if (data.i===0) {

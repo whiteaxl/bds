@@ -20,6 +20,7 @@ import * as globalActions from '../../reducers/global/globalActions';
 import * as registerActions from '../../reducers/register/registerActions';
 
 import RelandIcon from '../../components/RelandIcon';
+import GiftedSpinner from "../GiftedSpinner";
 
 
 const actions = [
@@ -46,6 +47,13 @@ function mapDispatchToProps(dispatch) {
 }
 
 class RegisterTab extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: false
+    }
+  }
+
   componentDidMount() {
     this.props.onDidMount(this.refs.username);
   }
@@ -66,8 +74,15 @@ class RegisterTab extends React.Component {
   tiepTuc() {
     let username = this.props.register.username;
 
+    this.setState({
+      loading: true
+    });
+
     this.props.actions.requestRegisterByPhone(username)
       .then((res) => {
+        this.setState({
+          loading: false
+        });
 
         if (res.status === 0) {
           this.onRequestVerifyCodeSuccess();
@@ -86,6 +101,17 @@ class RegisterTab extends React.Component {
   }
 
   render() {
+    let myProps = this.state;
+    if (myProps.loading) {
+      return (
+        <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
+          {/*<Text> Loading ... </Text>*/}
+          <GiftedSpinner />
+        </View>
+      )
+    }
+
+
     return (
       <View style={styles.wrapper}>
         <View style={[styles.line, { marginTop: 36}]}/>

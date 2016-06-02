@@ -186,6 +186,7 @@ class Profile extends Component {
 
         <Text style={styles.text}> List of chat msg:</Text>
         <ListView
+          enableEmptySections={true}
           dataSource={this.state.chatDs}
           renderRow={this._renderChat}
           style={styles.listView}/>
