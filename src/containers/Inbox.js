@@ -15,6 +15,14 @@ import * as globalActions from '../reducers/global/globalActions';
 
 import LoginRegister from './LoginRegister';
 
+import InboxTabBar from "../components/inbox/InboxTabBar";
+
+import AllInboxTab from "../components/inbox/AllInboxTab";
+
+import ScrollableTabView from 'react-native-scrollable-tab-view';
+
+import InboxHeader from '../components/inbox/InboxHeader';
+
 const actions = [
 	globalActions
 ];
@@ -42,19 +50,46 @@ export default class Inbox extends Component {
 		super(props);
 	}
 
+	onChangeTab(data) {
+		//this.props.actions.onAuthFieldChange('activeRegisterLoginTab',data.i);
+
+		//change focus, not now
+		if (data.i===0) {
+			//this.usernameRegister.focus();
+		} else {
+			//this.usernameLogin.focus();
+		}
+	}
+
+	renderTabBar() {
+		return <InboxTabBar />
+	}
+
   render() {
 		console.log("Calling Inbox.render ..., loggedIn = ", this.props.global.loggedIn);
 
 		if (this.props.global.loggedIn) {
 			return (
-				<View style={[styles.container]} >
-					<Text style={styles.welcome}>Screen 2 </Text>
-					<Text style={styles.stuff}>Awesome stuffs are here</Text>
+				<View style={styles.container}>
+					<InboxHeader headerTitle={"Chat"}/>
+
+					<ScrollableTabView page={this.props.auth.activeRegisterLoginTab}
+														 renderTabBar={this.renderTabBar.bind(this)}
+														 style={styles.scrollContainer}
+														 tabBarUnderlineColor={gui.mainColor}
+														 tabBarActiveTextColor={gui.mainColor}
+														 onChangeTab={this.onChangeTab.bind(this)}
+					>
+						<AllInboxTab tabLabel="TẤT CẢ" ref="allTab"/>
+						<AllInboxTab tabLabel="MUA" ref="buyTab"/>
+						<AllInboxTab tabLabel="BÁN/CHO THUÊ" ref="sellTab"/>
+					</ScrollableTabView>
 				</View>
+
 			);
 		} else {
 			return (
-				<LoginRegister />
+					<LoginRegister />
 			);
 		}
 	}
@@ -63,8 +98,15 @@ export default class Inbox extends Component {
 
 var styles = StyleSheet.create({
 	container: {
-		paddingTop: 15,
-		backgroundColor: "white"
+		paddingTop: 0,
+		backgroundColor: "white",
+		flex:1
+	},
+
+	scrollContainer: {
+		paddingTop: 0,
+		backgroundColor: "white",
+		
 	},
 
 	label: {

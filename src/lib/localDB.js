@@ -77,7 +77,7 @@ class DBService {
         );
     }
 
-    loginAndStartSync(username, password) {
+    loginAndStartSync(username, password, onDBChange) {
 
         var settings = {
             method: 'POST',
@@ -106,10 +106,17 @@ class DBService {
                                     .then((res) => {
                                       this.database.listen({since: res.update_seq - 1, feed: 'longpoll', include_docs:true});
                                     });
-                                  this.database.changesEventEmitter.on('changes', function (e) {
+                                  this.database.changesEventEmitter.on('changes', (e) => {
                                     console.log("DB just changes:",e);
-                                  }.bind(this));
 
+                                    setTimeout( () =>
+                                      this.database.getAllDocuments({include_docs: true})
+                                        .then(res => {
+                                          onDBChange(e, res.rows);
+                                        })
+                                      , 100
+                                    )
+                                  });
 
                                   this.startSync(sessionCookie);
 

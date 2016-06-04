@@ -10,39 +10,39 @@
 'use strict';
 
 
-
-
 /**
  * ## Imports
  *
  * The actions supported
  */
 const {
-    SESSION_TOKEN_REQUEST,
-    SESSION_TOKEN_SUCCESS,
-    SESSION_TOKEN_FAILURE,
+  SESSION_TOKEN_REQUEST,
+  SESSION_TOKEN_SUCCESS,
+  SESSION_TOKEN_FAILURE,
 
-    LOGIN_STATE_REGISTER,
-    LOGIN_STATE_LOGIN,
-    LOGIN_STATE_FORGOT_PASSWORD,
+  LOGIN_STATE_REGISTER,
+  LOGIN_STATE_LOGIN,
+  LOGIN_STATE_FORGOT_PASSWORD,
 
-    LOGOUT_REQUEST,
-    LOGOUT_SUCCESS,
-    LOGOUT_FAILURE,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILURE,
 
-    LOGIN_REQUEST,
-    LOGIN_SUCCESS,
-    LOGIN_FAILURE,
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE,
 
-    SIGNUP_REQUEST,
-    SIGNUP_SUCCESS,
-    SIGNUP_FAILURE,
+  SIGNUP_REQUEST,
+  SIGNUP_SUCCESS,
+  SIGNUP_FAILURE,
 
-    ON_AUTH_FIELD_CHANGE,
+  ON_AUTH_FIELD_CHANGE,
 
-    RESET_PASSWORD_REQUEST,
-    RESET_PASSWORD_SUCCESS,
-    RESET_PASSWORD_FAILURE
+  RESET_PASSWORD_REQUEST,
+  RESET_PASSWORD_SUCCESS,
+  RESET_PASSWORD_FAILURE,
+
+  ON_DB_CHANGE
 
 } = require('../../lib/constants').default;
 
@@ -58,42 +58,42 @@ import log from "../../lib/logUtil";
 
 
 export function registerState() {
-    return {
-        type: LOGIN_STATE_REGISTER
-    };
+  return {
+    type: LOGIN_STATE_REGISTER
+  };
 }
 
 export function loginState() {
-    return {
-        type: LOGIN_STATE_LOGIN
-    };
+  return {
+    type: LOGIN_STATE_LOGIN
+  };
 }
 
 export function forgotPasswordState() {
-    return {
-        type: LOGIN_STATE_FORGOT_PASSWORD
-    };
+  return {
+    type: LOGIN_STATE_FORGOT_PASSWORD
+  };
 }
 
 /**
  * ## Logout actions
  */
 export function logoutRequest() {
-    return {
-        type: LOGOUT_REQUEST
-    };
+  return {
+    type: LOGOUT_REQUEST
+  };
 }
 
 export function logoutSuccess() {
-    return {
-        type: LOGOUT_SUCCESS
-    };
+  return {
+    type: LOGOUT_SUCCESS
+  };
 }
 export function logoutFailure(error) {
-    return {
-        type: LOGOUT_FAILURE,
-        payload: error
-    };
+  return {
+    type: LOGOUT_FAILURE,
+    payload: error
+  };
 }
 /**
  * ## Login
@@ -115,15 +115,15 @@ export function logoutFailure(error) {
  */
 
 export function logout() {
-    return dispatch => {
-        dbService.logout().then((res) => {
-            console.log("Done delete localDB", res);
-            dispatch(logoutSuccess());
-          })
-          .catch((res) => {
-              console.log("Error", res)
-          });
-    };
+  return dispatch => {
+    dbService.logout().then((res) => {
+      console.log("Done delete localDB", res);
+      dispatch(logoutSuccess());
+    })
+      .catch((res) => {
+        console.log("Error", res)
+      });
+  };
 }
 
 /**
@@ -131,50 +131,50 @@ export function logout() {
  * Set the payload so the reducer can work on it
  */
 export function onAuthFieldChange(field, value) {
-    return {
-        type: ON_AUTH_FIELD_CHANGE,
-        payload: {field: field, value: value}
-    };
+  return {
+    type: ON_AUTH_FIELD_CHANGE,
+    payload: {field: field, value: value}
+  };
 }
 /**
  * ## Signup actions
  */
 export function signupRequest() {
-    return {
-        type: SIGNUP_REQUEST
-    };
+  return {
+    type: SIGNUP_REQUEST
+  };
 }
 export function signupSuccess(json) {
-    return {
-        type: SIGNUP_SUCCESS,
-        payload: json
-    };
+  return {
+    type: SIGNUP_SUCCESS,
+    payload: json
+  };
 }
 export function signupFailure(error) {
-    return {
-        type: SIGNUP_FAILURE,
-        payload: error
-    };
+  return {
+    type: SIGNUP_FAILURE,
+    payload: error
+  };
 }
 /**
  * ## SessionToken actions
  */
 export function sessionTokenRequest() {
-    return {
-        type: SESSION_TOKEN_REQUEST
-    };
+  return {
+    type: SESSION_TOKEN_REQUEST
+  };
 }
 export function sessionTokenRequestSuccess(token) {
-    return {
-        type: SESSION_TOKEN_SUCCESS,
-        payload: token
-    };
+  return {
+    type: SESSION_TOKEN_SUCCESS,
+    payload: token
+  };
 }
 export function sessionTokenRequestFailure(error) {
-    return {
-        type: SESSION_TOKEN_FAILURE,
-        payload: _.isUndefined(error) ? null : error
-    };
+  return {
+    type: SESSION_TOKEN_FAILURE,
+    payload: _.isUndefined(error) ? null : error
+  };
 }
 
 /**
@@ -183,13 +183,13 @@ export function sessionTokenRequestFailure(error) {
  * Call the AppAuthToken deleteSessionToken
  */
 export function deleteSessionToken() {
-    return dispatch => {
-        dispatch(sessionTokenRequest());
-        return new AppAuthToken().deleteSessionToken()
-            .then(() => {
-                dispatch(sessionTokenRequestSuccess());
-            });
-    };
+  return dispatch => {
+    dispatch(sessionTokenRequest());
+    return new AppAuthToken().deleteSessionToken()
+      .then(() => {
+        dispatch(sessionTokenRequestSuccess());
+      });
+  };
 }
 /**
  * ## getSessionToken
@@ -198,21 +198,21 @@ export function deleteSessionToken() {
  * Otherwise, the user will default to the login in screen.
  */
 export function getSessionToken() {
-    return dispatch => {
-        dispatch(sessionTokenRequest());
-        return new AppAuthToken().getSessionToken()
-            .then((token) => {
-                if (token) {
-                    dispatch(logoutState());
-                    dispatch(sessionTokenRequestSuccess(token));
-                } else {
-                    dispatch(sessionTokenRequestFailure());
-                }
-            })
-            .catch((error) => {
-                dispatch(sessionTokenRequestFailure(error));
-            });
-    };
+  return dispatch => {
+    dispatch(sessionTokenRequest());
+    return new AppAuthToken().getSessionToken()
+      .then((token) => {
+        if (token) {
+          dispatch(logoutState());
+          dispatch(sessionTokenRequestSuccess(token));
+        } else {
+          dispatch(sessionTokenRequestFailure());
+        }
+      })
+      .catch((error) => {
+        dispatch(sessionTokenRequestFailure(error));
+      });
+  };
 }
 
 /**
@@ -221,60 +221,81 @@ export function getSessionToken() {
  * @param {Object} json - object with sessionToken
  */
 export function saveSessionToken(json) {
-    return new AppAuthToken().storeSessionToken(json);
+  return new AppAuthToken().storeSessionToken(json);
 }
 
 /**
  * ## Login actions
  */
 export function loginRequest() {
-    return {
-        type: LOGIN_REQUEST
-    };
+  return {
+    type: LOGIN_REQUEST
+  };
 }
 
 export function loginSuccess(user) {
-    return {
-        type: LOGIN_SUCCESS,
-        payload: user
-    };
+  return {
+    type: LOGIN_SUCCESS,
+    payload: user
+  };
 }
 
 export function loginFailure(error) {
-    return {
-        type: LOGIN_FAILURE,
-        payload: error
-    };
+  return {
+    type: LOGIN_FAILURE,
+    payload: error
+  };
+}
+
+/*
+ e = {
+ last_seq: 3,
+ results: [{changes, doc, id, seq}],
+ length: number
+ }
+ */
+export function onDBChange(e, all) {
+  log.enter("AuthenAction.onDBChange");
+
+  return {
+    type: ON_DB_CHANGE,
+    payload: {e, all}
+  };
+
 }
 
 export function login(username, password) {
 
-    return dispatch => {
-        dispatch(loginRequest());
+  return dispatch => {
+    dispatch(loginRequest());
 
-        return dbService.loginAndStartSync(username, password)
-            .then(function (json) {
-                log.info("authActions.login", json);
-
-                if (json.status===0) {
-                    if (username.indexOf("@") > -1) {
-                        json.phone = username;
-                    } else {
-                        json.email = username;
-                    }
-                    dispatch(loginSuccess(json));
-                } else {
-                    dispatch(loginFailure(json.error));
-                }
-
-                return json;
-            });
+    var dispatchDBChange = (e, all) => {
+      dispatch(onDBChange(e, all));
     };
+
+    return dbService.loginAndStartSync(username, password, dispatchDBChange)
+      .then(function (json) {
+        log.info("authActions.login", json);
+
+        if (json.status === 0) {
+          if (username.indexOf("@") > -1) {
+            json.phone = username;
+          } else {
+            json.email = username;
+          }
+          dispatch(loginSuccess(json));
+        } else {
+          dispatch(loginFailure(json.error));
+        }
+
+        return json;
+      });
+  };
 }
 
 export function loginWithoutUser(user) {
-    return dispatch => {
-        dispatch(loginSuccess(user))
-    }
+  return dispatch => {
+    dispatch(loginSuccess(user))
+  }
 }
 

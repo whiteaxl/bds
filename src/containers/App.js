@@ -62,7 +62,9 @@ class App extends React.Component {
     return (
       <RouterWithRedux >
 
-        <Scene key="root" hideNavBar={true}>
+        <Scene key="root" hideNavBar={true}
+               titleStyle={styles.titleStyle}
+        >
           <Scene key='Launch' component={Launch} initial={true} title="Welcome" />
 
           <Scene key="Home" tabs={true} default="Main" type="replace" tabBarStyle={styles.tabBarStyle}>
@@ -72,7 +74,7 @@ class App extends React.Component {
 
             <Scene key="Inbox" component={Inbox} title="Chat"
                    iconName={"chat"} iconSize={19}
-                   icon={TabIcon} hideNavBar={true}/>
+                   icon={TabIcon} hideNavBar={true} />
             <Scene key="activity" component={PostAds} title="Đăng tin"
                    iconName={"camera-o"} iconSize={19} icon={TabIcon}/>
             <Scene key="AdsMgmt" component={Profile} title="Quản lý tin"
@@ -128,6 +130,15 @@ var styles = StyleSheet.create({
     height: 45,
     borderTopWidth:1,
     borderTopColor: '#dcdbdc'
+  },
+
+  navigationBarStyle : {
+    height: 63,
+    backgroundColor: gui.mainColor,
+  },
+
+  titleStyle : {
+    color: 'white'
   }
 
 });

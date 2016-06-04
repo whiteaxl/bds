@@ -14,7 +14,7 @@ import RelandIcon from '../../components/RelandIcon';
 
 import {Actions} from 'react-native-router-flux';
 
-export default class LoginRegisterTabBar extends React.Component {
+export default class InboxTabBar extends React.Component {
  
   renderTabOption(name, page) {
     const isTabActive = this.props.activeTab === page;
@@ -45,24 +45,19 @@ export default class LoginRegisterTabBar extends React.Component {
       width: containerWidth / numberOfTabs,
       height: 4,
       backgroundColor: this.props.underlineColor || 'navy',
-      bottom: 0,
+      bottom: 0
     };
 
     const left = this.props.scrollValue.interpolate({
-      inputRange: [0, 1, ], outputRange: [0,  containerWidth / numberOfTabs, ],
+      inputRange: [0, 1 ], outputRange: [0,  containerWidth / numberOfTabs ]
     });
 
     return (
       <View style={styles.outer}>
         <View style={styles.tabs}>
           {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
-          <Animated.View style={[tabUnderlineStyle, { left, }, ]} />
+          <Animated.View style={[tabUnderlineStyle, { left} ]} />
         </View>
-        <TouchableOpacity
-          style={{position:'absolute',top: 33,right: 10,}}
-          onPress={this.props.onClose}>
-          <RelandIcon.Icon style={styles.closeBtn} name="close-circle"/>
-        </TouchableOpacity>
       </View>
     );
   }
@@ -73,12 +68,11 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-    //paddingBottom: 10,
-    top: 11,
-
+    top: 0,
+    width: 120
   },
   tabs: {
-    height: 64,
+    height: 46,
     flexDirection: 'row',
     justifyContent: 'space-around',
     borderWidth: 1,
@@ -87,14 +81,5 @@ const styles = StyleSheet.create({
     borderRightWidth: 0,
     borderBottomColor: '#ccc',
     backgroundColor: 'white'
-  },
-  closeBtn : {
-    height: 18,
-    paddingLeft:3,
-    paddingRight:10,
-    paddingTop: 0,
-    color: gui.mainColor,
-    fontSize: 20,
-    backgroundColor: 'white'
-  },
+  }
 });
