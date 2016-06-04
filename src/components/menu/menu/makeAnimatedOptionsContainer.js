@@ -1,4 +1,4 @@
-import {nimated} from 'react-native';
+import {Animated} from 'react-native';
 
 module.exports = (React) => {
   const TimerMixin = require('react-timer-mixin');

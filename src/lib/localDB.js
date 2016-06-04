@@ -183,16 +183,19 @@ class DBService {
     }
 
     sendChat(state) {
-        this.db().createDocument({
-            timestamp: new Date().toISOString(),
-            type: "Chat",
-            msg: state.chatMsg,
-            toUser: state.chatTo,
-            fromUser: state.phone,
-        }).then((res) => {
-            let documentId = res.id;
-            console.log("created document!", documentId);
-        });
+        this.db()
+          .then(db => {
+            db.createDocument({
+              timestamp: new Date().toISOString(),
+              type: "Chat",
+              msg: state.chatMsg,
+              toUser: state.chatTo,
+              fromUser: state.phone,
+            }).then((res) => {
+              let documentId = res.id;
+              console.log("created document!", documentId);
+            });
+          });
     }
 
     getUser() {
