@@ -25,8 +25,6 @@ import HuongNha from '../components/HuongNha';
 import VerifyPhone from '../components/login/VerifyPhone';
 import RegisterMoreInfor from '../components/login/RegisterMoreInfor';
 
-
-
 import Profile from './Profile';
 
 import SearchSuggestion from '../containers/PlacesAutoComplete';
@@ -34,16 +32,16 @@ import SearchSuggestion from '../containers/PlacesAutoComplete';
 import {connect} from 'react-redux';
 const RouterWithRedux = connect()(Router);
 
-
-import Icon from 'react-native-vector-icons/FontAwesome';
+import gui from '../lib/gui';
+import RelandIcon from '../components/RelandIcon';
 
 class TabIcon extends React.Component {
   render() {
-    var color = this.props.selected ? '#FF3366' : '#FFB3B3';
+    var color = this.props.selected ? gui.mainColor : '#8f8f8f';
     return (
-      <View style={{flex:1, flexDirection:'column', alignItems:'center', alignSelf:'center'}}>
-        <Icon style={{color: color}} name={this.props.iconName} size={30}/>
-        <Text style={{color: color}}>{this.props.title}</Text>
+      <View style={styles.tabIcon}>
+        <RelandIcon.Icon style={{color: color}} name={this.props.iconName} size={this.props.iconSize}/>
+        <Text style={[styles.tabIconText, {color: color}]}>{this.props.title}</Text>
       </View>
     );
   }
@@ -67,15 +65,20 @@ class App extends React.Component {
         <Scene key="root" hideNavBar={true}>
           <Scene key='Launch' component={Launch} initial={true} title="Welcome" />
 
-          <Scene key="Home" tabs={true} default="Main" type="replace">
-            <Scene key="Main" title="home" iconName={"home"} icon={TabIcon}
+          <Scene key="Home" tabs={true} default="Main" type="replace" tabBarStyle={styles.tabBarStyle}>
+            <Scene key="Main" title="Duyệt nhanh" iconName={"list"} iconSize={18} icon={TabIcon}
                    component={Home}
                    hideNavBar={true} initial={true}/>
 
-
-            <Scene key="Inbox" component={Inbox} title="Inbox" iconName={"inbox"} icon={TabIcon} hideNavBar={true}/>
-            <Scene key="activity" component={PostAds} title="activity" iconName={"bell-o"} icon={TabIcon}/>
-            <Scene key="Profile" component={Profile} title="Profile" iconName={"gear"} icon={TabIcon}/>
+            <Scene key="Inbox" component={Inbox} title="Chat"
+                   iconName={"chat"} iconSize={19}
+                   icon={TabIcon} hideNavBar={true}/>
+            <Scene key="activity" component={PostAds} title="Đăng tin"
+                   iconName={"camera-o"} iconSize={19} icon={TabIcon}/>
+            <Scene key="AdsMgmt" component={Profile} title="Quản lý tin"
+                   iconName={"mgmt"} iconSize={18} icon={TabIcon}/>
+            <Scene key="Profile" component={Profile} title="Tôi"
+                   iconName={"me"} iconSize={20} icon={TabIcon}/>
 
           </Scene>
 
@@ -106,5 +109,28 @@ class App extends React.Component {
     );
   }
 }
+
+
+var styles = StyleSheet.create({
+  tabIcon: {
+    flex:1, flexDirection:'column',
+    alignItems:'center',
+    alignSelf:'center',
+    top: 10
+  },
+
+  tabIconText: {
+    fontSize:11,
+    fontFamily: 'Open Sans'
+  },
+
+  tabBarStyle : {
+    height: 45,
+    borderTopWidth:1,
+    borderTopColor: '#dcdbdc'
+  }
+
+});
+
 
 export default App;
