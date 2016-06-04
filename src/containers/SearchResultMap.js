@@ -393,6 +393,8 @@ class SearchResultMap extends Component {
   }
 
   _onDrawPressed(){
+    console.log("SearchResultMap._onDrawPressed");
+
     var {polygons} = this.state;
     this.setState({
       openDetailAdsModal: false,
@@ -401,6 +403,7 @@ class SearchResultMap extends Component {
       openDraw: !polygons || polygons.length === 0,
       drawMode: !polygons || polygons.length === 0
     });
+    this.props.actions.onSearchFieldChange("polygon", []);
   }
 
   _onDetailAdsPress(){
@@ -422,6 +425,8 @@ class SearchResultMap extends Component {
   }
 
   _onCloseDraw(){
+    console.log("SearchResultMap._onCloseDraw");
+
     this.setState({
       openDetailAdsModal: false,
       polygons: [],
@@ -429,6 +434,8 @@ class SearchResultMap extends Component {
       openDraw: false,
       drawMode: false
     });
+
+    this.props.actions.onSearchFieldChange("polygon", []);
   }
 
   _onMarkerPress(marker) {
@@ -439,7 +446,6 @@ class SearchResultMap extends Component {
 
     markedList.push(marker.id);
 
-    console.log(markedList);
     this.setState({
       openDetailAdsModal: true,
       mmarker: marker,
@@ -525,6 +531,7 @@ class SearchResultMap extends Component {
     if (polygons.length > 0) {
         var geoBox = apiUtils.getPolygonBox(polygons[0]);
         this.props.actions.onSearchFieldChange("geoBox", geoBox);
+        this.props.actions.onSearchFieldChange("polygon", apiUtils.convertPolygon(polygons[0]));
 
         this._refreshListData();
     }

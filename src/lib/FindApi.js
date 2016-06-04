@@ -18,7 +18,7 @@ var Api = {
 
 
   getItems: function(fields) {
-      var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, radiusInKmSelectedIdx, dienTich, orderBy, place, geoBox, huongNha, ngayDaDang} = fields;
+      var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, radiusInKmSelectedIdx, dienTich, orderBy, place, geoBox, huongNha, ngayDaDang, polygon} = fields;
 
       if (place) {
         place.radiusInKm = DanhMuc.getRadiusInKmByIndex(radiusInKmSelectedIdx) || undefined;
@@ -39,7 +39,8 @@ var Api = {
           'geoBox' : geoBox.length===4 ? geoBox : undefined,
           'limit' : maxRows || undefined,
           'huongNha' : huongNha || undefined,
-          'ngayDaDang' : ngayDaDang || undefined
+          'ngayDaDang' : ngayDaDang || undefined,
+          'polygon' : polygon || undefined
       };
 
  

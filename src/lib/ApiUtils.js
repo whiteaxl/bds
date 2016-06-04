@@ -48,6 +48,18 @@ var ApiUtils = {
     return [latMin-0.025, lonMin-0.017, latMax+0.025, lonMax+0.017];
   },
 
+  convertPolygon(polygon){
+    var convertedPolygon = [];
+
+    polygon.coordinates.map(function (coordinate) {
+      var lat = coordinate.latitude;
+      var lon = coordinate.longitude;
+      convertedPolygon.push({lat, lon});
+    });
+
+    return convertedPolygon;
+  },
+
   //lat1, lon1, lat2, lon2
   getRegion: function(geoBox){
     var latitudeDelta = geoBox[2] - geoBox[0];
