@@ -89,7 +89,7 @@ class Profile extends Component {
 
         var listAds = allDoc;
 
-        let users = allDoc.filter((x) => x.phone === this.props.auth.phone);
+        let users = allDoc.filter((x) => x.type='User');
         let chats = allDoc.filter((x) => x.type === 'Chat');
 
         console.log("myUser:", users);

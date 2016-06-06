@@ -4,7 +4,8 @@ const InitialState = require('./inboxInitialState').default;
 
 
 const {
-  ON_DB_CHANGE
+  ON_DB_CHANGE,
+  ON_INBOX_FIELD_CHANGE
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
@@ -12,20 +13,33 @@ const initialState = new InitialState;
 //all = [{doc}]
 function getInboxList(all) {
   let mapByAds = {};
+  let user = all.filter(e => e.type == 'User')[0];
+  const myUserID = user.userID;
+
 
   all.forEach(e => {
     const doc = e.doc;
     if (doc.type = 'Chat' && doc.relatedToAds && doc.relatedToAds.adsID) {
       const adsID = doc.relatedToAds.adsID;
-      if (!mapByAds[adsID]) {
-        mapByAds[adsID] = doc;
-      } else if (mapByAds[adsID].msgEpoch < doc.msgEpoch) {
-        mapByAds[adsID] = doc;
+      const partner = myUserID == doc.toUserID ? doc.fromUserID : doc.toUserID;
+      const key = adsID + partner;
+
+      if (!mapByAds[key]) {
+        mapByAds[key] = doc;
+      } else if (mapByAds[key].date < doc.date) {
+        mapByAds[key] = doc;
       }
     }
   });
 
-  return mapByAds;
+  var array = Object.keys(mapByAds).map(function(key) {
+    return mapByAds[key];
+  });
+  array.sort((a, b) => {
+    return a.date > b.date;
+  });
+
+  return array;
 }
 
 export default function inboxReducer(state = initialState, action) {
@@ -41,6 +55,13 @@ export default function inboxReducer(state = initialState, action) {
 
       let nextState = state.set("allInboxDS", newDs);
 
+      return nextState;
+    }
+
+    case ON_INBOX_FIELD_CHANGE:
+    {
+      const {field, value} = action.payload;
+      let nextState = state.set(field, value);
       return nextState;
     }
   }

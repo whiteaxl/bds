@@ -7,9 +7,9 @@ const {
   LOGIN_SUCCESS,
   LOGOUT_SUCCESS,
 
-  INIT_LOCAL_DB,
   LAUNCH_APP,
   ROUTER_FOCUS,
+  ON_DB_CHANGE
 } = require('../../lib/constants').default;
 
 import InitialState from './globalInitialState';
@@ -42,13 +42,6 @@ export default function globalReducer(state = initialState, action) {
       return newState;
     }
 
-    case INIT_LOCAL_DB:
-    {
-      var global = JSON.parse(action.payload).global;
-      var next = state.set('currentUser', global.currentUser);
-      return next;
-    }
-
     case LAUNCH_APP :
     {
       var data  =  action.payload;
@@ -71,6 +64,30 @@ export default function globalReducer(state = initialState, action) {
 
       return next;
     }
+    case ON_DB_CHANGE:
+    {
+      if (!state.loggedIn || state.currentUser.userID) {
+        return state;
+      }
+
+      var {all} = action.payload;
+      all.forEach((e) => {
+        if (e.type='User') {
+          var next = state
+            .setIn(['currentUser','userID'], e.userID)
+            .setIn(['currentUser','phone'], e.phone)
+            .setIn(['currentUser','email'], e.email)
+            .setIn(['currentUser','fullName'], e.fullName)
+            .setIn(['currentUser','avatar'], e.avatar)
+            ;
+          return next;
+        }
+      });
+
+      return state;
+    }
+
+
   }
   
   return state;

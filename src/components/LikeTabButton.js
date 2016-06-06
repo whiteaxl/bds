@@ -23,7 +23,7 @@ export default class LikeTabButton extends React.Component {
           </Text>
         </TouchableOpacity>
 
-        <View style = {[styles.lineunder, {borderBottomWidth:selected ? 5:0 }]}  /> 
+        <View style = {[styles.lineunder, {borderBottomWidth:selected ? 4:0 }]}  />
 
       </View>
     );

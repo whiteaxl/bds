@@ -2,7 +2,7 @@
 
 import  React, {Component} from 'react';
 
-import { View, Text, StyleSheet} from 'react-native';
+import { View, Text, StyleSheet, ScrollView} from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
 import log from "../lib/logUtil";
@@ -12,19 +12,16 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import * as globalActions from '../reducers/global/globalActions';
+import * as inboxActions from '../reducers/inbox/inboxActions';
 
 import LoginRegister from './LoginRegister';
-
-import InboxTabBar from "../components/inbox/InboxTabBar";
-
-import AllInboxTab from "../components/inbox/AllInboxTab";
-
-import ScrollableTabView from 'react-native-scrollable-tab-view';
-
+import InboxContent from "../components/inbox/InboxContent";
 import InboxHeader from '../components/inbox/InboxHeader';
+import LikeTabButton from '../components/LikeTabButton';
+
 
 const actions = [
-	globalActions
+	globalActions, inboxActions
 ];
 
 function mapStateToProps(state) {
@@ -65,25 +62,31 @@ export default class Inbox extends Component {
 		return <InboxTabBar />
 	}
 
+	_onLoaiTinChange(value) {
+		this.props.actions.onInboxFieldChange('loaiTin', value);
+	}
+
   render() {
 		console.log("Calling Inbox.render ..., loggedIn = ", this.props.global.loggedIn);
+		let loaiTin = this.props.inbox.loaiTin;
 
 		if (this.props.global.loggedIn) {
 			return (
 				<View style={styles.container}>
 					<InboxHeader headerTitle={"Chat"}/>
-
-					<ScrollableTabView page={this.props.auth.activeRegisterLoginTab}
-														 renderTabBar={this.renderTabBar.bind(this)}
-														 style={styles.scrollContainer}
-														 tabBarUnderlineColor={gui.mainColor}
-														 tabBarActiveTextColor={gui.mainColor}
-														 onChangeTab={this.onChangeTab.bind(this)}
-					>
-						<AllInboxTab tabLabel="TẤT CẢ" ref="allTab"/>
-						<AllInboxTab tabLabel="MUA" ref="buyTab"/>
-						<AllInboxTab tabLabel="BÁN/CHO THUÊ" ref="sellTab"/>
-					</ScrollableTabView>
+					<View style = {styles.tabbar}>
+						<LikeTabButton name={'all'}
+													 onPress={this._onLoaiTinChange.bind(this)}
+													 selected={loaiTin === 'all'}>TẤT CẢ</LikeTabButton>
+						<LikeTabButton name={'buy'}
+													 onPress={this._onLoaiTinChange.bind(this)}
+													 selected={loaiTin === 'buy'}>MUA</LikeTabButton>
+						<LikeTabButton name={'sell'}
+													 onPress={this._onLoaiTinChange.bind(this)}
+													 selected={loaiTin === 'sell'}>BÁN/CHO THUÊ</LikeTabButton>
+					</View>
+					<InboxContent/>
+					
 				</View>
 
 			);
@@ -100,13 +103,12 @@ var styles = StyleSheet.create({
 	container: {
 		paddingTop: 0,
 		backgroundColor: "white",
-		flex:1
+		flex:1,
 	},
 
 	scrollContainer: {
 		paddingTop: 0,
 		backgroundColor: "white",
-		
 	},
 
 	label: {
@@ -122,7 +124,16 @@ var styles = StyleSheet.create({
 		alignSelf: 'center',
 		padding: 5
 
-	}
+	},
+	tabbar : {
+		flexDirection: 'row',
+		paddingLeft: 5,
+		paddingRight: 5,
+		borderColor: '#e6e6e6',
+		borderBottomWidth: 1,
+		paddingTop: 2
+	},
+
 });
 
 

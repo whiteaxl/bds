@@ -6,7 +6,8 @@ const ReactNative = require('react-native');
 const {ListView} = ReactNative;
 
 var InitialState = Record({
-  allInboxDS : new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2})
+  allInboxDS : new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2}),
+  loaiTin : 'all' //all,buy,sell
 });
 
 export default InitialState;

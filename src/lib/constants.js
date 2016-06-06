@@ -63,4 +63,6 @@ export default keyMirror({
   REGISTER_SUCCESS : null,
 
   ON_DB_CHANGE: null,
+
+  ON_INBOX_FIELD_CHANGE: null,
 });

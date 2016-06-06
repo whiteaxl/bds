@@ -114,7 +114,7 @@ class DBService {
                                         .then(res => {
                                           onDBChange(e, res.rows);
                                         })
-                                      , 100
+                                      , 1000
                                     )
                                   });
 

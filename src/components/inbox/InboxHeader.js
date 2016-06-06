@@ -1,7 +1,6 @@
-// Import some code we need
 import React, {Component} from 'react';
 
-import {View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet, TouchableOpacity, Alert} from 'react-native';
 import TruliaIcon from '../TruliaIcon';
 
 import RelandIcon from '../RelandIcon';
@@ -11,14 +10,28 @@ import {Actions} from 'react-native-router-flux';
 import gui from '../../lib/gui';
 
 // Create our component
-var InboxHeader = React.createClass({
-  render: function() {
-    return <View style={styles.container}>
+export default class InboxHeader extends Component {
+  coming() {
+    Alert.alert("Coming soon...");
+  }
+
+  onArchive() {
+    this.coming();
+  }
+
+  render() {
+    return (
+    <View style={styles.container}>
+
       <View style={styles.left}>
+        <TouchableOpacity onPress={() => this.coming()}>
         <Text style={[styles.customPageTitleText, {fontWeight: 'normal'}]}>
           Lưu trữ
         </Text>
+        </TouchableOpacity>
       </View>
+
+
       <View style={styles.customPageTitle}>
         <Text style={styles.customPageTitleText}>
           Chat
@@ -32,19 +45,13 @@ var InboxHeader = React.createClass({
         </TruliaIcon>
       </View>
     </View>
-  },
-
-  _onHome: function() {
-    Actions.Home({type:"reset"});
-  },
-
-  _onSearch: function(){
-    Actions.Search({needBack:true});
+    )
   }
-});
 
-// Make this code available elsewhere
-module.exports = InboxHeader;
+  _onSearch(){
+    Actions.Search({needBack:false});
+  }
+}
 
 var styles = StyleSheet.create({
   container: {
