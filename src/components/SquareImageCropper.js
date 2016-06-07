@@ -14,19 +14,22 @@ var {
     TouchableHighlight,
     UIManager,
     View,
+    Dimensions
 } = ReactNative;
 
 var PAGE_SIZE = 20;
 
 var ImageOffset = {
-    x: number,
-    y: number
+    x: 0,
+    y: 0
 };
 
 var ImageSize = {
-    width: number,
-    height: number
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height
 };
+
+var any = '';
 
 var ImageCropData = {
     offset: ImageOffset,
