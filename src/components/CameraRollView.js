@@ -108,7 +108,7 @@ var CameraRollView = React.createClass({
         this.fetch();
     },
 
-    componentWillReceiveProps: function(nextProps: {groupTypes}) {
+    componentWillReceiveProps: function(nextProps) {
         if (this.props.groupTypes !== nextProps.groupTypes) {
             this.fetch(true);
         }

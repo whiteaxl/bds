@@ -277,15 +277,7 @@ class ImageCropper extends React.Component {
 
 }
 
-exports.framework = 'React';
-exports.title = 'ImageEditor';
-exports.description = 'Cropping and scaling with ImageEditor';
-exports.examples = [{
-    title: 'Image Cropping',
-    render() {
-        return <SquareImageCropper/>;
-    }
-}];
+module.exports = SquareImageCropper;
 
 var styles = StyleSheet.create({
     container: {

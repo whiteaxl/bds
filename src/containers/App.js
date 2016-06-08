@@ -29,6 +29,8 @@ import Profile from './Profile';
 
 import SearchSuggestion from '../containers/PlacesAutoComplete';
 
+import SquareImageCropper from '../components/SquareImageCropper';
+
 import {connect} from 'react-redux';
 const RouterWithRedux = connect()(Router);
 
@@ -93,6 +95,7 @@ class App extends React.Component {
           <Scene key='PropertyTypes' component={PropertyTypes} title="Loại nhà đất" hideNavBar={true}/>
 
           <Scene key='HuongNha' component={HuongNha} title="Hướng nhà" hideNavBar={true}/>
+          <Scene key='SquareImageCropper' component={SquareImageCropper} title="Image Cropper" hideNavBar={true}/>
 
           <Scene key='OrderPicker' component={OrderPicker} title="Sắp xếp" hideNavBar={true}/>
           <Scene key='SearchResultDetail' component={SearchResultDetail} title="Chi tiết" hideNavBar={true}/>

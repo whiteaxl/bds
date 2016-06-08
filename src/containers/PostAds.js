@@ -65,8 +65,13 @@ export default class PostAds extends Component {
 
     takePicture() {
         this.camera.capture()
-            .then((data) => console.log(data))
+            .then((data) => this.imageCropper(data))
             .catch(err => console.error(err));
+    }
+
+    imageCropper(data) {
+        console.log(data);
+        Actions.SquareImageCropper({photo: data});
     }
 }
 
