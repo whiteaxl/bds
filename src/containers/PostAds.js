@@ -50,6 +50,7 @@ export default class PostAds extends Component {
                         ref={(cam) => {
                         this.camera = cam;
                       }}
+                        captureTarget={Camera.constants.CaptureTarget.disk}
                         style={styles.preview}
                         aspect={Camera.constants.Aspect.fill}>
                         <Text style={styles.capture} onPress={this.takePicture.bind(this)}>Chụp ảnh</Text>

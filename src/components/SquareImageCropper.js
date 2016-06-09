@@ -3,21 +3,19 @@
 var React = require('react');
 var ReactNative = require('react-native');
 var {
-    CameraRoll,
     Image,
     ImageEditor,
-    NativeModules,
     Platform,
     ScrollView,
     StyleSheet,
     Text,
     TouchableHighlight,
-    UIManager,
     View,
     Dimensions
 } = ReactNative;
 
-var PAGE_SIZE = 20;
+import CommonHeader from './CommonHeader';
+import gui from '../lib/gui';
 
 var ImageOffset = {
     x: 0,
@@ -47,29 +45,11 @@ class SquareImageCropper extends React.Component {
         super(props);
         this._isMounted = true;
         this.state = {
-            randomPhoto: null,
+            originImage: {uri: props.photo.path},
             measuredSize: null,
-            croppedImageURI: null,
-            cropError: null,
+            croppedImageURI: props.photo.path,
+            cropError: null
         };
-        this._fetchRandomPhoto();
-    }
-
-    async _fetchRandomPhoto() {
-        try {
-            const data = await CameraRoll.getPhotos({first: PAGE_SIZE});
-            if (!this._isMounted) {
-                return;
-            }
-            var edges = data.edges;
-            var edge = edges[Math.floor(Math.random() * edges.length)];
-            var randomPhoto = edge && edge.node && edge.node.image;
-            if (randomPhoto) {
-                this.setState({randomPhoto});
-            }
-        } catch (error) {
-            console.warn("Can't get a photo from camera roll", error);
-        }
     }
 
     componentWillUnmount() {
@@ -79,18 +59,19 @@ class SquareImageCropper extends React.Component {
     render() {
         if (!this.state.measuredSize) {
             return (
-                <View
-                    style={styles.container}
-                    onLayout={(event) => {
-            var measuredWidth = event.nativeEvent.layout.width;
-            if (!measuredWidth) {
-              return;
-            }
-            this.setState({
-              measuredSize: {width: measuredWidth, height: measuredWidth},
-            });
-          }}
-                />
+                <View style={styles.fullWidthContainer}
+                      onLayout={(event) => {
+                        var measuredWidth = event.nativeEvent.layout.width;
+                        if (!measuredWidth) {
+                          return;
+                        }
+                        this.setState({
+                          measuredSize: {width: measuredWidth, height: measuredWidth},
+                        });
+                      }}>
+                    <CommonHeader />
+                    <View style={styles.headerSeparator} />
+                </View>
             );
         }
 
@@ -101,9 +82,12 @@ class SquareImageCropper extends React.Component {
     }
 
     _renderImageCropper() {
-        if (!this.state.randomPhoto) {
+        if (!this.state.originImage) {
             return (
-                <View style={styles.container} />
+                <View style={styles.fullWidthContainer}>
+                    <CommonHeader />
+                    <View style={styles.headerSeparator} />
+                </View>
             );
         }
         var error = null;
@@ -113,10 +97,12 @@ class SquareImageCropper extends React.Component {
             );
         }
         return (
-            <View style={styles.container}>
-                <Text>Drag the image within the square to crop:</Text>
+            <View style={styles.fullWidthContainer}>
+                <CommonHeader />
+                <View style={styles.headerSeparator} />
+                <Text style={{marginTop: 10}}>Drag the image within the square to crop:</Text>
                 <ImageCropper
-                    image={this.state.randomPhoto}
+                    image={this.state.originImage}
                     size={this.state.measuredSize}
                     style={[styles.imageCropper, this.state.measuredSize]}
                     onTransformDataChange={(data) => this._transformData = data}
@@ -137,8 +123,10 @@ class SquareImageCropper extends React.Component {
 
     _renderCroppedImage() {
         return (
-            <View style={styles.container}>
-                <Text>Here is the cropped image:</Text>
+            <View style={styles.fullWidthContainer}>
+                <CommonHeader />
+                <View style={styles.headerSeparator} />
+                <Text style={{marginTop: 10}}>Here is the cropped image:</Text>
                 <Image
                     source={{uri: this.state.croppedImageURI}}
                     style={[styles.imageCropper, this.state.measuredSize]}
@@ -158,7 +146,7 @@ class SquareImageCropper extends React.Component {
 
     _crop() {
         ImageEditor.cropImage(
-            this.state.randomPhoto.uri,
+            this.state.originImage.uri,
             this._transformData,
             (croppedImageURI) => this.setState({croppedImageURI}),
             (cropError) => this.setState({cropError})
@@ -167,11 +155,10 @@ class SquareImageCropper extends React.Component {
 
     _reset() {
         this.setState({
-            randomPhoto: null,
-            croppedImageURI: null,
-            cropError: null,
+            originImage: {uri: this.props.photo.path},
+            croppedImageURI: this.props.photo.path,
+            cropError: null
         });
-        this._fetchRandomPhoto();
     }
 
 }
@@ -281,8 +268,19 @@ module.exports = SquareImageCropper;
 
 var styles = StyleSheet.create({
     container: {
+        marginTop: 50,
         flex: 1,
         alignSelf: 'stretch',
+    },
+    fullWidthContainer: {
+        flex: 1,
+        alignItems: 'stretch',
+        backgroundColor: 'white'
+    },
+    headerSeparator: {
+        marginTop: 2,
+        borderTopWidth: 1,
+        borderTopColor: gui.separatorLine
     },
     imageCropper: {
         alignSelf: 'center',
