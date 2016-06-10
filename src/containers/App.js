@@ -22,13 +22,11 @@ import OrderPicker from '../components/OrderPicker';
 import SearchResultDetail from './SearchResultDetail';
 import SearchMapDetail from './SearchMapDetail';
 import HuongNha from '../components/HuongNha';
-
 import VerifyPhone from '../components/login/VerifyPhone';
 import RegisterMoreInfor from '../components/login/RegisterMoreInfor';
-
 import Profile from './Profile';
-
 import SearchSuggestion from '../containers/PlacesAutoComplete';
+import Chat from './Chat';
 
 import SquareImageCropper from '../components/SquareImageCropper';
 
@@ -71,22 +69,21 @@ class App extends React.Component {
           <Scene key='Launch' component={Launch} initial={true} title="Welcome" />
 
           <Scene key="Home" tabs={true} default="Main" type="replace" tabBarStyle={styles.tabBarStyle}>
-            <Scene key="Main" title="Duyệt nhanh" iconName={"list"} iconSize={18} icon={TabIcon}
+            <Scene key="Main" title="Duyệt nhanh" iconName={"list"} iconSize={19} icon={TabIcon}
                    component={Home}
                    hideNavBar={true} initial={true}/>
 
             <Scene key="Inbox" component={Inbox} title="Chat"
-                   iconName={"chat"} iconSize={19}
+                   iconName={"chat"} iconSize={20}
                    icon={TabIcon} hideNavBar={true} />
             <Scene key="activity" component={PostAds} title="Đăng tin"
-                   iconName={"camera-o"} iconSize={19} icon={TabIcon}/>
+                   iconName={"camera-o"} iconSize={20} icon={TabIcon}/>
             <Scene key="AdsMgmt" component={Profile} title="Quản lý tin"
-                   iconName={"mgmt"} iconSize={18} icon={TabIcon}/>
+                   iconName={"mgmt"} iconSize={19} icon={TabIcon}/>
             <Scene key="Profile" component={Profile} title="Tôi"
-                   iconName={"me"} iconSize={20} icon={TabIcon}/>
+                   iconName={"me"} iconSize={21} icon={TabIcon}/>
 
           </Scene>
-
 
           <Scene key='LoginRegister' component={LoginRegister} title="Register Screen" direction="vertical"/>
 
@@ -108,6 +105,7 @@ class App extends React.Component {
           <Scene key='VerifyPhone' component={VerifyPhone} title="Xác minh số điện thoại" hideNavBar={false}/>
           <Scene key='RegisterMoreInfor' component={RegisterMoreInfor} title="Đăng ký" hideNavBar={false}/>
 
+          <Scene key='Chat' component={Chat} hideNavBar={true}/>
 
         </Scene>
 

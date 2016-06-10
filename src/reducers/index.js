@@ -5,6 +5,7 @@ import search from './search/searchReducer';
 import auth from './auth/authReducer';
 import register from './register/registerReducer';
 import inbox from './inbox/inboxReducer';
+import chat from './chat/chatReducer';
 
 import { combineReducers } from 'redux';
 
@@ -13,7 +14,8 @@ const rootReducer = combineReducers({
   global,
   search,
   register,
-  inbox
+  inbox,
+  chat
 });
 
 export default rootReducer;

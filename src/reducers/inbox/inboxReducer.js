@@ -2,7 +2,6 @@
 const InitialState = require('./inboxInitialState').default;
 
 
-
 const {
   ON_DB_CHANGE,
   ON_INBOX_FIELD_CHANGE
@@ -13,21 +12,40 @@ const initialState = new InitialState;
 //all = [{doc}]
 function getInboxList(all) {
   let mapByAds = {};
-  let user = all.filter(e => e.type == 'User')[0];
-  const myUserID = user.userID;
+  let user = all.filter(e => e.doc.type == 'User')[0];
+  console.log("user=", user);
+  const myUserID = user.doc.userID;
+
+  console.log("My userID = " + myUserID);
 
 
   all.forEach(e => {
     const doc = e.doc;
-    if (doc.type = 'Chat' && doc.relatedToAds && doc.relatedToAds.adsID) {
+    let partner;
+
+    if (myUserID == doc.toUserID) {
+      partner = {
+        userID : doc.fromUserID,
+        fullName: doc.fromFullName,
+        avatar : doc.fromUserAvatar
+      };
+    } else {
+      partner = {
+        userID : doc.toUserID,
+        fullName: doc.toFullName,
+        avatar : doc.toUserAvatar
+      };
+    }
+
+    if (doc.type == 'Chat' && doc.relatedToAds && doc.relatedToAds.adsID) {
       const adsID = doc.relatedToAds.adsID;
-      const partner = myUserID == doc.toUserID ? doc.fromUserID : doc.toUserID;
-      const key = adsID + partner;
+      const key = adsID + partner.userID;
 
       if (!mapByAds[key]) {
-        mapByAds[key] = doc;
-      } else if (mapByAds[key].date < doc.date) {
-        mapByAds[key] = doc;
+        console.log("new key=" + key);
+        mapByAds[key] = {doc, partner};
+      } else if (mapByAds[key].doc.date < doc.date) {
+        mapByAds[key] = {doc, partner};
       }
     }
   });
@@ -36,8 +54,11 @@ function getInboxList(all) {
     return mapByAds[key];
   });
   array.sort((a, b) => {
-    return a.date > b.date;
+    return a.doc.date > b.doc.date;
   });
+
+
+  console.log("getInboxList, result=", array);
 
   return array;
 }

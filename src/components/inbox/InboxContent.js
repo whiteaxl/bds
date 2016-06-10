@@ -21,12 +21,14 @@ import {Map} from 'immutable';
 
 import * as globalActions from '../../reducers/global/globalActions';
 import * as authActions from '../../reducers/auth/authActions';
+import * as chatActions from '../../reducers/chat/chatActions';
 
 let defaultAvatar = require('../../assets/image/register_avatar_icon.png');
 
 const actions = [
   globalActions,
-  authActions
+  authActions,
+  chatActions
 ];
 
 function mapStateToProps(state) {
@@ -56,35 +58,45 @@ class InboxContent extends React.Component {
     Alert.alert("Coming soon...");
   }
 
+  onRowClick(row) {
+    //let {doc, partner} = row;
+    this.props.actions.startChat(row);
+    Actions.Chat();
+  }
+
   renderRow(row, sectionID, rowID) {
-    let dt = moment(row.date).format("DD/MM HH:mm");
+    let avatar = row.partner.avatar ? {uri: row.partner.avatar} : defaultAvatar;
+    let relatedToAds = row.doc.relatedToAds;
+
+    let dt = moment(row.doc.date).format("DD/MM HH:mm");
     let w = rowID == 0 ? 0 : 1;
-    let avatar = row.fromUserAvatar ? {uri: row.fromUserAvatar} : defaultAvatar;
 
     return (
-      <View style={[styles.rowContainer, {borderTopWidth:w}]}>
-        <Image
-          resizeMode = {"cover"}
-          source={avatar}
-          style={styles.thumbnail}/>
-        <View style={styles.rightContainer}>
-          <View style={styles.nameAndDateTime}>
-            <Text style={styles.name}>{row.fromFullName}</Text>
-            <Text style={styles.dateTime}>{dt}</Text>
-          </View>
-
-          <View style={styles.rightRow2}>
-            <View style={styles.titleAndLastMsg}>
-              <Text style={styles.title}>{row.relatedToAds?row.relatedToAds.title:"<Không tựa đề>"}</Text>
-              <Text style={styles.content}>{row.content}</Text>
+      <TouchableOpacity onPress={() => this.onRowClick(row)}>
+        <View style={[styles.rowContainer, {borderTopWidth:w}]}>
+          <Image
+            resizeMode = {"cover"}
+            source={avatar}
+            style={styles.thumbnail}/>
+          <View style={styles.rightContainer}>
+            <View style={styles.nameAndDateTime}>
+              <Text style={styles.name}>{row.partner.fullName}</Text>
+              <Text style={styles.dateTime}>{dt}</Text>
             </View>
-            <Image
-              resizeMode = {"cover"}
-              source={{uri: row.relatedToAds.cover}}
-              style={styles.adsCover}/>
+
+            <View style={styles.rightRow2}>
+              <View style={styles.titleAndLastMsg}>
+                <Text style={styles.title}>{relatedToAds?relatedToAds.title:"<Không tựa đề>"}</Text>
+                <Text style={styles.content}>{row.doc.content}</Text>
+              </View>
+              <Image
+                resizeMode = {"cover"}
+                source={{uri: relatedToAds.cover}}
+                style={styles.adsCover}/>
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 
@@ -94,7 +106,7 @@ class InboxContent extends React.Component {
         <ListView
           enableEmptySections={true}
           dataSource={this.props.inbox.allInboxDS}
-          renderRow={this.renderRow}
+          renderRow={this.renderRow.bind(this)}
           style={styles.listView}/>
 
         <Text style={styles.bottomText}>Tất cả đã được hiển thị</Text>

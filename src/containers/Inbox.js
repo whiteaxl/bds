@@ -42,7 +42,7 @@ function mapDispatchToProps(dispatch) {
 	};
 }
 
-export default class Inbox extends Component {
+class Inbox extends Component {
 	constructor(props) {
 		super(props);
 	}
