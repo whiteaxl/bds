@@ -23,6 +23,10 @@ import * as globalActions from '../../reducers/global/globalActions';
 import * as authActions from '../../reducers/auth/authActions';
 import * as chatActions from '../../reducers/chat/chatActions';
 
+import { SwipeListView } from 'react-native-swipe-list-view';
+
+
+
 let defaultAvatar = require('../../assets/image/register_avatar_icon.png');
 
 const actions = [
@@ -58,6 +62,10 @@ class InboxContent extends React.Component {
     Alert.alert("Coming soon...");
   }
 
+  onDelete() {
+    this.coming();
+  }
+
   onRowClick(row) {
     //let {doc, partner} = row;
     this.props.actions.startChat(row);
@@ -72,7 +80,7 @@ class InboxContent extends React.Component {
     let w = rowID == 0 ? 0 : 1;
 
     return (
-      <TouchableOpacity onPress={() => this.onRowClick(row)}>
+      <TouchableOpacity onPress={() => this.onRowClick(row)} style={styles.rowFront}>
         <View style={[styles.rowContainer, {borderTopWidth:w}]}>
           <Image
             resizeMode = {"cover"}
@@ -103,11 +111,25 @@ class InboxContent extends React.Component {
   render() {
     return (
       <ScrollView style={styles.wrapper}>
-        <ListView
+        <SwipeListView
           enableEmptySections={true}
           dataSource={this.props.inbox.allInboxDS}
           renderRow={this.renderRow.bind(this)}
-          style={styles.listView}/>
+          style={styles.listView}
+
+          renderHiddenRow={ data => (
+                <View style={styles.rowBack}>
+                  <Text>  Lưu trữ</Text>
+                  <TouchableOpacity onPress = { () => this.onDelete(data)}>
+                    <Text style={styles.deleteText}>Xóa</Text>
+                  </TouchableOpacity>
+
+                </View>
+            )}
+
+          rightOpenValue={-75}
+          leftOpenValue={75}
+        />
 
         <Text style={styles.bottomText}>Tất cả đã được hiển thị</Text>
       </ScrollView>
@@ -124,6 +146,10 @@ var styles = StyleSheet.create({
     marginBottom: 50
   },
 
+  deleteText : {
+    padding:20
+  },
+
   text: {
     flex: 1,
     alignSelf:'center',
@@ -134,6 +160,10 @@ var styles = StyleSheet.create({
     top: 9,
   },
 
+  rowFront :{
+    flex: 1,
+  },
+
   rowContainer: {
     flex: 1,
     flexDirection: 'row',
@@ -142,7 +172,6 @@ var styles = StyleSheet.create({
     backgroundColor: 'white',
     borderTopWidth: 1,
     borderColor: '#e6e6e6',
-    marginLeft: 16,
     paddingTop: 10,
     paddingBottom: 10,
   },
@@ -213,6 +242,14 @@ var styles = StyleSheet.create({
     fontWeight: '600',
     color: '#e4e4e4',
     paddingTop: 10
-  }
+  },
+  rowBack: {
+    alignItems: 'center',
+    backgroundColor: 'lightgreen',
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingLeft: 0,
+  },
 
 });

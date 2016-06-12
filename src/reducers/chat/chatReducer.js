@@ -62,7 +62,7 @@ export default function chatReducer(state = initialState, action) {
 
 function convertOne(e, partnerID) {
   e.uniqueId = e.date;
-  e.position = e.fromUserID == partnerID ? 'right' : 'left';
+  e.position = e.fromUserID == partnerID ? 'left' : 'right';
   e.text = e.content;
   e.name = e.fromFullName;
 
