@@ -103,10 +103,11 @@ class SearchResultMap extends Component {
     console.log("Call SearchResultMap.constructor");
     super(props);
 
-    var region = this.props.search.map.region;
-    region.longitudeDelta = region.latitudeDelta * ASPECT_RATIO;
-
-    this.props.actions.onMapChange("region", region);
+    if (Object.keys(this.props.search.form.fields.region).length <=0) {
+      var region = this.props.search.map.region;
+      region.longitudeDelta = region.latitudeDelta * ASPECT_RATIO;
+      this.props.actions.onSearchFieldChange("region", region);
+    }
 
     this.state = {
       firstLoad : true,
@@ -116,15 +117,11 @@ class SearchResultMap extends Component {
       openLocalInfo: false,
       openDraw: false,
       openDetailAdsModal: false,
-      region: {
-        latitude: LATITUDE,
-        longitude: LONGITUDE,
-        latitudeDelta: LATITUDE_DELTA,
-        longitudeDelta: LONGITUDE_DELTA
-      },
       markedList:[],
       polygons: [],
       editing: null,
+      oldRegion: {},
+      newRegion: this.props.search.form.fields.region,
       drawMode: false
     }
   }
@@ -148,7 +145,7 @@ class SearchResultMap extends Component {
         <View style={styles.map}>
           <MapView
               ref="map"
-              region={this.props.search.map.region}
+              region={isNaN(this.props.search.map.region.latitude) ? this.props.search.form.fields.region : this.props.search.map.region}
               onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
               style={styles.mapView}
               mapType={this.state.mapType.toLowerCase()}
@@ -242,8 +239,7 @@ class SearchResultMap extends Component {
           </TouchableOpacity>
           </View>
         </Modal>
-
-
+        
         {this._renderLocalInfoModal()}
 
         {this._renderDrawModal()}
@@ -254,6 +250,9 @@ class SearchResultMap extends Component {
 
   _renderTotalResultView(numberOfAds, loading){
     if(loading){
+      console.log("SearchResultMap_renderTotalResultView");
+      console.log(this.props.search.form.fields.region);
+      console.log(this.props.search.map.region);
       return (<View style={styles.resultContainer}>
         <View style={[styles.resultText]}>
           <Text style={styles.mapIcon}>  Đang tải dữ liệu ... </Text>
@@ -294,22 +293,22 @@ class SearchResultMap extends Component {
   _onRegionChangeComplete(region) {
     console.log("Call SearhResultMap._onRegionChangeComplete");
 
-    if (this.state.firstLoad){
+    if (this.state.firstLoad) {
       this.setState({
-        firstLoad : false,
+        firstLoad: false,
         openDetailAdsModal: false
       });
       return;
     }
 
+    this.props.actions.onSearchFieldChange("region", region);
 
-    this.props.actions.onMapChange("region", region);
-
-    var geoBox = apiUtils.getBbox(this.props.search.map.region);
+    var geoBox = apiUtils.getBbox(region);
     this.props.actions.onSearchFieldChange("geoBox", geoBox);
 
-    this._refreshListData();
-
+    if (this.state.polygons.length <= 0){
+      setTimeout(this._refreshListData.bind(this), 10);
+    }
   }
 
   _refreshListData() {
@@ -531,9 +530,10 @@ class SearchResultMap extends Component {
     if (polygons.length > 0) {
         var geoBox = apiUtils.getPolygonBox(polygons[0]);
         this.props.actions.onSearchFieldChange("geoBox", geoBox);
+        this.props.actions.onSearchFieldChange("region", apiUtils.getRegion(geoBox));
         this.props.actions.onSearchFieldChange("polygon", apiUtils.convertPolygon(polygons[0]));
 
-        this._refreshListData();
+        setTimeout(this._refreshListData.bind(this), 10);
     }
   }
 

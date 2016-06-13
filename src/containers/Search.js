@@ -275,9 +275,14 @@ class Search extends Component {
       Actions.SearchResultList({type: "reset"});
     }
     this.props.actions.onSearchFieldChange("geoBox", []);
-    this.props.actions.search(
-        this.props.search.form.fields
-        , () => {});
+
+    setTimeout(this._handleSearchAction.bind(this), 10);
+ }
+
+ _handleSearchAction(){
+     this.props.actions.search(
+         this.props.search.form.fields
+         , () => {});
 
  }
 
