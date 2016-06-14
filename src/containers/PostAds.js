@@ -59,7 +59,9 @@ export default class PostAds extends Component {
             )
         } else {
             return (
-                <LoginRegister />
+                <View style={[styles.container, {marginTop: 30}]} >
+                    <LoginRegister />
+                </View>
             )
         }
     }

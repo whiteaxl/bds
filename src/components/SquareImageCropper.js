@@ -17,6 +17,35 @@ var {
 import CommonHeader from './CommonHeader';
 import gui from '../lib/gui';
 
+import {Actions} from 'react-native-router-flux';
+import {Map} from 'immutable';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import * as globalActions from '../reducers/global/globalActions';
+
+const actions = [
+    globalActions
+];
+
+function mapStateToProps(state) {
+    return {
+        ...state
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    const creators = Map()
+        .merge(...actions)
+        .filter(value => typeof value === 'function')
+        .toObject();
+
+    return {
+        actions: bindActionCreators(creators, dispatch),
+        dispatch
+    };
+}
+
 var ImageOffset = {
     x: 0,
     y: 0
@@ -133,10 +162,10 @@ class SquareImageCropper extends React.Component {
                 />
                 <TouchableHighlight
                     style={styles.cropButtonTouchable}
-                    onPress={this._reset.bind(this)}>
+                    onPress={this._apply.bind(this)}>
                     <View style={styles.cropButton}>
                         <Text style={styles.cropButtonLabel}>
-                            Try again
+                            Chọn
                         </Text>
                     </View>
                 </TouchableHighlight>
@@ -159,6 +188,10 @@ class SquareImageCropper extends React.Component {
             croppedImageURI: this.props.photo.path,
             cropError: null
         });
+    }
+
+    _apply() {
+        Actions.PostAdsDetail({"photo": this.state.originImage});
     }
 
 }
@@ -264,7 +297,9 @@ class ImageCropper extends React.Component {
 
 }
 
-module.exports = SquareImageCropper;
+//module.exports = SquareImageCropper;
+
+export default connect(mapStateToProps, mapDispatchToProps)(SquareImageCropper);
 
 var styles = StyleSheet.create({
     container: {
