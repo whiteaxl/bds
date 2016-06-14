@@ -8,7 +8,7 @@ var testMessages = [
     {
       text: 'https://a.travel-assets.com/mediavault.le/media/b562baf90b3c49f8116dc9164472a8053bf4173a.jpeg',
       name: 'React-Bot',
-      image: {uri: 'https://facebook.github.io/react/img/logo_og.png'},
+      //image: {uri: 'https://facebook.github.io/react/img/logo_og.png'},: bug right now with image
       position: 'left',
       date: new Date(2016, 3, 14, 13, 0),
       type: 'image',

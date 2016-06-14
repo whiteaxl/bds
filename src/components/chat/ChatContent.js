@@ -22,7 +22,7 @@ import {Map} from 'immutable';
 import * as globalActions from '../../reducers/global/globalActions';
 import * as chatActions from '../../reducers/chat/chatActions';
 
-import GiftedMessenger from 'react-native-gifted-messenger';
+import GiftedMessenger from '../giftedMessegener/GiftedMessenger';
 
 var STATUS_BAR_HEIGHT = Navigator.NavigationBar.Styles.General.StatusBarHeight;
 
@@ -115,21 +115,21 @@ class  ChatContent extends React.Component {
         style={styles.image}/>
         )
     } else {
-      return <Text>{rowData.text}</Text>;
+      if (rowData.position === 'left') {
+        return <Text style={{color:'black'}}>{rowData.text}</Text>;
+      } else {
+        return <Text style={{color:'white'}}>{rowData.text}</Text>;
+      }
     }
   }
+
 
   render() {
     return (
         <GiftedMessenger
           ref={(c) => this._GiftedMessenger = c}
 
-          styles={{
-            bubbleRight: {
-              marginLeft: 70,
-              backgroundColor: '#007aff',
-            },
-          }}
+          //renderTextInput = {this.renderTextInput.bind(this)}
 
           autoFocus={false}
           messages={this.props.chat.messages}
@@ -156,7 +156,7 @@ class  ChatContent extends React.Component {
 
           typingMessage={this.props.chat.typingMessage}
 
-          renderCustomText = {this.renderCustomText.bind(this)}
+          //renderCustomText = {this.renderCustomText.bind(this)}
         />
     );
   }
@@ -257,6 +257,29 @@ var styles = StyleSheet.create({
     fontWeight: '600',
     color: '#e4e4e4',
     paddingTop: 10
-  }
+  },
+
+  textInputContainer: {
+    height: 44,
+    borderColor: '#b2b2b2',
+    flexDirection: 'row',
+    paddingLeft: 10,
+    paddingRight: 10,
+  },
+  textInput: {
+    alignSelf: 'center',
+    height: 30,
+    width: 100,
+    backgroundColor: '#FFF',
+    flex: 1,
+    padding: 0,
+    margin: 0,
+    fontSize: 18,
+    fontFamily: 'Open Sans',
+  },
+  sendButton: {
+    marginTop: 11,
+    marginLeft: 10,
+  },
 
 });

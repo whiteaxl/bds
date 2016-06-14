@@ -2,7 +2,8 @@
 
 const {
   ON_CHAT_FIELD_CHANGE,
-  REQUEST_START_CHAT
+  REQUEST_START_CHAT,
+  INSERT_MY_CHAT
 } = require('../../lib/constants').default;
 
 const _ = require('lodash');
@@ -35,10 +36,19 @@ export function startChat(data) {
   };
 }
 
+export function insertMyChat(msg) {
+  return {
+    type: INSERT_MY_CHAT,
+    payload: msg
+  }
+}
+
 
 export function sendChatMsg(msg) {
-
   return dispatch => {
+
+    dispatch(insertMyChat(msg));
+
     dbService.sendChat(msg)
       .then( res => console.log("sendChatMsg, result:" + res));
   };

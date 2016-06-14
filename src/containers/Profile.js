@@ -230,9 +230,10 @@ var styles = StyleSheet.create({
     textAlign: 'center'
   },
   input: {
-    fontSize: 15,
+    fontSize: 18,
     height: 30,
     borderRadius: 5,
+    fontFamily: 'Open Sans',
     backgroundColor: 'yellow',
   },
   year: {

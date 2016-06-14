@@ -6,7 +6,8 @@ const InitialState = require('./chatInitialState').default;
 const {
   ON_CHAT_FIELD_CHANGE,
   REQUEST_START_CHAT,
-  ON_DB_CHANGE
+  ON_DB_CHANGE,
+  INSERT_MY_CHAT
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
@@ -20,6 +21,8 @@ export default function chatReducer(state = initialState, action) {
       console.log("call REQUEST_START_CHAT:", partner);
 
       let messages = convertToGiftMsg(allMsg, partner.userID);
+
+      messages.sort((a,b) => a.date > b.date);
 
       let nextState = state.set("partner", partner)
         .set('ads', doc.relatedToAds)
@@ -49,19 +52,35 @@ export default function chatReducer(state = initialState, action) {
         if (doc.type == 'Chat' &&
             (doc.fromUserID == partnerID || doc.toUserID == partnerID)) {
           convertOne(doc, partnerID);
-          messages = [...messages,doc];
+          let filtered = messages.filter(e => e._id === doc._id); //_id is key
+          if (filtered.length === 0) {
+            messages = [...messages,doc];
+          }
         }
       });
       nextState = state.set('messages',messages);
       return nextState;
     }
+    case INSERT_MY_CHAT : {
+      let giftMsg = convertOne(action.payload);
+      var {messages} = state;
+
+      let filtered = messages.filter(e => e._id === giftMsg._id);
+      if (filtered.length === 0) {
+        messages = [...messages,giftMsg];
+      }
+
+      let nextState = state.set('messages',messages);
+      return nextState;
+    }
+
   }
 
   return state;
 }
 
 function convertOne(e, partnerID) {
-  e.uniqueId = e.date;
+  e.uniqueId = e._id;
   e.position = e.fromUserID == partnerID ? 'left' : 'right';
   e.text = e.content;
   e.name = e.fromFullName;
