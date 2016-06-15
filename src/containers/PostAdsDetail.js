@@ -6,7 +6,7 @@ import * as globalActions from '../reducers/global/globalActions';
 
 import React, {Component} from 'react';
 
-import { Text, View, StyleSheet, StatusBar, TextInput, Image, Dimensions, ScrollView } from 'react-native'
+import { Text, View, StyleSheet, StatusBar, TextInput, Image, Dimensions, ScrollView, Picker } from 'react-native'
 
 import {Map} from 'immutable';
 import {Actions} from 'react-native-router-flux';
@@ -20,6 +20,9 @@ import TruliaIcon from '../components/TruliaIcon';
 
 import RelandIcon from '../components/RelandIcon';
 
+import DanhMuc from '../assets/DanhMuc';
+
+const Item = Picker.Item;
 
 const actions = [
     globalActions
@@ -47,15 +50,16 @@ function mapDispatchToProps(dispatch) {
 
 class PostAdsDetail extends Component {
 
+
     constructor(props) {
         super(props);
         StatusBar.setBarStyle('default');
 
         this.state = {
             photo: props.photo,
-            nguoiDang: '',
-            hinhThuc: '',
-            loaiNha: '',
+            nguoiDang: 'chu_nha',
+            hinhThuc: 'ban',
+            loaiNha: '0',
             diaChi: '',
             gia: '',
             dienTich: '',
@@ -68,6 +72,13 @@ class PostAdsDetail extends Component {
 
     render() {
         var _scrollView: ScrollView;
+        var hinhThuc = this.state.hinhThuc;
+        var hashLoaiNha = hinhThuc == "ban" ? DanhMuc.LoaiNhaDatBan : DanhMuc.LoaiNhaDatThue;
+        var dmLoaiNha = DanhMuc.getDanhMucKeys(hashLoaiNha);
+        var loaiNhaItems = [];
+        dmLoaiNha.map(function (loaiNha) {
+            loaiNhaItems.push(<Item label={hashLoaiNha[loaiNha]} value={loaiNha}></Item>);
+        })
         return (
             <View myStyles={myStyles.container}>
                 <CommonHeader />
@@ -87,34 +98,36 @@ class PostAdsDetail extends Component {
                         <Image style={myStyles.imgItem}/>
                     </View>
                     <View style={myStyles.imgList} >
-                        <Text style={myStyles.label}>Nguoi dang</Text>
-                        <TextInput
-                            secureTextEntry={false}
-                            style={myStyles.input}
-                            value={this.state.nguoiDang}
-                            onChangeText={(text) => this.setState({nguoiDang: text})}
-                        />
+                        <Text style={myStyles.label}>Người đăng</Text>
+                        <Picker style={myStyles.picker}
+                                selectedValue={this.state.nguoiDang}
+                                onValueChange={this.onValueChange.bind(this, 'nguoiDang')}
+                                mode="dropdown">
+                            <Item label="Chủ nhà" value="chu_nha" />
+                            <Item label="Môi giới" value="moi_gioi" />
+                        </Picker>
                     </View>
                     <View style={myStyles.imgList} >
-                        <Text style={myStyles.label}>Hinh thuc</Text>
-                        <TextInput
-                            secureTextEntry={false}
-                            style={myStyles.input}
-                            value={this.state.hinhThuc}
-                            onChangeText={(text) => this.setState({hinhThuc: text})}
-                        />
+                        <Text style={myStyles.label}>Hình thức*</Text>
+                        <Picker style={myStyles.picker}
+                                selectedValue={this.state.hinhThuc}
+                                onValueChange={this.onValueChange.bind(this, 'hinhThuc')}
+                                mode="dropdown">
+                            <Item label="Bán" value="ban" />
+                            <Item label="Cho thuê" value="thue" />
+                        </Picker>
                     </View>
                     <View style={myStyles.imgList} >
-                        <Text style={myStyles.label}>Loai nha</Text>
-                        <TextInput
-                            secureTextEntry={false}
-                            style={myStyles.input}
-                            value={this.state.loaiNha}
-                            onChangeText={(text) => this.setState({loaiNha: text})}
-                        />
+                        <Text style={myStyles.label}>Loại nhà*</Text>
+                        <Picker style={myStyles.picker}
+                                selectedValue={this.state.loaiNha}
+                                onValueChange={this.onValueChange.bind(this, 'loaiNha')}
+                                mode="dropdown">
+                            {loaiNhaItems}
+                        </Picker>
                     </View>
                     <View style={myStyles.imgList} >
-                        <Text style={myStyles.label}>Dia chi</Text>
+                        <Text style={myStyles.label}>Địa chỉ*</Text>
                         <TextInput
                             secureTextEntry={false}
                             style={myStyles.input}
@@ -123,7 +136,7 @@ class PostAdsDetail extends Component {
                         />
                     </View>
                     <View style={myStyles.imgList} >
-                        <Text style={myStyles.label}>Gia</Text>
+                        <Text style={myStyles.label}>Giá*</Text>
                         <TextInput
                             secureTextEntry={false}
                             style={myStyles.input}
@@ -132,7 +145,7 @@ class PostAdsDetail extends Component {
                         />
                     </View>
                     <View style={myStyles.imgList} >
-                        <Text style={myStyles.label}>Dien tich</Text>
+                        <Text style={myStyles.label}>Diện tích*</Text>
                         <TextInput
                             secureTextEntry={false}
                             style={myStyles.input}
@@ -141,7 +154,7 @@ class PostAdsDetail extends Component {
                         />
                     </View>
                     <View style={myStyles.imgList} >
-                        <Text style={myStyles.label}>So tang</Text>
+                        <Text style={myStyles.label}>Số tầng</Text>
                         <TextInput
                             secureTextEntry={false}
                             style={myStyles.input}
@@ -150,7 +163,7 @@ class PostAdsDetail extends Component {
                         />
                     </View>
                     <View style={myStyles.imgList} >
-                        <Text style={myStyles.label}>Phong ngu</Text>
+                        <Text style={myStyles.label}>Phòng ngủ</Text>
                         <TextInput
                             secureTextEntry={false}
                             style={myStyles.input}
@@ -159,7 +172,7 @@ class PostAdsDetail extends Component {
                         />
                     </View>
                     <View style={myStyles.imgList} >
-                        <Text style={myStyles.label}>Mo ta chi tiet</Text>
+                        <Text style={myStyles.label}>Mô tả chi tiết</Text>
                         <TextInput
                             secureTextEntry={false}
                             style={myStyles.input}
@@ -179,6 +192,12 @@ class PostAdsDetail extends Component {
                 </View>
             </View>
         )
+    }
+
+    onValueChange(key: string, value: string) {
+        const newState = {};
+        newState[key] = value;
+        this.setState(newState);
     }
 
     onPostAds() {
@@ -217,7 +236,7 @@ var myStyles = StyleSheet.create({
     },
     input: {
         padding: 4,
-        height: 40,
+        height: 35,
         borderColor: 'gray',
         borderWidth: 1,
         borderRadius: 5,
@@ -250,8 +269,11 @@ var myStyles = StyleSheet.create({
         justifyContent: 'flex-end'
     },
     scrollView: {
-        flex: 1,
-        paddingBottom: 75
+        height: Dimensions.get('window').height-108
+    },
+    picker: {
+        margin: 5,
+        width: 200
     }
 });
 
