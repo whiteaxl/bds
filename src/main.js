@@ -16,6 +16,8 @@ import searchInitialState from './reducers/search/searchInitialState';
 import {lauchApp} from './reducers/global/globalActions';
 import DeviceInfo from 'react-native-device-info';
 
+
+
 var VERSION='0.0.1';
 
 function getInitialState() {
@@ -58,3 +60,40 @@ export default class MainBDS extends React.Component {
 
     }
   }
+
+
+var PushNotification = require('react-native-push-notification');
+
+PushNotification.configure({
+
+  // (optional) Called when Token is generated (iOS and Android)
+  onRegister: function(token) {
+    console.log( 'TOKEN:', token );
+  },
+
+  // (required) Called when a remote or local notification is opened or received
+  onNotification: function(notification) {
+    console.log( 'NOTIFICATION:', notification );
+  },
+
+  // ANDROID ONLY: (optional) GCM Sender ID.
+  senderID: "YOUR GCM SENDER ID",
+
+  // IOS ONLY (optional): default: all - Permissions to register.
+  permissions: {
+    alert: true,
+    badge: true,
+    sound: true
+  },
+
+  // Should the initial notification be popped automatically
+  // default: true
+  popInitialNotification: true,
+
+  /**
+   * IOS ONLY: (optional) default: true
+   * - Specified if permissions will requested or not,
+   * - if not, you must call PushNotificationsHandler.requestPermissions() later
+   */
+  requestPermissions: true,
+});
