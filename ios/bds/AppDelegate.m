@@ -13,6 +13,8 @@
 
 #import "RCTRootView.h"
 
+#import "RCTPushNotificationManager.h"
+
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions

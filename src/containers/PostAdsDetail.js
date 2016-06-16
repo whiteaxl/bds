@@ -22,6 +22,8 @@ import RelandIcon from '../components/RelandIcon';
 
 import DanhMuc from '../assets/DanhMuc';
 
+import UploadApi from '../lib/UploadApi';
+
 const Item = Picker.Item;
 
 const actions = [
@@ -184,9 +186,9 @@ class PostAdsDetail extends Component {
                 </ScrollView>
                 <View style={myStyles.searchButton}>
                     <View style={myStyles.searchListButton}>
-                        <RelandIcon onPress={this.onTryAgain} name="close" size={24} text="Làm lại"
+                        <RelandIcon onPress={this.onTryAgain.bind(this)} name="close" size={24} text="Làm lại"
                                     mainProps={myStyles.button} textProps={myStyles.buttonText}/>
-                        <RelandIcon onPress={this.onPostAds} name="save" size={24} text="Đăng tin"
+                        <RelandIcon onPress={this.onPostAds.bind(this)} name="save" size={24} text="Đăng tin"
                                     mainProps={myStyles.button} textProps={myStyles.buttonText}/>
                     </View>
                 </View>
@@ -202,6 +204,11 @@ class PostAdsDetail extends Component {
 
     onPostAds() {
         console.log('PostAds!');
+        var filepath = this.state.photo.uri;
+        var filename = filepath.substring(filepath.lastIndexOf('/')+1);
+        UploadApi.onUpload(filename, filepath, function (result) {
+            console.log(result);
+        })
     }
 
     onTryAgain() {

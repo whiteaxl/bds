@@ -18,14 +18,14 @@ import  React, {Component} from 'react';
 import { Text, StyleSheet, View, ScrollView, Image, Dimensions, TouchableOpacity } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
+
+import SearchHeader from '../components/SearchHeader';
 import TruliaIcon from '../components/TruliaIcon';
-
-import styles from './styles';
-
-import LinearGradient from 'react-native-linear-gradient';
+import RelandIcon from '../components/RelandIcon';
 
 import gui from '../lib/gui';
 
+var { width, height } = Dimensions.get('window');
 
 /**
 * ## Redux boilerplate
@@ -61,11 +61,11 @@ class Home extends Component {
 
     return (
       <View style={styles.fullWidthContainer}>
-        <View style={homeStyles.pageHeader}>
+        <View style={styles.pageHeader}>
           <TruliaIcon onPress={this.handleSearchButton}
-            name="search" size={18} color={'white'}
-            mainProps={styles.search} textProps={{paddingLeft: 10}}
-            text="Tìm kiếm" />
+                      name="search" size={18} color={'white'}
+                      mainProps={styles.search} textProps={{paddingLeft: 10}}
+                      text="Tìm kiếm" />
         </View>
 
         <View style={styles.homeDetailInfo}>
@@ -76,173 +76,168 @@ class Home extends Component {
             vertical={true}
             style={styles.scrollView}>
 
-            <View style={{flex: 1}}>
-  				    <Image style={homeStyles.slideImgItem}
-                source={require('../lib/image/home1.jpg')}>
-                <Text style={homeStyles.boldLabel}>Thông tin dự án</Text>
-              </Image>
+            <View style={{flex:1, flexDirection: "column"}}>
+              <View style={{flex: 1, height: 75, alignItems:'center', justifyContent: 'center'}}>
+                <Text style={styles.boldTitle}>BỘ SƯU TẬP</Text>
+                <Text style={styles.categoryLabel}>Nhà Gần Vị Trí Bạn</Text>
+                <Text style={styles.arrowLabel}>Quận Hà Đông, Hà Nội</Text>
+              </View>
+
+              <View style={styles.rowItem}>
+                  <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
+                    <View style={styles.column}>
+                      <Image style={styles.imgItem_6}
+                             source={{uri: 'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}}>
+                      </Image>
+                    </View>
+                  </TouchableOpacity>
+                  <View style={{flex: 1, width:1}}>
+                  </View>
+                  <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
+                    <View style={styles.column}>
+                      <Image style={styles.imgItem_4}
+                             source={{uri: 'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}}>
+                      </Image>
+                    </View>
+                  </TouchableOpacity>
+              </View>
+
+              <View style={{flex: 1, height:1}}>
+              </View>
+                <View style={styles.rowItem}>
+                  <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
+                    <View style={styles.column}>
+                      <Image style={styles.imgItem_4}
+                             source={{uri: 'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}}>
+                      </Image>
+                    </View>
+                  </TouchableOpacity>
+                  <View style={{flex: 1, width:1}}>
+                  </View>
+                  <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
+                    <View style={styles.column}>
+                      <Image style={styles.imgItem_6}
+                             source={{uri: 'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}}>
+                      </Image>
+                    </View>
+                  </TouchableOpacity>
+                </View>
+
+              <View style={{flex: 1, height:1}}>
+              </View>
+              <View style={{flex: 1}}>
+                <Image style={styles.fullImageItem}
+                  source={require('../lib/image/home1.jpg')}>
+                </Image>
+              </View>
+
+              <View style={{flex: 1, backgroundColor:'transparent'}}>
+                <Text style={styles.moreDetailButton}>Xem thêm</Text>
+              </View>
             </View>
 
             <View style={{flex:1, flexDirection: "column"}}>
-  				    <View style={{flex:1, alignItems: "center"}}>
-                <Text style={homeStyles.headerLabel}>
-                  Nhà đất bán
-                </Text>
+              <View style={{flex: 1, height: 75, alignItems:'center', justifyContent: 'center'}}>
+                <Text style={styles.boldTitle}>BỘ SƯU TẬP</Text>
+                <Text style={styles.categoryLabel}>Nhà Mới Đăng Hôm Nay</Text>
+                <Text style={styles.arrowLabel}>Quận Hà Đông, Hà Nội</Text>
               </View>
 
-              <View style={homeStyles.itemRow}>
-                <TouchableOpacity style={homeStyles.column} onPress={this._onBanCanHoChungCuPressed.bind(this)}>
-                  <HotDeal title="Bán căn hộ chung cư" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
+              <View style={styles.rowItem}>
+                <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
+                  <View style={styles.column}>
+                    <Image style={styles.imgItem_6}
+                           source={{uri: 'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}}>
+                    </Image>
+                  </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={homeStyles.column} onPress={this._onBanNhaRiengPressed.bind(this)}>
-                  <HotDeal title="Bán nhà riêng" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
+                <View style={{flex: 1, width:1}}>
+                </View>
+                <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
+                  <View style={styles.column}>
+                    <Image style={styles.imgItem_4}
+                           source={{uri: 'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}}>
+                    </Image>
+                  </View>
                 </TouchableOpacity>
               </View>
 
-              <View style={homeStyles.itemRow}>
-                <TouchableOpacity style={homeStyles.column} onPress={this._onBanNhaMatPhoPressed.bind(this)}>
-                  <HotDeal title="Bán nhà mặt phố" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
+              <View style={{flex: 1, height:1}}>
+              </View>
+              <View style={styles.rowItem}>
+                <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
+                  <View style={styles.column}>
+                    <Image style={styles.imgItem_4}
+                           source={{uri: 'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}}>
+                    </Image>
+                  </View>
                 </TouchableOpacity>
-                <TouchableOpacity style={homeStyles.column} onPress={this._onBanBietThuLienKePressed.bind(this)}>
-                  <HotDeal title="Bán biệt thự, liền kề" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
+                <View style={{flex: 1, width:1}}>
+                </View>
+                <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
+                  <View style={styles.column}>
+                    <Image style={styles.imgItem_6}
+                           source={{uri: 'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}}>
+                    </Image>
+                  </View>
                 </TouchableOpacity>
               </View>
 
-              <View style={homeStyles.itemRow}>
-                <TouchableOpacity style={homeStyles.column} onPress={this._onBanDatPressed.bind(this)}>
-                  <HotDeal title="Bán đất" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
-                </TouchableOpacity>
-                <TouchableOpacity style={homeStyles.column} onPress={this._onBanBdsKhacPressed.bind(this)}>
-                  <HotDeal title="Bán bất động sản khác" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
-                </TouchableOpacity>
+              <View style={{flex: 1, height:1}}>
+              </View>
+              <View style={{flex: 1}}>
+                <Image style={styles.fullImageItem}
+                       source={require('../lib/image/home1.jpg')}>
+                </Image>
+              </View>
+
+              <View style={{flex: 1, backgroundColor:'transparent'}}>
+                <Text style={styles.moreDetailButton}>Xem thêm</Text>
               </View>
             </View>
 
-            <View style={{flex:1, flexDirection: "column"}}>
-              <View style={{flex: 1, alignItems: "center"}}>
-                <Text style={homeStyles.headerLabel}>
-                  Nhà đất cho thuê
-                </Text>
-              </View>
-
-              <View style={homeStyles.itemRow}>
-                <TouchableOpacity style={homeStyles.column} onPress={this._onChoThueCanHoChungCuPressed.bind(this)}>
-                  <HotDeal title="Cho thuê chung cư" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
-                </TouchableOpacity>
-                <TouchableOpacity style={homeStyles.column} onPress={this._onChoThueNhaRiengPressed.bind(this)}>
-                  <HotDeal title="Cho thuê nhà riêng" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
-                </TouchableOpacity>
-              </View>
-
-              <View style={homeStyles.itemRow}>
-                <TouchableOpacity style={homeStyles.column} onPress={this._onChoThueNhaMatPhoPressed.bind(this)}>
-                  <HotDeal title="Cho thuê nhà mặt phố" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
-                </TouchableOpacity>
-                <TouchableOpacity style={homeStyles.column} onPress={this._onChoThueVanPhongPressed.bind(this)}>
-                  <HotDeal title="Cho thuê văn phòng" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
-                </TouchableOpacity>
-              </View>
-
-              <View style={homeStyles.itemRow}>
-                <TouchableOpacity style={homeStyles.column} onPress={this._onChoThueCuaHangKiotPressed.bind(this)}>
-                  <HotDeal title="Cho thuê cửa hàng, ki-ốt" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
-                </TouchableOpacity>
-                <TouchableOpacity style={homeStyles.column} onPress={this._onChoThueBdsKhacPressed.bind(this)}>
-                  <HotDeal title="Cho thuê bds khác" imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}/>
-                </TouchableOpacity>
-              </View>
-            </View>
           </ScrollView>
         </View>
-
-       
       </View>
 		)
 	}
+
+  _onAdsDetailPressed() {
+    console.log("On Ads detail pressed");
+  }
 
   handleSearchButton() {
     Actions.Search();
   }
 
-  _onBanCanHoChungCuPressed() {
-    this._onHotDealPressed('ban', 1);
-  }
 
-  _onBanNhaRiengPressed() {
-    this._onHotDealPressed('ban', 2);
-  }
-
-  _onBanNhaMatPhoPressed() {
-    this._onHotDealPressed('ban', 3);
-  }
-
-  _onBanBietThuLienKePressed() {
-    this._onHotDealPressed('ban', 4);
-  }
-
-  _onBanDatPressed() {
-    this._onHotDealPressed('ban', 5);
-  }
-
-  _onBanBdsKhacPressed() {
-    this._onHotDealPressed('ban', 99);
-  }
-
-  _onChoThueCanHoChungCuPressed() {
-    this._onHotDealPressed('thue', 1);
-  }
-
-  _onChoThueNhaRiengPressed() {
-    this._onHotDealPressed('thue', 2);
-  }
-
-  _onChoThueNhaMatPhoPressed() {
-    this._onHotDealPressed('thue', 3);
-  }
-
-  _onChoThueVanPhongPressed() {
-    this._onHotDealPressed('thue', 4);
-  }
-
-  _onChoThueCuaHangKiotPressed() {
-    this._onHotDealPressed('thue', 5);
-  }
-
-  _onChoThueBdsKhacPressed() {
-    this._onHotDealPressed('thue', 99);
-  }
-
-  _onHotDealPressed(loaiTin, loaiNhaDat){
-    this.props.actions.onSearchFieldChange("loaiTin", loaiTin)
-    this.props.actions.onSearchFieldChange("loaiNhaDat", loaiNhaDat);
-    console.log("Search cridential:");
-    console.log(this.props.search.form.fields);
-    Actions.SearchResultList();
-  }
 }
 
-class HotDeal extends React.Component{
-  render() {
-    return (
-        <View style={homeStyles.column}>
-          <Image style={homeStyles.imgItem}
-            source={{uri: this.props.imageUrl}}>
-           <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
-             style={homeStyles.linearGradient}>
-            <Text style={homeStyles.boldTitle}>{this.props.title}</Text>
-          </LinearGradient>
-          </Image>
-        </View>
-    );
-  }
-}
 
-var homeStyles = StyleSheet.create({
+var styles = StyleSheet.create({
+  fullWidthContainer: {
+    flex: 1,
+    alignItems: 'stretch',
+    backgroundColor: 'white',
+  },
+  homeDetailInfo: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'stretch',
+    backgroundColor: 'white',
+  },
+  scrollView: {
+    flex: 1,
+  },
   pageHeader: {
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: gui.mainColor,
-      height: 60
+      height: 61
+  },
+  search: {
+    backgroundColor: gui.mainColor,
+    height: 61
   },
   linearGradient: {
     flex: 1,
@@ -256,46 +251,65 @@ var homeStyles = StyleSheet.create({
     width: Dimensions.get('window').width/2-10,
     height:82
   },
-  slideImgItem: {
+  imgItem_6: {
+    flex:1,
+    alignItems: 'flex-start',
+    width: (width*0.55)-1,
+    height:143
+  },
+  imgItem_4: {
+    flex:1,
+    alignItems: 'flex-start',
+    width: (width*0.45)-1,
+    height:143
+  },
+  fullImageItem: {
     flex:1,
     justifyContent: 'center',
     alignItems: 'center',
     width: Dimensions.get('window').width,
-    height:120
+    height:143
   },
   column: {
     flex:1,
     alignItems: "center"
   },
   boldTitle: {
-    fontSize: 16,
+    fontFamily: gui.fontFamily,
+    fontSize: 12,
     fontWeight: 'bold',
-    textAlign: 'left',
     backgroundColor: 'transparent',
-    marginLeft: 5,
-    marginRight: 15,
-    marginTop: 5,
-    color: 'white',
-    width: Dimensions.get('window').width/2-20,
+    color: gui.mainColor
   },
-  boldLabel: {
-    fontSize: 16,
+  categoryLabel: {
+    fontFamily: gui.fontFamily,
+    fontSize: 18,
     fontWeight: 'bold',
-    textAlign: 'center',
+    backgroundColor: 'transparent'
+  },
+  arrowLabel: {
+    fontFamily: gui.fontFamily,
+    fontSize: 14,
     backgroundColor: 'transparent',
-    color: 'white',
+    color: gui.arrowColor
   },
-  headerLabel: {
-    textAlign: "center",
-    paddingTop: 10,
-    fontSize: 16,
-    fontWeight: "bold",
-    color: "#FF3366"
-  },
-  itemRow: {
+  rowItem: {
     flex:1,
-    flexDirection: "row",
-    paddingTop:10
+    flexDirection: "row"
+  },
+  moreDetailButton: {
+    margin: 12,
+    marginLeft:20,
+    marginRight:20,
+    padding: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    backgroundColor: gui.mainColor,
+    color: 'white',
+    fontFamily: gui.fontFamily,
+    fontWeight: 'normal',
+    fontSize: gui.normalFontSize
   }
 });
 
