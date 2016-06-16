@@ -226,7 +226,7 @@ var styles = StyleSheet.create({
         margin: 5,
         color: 'white'
     },
-    heartButton: {
+    heartButton_45: {
         marginBottom: 10
     }
 });

@@ -100,7 +100,7 @@ class TopModal extends React.Component {
                   <Text style={styles.text}>{this.getDiaChi(this.props.marker.diaChi)}</Text>
                 </View>
                 <Icon.Button name="heart-o" backgroundColor="transparent"
-                  underlayColor="transparent" style={styles.heartButton}/>
+                  underlayColor="transparent" style={styles.heartButton_45}/>
               </View>
               </LinearGradient>
             </Image>
@@ -176,7 +176,7 @@ var styles = StyleSheet.create({
     margin: 5,
     color: 'white'
   },
-  heartButton: {
+  heartButton_45: {
     marginBottom: 10
   },
   detail: {

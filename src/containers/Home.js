@@ -19,13 +19,16 @@ import { Text, StyleSheet, View, ScrollView, Image, Dimensions, TouchableOpacity
 
 import {Actions} from 'react-native-router-flux';
 
-import SearchHeader from '../components/SearchHeader';
 import TruliaIcon from '../components/TruliaIcon';
-import RelandIcon from '../components/RelandIcon';
+
+import Icon from 'react-native-vector-icons/FontAwesome';
+
+import LinearGradient from 'react-native-linear-gradient';
 
 import gui from '../lib/gui';
 
 var { width, height } = Dimensions.get('window');
+var imageHeight = 143;
 
 /**
 * ## Redux boilerplate
@@ -79,56 +82,59 @@ class Home extends Component {
             <View style={{flex:1, flexDirection: "column"}}>
               <View style={{flex: 1, height: 75, alignItems:'center', justifyContent: 'center'}}>
                 <Text style={styles.boldTitle}>BỘ SƯU TẬP</Text>
-                <Text style={styles.categoryLabel}>Nhà Gần Vị Trí Bạn</Text>
+                <Text style={styles.categoryLabel}>Nhà Mới Đăng Hôm Nay</Text>
                 <Text style={styles.arrowLabel}>Quận Hà Đông, Hà Nội</Text>
               </View>
 
               <View style={styles.rowItem}>
                   <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
-                    <View style={styles.column}>
-                      <Image style={styles.imgItem_6}
-                             source={{uri: 'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}}>
-                      </Image>
-                    </View>
+                    <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
+                               price="2.5 Tỷ" address="Khu đô thị Pháp Vân" detail="2 pn  1 pt"
+                               width={0.55}
+                    >
+                    </ImageItem>
                   </TouchableOpacity>
                   <View style={{flex: 1, width:1}}>
                   </View>
                   <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
-                    <View style={styles.column}>
-                      <Image style={styles.imgItem_4}
-                             source={{uri: 'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}}>
-                      </Image>
-                    </View>
+                    <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
+                               price="2.5 Tỷ" address="Khu đô thị Pháp Vân" detail="2 pn  1 pt"
+                               width={0.45}
+                    >
+                    </ImageItem>
                   </TouchableOpacity>
               </View>
 
               <View style={{flex: 1, height:1}}>
               </View>
-                <View style={styles.rowItem}>
+
+              <View style={styles.rowItem}>
                   <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
-                    <View style={styles.column}>
-                      <Image style={styles.imgItem_4}
-                             source={{uri: 'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}}>
-                      </Image>
-                    </View>
+                    <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
+                               price="2.5 Tỷ" address="Khu đô thị Pháp Vân" detail="2 pn  1 pt"
+                               width={0.45}
+                    >
+                    </ImageItem>
                   </TouchableOpacity>
                   <View style={{flex: 1, width:1}}>
                   </View>
                   <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
-                    <View style={styles.column}>
-                      <Image style={styles.imgItem_6}
-                             source={{uri: 'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}}>
-                      </Image>
-                    </View>
+                    <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
+                               price="2.5 Tỷ" address="Khu đô thị Pháp Vân" detail="2 pn  1 pt"
+                               width={0.55}
+                    >
+                    </ImageItem>
                   </TouchableOpacity>
-                </View>
+              </View>
 
               <View style={{flex: 1, height:1}}>
               </View>
               <View style={{flex: 1}}>
-                <Image style={styles.fullImageItem}
-                  source={require('../lib/image/home1.jpg')}>
-                </Image>
+                <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/DangTin/Images/184026/duan/7feaac4b-d60f-4c56-aa21-8c6c7a7b94ec.jpg'}
+                           price="10 Tỷ" address="Biệt thự biển Phú Quốc" detail="5 pn  3 pt"
+                           width={1}
+                >
+                </ImageItem>
               </View>
 
               <View style={{flex: 1, backgroundColor:'transparent'}}>
@@ -139,63 +145,66 @@ class Home extends Component {
             <View style={{flex:1, flexDirection: "column"}}>
               <View style={{flex: 1, height: 75, alignItems:'center', justifyContent: 'center'}}>
                 <Text style={styles.boldTitle}>BỘ SƯU TẬP</Text>
-                <Text style={styles.categoryLabel}>Nhà Mới Đăng Hôm Nay</Text>
+                <Text style={styles.categoryLabel}>Nhà Gần Vị Trí Bạn</Text>
                 <Text style={styles.arrowLabel}>Quận Hà Đông, Hà Nội</Text>
               </View>
 
               <View style={styles.rowItem}>
                 <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
-                  <View style={styles.column}>
-                    <Image style={styles.imgItem_6}
-                           source={{uri: 'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}}>
-                    </Image>
-                  </View>
+                  <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
+                             price="2.5 Tỷ" address="Khu đô thị Pháp Vân" detail="2 pn  1 pt"
+                             width={0.55}
+                  >
+                  </ImageItem>
                 </TouchableOpacity>
                 <View style={{flex: 1, width:1}}>
                 </View>
                 <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
-                  <View style={styles.column}>
-                    <Image style={styles.imgItem_4}
-                           source={{uri: 'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}}>
-                    </Image>
-                  </View>
+                  <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
+                             price="2.5 Tỷ" address="Khu đô thị Pháp Vân" detail="2 pn  1 pt"
+                             width={0.45}
+                  >
+                  </ImageItem>
                 </TouchableOpacity>
               </View>
 
               <View style={{flex: 1, height:1}}>
               </View>
+
               <View style={styles.rowItem}>
                 <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
-                  <View style={styles.column}>
-                    <Image style={styles.imgItem_4}
-                           source={{uri: 'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}}>
-                    </Image>
-                  </View>
+                  <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
+                             price="2.5 Tỷ" address="Khu đô thị Pháp Vân" detail="2 pn  1 pt"
+                             width={0.45}
+                  >
+                  </ImageItem>
                 </TouchableOpacity>
                 <View style={{flex: 1, width:1}}>
                 </View>
                 <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
-                  <View style={styles.column}>
-                    <Image style={styles.imgItem_6}
-                           source={{uri: 'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}}>
-                    </Image>
-                  </View>
+                  <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
+                             price="2.5 Tỷ" address="Khu đô thị Pháp Vân" detail="2 pn  1 pt"
+                             width={0.55}
+                  >
+                  </ImageItem>
                 </TouchableOpacity>
               </View>
 
               <View style={{flex: 1, height:1}}>
               </View>
               <View style={{flex: 1}}>
-                <Image style={styles.fullImageItem}
-                       source={require('../lib/image/home1.jpg')}>
-                </Image>
+                <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/DangTin/Images/184026/duan/7feaac4b-d60f-4c56-aa21-8c6c7a7b94ec.jpg'}
+                           price="10 Tỷ" address="Biệt thự biển Phú Quốc" detail="5 pn  3 pt"
+                           width={1}
+                >
+                </ImageItem>
               </View>
 
               <View style={{flex: 1, backgroundColor:'transparent'}}>
                 <Text style={styles.moreDetailButton}>Xem thêm</Text>
               </View>
             </View>
-
+            <View style={{height:40}}></View>
           </ScrollView>
         </View>
       </View>
@@ -211,6 +220,41 @@ class Home extends Component {
   }
 
 
+}
+
+class ImageItem extends React.Component{
+  render() {
+    return (
+     <View style={styles.column}>
+        <Image style={[styles.imgItem, {width:(width*this.props.width)-1}]}
+               source={{uri: this.props.imageUrl}}>
+
+          <View style={styles.heartContent}>
+            <TruliaIcon name="heart-o" mainProps={[styles.heartButton,{marginLeft: width*this.props.width-30}]}
+                        color={'white'} size={20}/>
+          </View>
+
+          <View style={styles.itemContent}
+                onStartShouldSetResponder={(evt) => false}
+                onMoveShouldSetResponder={(evt) => false}
+          >
+            <View
+                onStartShouldSetResponder={(evt) => false}
+                onMoveShouldSetResponder={(evt) => false}
+            >
+              <Text style={styles.price}
+                    onStartShouldSetResponder={(evt) => false}
+                    onMoveShouldSetResponder={(evt) => false}
+              >{this.props.price}</Text>
+              <Text style={styles.text}>{this.props.address}</Text>
+              <Text style={styles.text}>{this.props.detail}</Text>
+            </View>
+          </View>
+
+        </Image>
+      </View>
+  );
+  }
 }
 
 
@@ -239,36 +283,28 @@ var styles = StyleSheet.create({
     backgroundColor: gui.mainColor,
     height: 61
   },
-  linearGradient: {
-    flex: 1,
-    paddingLeft: 0,
-    paddingRight: 0,
-    backgroundColor : "transparent"
-  },
   imgItem: {
     flex:1,
     alignItems: 'flex-start',
-    width: Dimensions.get('window').width/2-10,
-    height:82
+    height:imageHeight
   },
-  imgItem_6: {
+  imgItem_55: {
     flex:1,
-    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    height:imageHeight,
     width: (width*0.55)-1,
-    height:143
   },
-  imgItem_4: {
+  imgItem_45: {
     flex:1,
     alignItems: 'flex-start',
     width: (width*0.45)-1,
-    height:143
+    height:imageHeight
   },
-  fullImageItem: {
+  imgItem_100: {
     flex:1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    width: Dimensions.get('window').width,
-    height:143
+    alignItems: 'flex-start',
+    width: width,
+    height:imageHeight
   },
   column: {
     flex:1,
@@ -310,6 +346,50 @@ var styles = StyleSheet.create({
     fontFamily: gui.fontFamily,
     fontWeight: 'normal',
     fontSize: gui.normalFontSize
+  },
+  linearGradient: {
+    backgroundColor : "transparent"
+  },
+  itemContent: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    top: imageHeight - 60
+  },
+  price: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    textAlign: 'left',
+    backgroundColor: 'transparent',
+    marginLeft: 10,
+    color: 'white'
+  },
+  text: {
+    fontSize: 14,
+    textAlign: 'left',
+    backgroundColor: 'transparent',
+    marginLeft: 10,
+    color: 'white'
+  },
+  heartContent: {
+    backgroundColor: 'transparent',
+    alignItems: 'flex-start'
+  },
+  heartButton: {
+    marginTop: 5,
+  },
+  heartButton_45: {
+    marginTop: 5,
+    marginLeft: width*0.45-30
+  },
+  heartButton_55: {
+    marginTop: 5,
+    marginLeft: width*0.55-30
+  },
+  heartButton_100: {
+    marginTop: 5,
+    marginLeft: width-30
   }
 });
 
