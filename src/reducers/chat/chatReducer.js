@@ -22,7 +22,11 @@ export default function chatReducer(state = initialState, action) {
 
       let messages = convertToGiftMsg(allMsg, partner.userID);
 
-      messages.sort((a,b) => a.date > b.date);
+      messages.sort((a,b) => {
+        let d1 = new Date(a.date);
+        let d2 = new Date(b.date);
+        return d1.getTime() > d2.getTime()
+      });
 
       let nextState = state.set("partner", partner)
         .set('ads', doc.relatedToAds)
@@ -52,8 +56,8 @@ export default function chatReducer(state = initialState, action) {
         if (doc.type == 'Chat' &&
             (doc.fromUserID == partnerID || doc.toUserID == partnerID)) {
           convertOne(doc, partnerID);
-          let filtered = messages.filter(e => e._id === doc._id); //_id is key
-          if (filtered.length === 0) {
+          let found = messages.find(e => e._id === doc._id); //_id is key
+          if (!found) {
             messages = [...messages,doc];
           }
         }
@@ -65,8 +69,8 @@ export default function chatReducer(state = initialState, action) {
       let giftMsg = convertOne(action.payload);
       var {messages} = state;
 
-      let filtered = messages.filter(e => e._id === giftMsg._id);
-      if (filtered.length === 0) {
+      let found = messages.find(e => e._id === giftMsg._id);
+      if (!found) {
         messages = [...messages,giftMsg];
       }
 

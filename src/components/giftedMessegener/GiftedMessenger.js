@@ -291,7 +291,6 @@ class GiftedMessenger extends Component {
   }
 
   onChangeText(text) {
-    console.log("aaaaaaaaaaaaa", text);
     this.setState({
       text: text,
       disabled: text.trim().length <= 0

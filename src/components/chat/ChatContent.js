@@ -78,7 +78,7 @@ class  ChatContent extends React.Component {
       type: 'Chat'
     };
 
-    console.log("handleSend... myMsg=", myMsg);
+    console.log("handleSend 123... myMsg=", myMsg);
 
     this.props.actions.sendChatMsg(myMsg);
   }
@@ -115,6 +115,7 @@ class  ChatContent extends React.Component {
         style={styles.image}/>
         )
     } else {
+      let d  = new Date(rowData.date);
       if (rowData.position === 'left') {
         return <Text style={{color:'black'}}>{rowData.text}</Text>;
       } else {
@@ -156,7 +157,7 @@ class  ChatContent extends React.Component {
 
           typingMessage={this.props.chat.typingMessage}
 
-          //renderCustomText = {this.renderCustomText.bind(this)}
+          renderCustomText = {this.renderCustomText.bind(this)}
         />
     );
   }
