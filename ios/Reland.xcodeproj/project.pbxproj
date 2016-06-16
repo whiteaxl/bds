@@ -21,6 +21,8 @@
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
 		23529A571CDF2A3A00993583 /* Orientation.m in Sources */ = {isa = PBXBuildFile; fileRef = 23529A561CDF2A3A00993583 /* Orientation.m */; };
 		23E8F5FA1CF3B8360071148B /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E8F5EE1CF3B80A0071148B /* libRCTCamera.a */; };
+		23F4FE8C1D121E8D00249AD8 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F4FE8B1D121E7600249AD8 /* libRCTPushNotification.a */; };
+		23F4FE8E1D12266000249AD8 /* FileUpload.m in Sources */ = {isa = PBXBuildFile; fileRef = 23F4FE8D1D12266000249AD8 /* FileUpload.m */; };
 		750484731C9EC50E00730C8B /* libBVLinearGradient.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 750484721C9EC4DE00730C8B /* libBVLinearGradient.a */; };
 		753605FC1CABB6D600E17AEA /* libAirMaps.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 753605EF1CABB6BF00E17AEA /* libAirMaps.a */; };
 		754A445F1CF199D200B09BFF /* CouchbaseLite.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 754A445D1CF199D200B09BFF /* CouchbaseLite.framework */; };
@@ -118,6 +120,13 @@
 			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
 			remoteInfo = RCTCamera;
 		};
+		23F4FE8A1D121E7600249AD8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 23F4FE861D121E7600249AD8 /* RCTPushNotification.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 134814201AA4EA6300B7C361;
+			remoteInfo = RCTPushNotification;
+		};
 		750484711C9EC4DE00730C8B /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 7504846D1C9EC4DE00730C8B /* BVLinearGradient.xcodeproj */;
@@ -182,6 +191,8 @@
 		23529A551CDF2A3A00993583 /* Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Orientation.h; path = "../node_modules/react-native-orientation/RCTOrientation/Orientation.h"; sourceTree = "<group>"; };
 		23529A561CDF2A3A00993583 /* Orientation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = Orientation.m; path = "../node_modules/react-native-orientation/RCTOrientation/Orientation.m"; sourceTree = "<group>"; };
 		23E8F5E61CF3B80A0071148B /* RCTCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RCTCamera.xcodeproj"; sourceTree = "<group>"; };
+		23F4FE861D121E7600249AD8 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
+		23F4FE8D1D12266000249AD8 /* FileUpload.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = FileUpload.m; path = "../node_modules/react-native-fileupload/FileUpload.m"; sourceTree = "<group>"; };
 		7504846D1C9EC4DE00730C8B /* BVLinearGradient.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = BVLinearGradient.xcodeproj; path = "../node_modules/react-native-linear-gradient/BVLinearGradient.xcodeproj"; sourceTree = "<group>"; };
 		753605EA1CABB6BF00E17AEA /* AirMaps.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = AirMaps.xcodeproj; path = "../node_modules/react-native-maps/ios/AirMaps.xcodeproj"; sourceTree = "<group>"; };
 		754A445D1CF199D200B09BFF /* CouchbaseLite.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = CouchbaseLite.framework; sourceTree = "<group>"; };
@@ -221,6 +232,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				23F4FE8C1D121E8D00249AD8 /* libRCTPushNotification.a in Frameworks */,
 				23E8F5FA1CF3B8360071148B /* libRCTCamera.a in Frameworks */,
 				75F3DF331C575387009B3BDF /* SystemConfiguration.framework in Frameworks */,
 				75D9A9C01CCDB19500CD638E /* CFNetwork.framework in Frameworks */,
@@ -311,6 +323,7 @@
 		13B07FAE1A68108700A75B9A /* bds */ = {
 			isa = PBXGroup;
 			children = (
+				23F4FE8D1D12266000249AD8 /* FileUpload.m */,
 				23529A551CDF2A3A00993583 /* Orientation.h */,
 				23529A561CDF2A3A00993583 /* Orientation.m */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -336,6 +349,14 @@
 			isa = PBXGroup;
 			children = (
 				23E8F5EE1CF3B80A0071148B /* libRCTCamera.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		23F4FE871D121E7600249AD8 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				23F4FE8B1D121E7600249AD8 /* libRCTPushNotification.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -394,6 +415,7 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				23F4FE861D121E7600249AD8 /* RCTPushNotification.xcodeproj */,
 				23E8F5E61CF3B80A0071148B /* RCTCamera.xcodeproj */,
 				75D9A9B41CCDB0CC00CD638E /* ReactCBLite.xcodeproj */,
 				753605EA1CABB6BF00E17AEA /* AirMaps.xcodeproj */,
@@ -543,6 +565,10 @@
 					ProjectRef = 00C302D31ABCB9D200DB3ED1 /* RCTNetwork.xcodeproj */;
 				},
 				{
+					ProductGroup = 23F4FE871D121E7600249AD8 /* Products */;
+					ProjectRef = 23F4FE861D121E7600249AD8 /* RCTPushNotification.xcodeproj */;
+				},
+				{
 					ProductGroup = 139105B71AF99BAD00B5F7CC /* Products */;
 					ProjectRef = 139105B61AF99BAD00B5F7CC /* RCTSettings.xcodeproj */;
 				},
@@ -642,6 +668,13 @@
 			remoteRef = 23E8F5ED1CF3B80A0071148B /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		23F4FE8B1D121E7600249AD8 /* libRCTPushNotification.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTPushNotification.a;
+			remoteRef = 23F4FE8A1D121E7600249AD8 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		750484721C9EC4DE00730C8B /* libBVLinearGradient.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -735,6 +768,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				23529A571CDF2A3A00993583 /* Orientation.m in Sources */,
+				23F4FE8E1D12266000249AD8 /* FileUpload.m in Sources */,
 				DD0F5DB41CAF074C000A3365 /* RCTShareManager.m in Sources */,
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
@@ -758,6 +792,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
 				);
 				INFOPLIST_FILE = bds/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
@@ -790,6 +825,7 @@
 					"$(inherited)",
 					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
 					"$(SRCROOT)/../node_modules/react-native/React/**",
+					"$(SRCROOT)/../node_modules/react-native/Libraries/PushNotificationIOS/**",
 				);
 				INFOPLIST_FILE = bds/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
