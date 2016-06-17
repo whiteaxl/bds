@@ -39,6 +39,15 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default class PostAds extends Component {
+    constructor(props) {
+        super(props);
+        var {photos, imageIndex} = props;
+        this.state = {
+            photos: photos,
+            imageIndex: imageIndex
+        }
+    }
+
     render() {
 
         console.log("Calling PostAds.render ..., loggedIn = ", this.props.global.loggedIn);
@@ -73,8 +82,18 @@ export default class PostAds extends Component {
     }
 
     imageCropper(data) {
-        console.log(data);
-        Actions.SquareImageCropper({photo: data});
+        //console.log(data);
+        //Actions.SquareImageCropper({photo: data});
+        var {photos, imageIndex} = this.state;
+        if (!photos) {
+            photos = [];
+            for(var i=0; i<4; i++) {
+                photos.push({uri: ''});
+            }
+            imageIndex = 0;
+        }
+        photos[imageIndex] = {uri: data.path};
+        Actions.PostAdsDetail({photos: photos});
     }
 }
 

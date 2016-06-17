@@ -94,6 +94,7 @@ class App extends React.Component {
 
           <Scene key='HuongNha' component={HuongNha} title="Hướng nhà" hideNavBar={true}/>
           <Scene key='SquareImageCropper' component={SquareImageCropper} title="Image Cropper" hideNavBar={true}/>
+          <Scene key='PostAds' component={PostAds} title="Post Ads" hideNavBar={true}/>
           <Scene key='PostAdsDetail' component={PostAdsDetail} title="Post Ads Detail" hideNavBar={true}/>
 
           <Scene key='OrderPicker' component={OrderPicker} title="Sắp xếp" hideNavBar={true}/>

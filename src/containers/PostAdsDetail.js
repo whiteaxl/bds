@@ -6,7 +6,7 @@ import * as globalActions from '../reducers/global/globalActions';
 
 import React, {Component} from 'react';
 
-import { Text, View, StyleSheet, StatusBar, TextInput, Image, Dimensions, ScrollView, Picker } from 'react-native'
+import { Text, View, StyleSheet, StatusBar, TextInput, Image, Dimensions, ScrollView, Picker, TouchableHighlight, Alert } from 'react-native'
 
 import {Map} from 'immutable';
 import {Actions} from 'react-native-router-flux';
@@ -23,6 +23,12 @@ import RelandIcon from '../components/RelandIcon';
 import DanhMuc from '../assets/DanhMuc';
 
 import UploadApi from '../lib/UploadApi';
+
+import localDB from '../lib/localDB';
+
+import cfg from "../cfg";
+
+var rootUrl = `http://${cfg.server}:5000`;
 
 const Item = Picker.Item;
 
@@ -48,6 +54,8 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
+var count = 0;
+var uploadFiles = [];
 
 
 class PostAdsDetail extends Component {
@@ -56,9 +64,18 @@ class PostAdsDetail extends Component {
     constructor(props) {
         super(props);
         StatusBar.setBarStyle('default');
+        
+        var {photos} = props;
 
+        if (!photos) {
+            photos = [];
+            for(var i=0; i<4; i++) {
+                photos.push({uri: ''});
+            }
+        }
+        
         this.state = {
-            photo: props.photo,
+            photos: photos,
             nguoiDang: 'chu_nha',
             hinhThuc: 'ban',
             loaiNha: '0',
@@ -68,6 +85,7 @@ class PostAdsDetail extends Component {
             soTang: '',
             phongNgu: '',
             chiTiet: '',
+            uploadUrls: [],
             errorMessage: ''
         }
     }
@@ -94,10 +112,18 @@ class PostAdsDetail extends Component {
                     //scrollEventThrottle={1}
                 >
                     <View style={myStyles.imgList} >
-                        <Image style={myStyles.imgItem} source={this.state.photo}/>
-                        <Image style={myStyles.imgItem}/>
-                        <Image style={myStyles.imgItem}/>
-                        <Image style={myStyles.imgItem}/>
+                        <TouchableHighlight onPress={() => this.onTakePhoto(0)} >
+                            <Image style={myStyles.imgItem} source={this.state.photos[0]}/>
+                        </TouchableHighlight>
+                        <TouchableHighlight onPress={() => this.onTakePhoto(1)} >
+                            <Image style={myStyles.imgItem} source={this.state.photos[1]}/>
+                        </TouchableHighlight>
+                        <TouchableHighlight onPress={() => this.onTakePhoto(2)} >
+                            <Image style={myStyles.imgItem} source={this.state.photos[2]}/>
+                        </TouchableHighlight>
+                        <TouchableHighlight onPress={() => this.onTakePhoto(3)} >
+                            <Image style={myStyles.imgItem} source={this.state.photos[3]}/>
+                        </TouchableHighlight>
                     </View>
                     <View style={myStyles.imgList} >
                         <Text style={myStyles.label}>Người đăng</Text>
@@ -203,16 +229,61 @@ class PostAdsDetail extends Component {
     }
 
     onPostAds() {
-        console.log('PostAds!');
-        var filepath = this.state.photo.uri;
-        var filename = filepath.substring(filepath.lastIndexOf('/')+1);
-        UploadApi.onUpload(filename, filepath, function (result) {
-            console.log(result);
-        })
+        var {photos} = this.state;
+        uploadFiles = [];
+        for(var i=0; i<photos.length; i++) {
+            var filepath = photos[i].uri;
+            if (filepath == '') {
+                continue;
+            }
+            var filename = filepath.substring(filepath.lastIndexOf('/')+1);
+            uploadFiles.push({filename: filename, filepath: filepath});
+        }
+        count = 0;
+        for(var i=0; i<uploadFiles.length; i++) {
+            if (this.state.errorMessage != '') {
+                return;
+            }
+            var filename = uploadFiles[i].filename;
+            var filepath = uploadFiles[i].filepath;
+            UploadApi.onUpload(filename, filepath, this.uploadCallBack.bind(this));
+        }
+    }
+
+    uploadCallBack = function (err, result) {
+        if (err) {
+            this.state.errorMessage = 'Upload ảnh không thành công!';
+            return;
+        }
+        var {data} = result;
+        var {success, file} = JSON.parse(data);
+        if (success) {
+            var {url} = file;
+            this.state.uploadUrls.push(url);
+            count++;
+            if (count == uploadFiles.length) {
+                this.onSaveAds();
+            }
+        } else {
+            this.state.errorMessage = 'Upload ảnh không thành công!';
+        }
+    }
+
+    onSaveAds() {
+        var {nguoiDang, hinhThuc, loaiNha, diaChi, gia, dienTich, soTang, phongNgu, chiTiet, uploadUrls} = this.state;
+        Alert.alert(
+            'Save Ads',
+            JSON.stringify(uploadUrls)
+        );
     }
 
     onTryAgain() {
         Actions.pop();
+    }
+
+    onTakePhoto(imageIndex) {
+        var {photos} = this.state;
+        Actions.PostAds({photos: photos, imageIndex: imageIndex});
     }
 }
 

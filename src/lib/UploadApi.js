@@ -22,7 +22,7 @@ var {
 } = React;
 
 var Api = {
-  onUpload: function(filename, filepath, successCallback) {
+  onUpload: function(filename, filepath, uploadCallback) {
       var obj = {
           uploadUrl: uploadUrl,
           method: 'POST', // default 'POST',support 'POST' and 'PUT'
@@ -39,9 +39,7 @@ var Api = {
       };
       return FileUpload.upload(obj, function(err, result) {
           //console.log('upload: ' + uploadUrl, err, result);
-          if (!err) {
-              successCallback(result);
-          }
+          uploadCallback(err, result);
       });
   }
 };
