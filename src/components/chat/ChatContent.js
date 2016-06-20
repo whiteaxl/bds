@@ -62,10 +62,12 @@ class  ChatContent extends React.Component {
     console.log("handleSend...", this.props.chat);
 
     const userID = this.props.global.currentUser.userID;
+    const chatID = "Chat_" + userID + "_" + new Date().getTime();
 
     let myMsg = {
-      _id : "Chat_" + userID + "_" + new Date().getTime(),
-      chatID : new Date(),
+      _id : chatID,
+      chatID : chatID,
+      id : chatID,
       fromUserID : userID,
       fromFullName : this.props.global.currentUser.fullName,
       toUserID : this.props.chat.partner.userID,

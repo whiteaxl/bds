@@ -63,6 +63,32 @@ var userApi = {
           msg: gui.ERR_LoiKetNoiMayChu
         }
       });
+  },
+
+  //tokenID and deviceID
+  updateDevice(tokenDto) {
+    const url  = `${userApiUrl}updateDevice`;
+    log.info("fetch ", url, tokenDto);
+
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(tokenDto)
+    })
+      .then(ApiUtils.checkStatus)
+      .then(response => {
+        return response.json()
+      })
+      .catch(e => {
+        log.info("Error in updateDevice", e);
+        return {
+          status : 101,
+          msg: gui.ERR_LoiKetNoiMayChu
+        }
+      });
   }
 };
 

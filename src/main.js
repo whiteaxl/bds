@@ -1,8 +1,8 @@
 'use strict';
 
 import React from "react";
-import { AppRegistry } from 'react-native';
-import { Provider } from 'react-redux';
+import {AppRegistry} from 'react-native';
+import {Provider} from 'react-redux';
 import App from './containers/App';
 import configureStore from './lib/configureStore';
 
@@ -13,12 +13,14 @@ import authInitialState from './reducers/auth/authInitialState';
 import globalInitialState from './reducers/global/globalInitialState';
 import searchInitialState from './reducers/search/searchInitialState';
 
-import {lauchApp} from './reducers/global/globalActions';
+import {lauchApp, registerPushTokenSuccess} from './reducers/global/globalActions';
 import DeviceInfo from 'react-native-device-info';
 
+import PushNotification from 'react-native-push-notification';
+import log from "./lib/logUtil";
+import userApi from "./lib/userApi";
 
-
-var VERSION='0.0.1';
+var VERSION = '0.0.1';
 
 function getInitialState() {
   const _initState = {
@@ -30,70 +32,98 @@ function getInitialState() {
 }
 
 export default class MainBDS extends React.Component {
-    componentWillMount() {
-      Orientation.lockToPortrait();
-    }
+  componentWillMount() {
+    Orientation.lockToPortrait();
+  }
 
+  _initStartupConfiguration(store) {
+    PushNotification.configure({
+      // (optional) Called when Token is generated (iOS and Android)
+      onRegister: function (token) {
+        console.log('TOKEN:', token);
+        let deviceDto = {
+          tokenID: token.token,
+          tokenOs: token.os,
+          deviceModel: DeviceInfo.getModel(),
+          deviceID: DeviceInfo.getUniqueID()
+        };
+        let data = {
+          appInfo: {
+            version: VERSION
+          },
+          deviceInfo : deviceDto
+        };
 
-  render() {
-      let _initState = getInitialState();
-   
-      const store = configureStore(_initState);
+        store.dispatch(lauchApp(data));
 
-      let data = {
-        deviceInfo: {
-          ID: DeviceInfo.getUniqueID(),
-          model: DeviceInfo.getModel(),
-        },
-        appInfo : {
-          version : VERSION,
-        }
-      };
+        userApi.updateDevice(deviceDto)
+          .then((res) => {
+            if (res.status && res.status > 0) {
+              //error
+            } else {
+              store.dispatch(registerPushTokenSuccess(data));
+            }
+          });
+      },
 
-      store.dispatch(lauchApp(data));
+      // (required) Called when a remote or local notification is opened or received
+      onNotification: function (notification) {
+        console.log('NOTIFICATION:', notification);
+      },
 
-      return (
-        <Provider store={store}>
-          <App />
-        </Provider>
-      );
+      // ANDROID ONLY: (optional) GCM Sender ID.
+      senderID: "YOUR GCM SENDER ID",
 
-    }
+      // IOS ONLY (optional): default: all - Permissions to register.
+      permissions: {
+        alert: true,
+        badge: true,
+        sound: true
+      },
+
+      // Should the initial notification be popped automatically
+      // default: true
+      popInitialNotification: true,
+
+      /**
+       * IOS ONLY: (optional) default: true
+       * - Specified if permissions will requested or not,
+       * - if not, you must call PushNotificationsHandler.requestPermissions() later
+       */
+      requestPermissions: true
+    });
   }
 
 
-var PushNotification = require('react-native-push-notification');
+  render() {
+    var _initState = getInitialState();
 
-PushNotification.configure({
+    let deviceInfo = {
+      deviceModel: DeviceInfo.getModel(),
+      deviceID: DeviceInfo.getUniqueID()
+    };
+    let data = {
+      appInfo: {
+        version: VERSION
+      },
+      deviceInfo : deviceInfo
+    };
+    let global = _initState.global;
+    global = global
+      .set('appInfo',data.appInfo)
+      .set('deviceInfo',data.deviceInfo);
+    _initState.global = global;
 
-  // (optional) Called when Token is generated (iOS and Android)
-  onRegister: function(token) {
-    console.log( 'TOKEN:', token );
-  },
+    const store = configureStore(_initState);
 
-  // (required) Called when a remote or local notification is opened or received
-  onNotification: function(notification) {
-    console.log( 'NOTIFICATION:', notification );
-  },
+    this._initStartupConfiguration(store);
 
-  // ANDROID ONLY: (optional) GCM Sender ID.
-  senderID: "YOUR GCM SENDER ID",
+    return (
+      <Provider store={store}>
+        <App />
+      </Provider>
+    );
 
-  // IOS ONLY (optional): default: all - Permissions to register.
-  permissions: {
-    alert: true,
-    badge: true,
-    sound: true
-  },
+  }
+}
 
-  // Should the initial notification be popped automatically
-  // default: true
-  popInitialNotification: true,
-
-  /**
-   * IOS ONLY: (optional) default: true
-   * - Specified if permissions will requested or not,
-   * - if not, you must call PushNotificationsHandler.requestPermissions() later
-   */
-  requestPermissions: true,
-});

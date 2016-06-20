@@ -9,7 +9,8 @@ const {
 
   LAUNCH_APP,
   ROUTER_FOCUS,
-  ON_DB_CHANGE
+  ON_DB_CHANGE,
+  REGISTER_PUSHTOKEN_SUCCESS
 } = require('../../lib/constants').default;
 
 import InitialState from './globalInitialState';
@@ -55,7 +56,7 @@ export default function globalReducer(state = initialState, action) {
     }
 
     case ROUTER_FOCUS: { //RNRF action
-      console.log("Call globalReducer.route ");
+      //console.log("Call globalReducer.route ");
       let prevScene = state.scene;
 
       var next = state
@@ -90,7 +91,12 @@ export default function globalReducer(state = initialState, action) {
 
       return next;
     }
+    case REGISTER_PUSHTOKEN_SUCCESS : {
+      let newState = state
+        .setIn(["deviceInfo", "tokenRegistered"], true);
 
+      return newState;
+    }
 
   }
   

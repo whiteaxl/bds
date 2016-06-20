@@ -13,6 +13,7 @@
 const {
   INIT_LOCAL_DB,
   LAUNCH_APP,
+  REGISTER_PUSHTOKEN_SUCCESS
 } = require('../../lib/constants').default;
 
 export function initLocalDB() {
@@ -28,6 +29,15 @@ export function lauchApp(data) {
       payload: data
   }
 }
+
+export function registerPushTokenSuccess() {
+  return {
+    type: REGISTER_PUSHTOKEN_SUCCESS,
+    payload: null
+  }
+}
+
+
 
 
 

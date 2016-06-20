@@ -56,7 +56,12 @@ class LoginTab extends React.Component {
       matKhau: this.props.auth.matKhau
     };
 
-    this.props.actions.login(userDto.phone, userDto.matKhau)
+    const deviceDto = {
+      ... this.props.global.deviceInfo,
+      phone: this.props.auth.phone //TODO: later can be email
+    };
+
+    this.props.actions.login(userDto.phone, userDto.matKhau, deviceDto)
       .then((res) => {
         if (res.status ===0) {
           if (this.props.onLoginSuccess) {

@@ -67,5 +67,6 @@ export default keyMirror({
   ON_INBOX_FIELD_CHANGE: null,
   ON_CHAT_FIELD_CHANGE: null,
   REQUEST_START_CHAT : null,
-  INSERT_MY_CHAT: null
+  INSERT_MY_CHAT: null,
+  REGISTER_PUSHTOKEN_SUCCESS: null
 });

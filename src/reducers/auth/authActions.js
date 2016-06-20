@@ -1,20 +1,5 @@
-/**
- * # authActions.js
- *
- * All the request actions have 3 variations, the request, a success
- * and a failure. They all follow the pattern that the request will
- * set the ```isFetching``` to true and the whether it's successful or
- * fails, setting it back to false.
- *
- */
 'use strict';
 
-
-/**
- * ## Imports
- *
- * The actions supported
- */
 const {
   SESSION_TOKEN_REQUEST,
   SESSION_TOKEN_SUCCESS,
@@ -46,15 +31,12 @@ const {
 
 } = require('../../lib/constants').default;
 
-/**
- * Project requirements
- */
-
 const _ = require('lodash');
 
 import dbService from "../../lib/localDB";
 
 import log from "../../lib/logUtil";
+import userApi from "../../lib/userApi";
 
 
 export function registerState() {
@@ -264,7 +246,7 @@ export function onDBChange(e, all) {
 
 }
 
-export function login(username, password) {
+export function login(username, password, deviceDto) {
 
   return dispatch => {
     dispatch(loginRequest());
@@ -284,6 +266,9 @@ export function login(username, password) {
             json.email = username;
           }
           dispatch(loginSuccess(json));
+          //
+          userApi.updateDevice(deviceDto);
+
         } else {
           dispatch(loginFailure(json.error));
         }

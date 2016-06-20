@@ -24,7 +24,7 @@ import DanhMuc from '../assets/DanhMuc';
 
 import UploadApi from '../lib/UploadApi';
 
-import dbService from "../../lib/localDB";
+import dbService from "../lib/localDB";
 
 import cfg from "../cfg";
 

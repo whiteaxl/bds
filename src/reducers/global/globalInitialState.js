@@ -12,8 +12,11 @@ var InitialState = Record({
   })),
 
   deviceInfo : {
-    ID : null,
-    model: null
+    deviceID : null,
+    deviceModel: null,
+    tokenID : null,
+    tokenOs : null,
+    tokenRegistered: false
   },
 
   appInfo : {
@@ -23,7 +26,7 @@ var InitialState = Record({
 
   loggedIn : false,
   scene : {},
-  prevScene: {},
+  prevScene: {}
 });
 
 export default InitialState;

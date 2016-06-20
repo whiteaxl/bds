@@ -113,7 +113,7 @@ class DBService {
         },
         "price_raw": '',
         "soPhongNgu": phongNgu,
-        "soTang", soTang,
+        "soTang": soTang,
         "ten_loaiNhaDat": tenLoaiNhaDat,
         "ten_loaiTin": tenLoaiTin,
         "title": chiTiet
