@@ -16,6 +16,8 @@ import LoginRegister from './LoginRegister'
 
 import * as globalActions from '../reducers/global/globalActions';
 
+import RelandIcon from '../components/RelandIcon';
+
 const actions = [
     globalActions
 ];
@@ -62,7 +64,19 @@ export default class PostAds extends Component {
                         captureTarget={Camera.constants.CaptureTarget.disk}
                         style={styles.preview}
                         aspect={Camera.constants.Aspect.fill}>
-                        <Text style={styles.capture} onPress={this.takePicture.bind(this)}>Chụp ảnh</Text>
+                        <View style={styles.buttonContainer}>
+                            <View style={styles.capture}>
+                            <RelandIcon name="close" color='black' mainProps={styles.captureIcon}
+                                        size={20} textProps={{paddingLeft: 0}}
+                                        onPress={this.onHome.bind(this)} />
+                            </View>
+                            <View style={styles.capture}>
+                            <RelandIcon name="camera" color="black"
+                                        mainProps={styles.captureIcon}
+                                        size={20} textProps={{paddingLeft: 0}}
+                                        onPress={this.takePicture.bind(this)} />
+                            </View>
+                        </View>
                     </Camera>
                 </View>
             )
@@ -73,6 +87,10 @@ export default class PostAds extends Component {
                 </View>
             )
         }
+    }
+
+    onHome() {
+        Actions.Launch({type:"reset"});
     }
 
     takePicture() {
@@ -111,12 +129,20 @@ var styles = StyleSheet.create({
         width: Dimensions.get('window').width
     },
     capture: {
-        flex: 0,
         backgroundColor: '#fff',
-        borderRadius: 5,
-        color: '#000',
-        padding: 10,
-        marginBottom: 80
+        borderRadius: 5
+    },
+    captureIcon: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        width: 80,
+        padding: 5
+    },
+    buttonContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-around',
+        marginBottom: 80,
+        width: Dimensions.get('window').width
     }
 });
 

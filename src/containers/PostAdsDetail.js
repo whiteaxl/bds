@@ -98,10 +98,12 @@ class PostAdsDetail extends Component {
     getCurrentLocation() {
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                this.state.geo = {
+                this.setState({
                     "lat": position.coords.latitude,
                     "lon": position.coords.longitude
-                };
+                });
+            },
+            (error) => {
             },
             {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
         );
@@ -205,6 +207,7 @@ class PostAdsDetail extends Component {
                             style={myStyles.input}
                             value={this.state.soTang}
                             onChangeText={(text) => this.setState({soTang: text})}
+                            keyboardType={"numeric"}
                         />
                     </View>
                     <View style={myStyles.imgList} >
@@ -214,17 +217,17 @@ class PostAdsDetail extends Component {
                             style={myStyles.input}
                             value={this.state.phongNgu}
                             onChangeText={(text) => this.setState({phongNgu: text})}
+                            keyboardType={"numeric"}
                         />
                     </View>
-                    <View style={myStyles.imgList} >
-                        <Text style={myStyles.label}>Mô tả chi tiết</Text>
-                        <TextInput
-                            secureTextEntry={false}
-                            style={myStyles.input}
-                            value={this.state.chiTiet}
-                            onChangeText={(text) => this.setState({chiTiet: text})}
-                        />
-                    </View>
+                    <Text style={myStyles.label2}>Mô tả chi tiết</Text>
+                    <TextInput
+                        secureTextEntry={false}
+                        style={myStyles.textArea}
+                        value={this.state.chiTiet}
+                        onChangeText={(text) => this.setState({chiTiet: text})}
+                        multiline={true}
+                    />
                     <Text style={myStyles.label}>{this.state.errorMessage}</Text>
                 </ScrollView>
                 <View style={myStyles.searchButton}>
@@ -287,7 +290,7 @@ class PostAdsDetail extends Component {
     }
 
     onSaveAds() {
-        var {nguoiDang, hinhThuc, loaiNha, diaChi, gia, dienTich, soTang, phongNgu, chiTiet, uploadUrls, geo} = this.state;
+        var {hinhThuc, loaiNha, diaChi, gia, dienTich, soTang, phongNgu, chiTiet, uploadUrls, geo} = this.state;
         var imageUrls = [];
         uploadUrls.map(function (uploadUrl) {
             imageUrls.push(rootUrl + uploadUrl);
@@ -296,12 +299,20 @@ class PostAdsDetail extends Component {
         var tenLoaiNhaDat = hashLoaiNha[loaiNha];
         var loaiTin = (hinhThuc == 'ban') ? 0 : 1;
         var tenLoaiTin = DanhMuc.LoaiTin[loaiTin];
-        var adsId = dbService._createAds({nguoiDang: nguoiDang, loaiTin: loaiTin, loaiNha: loaiNha, diaChi: diaChi, gia: gia,
+        var currentUser = this.props.global.currentUser;
+        var dangBoi = {
+            "email": currentUser.email,
+            "name": currentUser.fullName,
+            "phone": currentUser.phone,
+            "userID": currentUser.userID
+        };
+        var adsID = dbService._createAds({loaiTin: loaiTin, loaiNha: loaiNha, diaChi: diaChi, gia: gia,
             dienTich: dienTich, soTang: soTang, phongNgu: phongNgu, chiTiet: chiTiet, uploadUrls: imageUrls,
-            userID: this.props.global.currentUser.userID, geo: geo, tenLoaiNhaDat: tenLoaiNhaDat, tenLoaiTin: tenLoaiTin});
+            userID: currentUser.userID, geo: geo, tenLoaiNhaDat: tenLoaiNhaDat, tenLoaiTin: tenLoaiTin,
+            dangBoi: dangBoi});
         Alert.alert(
             'Save Ads',
-            'Lưu thành công ads ' + adsId
+            'Lưu thành công ads ' + adsID
         );
     }
 
@@ -350,8 +361,25 @@ var myStyles = StyleSheet.create({
         width: 200,
         alignSelf: 'center'
     },
+    textArea: {
+        fontSize: 18,
+        padding: 4,
+        height: 80,
+        borderColor: 'gray',
+        borderWidth: 1,
+        borderRadius: 5,
+        margin: 5,
+        marginLeft: 20,
+        marginRight: 15,
+        width: Dimensions.get('window').width-35,
+        alignSelf: 'center'
+    },
     label: {
         fontSize: 18
+    },
+    label2: {
+        fontSize: 18,
+        paddingLeft: 10
     },
     button: {
         flexDirection: 'row',

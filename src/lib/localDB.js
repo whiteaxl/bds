@@ -5,6 +5,7 @@ var {manager} = require('./relandCB');
 
 import log from "../lib/logUtil";
 import cfg from "../cfg";
+import moment from 'moment';
 
 
 class DBService {
@@ -64,10 +65,9 @@ class DBService {
   }
 
   _createAds(data) {
-    var {nguoiDang, loaiTin, loaiNha, diaChi, gia, dienTich, soTang, phongNgu, chiTiet, uploadUrls, userID, geo, tenLoaiNhaDat, tenLoaiTin} = data;
-    var d = new Date();
-    var t = d.getTime();
-    var adsID = 'Ads_bds_' + t;
+    var {loaiTin, loaiNha, diaChi, gia, dienTich, soTang, phongNgu, chiTiet, uploadUrls, userID, geo, tenLoaiNhaDat, tenLoaiTin, dangBoi} = data;
+    var ms = moment().toDate().getTime();
+    var adsID = 'Ads_' + userID + '_' + ms;
     var giaM2 = '';
     if (gia && dienTich) {
         giaM2 = Number((gia/dienTich).toFixed(3));
@@ -75,30 +75,23 @@ class DBService {
     var image = {cover: '', images: []};
     if (uploadUrls.length > 0) {
         image.cover = uploadUrls[0];
-        uploadUrls.map(function (uploadUrl) {
-            image.images.push(uploadUrl);
-        })
+        image.images = uploadUrls;
     }
-    var ngayDangTin = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+    var ngayDangTin = moment().format('DD-MM-YYYY');
 
       var adsDto = {
         "type": "Ads",
         "adsID": adsID,
         "area_raw": '',
         "chiTiet": chiTiet,
-        "dangBoi": {
-          "email": '',
-          "name": nguoiDang,
-          "phone": '',
-          "userID": userID
-        },
+        "dangBoi": dangBoi,
         "dienTich": dienTich,
         "gia": gia,
         "giaM2": giaM2,
         "image": image,
         "loaiNhaDat": loaiNha,
         "loaiTin": loaiTin,
-        "maSo": t,
+        "maSo": ms,
         "ngayDangTin": ngayDangTin,
         "place": {
           "diaChi": diaChi,
@@ -118,13 +111,15 @@ class DBService {
         "ten_loaiTin": tenLoaiTin,
         "title": chiTiet
       };
-      return this.db().then(db => {
+      adsDto._id = adsDto.adsID;
+      this.db().then(db => {
           db.createDocument(adsDto).then((res) => {
               let documentId = res.id;
               console.log("created document!", documentId);
               return documentId;
           });
       });
+      return adsID;
   }
 
   startSync(sessionCookie) {
