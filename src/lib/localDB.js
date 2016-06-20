@@ -63,6 +63,70 @@ class DBService {
       })
   }
 
+  _createAds(data) {
+    var {nguoiDang, loaiTin, loaiNha, diaChi, gia, dienTich, soTang, phongNgu, chiTiet, uploadUrls, userID, geo, tenLoaiNhaDat, tenLoaiTin} = data;
+    var d = new Date();
+    var t = d.getTime();
+    var adsID = 'Ads_bds_' + t;
+    var giaM2 = '';
+    if (gia && dienTich) {
+        giaM2 = Number((gia/dienTich).toFixed(3));
+    }
+    var image = {cover: '', images: []};
+    if (uploadUrls.length > 0) {
+        image.cover = uploadUrls[0];
+        uploadUrls.map(function (uploadUrl) {
+            image.images.push(uploadUrl);
+        })
+    }
+    var ngayDangTin = d.getDate() + "-" + (d.getMonth() + 1) + "-" + d.getFullYear();
+
+      var adsDto = {
+        "type": "Ads",
+        "adsID": adsID,
+        "area_raw": '',
+        "chiTiet": chiTiet,
+        "dangBoi": {
+          "email": '',
+          "name": nguoiDang,
+          "phone": '',
+          "userID": userID
+        },
+        "dienTich": dienTich,
+        "gia": gia,
+        "giaM2": giaM2,
+        "image": image,
+        "loaiNhaDat": loaiNha,
+        "loaiTin": loaiTin,
+        "maSo": t,
+        "ngayDangTin": ngayDangTin,
+        "place": {
+          "diaChi": diaChi,
+          "diaChinh": {
+            "huyen": '',
+            "tinh": '',
+            "xa": ''
+          },
+          "diaChinhFullName": '',
+          "duAnFullName": null,
+          "geo": geo
+        },
+        "price_raw": '',
+        "soPhongNgu": phongNgu,
+        "soTang", soTang,
+        "ten_loaiNhaDat": tenLoaiNhaDat,
+        "ten_loaiTin": tenLoaiTin,
+        "title": chiTiet
+      };
+      return this.db().then(db => {
+          db.createDocument(adsDto).then((res) => {
+              let documentId = res.id;
+              console.log("created document!", documentId);
+              return documentId;
+          });
+      });
+  }
+
   startSync(sessionCookie) {
     this.database.replicate(
       this.dbName,

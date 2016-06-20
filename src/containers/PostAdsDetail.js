@@ -24,7 +24,7 @@ import DanhMuc from '../assets/DanhMuc';
 
 import UploadApi from '../lib/UploadApi';
 
-import localDB from '../lib/localDB';
+import dbService from "../../lib/localDB";
 
 import cfg from "../cfg";
 
@@ -86,8 +86,25 @@ class PostAdsDetail extends Component {
             phongNgu: '',
             chiTiet: '',
             uploadUrls: [],
+            geo: {"lat": '', "lon": ''},
             errorMessage: ''
         }
+    }
+
+    componentWillMount() {
+        this.getCurrentLocation();
+    }
+
+    getCurrentLocation() {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                this.state.geo = {
+                    "lat": position.coords.latitude,
+                    "lon": position.coords.longitude
+                };
+            },
+            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+        );
     }
 
     render() {
@@ -270,10 +287,21 @@ class PostAdsDetail extends Component {
     }
 
     onSaveAds() {
-        var {nguoiDang, hinhThuc, loaiNha, diaChi, gia, dienTich, soTang, phongNgu, chiTiet, uploadUrls} = this.state;
+        var {nguoiDang, hinhThuc, loaiNha, diaChi, gia, dienTich, soTang, phongNgu, chiTiet, uploadUrls, geo} = this.state;
+        var imageUrls = [];
+        uploadUrls.map(function (uploadUrl) {
+            imageUrls.push(rootUrl + uploadUrl);
+        });
+        var hashLoaiNha = (hinhThuc == "ban") ? DanhMuc.LoaiNhaDatBan : DanhMuc.LoaiNhaDatThue;
+        var tenLoaiNhaDat = hashLoaiNha[loaiNha];
+        var loaiTin = (hinhThuc == 'ban') ? 0 : 1;
+        var tenLoaiTin = DanhMuc.LoaiTin[loaiTin];
+        var adsId = dbService._createAds({nguoiDang: nguoiDang, loaiTin: loaiTin, loaiNha: loaiNha, diaChi: diaChi, gia: gia,
+            dienTich: dienTich, soTang: soTang, phongNgu: phongNgu, chiTiet: chiTiet, uploadUrls: imageUrls,
+            userID: this.props.global.currentUser.userID, geo: geo, tenLoaiNhaDat: tenLoaiNhaDat, tenLoaiTin: tenLoaiTin});
         Alert.alert(
             'Save Ads',
-            JSON.stringify(uploadUrls)
+            'Lưu thành công ads ' + adsId
         );
     }
 
