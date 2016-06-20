@@ -118,10 +118,12 @@ class  ChatContent extends React.Component {
         )
     } else {
       let d  = new Date(rowData.date);
+      let msg = rowData.text;
+
       if (rowData.position === 'left') {
-        return <Text style={{color:'black'}}>{rowData.text}</Text>;
+        return <Text style={{color:'black'}}>{msg}</Text>;
       } else {
-        return <Text style={{color:'white'}}>{rowData.text}</Text>;
+        return <Text style={{color:'white'}}>{msg}</Text>;
       }
     }
   }

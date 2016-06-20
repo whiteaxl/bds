@@ -25,7 +25,7 @@ export default function chatReducer(state = initialState, action) {
       messages.sort((a,b) => {
         let d1 = new Date(a.date);
         let d2 = new Date(b.date);
-        return d1.getTime() > d2.getTime()
+        return d1.getTime() - d2.getTime()
       });
 
       let nextState = state.set("partner", partner)
