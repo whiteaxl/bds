@@ -199,7 +199,7 @@ class SearchResultList extends Component {
                         {this._renderImageStack(rowData)}
                     </Swiper>
 
-                    <View style={myStyles.itemContent}
+                    <View style={myStyles.searchListViewRowAlign}
                           onStartShouldSetResponder={(evt) => false}
                           onMoveShouldSetResponder={(evt) => false}
                     >
@@ -213,7 +213,7 @@ class SearchResultList extends Component {
                             >{rowData.giaFmt}</Text>
                             <Text style={myStyles.text}>{diaChi}{moreInfo}</Text>
                         </View>
-                        <TruliaIcon name="heart-o" mainProps={myStyles.heartButton_45} color={'white'} size={23}/>
+                        <TruliaIcon name="heart-o" mainProps={myStyles.heartButton} color={'white'} size={23}/>
                     </View>
 
                 </View>
