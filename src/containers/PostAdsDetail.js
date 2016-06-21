@@ -136,7 +136,8 @@ class PostAdsDetail extends Component {
                     {this._renderSoTang()}
                     {this._renderPhongNgu()}
                     {this._renderChiTiet()}
-                    <Text style={[myStyles.label, {marginTop: 9}]}>{this.state.errorMessage}</Text>
+                    <Text style={[myStyles.label, {marginTop: 9, marginLeft: 15, color: 'red'}]}>
+                        {this.state.errorMessage}</Text>
                 </ScrollView>
                 <View style={myStyles.searchButton}>
                     <View style={myStyles.searchListButton}>
@@ -474,6 +475,7 @@ class PostAdsDetail extends Component {
         }
         if (errors != '') {
             this.state.errorMessage = 'Bạn chưa chọn' + errors + '!';
+            this.setState({errorMessage: 'Bạn chưa chọn' + errors + '!'});
             return false;
         }
         return true;
