@@ -69,7 +69,7 @@ class App extends React.Component {
           <Scene key='Launch' component={Launch} initial={true} title="Welcome" />
 
           <Scene key="Home" tabs={true} default="Main" type="replace" tabBarStyle={styles.tabBarStyle}>
-            <Scene key="Main" title="Duyệt nhanh" iconName={"list"} iconSize={19} icon={TabIcon}
+            <Scene key="Main" title="Xem nhanh" iconName={"list"} iconSize={19} icon={TabIcon}
                    component={Home}
                    hideNavBar={true} initial={true}/>
 
