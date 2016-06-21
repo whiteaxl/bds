@@ -39,6 +39,8 @@ var Communications = require('react-native-communications');
 
 import ImagePreview from '../components/ImagePreview';
 
+import dbService from "../lib/localDB";
+
 const actions = [
   globalActions,
   searchActions
@@ -84,27 +86,32 @@ class SearchResultDetail extends Component {
   }
   fetchData() {
     //console.log("adsID: " + this.props.adsID);
-    this.props.actions.getDetail(
-        {'adsID' : this.props.adsID}
-        , (data) => {
-          this.refreshRowData(data)
-        });
+    if (this.props.source == 'server') {
+      this.props.actions.getDetail(
+          {'adsID' : this.props.adsID}
+          , (data) => {
+            this.refreshRowData(data.ads)
+          });
+    }
+    else {
+      dbService.getAds(this.props.adsID, this.refreshRowData.bind(this));
+    }
   }
-  refreshRowData(data) {
+  refreshRowData(ads) {
     navigator.geolocation.getCurrentPosition(
         (position) => {
-          var geoUrl = 'http://maps.apple.com/?saddr='+position.coords.latitude+','+position.coords.longitude+'&daddr='+data.ads.place.geo.lat+','+data.ads.place.geo.lon+'&dirflg=d&t=s';
+          var geoUrl = 'http://maps.apple.com/?saddr='+position.coords.latitude+','+position.coords.longitude+'&daddr='+ads.place.geo.lat+','+ads.place.geo.lon+'&dirflg=d&t=s';
           this.setState({
-            'data' : data.ads,
+            'data' : ads,
             'geoUrl' : geoUrl,
             'coords' : position.coords,
             loaded: true
           });
         },
         (error) => {
-          var geoUrl = 'http://maps.apple.com/?daddr='+data.ads.place.geo.lat+','+data.ads.place.geo.lon+'&dirflg=d&t=s';
+          var geoUrl = 'http://maps.apple.com/?daddr='+ads.place.geo.lat+','+ads.place.geo.lon+'&dirflg=d&t=s';
           this.setState({
-            'data' : data.ads,
+            'data' : ads,
             'geoUrl' : geoUrl,
             'coords' : {},
             loaded: true
@@ -263,16 +270,16 @@ class SearchResultDetail extends Component {
     return (
 			<View style={detailStyles.fullWidthContainer}>
         <View style={detailStyles.customPageHeader}>
-          <TruliaIcon onPress={this._onBack}
+          <TruliaIcon onPress={this._onBack.bind(this)}
             name="arrow-left" color="white"
             mainProps={detailStyles.backButton} size={25} >
           </TruliaIcon>
           <View style={[detailStyles.shareMainView, {marginRight: 0, marginLeft: 0}]}>
-            <RelandIcon onPress={this._onShare}
+            <RelandIcon onPress={this._onShare.bind(this)}
               name="share-o" color="white"
               iconProps={{style: [detailStyles.shareButton, {paddingLeft: 25}]}} size={26} >
             </RelandIcon>
-            <RelandIcon onPress={this._onShare}
+            <RelandIcon onPress={this._onShare.bind(this)}
               name="more" color="white"
               iconProps={{style: [detailStyles.shareButton, {paddingRight: 20}]}} size={30} >
             </RelandIcon>
@@ -553,7 +560,11 @@ class SearchResultDetail extends Component {
  // }
 
   _onBack() {
-    Actions.pop();
+    if (this.props.source == 'server') {
+      Actions.pop();
+    } else {
+      Actions.AdsMgmt();
+    }
   }
 
   _onShare() {

@@ -77,7 +77,7 @@ class App extends React.Component {
                    iconName={"chat"} iconSize={20}
                    icon={TabIcon} hideNavBar={true} />
             <Scene key="activity" component={PostAds} title="Đăng tin"
-                   iconName={"camera-o"} iconSize={20} icon={TabIcon}/>
+                   iconName={"camera-o"} iconSize={20} icon={TabIcon} hideNavBar={true}/>
             <Scene key="AdsMgmt" component={Profile} title="Quản lý tin"
                    iconName={"mgmt"} iconSize={19} icon={TabIcon}/>
             <Scene key="Profile" component={Profile} title="Tôi"

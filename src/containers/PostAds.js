@@ -82,7 +82,7 @@ export default class PostAds extends Component {
             )
         } else {
             return (
-                <View style={[styles.container, {marginTop: 30}]} >
+                <View style={styles.container} >
                     <LoginRegister />
                 </View>
             )
@@ -90,7 +90,7 @@ export default class PostAds extends Component {
     }
 
     onHome() {
-        Actions.Launch({type:"reset"});
+        Actions.Main();
     }
 
     takePicture() {
@@ -118,7 +118,7 @@ export default class PostAds extends Component {
 
 var styles = StyleSheet.create({
     container: {
-        paddingTop: 15,
+        flex: 1,
         backgroundColor: "white"
     },
     preview: {

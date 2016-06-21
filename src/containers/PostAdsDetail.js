@@ -482,11 +482,11 @@ class PostAdsDetail extends Component {
     }
 
     uploadCallBack = function (err, result) {
-        if (err) {
+        var {data} = result;
+        if (err || data == '') {
             this.state.errorMessage = 'Upload ảnh không thành công!';
             return;
         }
-        var {data} = result;
         var {success, file} = JSON.parse(data);
         if (success) {
             var {url} = file;
@@ -516,14 +516,14 @@ class PostAdsDetail extends Component {
             "phone": currentUser.phone,
             "userID": currentUser.userID
         };
-        var adsID = dbService._createAds({loaiTin: loaiTin, loaiNha: loaiNha, diaChi: diaChi, gia: gia,
+        dbService._createAds({loaiTin: loaiTin, loaiNha: loaiNha, diaChi: diaChi, gia: gia,
             dienTich: dienTich, soTang: soTang, phongNgu: phongNgu, chiTiet: chiTiet, uploadUrls: imageUrls,
             userID: currentUser.userID, geo: geo, tenLoaiNhaDat: tenLoaiNhaDat, tenLoaiTin: tenLoaiTin,
-            dangBoi: dangBoi});
-        Alert.alert(
-            'Thông báo',
-            'Lưu thành công ads ' + adsID
-        );
+            dangBoi: dangBoi}, this.createAdsCallBack.bind(this));
+    }
+
+    createAdsCallBack(adsID) {
+        Actions.SearchResultDetail({adsID: adsID, source: 'local'});
     }
 
     onTryAgain() {

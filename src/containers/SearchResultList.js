@@ -244,7 +244,7 @@ class MyImage extends Component {
     render() {
         return(
         <View style={myStyles.slide} key={"img"+(this.props.imageIndex)}>
-            <TouchableHighlight onPress={() => Actions.SearchResultDetail({adsID: this.props.rowData.adsID})}>
+            <TouchableHighlight onPress={() => Actions.SearchResultDetail({adsID: this.props.rowData.adsID, source: 'server'})}>
                 <Image style={myStyles.thumb} source={{uri: `${this.props.imageUrl}`}}>
                     <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.9)']}
                                     style={myStyles.linearGradient2}>

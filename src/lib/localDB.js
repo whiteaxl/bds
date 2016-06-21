@@ -64,7 +64,7 @@ class DBService {
       })
   }
 
-  _createAds(data) {
+  _createAds(data, createAdsCallBack) {
     var {loaiTin, loaiNha, diaChi, gia, dienTich, soTang, phongNgu, chiTiet, uploadUrls, userID, geo, tenLoaiNhaDat, tenLoaiTin, dangBoi} = data;
     var ms = moment().toDate().getTime();
     var adsID = 'Ads_' + userID + '_' + ms;
@@ -112,14 +112,14 @@ class DBService {
         "title": chiTiet
       };
       adsDto._id = adsDto.adsID;
-      this.db().then(db => {
+      return this.db().then(db => {
           db.createDocument(adsDto).then((res) => {
               let documentId = res.id;
               console.log("created document!", documentId);
+              createAdsCallBack(documentId);
               return documentId;
           });
       });
-      return adsID;
   }
 
   startSync(sessionCookie) {
@@ -224,6 +224,20 @@ class DBService {
 
             return res.rows || [];
           });
+      });
+  }
+
+  getAds(adsID, getAdsCallback) {
+    var options = {conflicts: true};
+
+    return this.db()
+      .then(db => {
+        return db.getDocument(adsID, options)
+            .then((doc) => {
+              console.log("getAds", doc);
+              getAdsCallback(doc);
+              return doc;
+            });
       });
   }
 
