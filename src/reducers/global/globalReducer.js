@@ -79,7 +79,9 @@ export default function globalReducer(state = initialState, action) {
 
       if (users.length > 0) {
         const e = users[0].doc;
-        console.log("globalreducer.ON_DB_CHANGE, user", e);
+        //console.log("globalreducer.ON_DB_CHANGE, user", e);
+        console.log("globalreducer.ON_DB_CHANGE, update current User");
+
         next = state
           .setIn(['currentUser','userID'], e.userID)
           .setIn(['currentUser','phone'], e.phone)

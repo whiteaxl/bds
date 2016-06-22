@@ -50,7 +50,10 @@ export function sendChatMsg(msg) {
     dispatch(insertMyChat(msg));
 
     dbService.sendChat(msg)
-      .then( res => console.log("sendChatMsg, result:" + res));
+      .then( res => console.log("sendChatMsg, result:" + res))
+      .catch(res => {
+        console.log("Error sendChat, error msg:" + res);
+      });
   };
 }
 

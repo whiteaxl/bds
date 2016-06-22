@@ -59,7 +59,7 @@ class  ChatContent extends React.Component {
   }
 
   handleSend(message = {}) {
-    console.log("handleSend...", this.props.chat);
+    console.log("Enter handleSend...", message);
 
     const userID = this.props.global.currentUser.userID;
     const chatID = "Chat_" + userID + "_" + new Date().getTime();
@@ -80,7 +80,7 @@ class  ChatContent extends React.Component {
       type: 'Chat'
     };
 
-    console.log("handleSend 123... myMsg=", myMsg);
+    console.log("start send myMsg=", myMsg);
 
     this.props.actions.sendChatMsg(myMsg);
   }

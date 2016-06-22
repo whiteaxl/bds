@@ -32,10 +32,19 @@ class DBService {
       })
       .catch(res => {
         console.log("Fail to DB infor, will reinit:", res);
-        return ReactCBLite.init(5984, 'admin', '321', e => {
-          log.warn('initialized localDB!');
-          return this.database
-        });
+        var that = this;
+        var p1 = new Promise(
+          function(resolve, reject) {
+            ReactCBLite.init(5984, 'admin', '321', e => {
+              log.warn('initialized localDB!');
+              that.startChangeListener();
+              //this.startSync();
+              resolve(that.database)
+            });
+          }
+        );
+
+        return p1
       });
   };
 
@@ -122,7 +131,10 @@ class DBService {
       });
   }
 
-  startSync(sessionCookie) {
+  startSync() {
+    log.info("Call startSync database with server");
+    let sessionCookie = this.sessionCookie;
+
     this.database.replicate(
       this.dbName,
       {headers: {Cookie: sessionCookie}, url: this.remoteDbUrl},
@@ -136,13 +148,35 @@ class DBService {
     );
   }
 
+  startChangeListener() {
+    //subscribe event
+    this.database.getInfo()
+      .then((res) => {
+        this.database.listen({since: res.update_seq - 1, feed: 'longpoll', include_docs: true});
+      });
+    this.database.changesEventEmitter.on('changes', (e) => {
+      console.log("DB just changes:", e.results ? e.results.length:0);
+
+      setTimeout(() =>
+          this.database.getAllDocuments({include_docs: true})
+            .then(res => {
+              this.onDBChange(e, res.rows);
+            })
+        , 1000
+      )
+    });
+  }
+
   loginAndStartSync(username, password, onDBChange) {
+    this.onDBChange = onDBChange;
 
     var settings = {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       body: JSON.stringify({name: username, password: password})
     };
+
+
 
     return fetch(this.remoteDbUrl + "/_session", settings)
       .then((res) => {
@@ -151,6 +185,7 @@ class DBService {
           {
             log.info("Login success, starting sync...");
             let sessionCookie = res.headers.map['set-cookie'][0];
+            this.sessionCookie = sessionCookie;
             //console.log(sessionCookie);
 
             this.database.deleteDatabase()
@@ -160,24 +195,9 @@ class DBService {
                 this.database.createDatabase()
                   .then((res) => {
 
-                    //subscribe event
-                    this.database.getInfo()
-                      .then((res) => {
-                        this.database.listen({since: res.update_seq - 1, feed: 'longpoll', include_docs: true});
-                      });
-                    this.database.changesEventEmitter.on('changes', (e) => {
-                      console.log("DB just changes:", e);
+                    this.startChangeListener();
 
-                      setTimeout(() =>
-                          this.database.getAllDocuments({include_docs: true})
-                            .then(res => {
-                              onDBChange(e, res.rows);
-                            })
-                        , 1000
-                      )
-                    });
-
-                    this.startSync(sessionCookie);
+                    this.startSync();
 
                     /*
                      this.db().getDesignDocument(this.adsDesignDocName)
@@ -263,6 +283,8 @@ class DBService {
 
   sendChat(msg) {
     return this.db().then(db => {
+        console.log("dbservice.sendChat", db);
+
         db.createDocument(msg).then((res) => {
           let documentId = res.id;
           console.log("created document!", documentId);

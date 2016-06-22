@@ -44,7 +44,7 @@ export default function chatReducer(state = initialState, action) {
 
     case ON_DB_CHANGE:
     {
-      console.log("Calling chatReducer.ON_DB_CHANGE...", action.payload);
+      console.log("Calling chatReducer.ON_DB_CHANGE...");
       const {e, all} = action.payload;
       const partnerID = state.partner.userID;
 

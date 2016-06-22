@@ -14,6 +14,8 @@ function getInboxList(all) {
   let mapByAds = {};
   let user = all.filter(e => e.doc.type == 'User')[0];
   console.log("user=", user);
+  if (!user) return;
+
   const myUserID = user.doc.userID;
 
   console.log("My userID = " + myUserID);
@@ -58,7 +60,7 @@ function getInboxList(all) {
   });
 
 
-  console.log("getInboxList, result=", array);
+  //console.log("getInboxList, result=", array);
 
   return array;
 }
@@ -68,9 +70,15 @@ export default function inboxReducer(state = initialState, action) {
   switch (action.type) {
     case ON_DB_CHANGE:
     {
-      console.log("Calling InboxReducer.ON_DB_CHANGE...", action.payload);
+      //console.log("Calling InboxReducer.ON_DB_CHANGE...", action.payload);
+      console.log("Calling InboxReducer.ON_DB_CHANGE...");
+
       const {e, all} = action.payload;
       const inboxList = getInboxList(all);
+      if (!inboxList) {
+        return state;
+      }
+
       const ds = state.allInboxDS;
       const newDs = ds.cloneWithRows(inboxList);
 
