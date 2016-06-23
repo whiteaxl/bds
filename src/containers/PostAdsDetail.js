@@ -71,7 +71,6 @@ class PostAdsDetail extends Component {
         StatusBar.setBarStyle('default');
         errorMessage = this.props.postAds.error;
         this.state = {
-            loaiNhaExpanded: false,
             uploadUrls: []
         }
     }
@@ -169,66 +168,37 @@ class PostAdsDetail extends Component {
     }
 
     _renderLoaiNha() {
-        var arrowName = this.state.loaiNhaExpanded ? "arrow-down" : "arrow-right";
         return (
             <View style={{marginTop: 9, marginBottom: 5}}>
                 <TouchableHighlight
                     onPress={() => this._onLoaiNhaPressed()}>
                     <View style={myStyles.imgList}>
                         <Text style={myStyles.label}>
-                            Loại nhà*
+                            Loại nhà
                         </Text>
                         <View style={{flexDirection: "row", alignItems: "flex-end"}}>
                             <Text style={myStyles.label}> {this._getLoaiNhaValue()} </Text>
-                            <TruliaIcon name={arrowName} color={gui.arrowColor} size={18} />
+                            <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
                         </View>
                     </View>
                 </TouchableHighlight>
-                {this._renderLoaiNhaPicker()}
             </View>
         );
     }
 
-    _renderLoaiNhaPicker() {
-        if (this.state.loaiNhaExpanded) {
-            var {loaiTin, loaiNha} = this.props.postAds;
-            var hashLoaiNha = (loaiTin == "ban") ? DanhMuc.LoaiNhaDatBan : DanhMuc.LoaiNhaDatThue;
-            var dmLoaiNha = DanhMuc.getDanhMucKeys(hashLoaiNha);
-            var loaiNhaItems = [];
-            dmLoaiNha.map(function (val) {
-                loaiNhaItems.push(<Item label={hashLoaiNha[val]} value={val}></Item>);
-            })
-            return (
-                <View>
-                    <Picker style={myStyles.picker2}
-                            selectedValue={loaiNha}
-                            onValueChange={this.onValueChange.bind(this, 'loaiNha')}
-                            mode="dropdown">
-                        {loaiNhaItems}
-                    </Picker>
-                </View>
-            );
-        } else {
-            return (
-                <View></View>
-            );
-        }
-    }
-
     _onLoaiNhaPressed() {
-        this.setState({loaiNhaExpanded: !this.state.loaiNhaExpanded});
+        Actions.PropertyTypes({func: 'postAds'});
     }
 
     _getLoaiNhaValue() {
-        var {loaiTin, loaiNha} = this.props.postAds;
-        var hashLoaiNha = (loaiTin == "ban") ? DanhMuc.LoaiNhaDatBan : DanhMuc.LoaiNhaDatThue;
-        return hashLoaiNha[loaiNha];
+        var {loaiTin, loaiNhaDat} = this.props.postAds;
+        return DanhMuc.getLoaiNhaDatForDisplay(loaiTin, loaiNhaDat);
     }
 
     _renderDiaChi() {
         return (
             <View style={myStyles.imgList} >
-                <Text style={myStyles.label}>Địa chỉ*</Text>
+                <Text style={myStyles.label}>Địa chỉ</Text>
                 <TextInput
                     secureTextEntry={false}
                     style={myStyles.input}
@@ -242,7 +212,7 @@ class PostAdsDetail extends Component {
     _renderGia() {
         return (
             <View style={myStyles.imgList} >
-                <Text style={myStyles.label}>Giá*</Text>
+                <Text style={myStyles.label}>Giá</Text>
                 <TextInput
                     secureTextEntry={false}
                     style={myStyles.input}
@@ -256,7 +226,7 @@ class PostAdsDetail extends Component {
     _renderDienTich() {
         return (
             <View style={myStyles.imgList} >
-                <Text style={myStyles.label}>Diện tích*</Text>
+                <Text style={myStyles.label}>Diện tích</Text>
                 <TextInput
                     secureTextEntry={false}
                     style={myStyles.input}
@@ -269,20 +239,21 @@ class PostAdsDetail extends Component {
 
     _renderSoTang() {
         return this._renderSegment("Số tầng", DanhMuc.getSoTangValues(),
-            this.props.postAds.soTang, this._onSegmentChanged.bind(this, 'soTang'));
+            this.props.postAds.soTang, this._onSegmentChanged.bind(this, 'soTangSelectedIdx'));
     }
 
     _renderPhongNgu() {
         return this._renderSegment("Số phòng ngủ", DanhMuc.getSoPhongNguValues(),
-            this.props.postAds.phongNgu, this._onSegmentChanged.bind(this, 'phongNgu'));
+            this.props.postAds.phongNgu, this._onSegmentChanged.bind(this, 'soPhongNguSelectedIdx'));
     }
 
     _renderPhongTam() {
         return this._renderSegment("Số phòng tắm", DanhMuc.getSoPhongTamValues(),
-            this.props.postAds.phongTam, this._onSegmentChanged.bind(this, 'phongTam'));
+            this.props.postAds.phongTam, this._onSegmentChanged.bind(this, 'soNhaTamSelectedIdx'));
     }
 
     _onSegmentChanged(key, event) {
+        console.log(key, event.nativeEvent.selectedSegmentIndex);
         this.onValueChange(key, event.nativeEvent.selectedSegmentIndex);
     }
 
@@ -353,8 +324,8 @@ class PostAdsDetail extends Component {
         if (uploadFiles.length === 0) {
             errors += ' (ảnh)';
         }
-        var {loaiNha, diaChi, gia, dienTich} = this.props.postAds;
-        if (loaiNha === 0) {
+        var {loaiNhaDat, diaChi, gia, dienTich} = this.props.postAds;
+        if (loaiNhaDat === 0) {
             errors += ' (loại nhà)';
         }
         if (diaChi == '') {
@@ -396,7 +367,7 @@ class PostAdsDetail extends Component {
 
     onSaveAds() {
         var {uploadUrls} = this.state;
-        var {loaiTin, loaiNha, gia, dienTich, soTang, phongNgu, phongTam, chiTiet, place} = this.props.postAds;
+        var {loaiTin, loaiNhaDat, gia, dienTich, soTangSelectedIdx, soPhongNguSelectedIdx, soNhaTamSelectedIdx, chiTiet, place} = this.props.postAds;
         var imageUrls = [];
         uploadUrls.map(function (uploadUrl) {
             imageUrls.push(rootUrl + uploadUrl);
@@ -411,7 +382,10 @@ class PostAdsDetail extends Component {
             "phone": currentUser.phone,
             "userID": currentUser.userID
         };
-        dbService._createAds({loaiTin: loaiTinVal, loaiNha: loaiNha, place: place, gia: gia,
+        var phongNgu = DanhMuc.getSoPhongByIndex(soPhongNguSelectedIdx);
+        var soTang = DanhMuc.getSoTangByIndex(soTangSelectedIdx);
+        var phongTam = DanhMuc.getSoPhongTamByIndex(soNhaTamSelectedIdx);
+        dbService._createAds({loaiTin: loaiTinVal, loaiNha: loaiNhaDat, place: place, gia: gia,
             dienTich: dienTich, soTang: soTang, phongNgu: phongNgu, phongTam: phongTam, chiTiet: chiTiet,
             uploadUrls: imageUrls, userID: currentUser.userID, tenLoaiNhaDat: tenLoaiNhaDat,
             tenLoaiTin: tenLoaiTin, dangBoi: dangBoi}, this.createAdsCallBack.bind(this));
@@ -436,7 +410,8 @@ class PostAdsDetail extends Component {
 var myStyles = StyleSheet.create({
     container: {
         flex: 1,
-        alignItems: 'stretch'
+        alignItems: 'stretch',
+        backgroundColor: 'white'
     },
     headerSeparator: {
         marginTop: 2,

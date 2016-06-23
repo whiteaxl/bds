@@ -306,7 +306,7 @@ class Search extends Component {
   }
 
   _onPropertyTypesPressed() {
-    Actions.PropertyTypes();
+    Actions.PropertyTypes({func: 'search'});
   }
 
   _onHuongNhaPressed() {

@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import * as globalActions from '../reducers/global/globalActions';
 import * as searchActions from '../reducers/search/searchActions';
+import * as postAdsActions from '../reducers/postAds/postAdsActions';
 
 import {Map} from 'immutable';
 
@@ -25,7 +26,8 @@ import gui from '../lib/gui';
 */
 const actions = [
   globalActions,
-  searchActions
+  searchActions,
+  postAdsActions
 ];
 
 function mapStateToProps(state) {
@@ -50,15 +52,41 @@ var loaiNhaDatValues = [];
 
 class PropertyTypes extends Component {
   constructor(props) {
-    super();
-    loaiNhaDatValues = props.search.form.fields.loaiTin=='ban' ? DanhMuc.getLoaiNhaDatBanValues() : DanhMuc.getLoaiNhaDatThueValues() ;
-    var loaiNhaDat = this.getValueByKey(loaiNhaDatValues, props.search.form.fields.loaiNhaDat);
-    if (!loaiNhaDat) {
-        loaiNhaDat = loaiNhaDatValues[0];
-    }
+    super(props);
+    var loaiNhaDatVal = this.getLoaiNhaDatVal();
     this.state = {
-        loaiNhaDat: loaiNhaDat
+        loaiNhaDat: loaiNhaDatVal
     };
+  }
+
+  getLoaiTin() {
+      var {func, search, postAds} = this.props;
+      return (func == 'search') ? search.form.fields.loaiTin : postAds.loaiTin;
+  }
+
+  getLoaiNhaDat() {
+      var {func, search, postAds} = this.props;
+      return (func == 'search') ? search.form.fields.loaiNhaDat : postAds.loaiNhaDat;
+  }
+
+  setLoaiNhaDat(option) {
+      var {func} = this.props;
+      if (func == 'search') {
+          this.props.actions.onSearchFieldChange("loaiNhaDat", this.getKeyByValue(loaiNhaDatValues, option));
+      } else {
+          this.props.actions.onPostAdsFieldChange("loaiNhaDat", this.getKeyByValue(loaiNhaDatValues, option));
+      }
+  }
+
+  getLoaiNhaDatVal() {
+      var loaiTin = this.getLoaiTin();
+      var loaiNhaDat = this.getLoaiNhaDat();
+      loaiNhaDatValues = loaiTin=='ban' ? DanhMuc.getLoaiNhaDatBanValues() : DanhMuc.getLoaiNhaDatThueValues() ;
+      var loaiNhaDatVal = this.getValueByKey(loaiNhaDatValues, loaiNhaDat);
+      if (!loaiNhaDatVal) {
+          loaiNhaDatVal = loaiNhaDatValues[0];
+      }
+      return loaiNhaDatVal;
   }
 
   render() {
@@ -83,7 +111,7 @@ class PropertyTypes extends Component {
   }
 
     _onApply(option) {
-        this.props.actions.onSearchFieldChange("loaiNhaDat", this.getKeyByValue(loaiNhaDatValues, option));
+        this.setLoaiNhaDat(option);
         Actions.pop();
     }
 
