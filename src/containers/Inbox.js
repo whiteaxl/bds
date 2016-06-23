@@ -47,17 +47,6 @@ class Inbox extends Component {
 		super(props);
 	}
 
-	onChangeTab(data) {
-		//this.props.actions.onAuthFieldChange('activeRegisterLoginTab',data.i);
-
-		//change focus, not now
-		if (data.i===0) {
-			//this.usernameRegister.focus();
-		} else {
-			//this.usernameLogin.focus();
-		}
-	}
-
 	renderTabBar() {
 		return <InboxTabBar />
 	}

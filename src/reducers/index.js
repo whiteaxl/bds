@@ -6,6 +6,7 @@ import auth from './auth/authReducer';
 import register from './register/registerReducer';
 import inbox from './inbox/inboxReducer';
 import chat from './chat/chatReducer';
+import postAds from './postAds/postAdsReducer';
 
 import { combineReducers } from 'redux';
 
@@ -15,7 +16,8 @@ const rootReducer = combineReducers({
   search,
   register,
   inbox,
-  chat
+  chat,
+  postAds
 });
 
 export default rootReducer;

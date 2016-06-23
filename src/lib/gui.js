@@ -18,7 +18,9 @@ var gui = {
 	ERR_MaXacMinhSai : 'Mã xác minh sai!',
 	ERR_dataRequired : 'Chưa nhập ',
 	INFO_userCreatedSuccessfully : 'Bạn đã đăng ký thành công!',
-	ERR_PhoneExisted : 'Số điện thoại đã tồn tại!'
+	ERR_PhoneExisted : 'Số điện thoại đã tồn tại!',
+	ERR_LIKED : "Lỗi! Bài đăng đã lưu từ trước",
+	ERR_UserNotExist : "Lỗi! User không tồn tại"
 };
 
 var styles = StyleSheet.create({

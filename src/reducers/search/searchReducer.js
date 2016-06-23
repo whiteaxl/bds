@@ -14,7 +14,8 @@ const {
     FETCH_SEARCH_RESULT_FAIL,
     FETCH_SEARCH_RESULT_SUCCESS,
     CHANGE_LOADING_SEARCH_RESULT,
-    ON_MAP_CHANGE
+    ON_MAP_CHANGE,
+  SEARCH_LIST_LIKE_SUCCESS
 
 } = require('../../lib/constants').default;
 
@@ -73,6 +74,24 @@ export default function searchReducer(state = initialState, action) {
       let nextState =  state.setIn(['map', field], value);
       return nextState;
     }
+      /*
+    case SEARCH_LIST_LIKE_SUCCESS : {
+      console.log("SEARCH_LIST_LIKE_SUCCESS reducer ", action.payload);
+      let {rowData, rowID} = action.payload;
+      let idx = Number(rowID);
+      let listAds = state.result.listAds;
+
+      rowData.isLiked = 1;
+
+      let newListAds = [
+        ...listAds.slice(0, idx),
+        rowData,
+        ...listAds.slice(idx+1)
+      ];
+
+      return state.setIn(['result',"listAds"], newListAds);
+    }
+    */
   }
   
   /**

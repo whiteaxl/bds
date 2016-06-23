@@ -92,8 +92,14 @@ export default class LoginRegister extends React.Component {
   }
 
   render(){
+    //let page = this.props.page;
+    let page;
+    if (page == null) {
+      page = this.props.auth.activeRegisterLoginTab;
+    }
+
     return (
-      <ScrollableTabView page={this.props.auth.activeRegisterLoginTab}
+      <ScrollableTabView page={page} initialPage={0}
         renderTabBar={this.renderTabBar.bind(this)}
         style={styles.container}
                          tabBarUnderlineColor={gui.mainColor}

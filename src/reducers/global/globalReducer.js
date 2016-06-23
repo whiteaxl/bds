@@ -10,7 +10,9 @@ const {
   LAUNCH_APP,
   ROUTER_FOCUS,
   ON_DB_CHANGE,
-  REGISTER_PUSHTOKEN_SUCCESS
+  REGISTER_PUSHTOKEN_SUCCESS,
+
+  SEARCH_LIST_LIKE_SUCCESS
 } = require('../../lib/constants').default;
 
 import InitialState from './globalInitialState';
@@ -72,15 +74,15 @@ export default function globalReducer(state = initialState, action) {
         return state;
       }
 
-      var {all} = action.payload;
+      var {e} = action.payload;
       var next = state;
 
-      let users = all.filter(e => e.doc.type == 'User');
+      let user = e.results.find(one => one.doc.type == 'User');
 
-      if (users.length > 0) {
-        const e = users[0].doc;
+      if (user) {
+        const e = user.doc;
         //console.log("globalreducer.ON_DB_CHANGE, user", e);
-        console.log("globalreducer.ON_DB_CHANGE, update current User");
+        console.log("globalreducer.ON_DB_CHANGE, update current User", e);
 
         next = state
           .setIn(['currentUser','userID'], e.userID)
@@ -88,6 +90,7 @@ export default function globalReducer(state = initialState, action) {
           .setIn(['currentUser','email'], e.email)
           .setIn(['currentUser','fullName'], e.fullName)
           .setIn(['currentUser','avatar'], e.avatar)
+          .setIn(['currentUser','adsLikes'], e.adsLikes)
         ;
       }
 
@@ -98,6 +101,12 @@ export default function globalReducer(state = initialState, action) {
         .setIn(["deviceInfo", "tokenRegistered"], true);
 
       return newState;
+    }
+
+    case SEARCH_LIST_LIKE_SUCCESS :
+    {
+      console.log("globalReducer ", action.payload);
+      return state.setIn(['currentUser','adsLikes'], action.payload)
     }
 
   }

@@ -77,7 +77,8 @@ class  ChatContent extends React.Component {
       msgType : message.type || 'text',
       read: false,
       date : new Date(),
-      type: 'Chat'
+      type: 'Chat',
+      epoch : new Date().getTime()
     };
 
     console.log("start send myMsg=", myMsg);

@@ -6,6 +6,7 @@ var {manager} = require('./relandCB');
 import log from "../lib/logUtil";
 import cfg from "../cfg";
 import moment from 'moment';
+import gui from "../lib/gui";
 
 
 class DBService {
@@ -27,11 +28,11 @@ class DBService {
   db() {
     return this.database.getInfo()
       .then((res) => {
-        console.log("DB infor:", res);
+        log.info("DB infor:", res);
         return this.database
       })
       .catch(res => {
-        console.log("Fail to DB infor, will reinit:", res);
+        log.warn("Fail to DB infor, will reinit:", res);
         var that = this;
         var p1 = new Promise(
           function(resolve, reject) {
@@ -125,7 +126,7 @@ class DBService {
       return this.db().then(db => {
           db.createDocument(adsDto).then((res) => {
               let documentId = res.id;
-              console.log("created document!", documentId);
+              log.info("created document!", documentId);
               createAdsCallBack(documentId);
               return documentId;
           });
@@ -156,13 +157,10 @@ class DBService {
         this.database.listen({since: res.update_seq - 1, feed: 'longpoll', include_docs: true});
       });
     this.database.changesEventEmitter.on('changes', (e) => {
-      console.log("DB just changes:", e.results ? e.results.length:0);
+      log.info("DB just changes:", e.results ? e.results.length:0);
 
       setTimeout(() =>
-          this.database.getAllDocuments({include_docs: true})
-            .then(res => {
-              this.onDBChange(e, res.rows);
-            })
+          this.onDBChange(e)
         , 1000
       )
     });
@@ -187,11 +185,11 @@ class DBService {
             log.info("Login success, starting sync...");
             let sessionCookie = res.headers.map['set-cookie'][0];
             this.sessionCookie = sessionCookie;
-            //console.log(sessionCookie);
+            //log.info(sessionCookie);
 
             this.database.deleteDatabase()
               .then((res) => {
-                console.log('deleted database!', res);
+                log.info('deleted database!', res);
 
                 this.database.createDatabase()
                   .then((res) => {
@@ -241,7 +239,7 @@ class DBService {
       .then(db => {
         return db.queryView(this.adsDesignDocName, 'all_ads')
           .then((res) => {
-            console.log("getAllAds", res);
+            log.info("getAllAds", res);
 
             return res.rows || [];
           });
@@ -255,7 +253,7 @@ class DBService {
       .then(db => {
         return db.getDocument(adsID, options)
             .then((doc) => {
-              console.log("getAds", doc);
+              log.info("getAds", doc);
               getAdsCallback(doc);
               return doc;
             });
@@ -275,7 +273,7 @@ class DBService {
 
             db.updateDocument(doc, docID, documentRevision)
               .then((res) => {
-                console.log("Updated document", res);
+                log.info("Updated document", res);
               });
 
           });
@@ -284,11 +282,11 @@ class DBService {
 
   sendChat(msg) {
     return this.db().then(db => {
-        console.log("dbservice.sendChat", db);
+        log.info("dbservice.sendChat", db);
 
         db.createDocument(msg).then((res) => {
           let documentId = res.id;
-          console.log("created document!", documentId);
+          log.info("created document!", documentId);
           return documentId;
         });
       });
@@ -339,6 +337,44 @@ class DBService {
           return filtered.map(e => e.doc);
         });
       });
+  }
+
+  //{userID, adsID}
+  likeAds(dto) {
+    return this.db().then(db => {
+      log.info("localDB.likeAds", db);
+      return db.getDocument(dto.userID, {})
+        .then((doc) => {
+          log.info("Found user," , doc);
+          let documentRevision = doc._rev;
+
+          let {adsLikes} = doc;
+          let idx = adsLikes ? adsLikes.indexOf(dto.adsID) : null;
+
+          if (idx && idx > -1) {
+            return {
+              status:0,
+              msg : gui.ERR_LIKED
+            }
+          }
+
+          if (!adsLikes) adsLikes=[];
+
+          adsLikes.push(dto.adsID);
+
+          doc.adsLikes = adsLikes;
+
+          return db.updateDocument(doc, doc.userID, documentRevision)
+            .then((res) => {
+              log.info("Updated document for likeAds", res);
+              return {
+                status:0,
+                msg : "Ngon",
+                adsLikes: adsLikes
+              }
+            });
+        });
+    });
   }
 }
 

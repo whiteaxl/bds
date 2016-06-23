@@ -9,6 +9,7 @@ import gui from "./gui";
 var userApiUrl = cfg.rootUrl + "/user/";
 var requestVerifyCodeUrl = userApiUrl + "requestVerifyCode";
 var registerUser = userApiUrl + "registerUser";
+var likeAdsUrl = cfg.rootUrl + "/likeAds";
 
 var userApi = {
   requestVerifyCode(phone) {
@@ -84,6 +85,32 @@ var userApi = {
       })
       .catch(e => {
         log.info("Error in updateDevice", e);
+        return {
+          status : 101,
+          msg: gui.ERR_LoiKetNoiMayChu
+        }
+      });
+  },
+
+  //{userID and adsID}
+  likeAds(dto) {
+    const url  = likeAdsUrl;
+    log.info("Call fetch ", url, dto);
+
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dto)
+    })
+      .then(ApiUtils.checkStatus)
+      .then(response => {
+        return response.json()
+      })
+      .catch(e => {
+        log.info("Error in likeAds", e);
         return {
           status : 101,
           msg: gui.ERR_LoiKetNoiMayChu

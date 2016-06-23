@@ -3,6 +3,8 @@ import {bindActionCreators} from 'redux';
 import {connect} from 'react-redux';
 
 import * as globalActions from '../reducers/global/globalActions';
+import * as authActions from '../reducers/auth/authActions';
+import * as searchActions from '../reducers/search/searchActions';
 
 import {Map} from 'immutable';
 
@@ -11,6 +13,7 @@ import React, {Component} from 'react';
 import {
     Text, View, Image, ListView, Dimensions, StatusBar
     , RecyclerViewBackedScrollView, TouchableHighlight, StyleSheet
+    , Alert
 } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
@@ -32,8 +35,11 @@ import GiftedSpinner from "../components/GiftedSpinner";
 
 import {MenuContext} from '../components/menu';
 
+
 const actions = [
-    globalActions
+    globalActions,
+    authActions,
+  searchActions
 ];
 
 function mapStateToProps(state) {
@@ -44,7 +50,8 @@ function mapStateToProps(state) {
         loading: state.search.loadingFromServer,
         errorMsg: state.search.result.errorMsg,
         placeFullName: state.search.form.fields.place.fullName,
-        place: state.search.form.fields.place
+        place: state.search.form.fields.place,
+      ...state
     };
 }
 
@@ -55,8 +62,8 @@ function mapDispatchToProps(dispatch) {
         .toObject();
 
     return {
-        //actions: bindActionCreators(creators, dispatch),
-        //dispatch
+        actions: bindActionCreators(creators, dispatch),
+        dispatch
     };
 }
 
@@ -154,6 +161,38 @@ class SearchResultList extends Component {
         }
     }
 
+    coming() {
+        Alert.alert("Coming soon...");
+    }
+
+    onLike(rowData, sectionID, rowID) {
+        if (!this.props.global.loggedIn) {
+            //this.props.actions.onAuthFieldChange('activeRegisterLoginTab',0);
+            Actions.LoginRegister({page:1});
+        } else {
+          this.props.actions.likeAds(this.props.global.currentUser.userID, rowData, sectionID, rowID)
+        }
+    }
+
+  renderLikeIcon(rowData, sectionID, rowID) {
+    //console.log("renderLikeIcon, ", rowData.isLiked);
+
+    const isLiked =
+      this.props.global.currentUser.adsLikes
+      && this.props.global.currentUser.adsLikes.indexOf(rowData.adsID) > -1;
+
+    if (isLiked) {
+      return (
+        <TruliaIcon name="heart-o" mainProps={myStyles.heartButton} color={'red'} size={23}/>
+      )
+    } else {
+      return (
+        <TruliaIcon onPress={() => {this.onLike(rowData, sectionID, rowID)}}
+                    name="heart-o" mainProps={myStyles.heartButton} color={'white'} size={23}/>
+      )
+    }
+  }
+
     renderRow(rowData, sectionID, rowID) {
         
         var diaChi = rowData.diaChi;
@@ -213,7 +252,7 @@ class SearchResultList extends Component {
                             >{rowData.giaFmt}</Text>
                             <Text style={myStyles.text}>{diaChi}{moreInfo}</Text>
                         </View>
-                        <TruliaIcon name="heart-o" mainProps={myStyles.heartButton} color={'white'} size={23}/>
+                      {this.renderLikeIcon(rowData, sectionID, rowID)}
                     </View>
 
                 </View>

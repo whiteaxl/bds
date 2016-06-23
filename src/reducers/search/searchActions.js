@@ -5,6 +5,9 @@ import {Actions} from 'react-native-router-flux';
 import gui from "../../lib/gui";
 import {Alert} from "react-native";
 
+import userApi from '../../lib/userApi';
+import db from '../../lib/localDB';
+
 const {
     ON_SEARCH_FIELD_CHANGE,
     SET_SEARCH_LOAI_TIN,
@@ -15,7 +18,8 @@ const {
     FETCH_DETAIL_SUCCESS,
     SET_LOADING_DETAIL,
     SEARCH_STATE_INPUT,
-    ON_MAP_CHANGE
+    ON_MAP_CHANGE,
+    SEARCH_LIST_LIKE_SUCCESS
 
 } = require('../../lib/constants').default;
 
@@ -141,4 +145,41 @@ export function getDetail(credential, successCallback) {
                 }
             });
     }
+}
+
+export function likeSuccess(payload) {
+    return {
+        type: SEARCH_LIST_LIKE_SUCCESS,
+        payload: payload
+    }
+}
+
+export function likeAds(userID, rowData, sectionID, rowID) {
+  return dispatch => {
+    let dto = {
+      userID : userID,
+      adsID : rowData.adsID
+    };
+
+    db.likeAds(dto).then((res) => {
+      if (res.status===0) {
+        dispatch(likeSuccess(res.adsLikes));
+        Alert.alert("Thành công!");
+      } else {
+        Alert.alert("Không thành công!");
+      }
+    });
+
+    /*
+    userApi.likeAds(dto).then(res => {
+      if (res.status === 0) {
+        let payload = {rowData, sectionID, rowID};
+        dispatch(likeSuccess(payload));
+        Alert.alert("Thành công!");
+      } else {
+        Alert.alert(res.msg);
+      }
+    });
+    */
+  }
 }

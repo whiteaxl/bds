@@ -9,6 +9,82 @@ const {
 
 const initialState = new InitialState;
 
+function updateInboxList(newDocs, next) {
+  let currentInboxList = next.inboxList;
+  let changed = false;
+  let nextInboxList = currentInboxList;
+
+  newDocs.forEach((e) => {
+    const {doc} = e;
+    //console.log("aaaaaaaa", doc);
+
+    if (doc.type == 'Chat') {
+      if (!next.currentUserID) {
+        console.log("WARN! No current user, will ignore these chat msg!");
+        return next;
+      }
+
+      let found = false;
+
+      for (let i=0; i < currentInboxList.length; i++) {
+        let inbox =  currentInboxList[i];
+        if (inbox.partner.userID === doc.fromUserID || inbox.partner.userID === doc.toUserID) {
+          if (inbox.doc.epoch <= doc.epoch) {
+            //console.log("New chat msg, update inboxList doc.epoch", doc.epoch);
+            inbox.doc = doc;
+            nextInboxList = [
+              ...currentInboxList.slice(0, i),
+              {doc: doc, partner: inbox.partner},
+              ...currentInboxList.slice(i+1)
+            ];
+            changed = true;
+          }
+          found = true;
+          break;
+        }
+      }
+
+      if (!found) {
+        let partner;
+
+        if (next.currentUserID == doc.toUserID) {
+          partner = {
+            userID : doc.fromUserID,
+            fullName: doc.fromFullName,
+            avatar : doc.fromUserAvatar
+          };
+        } else {
+          partner = {
+            userID : doc.toUserID,
+            fullName: doc.toFullName,
+            avatar : doc.toUserAvatar
+          };
+        }
+
+        changed = true;
+        nextInboxList = [...currentInboxList, {doc, partner}];
+      }
+
+      if (changed) {
+        currentInboxList = nextInboxList;
+      }
+    }
+  });
+
+  if (changed) {
+    const ds = next.allInboxDS;
+    const newDs = ds.cloneWithRows(currentInboxList);
+
+    console.log("InboxReducer - update new Inbox");
+
+    return next
+      .set("inboxList", currentInboxList)
+      .set("allInboxDS", newDs);
+  }
+
+  return next;
+}
+
 //all = [{doc}]
 function getInboxList(all) {
   let mapByAds = {};
@@ -70,21 +146,24 @@ export default function inboxReducer(state = initialState, action) {
   switch (action.type) {
     case ON_DB_CHANGE:
     {
+      var next = state;
       //console.log("Calling InboxReducer.ON_DB_CHANGE...", action.payload);
-      console.log("Calling InboxReducer.ON_DB_CHANGE...");
+      const {e} = action.payload;
+      console.log("Calling InboxReducer.ON_DB_CHANGE...", e);
 
-      const {e, all} = action.payload;
-      const inboxList = getInboxList(all);
-      if (!inboxList) {
-        return state;
+      //handle user msg
+      let userChanged = e.results.find((d) => d.doc.type==='User');
+      if (userChanged) {
+        console.log("InboxReducer,found user ", userChanged.doc.userID);
+        next = next.set('currentUserID', userChanged.doc.userID);
       }
 
-      const ds = state.allInboxDS;
-      const newDs = ds.cloneWithRows(inboxList);
+      //handle chat msg
+      //const inboxList = getInboxList(all);
 
-      let nextState = state.set("allInboxDS", newDs);
+      next = updateInboxList(e.results, next);
 
-      return nextState;
+      return next;
     }
 
     case ON_INBOX_FIELD_CHANGE:

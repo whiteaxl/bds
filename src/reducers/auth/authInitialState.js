@@ -30,7 +30,7 @@ var InitialState = Record({
     error: "",
     sessionCookie:"",
     state: LOGIN_STATE_LOGOUT,
-    activeRegisterLoginTab : 0
+    activeRegisterLoginTab : 1 //0 or 1
 });
 export default InitialState;
 
