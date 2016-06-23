@@ -98,7 +98,7 @@ class PostAdsDetail extends Component {
         var _scrollView: ScrollView;
         return (
             <View myStyles={myStyles.container}>
-                <CommonHeader />
+                <View style={{paddingTop: 30, backgroundColor: 'white'}} />
                 <View style={myStyles.headerSeparator} />
                 <ScrollView
                     ref={(scrollView) => { _scrollView = scrollView; }}
@@ -110,23 +110,52 @@ class PostAdsDetail extends Component {
                 >
                     {this._renderPhoto()}
                     {this._renderLoaiTin()}
+
+                    <View style={myStyles.searchSectionTitle}>
+                        <Text style={myStyles.cacDieuKienText}>
+                            ĐẶC ĐIỂM
+                        </Text>
+                    </View>
+
                     {this._renderLoaiNha()}
                     {this._renderDienTich()}
                     {this._renderPhongNgu()}
                     {this._renderPhongTam()}
                     {this._renderSoTang()}
+
+                    <View style={myStyles.searchSectionTitle}>
+                        <Text style={myStyles.cacDieuKienText}>
+                            VỊ TRÍ
+                        </Text>
+                    </View>
+
+                    {this._renderBanDo()}
                     {this._renderDiaChi()}
+
+                    <View style={myStyles.searchSectionTitle}>
+                        <Text style={myStyles.cacDieuKienText}>
+                            GIÁ
+                        </Text>
+                    </View>
+
                     {this._renderGia()}
+
+                    <View style={myStyles.searchSectionTitle}>
+                        <Text style={myStyles.cacDieuKienText}>
+                            THÔNG TIN CHI TIẾT
+                        </Text>
+                    </View>
+
                     {this._renderChiTiet()}
                     <Text style={[myStyles.label, {marginTop: 9, marginLeft: 15, color: 'red'}]}>
                         {this.props.postAds.error}</Text>
                 </ScrollView>
                 <View style={myStyles.searchButton}>
                     <View style={myStyles.searchListButton}>
-                        <RelandIcon onPress={this.onTryAgain.bind(this)} name="close" size={24} text="Làm lại"
-                                    mainProps={myStyles.button} textProps={myStyles.buttonText}/>
-                        <RelandIcon onPress={this.onPostAds.bind(this)} name="save" size={24} text="Đăng tin"
-                                    mainProps={myStyles.button} textProps={myStyles.buttonText}/>
+                        <Button onPress={this.onCancel.bind(this)}
+                                style={myStyles.buttonText}>Thoát</Button>
+                        <Button onPress={this.onPostAds.bind(this)}
+                                style={myStyles.buttonText}>Đăng tin</Button>
                     </View>
                 </View>
             </View>
@@ -135,7 +164,7 @@ class PostAdsDetail extends Component {
 
     _renderPhoto() {
         return (
-            <View style={myStyles.imgList} >
+            <View style={[myStyles.imgList, {marginTop: 15}]} >
                 <TouchableHighlight onPress={() => this.onTakePhoto(0)} >
                     <Image style={myStyles.imgItem} source={this.props.postAds.photos[0]}/>
                 </TouchableHighlight>
@@ -195,9 +224,36 @@ class PostAdsDetail extends Component {
         return DanhMuc.getLoaiNhaDatForDisplay(loaiTin, loaiNhaDat);
     }
 
+    _renderBanDo() {
+        return (
+            <View style={{marginTop: 9, marginBottom: 5}}>
+                <TouchableHighlight
+                    onPress={() => this._onBanDoPressed()}>
+                    <View style={myStyles.imgList} >
+                        <Text style={myStyles.label}>
+                            Bản đồ
+                        </Text>
+                        <View style={{flexDirection: "row", alignItems: "flex-end"}}>
+                            <Text style={myStyles.label}> {this._getBanDoValue()} </Text>
+                            <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
+                        </View>
+                    </View>
+                </TouchableHighlight>
+            </View>
+        );
+    }
+
+    _onBanDoPressed() {
+
+    }
+
+    _getBanDoValue() {
+        return "Chọn vị trí";
+    }
+
     _renderDiaChi() {
         return (
-            <View style={myStyles.imgList} >
+            <View style={[myStyles.imgList, myStyles.headerSeparator]} >
                 <Text style={myStyles.label}>Địa chỉ</Text>
                 <TextInput
                     secureTextEntry={false}
@@ -225,7 +281,7 @@ class PostAdsDetail extends Component {
 
     _renderDienTich() {
         return (
-            <View style={myStyles.imgList} >
+            <View style={[myStyles.imgList, myStyles.headerSeparator]} >
                 <Text style={myStyles.label}>Diện tích</Text>
                 <TextInput
                     secureTextEntry={false}
@@ -239,17 +295,17 @@ class PostAdsDetail extends Component {
 
     _renderSoTang() {
         return this._renderSegment("Số tầng", DanhMuc.getSoTangValues(),
-            this.props.postAds.soTang, this._onSegmentChanged.bind(this, 'soTangSelectedIdx'));
+            this.props.postAds.soTangSelectedIdx, this._onSegmentChanged.bind(this, 'soTangSelectedIdx'));
     }
 
     _renderPhongNgu() {
         return this._renderSegment("Số phòng ngủ", DanhMuc.getSoPhongNguValues(),
-            this.props.postAds.phongNgu, this._onSegmentChanged.bind(this, 'soPhongNguSelectedIdx'));
+            this.props.postAds.soPhongNguSelectedIdx, this._onSegmentChanged.bind(this, 'soPhongNguSelectedIdx'));
     }
 
     _renderPhongTam() {
         return this._renderSegment("Số phòng tắm", DanhMuc.getSoPhongTamValues(),
-            this.props.postAds.phongTam, this._onSegmentChanged.bind(this, 'soNhaTamSelectedIdx'));
+            this.props.postAds.soNhaTamSelectedIdx, this._onSegmentChanged.bind(this, 'soNhaTamSelectedIdx'));
     }
 
     _onSegmentChanged(key, event) {
@@ -267,7 +323,7 @@ class PostAdsDetail extends Component {
     _renderChiTiet() {
         return (
             <View>
-                <Text style={myStyles.label2}>Mô tả chi tiết</Text>
+                <Text style={myStyles.label2}>Chi tiết</Text>
                 <TextInput
                     secureTextEntry={false}
                     style={myStyles.textArea}
@@ -395,8 +451,8 @@ class PostAdsDetail extends Component {
         Actions.SearchResultDetail({adsID: adsID, source: 'local'});
     }
 
-    onTryAgain() {
-        Actions.pop();
+    onCancel() {
+        Actions.Main();
     }
 
     onTakePhoto(imageIndex) {
@@ -414,7 +470,7 @@ var myStyles = StyleSheet.create({
         backgroundColor: 'white'
     },
     headerSeparator: {
-        marginTop: 2,
+        marginTop: 0,
         borderTopWidth: 1,
         borderTopColor: gui.separatorLine
     },
@@ -422,13 +478,16 @@ var myStyles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingLeft: 10,
-        paddingRight: 10
+        paddingLeft: 17,
+        paddingRight: 10,
+        backgroundColor: 'white'
     },
     imgItem: {
         width: 90,
         height: 90,
-        backgroundColor: "#A18EBC"
+        backgroundColor: "white",
+        borderWidth: 1,
+        borderColor: gui.separatorLine
     },
     input: {
         padding: 4,
@@ -442,6 +501,7 @@ var myStyles = StyleSheet.create({
     },
     textArea: {
         fontSize: gui.normalFontSize,
+        fontFamily: gui.fontFamily,
         padding: 4,
         height: 80,
         borderColor: 'gray',
@@ -455,34 +515,65 @@ var myStyles = StyleSheet.create({
     },
     label: {
         fontSize: gui.normalFontSize,
+        fontFamily: gui.fontFamily
     },
     label2: {
         fontSize: gui.normalFontSize,
-        paddingLeft: 10
+        fontFamily: gui.fontFamily,
+        paddingLeft: 17
     },
     button: {
         flexDirection: 'row',
         justifyContent: 'space-between',
         backgroundColor: 'transparent',
-        margin: 10
+        margin: 15
     },
     buttonText: {
-        fontSize: gui.fontSize,
-        fontFamily: gui.fontFamily
+        marginLeft: 17,
+        marginRight: 17,
+        marginTop: 10,
+        marginBottom: 10,
+        color: 'white',
+        fontSize: gui.buttonFontSize,
+        fontFamily: gui.fontFamily,
+        fontWeight : 'normal'
     },
     searchListButton: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        backgroundColor: '#E2E2E2',
         width: Dimensions.get('window').width,
+        backgroundColor: gui.mainColor,
         height: 44
     },
     searchButton: {
         alignItems: 'center',
         justifyContent: 'flex-end'
     },
+    searchSectionTitle: {
+        flexDirection : "row",
+        //borderWidth:1,
+        //borderColor: "red",
+        justifyContent :'space-between',
+        paddingRight: 8,
+        paddingLeft: 17,
+        paddingTop: 12,
+        paddingBottom: 5,
+        borderTopWidth: 1,
+        borderTopColor: '#f8f8f8',
+        backgroundColor: '#f8f8f8'
+    },
+    cacDieuKienText: {
+        fontSize: 12,
+        fontFamily: gui.fontFamily,
+        color: '#606060',
+        justifyContent :'space-between',
+        padding: 0,
+        borderTopWidth: 1,
+        borderTopColor: gui.separatorLine
+    },
     scrollView: {
-        height: Dimensions.get('window').height-108
+        height: Dimensions.get('window').height-76,
+        backgroundColor: 'white'
     },
     picker: {
         margin: 5,
