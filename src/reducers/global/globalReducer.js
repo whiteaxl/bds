@@ -70,10 +70,11 @@ export default function globalReducer(state = initialState, action) {
     }
     case ON_DB_CHANGE:
     {
-
+      /*
       if (!state.loggedIn || state.currentUser.userID) {
         return state;
       }
+      */
 
       var {e} = action.payload;
       var next = state;
