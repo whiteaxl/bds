@@ -1,7 +1,7 @@
 'use strict';
 const InitialState = require('./chatInitialState').default;
 
-
+import log from '../../lib/logUtil';
 
 const {
   ON_CHAT_FIELD_CHANGE,
@@ -18,7 +18,7 @@ export default function chatReducer(state = initialState, action) {
     case REQUEST_START_CHAT:
     {
       let {allMsg, doc, partner} = action.payload;
-      console.log("call REQUEST_START_CHAT:", partner);
+      log.info("call REQUEST_START_CHAT:", partner);
 
       let messages = convertToGiftMsg(allMsg, partner.userID);
 
@@ -44,7 +44,7 @@ export default function chatReducer(state = initialState, action) {
 
     case ON_DB_CHANGE:
     {
-      console.log("Calling chatReducer.ON_DB_CHANGE...");
+      log.info("Calling chatReducer.ON_DB_CHANGE...");
       const {e, all} = action.payload;
       const partnerID = state.partner.userID;
 

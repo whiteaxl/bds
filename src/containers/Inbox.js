@@ -56,7 +56,7 @@ class Inbox extends Component {
 	}
 
   render() {
-		console.log("Calling Inbox.render ..., loggedIn = ", this.props.global.loggedIn);
+		log.info("Calling Inbox.render ..., loggedIn = ", this.props.global.loggedIn);
 		let loaiTin = this.props.inbox.loaiTin;
 
 		if (this.props.global.loggedIn) {

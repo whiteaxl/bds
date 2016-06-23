@@ -16,6 +16,7 @@ const {
 } = require('../../lib/constants').default;
 
 import InitialState from './globalInitialState';
+import log from '../../lib/logUtil';
 
 const initialState = new InitialState;
 
@@ -49,7 +50,7 @@ export default function globalReducer(state = initialState, action) {
     {
       var data  =  action.payload;
 
-      console.log("state:", state);
+      log.info("state:", state);
       var next = state
         .set('deviceInfo', data.deviceInfo)
         .set('appInfo', data.appInfo);
@@ -58,7 +59,7 @@ export default function globalReducer(state = initialState, action) {
     }
 
     case ROUTER_FOCUS: { //RNRF action
-      //console.log("Call globalReducer.route ");
+      //log.info("Call globalReducer.route ");
       let prevScene = state.scene;
 
       var next = state
@@ -81,8 +82,8 @@ export default function globalReducer(state = initialState, action) {
 
       if (user) {
         const e = user.doc;
-        //console.log("globalreducer.ON_DB_CHANGE, user", e);
-        console.log("globalreducer.ON_DB_CHANGE, update current User", e);
+        //log.info("globalreducer.ON_DB_CHANGE, user", e);
+        log.info("globalreducer.ON_DB_CHANGE, update current User", e);
 
         next = state
           .setIn(['currentUser','userID'], e.userID)
@@ -105,7 +106,7 @@ export default function globalReducer(state = initialState, action) {
 
     case SEARCH_LIST_LIKE_SUCCESS :
     {
-      console.log("globalReducer ", action.payload);
+      log.info("globalReducer ", action.payload);
       return state.setIn(['currentUser','adsLikes'], action.payload)
     }
 

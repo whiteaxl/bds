@@ -33,6 +33,8 @@ import apiUtils from '../lib/ApiUtils';
 
 import SegmentedControl from '../components/SegmentedControl';
 
+import log from '../lib/logUtil';
+
 const actions = [
   globalActions,
   searchActions
@@ -99,7 +101,7 @@ class Search extends Component {
   }
 
   _getGiaValue() {
-    //console.log(this.props.search.form.fields.gia)
+    //log.info(this.props.search.form.fields.gia)
     return RangeUtils.getFromToDisplay(this.props.search.form.fields.gia);
   }
 
@@ -129,10 +131,9 @@ class Search extends Component {
   }
 
   render() {
-    //console.log(RangeUtils.sellPriceRange.getPickerData());
-    console.log("CALL Search.render");
-    console.log(this.props);
-    console.log(Actions);
+    //log.info(RangeUtils.sellPriceRange.getPickerData());
+    log.info("CALL Search.render");
+    //log.info(this.props);
 
     let loaiTin = this.props.search.form.fields.loaiTin;
 
@@ -265,12 +266,12 @@ class Search extends Component {
   }
 
   onApply() {
-    console.log("Call Search.onApply");
+    log.info("Call Search.onApply");
 
     if (this.props.needBack) {
       Actions.pop();
     } else {
-      console.log("Call open SearchResultList in reset mode");
+      log.info("Call open SearchResultList in reset mode");
 
       Actions.SearchResultList({type: "reset"});
     }

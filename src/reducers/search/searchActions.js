@@ -3,6 +3,7 @@
 import Api from "../../lib/FindApi";
 import {Actions} from 'react-native-router-flux';
 import gui from "../../lib/gui";
+import log from "../../lib/logUtil";
 import {Alert} from "react-native";
 
 import userApi from '../../lib/userApi';
@@ -99,8 +100,8 @@ export function search(credential, successCallback) {
                 if (data.list) {
                     //let listAds = data.list;
 
-                    //console.log("Number of result: " + data.length);
-                    console.log(data);
+                    log.info("searchActions.search, Number of result: " + data.length);
+                    //log.info("searchActions.search", data);
 
                     dispatch(fetchSearchResultSuccess(data));
 
@@ -108,7 +109,6 @@ export function search(credential, successCallback) {
                 } else if (data.error) {
                     dispatch(fetchSearchResultFail(data.error));
                 }
-
                 else {
                     dispatch(fetchSearchResultFail(gui.ERR_LoiKetNoiMayChu));
                     //Alert.alert(gui.ERR_LoiKetNoiMayChu)
@@ -125,13 +125,8 @@ export function getDetail(credential, successCallback) {
 
         return Api.getDetail(credential)
             .then((data) => {
-                console.log(data);
+                log.info("getDetail", data);
                 if (data.ads) {
-                    //let listAds = data.list;
-
-                    //console.log("Number of result: " + data.length);
-                    console.log(data);
-
                     dispatch(fetchDetailSuccess(data));
 
                     successCallback(data);
@@ -141,7 +136,6 @@ export function getDetail(credential, successCallback) {
 
                 else {
                     dispatch(fetchDetailFail(gui.ERR_LoiKetNoiMayChu));
-                    //Alert.alert(gui.ERR_LoiKetNoiMayChu)
                 }
             });
     }

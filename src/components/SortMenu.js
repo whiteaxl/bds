@@ -19,6 +19,7 @@ import Menu, { MenuOptions, MenuOption, MenuTrigger } from './menu';
 import RelandIcon from './RelandIcon';
 
 import MMenuOption from './MMenuOption';
+import log from '../lib/logUtil';
 
 
 const actions = [
@@ -88,7 +89,7 @@ const orderKeys2 = [
 
 class SortMenu extends Component {
     render() {
-        console.log("Call SortMenu render");
+        log.info("Call SortMenu render");
         var {isDiaDiem} = this.props;
         var orderBy = this.getValueByKey(this.props.search.form.fields.orderBy, isDiaDiem);
         var orderTypes = isDiaDiem ? orderTypes2 : orderTypes1;
@@ -171,7 +172,7 @@ class SortMenu extends Component {
                 break;
             }
         }
-        //console.log(value);
+        //log.info(value);
         return value;
     }
 
@@ -186,7 +187,7 @@ class SortMenu extends Component {
                 break;
             }
         }
-        //console.log(key);
+        //log.info(key);
         return key;
     }
 

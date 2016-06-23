@@ -1,6 +1,7 @@
 'use strict';
 const InitialState = require('./inboxInitialState').default;
 
+import log from '../../lib/logUtil';
 
 const {
   ON_DB_CHANGE,
@@ -16,11 +17,9 @@ function updateInboxList(newDocs, next) {
 
   newDocs.forEach((e) => {
     const {doc} = e;
-    //console.log("aaaaaaaa", doc);
-
     if (doc.type == 'Chat') {
       if (!next.currentUserID) {
-        console.log("WARN! No current user, will ignore these chat msg!");
+        log.warn("WARN! No current user, will ignore these chat msg!");
         return next;
       }
 
@@ -30,7 +29,7 @@ function updateInboxList(newDocs, next) {
         let inbox =  currentInboxList[i];
         if (inbox.partner.userID === doc.fromUserID || inbox.partner.userID === doc.toUserID) {
           if (inbox.doc.epoch <= doc.epoch) {
-            //console.log("New chat msg, update inboxList doc.epoch", doc.epoch);
+            //log.info("New chat msg, update inboxList doc.epoch", doc.epoch);
             inbox.doc = doc;
             nextInboxList = [
               ...currentInboxList.slice(0, i),
@@ -75,7 +74,7 @@ function updateInboxList(newDocs, next) {
     const ds = next.allInboxDS;
     const newDs = ds.cloneWithRows(currentInboxList);
 
-    console.log("InboxReducer - update new Inbox");
+    log.info("InboxReducer - update new Inbox");
 
     return next
       .set("inboxList", currentInboxList)
@@ -89,12 +88,12 @@ function updateInboxList(newDocs, next) {
 function getInboxList(all) {
   let mapByAds = {};
   let user = all.filter(e => e.doc.type == 'User')[0];
-  console.log("user=", user);
+  log.info("user=", user);
   if (!user) return;
 
   const myUserID = user.doc.userID;
 
-  console.log("My userID = " + myUserID);
+  log.info("My userID = " + myUserID);
 
 
   all.forEach(e => {
@@ -120,7 +119,7 @@ function getInboxList(all) {
       const key = adsID + partner.userID;
 
       if (!mapByAds[key]) {
-        console.log("new key=" + key);
+        log.info("new key=" + key);
         mapByAds[key] = {doc, partner};
       } else if (mapByAds[key].doc.date < doc.date) {
         mapByAds[key] = {doc, partner};
@@ -136,7 +135,7 @@ function getInboxList(all) {
   });
 
 
-  //console.log("getInboxList, result=", array);
+  //log.info("getInboxList, result=", array);
 
   return array;
 }
@@ -147,14 +146,13 @@ export default function inboxReducer(state = initialState, action) {
     case ON_DB_CHANGE:
     {
       var next = state;
-      //console.log("Calling InboxReducer.ON_DB_CHANGE...", action.payload);
       const {e} = action.payload;
-      console.log("Calling InboxReducer.ON_DB_CHANGE...", e);
+      log.info("Calling InboxReducer.ON_DB_CHANGE...", e);
 
       //handle user msg
       let userChanged = e.results.find((d) => d.doc.type==='User');
       if (userChanged) {
-        console.log("InboxReducer,found user ", userChanged.doc.userID);
+        log.info("InboxReducer,found user ", userChanged.doc.userID);
         next = next.set('currentUserID', userChanged.doc.userID);
       }
 

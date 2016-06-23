@@ -24,6 +24,8 @@ import * as chatActions from '../../reducers/chat/chatActions';
 
 import GiftedMessenger from '../giftedMessegener/GiftedMessenger';
 
+import log from '../../lib/logUtil';
+
 var STATUS_BAR_HEIGHT = Navigator.NavigationBar.Styles.General.StatusBarHeight;
 
 const actions = [
@@ -59,7 +61,7 @@ class  ChatContent extends React.Component {
   }
 
   handleSend(message = {}) {
-    console.log("Enter handleSend...", message);
+    log.info("Enter handleSend...", message);
 
     const userID = this.props.global.currentUser.userID;
     const chatID = "Chat_" + userID + "_" + new Date().getTime();
@@ -81,7 +83,7 @@ class  ChatContent extends React.Component {
       epoch : new Date().getTime()
     };
 
-    console.log("start send myMsg=", myMsg);
+    log.info("start send myMsg=", myMsg);
 
     this.props.actions.sendChatMsg(myMsg);
   }

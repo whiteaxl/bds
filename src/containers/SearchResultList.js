@@ -35,6 +35,7 @@ import GiftedSpinner from "../components/GiftedSpinner";
 
 import {MenuContext} from '../components/menu';
 
+import log from '../lib/logUtil';
 
 const actions = [
     globalActions,
@@ -43,8 +44,6 @@ const actions = [
 ];
 
 function mapStateToProps(state) {
-    console.log("Call SearchResultList.mapStateToProps");
-    console.log(state);
     return {
         listAds: state.search.result.listAds,
         loading: state.search.loadingFromServer,
@@ -74,14 +73,11 @@ var myDs = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 class SearchResultList extends Component {
     constructor(props) {
         super(props);
-        console.log("Call SearchResultList.constructor: ");
         StatusBar.setBarStyle('light-content');
-
-        console.log(props);
     }
 
     _getListContent() {
-        console.log("Call SearchResultList._getListContent");
+        log.info("Call SearchResultList._getListContent");
 
         let myProps = this.props;
         if (myProps.loading) {
@@ -124,8 +120,8 @@ class SearchResultList extends Component {
     }
 
     render() {
-        console.log("Call SearchResultList render");
-        console.log(this.props);
+        log.info("Call SearchResultList render");
+        log.info(this.props);
         return (
             <MenuContext style={{ flex : 1 }}>
             <View style={myStyles.fullWidthContainer}>
@@ -175,7 +171,7 @@ class SearchResultList extends Component {
     }
 
   renderLikeIcon(rowData, sectionID, rowID) {
-    //console.log("renderLikeIcon, ", rowData.isLiked);
+    //log.info("renderLikeIcon, ", rowData.isLiked);
 
     const isLiked =
       this.props.global.currentUser.adsLikes
@@ -231,7 +227,7 @@ class SearchResultList extends Component {
                 <View style={myStyles.detail}>
                     <Swiper style={myStyles.wrapper} height={imgHeight}
                             showsButtons={false} autoplay={false} loop={false}
-                            onMomentumScrollEnd={function(e, state, context){console.log('index:', state.index)}}
+                            onMomentumScrollEnd={function(e, state, context){log.info('index:', state.index)}}
                             dot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]} />}
                             activeDot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]}/>}
                     >
