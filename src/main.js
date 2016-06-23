@@ -12,6 +12,7 @@ var Orientation = require('react-native-orientation');
 import authInitialState from './reducers/auth/authInitialState';
 import globalInitialState from './reducers/global/globalInitialState';
 import searchInitialState from './reducers/search/searchInitialState';
+import postAdsInitialState from './reducers/postAds/postAdsInitialState';
 
 import {lauchApp, registerPushTokenSuccess} from './reducers/global/globalActions';
 import DeviceInfo from 'react-native-device-info';
@@ -27,6 +28,7 @@ function getInitialState() {
     auth: new authInitialState,
     global: (new globalInitialState),
     search: (new searchInitialState),
+    postAds: (new postAdsInitialState),
   };
   return _initState;
 }

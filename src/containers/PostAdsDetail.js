@@ -3,6 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import * as globalActions from '../reducers/global/globalActions';
+import * as postAdsActions from '../reducers/postAds/postAdsActions';
 
 import React, {Component} from 'react';
 
@@ -26,8 +27,6 @@ import LikeTabButton from '../components/LikeTabButton';
 
 import SegmentedControl from '../components/SegmentedControl';
 
-import UploadApi from '../lib/UploadApi';
-
 import dbService from "../lib/localDB";
 
 import cfg from "../cfg";
@@ -37,7 +36,8 @@ var rootUrl = `http://${cfg.server}:5000`;
 const Item = Picker.Item;
 
 const actions = [
-    globalActions
+    globalActions,
+    postAdsActions
 ];
 
 function mapStateToProps(state) {
@@ -60,6 +60,7 @@ function mapDispatchToProps(dispatch) {
 
 var count = 0;
 var uploadFiles = [];
+var errorMessage = '';
 
 
 class PostAdsDetail extends Component {
@@ -68,37 +69,15 @@ class PostAdsDetail extends Component {
     constructor(props) {
         super(props);
         StatusBar.setBarStyle('default');
-        
-        var {photos} = props;
-
-        if (!photos) {
-            photos = [];
-            for(var i=0; i<4; i++) {
-                photos.push({uri: ''});
-            }
-        }
-        
+        errorMessage = this.props.postAds.error;
         this.state = {
-            photos: photos,
-            nguoiDang: 'chu_nha',
-            nguoiDangExpanded: false,
-            loaiTin: 'ban',
-            loaiNha: '0',
             loaiNhaExpanded: false,
-            diaChi: '',
-            gia: '',
-            dienTich: '',
-            soTang: 0,
-            phongNgu: 0,
-            phongTam: 0,
-            chiTiet: '',
-            uploadUrls: [],
-            geo: {"lat": '', "lon": ''},
-            errorMessage: ''
+            uploadUrls: []
         }
     }
 
     componentWillMount() {
+        this.onValueChange('photos', this.props.photos);
         this.getCurrentLocation();
     }
 
@@ -139,10 +118,9 @@ class PostAdsDetail extends Component {
                     {this._renderSoTang()}
                     {this._renderDiaChi()}
                     {this._renderGia()}
-                    {this._renderNguoiDang()}
                     {this._renderChiTiet()}
                     <Text style={[myStyles.label, {marginTop: 9, marginLeft: 15, color: 'red'}]}>
-                        {this.state.errorMessage}</Text>
+                        {this.props.postAds.error}</Text>
                 </ScrollView>
                 <View style={myStyles.searchButton}>
                     <View style={myStyles.searchListButton}>
@@ -160,69 +138,19 @@ class PostAdsDetail extends Component {
         return (
             <View style={myStyles.imgList} >
                 <TouchableHighlight onPress={() => this.onTakePhoto(0)} >
-                    <Image style={myStyles.imgItem} source={this.state.photos[0]}/>
+                    <Image style={myStyles.imgItem} source={this.props.postAds.photos[0]}/>
                 </TouchableHighlight>
                 <TouchableHighlight onPress={() => this.onTakePhoto(1)} >
-                    <Image style={myStyles.imgItem} source={this.state.photos[1]}/>
+                    <Image style={myStyles.imgItem} source={this.props.postAds.photos[1]}/>
                 </TouchableHighlight>
                 <TouchableHighlight onPress={() => this.onTakePhoto(2)} >
-                    <Image style={myStyles.imgItem} source={this.state.photos[2]}/>
+                    <Image style={myStyles.imgItem} source={this.props.postAds.photos[2]}/>
                 </TouchableHighlight>
                 <TouchableHighlight onPress={() => this.onTakePhoto(3)} >
-                    <Image style={myStyles.imgItem} source={this.state.photos[3]}/>
+                    <Image style={myStyles.imgItem} source={this.props.postAds.photos[3]}/>
                 </TouchableHighlight>
             </View>
         );
-    }
-
-    _renderNguoiDang() {
-        var arrowName = this.state.nguoiDangExpanded ? "arrow-down" : "arrow-right";
-        return (
-            <View style={{marginTop: 9, marginBottom: 5}}>
-                <TouchableHighlight
-                    onPress={() => this._onNguoiDangPressed()}>
-                    <View style={myStyles.imgList}>
-                        <Text style={myStyles.label}>
-                            Người đăng
-                        </Text>
-                        <View style={{flexDirection: "row", alignItems: "flex-end"}}>
-                            <Text style={myStyles.label}> {this._getNguoiDangValue()} </Text>
-                            <TruliaIcon name={arrowName} color={gui.arrowColor} size={18} />
-                        </View>
-                    </View>
-                </TouchableHighlight>
-                {this._renderNguoiDangPicker()}
-            </View>
-        );
-    }
-
-    _renderNguoiDangPicker() {
-        if (this.state.nguoiDangExpanded) {
-            return (
-                <View>
-                    <Picker style={myStyles.picker2}
-                            selectedValue={this.state.nguoiDang}
-                            onValueChange={this.onValueChange.bind(this, 'nguoiDang')}
-                            mode="dropdown">
-                        <Item label="Chủ nhà" value="chu_nha" />
-                        <Item label="Môi giới" value="moi_gioi" />
-                    </Picker>
-                </View>
-            );
-        } else {
-            return (
-                <View></View>
-            );
-        }
-    }
-
-    _onNguoiDangPressed() {
-        this.setState({nguoiDangExpanded: !this.state.nguoiDangExpanded});
-    }
-
-    _getNguoiDangValue() {
-        var nguoiDang = this.state.nguoiDang;
-        return (nguoiDang == 'chu_nha') ? "Chủ nhà" : "Môi giới";
     }
 
     _renderLoaiTin() {
@@ -231,10 +159,10 @@ class PostAdsDetail extends Component {
                 <View style = {{flex:1, flexDirection: 'row', paddingLeft: 5, paddingRight: 5}}>
                     <LikeTabButton name={'ban'}
                                    onPress={this.onValueChange.bind(this, 'loaiTin')}
-                                   selected={this.state.loaiTin === 'ban'}>BÁN</LikeTabButton>
+                                   selected={this.props.postAds.loaiTin === 'ban'}>BÁN</LikeTabButton>
                     <LikeTabButton name={'thue'}
                                    onPress={this.onValueChange.bind(this, 'loaiTin')}
-                                   selected={this.state.loaiTin === 'thue'}>CHO THUÊ</LikeTabButton>
+                                   selected={this.props.postAds.loaiTin === 'thue'}>CHO THUÊ</LikeTabButton>
                 </View>
             </View>
         );
@@ -263,17 +191,17 @@ class PostAdsDetail extends Component {
 
     _renderLoaiNhaPicker() {
         if (this.state.loaiNhaExpanded) {
-            var {loaiTin} = this.state;
+            var {loaiTin, loaiNha} = this.props.postAds;
             var hashLoaiNha = (loaiTin == "ban") ? DanhMuc.LoaiNhaDatBan : DanhMuc.LoaiNhaDatThue;
             var dmLoaiNha = DanhMuc.getDanhMucKeys(hashLoaiNha);
             var loaiNhaItems = [];
-            dmLoaiNha.map(function (loaiNha) {
-                loaiNhaItems.push(<Item label={hashLoaiNha[loaiNha]} value={loaiNha}></Item>);
+            dmLoaiNha.map(function (val) {
+                loaiNhaItems.push(<Item label={hashLoaiNha[val]} value={val}></Item>);
             })
             return (
                 <View>
                     <Picker style={myStyles.picker2}
-                            selectedValue={this.state.loaiNha}
+                            selectedValue={loaiNha}
                             onValueChange={this.onValueChange.bind(this, 'loaiNha')}
                             mode="dropdown">
                         {loaiNhaItems}
@@ -292,7 +220,7 @@ class PostAdsDetail extends Component {
     }
 
     _getLoaiNhaValue() {
-        var {loaiTin, loaiNha} = this.state;
+        var {loaiTin, loaiNha} = this.props.postAds;
         var hashLoaiNha = (loaiTin == "ban") ? DanhMuc.LoaiNhaDatBan : DanhMuc.LoaiNhaDatThue;
         return hashLoaiNha[loaiNha];
     }
@@ -304,8 +232,8 @@ class PostAdsDetail extends Component {
                 <TextInput
                     secureTextEntry={false}
                     style={myStyles.input}
-                    value={this.state.diaChi}
-                    onChangeText={(text) => this.setState({diaChi: text})}
+                    value={this.props.postAds.diaChi}
+                    onChangeText={(text) => this.onValueChange("diaChi", text)}
                 />
             </View>
         );
@@ -318,8 +246,8 @@ class PostAdsDetail extends Component {
                 <TextInput
                     secureTextEntry={false}
                     style={myStyles.input}
-                    value={this.state.gia}
-                    onChangeText={(text) => this.setState({gia: text})}
+                    value={this.props.postAds.gia}
+                    onChangeText={(text) => this.onValueChange("gia", text)}
                 />
             </View>
         );
@@ -332,23 +260,8 @@ class PostAdsDetail extends Component {
                 <TextInput
                     secureTextEntry={false}
                     style={myStyles.input}
-                    value={this.state.dienTich}
-                    onChangeText={(text) => this.setState({dienTich: text})}
-                />
-            </View>
-        );
-    }
-
-    _renderSoTang() {
-        return (
-            <View style={myStyles.imgList} >
-                <Text style={myStyles.label}>Số tầng</Text>
-                <TextInput
-                    secureTextEntry={false}
-                    style={myStyles.input}
-                    value={this.state.soTang}
-                    onChangeText={(text) => this.setState({soTang: text})}
-                    keyboardType={"numeric"}
+                    value={this.props.postAds.dienTich}
+                    onChangeText={(text) => this.onValueChange("dienTich", text)}
                 />
             </View>
         );
@@ -356,21 +269,20 @@ class PostAdsDetail extends Component {
 
     _renderSoTang() {
         return this._renderSegment("Số tầng", DanhMuc.getSoTangValues(),
-            this.state.soTang, this._onSegmentChanged.bind(this, 'soTang'));
+            this.props.postAds.soTang, this._onSegmentChanged.bind(this, 'soTang'));
     }
 
     _renderPhongNgu() {
         return this._renderSegment("Số phòng ngủ", DanhMuc.getSoPhongNguValues(),
-            this.state.phongNgu, this._onSegmentChanged.bind(this, 'phongNgu'));
+            this.props.postAds.phongNgu, this._onSegmentChanged.bind(this, 'phongNgu'));
     }
 
     _renderPhongTam() {
         return this._renderSegment("Số phòng tắm", DanhMuc.getSoPhongTamValues(),
-            this.state.phongTam, this._onSegmentChanged.bind(this, 'phongTam'));
+            this.props.postAds.phongTam, this._onSegmentChanged.bind(this, 'phongTam'));
     }
 
     _onSegmentChanged(key, event) {
-        console.log(key, event);
         this.onValueChange(key, event.nativeEvent.selectedSegmentIndex);
     }
 
@@ -388,8 +300,8 @@ class PostAdsDetail extends Component {
                 <TextInput
                     secureTextEntry={false}
                     style={myStyles.textArea}
-                    value={this.state.chiTiet}
-                    onChangeText={(text) => this.setState({chiTiet: text})}
+                    value={this.props.postAds.chiTiet}
+                    onChangeText={(text) => this.onValueChange("chiTiet", text)}
                     multiline={true}
                 />
             </View>
@@ -397,14 +309,12 @@ class PostAdsDetail extends Component {
     }
 
     onValueChange(key: string, value: string) {
-        const newState = {};
-        newState[key] = value;
-        this.setState(newState);
+        this.props.actions.onPostAdsFieldChange(key, value);
     }
 
     onPostAds() {
-        var {photos} = this.state;
-        this.state.errorMessage = '';
+        var {photos} = this.props.postAds;
+        errorMessage = '';
         uploadFiles = [];
         for(var i=0; i<photos.length; i++) {
             var filepath = photos[i].uri;
@@ -417,22 +327,24 @@ class PostAdsDetail extends Component {
         if (!this.isValidInputData()) {
             Alert.alert(
                 'Thông báo',
-                this.state.errorMessage
+                errorMessage
             );
+            this.props.actions.onPostAdsFieldChange('error', errorMessage);
             return;
         }
         count = 0;
         for(var i=0; i<uploadFiles.length; i++) {
-            if (this.state.errorMessage != '') {
+            if (errorMessage != '') {
                 Alert.alert(
                     'Thông báo',
-                    this.state.errorMessage
+                    errorMessage
                 );
+                this.props.actions.onPostAdsFieldChange('error', errorMessage);
                 return;
             }
             var filename = uploadFiles[i].filename;
             var filepath = uploadFiles[i].filepath;
-            UploadApi.onUpload(filename, filepath, this.uploadCallBack.bind(this));
+            this.props.actions.onUploadImage(filename, filepath, this.uploadCallBack.bind(this));
         }
     }
 
@@ -441,7 +353,7 @@ class PostAdsDetail extends Component {
         if (uploadFiles.length === 0) {
             errors += ' (ảnh)';
         }
-        var {loaiNha, diaChi, gia, dienTich} = this.state;
+        var {loaiNha, diaChi, gia, dienTich} = this.props.postAds;
         if (loaiNha === 0) {
             errors += ' (loại nhà)';
         }
@@ -455,8 +367,7 @@ class PostAdsDetail extends Component {
             errors += ' (diện tích)';
         }
         if (errors != '') {
-            this.state.errorMessage = 'Bạn chưa chọn' + errors + '!';
-            this.setState({errorMessage: 'Bạn chưa chọn' + errors + '!'});
+            errorMessage = 'Bạn chưa chọn' + errors + '!';
             return false;
         }
         return true;
@@ -465,7 +376,8 @@ class PostAdsDetail extends Component {
     uploadCallBack = function (err, result) {
         var {data} = result;
         if (err || data == '') {
-            this.state.errorMessage = 'Upload ảnh không thành công!';
+            errorMessage = 'Upload ảnh không thành công!';
+            this.props.actions.onPostAdsFieldChange('error', errorMessage);
             return;
         }
         var {success, file} = JSON.parse(data);
@@ -477,12 +389,14 @@ class PostAdsDetail extends Component {
                 this.onSaveAds();
             }
         } else {
-            this.state.errorMessage = 'Upload ảnh không thành công!';
+            errorMessage = 'Upload ảnh không thành công!';
+            this.props.actions.onPostAdsFieldChange('error', errorMessage);
         }
     }
 
     onSaveAds() {
-        var {loaiTin, loaiNha, diaChi, gia, dienTich, soTang, phongNgu, phongTam, chiTiet, uploadUrls, geo} = this.state;
+        var {uploadUrls} = this.state;
+        var {loaiTin, loaiNha, gia, dienTich, soTang, phongNgu, phongTam, chiTiet, place} = this.props.postAds;
         var imageUrls = [];
         uploadUrls.map(function (uploadUrl) {
             imageUrls.push(rootUrl + uploadUrl);
@@ -497,9 +411,9 @@ class PostAdsDetail extends Component {
             "phone": currentUser.phone,
             "userID": currentUser.userID
         };
-        dbService._createAds({loaiTin: loaiTinVal, loaiNha: loaiNha, diaChi: diaChi, gia: gia,
+        dbService._createAds({loaiTin: loaiTinVal, loaiNha: loaiNha, place: place, gia: gia,
             dienTich: dienTich, soTang: soTang, phongNgu: phongNgu, phongTam: phongTam, chiTiet: chiTiet,
-            uploadUrls: imageUrls, userID: currentUser.userID, geo: geo, tenLoaiNhaDat: tenLoaiNhaDat,
+            uploadUrls: imageUrls, userID: currentUser.userID, tenLoaiNhaDat: tenLoaiNhaDat,
             tenLoaiTin: tenLoaiTin, dangBoi: dangBoi}, this.createAdsCallBack.bind(this));
     }
 
@@ -512,8 +426,7 @@ class PostAdsDetail extends Component {
     }
 
     onTakePhoto(imageIndex) {
-        var {photos} = this.state;
-        Actions.PostAds({photos: photos, imageIndex: imageIndex});
+        Actions.PostAds({photos: this.props.postAds.photos, imageIndex: imageIndex});
     }
 }
 
