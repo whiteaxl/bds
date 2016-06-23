@@ -74,7 +74,7 @@ class DBService {
   }
 
   _createAds(data, createAdsCallBack) {
-    var {loaiTin, loaiNha, diaChi, gia, dienTich, soTang, phongNgu, chiTiet, uploadUrls, userID, geo, tenLoaiNhaDat, tenLoaiTin, dangBoi} = data;
+    var {loaiTin, loaiNha, diaChi, gia, dienTich, soTang, phongNgu, phongTam, chiTiet, uploadUrls, userID, geo, tenLoaiNhaDat, tenLoaiTin, dangBoi} = data;
     var ms = moment().toDate().getTime();
     var adsID = 'Ads_' + userID + '_' + ms;
     var giaM2 = '';
@@ -115,6 +115,7 @@ class DBService {
         },
         "price_raw": '',
         "soPhongNgu": phongNgu,
+        "soPhongTam": phongTam,
         "soTang": soTang,
         "ten_loaiNhaDat": tenLoaiNhaDat,
         "ten_loaiTin": tenLoaiTin,

@@ -22,6 +22,10 @@ import RelandIcon from '../components/RelandIcon';
 
 import DanhMuc from '../assets/DanhMuc';
 
+import LikeTabButton from '../components/LikeTabButton';
+
+import SegmentedControl from '../components/SegmentedControl';
+
 import UploadApi from '../lib/UploadApi';
 
 import dbService from "../lib/localDB";
@@ -78,15 +82,15 @@ class PostAdsDetail extends Component {
             photos: photos,
             nguoiDang: 'chu_nha',
             nguoiDangExpanded: false,
-            hinhThuc: 'ban',
-            hinhThucExpanded: false,
+            loaiTin: 'ban',
             loaiNha: '0',
             loaiNhaExpanded: false,
             diaChi: '',
             gia: '',
             dienTich: '',
-            soTang: '',
-            phongNgu: '',
+            soTang: 0,
+            phongNgu: 0,
+            phongTam: 0,
             chiTiet: '',
             uploadUrls: [],
             geo: {"lat": '', "lon": ''},
@@ -127,14 +131,15 @@ class PostAdsDetail extends Component {
                     //scrollEventThrottle={1}
                 >
                     {this._renderPhoto()}
-                    {this._renderNguoiDang()}
-                    {this._renderHinhThuc()}
+                    {this._renderLoaiTin()}
                     {this._renderLoaiNha()}
+                    {this._renderDienTich()}
+                    {this._renderPhongNgu()}
+                    {this._renderPhongTam()}
+                    {this._renderSoTang()}
                     {this._renderDiaChi()}
                     {this._renderGia()}
-                    {this._renderDienTich()}
-                    {this._renderSoTang()}
-                    {this._renderPhongNgu()}
+                    {this._renderNguoiDang()}
                     {this._renderChiTiet()}
                     <Text style={[myStyles.label, {marginTop: 9, marginLeft: 15, color: 'red'}]}>
                         {this.state.errorMessage}</Text>
@@ -220,55 +225,19 @@ class PostAdsDetail extends Component {
         return (nguoiDang == 'chu_nha') ? "Chủ nhà" : "Môi giới";
     }
 
-    _renderHinhThuc() {
-        var arrowName = this.state.hinhThucExpanded ? "arrow-down" : "arrow-right";
+    _renderLoaiTin() {
         return (
-            <View style={{marginTop: 9, marginBottom: 5}}>
-                <TouchableHighlight
-                    onPress={() => this._onHinhThucPressed()}>
-                    <View style={myStyles.imgList}>
-                        <Text style={myStyles.label}>
-                            Hình thức*
-                        </Text>
-                        <View style={{flexDirection: "row", alignItems: "flex-end"}}>
-                            <Text style={myStyles.label}> {this._getHinhThucValue()} </Text>
-                            <TruliaIcon name={arrowName} color={gui.arrowColor} size={18} />
-                        </View>
-                    </View>
-                </TouchableHighlight>
-                {this._renderHinhThucPicker()}
+            <View style={{flexDirection: 'row'}}>
+                <View style = {{flex:1, flexDirection: 'row', paddingLeft: 5, paddingRight: 5}}>
+                    <LikeTabButton name={'ban'}
+                                   onPress={this.onValueChange.bind(this, 'loaiTin')}
+                                   selected={this.state.loaiTin === 'ban'}>BÁN</LikeTabButton>
+                    <LikeTabButton name={'thue'}
+                                   onPress={this.onValueChange.bind(this, 'loaiTin')}
+                                   selected={this.state.loaiTin === 'thue'}>CHO THUÊ</LikeTabButton>
+                </View>
             </View>
         );
-    }
-
-    _renderHinhThucPicker() {
-        if (this.state.hinhThucExpanded) {
-            return (
-                <View>
-                    <Picker style={myStyles.picker2}
-                            selectedValue={this.state.hinhThuc}
-                            onValueChange={this.onValueChange.bind(this, 'hinhThuc')}
-                            mode="dropdown">
-                        <Item label="Bán" value="ban" />
-                        <Item label="Cho thuê" value="thue" />
-                    </Picker>
-                </View>
-            );
-        } else {
-            return (
-                <View></View>
-            );
-        }
-    }
-
-    _onHinhThucPressed() {
-        this.setState({hinhThucExpanded: !this.state.hinhThucExpanded});
-    }
-
-    _getHinhThucValue() {
-        var hinhThuc = this.state.hinhThuc;
-        var loaiTin = (hinhThuc == 'ban') ? 0 : 1;
-        return DanhMuc.LoaiTin[loaiTin];
     }
 
     _renderLoaiNha() {
@@ -294,8 +263,8 @@ class PostAdsDetail extends Component {
 
     _renderLoaiNhaPicker() {
         if (this.state.loaiNhaExpanded) {
-            var hinhThuc = this.state.hinhThuc;
-            var hashLoaiNha = (hinhThuc == "ban") ? DanhMuc.LoaiNhaDatBan : DanhMuc.LoaiNhaDatThue;
+            var {loaiTin} = this.state;
+            var hashLoaiNha = (loaiTin == "ban") ? DanhMuc.LoaiNhaDatBan : DanhMuc.LoaiNhaDatThue;
             var dmLoaiNha = DanhMuc.getDanhMucKeys(hashLoaiNha);
             var loaiNhaItems = [];
             dmLoaiNha.map(function (loaiNha) {
@@ -323,8 +292,8 @@ class PostAdsDetail extends Component {
     }
 
     _getLoaiNhaValue() {
-        var {hinhThuc, loaiNha} = this.state;
-        var hashLoaiNha = (hinhThuc == "ban") ? DanhMuc.LoaiNhaDatBan : DanhMuc.LoaiNhaDatThue;
+        var {loaiTin, loaiNha} = this.state;
+        var hashLoaiNha = (loaiTin == "ban") ? DanhMuc.LoaiNhaDatBan : DanhMuc.LoaiNhaDatThue;
         return hashLoaiNha[loaiNha];
     }
 
@@ -385,18 +354,30 @@ class PostAdsDetail extends Component {
         );
     }
 
+    _renderSoTang() {
+        return this._renderSegment("Số tầng", DanhMuc.getSoTangValues(),
+            this.state.soTang, this._onSegmentChanged.bind(this, 'soTang'));
+    }
+
     _renderPhongNgu() {
+        return this._renderSegment("Số phòng ngủ", DanhMuc.getSoPhongNguValues(),
+            this.state.phongNgu, this._onSegmentChanged.bind(this, 'phongNgu'));
+    }
+
+    _renderPhongTam() {
+        return this._renderSegment("Số phòng tắm", DanhMuc.getSoPhongTamValues(),
+            this.state.phongTam, this._onSegmentChanged.bind(this, 'phongTam'));
+    }
+
+    _onSegmentChanged(key, event) {
+        console.log(key, event);
+        this.onValueChange(key, event.nativeEvent.selectedSegmentIndex);
+    }
+
+    _renderSegment(label, values, selectedIndexAttribute, onChange) {
         return (
-            <View style={myStyles.imgList} >
-                <Text style={myStyles.label}>Phòng ngủ</Text>
-                <TextInput
-                    secureTextEntry={false}
-                    style={myStyles.input}
-                    value={this.state.phongNgu}
-                    onChangeText={(text) => this.setState({phongNgu: text})}
-                    keyboardType={"numeric"}
-                />
-            </View>
+            <SegmentedControl label={label} values={values} selectedIndexAttribute={selectedIndexAttribute}
+                              onChange={onChange} />
         );
     }
 
@@ -501,14 +482,14 @@ class PostAdsDetail extends Component {
     }
 
     onSaveAds() {
-        var {hinhThuc, loaiNha, diaChi, gia, dienTich, soTang, phongNgu, chiTiet, uploadUrls, geo} = this.state;
+        var {loaiTin, loaiNha, diaChi, gia, dienTich, soTang, phongNgu, phongTam, chiTiet, uploadUrls, geo} = this.state;
         var imageUrls = [];
         uploadUrls.map(function (uploadUrl) {
             imageUrls.push(rootUrl + uploadUrl);
         });
         var tenLoaiNhaDat = this._getLoaiNhaValue();
-        var loaiTin = (hinhThuc == 'ban') ? 0 : 1;
-        var tenLoaiTin = DanhMuc.LoaiTin[loaiTin];
+        var loaiTinVal = (loaiTin === 'ban') ? 0 : 1;
+        var tenLoaiTin = DanhMuc.LoaiTin[loaiTinVal];
         var currentUser = this.props.global.currentUser;
         var dangBoi = {
             "email": currentUser.email,
@@ -516,10 +497,10 @@ class PostAdsDetail extends Component {
             "phone": currentUser.phone,
             "userID": currentUser.userID
         };
-        dbService._createAds({loaiTin: loaiTin, loaiNha: loaiNha, diaChi: diaChi, gia: gia,
-            dienTich: dienTich, soTang: soTang, phongNgu: phongNgu, chiTiet: chiTiet, uploadUrls: imageUrls,
-            userID: currentUser.userID, geo: geo, tenLoaiNhaDat: tenLoaiNhaDat, tenLoaiTin: tenLoaiTin,
-            dangBoi: dangBoi}, this.createAdsCallBack.bind(this));
+        dbService._createAds({loaiTin: loaiTinVal, loaiNha: loaiNha, diaChi: diaChi, gia: gia,
+            dienTich: dienTich, soTang: soTang, phongNgu: phongNgu, phongTam: phongTam, chiTiet: chiTiet,
+            uploadUrls: imageUrls, userID: currentUser.userID, geo: geo, tenLoaiNhaDat: tenLoaiNhaDat,
+            tenLoaiTin: tenLoaiTin, dangBoi: dangBoi}, this.createAdsCallBack.bind(this));
     }
 
     createAdsCallBack(adsID) {
@@ -572,7 +553,7 @@ var myStyles = StyleSheet.create({
         alignSelf: 'center'
     },
     textArea: {
-        fontSize: 18,
+        fontSize: gui.normalFontSize,
         padding: 4,
         height: 80,
         borderColor: 'gray',
@@ -585,10 +566,10 @@ var myStyles = StyleSheet.create({
         alignSelf: 'center'
     },
     label: {
-        fontSize: 18
+        fontSize: gui.normalFontSize,
     },
     label2: {
-        fontSize: 18,
+        fontSize: gui.normalFontSize,
         paddingLeft: 10
     },
     button: {
