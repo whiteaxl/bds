@@ -10,6 +10,7 @@ var userApiUrl = cfg.rootUrl + "/user/";
 var requestVerifyCodeUrl = userApiUrl + "requestVerifyCode";
 var registerUser = userApiUrl + "registerUser";
 var likeAdsUrl = cfg.rootUrl + "/likeAds";
+var getAdsLikesUrl = cfg.rootUrl + "/user/getAdsLikes";
 
 var userApi = {
   requestVerifyCode(phone) {
@@ -116,7 +117,34 @@ var userApi = {
           msg: gui.ERR_LoiKetNoiMayChu
         }
       });
+  },
+
+  getAdsLikes(userID) {
+    const url  = getAdsLikesUrl;
+    const dto = {userID};
+    log.info("Call fetch ", url, userID);
+
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dto)
+    })
+      .then(ApiUtils.checkStatus)
+      .then(response => {
+        return response.json()
+      })
+      .catch(e => {
+        log.info("Error in getAdsLikes", e);
+        return {
+          status : 101,
+          msg: gui.ERR_LoiKetNoiMayChu
+        }
+      });
   }
+
 };
 
 export {userApi as default};

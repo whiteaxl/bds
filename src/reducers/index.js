@@ -7,6 +7,7 @@ import register from './register/registerReducer';
 import inbox from './inbox/inboxReducer';
 import chat from './chat/chatReducer';
 import postAds from './postAds/postAdsReducer';
+import adsMgmt from './adsMgmt/adsMgmtReducer';
 
 import { combineReducers } from 'redux';
 
@@ -17,7 +18,8 @@ const rootReducer = combineReducers({
   register,
   inbox,
   chat,
-  postAds
+  postAds,
+  adsMgmt
 });
 
 export default rootReducer;

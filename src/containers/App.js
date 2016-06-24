@@ -25,6 +25,8 @@ import HuongNha from '../components/HuongNha';
 import VerifyPhone from '../components/login/VerifyPhone';
 import RegisterMoreInfor from '../components/login/RegisterMoreInfor';
 import Profile from './Profile';
+import AdsMgmt from './AdsMgmt';
+
 import SearchSuggestion from '../containers/PlacesAutoComplete';
 import Chat from './Chat';
 
@@ -78,7 +80,7 @@ class App extends React.Component {
                    icon={TabIcon} hideNavBar={true} />
             <Scene key="activity" component={PostAds} title="Đăng tin"
                    iconName={"camera-o"} iconSize={20} icon={TabIcon} hideNavBar={true}/>
-            <Scene key="AdsMgmt" component={Profile} title="Quản lý tin"
+            <Scene key="AdsMgmt" component={AdsMgmt} title="Quản lý tin" hideNavBar={true}
                    iconName={"mgmt"} iconSize={19} icon={TabIcon}/>
             <Scene key="Profile" component={Profile} title="Tôi"
                    iconName={"me"} iconSize={21} icon={TabIcon}/>

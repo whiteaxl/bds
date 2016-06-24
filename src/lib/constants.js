@@ -74,5 +74,6 @@ export default keyMirror({
   ON_POST_ADS_FIELD_CHANGE:null,
   ON_UPLOAD_IMAGE: null,
   
-  SEARCH_LIST_LIKE_SUCCESS: null
+  SEARCH_LIST_LIKE_SUCCESS: null,
+  ON_ADSMGMT_FIELD_CHANGE: null
 });
