@@ -79,8 +79,8 @@ class Home extends Component {
             vertical={true}
             style={styles.scrollView}>
 
-            <View style={{flex:1, flexDirection: "column"}}>
-              <View style={{flex: 1, height: 75, alignItems:'center', justifyContent: 'center'}}>
+            <View style={{flexDirection: "column"}}>
+              <View style={styles.titleContainer}>
                 <Text style={styles.boldTitle}>BỘ SƯU TẬP</Text>
                 <Text style={styles.categoryLabel}>Nhà Mới Đăng Hôm Nay</Text>
                 <Text style={styles.arrowLabel}>Quận Hà Đông, Hà Nội</Text>
@@ -94,7 +94,7 @@ class Home extends Component {
                     >
                     </ImageItem>
                   </TouchableOpacity>
-                  <View style={{flex: 1, width:1}}>
+                  <View style={{width:1}}>
                   </View>
                   <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
                     <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
@@ -105,7 +105,7 @@ class Home extends Component {
                   </TouchableOpacity>
               </View>
 
-              <View style={{flex: 1, height:1}}>
+              <View style={{height:1}}>
               </View>
 
               <View style={styles.rowItem}>
@@ -116,7 +116,7 @@ class Home extends Component {
                     >
                     </ImageItem>
                   </TouchableOpacity>
-                  <View style={{flex: 1, width:1}}>
+                  <View style={{width:1}}>
                   </View>
                   <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
                     <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
@@ -127,9 +127,9 @@ class Home extends Component {
                   </TouchableOpacity>
               </View>
 
-              <View style={{flex: 1, height:1}}>
+              <View style={{height:1}}>
               </View>
-              <View style={{flex: 1}}>
+              <View style={{}}>
                 <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/DangTin/Images/184026/duan/7feaac4b-d60f-4c56-aa21-8c6c7a7b94ec.jpg'}
                            price="10 Tỷ" address="Biệt thự biển Phú Quốc" detail="5 pn  3 pt"
                            width={1}
@@ -137,13 +137,13 @@ class Home extends Component {
                 </ImageItem>
               </View>
 
-              <View style={{flex: 1, backgroundColor:'transparent'}}>
+              <View style={{backgroundColor:'transparent'}}>
                 <Text style={styles.moreDetailButton}>Xem thêm</Text>
               </View>
             </View>
 
-            <View style={{flex:1, flexDirection: "column"}}>
-              <View style={{flex: 1, height: 75, alignItems:'center', justifyContent: 'center'}}>
+            <View style={{flexDirection: "column"}}>
+              <View style={styles.titleContainer}>
                 <Text style={styles.boldTitle}>BỘ SƯU TẬP</Text>
                 <Text style={styles.categoryLabel}>Nhà Gần Vị Trí Bạn</Text>
                 <Text style={styles.arrowLabel}>Quận Hà Đông, Hà Nội</Text>
@@ -157,7 +157,7 @@ class Home extends Component {
                   >
                   </ImageItem>
                 </TouchableOpacity>
-                <View style={{flex: 1, width:1}}>
+                <View style={{width:1}}>
                 </View>
                 <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
                   <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
@@ -168,7 +168,7 @@ class Home extends Component {
                 </TouchableOpacity>
               </View>
 
-              <View style={{flex: 1, height:1}}>
+              <View style={{height:1}}>
               </View>
 
               <View style={styles.rowItem}>
@@ -179,7 +179,7 @@ class Home extends Component {
                   >
                   </ImageItem>
                 </TouchableOpacity>
-                <View style={{flex: 1, width:1}}>
+                <View style={{width:1}}>
                 </View>
                 <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
                   <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
@@ -190,9 +190,9 @@ class Home extends Component {
                 </TouchableOpacity>
               </View>
 
-              <View style={{flex: 1, height:1}}>
+              <View style={{height:1}}>
               </View>
-              <View style={{flex: 1}}>
+              <View style={{}}>
                 <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/DangTin/Images/184026/duan/7feaac4b-d60f-4c56-aa21-8c6c7a7b94ec.jpg'}
                            price="10 Tỷ" address="Biệt thự biển Phú Quốc" detail="5 pn  3 pt"
                            width={1}
@@ -200,7 +200,7 @@ class Home extends Component {
                 </ImageItem>
               </View>
 
-              <View style={{flex: 1, backgroundColor:'transparent'}}>
+              <View style={{backgroundColor:'transparent'}}>
                 <Text style={styles.moreDetailButton}>Xem thêm</Text>
               </View>
             </View>
@@ -272,6 +272,7 @@ var styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
+    marginBottom: 45
   },
   pageHeader: {
       alignItems: 'center',
@@ -313,7 +314,7 @@ var styles = StyleSheet.create({
   boldTitle: {
     fontFamily: gui.fontFamily,
     fontSize: 12,
-    fontWeight: 'bold',
+    fontWeight: '600',
     backgroundColor: 'transparent',
     color: gui.mainColor
   },
@@ -330,8 +331,7 @@ var styles = StyleSheet.create({
     color: gui.arrowColor
   },
   rowItem: {
-    flex:1,
-    flexDirection: "row"
+    flexDirection: "row",
   },
   moreDetailButton: {
     margin: 12,
@@ -390,6 +390,15 @@ var styles = StyleSheet.create({
   heartButton_100: {
     marginTop: 5,
     marginLeft: width-30
+  },
+  titleContainer : {
+    height: 75,
+    alignItems:'center',
+    justifyContent: 'center',
+    /*
+    borderColor: 'red',
+    borderWidth : 1,
+     */
   }
 });
 
