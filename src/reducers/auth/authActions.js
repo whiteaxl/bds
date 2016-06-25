@@ -77,24 +77,6 @@ export function logoutFailure(error) {
     payload: error
   };
 }
-/**
- * ## Login
- * After dispatching the logoutRequest, get the sessionToken
- * and call Parse
- *
- * When the response from Parse is received and it's valid
- * change the state to register and finish the logout
- *
- * But if the call to Parse fails, like expired token or
- * no network connection, just send the failure
- *
- * And if you fail due to an invalid sessionToken, be sure
- * to delete it so the user can log in.
- *
- * How could there be an invalid sessionToken?  Maybe they
- * haven't used the app for a long time.  Or they used another
- * device and logged out there.
- */
 
 export function logout() {
   return dispatch => {

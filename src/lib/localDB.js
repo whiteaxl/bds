@@ -157,7 +157,9 @@ class DBService {
         this.database.listen({since: res.update_seq - 1, feed: 'longpoll', include_docs: true});
       });
     this.database.changesEventEmitter.on('changes', (e) => {
-      log.info("DB just changes:", e.results ? e.results.length:0);
+      //log.info("DB just changes:", e.results ? e.results.length:0);
+
+      log.info("DB just changes:", e.results);
 
       setTimeout(() =>
           this.onDBChange(e)

@@ -8,6 +8,7 @@ import inbox from './inbox/inboxReducer';
 import chat from './chat/chatReducer';
 import postAds from './postAds/postAdsReducer';
 import adsMgmt from './adsMgmt/adsMgmtReducer';
+import me from './me/meReducer';
 
 import { combineReducers } from 'redux';
 
@@ -19,7 +20,8 @@ const rootReducer = combineReducers({
   inbox,
   chat,
   postAds,
-  adsMgmt
+  adsMgmt,
+  me
 });
 
 export default rootReducer;

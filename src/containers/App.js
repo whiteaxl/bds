@@ -24,7 +24,7 @@ import SearchMapDetail from './SearchMapDetail';
 import HuongNha from '../components/HuongNha';
 import VerifyPhone from '../components/login/VerifyPhone';
 import RegisterMoreInfor from '../components/login/RegisterMoreInfor';
-import Profile from './Profile';
+import Me from './Me';
 import AdsMgmt from './AdsMgmt';
 
 import SearchSuggestion from '../containers/PlacesAutoComplete';
@@ -82,7 +82,7 @@ class App extends React.Component {
                    iconName={"camera-o"} iconSize={20} icon={TabIcon} hideNavBar={true}/>
             <Scene key="AdsMgmt" component={AdsMgmt} title="Quản lý tin" hideNavBar={true}
                    iconName={"mgmt"} iconSize={19} icon={TabIcon}/>
-            <Scene key="Profile" component={Profile} title="Tôi"
+            <Scene key="Me" component={Me} title="Tôi" hideNavBar={true}
                    iconName={"me"} iconSize={21} icon={TabIcon}/>
 
           </Scene>
