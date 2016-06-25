@@ -12,7 +12,7 @@ import React, {Component} from 'react';
 import {
   Text, View, Image, ListView, Dimensions, StatusBar
   , RecyclerViewBackedScrollView, TouchableHighlight, StyleSheet
-  , Alert
+  , Alert, RefreshControl, ScrollView
 } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
@@ -66,18 +66,23 @@ class AdsListTab extends Component {
     StatusBar.setBarStyle('light-content');
   }
 
-  _getListContent() {
-    log.info("Call AdsListTab._getListContent");
+  _onRefresh() {
+    log.info("_onRefresh", this.props);
 
-    let myProps = this.props;
-    if (myProps.loading) {
-      return (
-        <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
-          {/*<Text> Loading ... </Text>*/}
-          <GiftedSpinner />
-        </View>
-      )
+    if (this.props.name == 'likedTab') {
+      this.props.actions.refreshLikedTab(this.props.global.currentUser.userID);
     }
+
+    /*
+    fetchData().then(() => {
+      this.setState({refreshing: false});
+    });
+    */
+  }
+
+
+  _getListContent() {
+    let myProps = this.props;
 
     if (myProps.errorMsg) {
       return (
@@ -89,9 +94,25 @@ class AdsListTab extends Component {
 
     if (myProps.listAds.length === 0) {
       return (
-        <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
-          <Text style={gui.styles.defaultText}> {gui.INF_KhongCoKetQua} </Text>
-        </View>
+        <ScrollView
+          refreshControl={
+          <RefreshControl
+            refreshing={this.props.adsMgmt.refreshing}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }
+        >
+          <View style={{flex:1, alignItems:'center', justifyContent:'center'
+            , marginTop: 30}}>
+            <Text style={gui.styles.defaultText}> {gui.INF_KhongCoKetQua} </Text>
+
+            <TouchableHighlight
+              onPress = {this._onRefresh.bind(this)}
+            >
+              <Text style={myStyles.linkText}> {gui.INF_ClickToRefresh} </Text>
+            </TouchableHighlight>
+          </View>
+        </ScrollView>
       )
     }
 
@@ -100,6 +121,15 @@ class AdsListTab extends Component {
 
     return (
       <ListView
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }
+
+        enableEmptySections = {true}
+
         dataSource={ds}
         renderRow={this.renderRow.bind(this)}
         renderScrollComponent={props => <RecyclerViewBackedScrollView {...props} />}
@@ -110,12 +140,16 @@ class AdsListTab extends Component {
   }
 
   render() {
-    log.info("Call AdsListTab render", this.props);
+    log.info("Call AdsListTab render", this.props.adsMgmt);
+
+
     return (
       <View style={myStyles.fullWidthContainer}>
         {this._getListContent()}
       </View>
     )
+
+
   }
 
   _renderImageStack(rowData) {
@@ -337,6 +371,11 @@ var myStyles = StyleSheet.create({
   heartButton: {
     marginBottom: 10,
     paddingRight: 18
+  },
+  linkText  : {
+    fontFamily: gui.fontFamily,
+    fontSize: gui.normalFontSize,
+    color : gui.mainColor
   }
 
 });

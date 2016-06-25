@@ -24,6 +24,7 @@ import log from "../lib/logUtil";
 import AdsMgmtTabBar from "../components/adsMgmt/AdsMgmtTabBar";
 import AdsMgmtHeader from "../components/adsMgmt/AdsMgmtHeader";
 import AdsListTab from '../components/adsMgmt/AdsListTab';
+import LoginRegister from '../containers/LoginRegister';
 
 
 const actions = [
@@ -69,33 +70,39 @@ export default class AdsMgmt extends React.Component {
   }
 
   render() {
-    let page = this.props.adsMgmt.activeTab;
+    if (this.props.global.loggedIn) {
+      let page = this.props.adsMgmt.activeTab;
 
-    return (
-      <View style={{flex: 1, marginBottom: 45}}>
-        <View style={styles.header}>
-          <AdsMgmtHeader />
+      return (
+        <View style={{flex: 1, marginBottom: 45}}>
+          <View style={styles.header}>
+            <AdsMgmtHeader />
+          </View>
+
+          <ScrollableTabView page={page} initialPage={0}
+                             renderTabBar={this.renderTabBar.bind(this)}
+                             style={styles.container}
+                             tabBarUnderlineColor={gui.mainColor}
+                             tabBarActiveTextColor={gui.mainColor}
+                             onChangeTab={this.onChangeTab.bind(this)}
+          >
+            <AdsListTab name="likedTab" tabLabel="ĐÃ LƯU" ref="likedTab"
+                        listAds={this.props.adsMgmt.likedList}
+            />
+            <AdsListTab name="sellTab" tabLabel="BÁN" ref="sellTab"
+                        listAds={this.props.adsMgmt.likedList}
+            />
+            <AdsListTab name="rentTab" tabLabel="CHO THUÊ" ref="rentTab"
+                        listAds={this.props.adsMgmt.likedList}
+            />
+          </ScrollableTabView>
         </View>
-
-        <ScrollableTabView page={page} initialPage={0}
-                           renderTabBar={this.renderTabBar.bind(this)}
-                           style={styles.container}
-                           tabBarUnderlineColor={gui.mainColor}
-                           tabBarActiveTextColor={gui.mainColor}
-                           onChangeTab={this.onChangeTab.bind(this)}
-        >
-          <AdsListTab key="likedTab" tabLabel="ĐÃ LƯU" ref="likedTab"
-                      listAds={this.props.adsMgmt.likedList}
-          />
-          <AdsListTab key="sellTab" tabLabel="BÁN" ref="sellTab"
-                      listAds={this.props.adsMgmt.likedList}
-          />
-          <AdsListTab key="rentTab" tabLabel="CHO THUÊ" ref="rentTab"
-                      listAds={this.props.adsMgmt.likedList}
-          />
-        </ScrollableTabView>
-      </View>
-    )
+      )
+    } else {
+      return (
+        <LoginRegister />
+      );
+    }
   };
 }
 

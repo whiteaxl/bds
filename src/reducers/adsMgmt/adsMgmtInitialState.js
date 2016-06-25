@@ -7,8 +7,8 @@ var InitialState = Record({
   sellList :List([]),
   rentList :List([]),
   activeTab : 0,
-  loadingFromServer : false,
-  errorMsg:''
+  errorMsg:'',
+  refreshing : false //refresh when scroll down
 });
 
 export default InitialState;

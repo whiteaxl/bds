@@ -16,10 +16,10 @@ export function onAdsMgmtFieldChange(field, value) {
 }
 
 
-
+// likedList get from Server
 export function loadAdsMgmtData(userID) {
   return dispatch => {
-    dispatch(onAdsMgmtFieldChange('loadingFromServer', true));
+    dispatch(onAdsMgmtFieldChange('refreshing', true));
 
     userApi.getAdsLikes(userID)
       .then(res => {
@@ -33,7 +33,23 @@ export function loadAdsMgmtData(userID) {
         } else {
           log.error("loadAdsMgmtData error", res);
         }
-        dispatch(onAdsMgmtFieldChange('loadingFromServer', false));
+        dispatch(onAdsMgmtFieldChange('refreshing', false));
       })
   }
 }
+export function refreshLikedTab(userID) {
+  return dispatch => {
+    dispatch(onAdsMgmtFieldChange('refreshing', true));
+
+    userApi.getAdsLikes(userID)
+      .then(res => {
+        if (res.status == 0) {
+          dispatch(onAdsMgmtFieldChange('likedList', res.data));
+        } else {
+          log.error("refreshLikedTab error", res);
+        }
+        dispatch(onAdsMgmtFieldChange('refreshing', false));
+      })
+  }
+}
+
