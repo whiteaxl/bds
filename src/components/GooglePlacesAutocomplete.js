@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 
 const {TextInput, View, ListView, Image, Text, Dimensions, TouchableHighlight, TouchableWithoutFeedback
-  , Platform, ActivityIndicatorIOS, ProgressBarAndroid} = require('react-native');
+  , Platform, ActivityIndicator, ProgressBarAndroid} = require('react-native');
 const Qs = require('qs');
 
 import placeUtil from "../lib/PlaceUtil";
@@ -534,7 +534,7 @@ const GooglePlacesAutocomplete = React.createClass({
             );
         }
         return (
-            <ActivityIndicatorIOS
+            <ActivityIndicator
                 animating={true}
                 size="small"
             />
