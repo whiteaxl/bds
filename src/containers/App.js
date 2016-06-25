@@ -103,10 +103,19 @@ class App extends React.Component {
           <Scene key='SearchResultDetail' component={SearchResultDetail} title="Chi tiết" hideNavBar={true}/>
           <Scene key='SearchSuggestion' duration={20} direction="vertical" component={SearchSuggestion}
                  title="Serch Text" hideNavBar={true}/>
-          <Scene key='SearchMapDetail' component={SearchMapDetail} title="Bản đồ" hideNavBar={true}/>
+          <Scene key='SearchMapDetail' component={SearchMapDetail}
+                 title="Bản đồ" hideNavBar={true}/>
 
-          <Scene key='VerifyPhone' component={VerifyPhone} title="Xác minh số điện thoại" hideNavBar={false}/>
-          <Scene key='RegisterMoreInfor' component={RegisterMoreInfor} title="Đăng ký" hideNavBar={false}/>
+          <Scene key='VerifyPhone' component={VerifyPhone}
+                 navigationBarStyle = {styles.navigationBarStyleWhite}
+                 titleStyle={styles.titleStyleWhite}
+                 leftButtonIconStyle = {styles.leftButtonIconStyle}
+                 title="Xác minh số điện thoại" hideNavBar={false}/>
+          <Scene key='RegisterMoreInfor' component={RegisterMoreInfor}
+                 navigationBarStyle = {styles.navigationBarStyleWhite}
+                 titleStyle={styles.titleStyleWhite}
+                 leftButtonIconStyle = {styles.leftButtonIconStyle}
+                 title="Đăng ký" hideNavBar={false}/>
 
           <Scene key='Chat' component={Chat} hideNavBar={true}/>
 
@@ -139,8 +148,21 @@ var styles = StyleSheet.create({
   },
 
   navigationBarStyle : {
-    height: 63,
+    height: 64,
     backgroundColor: gui.mainColor,
+  },
+
+  navigationBarStyleWhite : {
+    height: 64,
+    backgroundColor: 'white',
+    borderBottomWidth: 0.5,
+    borderBottomColor: gui.separatorLine,
+  },
+
+  titleStyleWhite : {
+    color: 'black',
+    fontSize: 17,
+    fontFamily: 'Open Sans',
   },
 
   titleStyle : {
