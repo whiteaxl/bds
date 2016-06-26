@@ -483,7 +483,37 @@ class PostAdsDetail extends Component {
 
     createAdsCallBack(adsID) {
         // Actions.SearchResultDetail({adsID: adsID, source: 'local'});
+        this.onRefreshPostAds();
         Actions.Home();
+    }
+
+    onRefreshPostAds() {
+        this.onValueChange("photos", [{uri: ''},{uri: ''},{uri: ''},{uri: ''}]);
+        this.onValueChange("loaiTin", 'ban');
+        this.onValueChange("loaiNhaDat", '');
+        this.onValueChange("soPhongNguSelectedIdx", 0);
+        this.onValueChange("soTangSelectedIdx", 0);
+        this.onValueChange("soNhaTamSelectedIdx", 0);
+        this.onValueChange("dienTich", null);
+        this.onValueChange("gia", null);
+        this.onValueChange("place", {
+            duAn: '',
+            duAnFullName: '',
+            placeId: "ChIJKQqAE44ANTERDbkQYkF-mAI",
+            diaChi: '',
+            diaChiFullName: "Hanoi",
+            diaChinh: {
+                tinh: 'Hanoi',
+                huyen: '',
+                xa: '',
+                tinhKhongDau: 'Hanoi',
+                huyenKhongDau: '',
+                xaKhongDau: ''
+            },
+            geo: {lat: '', lon: ''}
+        });
+        this.onValueChange("chiTiet", '');
+        this.onValueChange("error", '');
     }
 
     onCancel() {
