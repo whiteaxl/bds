@@ -10,6 +10,8 @@ import Home from '../containers/Home';
 import Inbox from '../containers/Inbox';
 import PostAds from '../containers/PostAds';
 import PostAdsDetail from '../containers/PostAdsDetail';
+import PostAdsMapView from '../containers/PostAdsMapView';
+import PostAdsAddress from '../containers/PostAdsAddress';
 
 import LoginRegister from './LoginRegister';
 
@@ -98,6 +100,8 @@ class App extends React.Component {
           <Scene key='SquareImageCropper' component={SquareImageCropper} title="Image Cropper" hideNavBar={true}/>
           <Scene key='PostAds' component={PostAds} title="Post Ads" hideNavBar={true}/>
           <Scene key='PostAdsDetail' component={PostAdsDetail} title="Post Ads Detail" hideNavBar={true}/>
+          <Scene key='PostAdsMapView' component={PostAdsMapView} title="Post Ads MapView" hideNavBar={true}/>
+          <Scene key='PostAdsAddress' component={PostAdsAddress} title="Post Ads Address" hideNavBar={true}/>
 
           <Scene key='OrderPicker' component={OrderPicker} title="Sắp xếp" hideNavBar={true}/>
           <Scene key='SearchResultDetail' component={SearchResultDetail} title="Chi tiết" hideNavBar={true}/>
