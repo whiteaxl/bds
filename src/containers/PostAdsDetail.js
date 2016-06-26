@@ -249,7 +249,19 @@ class PostAdsDetail extends Component {
     }
 
     _getBanDoValue() {
-        return "Chọn vị trí";
+        var {place} = this.props.postAds;
+        var tinh = place.diaChinh.tinh;
+        var huyen = place.diaChinh.huyen;
+        var xa = place.diaChinh.xa;
+        if (xa == '') {
+            return "Chọn vị trí";
+        } else {
+            var diaChinhFullName = xa + ', ' + huyen + ', ' + tinh;
+            if (diaChinhFullName.length > 30) {
+                diaChinhFullName = diaChinhFullName.substring(0,30) + '...';
+            }
+            return diaChinhFullName;
+        }
     }
 
     _renderDiaChi() {
@@ -276,7 +288,12 @@ class PostAdsDetail extends Component {
     }
 
     _getDiaChiValue() {
-        return this.props.postAds.place.diaChi;
+        var {place} = this.props.postAds;
+        var diaChi = place.diaChi;
+        if (diaChi.length > 30) {
+            diaChi = diaChi.substring(0,30) + '...';
+        }
+        return diaChi;
     }
 
     _renderGia() {
@@ -453,8 +470,11 @@ class PostAdsDetail extends Component {
             "userID": currentUser.userID
         };
         var phongNgu = DanhMuc.getSoPhongByIndex(soPhongNguSelectedIdx);
+        phongNgu = phongNgu != 0 ? phongNgu : null;
         var soTang = DanhMuc.getSoTangByIndex(soTangSelectedIdx);
+        soTang = soTang != 0 ? soTang : null;
         var phongTam = DanhMuc.getSoPhongTamByIndex(soNhaTamSelectedIdx);
+        phongTam = phongTam != 0 ? phongTam : null;
         dbService._createAds({loaiTin: loaiTinVal, loaiNha: loaiNhaDat, place: place, gia: gia,
             dienTich: dienTich, soTang: soTang, phongNgu: phongNgu, phongTam: phongTam, chiTiet: chiTiet,
             uploadUrls: imageUrls, userID: currentUser.userID, tenLoaiNhaDat: tenLoaiNhaDat,
@@ -462,11 +482,12 @@ class PostAdsDetail extends Component {
     }
 
     createAdsCallBack(adsID) {
-        Actions.SearchResultDetail({adsID: adsID, source: 'local'});
+        // Actions.SearchResultDetail({adsID: adsID, source: 'local'});
+        Actions.Home();
     }
 
     onCancel() {
-        Actions.Main();
+        Actions.Home();
     }
 
     onTakePhoto(imageIndex) {

@@ -2,6 +2,91 @@ import _ from "lodash";
 
 var placeUtil = {};
 
+placeUtil.fullName = function(place) {
+    //todo: other types
+    if (place.placeType === "Quan" || place.placeType  === "Huyen") {
+        return place.placeName + ", " + place.parentName;
+    }
+
+    return place.placeName;
+};
+// return Quoc Gia form Place.Place is type of Google api
+placeUtil.getQuocGia = function(place) {
+
+    var getCountry ="";
+
+    for (var i = 0; i < place.address_components.length; i++)
+    {
+        var addr = place.address_components[i];
+
+        for (var j=0; j < addr.types.length; j++) {
+            if (addr.types[j] == 'country'){
+                getCountry = addr.long_name;
+                return getCountry;
+            }
+        }
+    }
+    return getCountry;
+};
+
+// return Tinh form Place.Place is type of Google api
+placeUtil.getTinh = function(place) {
+
+    var Tinh ="";
+
+    for (var i = 0; i < place.address_components.length; i++)
+    {
+        var addr = place.address_components[i];
+
+        for (var j=0; j < addr.types.length; j++) {
+            if (addr.types[j] == placeUtil.type.TINH){
+                Tinh = addr.long_name;
+                return Tinh;
+            }
+        }
+    }
+    return Tinh;
+};
+
+// return Huyen form Place.Place is type of Google api
+placeUtil.getHuyen = function(place) {
+
+    var Huyen ="";
+
+    for (var i = 0; i < place.address_components.length; i++)
+    {
+        var addr = place.address_components[i];
+
+        for (var j=0; j < addr.types.length; j++) {
+            if (addr.types[j] == placeUtil.type.HUYEN){
+                Huyen = addr.long_name;
+                return Huyen;
+            }
+        }
+    }
+    return Huyen;
+};
+
+// return Xa form Place.Place is type of Google api
+placeUtil.getXa = function(place) {
+
+    var Xa ="";
+
+    for (var i = 0; i < place.address_components.length; i++)
+    {
+        var addr = place.address_components[i];
+
+        for (var j=0; j < addr.types.length; j++) {
+            if ((addr.types[j] == placeUtil.type.XA) || (addr.types[j] == placeUtil.type.XA2))
+            {
+                Xa = addr.long_name;
+                return Xa;
+            }
+        }
+    }
+    return Xa;
+};
+
 placeUtil.type = {
     TINH : "administrative_area_level_1",
     HUYEN : "administrative_area_level_2",

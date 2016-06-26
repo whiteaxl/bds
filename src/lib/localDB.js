@@ -103,17 +103,7 @@ class DBService {
         "loaiTin": loaiTin,
         "maSo": ms,
         "ngayDangTin": ngayDangTin,
-        "place": {
-          "diaChi": place.diaChi,
-          "diaChinh": {
-            "huyen": '',
-            "tinh": '',
-            "xa": ''
-          },
-          "diaChinhFullName": place.fullName,
-          "duAnFullName": null,
-          "geo": place.geo
-        },
+        "place": place,
         "price_raw": '',
         "soPhongNgu": phongNgu,
         "soPhongTam": phongTam,

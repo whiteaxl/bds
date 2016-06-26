@@ -111,7 +111,7 @@ export default class PostAds extends Component {
             imageIndex = 0;
         }
         photos[imageIndex] = {uri: data.path};
-        Actions.PostAdsDetail({photos: photos});
+        Actions.PostAdsDetail({photos: photos, type: "reset"});
     }
 }
 

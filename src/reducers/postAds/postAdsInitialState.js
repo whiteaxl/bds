@@ -12,11 +12,19 @@ const InitialState = Record({
     dienTich: null,
     gia: null,
     place: {
+        duAn: '',
+        duAnFullName: '',
         placeId: "ChIJKQqAE44ANTERDbkQYkF-mAI",
-        relandTypeName : "Tỉnh",
-        fullName: "Hanoi",
-        currentLocation : '',
         diaChi: '',
+        diaChiFullName: "Hanoi",
+        diaChinh: {
+            tinh: 'Hanoi',
+            huyen: '',
+            xa: '',
+            tinhKhongDau: 'Hanoi',
+            huyenKhongDau: '',
+            xaKhongDau: ''
+        },
         geo: {lat: '', lon: ''}
     },
     chiTiet: '',

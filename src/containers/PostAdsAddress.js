@@ -46,9 +46,16 @@ class PostAdsAddress extends Component {
       super(props);
       StatusBar.setBarStyle('default');
       var {place} = this.props.postAds;
+      var tinh = place.diaChinh.tinh;
+      var huyen = place.diaChinh.huyen;
+      var xa = place.diaChinh.xa;
+      var xaPhuong = '';
+      if (xa != '') {
+          xaPhuong = xa + ', ' + huyen + ', ' + tinh;
+      }
       this.state = {
           diaChi: place.diaChi,
-          xaPhuong: place.fullName
+          xaPhuong: xaPhuong
       };
   }
 
@@ -93,10 +100,14 @@ class PostAdsAddress extends Component {
 
   _updateDiaChiFull(key: string, value: string) {
       var {place} = this.props.postAds;
+      var {xaPhuong} = this.state;
       if (key == 'diaChi') {
           place.diaChi = value;
-      } else {
-          place.fullName = value;
+          if (xaPhuong != '') {
+              place.diaChiFullName = value + ', ' + xaPhuong;
+          } else {
+              place.diaChiFullName = value;
+          }
       }
       this.props.actions.onPostAdsFieldChange("place", place);
   }

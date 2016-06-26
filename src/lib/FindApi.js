@@ -132,6 +132,20 @@ var Api = {
             .then(ApiUtils.checkStatus)
             .then(response => response.json())
             .catch(e => e);
+    },
+
+    getGeocoding(lat, lon, callback) {
+        var url = "https://maps.googleapis.com/maps/api/geocode/json?" +
+            "key=AIzaSyAnioOM0qiWwUoCz8hNS8B2YuzKiYYaDdU" +
+            "&latlng=" + lat + ',' + lon;
+
+        return fetch(url)
+            .then(ApiUtils.checkStatus)
+            .then(response => response.json())
+            .then(function (data) {
+                callback(data);
+            })
+            .catch(e => e);
     }
 };
 

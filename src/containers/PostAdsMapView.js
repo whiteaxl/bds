@@ -21,12 +21,18 @@ import gui from '../lib/gui';
 
 import log from '../lib/logUtil';
 
+import findApi from '../lib/FindApi';
+
+import placeUtil from '../lib/PlaceUtil';
+
+import utils from '../lib/utils';
+
 var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / (height-110);
 const LATITUDE = 20.95389909999999;
 const LONGITUDE = 105.75490945;
-const LATITUDE_DELTA = 0.021;
+const LATITUDE_DELTA = 0.06102071125314978;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 /**
@@ -120,10 +126,47 @@ class PostAdsMapView extends Component {
   }
 
   _onApply() {
+    var {region} = this.state;
+    findApi.getGeocoding(region.latitude, region.longitude, this.geoCallback.bind(this));
+  }
+
+  geoCallback(data) {
     var {place} = this.props.postAds;
     var {region} = this.state;
     place.geo.lat = region.latitude;
     place.geo.lon = region.longitude;
+    var places = data.results;
+    if (places.length > 0) {
+      var newPlace = places[0];
+      for (var i=0; i<places.length; i++) {
+        var xa = placeUtil.getXa(places[i]);
+        if (xa != '') {
+          newPlace = places[i];
+          break;
+        }
+      }
+      place.placeID = newPlace.place_id;
+      var tinh = placeUtil.getTinh(newPlace);
+      var huyen = placeUtil.getHuyen(newPlace);
+      var xa = placeUtil.getXa(newPlace);
+      var {diaChinh} = place;
+      diaChinh.tinh = tinh;
+      diaChinh.huyen = huyen;
+      diaChinh.xa = xa;
+      diaChinh.tinhKhongDau = utils.locDau(tinh);
+      diaChinh.huyenKhongDau = utils.locDau(huyen);
+      diaChinh.xaKhongDau = utils.locDau(xa);
+      place.diaChiFullName = tinh;
+      if (huyen != '') {
+        place.diaChiFullName = huyen + ', ' + place.diaChiFullName;
+      }
+      if (xa != '') {
+        place.diaChiFullName = xa + ', ' + place.diaChiFullName;
+      }
+      if (place.diaChi != '') {
+        place.diaChiFullName = place.diaChi + ', ' + place.diaChiFullName;
+      }
+    }
     Actions.pop();
   }
 
