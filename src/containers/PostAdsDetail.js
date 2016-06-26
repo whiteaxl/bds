@@ -254,22 +254,35 @@ class PostAdsDetail extends Component {
 
     _renderDiaChi() {
         return (
-            <View style={[myStyles.imgList, myStyles.headerSeparator]} >
-                <Text style={myStyles.label}>Địa chỉ</Text>
-                <TextInput
-                    secureTextEntry={false}
-                    style={myStyles.input}
-                    value={this.props.postAds.diaChi}
-                    onChangeText={(text) => this.onValueChange("diaChi", text)}
-                />
+            <View style={[{paddingTop: 9, marginBottom: 7}, myStyles.headerSeparator]} >
+                <TouchableHighlight
+                    onPress={() => this._onDiaChiPressed()}>
+                    <View style={myStyles.imgList} >
+                        <Text style={myStyles.label}>
+                            Địa chỉ
+                        </Text>
+                        <View style={{flexDirection: "row", alignItems: "flex-end"}}>
+                            <Text style={myStyles.label}> {this._getDiaChiValue()} </Text>
+                            <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
+                        </View>
+                    </View>
+                </TouchableHighlight>
             </View>
         );
+    }
+
+    _onDiaChiPressed() {
+        Actions.PostAdsAddress();
+    }
+
+    _getDiaChiValue() {
+        return this.props.postAds.place.diaChi;
     }
 
     _renderGia() {
         return (
             <View style={myStyles.imgList} >
-                <Text style={myStyles.label}>Giá</Text>
+                <Text style={myStyles.label}>Giá (triệu)</Text>
                 <TextInput
                     secureTextEntry={false}
                     style={myStyles.input}
@@ -283,7 +296,7 @@ class PostAdsDetail extends Component {
     _renderDienTich() {
         return (
             <View style={[myStyles.imgList, myStyles.headerSeparator]} >
-                <Text style={myStyles.label}>Diện tích</Text>
+                <Text style={myStyles.label}>Diện tích (m²)</Text>
                 <TextInput
                     secureTextEntry={false}
                     style={myStyles.input}
@@ -497,7 +510,8 @@ var myStyles = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 5,
         margin: 5,
-        width: 200,
+        width: 80,
+        textAlign: 'center',
         alignSelf: 'center'
     },
     textArea: {
