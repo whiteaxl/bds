@@ -144,6 +144,14 @@ danhMuc.MapType = [
     "Hybrid"
 ];
 
+
+danhMuc.CHAT_MESSAGE_TYPE ={
+    TEXT: 1,
+    IMAGE:2,
+    FILE: 3,
+    SYSTEM: 4
+};
+
 danhMuc.getDanhMucKeys = function (hashDanhMuc) {
     var result = [];
     for (var k in hashDanhMuc) {
@@ -238,6 +246,9 @@ danhMuc.getRadiusInKmByIndex = function(index) {
 danhMuc.getLoaiTinValue = function (key) {
     return danhMuc.LoaiTin[key];
 }
+
+
+
 
 module.exports = danhMuc;
 

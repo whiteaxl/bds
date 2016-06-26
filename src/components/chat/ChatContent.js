@@ -25,6 +25,7 @@ import * as chatActions from '../../reducers/chat/chatActions';
 import GiftedMessenger from '../giftedMessegener/GiftedMessenger';
 
 import log from '../../lib/logUtil';
+import danhMuc from '../../assets/DanhMuc';
 
 var STATUS_BAR_HEIGHT = Navigator.NavigationBar.Styles.General.StatusBarHeight;
 
@@ -76,11 +77,11 @@ class  ChatContent extends React.Component {
       toFullName : this.props.chat.partner.fullName,
       relatedToAds : this.props.chat.ads,
       content : message.text,
-      msgType : message.type || 'text',
+      msgType : message.type || danhMuc.CHAT_MESSAGE_TYPE.TEXT,
       read: false,
       date : new Date(),
       type: 'Chat',
-      epoch : new Date().getTime()
+      timeStamp : new Date().getTime()
     };
 
     log.info("start send myMsg=", myMsg);
