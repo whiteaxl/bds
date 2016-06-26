@@ -83,10 +83,13 @@ class PostAdsDetail extends Component {
     getCurrentLocation() {
         navigator.geolocation.getCurrentPosition(
             (position) => {
-                this.setState({
+                var {place} = this.props.postAds;
+                var geo = {
                     "lat": position.coords.latitude,
                     "lon": position.coords.longitude
-                });
+                };
+                place.geo = geo;
+                this.props.actions.onPostAdsFieldChange("place", place);
             },
             (error) => {
             },
@@ -98,8 +101,6 @@ class PostAdsDetail extends Component {
         var _scrollView: ScrollView;
         return (
             <View myStyles={myStyles.container}>
-                <View style={{paddingTop: 30, backgroundColor: 'white'}} />
-                <View style={myStyles.headerSeparator} />
                 <ScrollView
                     ref={(scrollView) => { _scrollView = scrollView; }}
                     automaticallyAdjustContentInsets={false}
@@ -164,7 +165,7 @@ class PostAdsDetail extends Component {
 
     _renderPhoto() {
         return (
-            <View style={[myStyles.imgList, {marginTop: 15}]} >
+            <View style={[myStyles.imgList, {marginTop: 30}]} >
                 <TouchableHighlight onPress={() => this.onTakePhoto(0)} >
                     <Image style={myStyles.imgItem} source={this.props.postAds.photos[0]}/>
                 </TouchableHighlight>
@@ -226,7 +227,7 @@ class PostAdsDetail extends Component {
 
     _renderBanDo() {
         return (
-            <View style={{marginTop: 9, marginBottom: 5}}>
+            <View style={{marginTop: 9, marginBottom: 7}}>
                 <TouchableHighlight
                     onPress={() => this._onBanDoPressed()}>
                     <View style={myStyles.imgList} >
@@ -244,7 +245,7 @@ class PostAdsDetail extends Component {
     }
 
     _onBanDoPressed() {
-
+        Actions.PostAdsMapView();
     }
 
     _getBanDoValue() {
@@ -572,7 +573,7 @@ var myStyles = StyleSheet.create({
         borderTopColor: gui.separatorLine
     },
     scrollView: {
-        height: Dimensions.get('window').height-76,
+        height: Dimensions.get('window').height-44,
         backgroundColor: 'white'
     },
     picker: {
