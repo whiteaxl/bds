@@ -505,13 +505,14 @@ var myStyles = StyleSheet.create({
     },
     input: {
         padding: 4,
+        paddingRight: 10,
         height: 35,
         borderColor: 'gray',
         borderWidth: 1,
         borderRadius: 5,
         margin: 5,
         width: 80,
-        textAlign: 'center',
+        textAlign: 'right',
         alignSelf: 'center'
     },
     textArea: {
