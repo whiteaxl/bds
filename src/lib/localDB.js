@@ -355,7 +355,7 @@ class DBService {
 
           if (idx && idx > -1) {
             return {
-              status:0,
+              status:1,
               msg : gui.ERR_LIKED
             }
           }
@@ -378,6 +378,56 @@ class DBService {
         });
     });
   }
+
+  //saveSearch {userID, searchObj}
+  saveSearch(dto) {
+    return this.db().then(db => {
+      log.info("localDB.saveSearch", dto);
+      return db.getDocument(dto.userID, {})
+        .then((doc) => {
+          log.info("Found user," , doc);
+          let documentRevision = doc._rev;
+
+          let savedList = doc.saveSearch;
+          let exists = savedList ? savedList.find((e) => e && e.name == dto.searchObj.name) : null;
+
+          log.info("localDB.saveSearch, exists=", exists);
+
+          if (exists) {
+            //Object.assign(exists, dto.searchObj);
+
+            return {
+              status:1,
+              msg : gui.ERR_Saved
+            }
+
+          } else {
+            if (!savedList) savedList=[];
+            savedList.push(dto.searchObj);
+            savedList.sort((a,b) => b.timeModified - a.timeModified);
+
+            let LIMIT_SAVESEARCH = 10;
+            
+            if (savedList.length > LIMIT_SAVESEARCH) {
+              savedList = savedList.slice(0, LIMIT_SAVESEARCH);
+            }
+          }
+
+          doc.saveSearch = savedList;
+
+          return db.updateDocument(doc, doc.userID, documentRevision)
+            .then((res) => {
+              log.info("Updated document for saveSearch", res);
+              return {
+                status:0,
+                msg : "Ngon",
+                saveSearch: savedList
+              }
+            });
+        });
+    });
+  }
+
 }
 
 let dbService = new DBService();

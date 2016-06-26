@@ -11,6 +11,8 @@ var gui = {
 	normalFontSize : 16,
 	buttonFontSize: 16,
 	capitalizeFontSize: 13,
+	LIMIT_RECENT_SEARCH : 3,
+	LIMIT_SAVE_SEARCH : 5,
 
 	//Error msg
 	ERR_LoiKetNoiMayChu : "Lỗi kết nối đến máy chủ!",
@@ -21,7 +23,8 @@ var gui = {
 	ERR_PhoneExisted : 'Số điện thoại đã tồn tại!',
 	ERR_LIKED : "Lỗi! Bài đăng đã lưu từ trước",
 	ERR_UserNotExist : "Lỗi! User không tồn tại",
-	INF_ClickToRefresh : "Nhấn vào đây để lấy dữ liệu lại"
+	INF_ClickToRefresh : "Nhấn vào đây để lấy dữ liệu lại",
+	ERR_Saved : "Lỗi! Tên lưu tìm kiếm đã tồn tại!"
 };
 
 var styles = StyleSheet.create({

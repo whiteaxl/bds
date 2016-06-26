@@ -16,34 +16,70 @@ var maxRows = 200;
 
 var Api = {
 
+  convertFieldsToQueryParams : function(fields){
+    var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
+      radiusInKmSelectedIdx, dienTich, orderBy, place, geoBox, huongNha, ngayDaDang, polygon} = fields;
 
-  getItems: function(fields) {
-      var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, radiusInKmSelectedIdx, dienTich, orderBy, place, geoBox, huongNha, ngayDaDang, polygon} = fields;
-
-      if (place) {
-        place.radiusInKm = DanhMuc.getRadiusInKmByIndex(radiusInKmSelectedIdx) || undefined;
-        if (place.currentLocation==="") {
-          place.currentLocation = undefined;
-        }
+    if (place) {
+      place.radiusInKm = DanhMuc.getRadiusInKmByIndex(radiusInKmSelectedIdx) || undefined;
+      if (place.currentLocation==="") {
+        place.currentLocation = undefined;
       }
+    }
 
-      var params = {
-          'loaiTin' : 'ban' === loaiTin ? 0 : 1,
-          'loaiNhaDat' : loaiNhaDat || undefined,
-          'giaBETWEEN' : gia ? RangeUtils.sellPriceRange.toValRange(gia) : gia,
-          'soPhongNguGREATER' : DanhMuc.getSoPhongByIndex(soPhongNguSelectedIdx) || undefined,
-          'soTangGREATER' : DanhMuc.getSoTangByIndex(soTangSelectedIdx) || undefined,
-          'dienTichBETWEEN' : dienTich ? RangeUtils.dienTichRange.toValRange(dienTich) : undefined,
-          'orderBy' : orderBy || undefined,
-          'place':place || undefined,
-          'geoBox' : geoBox.length===4 ? geoBox : undefined,
-          'limit' : maxRows || undefined,
-          'huongNha' : huongNha || undefined,
-          'ngayDaDang' : ngayDaDang || undefined,
-          'polygon' : polygon || undefined
-      };
+    var params = {
+      'loaiTin' : 'ban' === loaiTin ? 0 : 1,
+      'loaiNhaDat' : loaiNhaDat || undefined,
+      'giaBETWEEN' : gia ? RangeUtils.sellPriceRange.toValRange(gia) : gia,
+      'soPhongNguGREATER' : DanhMuc.getSoPhongByIndex(soPhongNguSelectedIdx) || undefined,
+      'soTangGREATER' : DanhMuc.getSoTangByIndex(soTangSelectedIdx) || undefined,
+      'soPhongTamGREATER' : DanhMuc.getSoPhongTamByIndex(soNhaTamSelectedIdx) || undefined,
+      'dienTichBETWEEN' : dienTich ? RangeUtils.dienTichRange.toValRange(dienTich) : undefined,
+      'orderBy' : orderBy || undefined,
+      'place':place || undefined,
+      'geoBox' : geoBox.length===4 ? geoBox : undefined,
+      'limit' : maxRows || undefined,
+      'huongNha' : huongNha || undefined,
+      'ngayDaDang' : ngayDaDang || undefined,
+      'polygon' : polygon || undefined
+    };
 
- 
+    return params
+  },
+
+  //query json that sent to server
+  convertQuery2String(query) {
+    let toStrRange = (range) => {
+      if (range[0] == 0 && range[1] == DanhMuc.BIG) {
+        return undefined;
+      }
+      return range;
+    };
+
+    let {loaiTin, loaiNhaDat, giaBETWEEN, soPhongNguGREATER, soTangGREATER, dienTichBETWEEN,
+      orderBy, place, geoBox, limit, huongNha, ngayDaDang, polygon, soPhongTamGREATER
+    } = query;
+
+    let tmp = {
+      'tin' : loaiTin,
+      'nhàDat' : loaiNhaDat == 0 ? undefined : loaiNhaDat,
+      'giá' : toStrRange(giaBETWEEN),
+      'ngủ' : soPhongNguGREATER == 0 ? undefined : soPhongNguGREATER,
+      'tắm' : soPhongTamGREATER == 0 ? undefined : soPhongTamGREATER,
+      'tầng' : soTangGREATER == 0 ? undefined : soTangGREATER,
+      'dt' : toStrRange(dienTichBETWEEN),
+      'orderBy' : orderBy ,
+      'place':place ? place.fullName + "-" + place.radiusInKm : undefined ,
+      'geoBox' : geoBox,
+      'hướng' : huongNha || undefined,
+      'ngày' : ngayDaDang == 0 ? undefined : ngayDaDang,
+      'polygon' : polygon || undefined
+    };
+
+    return JSON.stringify(tmp);
+  },
+
+  getItems: function(params) {
     console.log(findUrl + "?" + JSON.stringify(params));
     return fetch(`${findUrl}`, {
       method: 'POST',

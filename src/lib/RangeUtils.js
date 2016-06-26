@@ -8,7 +8,7 @@ var BIG = danhMuc.BIG;
 var {sellStepValues,rentStepValues,dienTichStepValues, BAT_KY} = danhMuc;
 
 function getPriceStepsDisplay(val) {
-	if (val == 0 ) {
+	if (val == 0 || val == BIG) {
 		return BAT_KY;
 	}
 
@@ -20,7 +20,7 @@ function getPriceStepsDisplay(val) {
 }
 
 function getDienTichStepsDisplay(val) {
-	if (val == 0 ) {
+	if (val == 0 || val == BIG) {
 		return BAT_KY;
 	}
 
@@ -62,11 +62,18 @@ class IncRange {
 
 	toValRange(displayArr) {
 		let fromVal = this._map[displayArr[0]];
-
 		let toVal = this._map[displayArr[1]];
 		toVal = toVal == 0 ? BIG : toVal;
 
 		return [fromVal, toVal];
+	}
+
+	rangeVal2Display(rangeVal) {
+		console.log("rangeVal=", rangeVal);
+		let fromDisplay = this.getDisplay(rangeVal[0]);
+		let toDisplay = this.getDisplay(rangeVal[1]);
+
+		return [fromDisplay, toDisplay];
 	}
 }
 

@@ -32,7 +32,6 @@ const SearchForm = Record({
         soNhaTamSelectedIdx : 0,
         dienTich: RangeUtils.BAT_KY_RANGE,
         gia: RangeUtils.BAT_KY_RANGE,
-        giaPicker: RangeUtils.sellPriceRange.getPickerData(),
         orderBy: '',
         listData: [],
         marker: {},
@@ -78,6 +77,9 @@ var InitialState = Record({
             southwest : {lat:0, lon:0}
         }
 
-    }))
+    })),
+
+    saveSearchList : [],
+    recentSearchList : []
 });
 export default InitialState;

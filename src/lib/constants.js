@@ -76,5 +76,6 @@ export default keyMirror({
   
   SEARCH_LIST_LIKE_SUCCESS: null,
   ON_ADSMGMT_FIELD_CHANGE: null,
-  ON_ME_FIELD_CHANGE : null
+  ON_ME_FIELD_CHANGE : null,
+  SEARCH_LOAD_SAVED_SEARCH: null
 });

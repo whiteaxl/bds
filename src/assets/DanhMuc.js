@@ -225,7 +225,7 @@ danhMuc.getDanhMucKeyByIndex = function (hashDanhMuc, index) {
         i++;
     }
     return find;
-}
+};
 
 danhMuc.getSoPhongByIndex = function (index) {
     return danhMuc.getDanhMucKeyByIndex(danhMuc.SoPhongNgu, index);
@@ -248,6 +248,18 @@ danhMuc.getLoaiTinValue = function (key) {
 }
 
 
+//eg: map=danhMuc.SoPhongTam, value = 1
+danhMuc.getIdx = function(map, value) {
+    let i = 0;
+    for (var k in map) {
+        if (k == value) {
+            return i
+        }
+        i++;
+    }
+
+    return 0;//default
+};
 
 
 module.exports = danhMuc;

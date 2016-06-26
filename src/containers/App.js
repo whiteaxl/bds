@@ -124,8 +124,6 @@ class App extends React.Component {
           <Scene key='Chat' component={Chat} hideNavBar={true}/>
 
         </Scene>
-
-
       </RouterWithRedux>
     );
   }

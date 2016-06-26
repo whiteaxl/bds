@@ -9,7 +9,8 @@ var InitialState = Record({
     phone : '',
     email: '',
     avatar:'',
-    adsLikes : []
+    adsLikes : [],
+    saveSearch : []
   })),
 
   deviceInfo : {

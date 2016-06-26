@@ -12,6 +12,10 @@ import PlaceUtil from '../lib/PlaceUtil';
 
 import gui from '../lib/gui';
 
+import findApi from '../lib/FindApi';
+
+
+
 // Create our component
 var SearchResultFooter = React.createClass({
   render: function() {
@@ -29,18 +33,31 @@ var SearchResultFooter = React.createClass({
   },
 
   _onAlertSaveSearch() {
-    AlertIOS.prompt('Tên tìm kiếm cần lưu', 'Ví dụ: Gần chỗ làm, gần bệnh viện',
+    if (!this.props.loggedIn) {
+      Actions.LoginRegister({page:1});
+    } else {
+      var name = this.props.place.fullName;
+      AlertIOS.prompt('Tên tìm kiếm cần lưu', 'Ví dụ: Gần chỗ làm, gần bệnh viện',
         [{
-            text: 'Lưu lại',
-            onPress: this._onSaveSearch
+          text: 'Lưu lại',
+          onPress: this._onSaveSearch
         }, {
-            text: 'Thoát',
-            style: 'cancel'
-        }], 'plain-text', this.props.place.fullName);
+          text: 'Thoát',
+          style: 'cancel'
+        }], 'plain-text', name);
+    }
   },
 
-  _onSaveSearch() {
-    console.log("On Save Search pressed!");
+  _onSaveSearch(name) {
+    console.log("On Save Search pressed!", name);
+
+    let saveSearch = {
+      name : name,
+      query : this.props.query,
+      timeModified : new Date().getTime()
+    };
+
+    this.props.saveSearch(this.props.userID, saveSearch);
   },
 
   _onMap() {

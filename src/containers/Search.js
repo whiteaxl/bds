@@ -198,7 +198,7 @@ class Search extends Component {
 
               {this._renderSoNhaTam()}
 
-                {this._renderBanKinhTimKiem()}
+              {this._renderBanKinhTimKiem()}
 
               <TouchableOpacity style={myStyles.searchFilterAttribute}
                   onPress={this._onPressDienTichHandle.bind(this)}>
@@ -242,7 +242,7 @@ class Search extends Component {
         <View>
           <RangePicker ref={pickerGia => this.pickerGia = pickerGia}
                     pickerTitle = "Chọn Giá"
-                    pickerData={this.props.search.form.fields.giaPicker}
+                    pickerData={RangeUtils.sellPriceRange.getPickerData()}
                     selectedValue={this.props.search.form.fields.gia}
                     onPickerDone={(pickedValue) => {this._onGiaChanged(pickedValue)}}
               />
@@ -361,9 +361,12 @@ class Search extends Component {
         if (this.showBanKinhTimKiem(place)){
             return this._renderSegment("Bán kính tìm kiếm (Km)", DanhMuc.getRadiusInKmValues(),
                 this.props.search.form.fields["radiusInKmSelectedIdx"], this._onBanKinhTimKiemChanged.bind(this));
-        }else if (0 != this.props.search.form.fields.radiusInKmSelectedIdx) {
+        }
+        /*
+        else if (0 != this.props.search.form.fields.radiusInKmSelectedIdx) {
             this.props.actions.onSearchFieldChange("radiusInKmSelectedIdx", 0);
         }
+        */
     }
 
     _renderSegment(label, values, selectedIndexAttribute, onChange) {

@@ -36,6 +36,9 @@ import GiftedSpinner from "../components/GiftedSpinner";
 import {MenuContext} from '../components/menu';
 
 import log from '../lib/logUtil';
+import findApi from '../lib/FindApi';
+
+
 
 const actions = [
     globalActions,
@@ -131,7 +134,13 @@ class SearchResultList extends Component {
 
                 {this._getListContent()}
 
-                <SearchResultFooter place={this.props.place} />
+                <SearchResultFooter place = {this.props.place}
+
+                                    loggedIn = {this.props.global.loggedIn}
+                                    saveSearch = {this.props.actions.saveSearch}
+                                    query = {findApi.convertFieldsToQueryParams(this.props.search.form.fields)}
+                                    userID = {this.props.global.currentUser.userID}
+                />
             </View>
             </MenuContext>
         )
