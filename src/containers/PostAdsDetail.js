@@ -462,17 +462,17 @@ class PostAdsDetail extends Component {
         if (uploadFiles.length === 0) {
             errors += ' (ảnh)';
         }
-        var {loaiNhaDat, diaChi, gia, dienTich} = this.props.postAds;
-        if (loaiNhaDat === 0) {
+        var {loaiNhaDat, place, gia, dienTich} = this.props.postAds;
+        if (loaiNhaDat == '' || loaiNhaDat === 0) {
             errors += ' (loại nhà)';
         }
-        if (diaChi == '') {
+        if (place.diaChi == '') {
             errors += ' (địa chỉ)';
         }
-        if (gia == '') {
+        if (gia == null) {
             errors += ' (giá)';
         }
-        if (dienTich == '') {
+        if (dienTich == null) {
             errors += ' (diện tích)';
         }
         if (errors != '') {
