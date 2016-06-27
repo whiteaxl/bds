@@ -77,7 +77,7 @@ class PostAdsAddress extends Component {
                         onChangeText={(text) => this.onValueChange("diaChi", text)}
                     />
                     <Text style={myStyles.label2}>{ghiChuDuongPho}</Text>
-                    <Text style={myStyles.label}>PHƯỜNG, QUẬN, THÀNH PHỐ</Text>
+                    <Text style={[myStyles.label, {marginTop: 20}]}>PHƯỜNG, QUẬN, THÀNH PHỐ</Text>
                     <TextInput
                         editable={false}
                         secureTextEntry={false}
