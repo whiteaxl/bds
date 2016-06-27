@@ -71,7 +71,8 @@ class PostAdsDetail extends Component {
         StatusBar.setBarStyle('default');
         errorMessage = this.props.postAds.error;
         this.state = {
-            uploadUrls: []
+            uploadUrls: [],
+            chiTietExpanded: true
         }
     }
 
@@ -124,7 +125,7 @@ class PostAdsDetail extends Component {
                     {this._renderPhongTam()}
                     {this._renderSoTang()}
 
-                    <View style={myStyles.searchSectionTitle}>
+                    <View style={[myStyles.searchSectionTitle, myStyles.headerSeparator]}>
                         <Text style={myStyles.cacDieuKienText}>
                             VỊ TRÍ
                         </Text>
@@ -133,7 +134,7 @@ class PostAdsDetail extends Component {
                     {this._renderBanDo()}
                     {this._renderDiaChi()}
 
-                    <View style={myStyles.searchSectionTitle}>
+                    <View style={[myStyles.searchSectionTitle, myStyles.headerSeparator]}>
                         <Text style={myStyles.cacDieuKienText}>
                             GIÁ
                         </Text>
@@ -141,7 +142,7 @@ class PostAdsDetail extends Component {
 
                     {this._renderGia()}
 
-                    <View style={myStyles.searchSectionTitle}>
+                    <View style={[myStyles.searchSectionTitle, myStyles.headerSeparator]}>
                         <Text style={myStyles.cacDieuKienText}>
                             THÔNG TIN CHI TIẾT
                         </Text>
@@ -165,21 +166,32 @@ class PostAdsDetail extends Component {
 
     _renderPhoto() {
         return (
-            <View style={[myStyles.imgList, {marginTop: 30}]} >
-                <TouchableHighlight onPress={() => this.onTakePhoto(0)} >
-                    <Image style={myStyles.imgItem} source={this.props.postAds.photos[0]}/>
-                </TouchableHighlight>
-                <TouchableHighlight onPress={() => this.onTakePhoto(1)} >
-                    <Image style={myStyles.imgItem} source={this.props.postAds.photos[1]}/>
-                </TouchableHighlight>
-                <TouchableHighlight onPress={() => this.onTakePhoto(2)} >
-                    <Image style={myStyles.imgItem} source={this.props.postAds.photos[2]}/>
-                </TouchableHighlight>
-                <TouchableHighlight onPress={() => this.onTakePhoto(3)} >
-                    <Image style={myStyles.imgItem} source={this.props.postAds.photos[3]}/>
-                </TouchableHighlight>
+            <View style={[myStyles.imgList, {marginTop: 30, paddingLeft: 10}]} >
+                {this._renderPhotoItem(0)}
+                {this._renderPhotoItem(1)}
+                {this._renderPhotoItem(2)}
+                {this._renderPhotoItem(3)}
             </View>
         );
+    }
+
+    _renderPhotoItem(imageIndex) {
+        var {photos} = this.props.postAds;
+        var photo = photos[imageIndex];
+
+        if (photo.uri != '') {
+            return (
+                <TouchableHighlight onPress={() => this.onTakePhoto(`${imageIndex}`)} >
+                    <Image style={myStyles.imgItem} source={photo}/>
+                </TouchableHighlight>
+            );
+        } else {
+            return (
+                <TouchableHighlight onPress={() => this.onTakePhoto(`${imageIndex}`)} >
+                    <View style={myStyles.imgItem}/>
+                </TouchableHighlight>
+            );
+        }
     }
 
     _renderLoaiTin() {
@@ -199,14 +211,14 @@ class PostAdsDetail extends Component {
 
     _renderLoaiNha() {
         return (
-            <View style={{marginTop: 9, marginBottom: 5}}>
+            <View style={[{paddingTop: 9, marginBottom: 5}, myStyles.headerSeparator]}>
                 <TouchableHighlight
                     onPress={() => this._onLoaiNhaPressed()}>
                     <View style={myStyles.imgList}>
                         <Text style={myStyles.label}>
                             Loại nhà
                         </Text>
-                        <View style={{flexDirection: "row", alignItems: "flex-end"}}>
+                        <View style={myStyles.arrowIcon}>
                             <Text style={myStyles.label}> {this._getLoaiNhaValue()} </Text>
                             <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
                         </View>
@@ -227,14 +239,14 @@ class PostAdsDetail extends Component {
 
     _renderBanDo() {
         return (
-            <View style={{marginTop: 9, marginBottom: 7}}>
+            <View style={[{paddingTop: 9, marginBottom: 7}, myStyles.headerSeparator]}>
                 <TouchableHighlight
                     onPress={() => this._onBanDoPressed()}>
                     <View style={myStyles.imgList} >
                         <Text style={myStyles.label}>
                             Bản đồ
                         </Text>
-                        <View style={{flexDirection: "row", alignItems: "flex-end"}}>
+                        <View style={myStyles.arrowIcon}>
                             <Text style={myStyles.label}> {this._getBanDoValue()} </Text>
                             <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
                         </View>
@@ -266,14 +278,14 @@ class PostAdsDetail extends Component {
 
     _renderDiaChi() {
         return (
-            <View style={[{paddingTop: 9, marginBottom: 7}, myStyles.headerSeparator]} >
+            <View style={[myStyles.headerSeparator, {paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0}]} >
                 <TouchableHighlight
                     onPress={() => this._onDiaChiPressed()}>
-                    <View style={myStyles.imgList} >
+                    <View style={[myStyles.imgList, {paddingLeft: 0}]} >
                         <Text style={myStyles.label}>
                             Địa chỉ
                         </Text>
-                        <View style={{flexDirection: "row", alignItems: "flex-end"}}>
+                        <View style={myStyles.arrowIcon}>
                             <Text style={myStyles.label}> {this._getDiaChiValue()} </Text>
                             <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
                         </View>
@@ -298,7 +310,7 @@ class PostAdsDetail extends Component {
 
     _renderGia() {
         return (
-            <View style={myStyles.imgList} >
+            <View style={[myStyles.imgList, myStyles.headerSeparator]} >
                 <Text style={myStyles.label}>Giá (triệu)</Text>
                 <TextInput
                     secureTextEntry={false}
@@ -312,7 +324,7 @@ class PostAdsDetail extends Component {
 
     _renderDienTich() {
         return (
-            <View style={[myStyles.imgList, myStyles.headerSeparator]} >
+            <View style={[myStyles.imgList, myStyles.headerSeparator, {marginLeft: 17, paddingLeft: 0}]} >
                 <Text style={myStyles.label}>Diện tích (m²)</Text>
                 <TextInput
                     secureTextEntry={false}
@@ -352,18 +364,57 @@ class PostAdsDetail extends Component {
     }
 
     _renderChiTiet() {
+        var arrowIcon = this.state.chiTietExpanded ? "arrow-up" : "arrow-down";
         return (
-            <View>
-                <Text style={myStyles.label2}>Chi tiết</Text>
-                <TextInput
-                    secureTextEntry={false}
-                    style={myStyles.textArea}
-                    value={this.props.postAds.chiTiet}
-                    onChangeText={(text) => this.onValueChange("chiTiet", text)}
-                    multiline={true}
-                />
-            </View>
+            <TouchableHighlight
+                onPress={() => this._onChiTietPressed()}>
+                <View style={[{paddingTop: 9, marginBottom: 7}, myStyles.headerSeparator]} >
+                    <View style={myStyles.imgList} >
+                        <Text style={myStyles.label}>
+                            Chi tiết
+                        </Text>
+                        <View style={myStyles.arrowIcon}>
+                            <Text style={myStyles.label}> {this._getChiTietValue()} </Text>
+                            <TruliaIcon name={arrowIcon} color={gui.arrowColor} size={18} />
+                        </View>
+                    </View>
+                    {this._renderChiTietTextArea()}
+                </View>
+            </TouchableHighlight>
         );
+    }
+
+    _renderChiTietTextArea() {
+        if (this.state.chiTietExpanded) {
+            return (
+                <View>
+                    <TextInput
+                        secureTextEntry={false}
+                        style={myStyles.textArea}
+                        value={this.props.postAds.chiTiet}
+                        onChangeText={(text) => this.onValueChange("chiTiet", text)}
+                        multiline={true}
+                    />
+                </View>
+            );
+        } else {
+            return (
+                <View></View>
+            );
+        }
+    }
+
+    _onChiTietPressed() {
+        this.setState({chiTietExpanded: !this.state.chiTietExpanded});
+    }
+
+    _getChiTietValue() {
+        var {chiTiet} = this.props.postAds;
+        if (chiTiet.length > 30) {
+            return chiTiet.substring(0,30) + '...';
+        }
+        return chiTiet;
+
     }
 
     onValueChange(key: string, value: string) {
@@ -534,6 +585,11 @@ var myStyles = StyleSheet.create({
         alignItems: 'stretch',
         backgroundColor: 'white'
     },
+    arrowIcon: {
+        flexDirection: "row",
+        alignItems: "flex-end",
+        paddingRight: 4
+    },
     headerSeparator: {
         marginTop: 0,
         borderTopWidth: 1,
@@ -557,7 +613,7 @@ var myStyles = StyleSheet.create({
     input: {
         padding: 4,
         paddingRight: 10,
-        height: 35,
+        height: 30,
         borderColor: 'gray',
         borderWidth: 1,
         borderRadius: 5,

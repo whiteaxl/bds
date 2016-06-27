@@ -90,7 +90,11 @@ export default class PostAds extends Component {
     }
 
     onHome() {
-        Actions.Main();
+        if (!this.state.photos) {
+            Actions.Main();
+        } else {
+            Actions.pop();
+        }
     }
 
     takePicture() {
