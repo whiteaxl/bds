@@ -101,11 +101,13 @@ class PostAdsMapView extends Component {
               initialRegion={this.state.region}
               style={styles.mapView}
               mapType={this.state.mapType}
-              onPress={this._onDragEnd.bind(this)}
+              // onPress={this._onDragEnd.bind(this)}
+              onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
             >
-              <MapView.Marker.Animated draggable
+              <MapView.Marker.Animated
+                  // draggable
+                  // onDragEnd={this._onDragEnd.bind(this)}
                   coordinate={this.state.region}
-                  onDragEnd={this._onDragEnd.bind(this)}
               />
             </MapView>
             <View style={styles.mapButtonContainer}>
@@ -121,15 +123,19 @@ class PostAdsMapView extends Component {
     )
   }
 
-  _onDragEnd(e) {
-    var newRegion = {};
-    var coordinate = e.nativeEvent.coordinate;
-    newRegion.latitude = coordinate.latitude;
-    newRegion.longitude = coordinate.longitude;
-    newRegion.latitudeDelta = this.state.region.latitudeDelta;
-    newRegion.longitudeDelta = this.state.region.longitudeDelta;
-    this.setState({region: newRegion});
+  _onRegionChangeComplete(region) {
+    this.setState({region: region});
   }
+
+  // _onDragEnd(e) {
+  //   var newRegion = {};
+  //   var coordinate = e.nativeEvent.coordinate;
+  //   newRegion.latitude = coordinate.latitude;
+  //   newRegion.longitude = coordinate.longitude;
+  //   newRegion.latitudeDelta = this.state.region.latitudeDelta;
+  //   newRegion.longitudeDelta = this.state.region.longitudeDelta;
+  //   this.setState({region: newRegion});
+  // }
 
   _onApply() {
     var {region} = this.state;

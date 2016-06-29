@@ -179,7 +179,7 @@ class PostAdsDetail extends Component {
         var {photos} = this.props.postAds;
         var photo = photos[imageIndex];
 
-        if (photo.uri != '') {
+        if (photo.uri) {
             return (
                 <TouchableHighlight onPress={() => this.onTakePhoto(`${imageIndex}`)} >
                     <Image style={myStyles.imgItem} source={photo}/>
@@ -188,7 +188,7 @@ class PostAdsDetail extends Component {
         } else {
             return (
                 <TouchableHighlight onPress={() => this.onTakePhoto(`${imageIndex}`)} >
-                    <View style={myStyles.imgItem}/>
+                    <View style={[myStyles.imgItem, {borderStyle: 'dashed'}]}/>
                 </TouchableHighlight>
             );
         }
@@ -265,7 +265,7 @@ class PostAdsDetail extends Component {
         var tinh = place.diaChinh.tinh;
         var huyen = place.diaChinh.huyen;
         var xa = place.diaChinh.xa;
-        if (xa == '') {
+        if (!xa) {
             return "Chọn vị trí";
         } else {
             var diaChinhFullName = xa + ', ' + huyen + ', ' + tinh;
@@ -364,48 +364,26 @@ class PostAdsDetail extends Component {
     }
 
     _renderChiTiet() {
-        var arrowIcon = this.state.chiTietExpanded ? "arrow-up" : "arrow-down";
         return (
-            <TouchableHighlight
-                onPress={() => this._onChiTietPressed()}>
-                <View style={[{paddingTop: 9, marginBottom: 7}, myStyles.headerSeparator]} >
+            <View style={[{paddingTop: 9, marginBottom: 7}, myStyles.headerSeparator]} >
+                <TouchableHighlight
+                    onPress={() => this._onChiTietPressed()}>
                     <View style={myStyles.imgList} >
                         <Text style={myStyles.label}>
                             Chi tiết
                         </Text>
                         <View style={myStyles.arrowIcon}>
                             <Text style={myStyles.label}> {this._getChiTietValue()} </Text>
-                            <TruliaIcon name={arrowIcon} color={gui.arrowColor} size={18} />
+                            <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
                         </View>
                     </View>
-                    {this._renderChiTietTextArea()}
-                </View>
-            </TouchableHighlight>
+                </TouchableHighlight>
+            </View>
         );
     }
 
-    _renderChiTietTextArea() {
-        if (this.state.chiTietExpanded) {
-            return (
-                <View>
-                    <TextInput
-                        secureTextEntry={false}
-                        style={myStyles.textArea}
-                        value={this.props.postAds.chiTiet}
-                        onChangeText={(text) => this.onValueChange("chiTiet", text)}
-                        multiline={true}
-                    />
-                </View>
-            );
-        } else {
-            return (
-                <View></View>
-            );
-        }
-    }
-
     _onChiTietPressed() {
-        this.setState({chiTietExpanded: !this.state.chiTietExpanded});
+        Actions.PostAdsTitle();
     }
 
     _getChiTietValue() {
@@ -433,7 +411,9 @@ class PostAdsDetail extends Component {
             var filename = filepath.substring(filepath.lastIndexOf('/')+1);
             uploadFiles.push({filename: filename, filepath: filepath});
         }
+        log.info("errorMessage" + errorMessage);
         if (!this.isValidInputData()) {
+            log.info(errorMessage);
             Alert.alert(
                 'Thông báo',
                 errorMessage
@@ -469,10 +449,7 @@ class PostAdsDetail extends Component {
         if (place.diaChi == '') {
             errors += ' (địa chỉ)';
         }
-        if (gia == null) {
-            errors += ' (giá)';
-        }
-        if (dienTich == null) {
+        if (!dienTich) {
             errors += ' (diện tích)';
         }
         if (errors != '') {
@@ -521,11 +498,11 @@ class PostAdsDetail extends Component {
             "userID": currentUser.userID
         };
         var phongNgu = DanhMuc.getSoPhongByIndex(soPhongNguSelectedIdx);
-        phongNgu = phongNgu != 0 ? phongNgu : null;
+        phongNgu = phongNgu ? phongNgu : null;
         var soTang = DanhMuc.getSoTangByIndex(soTangSelectedIdx);
-        soTang = soTang != 0 ? soTang : null;
+        soTang = soTang ? soTang : null;
         var phongTam = DanhMuc.getSoPhongTamByIndex(soNhaTamSelectedIdx);
-        phongTam = phongTam != 0 ? phongTam : null;
+        phongTam = phongTam ? phongTam : null;
         dbService._createAds({loaiTin: loaiTinVal, loaiNha: loaiNhaDat, place: place, gia: gia,
             dienTich: dienTich, soTang: soTang, phongNgu: phongNgu, phongTam: phongTam, chiTiet: chiTiet,
             uploadUrls: imageUrls, userID: currentUser.userID, tenLoaiNhaDat: tenLoaiNhaDat,
@@ -611,6 +588,8 @@ var myStyles = StyleSheet.create({
         borderColor: gui.separatorLine
     },
     input: {
+        fontSize: gui.normalFontSize,
+        fontFamily: gui.fontFamily,
         padding: 4,
         paddingRight: 10,
         height: 30,

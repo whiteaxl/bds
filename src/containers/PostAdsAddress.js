@@ -81,7 +81,7 @@ class PostAdsAddress extends Component {
                     <TextInput
                         editable={false}
                         secureTextEntry={false}
-                        style={myStyles.input}
+                        style={[myStyles.input, {color: '#8A8A8A'}]}
                         value={this.state.xaPhuong}
                         onChangeText={(text) => this.onValueChange("xaPhuong", text)}
                     />
@@ -134,11 +134,13 @@ var myStyles = StyleSheet.create({
     },
     label: {
         fontSize: gui.normalFontSize,
-        fontFamily: gui.fontFamily
+        fontFamily: gui.fontFamily,
+        color: '#8A8A8A'
     },
     label2: {
         fontSize: 12,
-        fontFamily: gui.fontFamily
+        fontFamily: gui.fontFamily,
+        color: '#A9A9A9'
     },
     input: {
         padding: 4,
