@@ -65,21 +65,21 @@ export default class PostAds extends Component {
                         style={styles.preview}
                         aspect={Camera.constants.Aspect.fill}>
                         <View style={styles.buttonContainer}>
-                            <View style={styles.capture}>
-                            <RelandIcon name="close-circle" color='black' mainProps={styles.captureIcon}
-                                        size={20} textProps={{paddingLeft: 0}}
+                            <View style={styles.capture2}>
+                            <RelandIcon name="close-circle" color='white' mainProps={styles.captureIcon2}
+                                        size={22} textProps={{paddingLeft: 0}}
                                         onPress={this.onHome.bind(this)} />
                             </View>
                             <View style={styles.capture}>
                             <RelandIcon name="camera" color="black"
                                         mainProps={styles.captureIcon}
-                                        size={20} textProps={{paddingLeft: 0}}
+                                        size={22} textProps={{paddingLeft: 0}}
                                         onPress={this.takePicture.bind(this)} />
                             </View>
-                            <View style={styles.capture}>
-                                <RelandIcon name="photos" color="black"
-                                            mainProps={styles.captureIcon}
-                                            size={20} textProps={{paddingLeft: 0}}
+                            <View style={styles.capture2}>
+                                <RelandIcon name="photos" color="white"
+                                            mainProps={styles.captureIcon2}
+                                            size={22} textProps={{paddingLeft: 0}}
                                             onPress={this.pickPhoto.bind(this)} />
                             </View>
                         </View>
@@ -146,10 +146,19 @@ var styles = StyleSheet.create({
         backgroundColor: '#fff',
         borderRadius: 5
     },
+    capture2: {
+        backgroundColor: 'transparent',
+        borderRadius: 5
+    },
     captureIcon: {
         flexDirection: 'row',
         justifyContent: 'center',
         width: 80,
+        padding: 5
+    },
+    captureIcon2: {
+        flexDirection: 'row',
+        justifyContent: 'center',
         padding: 5
     },
     buttonContainer: {

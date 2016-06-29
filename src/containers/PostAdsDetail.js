@@ -68,7 +68,7 @@ class PostAdsDetail extends Component {
 
     constructor(props) {
         super(props);
-        StatusBar.setBarStyle('default');
+        StatusBar.setBarStyle('light-content');
         errorMessage = this.props.postAds.error;
         this.state = {
             uploadUrls: [],
@@ -102,6 +102,7 @@ class PostAdsDetail extends Component {
         var _scrollView: ScrollView;
         return (
             <View myStyles={myStyles.container}>
+                <View style={{paddingTop: 24, backgroundColor: gui.mainColor}} />
                 <ScrollView
                     ref={(scrollView) => { _scrollView = scrollView; }}
                     automaticallyAdjustContentInsets={false}
@@ -166,7 +167,7 @@ class PostAdsDetail extends Component {
 
     _renderPhoto() {
         return (
-            <View style={[myStyles.imgList, {marginTop: 30, paddingLeft: 10}]} >
+            <View style={[myStyles.imgList, {marginTop: 19, marginBottom: 10, paddingLeft: 17, paddingRight: 15}]} >
                 {this._renderPhotoItem(0)}
                 {this._renderPhotoItem(1)}
                 {this._renderPhotoItem(2)}
@@ -188,7 +189,12 @@ class PostAdsDetail extends Component {
         } else {
             return (
                 <TouchableHighlight onPress={() => this.onTakePhoto(`${imageIndex}`)} >
-                    <View style={[myStyles.imgItem, {borderStyle: 'dashed'}]}/>
+                    <View style={[myStyles.imgItem, {borderStyle: 'dashed', borderColor: gui.mainColor}]}>
+                        <RelandIcon name="plus" color={gui.mainColor}
+                                    mainProps={myStyles.captureIcon}
+                                    size={22} textProps={{paddingLeft: 0}}
+                                    onPress={() => this.onTakePhoto(`${imageIndex}`)} />
+                    </View>
                 </TouchableHighlight>
             );
         }
@@ -591,11 +597,17 @@ var myStyles = StyleSheet.create({
         backgroundColor: 'white'
     },
     imgItem: {
-        width: 90,
+        width: 85,
         height: 90,
         backgroundColor: "white",
+        justifyContent: 'center',
         borderWidth: 1,
         borderColor: gui.separatorLine
+    },
+    captureIcon: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        padding: 5
     },
     input: {
         fontSize: gui.normalFontSize,
@@ -684,7 +696,7 @@ var myStyles = StyleSheet.create({
         borderTopColor: gui.separatorLine
     },
     scrollView: {
-        height: Dimensions.get('window').height-44,
+        height: Dimensions.get('window').height-59,
         backgroundColor: 'white'
     },
     picker: {
