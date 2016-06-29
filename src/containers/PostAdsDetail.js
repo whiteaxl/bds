@@ -456,6 +456,16 @@ class PostAdsDetail extends Component {
             errorMessage = 'Bạn chưa chọn' + errors + '!';
             return false;
         }
+        if (gia && isNaN(gia)) {
+            errors += ' (giá)';
+        }
+        if (dienTich && isNaN(dienTich)) {
+            errors += ' (diện tích)';
+        }
+        if (errors != '') {
+            errorMessage = 'Sai kiểu giá trị:' + errors + '!';
+            return false;
+        }
         return true;
     }
 
