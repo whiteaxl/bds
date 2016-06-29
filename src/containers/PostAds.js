@@ -66,7 +66,7 @@ export default class PostAds extends Component {
                         aspect={Camera.constants.Aspect.fill}>
                         <View style={styles.buttonContainer}>
                             <View style={styles.capture}>
-                            <RelandIcon name="close" color='black' mainProps={styles.captureIcon}
+                            <RelandIcon name="close-circle" color='black' mainProps={styles.captureIcon}
                                         size={20} textProps={{paddingLeft: 0}}
                                         onPress={this.onHome.bind(this)} />
                             </View>
@@ -75,6 +75,12 @@ export default class PostAds extends Component {
                                         mainProps={styles.captureIcon}
                                         size={20} textProps={{paddingLeft: 0}}
                                         onPress={this.takePicture.bind(this)} />
+                            </View>
+                            <View style={styles.capture}>
+                                <RelandIcon name="photos" color="black"
+                                            mainProps={styles.captureIcon}
+                                            size={20} textProps={{paddingLeft: 0}}
+                                            onPress={this.pickPhoto.bind(this)} />
                             </View>
                         </View>
                     </Camera>
@@ -101,6 +107,10 @@ export default class PostAds extends Component {
         this.camera.capture()
             .then((data) => this.imageCropper(data))
             .catch(err => console.error(err));
+    }
+
+    pickPhoto() {
+        log.info("pickPhoto");
     }
 
     imageCropper(data) {
