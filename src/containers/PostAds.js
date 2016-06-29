@@ -61,7 +61,7 @@ export default class PostAds extends Component {
                         ref={(cam) => {
                         this.camera = cam;
                       }}
-                        captureTarget={Camera.constants.CaptureTarget.disk}
+                        // captureTarget={Camera.constants.CaptureTarget.disk}
                         style={styles.preview}
                         aspect={Camera.constants.Aspect.fill}>
                         <View style={styles.buttonContainer}>
@@ -110,7 +110,7 @@ export default class PostAds extends Component {
     }
 
     pickPhoto() {
-        log.info("pickPhoto");
+        Actions.CameraRollView({...this.state});
     }
 
     imageCropper(data) {

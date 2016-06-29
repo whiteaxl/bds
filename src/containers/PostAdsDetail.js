@@ -414,10 +414,12 @@ class PostAdsDetail extends Component {
             if (filepath == '') {
                 continue;
             }
-            var filename = filepath.substring(filepath.lastIndexOf('/')+1);
+            //var filename = filepath.substring(filepath.lastIndexOf('/')+1);
+            var shortname = filepath.substring(filepath.indexOf('id=')+3, filepath.indexOf('&'));
+            var ext = filepath.substring(filepath.indexOf('ext=')+4);
+            var filename = shortname + '.' + ext;
             uploadFiles.push({filename: filename, filepath: filepath});
         }
-        log.info("errorMessage" + errorMessage);
         if (!this.isValidInputData()) {
             log.info(errorMessage);
             Alert.alert(

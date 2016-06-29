@@ -3,14 +3,49 @@
 var React = require('react');
 var ReactNative = require('react-native');
 var {
-    ActivityIndicatorIOS,
+    ActivityIndicator,
     CameraRoll,
     Image,
     ListView,
     Platform,
     StyleSheet,
     View,
+    TouchableHighlight,
+    StatusBar
 } = ReactNative;
+
+import CommonHeader from './CommonHeader';
+
+import gui from "../lib/gui";
+
+import {Actions} from 'react-native-router-flux';
+import {Map} from 'immutable';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import * as globalActions from '../reducers/global/globalActions';
+
+const actions = [
+    globalActions
+];
+
+function mapStateToProps(state) {
+    return {
+        ...state
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    const creators = Map()
+        .merge(...actions)
+        .filter(value => typeof value === 'function')
+        .toObject();
+
+    return {
+        actions: bindActionCreators(creators, dispatch),
+        dispatch
+    };
+}
 
 var groupByEveryN = require('groupByEveryN');
 var logError = require('logError');
@@ -80,7 +115,9 @@ var CameraRollView = React.createClass({
     },
 
     getInitialState: function() {
+        StatusBar.setBarStyle('default');
         var ds = new ListView.DataSource({rowHasChanged: this._rowHasChanged});
+        var {photos, imageIndex} = this.props;
 
         return {
             assets: [],
@@ -90,6 +127,8 @@ var CameraRollView = React.createClass({
             noMore: false,
             loadingMore: false,
             dataSource: ds,
+            photos: photos,
+            imageIndex: imageIndex
     };
     },
 
@@ -149,13 +188,19 @@ fetch: function(clear) {
 
 render: function() {
     return (
-        <ListView
-            renderRow={this._renderRow}
-            renderFooter={this._renderFooterSpinner}
-            onEndReached={this._onEndReached}
-            style={styles.container}
-            dataSource={this.state.dataSource}
-        />
+        <View style={styles.container}>
+            <View style={styles.search}>
+                <CommonHeader backTitle={"Kho ảnh"} />
+                <View style={styles.headerSeparator} />
+            </View>
+            <ListView
+                renderRow={this._renderRow}
+                renderFooter={this._renderFooterSpinner}
+                onEndReached={this._onEndReached}
+                style={styles.list}
+                dataSource={this.state.dataSource}
+            />
+        </View>
     );
 },
 
@@ -175,7 +220,7 @@ _rowHasChanged: function(r1: Array<Image>, r2: Array<Image>): boolean {
 
 _renderFooterSpinner: function() {
     if (!this.state.noMore) {
-        return <ActivityIndicatorIOS style={styles.spinner} />;
+        return <ActivityIndicator style={styles.spinner} />;
     }
     return null;
 },
@@ -186,7 +231,11 @@ _renderRow: function(rowData: Array<Image>, sectionID: string, rowID: string)  {
         if (image === null) {
             return null;
         }
-        return this.props.renderImage(image);
+        return (
+            <TouchableHighlight onPress={this.selectImage.bind(this, image)}>
+                {this.props.renderImage(image)}
+            </TouchableHighlight>
+        );
     });
 
     return (
@@ -194,6 +243,19 @@ _renderRow: function(rowData: Array<Image>, sectionID: string, rowID: string)  {
             {images}
         </View>
     );
+},
+
+selectImage: function (asset) {
+    var {photos, imageIndex} = this.state;
+    if (!photos) {
+        photos = [];
+        for(var i=0; i<4; i++) {
+            photos.push({uri: ''});
+        }
+        imageIndex = 0;
+    }
+    photos[imageIndex] = {uri: asset.node.image.uri};
+    Actions.PostAdsDetail({photos: photos, type: "reset"});
 },
 
 _appendAssets: function(data: Object) {
@@ -239,7 +301,24 @@ var styles = StyleSheet.create({
     },
     container: {
         flex: 1,
+        alignItems: 'stretch',
+        backgroundColor: 'white'
     },
+    headerSeparator: {
+        marginTop: 2,
+        borderTopWidth: 1,
+        borderTopColor: gui.separatorLine
+    },
+    search: {
+        top:0,
+        alignItems: 'stretch',
+        justifyContent: 'flex-start'
+    },
+    list: {
+        flex: 1
+    }
 });
 
-module.exports = CameraRollView;
+//module.exports = CameraRollView;
+
+export default connect(mapStateToProps, mapDispatchToProps)(CameraRollView);
