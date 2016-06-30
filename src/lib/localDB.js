@@ -238,6 +238,24 @@ class DBService {
       });
   }
 
+  getAllAdsBy(loaiTin) {
+      return this.db()
+          .then(db => {
+              return db.queryView(this.adsDesignDocName, 'all_ads')
+                  .then((res) => {
+                      let rows = res.rows;
+                      if (!rows) {
+                          return [];
+                      }
+                      let filtered = rows.filter((e) => {
+                          return e.loaiTin==loaiTin
+                      } );
+
+                      return filtered.map(e => e);
+                  });
+          });
+  }
+
   getAds(adsID, getAdsCallback) {
     var options = {conflicts: true};
 
