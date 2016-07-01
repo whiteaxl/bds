@@ -8,6 +8,8 @@ import log from "../../lib/logUtil";
 
 import userApi from '../../lib/userApi';
 
+import localDB from '../../lib/localDB';
+
 export function onAdsMgmtFieldChange(field, value) {
   return {
     type: ON_ADSMGMT_FIELD_CHANGE,
@@ -25,8 +27,8 @@ export function loadAdsMgmtData(userID) {
       .then(res => {
         if (res.status == 0) {
           dispatch(onAdsMgmtFieldChange('likedList', res.data));
-          let sellList = Object.assign({}, res.data);
-          let rentList = Object.assign({}, res.data);
+          let sellList = localDB.getAllAdsBy(0);
+          let rentList = localDB.getAllAdsBy(1);
 
           dispatch(onAdsMgmtFieldChange('sellList', sellList));
           dispatch(onAdsMgmtFieldChange('rentList', rentList));
@@ -45,6 +47,11 @@ export function refreshLikedTab(userID) {
       .then(res => {
         if (res.status == 0) {
           dispatch(onAdsMgmtFieldChange('likedList', res.data));
+          let sellList = localDB.getAllAdsBy(0);
+          let rentList = localDB.getAllAdsBy(1);
+
+          dispatch(onAdsMgmtFieldChange('sellList', sellList));
+          dispatch(onAdsMgmtFieldChange('rentList', rentList));
         } else {
           log.error("refreshLikedTab error", res);
         }

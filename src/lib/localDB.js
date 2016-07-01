@@ -241,17 +241,17 @@ class DBService {
   getAllAdsBy(loaiTin) {
       return this.db()
           .then(db => {
-              return db.queryView(this.adsDesignDocName, 'all_ads')
+              return db.getAllDocuments({include_docs: true})
                   .then((res) => {
                       let rows = res.rows;
                       if (!rows) {
                           return [];
                       }
                       let filtered = rows.filter((e) => {
-                          return e.loaiTin==loaiTin
+                          return e.type == 'Ads' && e.loaiTin==loaiTin
                       } );
 
-                      return filtered.map(e => e);
+                      return filtered;
                   });
           });
   }
