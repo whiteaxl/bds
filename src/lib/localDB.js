@@ -238,7 +238,7 @@ class DBService {
       });
   }
 
-  getAllAdsBy(loaiTin) {
+  getAllAdsDocs() {
       return this.db()
           .then(db => {
               return db.getAllDocuments({include_docs: true})
@@ -248,23 +248,24 @@ class DBService {
                           return [];
                       }
                       let filtered = rows.filter((e) => {
-                          return e.type == 'Ads' && e.loaiTin==loaiTin
+                          return e.doc.type == 'Ads'
                       } );
-
-                      return filtered;
+                      return filtered.map(e => e.doc);
                   });
           });
   }
 
   getAds(adsID, getAdsCallback) {
     var options = {conflicts: true};
-
+    log.info("getAds adsID", adsID);
     return this.db()
       .then(db => {
         return db.getDocument(adsID, options)
             .then((doc) => {
               log.info("getAds", doc);
-              getAdsCallback(doc);
+              if (!doc.error) {
+                  getAdsCallback(doc);
+              }
               return doc;
             });
       });

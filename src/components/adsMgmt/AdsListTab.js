@@ -92,7 +92,8 @@ class AdsListTab extends Component {
       )
     }
 
-    if (myProps.listAds.length === 0) {
+    log.info("listAds", myProps.listAds);
+    if (myProps.listAds.length === 0 || myProps.listAds.size == 0) {
       return (
         <ScrollView
           refreshControl={
@@ -157,17 +158,17 @@ class AdsListTab extends Component {
     if (rowData.image) {
       if (!rowData.image.images || rowData.image.images.length === 0) {
         return (
-          <MyImage imageIndex={0} rowData={rowData} imageUrl={rowData.image.cover}/>
+          <MyImage imageIndex={0} rowData={rowData} imageUrl={rowData.image.cover} source={this.props.source}/>
         )
       }
 
       return rowData.image.images.map(imageUrl => {
-        return <MyImage key={imageIndex} imageIndex={imageIndex++} rowData={rowData} imageUrl={imageUrl}/>
+        return <MyImage key={imageIndex} imageIndex={imageIndex++} rowData={rowData} imageUrl={imageUrl} source={this.props.source}/>
       });
 
     } else {
       return (
-        <MyImage imageIndex={0} rowData={rowData} imageUrl={''}/>
+        <MyImage imageIndex={0} rowData={rowData} imageUrl={''} source={this.props.source}/>
       );
     }
   }
@@ -260,10 +261,11 @@ class AdsListTab extends Component {
 
 class MyImage extends Component {
   render() {
+    let source = this.props.source ? this.props.source : 'server';
     return (
       <View style={myStyles.slide} key={"img"+(this.props.imageIndex)}>
         <TouchableHighlight
-          onPress={() => Actions.SearchResultDetail({adsID: this.props.rowData.adsID, source: 'server'})}>
+          onPress={() => Actions.SearchResultDetail({adsID: this.props.rowData.adsID, source: source})}>
           <Image style={myStyles.thumb} source={{uri: `${this.props.imageUrl}`}}>
             <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.9)']}
                             style={myStyles.linearGradient2}>

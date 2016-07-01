@@ -560,11 +560,7 @@ class SearchResultDetail extends Component {
  // }
 
   _onBack() {
-    if (this.props.source == 'server') {
-      Actions.pop();
-    } else {
-      Actions.AdsMgmt();
-    }
+    Actions.pop();
   }
 
   _onShare() {

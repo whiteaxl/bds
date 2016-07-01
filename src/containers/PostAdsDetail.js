@@ -454,6 +454,9 @@ class PostAdsDetail extends Component {
         if (loaiNhaDat == '' || loaiNhaDat === 0) {
             errors += ' (loại nhà)';
         }
+        if (place.geo.lat == '' || place.geo.lon == '') {
+            errors += ' (vị trí trên bản đồ)';
+        }
         if (place.diaChi == '') {
             errors += ' (địa chỉ)';
         }
@@ -698,7 +701,7 @@ var myStyles = StyleSheet.create({
         borderTopColor: gui.separatorLine
     },
     scrollView: {
-        height: Dimensions.get('window').height-59,
+        height: Dimensions.get('window').height-64,
         backgroundColor: 'white'
     },
     picker: {

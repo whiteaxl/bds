@@ -87,13 +87,13 @@ export default class AdsMgmt extends React.Component {
                              onChangeTab={this.onChangeTab.bind(this)}
           >
             <AdsListTab name="likedTab" tabLabel="ĐÃ LƯU" ref="likedTab"
-                        listAds={this.props.adsMgmt.likedList}
+                        listAds={this.props.adsMgmt.likedList} source={"server"}
             />
             <AdsListTab name="sellTab" tabLabel="BÁN" ref="sellTab"
-                        listAds={this.props.adsMgmt.likedList}
+                        listAds={this.props.adsMgmt.sellList} source={"local"}
             />
             <AdsListTab name="rentTab" tabLabel="CHO THUÊ" ref="rentTab"
-                        listAds={this.props.adsMgmt.likedList}
+                        listAds={this.props.adsMgmt.rentList} source={"local"}
             />
           </ScrollableTabView>
         </View>

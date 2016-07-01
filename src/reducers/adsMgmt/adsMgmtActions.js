@@ -10,6 +10,8 @@ import userApi from '../../lib/userApi';
 
 import localDB from '../../lib/localDB';
 
+import util from '../../lib/utils';
+
 export function onAdsMgmtFieldChange(field, value) {
   return {
     type: ON_ADSMGMT_FIELD_CHANGE,
@@ -27,11 +29,34 @@ export function loadAdsMgmtData(userID) {
       .then(res => {
         if (res.status == 0) {
           dispatch(onAdsMgmtFieldChange('likedList', res.data));
-          let sellList = localDB.getAllAdsBy(0);
-          let rentList = localDB.getAllAdsBy(1);
-
-          dispatch(onAdsMgmtFieldChange('sellList', sellList));
-          dispatch(onAdsMgmtFieldChange('rentList', rentList));
+            localDB.getAllAdsDocs().then((adsList) => {
+                var sellList = adsList.filter((e) => {
+                    return e.loaiTin==0
+                });
+                sellList = sellList.map(e => {
+                    var diaChiFullName = e.place.diaChiFullName;
+                    e.diaChi = diaChiFullName;
+                    e.dienTichFmt = util.getDienTichDisplay(e.dienTich);
+                    e.soPhongNguFmt = e.soPhongNgu ? e.soPhongNgu + "pn" : null;
+                    e.soTangFmt = e.soTang ? e.soTang + "t" : null;
+                    e.giaFmt = util.getPriceDisplay(e.gia, e.loaiTin);
+                    return e;
+                });
+                var rentList = adsList.filter((e) => {
+                    return e.loaiTin==1
+                });
+                rentList = rentList.map(e => {
+                    var diaChiFullName = e.place.diaChiFullName;
+                    e.diaChi = diaChiFullName;
+                    e.dienTichFmt = util.getDienTichDisplay(e.dienTich);
+                    e.soPhongNguFmt = e.soPhongNgu ? e.soPhongNgu + "pn" : null;
+                    e.soTangFmt = e.soTang ? e.soTang + "t" : null;
+                    e.giaFmt = util.getPriceDisplay(e.gia, e.loaiTin);
+                    return e;
+                });
+                dispatch(onAdsMgmtFieldChange('sellList', sellList));
+                dispatch(onAdsMgmtFieldChange('rentList', rentList));
+            });
         } else {
           log.error("loadAdsMgmtData error", res);
         }
@@ -47,11 +72,34 @@ export function refreshLikedTab(userID) {
       .then(res => {
         if (res.status == 0) {
           dispatch(onAdsMgmtFieldChange('likedList', res.data));
-          let sellList = localDB.getAllAdsBy(0);
-          let rentList = localDB.getAllAdsBy(1);
-
-          dispatch(onAdsMgmtFieldChange('sellList', sellList));
-          dispatch(onAdsMgmtFieldChange('rentList', rentList));
+            localDB.getAllAdsDocs().then((adsList) => {
+                var sellList = adsList.filter((e) => {
+                    return e.loaiTin==0
+                });
+                sellList = sellList.map(e => {
+                    var diaChiFullName = e.place.diaChiFullName;
+                    e.diaChi = diaChiFullName;
+                    e.dienTichFmt = util.getDienTichDisplay(e.dienTich);
+                    e.soPhongNguFmt = e.soPhongNgu ? e.soPhongNgu + "pn" : null;
+                    e.soTangFmt = e.soTang ? e.soTang + "t" : null;
+                    e.giaFmt = util.getPriceDisplay(e.gia, e.loaiTin);
+                    return e;
+                });
+                var rentList = adsList.filter((e) => {
+                    return e.loaiTin==1
+                });
+                rentList = rentList.map(e => {
+                    var diaChiFullName = e.place.diaChiFullName;
+                    e.diaChi = diaChiFullName;
+                    e.dienTichFmt = util.getDienTichDisplay(e.dienTich);
+                    e.soPhongNguFmt = e.soPhongNgu ? e.soPhongNgu + "pn" : null;
+                    e.soTangFmt = e.soTang ? e.soTang + "t" : null;
+                    e.giaFmt = util.getPriceDisplay(e.gia, e.loaiTin);
+                    return e;
+                });
+                dispatch(onAdsMgmtFieldChange('sellList', sellList));
+                dispatch(onAdsMgmtFieldChange('rentList', rentList));
+            });
         } else {
           log.error("refreshLikedTab error", res);
         }
