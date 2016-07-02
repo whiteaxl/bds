@@ -77,7 +77,7 @@ class DBService {
   _createAds(data, createAdsCallBack) {
     var {loaiTin, loaiNha, place, gia, dienTich, soTang, phongNgu, phongTam, chiTiet, uploadUrls, userID, tenLoaiNhaDat, tenLoaiTin, dangBoi} = data;
     var ms = moment().toDate().getTime();
-    var adsID = 'Ads_' + userID + '_' + ms;
+    var adsID = 'Ads_reland_' + userID + '_' + ms;
     var giaM2 = null;
     if (gia && dienTich) {
         giaM2 = Number((gia/dienTich).toFixed(3));
@@ -87,12 +87,11 @@ class DBService {
         image.cover = uploadUrls[0];
         image.images = uploadUrls;
     }
-    var ngayDangTin = moment().format('DD-MM-YYYY');
+    var ngayDangTin = moment().format('YYYYMMDD');
 
       var adsDto = {
         "type": "Ads",
         "adsID": adsID,
-        "area_raw": '',
         "chiTiet": chiTiet,
         "dangBoi": dangBoi,
         "dienTich": dienTich,
@@ -104,13 +103,12 @@ class DBService {
         "maSo": ms,
         "ngayDangTin": ngayDangTin,
         "place": place,
-        "price_raw": '',
         "soPhongNgu": phongNgu,
         "soPhongTam": phongTam,
         "soTang": soTang,
         "ten_loaiNhaDat": tenLoaiNhaDat,
         "ten_loaiTin": tenLoaiTin,
-        "title": chiTiet
+        "source" : 'reland'
       };
       adsDto._id = adsDto.adsID;
       return this.db().then(db => {

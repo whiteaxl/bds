@@ -157,7 +157,7 @@ class PostAdsMapView extends Component {
           break;
         }
       }
-      place.placeID = newPlace.place_id;
+      place.placeId = newPlace.place_id;
       var tinh = placeUtil.getTinh(newPlace);
       var huyen = placeUtil.getHuyen(newPlace);
       var xa = placeUtil.getXa(newPlace);

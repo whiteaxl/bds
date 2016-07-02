@@ -518,14 +518,16 @@ class PostAdsDetail extends Component {
             "phone": currentUser.phone,
             "userID": currentUser.userID
         };
-        var phongNgu = DanhMuc.getSoPhongByIndex(soPhongNguSelectedIdx);
-        phongNgu = phongNgu ? phongNgu : null;
-        var soTang = DanhMuc.getSoTangByIndex(soTangSelectedIdx);
-        soTang = soTang ? soTang : null;
-        var phongTam = DanhMuc.getSoPhongTamByIndex(soNhaTamSelectedIdx);
-        phongTam = phongTam ? phongTam : null;
-        dbService._createAds({loaiTin: loaiTinVal, loaiNha: loaiNhaDat, place: place, gia: gia,
-            dienTich: dienTich, soTang: soTang, phongNgu: phongNgu, phongTam: phongTam, chiTiet: chiTiet,
+        var phongNgu = Number(DanhMuc.getSoPhongByIndex(soPhongNguSelectedIdx));
+        phongNgu = phongNgu ? phongNgu : undefined;
+        var soTang = Number(DanhMuc.getSoTangByIndex(soTangSelectedIdx));
+        soTang = soTang ? soTang : undefined;
+        var phongTam = Number(DanhMuc.getSoPhongTamByIndex(soNhaTamSelectedIdx));
+        phongTam = phongTam ? phongTam : undefined;
+        dbService._createAds({loaiTin: loaiTinVal, loaiNha: loaiNhaDat,
+            place: place, gia: Number(gia),
+            dienTich: Number(dienTich), soTang: soTang,
+            phongNgu: phongNgu, phongTam: phongTam, chiTiet: chiTiet || undefined,
             uploadUrls: imageUrls, userID: currentUser.userID, tenLoaiNhaDat: tenLoaiNhaDat,
             tenLoaiTin: tenLoaiTin, dangBoi: dangBoi}, this.createAdsCallBack.bind(this));
     }
