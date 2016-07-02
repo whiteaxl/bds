@@ -149,7 +149,7 @@ export function likeSuccess(payload) {
   }
 }
 
-export function likeAds(userID, rowData, sectionID, rowID) {
+export function likeAds(userID, rowData) {
   return dispatch => {
     let dto = {
       userID: userID,
