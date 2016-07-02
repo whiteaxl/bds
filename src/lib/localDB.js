@@ -108,7 +108,8 @@ class DBService {
         "soTang": soTang,
         "ten_loaiNhaDat": tenLoaiNhaDat,
         "ten_loaiTin": tenLoaiTin,
-        "source" : 'reland'
+        "source" : 'reland',
+        "timeModified" : ms
       };
       adsDto._id = adsDto.adsID;
       return this.db().then(db => {
