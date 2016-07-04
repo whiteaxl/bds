@@ -26,12 +26,12 @@ export function requestStartChat(data) {
 }
 
 //payload={doc, partner}, doc is latest CHAT msg
-export function startChat(data) {
+export function startChat(partner, ads) {
 
   return dispatch => {
-    dbService.getAllChatMsg(data.partner.userID, data.doc.relatedToAds.adsID)
+    dbService.getAllChatMsg(partner.userID, ads.adsID)
       .then((allMsg) => {
-        dispatch(requestStartChat({allMsg, ...data}))
+        dispatch(requestStartChat({allMsg, partner, ads}))
       });
   };
 }

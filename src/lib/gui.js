@@ -24,7 +24,8 @@ var gui = {
 	ERR_LIKED : "Lỗi! Bài đăng đã lưu từ trước",
 	ERR_UserNotExist : "Lỗi! User không tồn tại",
 	INF_ClickToRefresh : "Nhấn vào đây để lấy dữ liệu lại",
-	ERR_Saved : "Lỗi! Tên lưu tìm kiếm đã tồn tại!"
+	ERR_Saved : "Lỗi! Tên lưu tìm kiếm đã tồn tại!",
+	ERR_NotRelandUser : "Lỗi! Bạn không chat được vì bài đăng không phải của Reland!"
 };
 
 var styles = StyleSheet.create({

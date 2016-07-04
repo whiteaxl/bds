@@ -17,7 +17,7 @@ export default function chatReducer(state = initialState, action) {
   switch (action.type) {
     case REQUEST_START_CHAT:
     {
-      let {allMsg, doc, partner} = action.payload;
+      let {allMsg, ads, partner} = action.payload;
       log.info("call REQUEST_START_CHAT:", partner);
 
       let messages = convertToGiftMsg(allMsg, partner.userID);
@@ -29,7 +29,7 @@ export default function chatReducer(state = initialState, action) {
       });
 
       let nextState = state.set("partner", partner)
-        .set('ads', doc.relatedToAds)
+        .set('ads', ads)
         .set('messages', messages);
 
       return nextState;

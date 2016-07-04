@@ -80,7 +80,7 @@ class SearchResultList extends Component {
                     <SearchHeader placeName={this.props.fields.place.fullName}/>
                 </View>
 
-                <AdsListView {...this.props} onLike={this.onLike.bind(this)} />
+                <AdsListView {...this.props} />
 
                 <SearchResultFooter place = {this.props.fields.place}
                                     loggedIn = {this.props.loggedIn}
@@ -91,15 +91,6 @@ class SearchResultList extends Component {
             </View>
             </MenuContext>
         )
-    }
-
-    onLike(ads) {
-        if (!this.props.global.loggedIn) {
-            //this.props.actions.onAuthFieldChange('activeRegisterLoginTab',0);
-            Actions.LoginRegister({page:1});
-        } else {
-          this.props.actions.likeAds(this.props.userID, ads)
-        }
     }
 }
 

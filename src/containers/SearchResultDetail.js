@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 
 import * as globalActions from '../reducers/global/globalActions';
 import * as searchActions from '../reducers/search/searchActions';
+import * as chatActions from '../reducers/chat/chatActions';
+
 
 import {Map} from 'immutable';
 
@@ -43,7 +45,8 @@ import dbService from "../lib/localDB";
 
 const actions = [
   globalActions,
-  searchActions
+  searchActions,
+  chatActions
 ];
 
 function mapStateToProps(state) {
@@ -258,7 +261,7 @@ class SearchResultDetail extends Component {
               </View>
             </View>
             <View style={detailStyles.moiGioiButtons}>
-              <Button onPress={() => this._onChat(phone)} style={detailStyles.moiGioiChatButton}>CHAT</Button>
+              <Button onPress={() => this._onChat(rowData)} style={detailStyles.moiGioiChatButton}>CHAT</Button>
               <Button onPress={() => this._onCall(phone)} style={detailStyles.moiGioiCallButton}>GỌI</Button>
             </View>
           </View>
@@ -420,7 +423,7 @@ class SearchResultDetail extends Component {
           </ScrollView>
 
         </View>
-        <SearchResultDetailFooter mobile={mobile}/>
+        <SearchResultDetailFooter mobile={mobile} onChat={() => this._onChat(rowData)}/>
         {this.state.modal ? <ImagePreview images={imageDataItems} closeModal={() => this.setState({modal: false}) }/> : null }
         </View>
 		)
@@ -457,8 +460,30 @@ class SearchResultDetail extends Component {
     Communications.phonecall(phone, true);
   }
 
-  _onChat(phone) {
-    Communications.text(phone);
+  _onChat(ads) {
+    if (!ads.dangBoi.userID) {
+      alert(gui.ERR_NotRelandUser);
+      return;
+    }
+
+    if (!this.props.global.loggedIn) {
+      Actions.LoginRegister({page:1});
+    } else {
+      let partner = {
+        userID : ads.dangBoi.userID,
+        phone: ads.dangBoi.phone,
+        fullName : ads.dangBoi.name,
+      };
+
+      let relatedToAds = {
+        adsID : ads.adsID,
+        title : ads.place.diaChiFullName,
+        cover : ads.image.cover
+      };
+
+      this.props.actions.startChat(partner, relatedToAds);
+      Actions.Chat();
+    }
   }
 
   _onMapPressed() {

@@ -53,7 +53,11 @@ class AdsListView extends React.Component {
 
   renderRow(rowData) {
     return (
-      <AdsRow ads={rowData} onLike = {this.props.onLike} adsLikes={this.props.adsLikes}/>
+      <AdsRow ads={rowData}
+              userID = {this.props.userID}
+              likeAds = {this.props.actions.likeAds}
+              loggedIn = {this.props.loggedIn}
+              adsLikes={this.props.adsLikes}/>
     );
   }
 }

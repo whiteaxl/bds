@@ -24,12 +24,22 @@ class AdsRow extends React.Component {
     const color = isLiked ? 'red' : 'white';
 
     return (
-      <TouchableHighlight underlayColor='transparent' style={{overflow: 'hidden'}} onPress={() => {this.onLike(ads)}}>
+      <TouchableHighlight underlayColor='transparent' style={{overflow: 'hidden'}} onPress={() => this.onLike(ads)}>
         <View style={myStyles.heartButton} >
           <Icon color={color} name={'heart-o'} size={23}  />
         </View>
       </TouchableHighlight>
     )
+  }
+
+  onLike(ads) {
+    console.log("AdsRow.Onlike", this.props);
+    if (!this.props.loggedIn) {
+      //this.props.actions.onAuthFieldChange('activeRegisterLoginTab',0);
+      Actions.LoginRegister({page:1});
+    } else {
+      this.props.likeAds(this.props.userID, ads)
+    }
   }
 
   renderImageStack(ads) {

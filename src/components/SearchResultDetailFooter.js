@@ -19,7 +19,7 @@ var SearchResultDetailFooter = React.createClass({
           <TruliaIcon onPress={this.onCall} name="phone" color={'white'} size={18}
                       mainProps={myStyles.searchListButtonItem1} textProps={myStyles.searchListButtonText1}
                       text={'Gọi điện'} />
-          <RelandIcon onPress={this.onChat} name="chat" color={'white'} size={22}
+          <RelandIcon onPress={this.props.onChat} name="chat" color={'white'} size={22}
                       mainProps={[myStyles.searchListButtonItem2,{flexDirection: 'row'}]}
                       textProps={[myStyles.searchListButtonText2,{paddingLeft: 0}]}
                       text={'Chat'} />
@@ -32,9 +32,7 @@ var SearchResultDetailFooter = React.createClass({
   onCall() {
     Communications.phonecall(this.props.mobile, true);
   },
-  onChat() {
-    Communications.text(this.props.mobile);
-  },
+  
   onAlertComment() {
     AlertIOS.prompt('Nhập comment', null,
             [{
