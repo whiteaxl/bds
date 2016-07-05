@@ -9,6 +9,8 @@ import React, {Component} from 'react';
 
 import { Text, View, StyleSheet, StatusBar, TextInput, Image, Dimensions, ScrollView, Picker, TouchableHighlight, Alert } from 'react-native'
 
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+
 import {Map} from 'immutable';
 import {Actions} from 'react-native-router-flux';
 import Button from 'react-native-button';
@@ -153,6 +155,7 @@ class PostAdsDetail extends Component {
                     <Text style={[myStyles.label, {marginTop: 9, marginLeft: 15, color: 'red'}]}>
                         {this.props.postAds.error}</Text>
                 </ScrollView>
+                <KeyboardSpacer/>
                 <View style={myStyles.searchButton}>
                     <View style={myStyles.searchListButton}>
                         <Button onPress={this.onCancel.bind(this)}
@@ -320,6 +323,7 @@ class PostAdsDetail extends Component {
                 <Text style={myStyles.label}>Giá (triệu)</Text>
                 <TextInput
                     secureTextEntry={false}
+                    keyboardType={'numeric'}
                     style={myStyles.input}
                     value={this.props.postAds.gia}
                     onChangeText={(text) => this.onValueChange("gia", text)}
@@ -334,6 +338,7 @@ class PostAdsDetail extends Component {
                 <Text style={myStyles.label}>Diện tích (m²)</Text>
                 <TextInput
                     secureTextEntry={false}
+                    keyboardType={'numeric'}
                     style={myStyles.input}
                     value={this.props.postAds.dienTich}
                     onChangeText={(text) => this.onValueChange("dienTich", text)}
@@ -343,22 +348,21 @@ class PostAdsDetail extends Component {
     }
 
     _renderSoTang() {
-        return this._renderSegment("Số tầng", DanhMuc.getSoTangValues(),
+        return this._renderSegment("Số tầng", DanhMuc.getAdsSoTangValues(),
             this.props.postAds.soTangSelectedIdx, this._onSegmentChanged.bind(this, 'soTangSelectedIdx'));
     }
 
     _renderPhongNgu() {
-        return this._renderSegment("Số phòng ngủ", DanhMuc.getSoPhongNguValues(),
+        return this._renderSegment("Số phòng ngủ", DanhMuc.getAdsSoPhongNguValues(),
             this.props.postAds.soPhongNguSelectedIdx, this._onSegmentChanged.bind(this, 'soPhongNguSelectedIdx'));
     }
 
     _renderPhongTam() {
-        return this._renderSegment("Số phòng tắm", DanhMuc.getSoPhongTamValues(),
+        return this._renderSegment("Số phòng tắm", DanhMuc.getAdsSoPhongTamValues(),
             this.props.postAds.soNhaTamSelectedIdx, this._onSegmentChanged.bind(this, 'soNhaTamSelectedIdx'));
     }
 
     _onSegmentChanged(key, event) {
-        console.log(key, event.nativeEvent.selectedSegmentIndex);
         this.onValueChange(key, event.nativeEvent.selectedSegmentIndex);
     }
 
@@ -393,9 +397,13 @@ class PostAdsDetail extends Component {
     }
 
     _getChiTietValue() {
-        var {chiTiet} = this.props.postAds;
-        if (chiTiet.length > 30) {
-            return chiTiet.substring(0,30) + '...';
+        let {chiTiet} = this.props.postAds;
+        let index = chiTiet.indexOf('\n');
+        let val = index > 0 ? chiTiet.substring(0, index) : chiTiet;
+        if (val.length > 30) {
+            return val.substring(0,30) + '...';
+        } else if (val.length != chiTiet.length) {
+            return val + '...';
         }
         return chiTiet;
 
@@ -518,11 +526,11 @@ class PostAdsDetail extends Component {
             "phone": currentUser.phone,
             "userID": currentUser.userID
         };
-        var phongNgu = Number(DanhMuc.getSoPhongByIndex(soPhongNguSelectedIdx));
+        var phongNgu = Number(DanhMuc.getAdsSoPhongByIndex(soPhongNguSelectedIdx));
         phongNgu = phongNgu ? phongNgu : undefined;
-        var soTang = Number(DanhMuc.getSoTangByIndex(soTangSelectedIdx));
+        var soTang = Number(DanhMuc.getAdsSoTangByIndex(soTangSelectedIdx));
         soTang = soTang ? soTang : undefined;
-        var phongTam = Number(DanhMuc.getSoPhongTamByIndex(soNhaTamSelectedIdx));
+        var phongTam = Number(DanhMuc.getAdsSoPhongTamByIndex(soNhaTamSelectedIdx));
         phongTam = phongTam ? phongTam : undefined;
         dbService._createAds({loaiTin: loaiTinVal, loaiNha: loaiNhaDat,
             place: place, gia: Number(gia),

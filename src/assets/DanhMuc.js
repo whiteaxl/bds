@@ -73,6 +73,45 @@ danhMuc.SoPhongTam = {
     5: "5+"
 }
 
+danhMuc.AdsSoPhongNgu = {
+    0: "0",
+    1: "1",
+    2: "2",
+    3: "3",
+    4: "4",
+    5: "5",
+    6: "6",
+    7: "7",
+    8: "8",
+    9: "9+"
+}
+
+danhMuc.AdsSoTang = {
+    0: "0",
+    1: "1",
+    2: "2",
+    3: "3",
+    4: "4",
+    5: "5",
+    6: "6",
+    7: "7",
+    8: "8",
+    9: "9+"
+}
+
+danhMuc.AdsSoPhongTam = {
+    0: "0",
+    1: "1",
+    2: "2",
+    3: "3",
+    4: "4",
+    5: "5",
+    6: "6",
+    7: "7",
+    8: "8",
+    9: "9+"
+}
+
 danhMuc.RadiusInKm = {
     0.5: "0.5",
     1: "1",
@@ -188,6 +227,18 @@ danhMuc.getSoPhongTamValues = function () {
     return danhMuc.getDanhMucValues(danhMuc.SoPhongTam);
 }
 
+danhMuc.getAdsSoPhongNguValues = function () {
+    return danhMuc.getDanhMucValues(danhMuc.AdsSoPhongNgu);
+}
+
+danhMuc.getAdsSoTangValues = function () {
+    return danhMuc.getDanhMucValues(danhMuc.AdsSoTang);
+}
+
+danhMuc.getAdsSoPhongTamValues = function () {
+    return danhMuc.getDanhMucValues(danhMuc.AdsSoPhongTam);
+}
+
 danhMuc.getHuongNhaValues = function () {
     return danhMuc.getDanhMucValues(danhMuc.HuongNha);
 }
@@ -237,6 +288,18 @@ danhMuc.getSoTangByIndex = function (index) {
 
 danhMuc.getSoPhongTamByIndex = function (index) {
     return danhMuc.getDanhMucKeyByIndex(danhMuc.SoPhongTam, index);
+}
+
+danhMuc.getAdsSoPhongByIndex = function (index) {
+    return danhMuc.getDanhMucKeyByIndex(danhMuc.AdsSoPhongNgu, index);
+}
+
+danhMuc.getAdsSoTangByIndex = function (index) {
+    return danhMuc.getDanhMucKeyByIndex(danhMuc.AdsSoTang, index);
+}
+
+danhMuc.getAdsSoPhongTamByIndex = function (index) {
+    return danhMuc.getDanhMucKeyByIndex(danhMuc.AdsSoPhongTam, index);
 }
 
 danhMuc.getRadiusInKmByIndex = function(index) {

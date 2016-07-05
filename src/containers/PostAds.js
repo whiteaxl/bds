@@ -110,7 +110,7 @@ export default class PostAds extends Component {
     }
 
     pickPhoto() {
-        Actions.CameraRollView({...this.state, type: "reset"});
+        Actions.CameraRollView({...this.state});
     }
 
     imageCropper(data) {

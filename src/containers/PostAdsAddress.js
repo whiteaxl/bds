@@ -72,6 +72,7 @@ class PostAdsAddress extends Component {
                     <Text style={myStyles.label}>SỐ NHÀ, NGÕ, ĐƯỜNG</Text>
                     <TextInput
                         secureTextEntry={false}
+                        autoFocus={true}
                         style={myStyles.input}
                         value={this.state.diaChi}
                         onChangeText={(text) => this.onValueChange("diaChi", text)}
@@ -120,7 +121,7 @@ var myStyles = StyleSheet.create({
     container: {
         flex: 1,
         alignItems: 'stretch',
-        backgroundColor: 'white'
+        backgroundColor: '#F6F6F6'
     },
     headerSeparator: {
         marginTop: 2,
@@ -144,13 +145,17 @@ var myStyles = StyleSheet.create({
     },
     input: {
         padding: 4,
+        paddingLeft: 17,
+        paddingRight: 15,
         height: 35,
-        borderColor: 'gray',
+        borderColor: '#EFEFEF',
         borderWidth: 1,
-        borderRadius: 5,
+        borderLeftWidth: 0,
+        borderRightWidth: 0,
         margin: 5,
-        width: Dimensions.get('window').width - 30,
-        alignSelf: 'center'
+        width: Dimensions.get('window').width,
+        alignSelf: 'center',
+        backgroundColor: "white"
     }
 });
 

@@ -11,7 +11,7 @@ class SummaryText extends Component{
             'down'  : '... Xem thêm'
         };
 
-        var maxDiaChiLength = 80;
+        var maxDiaChiLength = 140;
         var longText = '';
         var shortText = '';
         if (props.longText) {
