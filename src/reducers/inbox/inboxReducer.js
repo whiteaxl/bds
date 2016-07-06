@@ -25,10 +25,12 @@ function updateInboxList(newDocs, next) {
 
       let found = false;
 
+      //console.log("updateInboxList", currentInboxList, doc);
+
       for (let i=0; i < currentInboxList.length; i++) {
         let inbox =  currentInboxList[i];
         if (inbox.partner.userID === doc.fromUserID || inbox.partner.userID === doc.toUserID) {
-          if (inbox.doc.epoch <= doc.epoch) {
+          if (inbox.doc.timeStamp <= doc.timeStamp) {
             //log.info("New chat msg, update inboxList doc.epoch", doc.epoch);
             inbox.doc = doc;
             nextInboxList = [
