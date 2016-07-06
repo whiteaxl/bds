@@ -28,6 +28,7 @@ import log from '../../lib/logUtil';
 import danhMuc from '../../assets/DanhMuc';
 
 var STATUS_BAR_HEIGHT = Navigator.NavigationBar.Styles.General.StatusBarHeight;
+var ADS_BAR_HEIGHT = 62;
 
 const actions = [
   globalActions,
@@ -132,9 +133,32 @@ class  ChatContent extends React.Component {
     }
   }
 
-
   render() {
+    let maxHeight = Dimensions.get('window').height
+    - Navigator.NavigationBar.Styles.General.NavBarHeight
+    - STATUS_BAR_HEIGHT
+    - ADS_BAR_HEIGHT;
+
+    log.info("maxHeight", maxHeight);
+
+    let relatedToAds = this.props.chat.ads;
+    const adsTextLine1 = relatedToAds.loaiNhaDatFmt + " - " + relatedToAds.diaChinhFullName;
+    const adsTextLine2 = relatedToAds.giaFmt;
+
     return (
+      <View style={styles.wrapper}>
+        <View style = {styles.adsHeader}>
+          <Image
+            resizeMode = {"cover"}
+            source={{uri: relatedToAds.cover}}
+            style={styles.adsCover}/>
+
+          <View style={styles.adsTitle}>
+            <Text numberOfLines={1} style={styles.adsLine1}>{adsTextLine1}</Text>
+            <Text style={styles.adsLine2}>{adsTextLine2}</Text>
+          </View>
+        </View>
+
         <GiftedMessenger
           ref={(c) => this._GiftedMessenger = c}
 
@@ -144,7 +168,7 @@ class  ChatContent extends React.Component {
           messages={this.props.chat.messages}
           handleSend={this.handleSend.bind(this)}
           onErrorButtonPress={this.onErrorButtonPress.bind(this)}
-          maxHeight={Dimensions.get('window').height - Navigator.NavigationBar.Styles.General.NavBarHeight - STATUS_BAR_HEIGHT}
+          maxHeight={maxHeight}
 
           loadEarlierMessagesButton={!this.props.chat.allLoaded}
           onLoadEarlierMessages={this.onLoadEarlierMessages.bind(this)}
@@ -167,6 +191,7 @@ class  ChatContent extends React.Component {
 
           renderCustomText = {this.renderCustomText.bind(this)}
         />
+      </View>
     );
   }
 }
@@ -177,7 +202,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(ChatContent);
 var styles = StyleSheet.create({
   wrapper: {
     flexDirection: 'column',
-    marginBottom: 50
+    flex : 1
+  },
+
+  headerAds : {
+
   },
 
   text: {
@@ -289,6 +318,39 @@ var styles = StyleSheet.create({
   sendButton: {
     marginTop: 11,
     marginLeft: 10,
+  },
+  adsCover : {
+    width: 120,
+    height: ADS_BAR_HEIGHT,
+  },
+
+  adsTitle : {
+    flex: 1,
+    flexDirection: 'column',
+    paddingLeft : 10,
+    paddingRight: 10
+  },
+
+  adsLine1: {
+    fontSize: 15,
+    textAlign: 'left',
+    fontFamily: 'Open Sans',
+    fontWeight: '600',
+  },
+
+  adsLine2: {
+    fontSize: 15,
+    textAlign: 'left',
+    fontFamily: 'Open Sans',
+    color : '#d10d16',
+    paddingTop:5
+  },
+  adsHeader: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomWidth: 1,
+    borderColor: '#e6e6e6',
   },
 
 });

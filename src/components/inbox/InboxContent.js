@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 
 import gui from '../../lib/gui';
+import utils from '../../lib/utils';
 import {Actions} from 'react-native-router-flux';
 
 import { bindActionCreators } from 'redux';
@@ -75,8 +76,11 @@ class InboxContent extends React.Component {
   renderRow(row, sectionID, rowID) {
     let avatar = row.partner.avatar ? {uri: row.partner.avatar} : defaultAvatar;
     let relatedToAds = row.doc.relatedToAds;
+    const {giaFmt, loaiNhaDatFmt, diaChinhFullName} = relatedToAds;
+    let adsInboxTitle = `${giaFmt} - ${loaiNhaDatFmt} - ${diaChinhFullName}`;
 
-    let dt = moment(row.doc.date).format("DD/MM HH:mm");
+    let dt = moment(row.doc.date).format("DD/MM   HH:mm");
+    dt = dt.replace("/", " tháng ");
     let w = rowID == 0 ? 0 : 1;
 
     return (
@@ -94,7 +98,7 @@ class InboxContent extends React.Component {
 
             <View style={styles.rightRow2}>
               <View style={styles.titleAndLastMsg}>
-                <Text style={styles.title}>{relatedToAds?relatedToAds.title:"<Không tựa đề>"}</Text>
+                <Text numberOfLines={1} style={styles.title}>{relatedToAds?adsInboxTitle:"<Không tựa đề>"}</Text>
                 <Text style={styles.content}>{row.doc.content}</Text>
               </View>
               <Image
@@ -200,7 +204,7 @@ var styles = StyleSheet.create({
     fontSize: 13,
     textAlign: 'left',
     fontFamily: 'Open Sans',
-    fontWeight: 'bold'
+    fontWeight: '600'
   },
   content: {
     fontSize: 13,

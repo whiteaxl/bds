@@ -1,58 +1,89 @@
 'use strict';
 
+import danhMuc from '../assets/DanhMuc';
+import log from './logUtil';
+import placeUtil from './PlaceUtil';
+
 var util = {};
 
 
-util.locDau = function(str) {
-    var a1 = locDauInt(str);
-    var a2 = locDauInt(a1);
+util.locDau = function (str) {
+  var a1 = locDauInt(str);
+  var a2 = locDauInt(a1);
 
-    return a2;
+  return a2;
 };
 
-var locDauInt = function(str) {
-    if(!str) {
-        return str
-    }
-    //var str = (document.getElementById("title").value);
-    str= str.toLowerCase();
-    str= str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ|à/g,"a");
-    str= str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g,"e");
-    str= str.replace(/ì|í|ị|ỉ|ĩ/g,"i");
-    str= str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ộ|ớ|ợ|ở|ỡ|ọ/g,"o");
-    str= str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g,"u");
-    str= str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g,"y");
-    str= str.replace(/đ/g,"d");
-    str= str.replace(/!|@|\$|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\'| |\"|\&|\#|\[|\]|~/g,"-");
-    str= str.replace(/-+-/g,"-"); //thay thế 2- thành 1-
-    str= str.replace(/^\-+|\-+$/g,"");//cắt bỏ ký tự - ở đầu và cuối chuỗi
-    return str;
+var locDauInt = function (str) {
+  if (!str) {
+    return str
+  }
+  //var str = (document.getElementById("title").value);
+  str = str.toLowerCase();
+  str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ|à/g, "a");
+  str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e");
+  str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i");
+  str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ộ|ớ|ợ|ở|ỡ|ọ/g, "o");
+  str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u");
+  str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y");
+  str = str.replace(/đ/g, "d");
+  str = str.replace(/!|@|\$|%|\^|\*|\(|\)|\+|\=|\<|\>|\?|\/|,|\.|\:|\'| |\"|\&|\#|\[|\]|~/g, "-");
+  str = str.replace(/-+-/g, "-"); //thay thế 2- thành 1-
+  str = str.replace(/^\-+|\-+$/g, "");//cắt bỏ ký tự - ở đầu và cuối chuỗi
+  return str;
 };
 
-util.getPriceDisplay = function(val, loaiTin) {
-    if (!val) {
-        return "Thỏa thuận";
+util.getPriceDisplay = function (val, loaiTin) {
+  if (!val) {
+    return "Thỏa thuận";
+  }
+
+  if (loaiTin === 0) { //ban
+    if (val < 1000) {
+      return val + " TRIỆU";
     }
 
-    if (loaiTin===0) { //ban
-        if (val < 1000) {
-            return val + " TRIỆU";
-        }
-
-        return (val/1000).toFixed(2) + " TỶ";
-    } else {
-        return val.toFixed(2) + " TRIỆU/THÁNG";
-    }
+    return (val / 1000).toFixed(2) + " TỶ";
+  } else {
+    return val.toFixed(2) + " TRIỆU/THÁNG";
+  }
 
 
 };
 
-util.getDienTichDisplay = function(val) {
-    if (!val) {
-        return "Không rõ";
-    }
+util.getDienTichDisplay = function (val) {
+  if (!val) {
+    return "Không rõ";
+  }
 
-    return val + "m²";
+  return val + "m²";
+};
+
+util.getLoaiNhaDatFmt = function(ads) {
+  let loaiNhaDatFmt = "";
+  if (ads.loaiNhaDat) {
+    loaiNhaDatFmt = ads.loaiTin ? danhMuc.LoaiNhaDatThue[ads.loaiNhaDat] : danhMuc.LoaiNhaDatBan[ads.loaiNhaDat];
+    loaiNhaDatFmt = loaiNhaDatFmt.replace("Bán ", "").replace("Cho Thuê ", "");
+    loaiNhaDatFmt = loaiNhaDatFmt[0].toUpperCase() + loaiNhaDatFmt.slice(1);
+  }
+
+  return loaiNhaDatFmt;
+};
+
+util.getAdsTitle4Inbox = function (ads) {
+  log.info("getAdsTitle4Inbox", ads);
+
+  let giaFmt = util.getPriceDisplay(ads.gia, ads.loaiTin);
+  let loaiNhaDatFmt = "";
+  if (ads.loaiNhaDat) {
+    loaiNhaDatFmt = ads.loaiTin ? danhMuc.LoaiNhaDatThue[ads.loaiNhaDat] : danhMuc.LoaiNhaDatBan[ads.loaiNhaDat];
+    loaiNhaDatFmt = loaiNhaDatFmt.replace("Bán ", "").replace("Cho Thuê ", "");
+    loaiNhaDatFmt = loaiNhaDatFmt[0].toUpperCase() + loaiNhaDatFmt.slice(1);
+  }
+
+  let title = `${giaFmt} - ${loaiNhaDatFmt} - ${placeUtil.getDiaChinhFullName(ads.place)}`;
+
+  return title;
 };
 
 module.exports = util;

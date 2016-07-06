@@ -13,6 +13,7 @@ import {Map} from 'immutable';
 import {Actions} from 'react-native-router-flux';
 import log from "../lib/logUtil";
 import gui from "../lib/gui";
+import placeUtil from "../lib/PlaceUtil";
 
 import CommonHeader from '../components/CommonHeader';
 
@@ -46,16 +47,10 @@ class PostAdsAddress extends Component {
       super(props);
       StatusBar.setBarStyle('default');
       var {place} = this.props.postAds;
-      var tinh = place.diaChinh.tinh;
-      var huyen = place.diaChinh.huyen;
-      var xa = place.diaChinh.xa;
-      var xaPhuong = '';
-      if (xa != '') {
-          xaPhuong = xa + ', ' + huyen + ', ' + tinh;
-      }
+
       this.state = {
           diaChi: place.diaChi,
-          xaPhuong: xaPhuong
+          xaPhuong: placeUtil.getDiaChinhFullName(place)
       };
   }
 

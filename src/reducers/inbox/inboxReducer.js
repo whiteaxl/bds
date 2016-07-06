@@ -31,7 +31,6 @@ function updateInboxList(newDocs, next) {
         let inbox =  currentInboxList[i];
         if (inbox.partner.userID === doc.fromUserID || inbox.partner.userID === doc.toUserID) {
           if (inbox.doc.timeStamp <= doc.timeStamp) {
-            //log.info("New chat msg, update inboxList doc.epoch", doc.epoch);
             inbox.doc = doc;
             nextInboxList = [
               ...currentInboxList.slice(0, i),
@@ -86,62 +85,6 @@ function updateInboxList(newDocs, next) {
   return next;
 }
 
-//all = [{doc}]
-function getInboxList(all) {
-  let mapByAds = {};
-  let user = all.filter(e => e.doc.type == 'User')[0];
-  log.info("user=", user);
-  if (!user) return;
-
-  const myUserID = user.doc.userID;
-
-  log.info("My userID = " + myUserID);
-
-
-  all.forEach(e => {
-    const doc = e.doc;
-    let partner;
-
-    if (myUserID == doc.toUserID) {
-      partner = {
-        userID : doc.fromUserID,
-        fullName: doc.fromFullName,
-        avatar : doc.fromUserAvatar
-      };
-    } else {
-      partner = {
-        userID : doc.toUserID,
-        fullName: doc.toFullName,
-        avatar : doc.toUserAvatar
-      };
-    }
-
-    if (doc.type == 'Chat' && doc.relatedToAds && doc.relatedToAds.adsID) {
-      const adsID = doc.relatedToAds.adsID;
-      const key = adsID + partner.userID;
-
-      if (!mapByAds[key]) {
-        log.info("new key=" + key);
-        mapByAds[key] = {doc, partner};
-      } else if (mapByAds[key].doc.date < doc.date) {
-        mapByAds[key] = {doc, partner};
-      }
-    }
-  });
-
-  var array = Object.keys(mapByAds).map(function(key) {
-    return mapByAds[key];
-  });
-  array.sort((a, b) => {
-    return a.doc.date > b.doc.date;
-  });
-
-
-  //log.info("getInboxList, result=", array);
-
-  return array;
-}
-
 export default function inboxReducer(state = initialState, action) {
   if (!(state instanceof InitialState)) return initialState.mergeDeep(state);
   switch (action.type) {
@@ -159,8 +102,6 @@ export default function inboxReducer(state = initialState, action) {
       }
 
       //handle chat msg
-      //const inboxList = getInboxList(all);
-
       next = updateInboxList(e.results, next);
 
       return next;

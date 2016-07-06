@@ -25,6 +25,8 @@ import CommonHeader from '../components/CommonHeader';
 import Swiper from 'react-native-swiper';
 
 import gui from '../lib/gui';
+import utils from '../lib/utils';
+import placeUtil from '../lib/PlaceUtil';
 
 import CollapsiblePanel from '../components/CollapsiblePanel';
 import SummaryText from '../components/SummaryText';
@@ -477,7 +479,9 @@ class SearchResultDetail extends Component {
 
       let relatedToAds = {
         adsID : ads.adsID,
-        title : ads.place.diaChiFullName,
+        loaiNhaDatFmt : utils.getLoaiNhaDatFmt(ads),
+        giaFmt : utils.getPriceDisplay(ads.gia, ads.loaiTin),
+        diaChinhFullName : placeUtil.getDiaChinhFullName(ads.place),
         cover : ads.image.cover
       };
 
