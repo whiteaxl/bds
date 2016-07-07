@@ -3,8 +3,8 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import * as globalActions from '../reducers/global/globalActions';
-import * as postAdsActions from '../reducers/postAds/postAdsActions';
+import * as globalActions from '../../reducers/global/globalActions';
+import * as postAdsActions from '../../reducers/postAds/postAdsActions';
 
 import {Map} from 'immutable';
 
@@ -15,17 +15,17 @@ import {Actions} from 'react-native-router-flux';
 import MapView from 'react-native-maps';
 import Button from 'react-native-button';
 
-import CommonHeader from '../components/CommonHeader';
+import CommonHeader from '../CommonHeader';
 
-import gui from '../lib/gui';
+import gui from '../../lib/gui';
 
-import log from '../lib/logUtil';
+import log from '../../lib/logUtil';
 
-import findApi from '../lib/FindApi';
+import findApi from '../../lib/FindApi';
 
-import placeUtil from '../lib/PlaceUtil';
+import placeUtil from '../../lib/PlaceUtil';
 
-import utils from '../lib/utils';
+import utils from '../../lib/utils';
 
 var { width, height } = Dimensions.get('window');
 

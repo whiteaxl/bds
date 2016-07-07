@@ -9,10 +9,10 @@ import Launch from './Launch';
 import Home from '../containers/Home';
 import Inbox from '../containers/Inbox';
 import PostAds from '../containers/PostAds';
-import PostAdsDetail from '../containers/PostAdsDetail';
-import PostAdsMapView from '../containers/PostAdsMapView';
-import PostAdsAddress from '../containers/PostAdsAddress';
-import PostAdsTitle from '../containers/PostAdsTitle';
+import PostAdsDetail from '../components/postAds/PostAdsDetail';
+import PostAdsMapView from '../components/postAds/PostAdsMapView';
+import PostAdsAddress from '../components/postAds/PostAdsAddress';
+import PostAdsTitle from '../components/postAds/PostAdsTitle';
 import CameraRollView2 from '../components/CameraRollView2'
 
 import LoginRegister from './LoginRegister';

@@ -2,8 +2,8 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import * as globalActions from '../reducers/global/globalActions';
-import * as postAdsActions from '../reducers/postAds/postAdsActions';
+import * as globalActions from '../../reducers/global/globalActions';
+import * as postAdsActions from '../../reducers/postAds/postAdsActions';
 
 import React, {Component} from 'react';
 
@@ -14,24 +14,24 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 import {Map} from 'immutable';
 import {Actions} from 'react-native-router-flux';
 import Button from 'react-native-button';
-import log from "../lib/logUtil";
-import gui from "../lib/gui";
+import log from "../../lib/logUtil";
+import gui from "../../lib/gui";
 
-import CommonHeader from '../components/CommonHeader';
+import CommonHeader from '../CommonHeader';
 
-import TruliaIcon from '../components/TruliaIcon';
+import TruliaIcon from '../TruliaIcon';
 
-import RelandIcon from '../components/RelandIcon';
+import RelandIcon from '../RelandIcon';
 
-import DanhMuc from '../assets/DanhMuc';
+import DanhMuc from '../../assets/DanhMuc';
 
-import LikeTabButton from '../components/LikeTabButton';
+import LikeTabButton from '../LikeTabButton';
 
-import SegmentedControl from '../components/SegmentedControl';
+import SegmentedControl from '../SegmentedControl';
 
-import dbService from "../lib/localDB";
+import dbService from "../../lib/localDB";
 
-import cfg from "../cfg";
+import cfg from "../../cfg";
 
 var rootUrl = `http://${cfg.server}:5000`;
 

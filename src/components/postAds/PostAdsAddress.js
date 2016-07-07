@@ -2,20 +2,20 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import * as globalActions from '../reducers/global/globalActions';
-import * as postAdsActions from '../reducers/postAds/postAdsActions';
+import * as globalActions from '../../reducers/global/globalActions';
+import * as postAdsActions from '../../reducers/postAds/postAdsActions';
 
 import React, {Component} from 'react';
 
 import { Text, View, StyleSheet, TextInput, StatusBar, Dimensions } from 'react-native'
 
+import TruliaIcon from '../TruliaIcon';
+
 import {Map} from 'immutable';
 import {Actions} from 'react-native-router-flux';
-import log from "../lib/logUtil";
-import gui from "../lib/gui";
-import placeUtil from "../lib/PlaceUtil";
-
-import CommonHeader from '../components/CommonHeader';
+import log from "../../lib/logUtil";
+import gui from "../../lib/gui";
+import placeUtil from "../../lib/PlaceUtil";
 
 const actions = [
   globalActions,
@@ -45,7 +45,7 @@ function mapDispatchToProps(dispatch) {
 class PostAdsAddress extends Component {
   constructor(props) {
       super(props);
-      StatusBar.setBarStyle('default');
+      StatusBar.setBarStyle('light-content');
       var {place} = this.props.postAds;
 
       this.state = {
@@ -57,11 +57,22 @@ class PostAdsAddress extends Component {
   render() {
     var ghiChuDuongPho = 'Ví dụ: Nhà số 12, ngõ 68, đường Hai Bà Trưng';
     var ghiChuXaPhuong = 'Thông tin này được lấy từ vị trí bạn chọn trên bản đồ.\r\nNếu chưa đúng, bạn hãy quay lại phần bản đồ và chọn lại vị trí nhà.';
+    var headerTitle = "Địa chỉ";
     return (
 			<View style={myStyles.container}>
                 <View style={myStyles.search}>
-                    <CommonHeader backTitle={"Địa chỉ"} />
-                    <View style={myStyles.headerSeparator} />
+                    <View style={myStyles.customPageHeader}>
+                        <View style={myStyles.customPageTitle}>
+                            <Text style={myStyles.customPageTitleText}>
+                                {headerTitle}
+                            </Text>
+                        </View>
+                        <TruliaIcon onPress={this._onBack.bind(this)}
+                                    name="arrow-left" color={'white'} size={25}
+                                    mainProps={myStyles.backButton} text={this.props.backTitle}
+                                    textProps={myStyles.backButtonText} >
+                        </TruliaIcon>
+                    </View>
                 </View>
                 <View style={{marginTop: 15, marginLeft: 15, marginRight: 15}}>
                     <Text style={myStyles.label}>SỐ NHÀ, NGÕ, ĐƯỜNG</Text>
@@ -86,6 +97,10 @@ class PostAdsAddress extends Component {
 			</View>
 		)
 	}
+
+  _onBack() {
+      Actions.pop();
+  }
 
   onValueChange(key: string, value: string) {
       const newState = {};
@@ -122,6 +137,43 @@ var myStyles = StyleSheet.create({
         marginTop: 2,
         borderTopWidth: 1,
         borderTopColor: gui.separatorLine
+    },
+    customPageHeader: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        backgroundColor: gui.mainColor,
+        height: 60
+    },
+    customPageTitle: {
+        left:36,
+        right:36,
+        marginTop: 31,
+        marginBottom: 10,
+        position: 'absolute'
+    },
+    customPageTitleText: {
+        color: 'white',
+        fontSize: gui.normalFontSize,
+        fontWeight: 'bold',
+        fontFamily: gui.fontFamily,
+        textAlign: 'center'
+    },
+    backButton: {
+        marginTop: 28,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'transparent',
+        paddingLeft: 18,
+        paddingRight: 18
+    },
+    backButtonText: {
+        color: 'white',
+        fontSize: gui.normalFontSize,
+        fontFamily: gui.fontFamily,
+        textAlign: 'left',
+        marginLeft: 7
     },
     search: {
         top:0,
