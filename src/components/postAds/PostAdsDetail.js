@@ -74,7 +74,9 @@ class PostAdsDetail extends Component {
         errorMessage = this.props.postAds.error;
         this.state = {
             uploadUrls: [],
-            chiTietExpanded: true
+            chiTietExpanded: true,
+            toggleState: false,
+            editGia: false
         }
     }
 
@@ -101,15 +103,17 @@ class PostAdsDetail extends Component {
     }
 
     render() {
-        var _scrollView: ScrollView;
+        var {toggleState} = this.state;
+        var scrollHeight = toggleState ? Dimensions.get('window').height-290 :
+            Dimensions.get('window').height-64;
         return (
             <View myStyles={myStyles.container}>
                 <View style={{paddingTop: 24, backgroundColor: gui.mainColor}} />
                 <ScrollView
-                    ref={(scrollView) => { _scrollView = scrollView; }}
+                    ref={(scrollView) => { this._scrollView = scrollView; }}
                     automaticallyAdjustContentInsets={false}
                     vertical={true}
-                    style={myStyles.scrollView}
+                    style={[myStyles.scrollView, {height: scrollHeight}]}
                     //onScroll={this.handleScroll.bind(this)}
                     //scrollEventThrottle={1}
                 >
@@ -155,7 +159,6 @@ class PostAdsDetail extends Component {
                     <Text style={[myStyles.label, {marginTop: 9, marginLeft: 15, color: 'red'}]}>
                         {this.props.postAds.error}</Text>
                 </ScrollView>
-                <KeyboardSpacer/>
                 <View style={myStyles.searchButton}>
                     <View style={myStyles.searchListButton}>
                         <Button onPress={this.onCancel.bind(this)}
@@ -164,8 +167,20 @@ class PostAdsDetail extends Component {
                                 style={myStyles.buttonText}>Đăng tin</Button>
                     </View>
                 </View>
+                <KeyboardSpacer onToggle={(toggleState) => this.onKeyboardToggle.bind(this, toggleState)}/>
             </View>
         )
+    }
+
+    onKeyboardToggle(toggleState) {
+        this.setState({toggleState: toggleState});
+        if (this.state.editGia) {
+            var scrollTo = toggleState ? (Dimensions.get('window').height-64)/2 :
+            (Dimensions.get('window').height-64)/2-226;
+            this._scrollView.scrollTo({y: scrollTo});
+        } else {
+            this._scrollView.scrollTo({y: 0});
+        }
     }
 
     _renderPhoto() {
@@ -327,6 +342,7 @@ class PostAdsDetail extends Component {
                     style={myStyles.input}
                     value={this.props.postAds.gia}
                     onChangeText={(text) => this.onValueChange("gia", text)}
+                    onFocus={() => this.setState({editGia: true})}
                 />
             </View>
         );
@@ -342,6 +358,7 @@ class PostAdsDetail extends Component {
                     style={myStyles.input}
                     value={this.props.postAds.dienTich}
                     onChangeText={(text) => this.onValueChange("dienTich", text)}
+                    onFocus={() => this.setState({editGia: false})}
                 />
             </View>
         );
@@ -399,7 +416,7 @@ class PostAdsDetail extends Component {
     _getChiTietValue() {
         let {chiTiet} = this.props.postAds;
         let index = chiTiet.indexOf('\n');
-        let val = index > 0 ? chiTiet.substring(0, index) : chiTiet;
+        let val = index >= 0 ? chiTiet.substring(0, index) : chiTiet;
         if (val.length > 30) {
             return val.substring(0,30) + '...';
         } else if (val.length != chiTiet.length) {
@@ -711,7 +728,6 @@ var myStyles = StyleSheet.create({
         borderTopColor: gui.separatorLine
     },
     scrollView: {
-        height: Dimensions.get('window').height-64,
         backgroundColor: 'white'
     },
     picker: {

@@ -47,6 +47,9 @@ class PostAdsTitle extends Component {
     constructor(props) {
         super(props);
         StatusBar.setBarStyle('default');
+        this.state = {
+            toggleState: false
+        }
     }
 
     render() {
@@ -56,6 +59,9 @@ class PostAdsTitle extends Component {
             chiTietHolder = 'Mô tả những gì bạn muốn bán (cho thuê).\r\nVí dụ: Địa chỉ, diện tích, giá, hướng nhà...';
         }
         var headerTitle = "Chi tiết";
+        var {toggleState} = this.state;
+        var inputHeight = toggleState ? Dimensions.get('window').height-336 :
+            Dimensions.get('window').height-110;
         return (
             <View style={myStyles.container}>
                 <View style={myStyles.search}>
@@ -77,15 +83,19 @@ class PostAdsTitle extends Component {
                         secureTextEntry={false}
                         multiline={true}
                         autoFocus={true}
-                        style={myStyles.input}
+                        style={[myStyles.input, {height: inputHeight}]}
                         placeholder={chiTietHolder}
                         value={this.props.postAds.chiTiet}
                         onChangeText={(text) => this.onValueChange("chiTiet", text)}
                     />
                 </View>
-                <KeyboardSpacer/>
+                <KeyboardSpacer onToggle={(toggleState) => this.onKeyboardToggle.bind(this, toggleState)}/>
             </View>
         )
+    }
+
+    onKeyboardToggle(toggleState) {
+        this.setState({toggleState: toggleState});
     }
 
     onValueChange(key: string, value: string) {
@@ -163,7 +173,6 @@ var myStyles = StyleSheet.create({
         fontSize: gui.normalFontSize,
         fontFamily: gui.fontFamily,
         padding: 4,
-        height: Dimensions.get('window').height - 95,
         borderColor: '#EFEFEF',
         borderWidth: 0,
         borderRadius: 5,
