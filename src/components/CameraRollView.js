@@ -11,6 +11,7 @@ var {
     StyleSheet,
     View,
     TouchableHighlight,
+    Dimensions,
     StatusBar
 } = ReactNative;
 
@@ -92,6 +93,8 @@ var propTypes = {
 
 };
 
+const IMAGE_SIZE = Dimensions.get('window').width/2 - 30;
+
 var CameraRollView = React.createClass({
     propTypes: propTypes,
 
@@ -99,11 +102,10 @@ var CameraRollView = React.createClass({
         return {
             groupTypes: 'SavedPhotos',
             batchSize: 5,
-            imagesPerRow: 1,
+            imagesPerRow: 2,
             assetType: 'Photos',
             renderImage: function(asset) {
-                var imageSize = 150;
-                var imageStyle = [styles.image, {width: imageSize, height: imageSize}];
+                var imageStyle = [styles.image, {width: IMAGE_SIZE, height: IMAGE_SIZE}];
                 return (
                     <Image
                         source={asset.node.image}
@@ -288,13 +290,16 @@ var styles = StyleSheet.create({
     row: {
         flexDirection: 'row',
         flex: 1,
+        margin: 10,
+        marginBottom: 0
     },
     url: {
         fontSize: 9,
         marginBottom: 14,
     },
     image: {
-        margin: 4,
+        margin: 10,
+        marginBottom: 0
     },
     info: {
         flex: 1,
@@ -316,6 +321,8 @@ var styles = StyleSheet.create({
     },
     list: {
         flex: 1
+    },
+    spinner: {
     }
 });
 
