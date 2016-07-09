@@ -29,6 +29,9 @@ var {
     width: deviceWidth
 } = Dimensions.get('window');
 
+var imageWidth = deviceWidth;
+var imageHeight = deviceHeight;
+
 class ImagePreview extends React.Component {
     constructor(props) {
         super(props);
@@ -46,11 +49,15 @@ class ImagePreview extends React.Component {
     }
 
     componentWillUnmount() {
-        Orientation.lockToPortrait();
+        if (this.props.owner != 'chat') {
+            Orientation.lockToPortrait();
+        }
     }
 
     componentWillMount() {
-        Orientation.lockToLandscape();
+        if (this.props.owner != 'chat') {
+            Orientation.lockToLandscape();
+        }
     }
 
     closeModal() {
@@ -81,16 +88,20 @@ class ImagePreview extends React.Component {
                 );
             });
         }
+        var isChatOwner = this.props.owner == 'chat';
+        imageWidth = isChatOwner ? deviceWidth : deviceHeight;
+        imageHeight = isChatOwner ? deviceHeight : deviceWidth;
+        var renderPagination = isChatOwner ? null : this._renderPagination;
         return (
             <Animated.View style={[styles.modal, styles.flexCenter, {transform: [{translateY: this.state.offset}]}]}>
                 <View style={styles.container}>
-                    <Swiper style={styles.imgSlide} width={deviceHeight} height={deviceWidth}
+                    <Swiper style={styles.imgSlide} width={imageWidth} height={imageHeight}
                             showsButtons={false} autoplay={false} loop={false}
                             dot={<View style={[styles.dot, {backgroundColor: 'transparent'}]} />}
                             activeDot={<View style={[styles.dot, {backgroundColor: 'transparent'}]}/>}
-                            renderPagination={this._renderPagination}
+                            renderPagination={renderPagination}
                             paginationStyle={{
-                                top: 28, left: deviceHeight/2-35, right: null,
+                                top: 28, left: imageWidth/2-35, right: null,
                               }}
                     >
                         {imageItems}
@@ -110,7 +121,7 @@ class ImagePreview extends React.Component {
             <View style={{
       position: 'absolute',
       top: 28,
-      left: deviceHeight/2-35,
+      left: imageWidth/2-35,
     }}>
                 <RelandIcon name="camera" color="white"
                             iconProps={{style: styles.pagingIcon}} size={16}
@@ -187,8 +198,8 @@ var styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         alignSelf: 'auto',
-        width: deviceHeight,
-        height: deviceWidth
+        width: imageWidth,
+        height: imageHeight
     },
     flexCenter: {
         flex: 1,

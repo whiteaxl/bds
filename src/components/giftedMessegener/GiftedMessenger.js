@@ -18,6 +18,37 @@ import moment from 'moment';
 import {setLocale} from './Locale';
 import deepEqual from 'deep-equal';
 import Button from 'react-native-button';
+import RelandIcon from '../RelandIcon';
+import gui from '../../lib/gui';
+
+import {Actions} from 'react-native-router-flux';
+import {Map} from 'immutable';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+
+import * as globalActions from '../../reducers/global/globalActions';
+
+const actions = [
+  globalActions
+];
+
+function mapStateToProps(state) {
+  return {
+    ...state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  const creators = Map()
+      .merge(...actions)
+      .filter(value => typeof value === 'function')
+      .toObject();
+
+  return {
+    actions: bindActionCreators(creators, dispatch),
+    dispatch
+  };
+}
 
 class GiftedMessenger extends Component {
 
@@ -128,6 +159,12 @@ class GiftedMessenger extends Component {
       loadEarlierMessagesButton: {
         fontSize: 14,
       },
+      captureIcon: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 10,
+        marginLeft: 10
+      }
     };
 
     Object.assign(this.styles, this.props.styles);
@@ -196,6 +233,14 @@ class GiftedMessenger extends Component {
         height: new Animated.Value(this.listViewMaxHeight),
       });
     }
+  }
+
+  takePicture() {
+    Actions.PostAds({owner: 'chat'});
+  }
+
+  pickPhoto() {
+    Actions.CameraRollView({owner: 'chat'});
   }
 
   onSend() {
@@ -588,6 +633,14 @@ class GiftedMessenger extends Component {
 
             blurOnSubmit={this.props.blurOnSubmit}
           />
+          <RelandIcon name="camera" color={gui.mainColor}
+                      mainProps={this.styles.captureIcon}
+                      size={22} textProps={{paddingLeft: 0}}
+                      onPress={this.takePicture} />
+          <RelandIcon name="photos" color={gui.mainColor}
+                      mainProps={this.styles.captureIcon}
+                      size={22} textProps={{paddingLeft: 0}}
+                      onPress={this.pickPhoto} />
           <Button
             style={this.styles.sendButton}
             styleDisabled={this.styles.sendButtonDisabled}
@@ -691,4 +744,6 @@ GiftedMessenger.propTypes = {
 };
 
 
-module.exports = GiftedMessenger;
+// module.exports = GiftedMessenger;
+
+export default connect(mapStateToProps, mapDispatchToProps)(GiftedMessenger);

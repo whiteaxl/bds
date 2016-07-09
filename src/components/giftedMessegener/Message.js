@@ -86,7 +86,7 @@ export default class Message extends Component {
               underlayColor='transparent'
               onPress={() => onImagePress(rowData)}
             >
-              <ImageView {...rowData}
+              <ImageView {...rowData} position={'relative'}
                 source={rowData.image}
                 style={[styles.imagePosition, styles.image, (rowData.position === 'left' ? styles.imageLeft : styles.imageRight)]}
               />
@@ -94,7 +94,7 @@ export default class Message extends Component {
           );
         }
         return (
-          <ImageView {...rowData}
+          <ImageView {...rowData} position={'relative'}
             source={rowData.image}
             style={[styles.imagePosition, styles.image, (rowData.position === 'left' ? styles.imageLeft : styles.imageRight)]}
           />
@@ -159,6 +159,18 @@ export default class Message extends Component {
       RowView = rowData.view;
     }
 
+    let customText = rowData.text ? (<RowView
+          {...rowData}
+          renderCustomText={this.props.renderCustomText}
+          styles={styles}
+          name={position === 'left' && this.props.displayNamesInsideBubble ? this.renderName(rowData.name, displayNames, diffMessage) : null}
+
+          parseText={this.props.parseText}
+          handlePhonePress={this.props.handlePhonePress}
+          handleUrlPress={this.props.handleUrlPress}
+          handleEmailPress={this.props.handleEmailPress}
+      />) : null;
+    
     let messageView = (
       <View>
         {position === 'left' && !this.props.displayNamesInsideBubble ? this.renderName(rowData.name, displayNames, diffMessage) : null}
@@ -169,17 +181,7 @@ export default class Message extends Component {
         >
           {position === 'left' ? this.renderImage(rowData, diffMessage, forceRenderImage, onImagePress) : null}
           {position === 'right' ? this.renderErrorButton(rowData, onErrorButtonPress) : null}
-          <RowView
-            {...rowData}
-            renderCustomText={this.props.renderCustomText}
-            styles={styles}
-            name={position === 'left' && this.props.displayNamesInsideBubble ? this.renderName(rowData.name, displayNames, diffMessage) : null}
-
-            parseText={this.props.parseText}
-            handlePhonePress={this.props.handlePhonePress}
-            handleUrlPress={this.props.handleUrlPress}
-            handleEmailPress={this.props.handleEmailPress}
-          />
+          {customText}
           {rowData.position === 'right' ? this.renderImage(rowData, diffMessage, forceRenderImage, onImagePress) : null}
         </View>
         {rowData.position === 'right' ? this.renderStatus(rowData.status) : null}

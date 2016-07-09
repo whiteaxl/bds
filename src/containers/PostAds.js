@@ -11,15 +11,24 @@ import {Map} from 'immutable';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import Camera from 'react-native-camera';
+import danhMuc from '../assets/DanhMuc';
 
 import LoginRegister from './LoginRegister'
 
 import * as globalActions from '../reducers/global/globalActions';
+import * as postAdsActions from '../reducers/postAds/postAdsActions';
+import * as chatActions from '../reducers/chat/chatActions';
 
 import RelandIcon from '../components/RelandIcon';
 
+import cfg from "../cfg";
+
+var rootUrl = `http://${cfg.server}:5000`;
+
 const actions = [
-    globalActions
+    globalActions,
+    postAdsActions,
+    chatActions
 ];
 
 function mapStateToProps(state) {
@@ -43,10 +52,11 @@ function mapDispatchToProps(dispatch) {
 export default class PostAds extends Component {
     constructor(props) {
         super(props);
-        var {photos, imageIndex} = props;
+        var {photos, imageIndex, owner} = props;
         this.state = {
             photos: photos,
-            imageIndex: imageIndex
+            imageIndex: imageIndex,
+            owner: owner
         }
     }
 
@@ -55,6 +65,39 @@ export default class PostAds extends Component {
         console.log("Calling PostAds.render ..., loggedIn = ", this.props.global.loggedIn);
 
         if (this.props.global.loggedIn) {
+            let buttonItems = this.state.owner == 'chat' ?
+                (<View style={styles.buttonContainer}>
+                    <View style={styles.capture2}>
+                        <RelandIcon name="close-circle" color='white' mainProps={styles.captureIcon2}
+                                    size={22} textProps={{paddingLeft: 0}}
+                                    onPress={this.onHome.bind(this)} />
+                    </View>
+                    <View style={styles.capture}>
+                        <RelandIcon name="camera" color="black"
+                                    mainProps={styles.captureIcon}
+                                    size={22} textProps={{paddingLeft: 0}}
+                                    onPress={this.takePicture.bind(this)} />
+                    </View>
+                </View>) :
+                (<View style={styles.buttonContainer}>
+                    <View style={styles.capture2}>
+                        <RelandIcon name="close-circle" color='white' mainProps={styles.captureIcon2}
+                                    size={22} textProps={{paddingLeft: 0}}
+                                    onPress={this.onHome.bind(this)} />
+                    </View>
+                    <View style={styles.capture}>
+                        <RelandIcon name="camera" color="black"
+                                    mainProps={styles.captureIcon}
+                                    size={22} textProps={{paddingLeft: 0}}
+                                    onPress={this.takePicture.bind(this)} />
+                    </View>
+                    <View style={styles.capture2}>
+                        <RelandIcon name="photos" color="white"
+                                    mainProps={styles.captureIcon2}
+                                    size={22} textProps={{paddingLeft: 0}}
+                                    onPress={this.pickPhoto.bind(this)} />
+                    </View>
+                </View>);
             return (
                 <View style={[styles.container]} >
                     <Camera
@@ -64,25 +107,7 @@ export default class PostAds extends Component {
                         // captureTarget={Camera.constants.CaptureTarget.disk}
                         style={styles.preview}
                         aspect={Camera.constants.Aspect.fill}>
-                        <View style={styles.buttonContainer}>
-                            <View style={styles.capture2}>
-                            <RelandIcon name="close-circle" color='white' mainProps={styles.captureIcon2}
-                                        size={22} textProps={{paddingLeft: 0}}
-                                        onPress={this.onHome.bind(this)} />
-                            </View>
-                            <View style={styles.capture}>
-                            <RelandIcon name="camera" color="black"
-                                        mainProps={styles.captureIcon}
-                                        size={22} textProps={{paddingLeft: 0}}
-                                        onPress={this.takePicture.bind(this)} />
-                            </View>
-                            <View style={styles.capture2}>
-                                <RelandIcon name="photos" color="white"
-                                            mainProps={styles.captureIcon2}
-                                            size={22} textProps={{paddingLeft: 0}}
-                                            onPress={this.pickPhoto.bind(this)} />
-                            </View>
-                        </View>
+                        {buttonItems}
                     </Camera>
                 </View>
             )
@@ -96,10 +121,11 @@ export default class PostAds extends Component {
     }
 
     onHome() {
-        if (!this.state.photos) {
-            Actions.Main();
-        } else {
+        if (this.state.photos || this.state.owner == 'chat') {
             Actions.pop();
+        }
+        else {
+            Actions.Main();
         }
     }
 
@@ -116,7 +142,7 @@ export default class PostAds extends Component {
     imageCropper(data) {
         //console.log(data);
         //Actions.SquareImageCropper({photo: data});
-        var {photos, imageIndex} = this.state;
+        var {photos, imageIndex, owner} = this.state;
         if (!photos) {
             photos = [];
             for(var i=0; i<4; i++) {
@@ -125,7 +151,59 @@ export default class PostAds extends Component {
             imageIndex = 0;
         }
         photos[imageIndex] = {uri: data.path};
-        Actions.PostAdsDetail({photos: photos, type: "reset"});
+        if (owner == 'chat') {
+            this.onSendImage(data.path);
+        } else {
+            Actions.PostAdsDetail({photos: photos, type: "reset"});
+        }
+    }
+
+    onSendImage(uri) {
+        var shortname = uri.substring(uri.indexOf('id=')+3, uri.indexOf('&'));
+        var ext = uri.substring(uri.indexOf('ext=')+4);
+        var filename = shortname + '.' + ext;
+        this.props.actions.onUploadImage(filename, uri, this.uploadCallBack.bind(this));
+    }
+
+    uploadCallBack(err, result) {
+        var {data} = result;
+        if (err || data == '') {
+            return;
+        }
+        var {success, file} = JSON.parse(data);
+        if (success) {
+            var {url} = file;
+            this.onSaveMsg(rootUrl + url);
+            Actions.pop();
+        }
+    }
+
+    onSaveMsg(url) {
+        log.info("Enter onSaveMsg...");
+
+        const userID = this.props.global.currentUser.userID;
+        const chatID = "Chat_" + userID + "_" + new Date().getTime();
+
+        let myMsg = {
+            _id : chatID,
+            chatID : chatID,
+            id : chatID,
+            fromUserID : userID,
+            fromFullName : this.props.global.currentUser.fullName,
+            toUserID : this.props.chat.partner.userID,
+            toFullName : this.props.chat.partner.fullName,
+            relatedToAds : this.props.chat.ads,
+            image: {uri: url},
+            msgType : danhMuc.CHAT_MESSAGE_TYPE.IMAGE,
+            read: false,
+            date : new Date(),
+            type: 'Chat',
+            timeStamp : new Date().getTime()
+        };
+
+        log.info("start send myMsg=", myMsg);
+
+        this.props.actions.sendChatMsg(myMsg);
     }
 }
 

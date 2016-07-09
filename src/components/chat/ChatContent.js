@@ -27,6 +27,8 @@ import GiftedMessenger from '../giftedMessegener/GiftedMessenger';
 import log from '../../lib/logUtil';
 import danhMuc from '../../assets/DanhMuc';
 
+import ImagePreview from '../ImagePreview';
+
 var STATUS_BAR_HEIGHT = Navigator.NavigationBar.Styles.General.StatusBarHeight;
 var ADS_BAR_HEIGHT = 62;
 
@@ -56,6 +58,11 @@ function mapDispatchToProps(dispatch) {
 class  ChatContent extends React.Component {
   constructor(props) {
     super(props);
+
+    this.state = {
+      imageUri: '',
+      modal: false
+    };
   }
 
   coming() {
@@ -98,8 +105,14 @@ class  ChatContent extends React.Component {
     this.coming();
   }
 
-  onImagePress() {
-    this.coming();
+  onImagePress(data) {
+    if (this.state.modal) {
+      return;
+    }
+    this.setState({
+      imageUri: data.image.uri,
+      modal: true
+    });
   }
 
   handlePhonePress() {
@@ -142,8 +155,12 @@ class  ChatContent extends React.Component {
     log.info("maxHeight", maxHeight);
 
     let relatedToAds = this.props.chat.ads;
+    log.info("relatedToAds", relatedToAds);
     const adsTextLine1 = relatedToAds.loaiNhaDatFmt + " - " + relatedToAds.diaChinhFullName;
     const adsTextLine2 = relatedToAds.giaFmt;
+
+    let imageDataItems = [];
+    imageDataItems.push(this.state.imageUri);
 
     return (
       <View style={styles.wrapper}>
@@ -175,7 +192,7 @@ class  ChatContent extends React.Component {
 
           senderName='Awesome Developer'
           senderImage={null}
-          onImagePress={this.onImagePress}
+          onImagePress={this.onImagePress.bind(this)}
           displayNames={true}
 
           forceRenderImage = {true}
@@ -191,6 +208,7 @@ class  ChatContent extends React.Component {
 
           renderCustomText = {this.renderCustomText.bind(this)}
         />
+        {this.state.modal ? <ImagePreview images={imageDataItems} owner={'chat'} closeModal={() => this.setState({modal: false}) }/> : null }
       </View>
     );
   }

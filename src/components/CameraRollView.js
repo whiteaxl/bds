@@ -18,6 +18,8 @@ var {
 import CommonHeader from './CommonHeader';
 
 import gui from "../lib/gui";
+import log from "../lib/logUtil";
+import danhMuc from '../assets/DanhMuc';
 
 import {Actions} from 'react-native-router-flux';
 import {Map} from 'immutable';
@@ -25,9 +27,17 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
 import * as globalActions from '../reducers/global/globalActions';
+import * as postAdsActions from '../reducers/postAds/postAdsActions';
+import * as chatActions from '../reducers/chat/chatActions';
+
+import cfg from "../cfg";
+
+var rootUrl = `http://${cfg.server}:5000`;
 
 const actions = [
-    globalActions
+    globalActions,
+    postAdsActions,
+    chatActions
 ];
 
 function mapStateToProps(state) {
@@ -119,7 +129,7 @@ var CameraRollView = React.createClass({
     getInitialState: function() {
         StatusBar.setBarStyle('default');
         var ds = new ListView.DataSource({rowHasChanged: this._rowHasChanged});
-        var {photos, imageIndex} = this.props;
+        var {photos, imageIndex, owner} = this.props;
 
         return {
             assets: [],
@@ -130,7 +140,8 @@ var CameraRollView = React.createClass({
             loadingMore: false,
             dataSource: ds,
             photos: photos,
-            imageIndex: imageIndex
+            imageIndex: imageIndex,
+            owner: owner
     };
     },
 
@@ -248,7 +259,7 @@ _renderRow: function(rowData: Array<Image>, sectionID: string, rowID: string)  {
 },
 
 selectImage: function (asset) {
-    var {photos, imageIndex} = this.state;
+    var {photos, imageIndex, owner} = this.state;
     if (!photos) {
         photos = [];
         for(var i=0; i<4; i++) {
@@ -257,7 +268,59 @@ selectImage: function (asset) {
         imageIndex = 0;
     }
     photos[imageIndex] = {uri: asset.node.image.uri};
-    Actions.PostAdsDetail({photos: photos, type: "reset"});
+    if (owner == 'chat') {
+        this.onSendImage(asset.node.image.uri);
+    } else {
+        Actions.PostAdsDetail({photos: photos, type: "reset"});
+    }
+},
+
+onSendImage: function (uri) {
+    var shortname = uri.substring(uri.indexOf('id=')+3, uri.indexOf('&'));
+    var ext = uri.substring(uri.indexOf('ext=')+4);
+    var filename = shortname + '.' + ext;
+    this.props.actions.onUploadImage(filename, uri, this.uploadCallBack);
+},
+
+uploadCallBack: function (err, result) {
+    var {data} = result;
+    if (err || data == '') {
+        return;
+    }
+    var {success, file} = JSON.parse(data);
+    if (success) {
+        var {url} = file;
+        this.onSaveMsg(rootUrl + url);
+        Actions.pop();
+    }
+},
+
+onSaveMsg: function (url) {
+    log.info("Enter onSaveMsg...");
+
+    const userID = this.props.global.currentUser.userID;
+    const chatID = "Chat_" + userID + "_" + new Date().getTime();
+
+    let myMsg = {
+        _id : chatID,
+        chatID : chatID,
+        id : chatID,
+        fromUserID : userID,
+        fromFullName : this.props.global.currentUser.fullName,
+        toUserID : this.props.chat.partner.userID,
+        toFullName : this.props.chat.partner.fullName,
+        relatedToAds : this.props.chat.ads,
+        image: {uri: url},
+        msgType : danhMuc.CHAT_MESSAGE_TYPE.IMAGE,
+        read: false,
+        date : new Date(),
+        type: 'Chat',
+        timeStamp : new Date().getTime()
+    };
+
+    log.info("start send myMsg=", myMsg);
+
+    this.props.actions.sendChatMsg(myMsg);
 },
 
 _appendAssets: function(data: Object) {
