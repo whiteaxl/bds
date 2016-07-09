@@ -8,6 +8,7 @@ import {Alert} from "react-native";
 
 import userApi from '../../lib/userApi';
 import db from '../../lib/localDB';
+import localStorage  from '../../lib/localStorage';
 
 const {
   ON_SEARCH_FIELD_CHANGE,
@@ -21,7 +22,10 @@ const {
   SEARCH_STATE_INPUT,
   ON_MAP_CHANGE,
   SEARCH_LIST_LIKE_SUCCESS,
-  SEARCH_LOAD_SAVED_SEARCH
+  SEARCH_LOAD_SAVED_SEARCH,
+  CHANGE_LOADING_HOME_DATA,
+  LOAD_HOME_DATA_DONE,
+  CHANGE_SEARCH_CALLED_FROM
 
 } = require('../../lib/constants').default;
 
@@ -68,6 +72,13 @@ export function changeLoadingSearchResult(loading) {
   }
 }
 
+export function changeSearchCalledFrom(loading) {
+  return {
+    type: CHANGE_SEARCH_CALLED_FROM,
+    payload: loading
+  }
+}
+
 export function fetchDetailFail(error) {
   return {
     type: FETCH_DETAIL_FAIL,
@@ -89,32 +100,43 @@ export function setLoadingDetail() {
   }
 }
 
+function callApiSearch(params, dispatch, successCallback) {
+  dispatch(changeLoadingSearchResult(true));
+
+  return Api.getItems(params)
+    .then((data) => {
+      if (data.list) {
+        //let listAds = data.list;
+        log.info("searchActions.search, Number of result: " + data.length);
+        //log.info("searchActions.search", data);
+
+        dispatch(fetchSearchResultSuccess({data, query:params}));
+
+        successCallback();
+      } else if (data.error) {
+        dispatch(fetchSearchResultFail(data.error));
+      }
+      else {
+        dispatch(fetchSearchResultFail(gui.ERR_LoiKetNoiMayChu));
+        //Alert.alert(gui.ERR_LoiKetNoiMayChu)
+      }
+    });
+}
 
 export function search(credential, successCallback) {
   return dispatch => {
-    dispatch(changeLoadingSearchResult(true));
-
     let params = Api.convertFieldsToQueryParams(credential);
+    dispatch(changeSearchCalledFrom("Search"));
 
-    return Api.getItems(params)
-      .then((data) => {
-        let dataBlob = [];
-        if (data.list) {
-          //let listAds = data.list;
-          log.info("searchActions.search, Number of result: " + data.length);
-          //log.info("searchActions.search", data);
+    return callApiSearch(params, dispatch, successCallback)
+  }
+}
 
-          dispatch(fetchSearchResultSuccess({data, query:params}));
+export function searchFromHome(query, successCallback) {
+  return dispatch => {
+    dispatch(changeSearchCalledFrom("Home"));
 
-          successCallback();
-        } else if (data.error) {
-          dispatch(fetchSearchResultFail(data.error));
-        }
-        else {
-          dispatch(fetchSearchResultFail(gui.ERR_LoiKetNoiMayChu));
-          //Alert.alert(gui.ERR_LoiKetNoiMayChu)
-        }
-      });
+    return callApiSearch(query, dispatch, successCallback)
   }
 }
 
@@ -164,18 +186,6 @@ export function likeAds(userID, rowData) {
         Alert.alert("Không thành công!");
       }
     });
-
-    /*
-     userApi.likeAds(dto).then(res => {
-     if (res.status === 0) {
-     let payload = {rowData, sectionID, rowID};
-     dispatch(likeSuccess(payload));
-     Alert.alert("Thành công!");
-     } else {
-     Alert.alert(res.msg);
-     }
-     });
-     */
   }
 }
 
@@ -206,3 +216,62 @@ export function loadSavedSearch(savedSearch) {
   }
 }
 
+
+// HOME screen
+export function changeLoadingHomeData(loading) {
+  return {
+    type: CHANGE_LOADING_HOME_DATA,
+    payload: loading
+  }
+}
+
+export function loadHomeDataDone(res) {
+  return {
+    type: LOAD_HOME_DATA_DONE,
+    payload: res
+  }
+}
+
+
+export function loadHomeData() {
+  return dispatch => {
+    dispatch(changeLoadingHomeData(true));
+
+    return localStorage.getLastSearch().then((ret) => {
+      log.info("loadHomeData.getLastSearch", ret);
+      let lastSearchObj = ret && JSON.parse(ret);
+      if (!lastSearchObj) {
+        let today = new Date(); today.setHours(0,0,0);
+        lastSearchObj = {
+          timeModified : today.getTime(),
+          query : {}
+        }
+      }
+
+      var getHomeData = (currentLocation) => {
+        return Api.getAppHomeData({
+          timeModified : lastSearchObj.timeModified,
+          query : lastSearchObj.query,
+          currentLocation: currentLocation
+        }).then((res) => {
+          log.info("getAppHomeData", res);
+          dispatch(loadHomeDataDone(res));
+        });
+      };
+
+      return navigator.geolocation.getCurrentPosition(
+        (position) => {
+          return getHomeData({
+            "lat": position.coords.latitude,
+            "lon": position.coords.longitude
+          });
+        },
+        (error) => {
+          alert(error.message);
+
+          return getHomeData(gui.defaultLocation);
+        },
+        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000});
+    });
+  }
+}

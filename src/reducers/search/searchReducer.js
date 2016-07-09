@@ -9,6 +9,7 @@ import danhMuc from '../../assets/DanhMuc';
 import moment from 'moment';
 
 import gui from '../../lib/gui';
+import localStorage from '../../lib/localStorage';
 
 const InitialState = require('./searchInitialState').default;
 
@@ -24,8 +25,10 @@ const {
   ON_MAP_CHANGE,
   SEARCH_LIST_LIKE_SUCCESS,
   ON_DB_CHANGE,
-  SEARCH_LOAD_SAVED_SEARCH
-
+  SEARCH_LOAD_SAVED_SEARCH,
+  CHANGE_LOADING_HOME_DATA,
+  LOAD_HOME_DATA_DONE,
+  CHANGE_SEARCH_CALLED_FROM
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
@@ -72,17 +75,23 @@ export default function searchReducer(state = initialState, action) {
       let {data, query} = action.payload;
 
       let recentSearchList = state.recentSearchList;
-      recentSearchList.push({
+      let searchObj = {
         name : 'Search at ' + moment().format("DD-MM-YYYY HH:mm:ss"),
         timeModified : new Date().getTime(),
         query : query,
         isRecent : true,
         desc: findApi.convertQuery2String(query),
-      });
+      };
+
+      recentSearchList.push(searchObj);
       recentSearchList.sort((a,b) => b.timeModified - a.timeModified);
       let LIMIT = gui.LIMIT_RECENT_SEARCH;
       recentSearchList = recentSearchList.slice(0, LIMIT);
 
+      //update lastSearch if called from search screen
+      if (state.searchCalledFrom == 'Search') {
+        localStorage.setLastSearch(JSON.stringify(searchObj));
+      }
 
       return state.setIn(['result', "listAds"], data.list)
         .setIn(['result', "viewport"], data.viewport)
@@ -98,30 +107,17 @@ export default function searchReducer(state = initialState, action) {
       return state.set("loadingFromServer", action.payload)
     }
 
+    case CHANGE_SEARCH_CALLED_FROM :
+    {
+      return state.set("searchCalledFrom", action.payload)
+    }
+
     case ON_MAP_CHANGE :
     {
       const {field, value} = action.payload;
       let nextState = state.setIn(['map', field], value);
       return nextState;
     }
-    /*
-     case SEARCH_LIST_LIKE_SUCCESS : {
-     console.log("SEARCH_LIST_LIKE_SUCCESS reducer ", action.payload);
-     let {rowData, rowID} = action.payload;
-     let idx = Number(rowID);
-     let listAds = state.result.listAds;
-
-     rowData.isLiked = 1;
-
-     let newListAds = [
-     ...listAds.slice(0, idx),
-     rowData,
-     ...listAds.slice(idx+1)
-     ];
-
-     return state.setIn(['result',"listAds"], newListAds);
-     }
-     */
 
     case ON_DB_CHANGE:
     {
@@ -175,6 +171,35 @@ export default function searchReducer(state = initialState, action) {
         .setIn(['form', 'fields', "polygon"], cred.polygon)
         ;
       return next;
+    }
+
+    case CHANGE_LOADING_HOME_DATA :
+    {
+      return state.set("loadingHomeData", action.payload)
+    }
+
+    case LOAD_HOME_DATA_DONE : {
+      let res = action.payload;
+      console.log("reducer LOAD_HOME_DATA_DONE", res);
+
+      if (res.status == null ) {
+        return state.set('loadingHomeData', false)
+          .set('homeDataErrorMsg', gui.ERR_LoiKetNoiMayChu)
+      } else if (res.status == 0) {
+        let next = state.set('collections', res.data)
+          .set('loadingHomeData', false);
+
+        if (!res.data || res.data.length == 0) {
+          return next.set('homeDataErrorMsg', gui.INF_KhongCoGoiYNao + ", dựa theo lần tìm kiếm cuối:\n\n"
+            + JSON.stringify(res.lastQuery))
+        }
+
+        return next;
+
+      } else {
+        return state.set('loadingHomeData', false)
+          .set('homeDataErrorMsg', res.msg)
+      }
     }
   }
 

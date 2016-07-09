@@ -1,24 +1,24 @@
-/**
- * # authInitialState.js
- *
- * This class is a Immutable object
- * Working *successfully* with Redux, requires
- * state that is immutable.
- * In my opinion, that can not be by convention
- * By using Immutable, it's enforced.  Just saying....
- *
- */
 'use strict';
-/**
- * ## Import
- */
-const {Record} = require('immutable');
+
+const {Record, List} = require('immutable');
 const {
     SEARCH_STATE_INPUT
 } = require('../../lib/constants').default;
 
 import RangeUtils from "../../lib/RangeUtils";
 import danhMuc from "../../assets/DanhMuc";
+
+
+const defaultItemInCollection = {
+    adsID : "",
+    giaFmt : "",
+    khuVuc : "",
+    soPhongNguFmt : "",
+    soPhongTamFmt : "",
+    dienTichFmt : "",
+    cover : "http://203.162.13.40:5000/web/asset/img/reland_house_large.jpg"
+};
+
 
 /**
  * This Record contains the state of the seach form
@@ -79,7 +79,31 @@ var InitialState = Record({
 
     })),
 
+    /*
+     searchObj : {
+       name : 'Search at ' + moment().format("DD-MM-YYYY HH:mm:ss"),
+       timeModified : new Date().getTime(),
+       query : query,
+       isRecent : true,
+       desc: findApi.convertQuery2String(query),
+     }
+     */
     saveSearchList : [],
-    recentSearchList : []
+    recentSearchList : [],
+    //home screen
+    loadingHomeData : false,
+    collections : [{
+        title1 : "",
+        title2 : "",
+        //data must have 5 elements
+        data : [defaultItemInCollection, defaultItemInCollection,
+            defaultItemInCollection,
+            defaultItemInCollection, defaultItemInCollection],
+        query : {loaiTin: 0} //search conditions
+    }],
+    homeDataErrorMsg : "",
+
+    //shared
+    searchCalledFrom : "Search"
 });
 export default InitialState;

@@ -10,6 +10,7 @@ placeUtil.fullName = function (place) {
 
   return place.placeName;
 };
+
 // return Quoc Gia form Place.Place is type of Google api
 placeUtil.getQuocGia = function (place) {
 

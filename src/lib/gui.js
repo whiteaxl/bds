@@ -17,6 +17,7 @@ var gui = {
 	//Error msg
 	ERR_LoiKetNoiMayChu : "Lỗi kết nối đến máy chủ!",
 	INF_KhongCoKetQua : "Không có kết quả nào!",
+	INF_KhongCoGoiYNao : "Không có gợi ý nào!",
 	ERR_MaXacMinhSai : 'Mã xác minh sai!',
 	ERR_dataRequired : 'Chưa nhập ',
 	INFO_userCreatedSuccessfully : 'Bạn đã đăng ký thành công!',
@@ -36,6 +37,12 @@ var styles = StyleSheet.create({
 });
 
 gui.styles = styles;
+gui.defaultLocation = {
+	lat : 20.95389909999999,
+	lon : 105.75490945
+};
+
+gui.MAX_ITEM = 200
 
 
 module.exports = gui;

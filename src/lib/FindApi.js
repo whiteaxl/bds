@@ -10,6 +10,7 @@ var rootUrl = `http://${cfg.server}:5000/api`;
 var findUrl = rootUrl + "/find";
 var placeUrl = rootUrl + "/findPlace";
 var detailUrl = rootUrl + "/detail";
+var homeData4AppUrl = rootUrl + "/homeData4App";
 
 
 var maxRows = 200;
@@ -146,7 +147,26 @@ var Api = {
                 callback(data);
             })
             .catch(e => e);
-    }
+    },
+
+  getAppHomeData(lastSearchObj) {
+    return fetch(`${homeData4AppUrl}`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(lastSearchObj)
+    })
+      .then(ApiUtils.checkStatus)
+      .then(response => response.json())
+      .catch(e => {
+        return {
+          status: 99,
+          msg: e.toString()
+        }
+      });
+  },
 };
 
 export { Api as default };

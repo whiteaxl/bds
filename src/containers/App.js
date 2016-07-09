@@ -36,11 +36,33 @@ import Chat from './Chat';
 
 import SquareImageCropper from '../components/SquareImageCropper';
 
-import {connect} from 'react-redux';
-const RouterWithRedux = connect()(Router);
-
 import gui from '../lib/gui';
+import log from '../lib/logUtil';
+
 import RelandIcon from '../components/RelandIcon';
+
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+
+import * as searchActions from '../reducers/search/searchActions';
+import {Map} from 'immutable';
+const actions = [
+  searchActions,
+];
+
+function mapDispatchToProps(dispatch) {
+  const creators = Map()
+    .merge(...actions)
+    .filter(value => typeof value === 'function')
+    .toObject();
+
+  return {
+    actions: bindActionCreators(creators, dispatch),
+    dispatch
+  };
+}
+
+const RouterWithRedux = connect()(Router);
 
 class TabIcon extends React.Component {
   render() {
@@ -53,15 +75,6 @@ class TabIcon extends React.Component {
     );
   }
 }
-
-const reducerCreate = params=> {
-  //console.log("Calling reducerCreate, params", params);
-  const defaultReducer = Reducer(params);
-  return (state, action)=> {
-    console.log("Calling reducerCreate:", action, state);
-    return defaultReducer(state, action);
-  }
-};
 
 class App extends React.Component {
   render() {
@@ -76,7 +89,10 @@ class App extends React.Component {
 
           <Scene key="Home" tabs={true} default="Main" type="replace" tabBarStyle={styles.tabBarStyle}>
             <Scene key="Main" title="Xem nhanh" iconName={"list"} iconSize={19} icon={TabIcon}
-                   component={Home}
+                   component={Home} onPress={()=>{
+                      this.props.actions.loadHomeData();
+                      Actions.Main()
+                   }}
                    hideNavBar={true} initial={true}/>
 
             <Scene key="Inbox" component={Inbox} title="Chat"
@@ -178,4 +194,4 @@ var styles = StyleSheet.create({
 });
 
 
-export default App;
+export default connect(null, mapDispatchToProps)(App);

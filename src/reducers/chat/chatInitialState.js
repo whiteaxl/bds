@@ -33,7 +33,9 @@ var InitialState = Record({
   },
   ads: {
     adsID : "Ads_bds_3989184",
-    title : "33 triệu/m² - Căn hộ chung cư - N05 Trần Duy Hưng",
+    loaiNhaDatFmt : "",
+    giaFmt : "",
+    diaChinhFullName : "",
     cover: "http://file1.batdongsan.com.vn/guestthumb120x90.20131125095109163.jpg"
   },
 

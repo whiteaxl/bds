@@ -2,15 +2,9 @@
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-/**
- * The actions we need
- */
 import * as globalActions from '../reducers/global/globalActions';
 import * as searchActions from '../reducers/search/searchActions';
 
-/**
- * Immutable Mapn
- */
 import {Map} from 'immutable';
 
 import  React, {Component} from 'react';
@@ -26,13 +20,13 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import LinearGradient from 'react-native-linear-gradient';
 
 import gui from '../lib/gui';
+import log from '../lib/logUtil';
+
+import HomeCollection from '../components/home/HomeCollection';
 
 var { width, height } = Dimensions.get('window');
 var imageHeight = 143;
 
-/**
-* ## Redux boilerplate
-*/
 const actions = [
   globalActions,
   searchActions
@@ -58,9 +52,43 @@ function mapDispatchToProps(dispatch) {
 
 
 class Home extends Component {
+  componentDidMount() {
+    log.info("call home.componentDidMount");
+
+    this.props.actions.loadHomeData();
+  }
+
+  renderCollections(collections) {
+    return collections.map(e => {
+      return <HomeCollection key={e.title1} collectionData = {e} searchFromHome={this.props.actions.searchFromHome}/>
+    });
+  }
+
+  renderContent(collections) {
+    if (this.props.search.homeDataErrorMsg) {
+      return (
+        <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
+          <Text style={styles.welcome}>{this.props.search.homeDataErrorMsg}</Text>
+        </View>
+      )
+    }
+
+    return (
+      <ScrollView
+        automaticallyAdjustContentInsets={false}
+        showsVerticalScrollIndicator={false}
+        vertical={true}
+        style={styles.scrollView}>
+
+        {this.renderCollections(collections)}
+
+        <View style={{height:40}}></View>
+      </ScrollView>
+    );
+  }
 
   render() {
-    var _scrollView: ScrollView;
+    log.info("call home.render", this.props.search.collections, this.props.search.homeDataErrorMsg);
 
     return (
       <View style={styles.fullWidthContainer}>
@@ -72,188 +100,14 @@ class Home extends Component {
         </View>
 
         <View style={styles.homeDetailInfo}>
-          <ScrollView
-            ref={(scrollView) => { _scrollView = scrollView; }}
-            automaticallyAdjustContentInsets={false}
-            showsVerticalScrollIndicator={false}
-            vertical={true}
-            style={styles.scrollView}>
-
-            <View style={{flexDirection: "column"}}>
-              <View style={styles.titleContainer}>
-                <Text style={styles.boldTitle}>BỘ SƯU TẬP</Text>
-                <Text style={styles.categoryLabel}>Nhà Mới Đăng Hôm Nay</Text>
-                <Text style={styles.arrowLabel}>Quận Hà Đông, Hà Nội</Text>
-              </View>
-
-              <View style={styles.rowItem}>
-                  <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
-                    <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
-                               price="2.5 Tỷ" address="Khu đô thị Pháp Vân" detail="2 pn  1 pt"
-                               width={0.55}
-                    >
-                    </ImageItem>
-                  </TouchableOpacity>
-                  <View style={{width:1}}>
-                  </View>
-                  <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
-                    <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
-                               price="2.5 Tỷ" address="Khu đô thị Pháp Vân" detail="2 pn  1 pt"
-                               width={0.45}
-                    >
-                    </ImageItem>
-                  </TouchableOpacity>
-              </View>
-
-              <View style={{height:1}}>
-              </View>
-
-              <View style={styles.rowItem}>
-                  <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
-                    <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
-                               price="2.5 Tỷ" address="Khu đô thị Pháp Vân" detail="2 pn  1 pt"
-                               width={0.45}
-                    >
-                    </ImageItem>
-                  </TouchableOpacity>
-                  <View style={{width:1}}>
-                  </View>
-                  <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
-                    <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
-                               price="2.5 Tỷ" address="Khu đô thị Pháp Vân" detail="2 pn  1 pt"
-                               width={0.55}
-                    >
-                    </ImageItem>
-                  </TouchableOpacity>
-              </View>
-
-              <View style={{height:1}}>
-              </View>
-              <View style={{}}>
-                <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/DangTin/Images/184026/duan/7feaac4b-d60f-4c56-aa21-8c6c7a7b94ec.jpg'}
-                           price="10 Tỷ" address="Biệt thự biển Phú Quốc" detail="5 pn  3 pt"
-                           width={1}
-                >
-                </ImageItem>
-              </View>
-
-              <View style={{backgroundColor:'transparent'}}>
-                <Text style={styles.moreDetailButton}>Xem thêm</Text>
-              </View>
-            </View>
-
-            <View style={{flexDirection: "column"}}>
-              <View style={styles.titleContainer}>
-                <Text style={styles.boldTitle}>BỘ SƯU TẬP</Text>
-                <Text style={styles.categoryLabel}>Nhà Gần Vị Trí Bạn</Text>
-                <Text style={styles.arrowLabel}>Quận Hà Đông, Hà Nội</Text>
-              </View>
-
-              <View style={styles.rowItem}>
-                <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
-                  <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
-                             price="2.5 Tỷ" address="Khu đô thị Pháp Vân" detail="2 pn  1 pt"
-                             width={0.55}
-                  >
-                  </ImageItem>
-                </TouchableOpacity>
-                <View style={{width:1}}>
-                </View>
-                <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
-                  <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
-                             price="2.5 Tỷ" address="Khu đô thị Pháp Vân" detail="2 pn  1 pt"
-                             width={0.45}
-                  >
-                  </ImageItem>
-                </TouchableOpacity>
-              </View>
-
-              <View style={{height:1}}>
-              </View>
-
-              <View style={styles.rowItem}>
-                <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
-                  <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
-                             price="2.5 Tỷ" address="Khu đô thị Pháp Vân" detail="2 pn  1 pt"
-                             width={0.45}
-                  >
-                  </ImageItem>
-                </TouchableOpacity>
-                <View style={{width:1}}>
-                </View>
-                <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)}>
-                  <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/Dangtin/Images/218628/Thumbnai/fceb8f91-9e68-40bc-b375-766f53bdfdcc_bthumb.jpg'}
-                             price="2.5 Tỷ" address="Khu đô thị Pháp Vân" detail="2 pn  1 pt"
-                             width={0.55}
-                  >
-                  </ImageItem>
-                </TouchableOpacity>
-              </View>
-
-              <View style={{height:1}}>
-              </View>
-              <View style={{}}>
-                <ImageItem imageUrl={'http://nhadat24h.net/Upload/User/DangTin/Images/184026/duan/7feaac4b-d60f-4c56-aa21-8c6c7a7b94ec.jpg'}
-                           price="10 Tỷ" address="Biệt thự biển Phú Quốc" detail="5 pn  3 pt"
-                           width={1}
-                >
-                </ImageItem>
-              </View>
-
-              <View style={{backgroundColor:'transparent'}}>
-                <Text style={styles.moreDetailButton}>Xem thêm</Text>
-              </View>
-            </View>
-            <View style={{height:40}}></View>
-          </ScrollView>
+          {this.renderContent(this.props.search.collections)}
         </View>
       </View>
 		)
 	}
 
-  _onAdsDetailPressed() {
-    console.log("On Ads detail pressed");
-  }
-
   handleSearchButton() {
     Actions.Search();
-  }
-
-
-}
-
-class ImageItem extends React.Component{
-  render() {
-    return (
-     <View style={styles.column}>
-        <Image style={[styles.imgItem, {width:(width*this.props.width)-1}]}
-               source={{uri: this.props.imageUrl}}>
-
-          <View style={styles.heartContent}>
-            <TruliaIcon name="heart-o" mainProps={[styles.heartButton,{marginLeft: width*this.props.width-30}]}
-                        color={'white'} size={20}/>
-          </View>
-
-          <View style={styles.itemContent}
-                onStartShouldSetResponder={(evt) => false}
-                onMoveShouldSetResponder={(evt) => false}
-          >
-            <View
-                onStartShouldSetResponder={(evt) => false}
-                onMoveShouldSetResponder={(evt) => false}
-            >
-              <Text style={styles.price}
-                    onStartShouldSetResponder={(evt) => false}
-                    onMoveShouldSetResponder={(evt) => false}
-              >{this.props.price}</Text>
-              <Text style={styles.text}>{this.props.address}</Text>
-              <Text style={styles.text}>{this.props.detail}</Text>
-            </View>
-          </View>
-
-        </Image>
-      </View>
-  );
   }
 }
 
@@ -399,7 +253,14 @@ var styles = StyleSheet.create({
     borderColor: 'red',
     borderWidth : 1,
      */
-  }
+  },
+  welcome: {
+    marginTop: -50,
+    marginBottom: 50,
+    fontSize: 16,
+    textAlign: 'center',
+    margin: 10,
+  },
 });
 
 
