@@ -271,7 +271,7 @@ var styles = StyleSheet.create({
   },
   phoneLine : {
     height: 36,
-    marginLeft: 18,
+    paddingLeft: 18,
     justifyContent: 'center',
     backgroundColor : '#f9f9f9'
   },

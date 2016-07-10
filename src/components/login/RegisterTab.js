@@ -73,7 +73,9 @@ class RegisterTab extends React.Component {
 
   tiepTuc() {
     let username = this.props.register.username;
+    Actions.RegisterMoreInfor();
 
+    /*
     this.setState({
       loading: true
     });
@@ -94,6 +96,7 @@ class RegisterTab extends React.Component {
         console.log("Error in registerByPhone:" + res);
         Alert.alert(res.toString());
       })
+      */
   }
 
   coming() {
