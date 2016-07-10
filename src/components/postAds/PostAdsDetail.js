@@ -348,6 +348,35 @@ class PostAdsDetail extends Component {
         );
     }
 
+    _renderGia() {
+        return (
+            <View style={[{paddingTop: 9, marginBottom: 5}, myStyles.headerSeparator]}>
+                <TouchableHighlight
+                    onPress={() => this._onGiaPressed()}>
+                    <View style={myStyles.imgList}>
+                        <Text style={myStyles.label}>
+                            Giá
+                        </Text>
+                        <View style={myStyles.arrowIcon}>
+                            <Text style={myStyles.label}> {this._getGiaValue()} </Text>
+                            <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
+                        </View>
+                    </View>
+                </TouchableHighlight>
+            </View>
+        );
+    }
+
+    _onGiaPressed() {
+        this.setState({editGia: true});
+        Actions.PostAdsPrice();
+    }
+
+    _getGiaValue() {
+        var {gia, donViTien} = this.props.postAds;
+        return DanhMuc.getGiaForDisplay(gia, donViTien);
+    }
+
     _renderDienTich() {
         return (
             <View style={[myStyles.imgList, myStyles.headerSeparator, {marginLeft: 17, paddingLeft: 0}]} >
@@ -528,7 +557,7 @@ class PostAdsDetail extends Component {
 
     onSaveAds() {
         var {uploadUrls} = this.state;
-        var {loaiTin, loaiNhaDat, gia, dienTich, soTangSelectedIdx, soPhongNguSelectedIdx, soNhaTamSelectedIdx, chiTiet, place} = this.props.postAds;
+        var {loaiTin, loaiNhaDat, gia, donViTien, dienTich, soTangSelectedIdx, soPhongNguSelectedIdx, soNhaTamSelectedIdx, chiTiet, place} = this.props.postAds;
         var imageUrls = [];
         uploadUrls.map(function (uploadUrl) {
             imageUrls.push(rootUrl + uploadUrl);
@@ -549,8 +578,9 @@ class PostAdsDetail extends Component {
         soTang = soTang ? soTang : undefined;
         var phongTam = Number(DanhMuc.getAdsSoPhongTamByIndex(soNhaTamSelectedIdx));
         phongTam = phongTam ? phongTam : undefined;
+        var giaBan = DanhMuc.calculateGia(gia, donViTien, dienTich);
         dbService._createAds({loaiTin: loaiTinVal, loaiNha: loaiNhaDat,
-            place: place, gia: Number(gia),
+            place: place, gia: Number(giaBan),
             dienTich: Number(dienTich), soTang: soTang,
             phongNgu: phongNgu, phongTam: phongTam, chiTiet: chiTiet || undefined,
             uploadUrls: imageUrls, userID: currentUser.userID, tenLoaiNhaDat: tenLoaiNhaDat,

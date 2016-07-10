@@ -13,7 +13,8 @@ import PostAdsDetail from '../components/postAds/PostAdsDetail';
 import PostAdsMapView from '../components/postAds/PostAdsMapView';
 import PostAdsAddress from '../components/postAds/PostAdsAddress';
 import PostAdsTitle from '../components/postAds/PostAdsTitle';
-import CameraRollView from '../components/CameraRollView'
+import CameraRollView from '../components/CameraRollView';
+import PostAdsPrice from '../components/postAds/PostAdsPrice';
 
 import LoginRegister from './LoginRegister';
 
@@ -122,6 +123,7 @@ class App extends React.Component {
           <Scene key='PostAdsAddress' component={PostAdsAddress} title="Post Ads Address" hideNavBar={true}/>
           <Scene key='PostAdsTitle' component={PostAdsTitle} title="Post Ads Title" hideNavBar={true}/>
           <Scene key='CameraRollView' component={CameraRollView} title="Kho ảnh" hideNavBar={true}/>
+          <Scene key='PostAdsPrice' component={PostAdsPrice} title="Giá tiền" hideNavBar={true}/>
 
           <Scene key='OrderPicker' component={OrderPicker} title="Sắp xếp" hideNavBar={true}/>
           <Scene key='SearchResultDetail' component={SearchResultDetail} title="Chi tiết" hideNavBar={true}/>

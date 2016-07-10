@@ -240,12 +240,13 @@ _renderFooterSpinner: function() {
 
 // rowData is an array of images
 _renderRow: function(rowData: Array<Image>, sectionID: string, rowID: string)  {
+    var key = 0;
     var images = rowData.map((image) => {
         if (image === null) {
             return null;
         }
         return (
-            <TouchableHighlight onPress={this.selectImage.bind(this, image)}>
+            <TouchableHighlight key={key++} onPress={this.selectImage.bind(this, image)}>
                 {this.props.renderImage(image)}
             </TouchableHighlight>
         );

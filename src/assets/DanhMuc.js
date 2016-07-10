@@ -191,6 +191,22 @@ danhMuc.CHAT_MESSAGE_TYPE ={
     SYSTEM: 4
 };
 
+danhMuc.DonViTien = {
+    1: "Triệu",
+    2: "Tỷ",
+    3: "Trăm nghìn/m²",
+    4: "Triệu/m²",
+    5: "Thỏa thuận"
+};
+
+danhMuc.DonViTienKey = [
+    1,
+    2,
+    3,
+    4,
+    5
+];
+
 danhMuc.getDanhMucKeys = function (hashDanhMuc) {
     var result = [];
     for (var k in hashDanhMuc) {
@@ -243,6 +259,10 @@ danhMuc.getHuongNhaValues = function () {
     return danhMuc.getDanhMucValues(danhMuc.HuongNha);
 }
 
+danhMuc.getDonViTienValues = function () {
+    return danhMuc.getDanhMucValues(danhMuc.DonViTien);
+}
+
 danhMuc.getRadiusInKmValues = function () {
     return ["0.5", "1", "2", "3", "4", "5"];
 }
@@ -263,7 +283,40 @@ danhMuc.getLoaiNhaDatForDisplay = function(loaiTin, loaiNhaDatKey){
         value = BAT_KY;
 
     return value;
-}
+};
+
+danhMuc.getGiaForDisplay = function (gia, donViTien) {
+    var value = '';
+    if (!gia || donViTien == 5) {
+        value = danhMuc.DonViTien[5];
+    } else {
+        value = gia + ' ' + danhMuc.DonViTien[donViTien].toLowerCase();
+    }
+    return value;
+};
+
+danhMuc.calculateGia = function (gia, donViTien, dienTich) {
+    if (!gia || donViTien == 1) {
+        return gia;
+    } else {
+        if (donViTien == 5) {
+            return null;
+        }
+        if (donViTien == 2) {
+            return gia * 1000.0;
+        }
+        if (!dienTich) {
+            return null;
+        }
+        if (donViTien == 3) {
+            return (gia * dienTich) / 10.0;
+        }
+        if (donViTien == 4) {
+            return gia * dienTich;
+        }
+    }
+    return null;
+};
 
 danhMuc.getDanhMucKeyByIndex = function (hashDanhMuc, index) {
     var find = '';

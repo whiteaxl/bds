@@ -54,10 +54,7 @@ class PostAdsTitle extends Component {
 
     render() {
         var {chiTiet} = this.props.postAds;
-        var chiTietHolder = '';
-        if (!chiTiet) {
-            chiTietHolder = 'Mô tả những gì bạn muốn bán (cho thuê).\r\nVí dụ: Địa chỉ, diện tích, giá, hướng nhà...';
-        }
+        var chiTietHolder = 'Mô tả những gì bạn muốn bán (cho thuê).\r\nVí dụ: Địa chỉ, diện tích, giá, hướng nhà...';
         var headerTitle = "Chi tiết";
         var {toggleState} = this.state;
         var inputHeight = toggleState ? Dimensions.get('window').height-336 :

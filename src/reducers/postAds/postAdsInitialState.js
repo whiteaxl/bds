@@ -11,6 +11,7 @@ const InitialState = Record({
     soNhaTamSelectedIdx : 0,
     dienTich: null,
     gia: null,
+    donViTien: 1,
     place: {
         duAn: '',
         duAnFullName: '',
