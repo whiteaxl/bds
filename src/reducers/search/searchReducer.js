@@ -187,7 +187,8 @@ export default function searchReducer(state = initialState, action) {
           .set('homeDataErrorMsg', gui.ERR_LoiKetNoiMayChu)
       } else if (res.status == 0) {
         let next = state.set('collections', res.data)
-          .set('loadingHomeData', false);
+          .set('loadingHomeData', false)
+          .set('homeDataErrorMsg', res.msg);
 
         if (!res.data || res.data.length == 0) {
           return next.set('homeDataErrorMsg', gui.INF_KhongCoGoiYNao + ", dựa theo lần tìm kiếm cuối:\n\n"
@@ -198,7 +199,7 @@ export default function searchReducer(state = initialState, action) {
 
       } else {
         return state.set('loadingHomeData', false)
-          .set('homeDataErrorMsg', res.msg)
+          .set('homeDataErrorMsg', gui.ERR_LoiKetNoiMayChu)
       }
     }
   }
