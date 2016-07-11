@@ -11,13 +11,11 @@ import TruliaIcon from '../../components/TruliaIcon';
 
 import {Actions} from 'react-native-router-flux';
 
-var { width, height } = Dimensions.get('window');
 var imageHeight = 143;
 
-
 export default class HomeCollection extends Component {
-  _onAdsDetailPressed() {
-    console.log("On Ads detail pressed");
+  _onAdsPressed(ads) {
+    Actions.SearchResultDetail({adsID: ads.adsID, source: 'server'})
   }
 
   _onSeeMore() {
@@ -27,6 +25,14 @@ export default class HomeCollection extends Component {
     Actions.SearchResultList({type: "reset"});
 
     this.props.searchFromHome(query, () => {});
+  }
+
+  _renderAds(ads, flex) {
+    return (
+      <TouchableOpacity onPress={() => this._onAdsPressed(ads)} style={{flex: flex}}>
+        <ImageItem ads={ads}/>
+      </TouchableOpacity>
+    );
   }
 
   render() {
@@ -40,39 +46,22 @@ export default class HomeCollection extends Component {
         </View>
 
         <View style={styles.rowItem}>
-          <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)} style={{flex: 0.55}}>
-            <ImageItem ads={data[0]}>
-            </ImageItem>
-          </TouchableOpacity>
-          <View style={{width:1}}>
-          </View>
-          <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)} style={{flex: 0.45}}>
-            <ImageItem ads={data[1]} >
-            </ImageItem>
-          </TouchableOpacity>
+          {this._renderAds(data[0], 0.55)}
+          <View style={{width:1}}/>
+          {this._renderAds(data[1], 0.45)}
         </View>
 
-        <View style={{height:1}}>
-        </View>
+        <View style={{height:1}}/>
 
         <View style={styles.rowItem}>
-          <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)} style={{flex: 0.45}}>
-            <ImageItem ads={data[2]}>
-            </ImageItem>
-          </TouchableOpacity>
-          <View style={{width:1}}>
-          </View>
-          <TouchableOpacity onPress={this._onAdsDetailPressed.bind(this)} style={{flex: 0.55}}>
-            <ImageItem ads={data[3]}>
-            </ImageItem>
-          </TouchableOpacity>
+          {this._renderAds(data[2], 0.45)}
+          <View style={{width:1}}/>
+          {this._renderAds(data[3], 0.55)}
         </View>
 
-        <View style={{height:1}}>
-        </View>
+        <View style={{height:1}}/>
         <View style={{flex: 1}}>
-          <ImageItem ads={data[4]}>
-          </ImageItem>
+          {this._renderAds(data[4], 1)}
         </View>
 
         <TouchableOpacity style={{backgroundColor:'transparent'}} onPress={this._onSeeMore.bind(this)} >
