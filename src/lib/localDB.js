@@ -78,7 +78,7 @@ class DBService {
     var {loaiTin, loaiNha, place, gia, dienTich, soTang, phongNgu, phongTam, chiTiet, uploadUrls, userID, tenLoaiNhaDat, tenLoaiTin, dangBoi} = data;
     var ms = moment().toDate().getTime();
     var adsID = 'Ads_reland_' + userID + '_' + ms;
-    var giaM2 = null;
+    var giaM2 = 0;
     if (gia && dienTich) {
         giaM2 = Number((gia/dienTich).toFixed(3));
     }
