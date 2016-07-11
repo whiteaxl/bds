@@ -242,7 +242,7 @@ class Search extends Component {
         <View>
           <RangePicker ref={pickerGia => this.pickerGia = pickerGia}
                     pickerTitle = "Chọn Giá"
-                    pickerData={RangeUtils.sellPriceRange.getPickerData()}
+                    pickerData={this.props.search.form.fields.giaPicker}
                     selectedValue={this.props.search.form.fields.gia}
                     onPickerDone={(pickedValue) => {this._onGiaChanged(pickedValue)}}
               />

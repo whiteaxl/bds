@@ -28,10 +28,12 @@ var Api = {
       }
     }
 
+    let giaRange = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange ;
+
     var params = {
       'loaiTin' : 'ban' === loaiTin ? 0 : 1,
       'loaiNhaDat' : loaiNhaDat || undefined,
-      'giaBETWEEN' : gia ? RangeUtils.sellPriceRange.toValRange(gia) : gia,
+      'giaBETWEEN' : gia ? giaRange.toValRange(gia) : gia,
       'soPhongNguGREATER' : DanhMuc.getSoPhongByIndex(soPhongNguSelectedIdx) || undefined,
       'soTangGREATER' : DanhMuc.getSoTangByIndex(soTangSelectedIdx) || undefined,
       'soPhongTamGREATER' : DanhMuc.getSoPhongTamByIndex(soNhaTamSelectedIdx) || undefined,

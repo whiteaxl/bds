@@ -32,6 +32,7 @@ const SearchForm = Record({
         soNhaTamSelectedIdx : 0,
         dienTich: RangeUtils.BAT_KY_RANGE,
         gia: RangeUtils.BAT_KY_RANGE,
+        giaPicker : RangeUtils.sellPriceRange.getPickerData(),
         orderBy: '',
         listData: [],
         marker: {},
