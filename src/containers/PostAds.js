@@ -21,6 +21,8 @@ import * as chatActions from '../reducers/chat/chatActions';
 
 import RelandIcon from '../components/RelandIcon';
 
+import ImageResizer from 'react-native-image-resizer';
+
 import cfg from "../cfg";
 
 var rootUrl = `http://${cfg.server}:5000`;
@@ -159,10 +161,15 @@ export default class PostAds extends Component {
     }
 
     onSendImage(uri) {
-        var shortname = uri.substring(uri.indexOf('id=')+3, uri.indexOf('&'));
-        var ext = uri.substring(uri.indexOf('ext=')+4);
-        var filename = shortname + '.' + ext;
-        this.props.actions.onUploadImage(filename, uri, this.uploadCallBack.bind(this));
+        // var shortname = uri.substring(uri.indexOf('id=')+3, uri.indexOf('&'));
+        // var ext = uri.substring(uri.indexOf('ext=')+4);
+        // var filename = shortname + '.' + ext;
+        ImageResizer.createResizedImage(uri, 745, 510, 'JPEG', 85, 0, null).then((resizedImageUri) => {
+            var filename = resizedImageUri.substring(resizedImageUri.lastIndexOf('/')+1);
+            this.props.actions.onUploadImage(filename, resizedImageUri, this.uploadCallBack.bind(this));
+        }).catch((err) => {
+            log.error(err);
+        });
     }
 
     uploadCallBack(err, result) {

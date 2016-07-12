@@ -23,6 +23,7 @@
     "react-native-device-info": "^0.9.3",
     "react-native-fileupload": "^1.2.0",
     "react-native-gifted-spinner": "0.0.5",
+    "react-native-image-resizer": "0.0.6",
     "react-native-keyboard-spacer": "^0.3.0",
     "react-native-linear-gradient": "^1.5.7",
     "react-native-maps": "^0.6.0",

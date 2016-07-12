@@ -31,6 +31,8 @@ import SegmentedControl from '../SegmentedControl';
 
 import dbService from "../../lib/localDB";
 
+import ImageResizer from 'react-native-image-resizer';
+
 import cfg from "../../cfg";
 
 var rootUrl = `http://${cfg.server}:5000`;
@@ -469,10 +471,10 @@ class PostAdsDetail extends Component {
                 continue;
             }
             //var filename = filepath.substring(filepath.lastIndexOf('/')+1);
-            var shortname = filepath.substring(filepath.indexOf('id=')+3, filepath.indexOf('&'));
-            var ext = filepath.substring(filepath.indexOf('ext=')+4);
-            var filename = shortname + '.' + ext;
-            uploadFiles.push({filename: filename, filepath: filepath});
+            // var shortname = filepath.substring(filepath.indexOf('id=')+3, filepath.indexOf('&'));
+            // var ext = filepath.substring(filepath.indexOf('ext=')+4);
+            // var filename = shortname + '.' + ext;
+            uploadFiles.push({filepath: filepath});
         }
         if (!this.isValidInputData()) {
             log.info(errorMessage);
@@ -493,9 +495,13 @@ class PostAdsDetail extends Component {
                 this.props.actions.onPostAdsFieldChange('error', errorMessage);
                 return;
             }
-            var filename = uploadFiles[i].filename;
             var filepath = uploadFiles[i].filepath;
-            this.props.actions.onUploadImage(filename, filepath, this.uploadCallBack.bind(this));
+            ImageResizer.createResizedImage(filepath, 745, 510, 'JPEG', 85, 0, null).then((resizedImageUri) => {
+                var filename = resizedImageUri.substring(resizedImageUri.lastIndexOf('/')+1);
+                this.props.actions.onUploadImage(filename, resizedImageUri, this.uploadCallBack.bind(this));
+            }).catch((err) => {
+                log.error(err);
+            });
         }
     }
 

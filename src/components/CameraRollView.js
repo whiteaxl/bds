@@ -30,6 +30,8 @@ import * as globalActions from '../reducers/global/globalActions';
 import * as postAdsActions from '../reducers/postAds/postAdsActions';
 import * as chatActions from '../reducers/chat/chatActions';
 
+import ImageResizer from 'react-native-image-resizer';
+
 import cfg from "../cfg";
 
 var rootUrl = `http://${cfg.server}:5000`;
@@ -277,10 +279,15 @@ selectImage: function (asset) {
 },
 
 onSendImage: function (uri) {
-    var shortname = uri.substring(uri.indexOf('id=')+3, uri.indexOf('&'));
-    var ext = uri.substring(uri.indexOf('ext=')+4);
-    var filename = shortname + '.' + ext;
-    this.props.actions.onUploadImage(filename, uri, this.uploadCallBack);
+    // var shortname = uri.substring(uri.indexOf('id=')+3, uri.indexOf('&'));
+    // var ext = uri.substring(uri.indexOf('ext=')+4);
+    // var filename = shortname + '.' + ext;
+    ImageResizer.createResizedImage(uri, 745, 510, 'JPEG', 85, 0, null).then((resizedImageUri) => {
+        var filename = resizedImageUri.substring(resizedImageUri.lastIndexOf('/')+1);
+        this.props.actions.onUploadImage(filename, resizedImageUri, this.uploadCallBack);
+    }).catch((err) => {
+        log.error(err);
+    });
 },
 
 uploadCallBack: function (err, result) {

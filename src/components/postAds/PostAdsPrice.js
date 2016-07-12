@@ -65,7 +65,7 @@ class PostAdsPrice extends Component {
 
     onUpdateGia(option) {
         var donViTien = this.getKeyByValue(DanhMuc.getDonViTienValues(), option);
-        this.onValueChange("donViTien", donViTien);
+        this.state.donViTien = option;
         var gia = donViTien == 5 ? null : this.state.gia;
         this.props.actions.onPostAdsFieldChange("gia", gia);
         this.props.actions.onPostAdsFieldChange("donViTien", donViTien);
@@ -137,7 +137,7 @@ class PostAdsPrice extends Component {
         if (!this.isValidInputData()) {
             return;
         }
-        var gia = this.state.donViTien == 5 ? null : this.state.gia;
+        var gia = this.state.donViTien == DanhMuc.DonViTien[5] ? null : this.state.gia;
         this.props.actions.onPostAdsFieldChange("gia", gia);
         Actions.pop();
     }
@@ -147,7 +147,9 @@ class PostAdsPrice extends Component {
             return;
         }
         this.onUpdateGia(option);
-        Actions.pop();
+        if (this.state.gia || this.state.donViTien == DanhMuc.DonViTien[5]) {
+            Actions.pop();
+        }
     }
 
     isValidInputData() {

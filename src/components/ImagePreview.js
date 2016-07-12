@@ -29,15 +29,12 @@ var {
     width: deviceWidth
 } = Dimensions.get('window');
 
-var imageWidth = deviceWidth;
-var imageHeight = deviceHeight;
-
 class ImagePreview extends React.Component {
     constructor(props) {
         super(props);
         StatusBar.setBarStyle('default');
         this.state ={
-            offset: new Animated.Value(deviceHeight),
+            offset: new Animated.Value(deviceHeight)
         }
     }
 
@@ -55,6 +52,115 @@ class ImagePreview extends React.Component {
     }
 
     componentWillMount() {
+        var isChatOwner = this.isChatOwner();
+        this.imageWidth = isChatOwner ? deviceWidth : deviceHeight;
+        this.imageHeight = isChatOwner ? deviceHeight : deviceWidth;
+
+        this.styles = {
+            pagingText: {
+                fontSize: 14,
+                fontFamily: gui.fontFamily,
+                fontWeight: 'normal',
+                color: 'white',
+                marginRight: 10,
+                marginBottom: 2,
+                marginTop: 2
+            },
+            pagingIcon: {
+                borderRadius: 0,
+                marginLeft: 10,
+                marginBottom: 2,
+                marginTop: 2
+            },
+            pagingView: {
+                flexDirection: 'row',
+                backgroundColor: gui.mainColor,
+                borderRadius: 5
+            },
+            container: {
+                backgroundColor: 'white',
+                flex: 1,
+                alignItems: 'flex-start',
+                justifyContent: 'flex-start'
+            },
+            closeView: {
+                position: 'absolute',
+                backgroundColor: 'transparent',
+                top: 30
+            },
+            closeBtn: {
+                flexDirection: 'row',
+                backgroundColor: 'transparent',
+                paddingLeft: 15,
+                paddingRight: 15
+            },
+            imgSlide: {
+                marginTop: 0,
+                marginBottom: 0
+            },
+            imgView: {
+                justifyContent: 'center',
+                backgroundColor: 'transparent'
+                //
+            },
+            dot : {
+                width: 8,
+                height: 8,
+                borderRadius: 4,
+                marginLeft: 3,
+                marginRight: 3,
+                marginTop: 3,
+                marginBottom: 3,
+                bottom: 32
+            },
+            imgItem: {
+                flex:1,
+                justifyContent: 'center',
+                alignItems: 'center',
+                alignSelf: 'auto',
+                width: this.imageWidth,
+                height: this.imageHeight
+            },
+            flexCenter: {
+                flex: 1,
+                justifyContent: 'center',
+                alignItems: 'center'
+            },
+            modal: {
+                backgroundColor: 'transparent',
+                position: 'absolute',
+                top: 0,
+                right: 0,
+                bottom: 0,
+                left: 0
+            },
+            linearGradient: {
+                flex: 1,
+                paddingLeft: 0,
+                paddingRight: 0,
+                backgroundColor : "transparent"
+            },
+            price: {
+                fontSize: 16,
+                fontWeight: 'bold',
+                textAlign: 'left',
+                backgroundColor: 'transparent',
+                marginLeft: 10,
+                color: 'white'
+            },
+            text: {
+                fontSize: 14,
+                textAlign: 'left',
+                backgroundColor: 'transparent',
+                marginLeft: 10,
+                marginBottom: 15,
+                margin: 5,
+                color: 'white'
+            },
+            heartButton_45: {
+                marginBottom: 10
+            }
+        };
         if (this.props.owner != 'chat') {
             Orientation.lockToLandscape();
         }
@@ -67,9 +173,15 @@ class ImagePreview extends React.Component {
         }).start(this.props.closeModal);
     }
 
+    isChatOwner() {
+        return this.props.owner == 'chat';
+    }
+
     render() {
         console.log("Call ImagePreview.render");
-
+        var styles = this.styles;
+        var imageWidth = this.imageWidth;
+        var imageHeight = this.imageHeight;
         var imageItems = [];
         var imageIndex = 0;
         if (this.props.images) {
@@ -88,10 +200,7 @@ class ImagePreview extends React.Component {
                 );
             });
         }
-        var isChatOwner = this.props.owner == 'chat';
-        imageWidth = isChatOwner ? deviceWidth : deviceHeight;
-        imageHeight = isChatOwner ? deviceHeight : deviceWidth;
-        var renderPagination = isChatOwner ? null : this._renderPagination;
+        var renderPagination = this.isChatOwner() ? null : this._renderPagination.bind(this);
         return (
             <Animated.View style={[styles.modal, styles.flexCenter, {transform: [{translateY: this.state.offset}]}]}>
                 <View style={styles.container}>
@@ -117,6 +226,8 @@ class ImagePreview extends React.Component {
     }
 
     _renderPagination(index, total, context) {
+        var styles = this.styles;
+        var imageWidth = this.imageWidth;
         return (
             <View style={{
       position: 'absolute',
@@ -135,112 +246,5 @@ class ImagePreview extends React.Component {
     }
 
 }
-
-var styles = StyleSheet.create({
-    pagingText: {
-        fontSize: 14,
-        fontFamily: gui.fontFamily,
-        fontWeight: 'normal',
-        color: 'white',
-        marginRight: 10,
-        marginBottom: 2,
-        marginTop: 2
-    },
-    pagingIcon: {
-        borderRadius: 0,
-        marginLeft: 10,
-        marginBottom: 2,
-        marginTop: 2
-    },
-    pagingView: {
-        flexDirection: 'row',
-        backgroundColor: gui.mainColor,
-        borderRadius: 5
-    },
-    container: {
-        backgroundColor: 'white',
-        flex: 1,
-        alignItems: 'flex-start',
-        justifyContent: 'flex-start'
-    },
-    closeView: {
-        position: 'absolute',
-        backgroundColor: 'transparent',
-        top: 30
-    },
-    closeBtn: {
-        flexDirection: 'row',
-        backgroundColor: 'transparent',
-        paddingLeft: 15,
-        paddingRight: 15
-    },
-    imgSlide: {
-        marginTop: 0,
-        marginBottom: 0
-    },
-    imgView: {
-        justifyContent: 'center',
-        backgroundColor: 'transparent'
-        //
-    },
-    dot : {
-        width: 8,
-        height: 8,
-        borderRadius: 4,
-        marginLeft: 3,
-        marginRight: 3,
-        marginTop: 3,
-        marginBottom: 3,
-        bottom: 32
-    },
-    imgItem: {
-        flex:1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        alignSelf: 'auto',
-        width: imageWidth,
-        height: imageHeight
-    },
-    flexCenter: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    modal: {
-        backgroundColor: 'transparent',
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        bottom: 0,
-        left: 0
-    },
-    linearGradient: {
-        flex: 1,
-        paddingLeft: 0,
-        paddingRight: 0,
-        backgroundColor : "transparent"
-    },
-    price: {
-        fontSize: 16,
-        fontWeight: 'bold',
-        textAlign: 'left',
-        backgroundColor: 'transparent',
-        marginLeft: 10,
-        color: 'white'
-    },
-    text: {
-        fontSize: 14,
-        textAlign: 'left',
-        backgroundColor: 'transparent',
-        marginLeft: 10,
-        marginBottom: 15,
-        margin: 5,
-        color: 'white'
-    },
-    heartButton_45: {
-        marginBottom: 10
-    }
-});
-
 
 export default ImagePreview;
