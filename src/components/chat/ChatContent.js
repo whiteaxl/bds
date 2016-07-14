@@ -106,13 +106,7 @@ class  ChatContent extends React.Component {
   }
 
   onImagePress(data) {
-    if (this.state.modal) {
-      return;
-    }
-    this.setState({
-      imageUri: data.image.uri,
-      modal: true
-    });
+    this.doImagePress(data.image.uri);
   }
 
   handlePhonePress() {
@@ -127,12 +121,25 @@ class  ChatContent extends React.Component {
     this.coming();
   }
 
+  doImagePress(uri) {
+    if (this.state.modal) {
+      return;
+    }
+    this.setState({
+      imageUri: uri,
+      modal: true
+    });
+  }
+
   renderCustomText(rowData) {
-    if(rowData.type=='image'){
+    if(rowData.msgType==2){
       return (
+        <TouchableOpacity
+            onPress={this.doImagePress.bind(this, rowData.text)}>
         <Image resizeMode = {"cover"}
         source={{uri:rowData.text}}
         style={styles.image}/>
+        </TouchableOpacity>
         )
     } else {
       let d  = new Date(rowData.date);
@@ -199,7 +206,7 @@ class  ChatContent extends React.Component {
 
           parseText={true} // enable handlePhonePress, handleUrlPress and handleEmailPress
           handlePhonePress={this.handlePhonePress}
-          handleUrlPress={this.handleUrlPress}
+          handleUrlPress={this.handleUrlPress.bind(this)}
           handleEmailPress={this.handleEmailPress}
 
           isLoadingEarlierMessages={this.props.chat.isLoadingEarlierMessages}

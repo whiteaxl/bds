@@ -21,14 +21,15 @@ const styles = StyleSheet.create({
     marginLeft: 0,
   },
   imagePosition: {
-    height: 200,
-    width: 200,
+    height: 30,
+    width: 30,
     alignSelf: 'flex-end',
     marginLeft: 8,
-    marginRight: 8,
+    marginRight: 8
   },
   image: {
-    alignSelf: 'center'
+    alignSelf: 'center',
+    borderRadius: 15
   },
   imageLeft: {
   },

@@ -279,11 +279,12 @@ selectImage: function (asset) {
 },
 
 onSendImage: function (uri) {
+    const userID = this.props.global.currentUser.userID;
     // var shortname = uri.substring(uri.indexOf('id=')+3, uri.indexOf('&'));
     // var ext = uri.substring(uri.indexOf('ext=')+4);
     // var filename = shortname + '.' + ext;
     ImageResizer.createResizedImage(uri, 745, 510, 'JPEG', 85, 0, null).then((resizedImageUri) => {
-        var filename = resizedImageUri.substring(resizedImageUri.lastIndexOf('/')+1);
+        var filename = resizedImageUri.substring(resizedImageUri.lastIndexOf('/')+1) + '_' + userID;
         this.props.actions.onUploadImage(filename, resizedImageUri, this.uploadCallBack);
     }).catch((err) => {
         log.error(err);
@@ -318,7 +319,7 @@ onSaveMsg: function (url) {
         toUserID : this.props.chat.partner.userID,
         toFullName : this.props.chat.partner.fullName,
         relatedToAds : this.props.chat.ads,
-        image: {uri: url},
+        content: url,
         msgType : danhMuc.CHAT_MESSAGE_TYPE.IMAGE,
         read: false,
         date : new Date(),
