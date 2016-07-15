@@ -66,14 +66,16 @@ class MeContent extends Component {
 
   render() {
     log.info("Call MeContent render", this.props.me);
+    let avatarUri = this.props.global.currentUser.avatar ? {uri: this.props.global.currentUser.avatar} :
+        require('../../assets/image/register_avatar_icon.png');
     return (
       <ScrollView style={styles.fullWidthContainer}>
         <TouchableOpacity onPress={this.coming}>
           <View style={styles.settingLine}>
             <Image
               style={styles.avatarIcon}
-              resizeMode={Image.resizeMode.contain}
-              source={require('../../assets/image/me/me_sample_avatar.png')}
+              resizeMode={Image.resizeMode.cover}
+              source={avatarUri}
             />
 
             <View style={styles.profileLabel}>
@@ -192,8 +194,9 @@ var styles = StyleSheet.create({
   },
 
   avatarIcon : {
-    height: 65,
-    width: 65,
+    height: 60,
+    width: 60,
+    borderRadius: 30
   },
 
   rightIcon : {

@@ -88,7 +88,7 @@ function convertOne(e, partnerID) {
   e.position = e.fromUserID == partnerID ? 'left' : 'right';
   e.text = e.content;
   e.name = e.fromFullName;
-  e.image = {uri: e.avatar};
+  e.image = e.avatar ? {uri: e.avatar} : require('../../assets/image/register_avatar_icon.png');
 
   return e;
 }

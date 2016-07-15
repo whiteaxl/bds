@@ -35,8 +35,6 @@ import ImageResizer from 'react-native-image-resizer';
 
 import RNFS from 'react-native-fs';
 
-import moment from 'moment';
-
 import cfg from "../cfg";
 
 var rootUrl = `http://${cfg.server}:5000`;
@@ -288,17 +286,9 @@ selectImage: function (asset) {
 
 onSelectAvatar: function (uri) {
     ImageResizer.createResizedImage(uri, cfg.maxWidth, cfg.maxHeight, 'JPEG', 85, 0, null).then((resizedImageUri) => {
-        var ms = moment().toDate().getTime();
-        var newImageUri = resizedImageUri.substring(0, resizedImageUri.lastIndexOf('.')) + '_' + ms
-            + resizedImageUri.substring(resizedImageUri.lastIndexOf('.'));
-        RNFS.moveFile(resizedImageUri, newImageUri).then((data) => {
-            if (data && data.length == 2 && data[0]) {
-                var filepath = data[1];
-                this.props.actions.onRegisterFieldChange('image', filepath);
-                Actions.pop();
-                Actions.pop();
-            }
-        });
+        this.props.actions.onRegisterFieldChange('image', resizedImageUri);
+        Actions.pop();
+        Actions.pop();
     }).catch((err) => {
         log.error(err);
     });
