@@ -84,6 +84,7 @@ class  ChatContent extends React.Component {
       toUserID : this.props.chat.partner.userID,
       toFullName : this.props.chat.partner.fullName,
       relatedToAds : this.props.chat.ads,
+      avatar: this.props.global.currentUser.avatar,
       content : message.text,
       msgType : message.type || danhMuc.CHAT_MESSAGE_TYPE.TEXT,
       read: false,

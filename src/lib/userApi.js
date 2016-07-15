@@ -40,7 +40,8 @@ var userApi = {
     var params = {
       'phone': userDto.phone,
       'fullName' : userDto.fullName,
-      'matKhau' : userDto.matKhau
+      'matKhau' : userDto.matKhau,
+      'avatar' : userDto.avatar || undefined
     };
 
     log.info("fetch ", params, registerUser);

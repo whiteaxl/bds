@@ -18,10 +18,15 @@ import LoginRegister from './LoginRegister'
 import * as globalActions from '../reducers/global/globalActions';
 import * as postAdsActions from '../reducers/postAds/postAdsActions';
 import * as chatActions from '../reducers/chat/chatActions';
+import * as registerActions from '../reducers/register/registerActions';
 
 import RelandIcon from '../components/RelandIcon';
 
 import ImageResizer from 'react-native-image-resizer';
+
+import RNFS from 'react-native-fs';
+
+import moment from 'moment';
 
 import cfg from "../cfg";
 
@@ -30,7 +35,8 @@ var rootUrl = `http://${cfg.server}:5000`;
 const actions = [
     globalActions,
     postAdsActions,
-    chatActions
+    chatActions,
+    registerActions
 ];
 
 function mapStateToProps(state) {
@@ -66,21 +72,8 @@ export default class PostAds extends Component {
 
         console.log("Calling PostAds.render ..., loggedIn = ", this.props.global.loggedIn);
 
-        if (this.props.global.loggedIn) {
-            let buttonItems = this.state.owner == 'chat' ?
-                (<View style={styles.buttonContainer}>
-                    <View style={styles.capture2}>
-                        <RelandIcon name="close-circle" color='white' mainProps={styles.captureIcon2}
-                                    size={22} textProps={{paddingLeft: 0}}
-                                    onPress={this.onHome.bind(this)} />
-                    </View>
-                    <View style={styles.capture}>
-                        <RelandIcon name="camera" color="black"
-                                    mainProps={styles.captureIcon}
-                                    size={22} textProps={{paddingLeft: 0}}
-                                    onPress={this.takePicture.bind(this)} />
-                    </View>
-                </View>) :
+        if (this.props.global.loggedIn || this.state.owner == 'register') {
+            let buttonItems =
                 (<View style={styles.buttonContainer}>
                     <View style={styles.capture2}>
                         <RelandIcon name="close-circle" color='white' mainProps={styles.captureIcon2}
@@ -123,7 +116,7 @@ export default class PostAds extends Component {
     }
 
     onHome() {
-        if (this.state.photos || this.state.owner == 'chat') {
+        if (this.state.photos || this.state.owner == 'chat' || this.state.owner == 'register') {
             Actions.pop();
         }
         else {
@@ -155,9 +148,28 @@ export default class PostAds extends Component {
         photos[imageIndex] = {uri: data.path};
         if (owner == 'chat') {
             this.onSendImage(data.path);
+        } else if (owner == 'register') {
+            this.onSelectAvatar(data.path);
         } else {
             Actions.PostAdsDetail({photos: photos, type: "reset"});
         }
+    }
+
+    onSelectAvatar(uri) {
+        ImageResizer.createResizedImage(uri, cfg.maxWidth, cfg.maxHeight, 'JPEG', 85, 0, null).then((resizedImageUri) => {
+            var ms = moment().toDate().getTime();
+            var newImageUri = resizedImageUri.substring(0, resizedImageUri.lastIndexOf('.')) + '_' + ms
+                + resizedImageUri.substring(resizedImageUri.lastIndexOf('.'));
+            RNFS.moveFile(resizedImageUri, newImageUri).then((data) => {
+                if (data && data.length == 2 && data[0]) {
+                    var filepath = data[1];
+                    this.props.actions.onRegisterFieldChange('image', filepath);
+                    Actions.pop();
+                }
+            });
+        }).catch((err) => {
+            log.error(err);
+        });
     }
 
     onSendImage(uri) {
@@ -165,9 +177,16 @@ export default class PostAds extends Component {
         // var shortname = uri.substring(uri.indexOf('id=')+3, uri.indexOf('&'));
         // var ext = uri.substring(uri.indexOf('ext=')+4);
         // var filename = shortname + '.' + ext;
-        ImageResizer.createResizedImage(uri, 745, 510, 'JPEG', 85, 0, null).then((resizedImageUri) => {
-            var filename = resizedImageUri.substring(resizedImageUri.lastIndexOf('/')+1) + '_' + userID;
-            this.props.actions.onUploadImage(filename, resizedImageUri, this.uploadCallBack.bind(this));
+        ImageResizer.createResizedImage(uri, cfg.maxWidth, cfg.maxHeight, 'JPEG', 85, 0, null).then((resizedImageUri) => {
+            var newImageUri = resizedImageUri.substring(0, resizedImageUri.lastIndexOf('/')+1) + userID + '_'
+                + resizedImageUri.substring(resizedImageUri.lastIndexOf('/')+1);
+            RNFS.moveFile(resizedImageUri, newImageUri).then((data) => {
+                if (data && data.length == 2 && data[0]) {
+                    var filepath = data[1];
+                    var filename = filepath.substring(filepath.lastIndexOf('/')+1);
+                    this.props.actions.onUploadImage(filename, filepath, this.uploadCallBack.bind(this));
+                }
+            });
         }).catch((err) => {
             log.error(err);
         });
@@ -201,6 +220,7 @@ export default class PostAds extends Component {
             toUserID : this.props.chat.partner.userID,
             toFullName : this.props.chat.partner.fullName,
             relatedToAds : this.props.chat.ads,
+            avatar: this.props.global.currentUser.avatar,
             content: url,
             msgType : danhMuc.CHAT_MESSAGE_TYPE.IMAGE,
             read: false,

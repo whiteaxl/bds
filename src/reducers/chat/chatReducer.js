@@ -88,6 +88,7 @@ function convertOne(e, partnerID) {
   e.position = e.fromUserID == partnerID ? 'left' : 'right';
   e.text = e.content;
   e.name = e.fromFullName;
+  e.image = {uri: e.avatar};
 
   return e;
 }

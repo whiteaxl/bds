@@ -18,8 +18,15 @@ import {Map} from 'immutable';
 
 import * as globalActions from '../../reducers/global/globalActions';
 import * as registerActions from '../../reducers/register/registerActions';
+import * as postAdsActions from '../../reducers/postAds/postAdsActions';
 
 import RelandIcon from '../../components/RelandIcon';
+
+import cfg from "../../cfg";
+
+var rootUrl = `http://${cfg.server}:5000`;
+
+import log from "../../lib/logUtil";
 
 import GiftedSpinner from "../GiftedSpinner";
 
@@ -27,7 +34,8 @@ import GiftedSpinner from "../GiftedSpinner";
 
 const actions = [
   globalActions,
-  registerActions
+  registerActions,
+  postAdsActions
 ];
 
 function mapStateToProps(state) {
@@ -52,7 +60,8 @@ class RegisterMoreInfor extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: false
+      loading: false,
+      avatar: null
     }
   }
 
@@ -73,14 +82,44 @@ class RegisterMoreInfor extends React.Component {
     return true;
   }
 
+  takePicture() {
+    Actions.PostAds({owner: 'register'});
+  }
+
+  onUploadImage() {
+    var filepath = this.props.register.image;
+    if (filepath == null) {
+      this.state.avatar = null;
+      this.register();
+      return;
+    }
+    var filename = filepath.substring(filepath.lastIndexOf('/')+1);
+    this.props.actions.onUploadImage(filename, filepath, this.uploadCallBack.bind(this));
+  }
+
+  uploadCallBack(err, result) {
+    var {data} = result;
+    if (err || data == '') {
+      return;
+    }
+    var {success, file} = JSON.parse(data);
+    if (success) {
+      var {url} = file;
+      this.state.avatar = rootUrl + url;
+      this.register();
+    }
+  }
+
   register()  {
     if (this.dataValid()) {
       //Alert.alert("Coming soon...");
       let userDto = {
         phone: this.props.register.username,
         fullName: this.props.register.fullName,
-        matKhau: this.props.register.matKhau
+        matKhau: this.props.register.matKhau,
+        avatar: this.state.avatar
       };
+      log.info(userDto);
 
       this.setState({
         loading: true
@@ -118,6 +157,8 @@ class RegisterMoreInfor extends React.Component {
       )
     }
 
+    let avatarUri = this.props.register.image ? {uri: this.props.register.image} :
+        require('../../assets/image/register_avatar_icon.png');
 
     return (
       <View style={styles.wrapper}>
@@ -129,6 +170,7 @@ class RegisterMoreInfor extends React.Component {
 
         <View style={[styles.line, { marginTop: 17}]}/>
         <TextInput style={styles.input} placeholder="Mật khẩu"
+                   secureTextEntry={true}
                    selectTextOnFocus={true}
                    value={this.props.register.matKhau}
                    onChangeText={(text) => {
@@ -148,20 +190,20 @@ class RegisterMoreInfor extends React.Component {
         <View style={[styles.line, { marginTop: 0}]}/>
 
         <TouchableOpacity
-                          onPress={this.coming.bind(this)}
+                          onPress={this.takePicture.bind(this)}
         >
           <View style={styles.avatarLine}>
             <Image
               style={styles.avatarIcon}
-              resizeMode={Image.resizeMode.contain}
-              source={require('../../assets/image/register_avatar_icon.png')}
+              resizeMode={Image.resizeMode.cover}
+              source={avatarUri}
             />
             <Text style={styles.avatarText}>Chạm để thêm ảnh đại diện</Text>
           </View>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.btn}
-                          onPress={this.register.bind(this)}
+                          onPress={this.onUploadImage.bind(this)}
         >
           <Text style={styles.btnText}>Đăng ký</Text>
         </TouchableOpacity>
@@ -276,8 +318,11 @@ var styles = StyleSheet.create({
     backgroundColor : '#f9f9f9'
   },
   avatarIcon : {
-    height: 60,
-    width: 60,
+    height: 30,
+    width: 30,
+    margin: 10,
+    alignSelf: 'center',
+    borderRadius: 15
   },
   avatarText : {
     fontSize: 15,

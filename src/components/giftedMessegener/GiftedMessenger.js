@@ -239,10 +239,6 @@ class GiftedMessenger extends Component {
     Actions.PostAds({owner: 'chat'});
   }
 
-  pickPhoto() {
-    Actions.CameraRollView({owner: 'chat'});
-  }
-
   onSend() {
     this.myTextInput.clear();
 
@@ -637,10 +633,6 @@ class GiftedMessenger extends Component {
                       mainProps={this.styles.captureIcon}
                       size={22} textProps={{paddingLeft: 0}}
                       onPress={this.takePicture} />
-          <RelandIcon name="photos" color={gui.mainColor}
-                      mainProps={this.styles.captureIcon}
-                      size={22} textProps={{paddingLeft: 0}}
-                      onPress={this.pickPhoto} />
           <Button
             style={this.styles.sendButton}
             styleDisabled={this.styles.sendButtonDisabled}

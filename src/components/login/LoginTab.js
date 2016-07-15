@@ -102,6 +102,7 @@ class LoginTab extends React.Component {
 
         <View style={[styles.line, { marginTop: 18}]}/>
         <TextInput style={styles.input} placeholder="Mật khẩu"
+                   secureTextEntry={true}
                    selectTextOnFocus={true}
                    value={this.props.auth.matKhau}
                    onChangeText={(text) => {

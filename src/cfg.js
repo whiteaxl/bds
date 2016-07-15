@@ -6,4 +6,7 @@ var cfg = {
 
 cfg.rootUrl = `http://${cfg.server}:5000/api`;
 
+cfg.maxWidth = 745;
+cfg.maxHeight = 510;
+
 export default cfg;

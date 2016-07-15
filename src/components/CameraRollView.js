@@ -29,8 +29,13 @@ import { connect } from 'react-redux';
 import * as globalActions from '../reducers/global/globalActions';
 import * as postAdsActions from '../reducers/postAds/postAdsActions';
 import * as chatActions from '../reducers/chat/chatActions';
+import * as registerActions from '../reducers/register/registerActions';
 
 import ImageResizer from 'react-native-image-resizer';
+
+import RNFS from 'react-native-fs';
+
+import moment from 'moment';
 
 import cfg from "../cfg";
 
@@ -39,7 +44,8 @@ var rootUrl = `http://${cfg.server}:5000`;
 const actions = [
     globalActions,
     postAdsActions,
-    chatActions
+    chatActions,
+    registerActions
 ];
 
 function mapStateToProps(state) {
@@ -273,9 +279,29 @@ selectImage: function (asset) {
     photos[imageIndex] = {uri: asset.node.image.uri};
     if (owner == 'chat') {
         this.onSendImage(asset.node.image.uri);
+    } else if (owner == 'register') {
+        this.onSelectAvatar(asset.node.image.uri);
     } else {
         Actions.PostAdsDetail({photos: photos, type: "reset"});
     }
+},
+
+onSelectAvatar: function (uri) {
+    ImageResizer.createResizedImage(uri, cfg.maxWidth, cfg.maxHeight, 'JPEG', 85, 0, null).then((resizedImageUri) => {
+        var ms = moment().toDate().getTime();
+        var newImageUri = resizedImageUri.substring(0, resizedImageUri.lastIndexOf('.')) + '_' + ms
+            + resizedImageUri.substring(resizedImageUri.lastIndexOf('.'));
+        RNFS.moveFile(resizedImageUri, newImageUri).then((data) => {
+            if (data && data.length == 2 && data[0]) {
+                var filepath = data[1];
+                this.props.actions.onRegisterFieldChange('image', filepath);
+                Actions.pop();
+                Actions.pop();
+            }
+        });
+    }).catch((err) => {
+        log.error(err);
+    });
 },
 
 onSendImage: function (uri) {
@@ -283,9 +309,16 @@ onSendImage: function (uri) {
     // var shortname = uri.substring(uri.indexOf('id=')+3, uri.indexOf('&'));
     // var ext = uri.substring(uri.indexOf('ext=')+4);
     // var filename = shortname + '.' + ext;
-    ImageResizer.createResizedImage(uri, 745, 510, 'JPEG', 85, 0, null).then((resizedImageUri) => {
-        var filename = resizedImageUri.substring(resizedImageUri.lastIndexOf('/')+1) + '_' + userID;
-        this.props.actions.onUploadImage(filename, resizedImageUri, this.uploadCallBack);
+    ImageResizer.createResizedImage(uri, cfg.maxWidth, cfg.maxHeight, 'JPEG', 85, 0, null).then((resizedImageUri) => {
+        var newImageUri = resizedImageUri.substring(0, resizedImageUri.lastIndexOf('/')+1) + userID + '_'
+            + resizedImageUri.substring(resizedImageUri.lastIndexOf('/')+1);
+        RNFS.moveFile(resizedImageUri, newImageUri).then((data) => {
+            if (data && data.length == 2 && data[0]) {
+                var filepath = data[1];
+                var filename = filepath.substring(filepath.lastIndexOf('/')+1);
+                this.props.actions.onUploadImage(filename, filepath, this.uploadCallBack);
+            }
+        });
     }).catch((err) => {
         log.error(err);
     });
@@ -300,6 +333,7 @@ uploadCallBack: function (err, result) {
     if (success) {
         var {url} = file;
         this.onSaveMsg(rootUrl + url);
+        Actions.pop();
         Actions.pop();
     }
 },
@@ -319,6 +353,7 @@ onSaveMsg: function (url) {
         toUserID : this.props.chat.partner.userID,
         toFullName : this.props.chat.partner.fullName,
         relatedToAds : this.props.chat.ads,
+        avatar: this.props.global.currentUser.avatar,
         content: url,
         msgType : danhMuc.CHAT_MESSAGE_TYPE.IMAGE,
         read: false,
