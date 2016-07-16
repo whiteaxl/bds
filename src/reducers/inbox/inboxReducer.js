@@ -101,10 +101,11 @@ export default function inboxReducer(state = initialState, action) {
       //handle user msg
       if (doc.type==='User') {
         log.info("InboxReducer,found user ", doc.userID);
+        next = next.set('currentUserID', doc.userID);
         //refresh inbox
         next = updateInboxList(state.tmpChatList, next);
 
-        next = next.set('currentUserID', doc.userID);
+        next = next.set('tmpChatList', []);
       }
 
       if (state.currentUserID) {
