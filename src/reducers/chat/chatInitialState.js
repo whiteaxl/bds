@@ -26,17 +26,17 @@ var testMessages = [
 
 var InitialState = Record({
   partner: {
-    fullName: 'Lo Van Ten',
-    userID : 'User_1',
-    phone: '0980002',
-    avatar  : "https://techreviewpro-techreviewpro.netdna-ssl.com/wp-content/uploads//2015/03/Funny-Love-Quote-Best-Whatsapp-Profile-Dp-Profiledp.jpg"
+    fullName: null,
+    userID : null,
+    phone: null,
+    avatar  : null
   },
   ads: {
-    adsID : "Ads_bds_3989184",
+    adsID : "",
     loaiNhaDatFmt : "",
     giaFmt : "",
     diaChinhFullName : "",
-    cover: "http://file1.batdongsan.com.vn/guestthumb120x90.20131125095109163.jpg"
+    cover: "http://sample.jpg"
   },
 
   messages: testMessages,

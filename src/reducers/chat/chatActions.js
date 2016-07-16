@@ -27,6 +27,7 @@ export function requestStartChat(data) {
 
 //payload={doc, partner}, doc is latest CHAT msg
 export function startChat(partner, ads) {
+  log.info("aaaaaa",ads);
 
   return dispatch => {
     dbService.getAllChatMsg(partner.userID, ads.adsID)

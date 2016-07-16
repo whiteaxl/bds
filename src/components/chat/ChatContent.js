@@ -88,12 +88,11 @@ class  ChatContent extends React.Component {
       content : message.text,
       msgType : message.type || danhMuc.CHAT_MESSAGE_TYPE.TEXT,
       read: false,
-      date : new Date(),
       type: 'Chat',
       timeStamp : new Date().getTime()
     };
 
-    log.info("start send myMsg=", myMsg);
+    log.info("ChatContent, start send myMsg=", myMsg, myMsg.position);
 
     this.props.actions.sendChatMsg(myMsg);
   }
@@ -160,10 +159,8 @@ class  ChatContent extends React.Component {
     - STATUS_BAR_HEIGHT
     - ADS_BAR_HEIGHT;
 
-    log.info("maxHeight", maxHeight);
-
     let relatedToAds = this.props.chat.ads;
-    log.info("relatedToAds", relatedToAds);
+    log.info("Chat content.render - relatedToAds", relatedToAds);
     const adsTextLine1 = relatedToAds.loaiNhaDatFmt + " - " + relatedToAds.diaChinhFullName;
     const adsTextLine2 = relatedToAds.giaFmt;
 

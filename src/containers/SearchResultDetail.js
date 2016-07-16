@@ -468,9 +468,15 @@ class SearchResultDetail extends Component {
       return;
     }
 
+
     if (!this.props.global.loggedIn) {
       Actions.LoginRegister({page:1});
     } else {
+      if (ads.dangBoi.userID == this.props.global.currentUser.userID) {
+        alert(gui.ERR_NotAllowChatYourSelf);
+        return;
+      }
+
       let partner = {
         userID : ads.dangBoi.userID,
         phone: ads.dangBoi.phone,

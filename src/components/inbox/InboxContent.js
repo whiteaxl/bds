@@ -69,6 +69,7 @@ class InboxContent extends React.Component {
 
   onRowClick(row) {
     let {doc, partner} = row;
+
     this.props.actions.startChat(partner, doc.relatedToAds);
     Actions.Chat();
   }

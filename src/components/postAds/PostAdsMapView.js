@@ -144,6 +144,10 @@ class PostAdsMapView extends Component {
 
   geoCallback(data) {
     var {place} = this.props.postAds;
+    //not allow to directly change state object, so we need clone it first
+    let nextPlace = {} ; Object.assign(nextPlace, place);
+    place = nextPlace;
+
     var {region} = this.state;
     place.geo.lat = region.latitude;
     place.geo.lon = region.longitude;
@@ -179,6 +183,8 @@ class PostAdsMapView extends Component {
         place.diaChiFullName = place.diaChi + ', ' + place.diaChiFullName;
       }
     }
+
+    this.props.actions.onPostAdsFieldChange("place", place);
     Actions.pop();
   }
 

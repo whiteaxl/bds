@@ -7,7 +7,8 @@ const {
   ON_CHAT_FIELD_CHANGE,
   REQUEST_START_CHAT,
   ON_DB_CHANGE,
-  INSERT_MY_CHAT
+  INSERT_MY_CHAT,
+  LOGOUT_SUCCESS
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
@@ -23,9 +24,9 @@ export default function chatReducer(state = initialState, action) {
       let messages = convertToGiftMsg(allMsg, partner.userID);
 
       messages.sort((a,b) => {
-        let d1 = new Date(a.date);
-        let d2 = new Date(b.date);
-        return d1.getTime() - d2.getTime()
+        let d1 = a.timeStamp;
+        let d2 = b.timeStamp;
+        return d1 - d2
       });
 
       let nextState = state.set("partner", partner)
@@ -44,29 +45,35 @@ export default function chatReducer(state = initialState, action) {
 
     case ON_DB_CHANGE:
     {
-      log.info("Calling chatReducer.ON_DB_CHANGE...");
-      const {e, all} = action.payload;
+
+      const {doc} = action.payload;
       const partnerID = state.partner.userID;
+
+      log.info("Calling chatReducer.ON_DB_CHANGE...", partnerID);
 
       var nextState = state;
       var {messages} = state;
 
-      e.results.forEach((one) => {
-        let doc = one.doc;
-        if (doc.type == 'Chat' &&
-            (doc.fromUserID == partnerID || doc.toUserID == partnerID)) {
-          convertOne(doc, partnerID);
-          let found = messages.find(e => e._id === doc._id); //_id is key
-          if (!found) {
-            messages = [...messages,doc];
-          }
+      if (doc.type == 'Chat'
+        && (doc.fromUserID == partnerID || doc.toUserID == partnerID)
+        && (doc.relatedToAds.adsID == state.ads.adsID)) {
+        convertOne(doc, partnerID);
+        let found = messages.find(e => e._id === doc._id); //_id is key
+        if (!found) {
+          messages = [...messages,doc];
+          nextState = state.set('messages',messages);
         }
-      });
-      nextState = state.set('messages',messages);
+      }
+
       return nextState;
     }
     case INSERT_MY_CHAT : {
-      let giftMsg = convertOne(action.payload);
+      const partnerID = state.partner.userID;
+      let doc = {}; Object.assign(doc,action.payload);
+
+      log.info("Calling chatReducer.INSERT_MY_CHAT...", partnerID);
+
+      let giftMsg = convertOne(doc, partnerID);
       var {messages} = state;
 
       let found = messages.find(e => e._id === giftMsg._id);
@@ -76,6 +83,14 @@ export default function chatReducer(state = initialState, action) {
 
       let nextState = state.set('messages',messages);
       return nextState;
+    }
+    case LOGOUT_SUCCESS: {
+      let newState = state
+        .set("partner", {})
+        .set("messages", [])
+        .set("ads", {});
+
+      return newState;
     }
 
   }
@@ -94,10 +109,6 @@ function convertOne(e, partnerID) {
 }
 
 function convertToGiftMsg(allMsg, partnerID) {
-  allMsg.sort((a, b) => {
-    return a.date > b.date;
-  });
-
   let messages = allMsg.map((e) => {
     convertOne(e, partnerID);
     return e;

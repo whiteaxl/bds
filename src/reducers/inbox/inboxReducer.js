@@ -5,18 +5,20 @@ import log from '../../lib/logUtil';
 
 const {
   ON_DB_CHANGE,
-  ON_INBOX_FIELD_CHANGE
+  ON_INBOX_FIELD_CHANGE,
+  LOGOUT_SUCCESS
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
 
-function updateInboxList(newDocs, next) {
+function updateInboxList(docs, next) {
   let currentInboxList = next.inboxList;
   let changed = false;
   let nextInboxList = currentInboxList;
+  log.info("updateInboxList, before:" , nextInboxList.length);
 
-  newDocs.forEach((e) => {
-    const {doc} = e;
+
+  docs.forEach((doc) => {
     if (doc.type == 'Chat') {
       if (!next.currentUserID) {
         log.warn("WARN! No current user, will ignore these chat msg!");
@@ -28,13 +30,15 @@ function updateInboxList(newDocs, next) {
       //console.log("updateInboxList", currentInboxList, doc);
 
       for (let i=0; i < currentInboxList.length; i++) {
-        let inbox =  currentInboxList[i];
-        if (inbox.partner.userID === doc.fromUserID || inbox.partner.userID === doc.toUserID) {
-          if (inbox.doc.timeStamp <= doc.timeStamp) {
-            inbox.doc = doc;
+        let {partner} =  currentInboxList[i];
+        let oldDoc = currentInboxList[i].doc;
+
+        if ((partner.userID === doc.fromUserID || partner.userID === doc.toUserID)
+        && doc.relatedToAds.adsID == oldDoc.relatedToAds.adsID) {
+          if (oldDoc.timeStamp <= doc.timeStamp) {
             nextInboxList = [
               ...currentInboxList.slice(0, i),
-              {doc: doc, partner: inbox.partner},
+              {doc: doc, partner: partner},
               ...currentInboxList.slice(i+1)
             ];
             changed = true;
@@ -75,7 +79,7 @@ function updateInboxList(newDocs, next) {
     const ds = next.allInboxDS;
     const newDs = ds.cloneWithRows(currentInboxList);
 
-    log.info("InboxReducer - update new Inbox");
+    log.info("InboxReducer - update new Inbox", currentInboxList.length);
 
     return next
       .set("inboxList", currentInboxList)
@@ -91,18 +95,25 @@ export default function inboxReducer(state = initialState, action) {
     case ON_DB_CHANGE:
     {
       var next = state;
-      const {e} = action.payload;
-      log.info("Calling InboxReducer.ON_DB_CHANGE...", e);
+      const {doc} = action.payload;
+      log.info("Calling InboxReducer.ON_DB_CHANGE...", doc, state.currentUserID);
 
       //handle user msg
-      let userChanged = e.results.find((d) => d.doc.type==='User');
-      if (userChanged) {
-        log.info("InboxReducer,found user ", userChanged.doc.userID);
-        next = next.set('currentUserID', userChanged.doc.userID);
+      if (doc.type==='User') {
+        log.info("InboxReducer,found user ", doc.userID);
+        //refresh inbox
+        next = updateInboxList(state.tmpChatList, next);
+
+        next = next.set('currentUserID', doc.userID);
       }
 
-      //handle chat msg
-      next = updateInboxList(e.results, next);
+      if (state.currentUserID) {
+        //handle chat msg
+        next = updateInboxList([doc], next);
+      } else {
+        console.log("inboxReducer, tmpChatList=", next.tmpChatList);
+        next = next.set('tmpChatList', [...next.tmpChatList, doc]);
+      }
 
       return next;
     }
@@ -112,6 +123,17 @@ export default function inboxReducer(state = initialState, action) {
       const {field, value} = action.payload;
       let nextState = state.set(field, value);
       return nextState;
+    }
+
+    case LOGOUT_SUCCESS: {
+      let newState = state
+        .set('currentUserID', null)
+        .set("inboxList", [])
+        .set("allInboxDS", state.allInboxDS.cloneWithRows([]))
+        .set("tmpChatList", [])
+        .set("loaiTin", 'all');
+
+      return newState;
     }
   }
 

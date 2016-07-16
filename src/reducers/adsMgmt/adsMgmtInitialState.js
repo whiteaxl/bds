@@ -4,8 +4,8 @@ const {Record, List} = require('immutable');
 
 var InitialState = Record({
   likedList :[],
-  sellList :List([]),
-  rentList :List([]),
+  sellList :[],
+  rentList :[],
   activeTab : 0,
   errorMsg:'',
   refreshing : false //refresh when scroll down

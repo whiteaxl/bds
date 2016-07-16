@@ -566,7 +566,7 @@ class GiftedMessenger extends Component {
           ref="listView"
           dataSource={this.state.dataSource}
           renderRow={this.renderRow}
-          renderHeader={this.renderLoadEarlierMessages}
+          //renderHeader={this.renderLoadEarlierMessages}
           enableEmptySections={true}
           onLayout={this.onLayout}
           renderFooter={this.renderFooter}

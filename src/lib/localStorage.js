@@ -5,7 +5,9 @@ var {
 
 var storageKeys = {
   PUSH_TOKEN : '@RELAND:PUSH_TOKEN',
-  LAST_SEARCH : '@RELAND:LAST_SEARCH'
+  LAST_SEARCH : '@RELAND:LAST_SEARCH',
+
+  LOGIN_INFO : '@RELAND:LOGIN_INFO'
 };
 
 class LocalStorage {
@@ -30,6 +32,17 @@ class LocalStorage {
   }
   getLastSearch() {
     return AsyncStorage.getItem(storageKeys.LAST_SEARCH);
+  }
+
+  //{username, password, sessionCookie}
+  setLoginInfo(loginObj) {
+    return AsyncStorage.setItem(storageKeys.LOGIN_INFO, JSON.stringify(loginObj));
+  }
+  getLoginInfo() {
+    return AsyncStorage.getItem(storageKeys.LOGIN_INFO).then(ret => {
+      console.log("getLoginInfo", ret);
+      return JSON.parse(ret);
+    });
   }
 }
 

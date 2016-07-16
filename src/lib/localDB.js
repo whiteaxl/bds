@@ -8,9 +8,13 @@ import cfg from "../cfg";
 import moment from 'moment';
 import gui from "../lib/gui";
 
+import ls from './localStorage';
+
 
 class DBService {
   constructor() {
+    log.error("Call LOCAL DB constructor!!!");
+
     this.adsDesignDocName = "ads";
     this.dbName = 'default';
     this.remoteDbUrl = `http://${cfg.server}:4984/${this.dbName}`;
@@ -22,6 +26,21 @@ class DBService {
     });
 
     this.database = new manager(this.databaseUrl, this.dbName);
+
+    //subscribe event
+    this.database.changesEventEmitter.on('changes', (e) => {
+      //log.info("DB just changes:", e.results ? e.results.length:0);
+      log.info("DB just changes:", e.results);
+
+      e.results.forEach(one => {
+        //check one by one to make sure it's my change, somehow data come from from other source
+        this.database.getDocument(one.id).then((doc) => {
+          if (!doc.error) {
+            this.onDBChange(doc)
+          }
+        });
+      });
+    });
   }
 
   //may be need check connection when close...
@@ -140,21 +159,24 @@ class DBService {
   }
 
   startChangeListener() {
-    //subscribe event
+    log.info("startChangeListener... ");
+    this.database.getAllDocuments({include_docs: true})
+      .then((res) => {
+        if (res.rows) {
+          res.rows.forEach( (e) => {
+            this.onDBChange(e.doc);
+          })
+        }
+      });
+
     this.database.getInfo()
       .then((res) => {
         this.database.listen({since: res.update_seq - 1, feed: 'longpoll', include_docs: true});
       });
-    this.database.changesEventEmitter.on('changes', (e) => {
-      //log.info("DB just changes:", e.results ? e.results.length:0);
-
-      log.info("DB just changes:", e.results);
-
-      setTimeout(() =>
-          this.onDBChange(e)
-        , 1000
-      )
-    });
+    //always start from 0
+    /*
+    this.database.listen({since: 0, feed: 'longpoll', include_docs: false});
+    */
   }
 
   loginAndStartSync(username, password, onDBChange) {
@@ -166,17 +188,16 @@ class DBService {
       body: JSON.stringify({name: username, password: password})
     };
 
-
-
     return fetch(this.remoteDbUrl + "/_session", settings)
       .then((res) => {
         switch (res.status) {
           case 200:
           {
-            log.info("Login success, starting sync...");
+            log.info("Login success, starting sync...", res);
             let sessionCookie = res.headers.map['set-cookie'][0];
             this.sessionCookie = sessionCookie;
             //log.info(sessionCookie);
+            ls.setLoginInfo({username,password,sessionCookie});
 
             this.database.deleteDatabase()
               .then((res) => {
@@ -184,11 +205,10 @@ class DBService {
 
                 this.database.createDatabase()
                   .then((res) => {
-
-                    this.startChangeListener();
-
                     this.startSync();
-
+                    setTimeout(() => {
+                      this.startChangeListener();
+                    },1000);
                     /*
                      this.db().getDesignDocument(this.adsDesignDocName)
                      .then((res) => {
@@ -292,8 +312,7 @@ class DBService {
 
   sendChat(msg) {
     return this.db().then(db => {
-        log.info("dbservice.sendChat", db);
-
+        //log.info("dbservice.sendChat", db);
         db.createDocument(msg).then((res) => {
           let documentId = res.id;
           log.info("created document!", documentId);
@@ -321,7 +340,13 @@ class DBService {
   }
 
   logout() {
-    return this.database.deleteDatabase();
+
+    return this.database.getChanges().then(res => {
+      console.log("getChanges", res);
+
+      this.database.abortAllRequest();
+      return this.database.deleteDatabase();
+    });
   }
 
   initListener() {

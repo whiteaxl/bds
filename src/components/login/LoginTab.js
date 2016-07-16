@@ -20,7 +20,10 @@ import * as globalActions from '../../reducers/global/globalActions';
 import * as authActions from '../../reducers/auth/authActions';
 
 import RelandIcon from '../../components/RelandIcon';
+import GiftedSpinner from 'react-native-gifted-spinner';
 
+import log from '../../lib/logUtil';
+import localDB from '../../lib/localDB';
 
 const actions = [
   globalActions,
@@ -69,6 +72,20 @@ class LoginTab extends React.Component {
           } else {
             Actions.pop();
           }
+          //create thread to get user infor:
+          /*
+          setTimeout(() => {
+            if (!this.props.global.currentUser.userID) {
+              log.info("No user, try to get it from DB!");
+              localDB.getUser().then((user) => {
+                if (user) {
+                  this.props.actions.onDBChange(user);
+                }
+              });
+            }
+          }, 5000);
+          */
+
         } else {
           Alert.alert("Invalid username or password!");
         }
@@ -83,6 +100,16 @@ class LoginTab extends React.Component {
   }
 
   render() {
+    //fetching or synchnizing user
+    if (this.props.auth.isFetching ||
+      (this.props.global.loggedIn && !this.props.global.currentUser.userID)) {
+      return (
+        <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
+          <GiftedSpinner />
+        </View>
+      )
+    }
+
     return (
       <View style={styles.wrapper}>
         <View style={[styles.line, { marginTop: 36}]}/>

@@ -5,6 +5,7 @@ import log from '../../lib/logUtil';
 
 const {
   ON_ADSMGMT_FIELD_CHANGE,
+  LOGOUT_SUCCESS
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
@@ -18,6 +19,17 @@ export default function adsMgmtReducer(state = initialState, action) {
       const {field, value} = action.payload;
       let nextState = state.set(field, value);
       return nextState;
+    }
+
+    case LOGOUT_SUCCESS: {
+      let newState = state
+        .set("likedList", [])
+        .set("sellList", [])
+        .set("rentList", [])
+        .set("activeTab", 0)
+        ;
+
+      return newState;
     }
   }
 

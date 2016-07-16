@@ -17,6 +17,8 @@ const {
 
 import InitialState from './globalInitialState';
 import log from '../../lib/logUtil';
+import localDB from '../../lib/localDB';
+
 
 const initialState = new InitialState;
 
@@ -39,12 +41,13 @@ export default function globalReducer(state = initialState, action) {
       return newState;
     }
     case LOGOUT_SUCCESS: {
-      let newState = state
-        .setIn(["currentUser", "phone"], '')
-        .set("loggedIn", false);
+    let newState = state
+      .setIn(["currentUser", "phone"], '')
+      .set("loggedIn", false)
+      .setIn(['currentUser','userID'], '');
 
-      return newState;
-    }
+    return newState;
+  }
 
     case LAUNCH_APP :
     {
@@ -76,13 +79,11 @@ export default function globalReducer(state = initialState, action) {
       }
       */
 
-      var {e} = action.payload;
+      var {doc} = action.payload;
       var next = state;
 
-      let user = e.results.find(one => one.doc.type == 'User');
-
-      if (user) {
-        const e = user.doc;
+      if (doc.type == 'User') {
+        const e = doc;
         //log.info("globalreducer.ON_DB_CHANGE, user", e);
         log.info("globalreducer.ON_DB_CHANGE, update current User", e);
 
@@ -95,7 +96,7 @@ export default function globalReducer(state = initialState, action) {
           .setIn(['currentUser','adsLikes'], e.adsLikes)
           .setIn(['currentUser','saveSearch'], e.saveSearch)
         ;
-      }
+      } 
 
       return next;
     }

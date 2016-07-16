@@ -292,24 +292,40 @@ manager.prototype = {
     });
   },
 
+  //Reland:
+  abortAllRequest : function() {
+    if (this.listenRequest) {
+      this.listenRequest.abort();
+    }
+  },
+
   /**
    * Listen for database changes
    */
   listen: function(queryStringParams) {
-    var poller = function (databaseUrl, databaseName, params) {
-      var request = new XMLHttpRequest();
-      var self = this;
-      request.onload = (e) => {
-        var data = JSON.parse(request.responseText);
-        self.changesEventEmitter.emit(CHANGE_EVENT_TYPE, data);
-        params.since = data.last_seq;
-        poller(databaseUrl, databaseName, params);
-      };
-      request.open('GET', databaseUrl + databaseName + '/_changes' + this._encodeParams(params));
+    var request = new XMLHttpRequest();
+    this.listenRequest = request;
+
+    var changeUrl = this.databaseUrl + this.databaseName + '/_changes';
+
+    this.listenParams = queryStringParams;
+    var self = this;
+
+    var poller = function() {
+      request.open('GET', changeUrl + this._encodeParams(this.listenParams));
       request.setRequestHeader('Authorization', this.authHeader);
       request.send();
     }.bind(this);
-    poller(this.databaseUrl, this.databaseName, queryStringParams);
+
+    request.onload = (e) => {
+      var data = JSON.parse(request.responseText);
+      self.changesEventEmitter.emit(CHANGE_EVENT_TYPE, data);
+      self.listenParams.since = data.last_seq;
+      request.abort();
+      poller();
+    };
+
+    poller();
   },
 
   /**
@@ -394,7 +410,6 @@ manager.prototype = {
 
     var fullUrl = encodeURI(url) + this._encodeParams(queryStringParameters);
 
-//    console.log("fullUrl", fullUrl);
     var self = this;
 
     return fetch(fullUrl, settings).then((res) => {
@@ -409,6 +424,7 @@ manager.prototype = {
           return self._makeRequest(settings, url, queryStringParameters, attempt)
         }
       }
+
       return res
     }).catch((err) => {
       throw new Error("http error for " + settings.method + " '" + fullUrl + "', caused by => " + err);

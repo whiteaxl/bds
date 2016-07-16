@@ -65,7 +65,7 @@ class MeContent extends Component {
   }
 
   render() {
-    log.info("Call MeContent render", this.props.me);
+    log.info("Call MeContent render, currentUser:", this.props.global.currentUser);
     let avatarUri = this.props.global.currentUser.avatar ? {uri: this.props.global.currentUser.avatar} :
         require('../../assets/image/register_avatar_icon.png');
     return (

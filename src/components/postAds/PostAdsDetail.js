@@ -290,6 +290,9 @@ class PostAdsDetail extends Component {
 
     _getBanDoValue() {
         var {place} = this.props.postAds;
+        log.info("aaaaaaaaaaa",place);
+
+
         var tinh = place.diaChinh.tinh;
         var huyen = place.diaChinh.huyen;
         var xa = place.diaChinh.xa;

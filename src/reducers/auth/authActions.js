@@ -80,8 +80,9 @@ export function logoutFailure(error) {
 
 export function logout() {
   return dispatch => {
+    log.info("start authenAction.logout");
     dbService.logout().then((res) => {
-      console.log("Done delete localDB", res);
+      log.info("Done delete localDB", res);
       dispatch(logoutSuccess());
     })
       .catch((res) => {
@@ -218,12 +219,12 @@ export function loginFailure(error) {
  length: number
  }
  */
-export function onDBChange(e, all) {
+export function onDBChange(doc) {
   log.enter("AuthenAction.onDBChange");
 
   return {
     type: ON_DB_CHANGE,
-    payload: {e, all}
+    payload: {doc}
   };
 
 }
@@ -233,8 +234,8 @@ export function login(username, password, deviceDto) {
   return dispatch => {
     dispatch(loginRequest());
 
-    var dispatchDBChange = (e, all) => {
-      dispatch(onDBChange(e, all));
+    var dispatchDBChange = (e) => {
+      dispatch(onDBChange(e));
     };
 
     return dbService.loginAndStartSync(username, password, dispatchDBChange)

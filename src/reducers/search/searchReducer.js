@@ -121,11 +121,10 @@ export default function searchReducer(state = initialState, action) {
 
     case ON_DB_CHANGE:
     {
-      var {e} = action.payload;
+      var {doc} = action.payload;
       var next = state;
-      let user = e.results.find(one => one.doc.type == 'User');
-      if (user) {
-        const e = user.doc;
+      if (doc.type == 'User') {
+        const e = doc;
         //log.info("globalreducer.ON_DB_CHANGE, user", e);
         log.info("searchReducer.ON_DB_CHANGE, update saveSearchList", e);
 

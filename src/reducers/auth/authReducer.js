@@ -31,7 +31,8 @@ const {
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAILURE,
-  REGISTER_SUCCESS
+  REGISTER_SUCCESS,
+  ON_DB_CHANGE
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
@@ -83,7 +84,18 @@ export default function authReducer(state = initialState, action) {
     case RESET_PASSWORD_FAILURE:
       return state.set('isFetching', false)
         .set('error', action.payload);
+
+    case LOGOUT_SUCCESS: {
+      let newState = state
+        .set("sessionCookie", "")
+        .set("activeRegisterLoginTab", 1);
+
+      return newState;
+    }
+
   }
+
+
 
   return state;
 }
