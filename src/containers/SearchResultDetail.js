@@ -488,7 +488,10 @@ class SearchResultDetail extends Component {
         loaiNhaDatFmt : utils.getLoaiNhaDatFmt(ads),
         giaFmt : utils.getPriceDisplay(ads.gia, ads.loaiTin),
         diaChinhFullName : placeUtil.getDiaChinhFullName(ads.place),
-        cover : ads.image.cover
+        cover : ads.image.cover,
+        loaiTin: ads.loaiTin,
+        dienTichFmt: utils.getDienTichDisplay(ads.dienTich),
+        loaiNhaDat: ads.loaiNhaDat
       };
 
       this.props.actions.startChat(partner, relatedToAds);

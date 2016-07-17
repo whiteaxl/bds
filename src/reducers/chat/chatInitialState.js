@@ -36,7 +36,10 @@ var InitialState = Record({
     loaiNhaDatFmt : "",
     giaFmt : "",
     diaChinhFullName : "",
-    cover: "http://sample.jpg"
+    cover: "http://sample.jpg",
+    loaiTin: null,
+    dienTichFmt: "",
+    loaiNhaDat: null
   },
 
   messages: testMessages,
