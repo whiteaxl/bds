@@ -20,11 +20,7 @@ import * as globalActions from '../../reducers/global/globalActions';
 import * as registerActions from '../../reducers/register/registerActions';
 import * as postAdsActions from '../../reducers/postAds/postAdsActions';
 
-import RelandIcon from '../../components/RelandIcon';
-
 import moment from 'moment';
-
-import RNFS from 'react-native-fs';
 
 import cfg from "../../cfg";
 
@@ -97,20 +93,10 @@ class RegisterMoreInfor extends React.Component {
       this.register();
       return;
     }
-    if (!RNFS.exists(filepath)) {
-      this.register();
-      return;
-    }
     var ms = moment().toDate().getTime();
-    var newImageUri = filepath.substring(0, filepath.lastIndexOf('/')+1) + 'Avatar_'
-        + this.props.register.username + '_' + ms + filepath.substring(filepath.lastIndexOf('.'));
-    RNFS.moveFile(filepath, newImageUri).then((data) => {
-      if (data && data.length == 2 && data[0]) {
-        var newFilepath = data[1];
-        var filename = newFilepath.substring(newFilepath.lastIndexOf('/')+1);
-        this.props.actions.onUploadImage(filename, newFilepath, this.uploadCallBack.bind(this));
-      }
-    });
+    var userID = this.props.register.username;
+    var filename = 'Avatar_' + userID + '_' + ms + filepath.substring(filepath.lastIndexOf('.'));
+    this.props.actions.onUploadImage(filename, filepath, this.uploadCallBack.bind(this));
   }
 
   uploadCallBack(err, result) {

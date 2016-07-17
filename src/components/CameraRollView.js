@@ -33,7 +33,7 @@ import * as registerActions from '../reducers/register/registerActions';
 
 import ImageResizer from 'react-native-image-resizer';
 
-import RNFS from 'react-native-fs';
+import moment from 'moment';
 
 import cfg from "../cfg";
 
@@ -300,15 +300,9 @@ onSendImage: function (uri) {
     // var ext = uri.substring(uri.indexOf('ext=')+4);
     // var filename = shortname + '.' + ext;
     ImageResizer.createResizedImage(uri, cfg.maxWidth, cfg.maxHeight, 'JPEG', 85, 0, null).then((resizedImageUri) => {
-        var newImageUri = resizedImageUri.substring(0, resizedImageUri.lastIndexOf('/')+1) + userID + '_'
-            + resizedImageUri.substring(resizedImageUri.lastIndexOf('/')+1);
-        RNFS.moveFile(resizedImageUri, newImageUri).then((data) => {
-            if (data && data.length == 2 && data[0]) {
-                var filepath = data[1];
-                var filename = filepath.substring(filepath.lastIndexOf('/')+1);
-                this.props.actions.onUploadImage(filename, filepath, this.uploadCallBack);
-            }
-        });
+        var ms = moment().toDate().getTime();
+        var filename = 'Chat_' + userID + '_' + ms + resizedImageUri.substring(resizedImageUri.lastIndexOf('.'));
+        this.props.actions.onUploadImage(filename, resizedImageUri, this.uploadCallBack);
     }).catch((err) => {
         log.error(err);
     });

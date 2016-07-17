@@ -33,7 +33,7 @@ import dbService from "../../lib/localDB";
 
 import ImageResizer from 'react-native-image-resizer';
 
-import RNFS from 'react-native-fs';
+import moment from 'moment';
 
 import cfg from "../../cfg";
 
@@ -503,15 +503,9 @@ class PostAdsDetail extends Component {
             }
             var filepath = uploadFiles[i].filepath;
             ImageResizer.createResizedImage(filepath, 745, 510, 'JPEG', 85, 0, null).then((resizedImageUri) => {
-                var newImageUri = resizedImageUri.substring(0, resizedImageUri.lastIndexOf('/')+1) + userID + '_'
-                    + resizedImageUri.substring(resizedImageUri.lastIndexOf('/')+1);
-                RNFS.moveFile(resizedImageUri, newImageUri).then((data) => {
-                    if (data && data.length == 2 && data[0]) {
-                        var filepath = data[1];
-                        var filename = filepath.substring(filepath.lastIndexOf('/')+1);
-                        this.props.actions.onUploadImage(filename, filepath, this.uploadCallBack.bind(this));
-                    }
-                });
+                var ms = moment().toDate().getTime();
+                var filename = 'Ads_' + userID + '_' + ms + resizedImageUri.substring(resizedImageUri.lastIndexOf('.'));
+                this.props.actions.onUploadImage(filename, resizedImageUri, this.uploadCallBack.bind(this));
             }).catch((err) => {
                 log.error(err);
             });
