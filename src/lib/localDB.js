@@ -374,6 +374,23 @@ class DBService {
       });
   }
 
+  getAllChatMsgByLoaiTin(partnerID, loaiTin) {
+      return this.db()
+          .then(db => {
+              return db.getAllDocuments({include_docs: true}).then((res) => {
+                  let rows = res.rows;
+                  let filtered = rows.filter((e) => {
+                      let doc = e.doc;
+                      return doc.type=='Chat'
+                          && (doc.fromUserID == partnerID || doc.toUserID == partnerID)
+                          && (!loaiTin || doc.relatedToAds.loaiTin == loaiTin)
+                  } );
+
+                  return filtered.map(e => e.doc);
+              });
+          });
+  }
+
   //{userID, adsID}
   likeAds(dto) {
     return this.db().then(db => {
