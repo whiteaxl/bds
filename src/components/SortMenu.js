@@ -129,6 +129,9 @@ class SortMenu extends Component {
     }
 
     _getOrderKey(key) {
+        if ('giaASC' == key || 'giaDESC' == key) {
+            return key;
+        }
         return key.indexOf("DESC") !== -1 ? key.substring(0, key.length-4) :
             key.substring(0, key.length-3);
     }
@@ -149,12 +152,20 @@ class SortMenu extends Component {
             || newOrderBy.indexOf("khoangCach") !== -1
             || newOrderBy.indexOf("dienTich") !== -1)) {
             newOrderBy = this._getOrderKey(newOrderBy);
-            newOrderBy = (oldSortType == "ASC") ? newOrderBy + "DESC" : newOrderBy + "ASC";
+            if ('giaASC' != newOrderBy && 'giaDESC' != newOrderBy) {
+                newOrderBy = (oldSortType == "ASC") ? newOrderBy + "DESC" : newOrderBy + "ASC";
+            }
         }
         this.props.actions.onSearchFieldChange("orderBy", newOrderBy);
-
+        var {loaiTin, loaiNhaDat, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
+            dienTich, gia, giaPicker, listData, marker, geoBox, place, radiusInKmSelectedIdx,
+            huongNha, ngayDaDang, polygon, region} = this.props.search.form.fields;
         this.props.actions.search(
-            this.props.search.form.fields
+            {loaiTin: loaiTin, loaiNhaDat: loaiNhaDat, soPhongNguSelectedIdx: soPhongNguSelectedIdx,
+                soTangSelectedIdx: soTangSelectedIdx, soNhaTamSelectedIdx: soNhaTamSelectedIdx,
+                dienTich: dienTich, gia: gia, giaPicker: giaPicker, orderBy: newOrderBy, listData: listData,
+                marker: marker, geoBox: geoBox, place: place, radiusInKmSelectedIdx: radiusInKmSelectedIdx,
+                huongNha: huongNha, ngayDaDang: ngayDaDang, polygon: polygon, region: region}
             , () => { }
         );
     }
