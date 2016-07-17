@@ -56,7 +56,7 @@ export default class AdsMgmt extends React.Component {
   }
 
   onChangeTab(data) {
-    //this.props.actions.onAuthFieldChange('activeRegisterLoginTab',data.i);
+    this.props.actions.onAdsMgmtFieldChange('activeTab',data.i);
   }
 
   renderTabBar() {
@@ -65,8 +65,7 @@ export default class AdsMgmt extends React.Component {
 
   componentDidMount() {
     log.info("AdsMgmt - componentDidMount");
-
-    this.props.actions.loadAdsMgmtData(this.props.global.currentUser.userID);
+    this.props.actions.loadLikedList(this.props.global.currentUser.userID);
   }
 
   render() {

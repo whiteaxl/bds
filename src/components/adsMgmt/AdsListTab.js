@@ -30,6 +30,8 @@ import GiftedSpinner from "../../components/GiftedSpinner";
 
 import log from '../../lib/logUtil';
 
+import RelandIcon from '../../components/RelandIcon';
+
 const actions = [
   globalActions,
   adsMgmtActions
@@ -70,7 +72,9 @@ class AdsListTab extends Component {
     log.info("_onRefresh", this.props);
 
     if (this.props.name == 'likedTab') {
-      this.props.actions.refreshLikedTab(this.props.global.currentUser.userID);
+      this.props.actions.loadLikedList(this.props.global.currentUser.userID);
+    } else {
+      this.props.actions.loadMySellRentList();
     }
 
     /*
@@ -79,7 +83,6 @@ class AdsListTab extends Component {
     });
     */
   }
-
 
   _getListContent() {
     let myProps = this.props;
@@ -143,14 +146,11 @@ class AdsListTab extends Component {
   render() {
     log.info("Call AdsListTab render", this.props.adsMgmt);
 
-
     return (
       <View style={myStyles.fullWidthContainer}>
         {this._getListContent()}
       </View>
     )
-
-
   }
 
   _renderImageStack(rowData) {
@@ -173,11 +173,40 @@ class AdsListTab extends Component {
     }
   }
 
+  upgradeAds(rowData) {
+    Actions.UpgradeAds();
+  }
+
   coming() {
     Alert.alert("Coming soon...");
   }
 
-  renderRow(rowData, sectionID, rowID) {
+  _renderGoiTin(rowData) {
+    if (this.props.name == 'likedTab') {
+      return null;
+    }
+
+    return (
+      <View style={myStyles.rightTextGroup}>
+        <Text numberOfLines={1} style={myStyles.tinChoDuyet}>TIN ĐANG CHỜ DUYỆT</Text>
+
+        <TouchableHighlight underlayColor='transparent' onPress={() => {this.upgradeAds(rowData)}}>
+          <View style={myStyles.nangCap} >
+            <RelandIcon.Icon color={'white'} name={"update"} size={12} style={{marginLeft:5, marginRight:5}} />
+            <Text style={myStyles.textNangCap}>
+              NÂNG CẤP
+            </Text>
+          </View>
+        </TouchableHighlight>
+        <Text numberOfLines={1} style={myStyles.textGoiTin}>Vị trí cao cấp - 7 ngày</Text>
+        <Text numberOfLines={1} style={myStyles.textGoiTin}>Trang chủ cao cấp - 3 ngày</Text>
+        <Text numberOfLines={1} style={myStyles.textGoiTin}>Logo cần bán gấp - 6 ngày</Text>
+
+      </View>
+    )
+  }
+
+  _renderText(rowData) {
     var diaChi = rowData.diaChi;
     var loaiNhaDat = rowData.loaiNhaDat;
     var dienTich = '';
@@ -193,8 +222,8 @@ class AdsListTab extends Component {
     if (rowData.soTangFmt) {
       soTang = " " + rowData.soTangFmt;
     }
-    var maxDiaChiLength = 25;
 
+    var maxDiaChiLength = 25;
     var index = diaChi.indexOf(',', maxDiaChiLength - 5);
     var length = 0;
     if (index !== -1 && index <= maxDiaChiLength) {
@@ -207,8 +236,29 @@ class AdsListTab extends Component {
     if (diaChi.length < rowData.diaChi.length) {
       diaChi = diaChi + '...';
     }
-    var moreInfo = this.getMoreInfo(loaiNhaDat, dienTich, soPhongNgu, soTang);
 
+    var moreInfo = this.getMoreInfo(loaiNhaDat, dienTich, soPhongNgu, soTang);
+    var moreInfoWithoutDot = moreInfo.substring(3);
+
+    if (this.props.name == 'likedTab') {
+      return (
+        <View style={myStyles.searchListViewRowAlign}>
+          <Text style={myStyles.price}>{rowData.giaFmt}</Text>
+          <Text style={myStyles.text}>{diaChi}{moreInfo}</Text>
+        </View>
+      );
+    }
+    //Ban or Cho Thue
+    return (
+      <View style={myStyles.leftTextGroup}>
+        <Text numberOfLines={1} style={myStyles.price}>{rowData.giaFmt}</Text>
+        <Text numberOfLines={1} style={myStyles.smallText1}>{rowData.diaChi}</Text>
+        <Text numberOfLines={1} style={myStyles.smallText1}>{moreInfoWithoutDot}</Text>
+      </View>
+    )
+  }
+
+  renderRow(rowData, sectionID, rowID) {
     return (
       <View key={rowData.adsID}>
         <View style={myStyles.detail}>
@@ -221,21 +271,9 @@ class AdsListTab extends Component {
             {this._renderImageStack(rowData)}
           </Swiper>
 
-          <View style={myStyles.searchListViewRowAlign}
-                onStartShouldSetResponder={(evt) => false}
-                onMoveShouldSetResponder={(evt) => false}
-          >
-            <View
-              onStartShouldSetResponder={(evt) => false}
-              onMoveShouldSetResponder={(evt) => false}
-            >
-              <Text style={myStyles.price}
-                    onStartShouldSetResponder={(evt) => false}
-                    onMoveShouldSetResponder={(evt) => false}
-              >{rowData.giaFmt}</Text>
-              <Text style={myStyles.text}>{diaChi}{moreInfo}</Text>
-            </View>
-          </View>
+          {this._renderText(rowData)}
+
+          {this._renderGoiTin(rowData)}
         </View>
       </View>
     );
@@ -327,8 +365,8 @@ var myStyles = StyleSheet.create({
     backgroundColor: "transparent"
   },
   linearGradient2: {
-    marginTop: imgHeight / 2,
-    height: imgHeight / 2,
+    marginTop: imgHeight / 3,
+    height: 2 * (imgHeight / 3),
     paddingLeft: 0,
     paddingRight: 0,
     backgroundColor: "transparent"
@@ -349,25 +387,41 @@ var myStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     top: imgHeight - 53,
-    width: Dimensions.get('window').width
+    width: Dimensions.get('window').width,
+    marginLeft: 17
   },
+
+  leftTextGroup: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    flexDirection: 'column',
+    top: imgHeight - 70,
+    width: 220,
+    marginLeft: 17
+  },
+
+
   price: {
     fontSize: 16,
     fontWeight: 'bold',
     textAlign: 'left',
     backgroundColor: 'transparent',
-    marginLeft: 15,
-    color: 'white'
+    color: 'white',
+    fontFamily: 'Open Sans',
   },
   text: {
     fontSize: 14,
     textAlign: 'left',
     backgroundColor: 'transparent',
-    marginLeft: 15,
-    marginBottom: 15,
-    margin: 5,
-    marginTop: 2,
-    color: 'white'
+    color: 'white',
+    fontFamily: 'Open Sans',
+  },
+
+  smallText1: {
+    fontSize: 13,
+    textAlign: 'left',
+    color: 'white',
+    fontFamily: 'Open Sans',
   },
 
   heartButton: {
@@ -378,6 +432,49 @@ var myStyles = StyleSheet.create({
     fontFamily: gui.fontFamily,
     fontSize: gui.normalFontSize,
     color : gui.mainColor
+  },
+  rightTextGroup: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    flexDirection: 'column',
+    top: imgHeight - 110,
+    width: 180,
+    right: 19,
+    alignItems : 'flex-end'
+  },
+
+  nangCap : {
+    backgroundColor: '#ff2714',
+    flexDirection: 'row',
+    padding: 3,
+    width: 80,
+    borderRadius : 3,
+    marginBottom: 7,
+    marginTop: 7,
+  },
+
+  textNangCap : {
+    color : "white",
+    fontFamily: gui.fontFamily,
+    fontSize: 10,
+    fontWeight : 'bold'
+  },
+
+  textGoiTin: {
+    fontSize: 10,
+    textAlign: 'left',
+    color: '#f3f0bc',
+    fontFamily: 'Open Sans',
+    fontWeight : 'bold',
+    marginTop: 2
+  },
+
+  tinChoDuyet : {
+    fontFamily: gui.fontFamily,
+    fontSize: 10,
+    color : '#dcd135',
+
+    fontWeight : 'bold'
   }
 
 });

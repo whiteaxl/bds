@@ -31,6 +31,9 @@ import VerifyPhone from '../components/login/VerifyPhone';
 import RegisterMoreInfor from '../components/login/RegisterMoreInfor';
 import Me from './Me';
 import AdsMgmt from './AdsMgmt';
+import UpgradeAds from '../components/adsMgmt/UpgradeAds';
+
+
 
 import SearchSuggestion from '../containers/PlacesAutoComplete';
 import Chat from './Chat';
@@ -106,6 +109,9 @@ class App extends React.Component {
             <Scene key="Me" component={Me} title="Tôi" hideNavBar={true}
                    iconName={"me"} iconSize={21} icon={TabIcon}/>
 
+            <Scene key="UpgradeAds11" component={UpgradeAds} hideNavBar={true} title="Upgrade"
+                   iconName={"me"} iconSize={21} icon={TabIcon}/>
+
           </Scene>
 
           <Scene key='LoginRegister' component={LoginRegister} title="Register Screen" direction="vertical"/>
@@ -144,6 +150,8 @@ class App extends React.Component {
                  title="Đăng ký" hideNavBar={false}/>
 
           <Scene key='Chat' component={Chat} hideNavBar={true}/>
+
+          <Scene key='UpgradeAds' component={UpgradeAds} hideNavBar={true}/>
 
         </Scene>
       </RouterWithRedux>

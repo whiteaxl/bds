@@ -19,9 +19,33 @@ export function onAdsMgmtFieldChange(field, value) {
   };
 }
 
+function convertAds(e) {
+  var diaChiFullName = e.place.diaChiFullName;
+  e.diaChi = diaChiFullName;
+  e.dienTichFmt = util.getDienTichDisplay(e.dienTich);
+  e.soPhongNguFmt = e.soPhongNgu ? e.soPhongNgu + "pn" : null;
+  e.soTangFmt = e.soTang ? e.soTang + "t" : null;
+  e.giaFmt = util.getPriceDisplay(e.gia, e.loaiTin);
+  return e;
+}
+
+export function loadMySellRentList() {
+  return dispatch => {
+    localDB.getAllAdsDocs().then((adsList) => {
+      var sellList = adsList.filter((e) => e.loaiTin == 0);
+      sellList = sellList.map(e => convertAds(e));
+
+      var rentList = adsList.filter((e) => e.loaiTin == 1);
+      rentList = rentList.map(e => convertAds(e));
+
+      dispatch(onAdsMgmtFieldChange('sellList', sellList));
+      dispatch(onAdsMgmtFieldChange('rentList', rentList));
+    });
+  };
+}
 
 // likedList get from Server
-export function loadAdsMgmtData(userID) {
+export function loadLikedList(userID) {
   return dispatch => {
     dispatch(onAdsMgmtFieldChange('refreshing', true));
 
@@ -29,34 +53,7 @@ export function loadAdsMgmtData(userID) {
       .then(res => {
         if (res.status == 0) {
           dispatch(onAdsMgmtFieldChange('likedList', res.data));
-            localDB.getAllAdsDocs().then((adsList) => {
-                var sellList = adsList.filter((e) => {
-                    return e.loaiTin==0
-                });
-                sellList = sellList.map(e => {
-                    var diaChiFullName = e.place.diaChiFullName;
-                    e.diaChi = diaChiFullName;
-                    e.dienTichFmt = util.getDienTichDisplay(e.dienTich);
-                    e.soPhongNguFmt = e.soPhongNgu ? e.soPhongNgu + "pn" : null;
-                    e.soTangFmt = e.soTang ? e.soTang + "t" : null;
-                    e.giaFmt = util.getPriceDisplay(e.gia, e.loaiTin);
-                    return e;
-                });
-                var rentList = adsList.filter((e) => {
-                    return e.loaiTin==1
-                });
-                rentList = rentList.map(e => {
-                    var diaChiFullName = e.place.diaChiFullName;
-                    e.diaChi = diaChiFullName;
-                    e.dienTichFmt = util.getDienTichDisplay(e.dienTich);
-                    e.soPhongNguFmt = e.soPhongNgu ? e.soPhongNgu + "pn" : null;
-                    e.soTangFmt = e.soTang ? e.soTang + "t" : null;
-                    e.giaFmt = util.getPriceDisplay(e.gia, e.loaiTin);
-                    return e;
-                });
-                dispatch(onAdsMgmtFieldChange('sellList', sellList));
-                dispatch(onAdsMgmtFieldChange('rentList', rentList));
-            });
+
         } else {
           log.error("loadAdsMgmtData error", res);
         }
@@ -64,47 +61,5 @@ export function loadAdsMgmtData(userID) {
       })
   }
 }
-export function refreshLikedTab(userID) {
-  return dispatch => {
-    dispatch(onAdsMgmtFieldChange('refreshing', true));
 
-    userApi.getAdsLikes(userID)
-      .then(res => {
-        if (res.status == 0) {
-          dispatch(onAdsMgmtFieldChange('likedList', res.data));
-            localDB.getAllAdsDocs().then((adsList) => {
-                var sellList = adsList.filter((e) => {
-                    return e.loaiTin==0
-                });
-                sellList = sellList.map(e => {
-                    var diaChiFullName = e.place.diaChiFullName;
-                    e.diaChi = diaChiFullName;
-                    e.dienTichFmt = util.getDienTichDisplay(e.dienTich);
-                    e.soPhongNguFmt = e.soPhongNgu ? e.soPhongNgu + "pn" : null;
-                    e.soTangFmt = e.soTang ? e.soTang + "t" : null;
-                    e.giaFmt = util.getPriceDisplay(e.gia, e.loaiTin);
-                    return e;
-                });
-                var rentList = adsList.filter((e) => {
-                    return e.loaiTin==1
-                });
-                rentList = rentList.map(e => {
-                    var diaChiFullName = e.place.diaChiFullName;
-                    e.diaChi = diaChiFullName;
-                    e.dienTichFmt = util.getDienTichDisplay(e.dienTich);
-                    e.soPhongNguFmt = e.soPhongNgu ? e.soPhongNgu + "pn" : null;
-                    e.soTangFmt = e.soTang ? e.soTang + "t" : null;
-                    e.giaFmt = util.getPriceDisplay(e.gia, e.loaiTin);
-                    return e;
-                });
-                dispatch(onAdsMgmtFieldChange('sellList', sellList));
-                dispatch(onAdsMgmtFieldChange('rentList', rentList));
-            });
-        } else {
-          log.error("refreshLikedTab error", res);
-        }
-        dispatch(onAdsMgmtFieldChange('refreshing', false));
-      })
-  }
-}
 
