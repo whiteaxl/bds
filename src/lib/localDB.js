@@ -383,7 +383,7 @@ class DBService {
                       let doc = e.doc;
                       return doc.type=='Chat'
                           && (doc.fromUserID == partnerID || doc.toUserID == partnerID)
-                          && (!loaiTin || doc.relatedToAds.loaiTin == loaiTin)
+                          && (loaiTin === null || doc.relatedToAds.loaiTin === loaiTin)
                   } );
 
                   return filtered.map(e => e.doc);

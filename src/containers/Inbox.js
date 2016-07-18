@@ -2,7 +2,7 @@
 
 import  React, {Component} from 'react';
 
-import { View, Text, StyleSheet, ScrollView} from 'react-native';
+import { View, Text, StyleSheet, ScrollView, ListView} from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
 import log from "../lib/logUtil";
@@ -19,6 +19,9 @@ import InboxContent from "../components/inbox/InboxContent";
 import InboxHeader from '../components/inbox/InboxHeader';
 import LikeTabButton from '../components/LikeTabButton';
 
+import dbService from "../lib/localDB";
+
+var myDs = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 const actions = [
 	globalActions, inboxActions
@@ -53,6 +56,24 @@ class Inbox extends Component {
 
 	_onLoaiTinChange(value) {
 		this.props.actions.onInboxFieldChange('loaiTin', value);
+		let loaiTin = this.decodeLoaiTin(value);
+		let userID = this.props.global.currentUser.userID;
+		dbService.getAllChatMsgByLoaiTin(userID, loaiTin).then((allInboxDS) => {
+			log.info('allInboxDS', allInboxDS);
+			// this.props.actions.onInboxFieldChange('allInboxDS', myDs.cloneWithRows(allInboxDS));
+		});
+	}
+
+	decodeLoaiTin(value) {
+		if ('all' == value) {
+			return null;
+		}
+		else if ('sell' == value) {
+			return 0;
+		}
+		else {
+			return 1;
+		}
 	}
 
   render() {
@@ -67,12 +88,12 @@ class Inbox extends Component {
 						<LikeTabButton name={'all'}
 													 onPress={this._onLoaiTinChange.bind(this)}
 													 selected={loaiTin === 'all'}>TẤT CẢ</LikeTabButton>
-						<LikeTabButton name={'buy'}
-													 onPress={this._onLoaiTinChange.bind(this)}
-													 selected={loaiTin === 'buy'}>MUA</LikeTabButton>
 						<LikeTabButton name={'sell'}
 													 onPress={this._onLoaiTinChange.bind(this)}
-													 selected={loaiTin === 'sell'}>BÁN/CHO THUÊ</LikeTabButton>
+													 selected={loaiTin === 'sell'}>BÁN</LikeTabButton>
+						<LikeTabButton name={'hire'}
+													 onPress={this._onLoaiTinChange.bind(this)}
+													 selected={loaiTin === 'hire'}>CHO THUÊ</LikeTabButton>
 					</View>
 					<InboxContent/>
 					
