@@ -63,7 +63,7 @@ class Inbox extends Component {
 			if (loaiTin == undefined || data.doc.relatedToAds.loaiTin == loaiTin) {
 				allInboxDS.push(data);
 			}
-		})
+		});
 		this.props.actions.onInboxFieldChange('allInboxDS', myDs.cloneWithRows(allInboxDS));
 	}
 
