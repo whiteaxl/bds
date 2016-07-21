@@ -305,16 +305,33 @@ class SearchResultMap extends Component {
 
     var geoBox = apiUtils.getBbox(region);
     this.props.actions.onSearchFieldChange("geoBox", geoBox);
-
+    
+    var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
+        radiusInKmSelectedIdx, dienTich, orderBy, place, huongNha, ngayDaDang, polygon} = this.props.search.form.fields;
+    
     if (this.state.polygons.length <= 0){
-      setTimeout(this._refreshListData.bind(this), 10);
+      this._refreshListData({
+        loaiTin: loaiTin,
+        loaiNhaDat: loaiNhaDat,
+        soPhongNguSelectedIdx: soPhongNguSelectedIdx,
+        soTangSelectedIdx: soTangSelectedIdx,
+        soNhaTamSelectedIdx : soNhaTamSelectedIdx,
+        dienTich: dienTich,
+        gia: gia,
+        orderBy: orderBy,
+        geoBox: geoBox,
+        place: place,
+        radiusInKmSelectedIdx: radiusInKmSelectedIdx,
+        huongNha: huongNha,
+        ngayDaDang: ngayDaDang,
+        polygon: polygon});
     }
   }
 
-  _refreshListData() {
+  _refreshListData(fields) {
     console.log("Call SearhResultMap._refreshListData");
     this.props.actions.search(
-        this.props.search.form.fields
+        fields
         , () => {});
     this.setState({openDetailAdsModal: false});
   }
@@ -380,7 +397,24 @@ class SearchResultMap extends Component {
 
           this.props.actions.onSearchFieldChange("geoBox", geoBox);
 
-          this._refreshListData();
+          var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
+              radiusInKmSelectedIdx, dienTich, orderBy, place, huongNha, ngayDaDang, polygon} = this.props.search.form.fields;
+
+          this._refreshListData({
+            loaiTin: loaiTin,
+            loaiNhaDat: loaiNhaDat,
+            soPhongNguSelectedIdx: soPhongNguSelectedIdx,
+            soTangSelectedIdx: soTangSelectedIdx,
+            soNhaTamSelectedIdx : soNhaTamSelectedIdx,
+            dienTich: dienTich,
+            gia: gia,
+            orderBy: orderBy,
+            geoBox: geoBox,
+            place: place,
+            radiusInKmSelectedIdx: radiusInKmSelectedIdx,
+            huongNha: huongNha,
+            ngayDaDang: ngayDaDang,
+            polygon: polygon});
 
           this.props.actions.onMapChange("region", region);
         },
@@ -531,9 +565,27 @@ class SearchResultMap extends Component {
         var geoBox = apiUtils.getPolygonBox(polygons[0]);
         this.props.actions.onSearchFieldChange("geoBox", geoBox);
         this.props.actions.onSearchFieldChange("region", apiUtils.getRegion(geoBox));
-        this.props.actions.onSearchFieldChange("polygon", apiUtils.convertPolygon(polygons[0]));
+        var polygon = apiUtils.convertPolygon(polygons[0]);
+        this.props.actions.onSearchFieldChange("polygon", polygon);
 
-        setTimeout(this._refreshListData.bind(this), 10);
+        var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
+          radiusInKmSelectedIdx, dienTich, orderBy, place, huongNha, ngayDaDang} = this.props.search.form.fields;
+
+        this._refreshListData({
+          loaiTin: loaiTin,
+          loaiNhaDat: loaiNhaDat,
+          soPhongNguSelectedIdx: soPhongNguSelectedIdx,
+          soTangSelectedIdx: soTangSelectedIdx,
+          soNhaTamSelectedIdx : soNhaTamSelectedIdx,
+          dienTich: dienTich,
+          gia: gia,
+          orderBy: orderBy,
+          geoBox: geoBox,
+          place: place,
+          radiusInKmSelectedIdx: radiusInKmSelectedIdx,
+          huongNha: huongNha,
+          ngayDaDang: ngayDaDang,
+          polygon: polygon});
     }
   }
 

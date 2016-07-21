@@ -44,8 +44,8 @@ var ApiUtils = {
       if (lonMin > lon) {
         lonMin = lon;
       }
-    })
-    return [latMin-0.025, lonMin-0.017, latMax+0.025, lonMax+0.017];
+    });
+    return [0.96*latMin, 0.96*lonMin, 1.04*latMax, 1.04*lonMax];
   },
 
   convertPolygon(polygon){
