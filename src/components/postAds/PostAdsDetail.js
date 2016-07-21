@@ -35,6 +35,8 @@ import ImageResizer from 'react-native-image-resizer';
 
 import moment from 'moment';
 
+import dismissKeyboard from 'react-native-dismiss-keyboard';
+
 import cfg from "../../cfg";
 
 var rootUrl = `http://${cfg.server}:5000`;
@@ -163,6 +165,9 @@ class PostAdsDetail extends Component {
                     <Text style={[myStyles.label, {marginTop: 9, marginLeft: 15, color: 'red'}]}>
                         {this.props.postAds.error}</Text>
                 </ScrollView>
+                {this.state.toggleState ? <Button onPress={() => dismissKeyboard()}
+                        style={[myStyles.buttonText, {textAlign: 'right', color: gui.mainColor}]}>Xong</Button> : null}
+                <KeyboardSpacer onToggle={(toggleState) => this.onKeyboardToggle.bind(this, toggleState)}/>
                 <View style={myStyles.searchButton}>
                     <View style={myStyles.searchListButton}>
                         <Button onPress={this.onCancel.bind(this)}
@@ -171,7 +176,6 @@ class PostAdsDetail extends Component {
                                 style={myStyles.buttonText}>Đăng tin</Button>
                     </View>
                 </View>
-                <KeyboardSpacer onToggle={(toggleState) => this.onKeyboardToggle.bind(this, toggleState)}/>
             </View>
         )
     }
