@@ -56,17 +56,20 @@ class Inbox extends Component {
 
 	_onLoaiTinChange(value) {
 		this.props.actions.onInboxFieldChange('loaiTin', value);
+		let currentInboxList = this.props.inbox.inboxList;
+		let allInboxDS = [];
 		let loaiTin = this.decodeLoaiTin(value);
-		let userID = this.props.global.currentUser.userID;
-		dbService.getAllChatMsgByLoaiTin(userID, loaiTin).then((allInboxDS) => {
-			log.info('allInboxDS', allInboxDS);
-			// this.props.actions.onInboxFieldChange('allInboxDS', myDs.cloneWithRows(allInboxDS));
-		});
+		currentInboxList.map(function (data) {
+			if (loaiTin == undefined || data.doc.relatedToAds.loaiTin == loaiTin) {
+				allInboxDS.push(data);
+			}
+		})
+		this.props.actions.onInboxFieldChange('allInboxDS', myDs.cloneWithRows(allInboxDS));
 	}
 
 	decodeLoaiTin(value) {
 		if ('all' == value) {
-			return null;
+			return undefined;
 		}
 		else if ('sell' == value) {
 			return 0;
