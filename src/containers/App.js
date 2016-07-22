@@ -31,8 +31,11 @@ import VerifyPhone from '../components/login/VerifyPhone';
 import RegisterMoreInfor from '../components/login/RegisterMoreInfor';
 import Me from './Me';
 import AdsMgmt from './AdsMgmt';
-import UpgradeAds from '../components/adsMgmt/UpgradeAds';
+import UpgradePackgeSelector from '../components/adsMgmt/UpgradePackgeSelector';
 
+import PackageUpdater from '../components/adsMgmt/PackageUpdater';
+import PackageTypes from '../components/adsMgmt/PackageTypes';
+import PackageLengths from '../components/adsMgmt/PackageLengths';
 
 
 import SearchSuggestion from '../containers/PlacesAutoComplete';
@@ -108,9 +111,12 @@ class App extends React.Component {
                    iconName={"mgmt"} iconSize={19} icon={TabIcon}/>
             <Scene key="Me" component={Me} title="Tôi" hideNavBar={true}
                    iconName={"me"} iconSize={21} icon={TabIcon}/>
-
-            <Scene key="UpgradeAds11" component={UpgradeAds} hideNavBar={true} title="Upgrade"
+            {
+              /*
+            <Scene key="UpgradeAds11" component={UpgradePackgeSelector} hideNavBar={true} title="Upgrade"
                    iconName={"me"} iconSize={21} icon={TabIcon}/>
+             */
+            }
 
           </Scene>
 
@@ -151,7 +157,13 @@ class App extends React.Component {
 
           <Scene key='Chat' component={Chat} hideNavBar={true}/>
 
-          <Scene key='UpgradeAds' component={UpgradeAds} hideNavBar={true}/>
+          <Scene key='UpgradePackgeSelector' component={UpgradePackgeSelector} hideNavBar={true}/>
+          <Scene key='PackageUpdater' component={PackageUpdater} hideNavBar={true}/>
+
+          {/* Multi choice */}
+          <Scene key='PackageTypes' component={PackageTypes} hideNavBar={true}/>
+          <Scene key='PackageLengths' component={PackageLengths} hideNavBar={true}/>
+
 
         </Scene>
       </RouterWithRedux>

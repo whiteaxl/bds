@@ -377,6 +377,55 @@ danhMuc.getIdx = function(map, value) {
     return 0;//default
 };
 
+danhMuc.package = {
+    goi: {
+        1: {
+            title: "Vị trí"
+        },
+        2: {
+            title: "Trang chủ"
+        },
+        3: {
+            title: "Đặc biệt"
+        }
+    },
+    level: {
+        1: "Đặc biệt",
+        2: "Cao cấp",
+        3: "Tiêu chuẩn"
+    }, 
+    length : {
+        0: "0 ngày",
+        7: "7 ngày",
+        14: "14 ngày",
+        30: "30 ngày",
+        90: "90 ngày"
+    },
+
+    getLevel(option) {
+        let found = null;
+        for (let field in danhMuc.package.level) {
+            if (danhMuc.package.level[field] == option) {
+                found = Number(field);
+            }
+        }
+
+        return found;
+    },
+
+    getLength(option) {
+        let found = null;
+        for (let field in danhMuc.package.length) {
+            if (danhMuc.package.length[field] == option) {
+                found = Number(field);
+            }
+        }
+
+        return found;
+    }
+};
+
+
 
 module.exports = danhMuc;
 

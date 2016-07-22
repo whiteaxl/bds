@@ -8,12 +8,12 @@ import {
 import gui from '../../lib/gui';
 
 import TruliaIcon from '../../components/TruliaIcon'
+import {Actions} from 'react-native-router-flux';
 
-export default class LineWithIcon extends Component {
-
+export default class UpgradePackgeSelector_LineWithIcon extends Component {
   render() {
     return (
-      <TouchableOpacity onPress={this.coming}>
+      <TouchableOpacity onPress={this.props.onPress}>
         <View style={styles.settingLine}>
           <View style = {styles.valueWithIcon}>
             <Image

@@ -29,6 +29,8 @@ import DanhMuc from '../../assets/DanhMuc';
 import GiftedSpinner from "../../components/GiftedSpinner";
 
 import log from '../../lib/logUtil';
+import danhMuc from '../../assets/DanhMuc';
+
 
 import RelandIcon from '../../components/RelandIcon';
 
@@ -173,18 +175,43 @@ class AdsListTab extends Component {
     }
   }
 
-  upgradeAds(rowData) {
-    Actions.UpgradeAds();
+  _getLevelName(pack) {
+    return pack ? danhMuc.package.level[pack.level] : "Chưa có";
+  }
+
+  upgradeAds(ads) {
+    this.props.actions.changePackageField('adsID', ads.adsID);
+
+    this.props.actions.changePackageField(
+      'current_goiViTri', this._getLevelName(ads.goiViTri));
+    this.props.actions.changePackageField(
+      'current_goiTrangChu', this._getLevelName(ads.goiTrangChu));
+    this.props.actions.changePackageField(
+      'current_goiLogo', this._getLevelName(ads.goiLogo));
+
+    Actions.UpgradePackgeSelector();
   }
 
   coming() {
     Alert.alert("Coming soon...");
   }
 
+  _getPackValue(prefix, pack) {
+    if (pack && pack.level) {
+      return prefix + danhMuc.package.level[pack.level] + " - " + danhMuc.package.length[pack.length];
+    }
+
+    return '';
+  }
+
   _renderGoiTin(rowData) {
     if (this.props.name == 'likedTab') {
       return null;
     }
+
+    let viTriLabel = this._getPackValue("Vị trí : " , rowData.goiViTri);
+    let trangChuLabel =  this._getPackValue("Trang chủ : ", rowData.goiTrangChu);
+    let logoLabel = this._getPackValue("Logo : " , rowData.goiLogo);
 
     return (
       <View style={myStyles.rightTextGroup}>
@@ -198,9 +225,9 @@ class AdsListTab extends Component {
             </Text>
           </View>
         </TouchableHighlight>
-        <Text numberOfLines={1} style={myStyles.textGoiTin}>Vị trí cao cấp - 7 ngày</Text>
-        <Text numberOfLines={1} style={myStyles.textGoiTin}>Trang chủ cao cấp - 3 ngày</Text>
-        <Text numberOfLines={1} style={myStyles.textGoiTin}>Logo cần bán gấp - 6 ngày</Text>
+        <Text numberOfLines={1} style={myStyles.textGoiTin}>{viTriLabel}</Text>
+        <Text numberOfLines={1} style={myStyles.textGoiTin}>{trangChuLabel}</Text>
+        <Text numberOfLines={1} style={myStyles.textGoiTin}>{logoLabel}</Text>
 
       </View>
     )

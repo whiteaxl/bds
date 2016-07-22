@@ -17,7 +17,7 @@ import log from "../../lib/logUtil";
 import gui from "../../lib/gui";
 import placeUtil from "../../lib/PlaceUtil";
 
-import LineWithIcon from "./LineWithIcon";
+import LineWithIcon from "./UpgradePackgeSelector_LineWithIcon";
 
 const actions = [
   globalActions,
@@ -43,13 +43,14 @@ function mapDispatchToProps(dispatch) {
 }
 
 
-class UpgradeAds extends Component {
+class UpgradePackgeSelector extends Component {
   constructor(props) {
     super(props);
     StatusBar.setBarStyle('light-content');
   }
-  _onGoiPressed() {
-
+  _onSelect(val) {
+    this.props.actions.changeSelectedPackage(val);
+    Actions.PackageUpdater();
   }
 
   render() {
@@ -77,23 +78,25 @@ class UpgradeAds extends Component {
           <Text style={myStyles.introText}>{ghiChuTitle}</Text>
 
           <LineWithIcon iconSource = {require('../../assets/image/goi/viTri.png')}
-                        value = "Tiêu chuẩn"
+                        onPress = {() => this._onSelect('goiViTri')}
+                        value = {this.props.adsMgmt.package.current_goiViTri}
                         titleColor = {"#e52663"}
                         title = "Gói VỊ TRÍ" />
           <Text style={myStyles.introText}>{ghiChuViTri}</Text>
 
           <LineWithIcon iconSource = {require('../../assets/image/goi/trangChu.png')}
-                        value = "Tiêu chuẩn"
+                        onPress = {() => this._onSelect('goiTrangChu')}
+                        value = {this.props.adsMgmt.package.current_goiTrangChu}
                         titleColor = {"#ffbc34"}
                         title = "Gói TRANG CHỦ" />
           <Text style={myStyles.introText}>{ghiChuTrangChu}</Text>
 
           <LineWithIcon iconSource = {require('../../assets/image/goi/logo.png')}
-                        value = "Cần bán gấp"
+                        onPress = {() => this._onSelect('goiLogo')}
+                        value = {this.props.adsMgmt.package.current_goiLogo}
                         titleColor = {"#2a9ad2"}
                         title = "Gói LOGO" />
           <Text style={myStyles.introText}>{ghiChuLogo}</Text>
-
 
         </View>
       </View>
@@ -102,27 +105,6 @@ class UpgradeAds extends Component {
 
   _onBack() {
     Actions.pop();
-  }
-
-  onValueChange(key:string, value:string) {
-    const newState = {};
-    newState[key] = value;
-    this.setState(newState);
-    this._updateDiaChiFull(key, value);
-  }
-
-  _updateDiaChiFull(key:string, value:string) {
-    var {place} = this.props.postAds;
-    var {xaPhuong} = this.state;
-    if (key == 'diaChi') {
-      place.diaChi = value;
-      if (xaPhuong != '') {
-        place.diaChiFullName = value + ', ' + xaPhuong;
-      } else {
-        place.diaChiFullName = value;
-      }
-    }
-    this.props.actions.onPostAdsFieldChange("place", place);
   }
 }
 
@@ -196,5 +178,5 @@ var myStyles = StyleSheet.create({
   },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UpgradeAds);
+export default connect(mapStateToProps, mapDispatchToProps)(UpgradePackgeSelector);
 

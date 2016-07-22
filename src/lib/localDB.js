@@ -32,14 +32,19 @@ class DBService {
       //log.info("DB just changes:", e.results ? e.results.length:0);
       log.info("DB just changes:", e.results);
 
-      e.results.forEach(one => {
-        //check one by one to make sure it's my change, somehow data come from from other source
-        this.database.getDocument(one.id).then((doc) => {
-          if (!doc.error) {
-            this.onDBChange(doc)
-          }
+      if (e.results) {
+        e.results.forEach(one => {
+          //check one by one to make sure it's my change, somehow data come from from other source
+          this.database.getDocument(one.id).then((doc) => {
+            if (!doc.error) {
+              this.onDBChange(doc)
+            }
+          });
         });
-      });
+      } else {
+        log.warn("DB just changes but e.results is null, e is:", e)
+      }
+
     });
   }
 
@@ -340,13 +345,15 @@ class DBService {
   }
 
   logout() {
+    return this.db()
+      .then(db => {
+        db.getChanges().then(res => {
+          console.log("getChanges", res);
 
-    return this.database.getChanges().then(res => {
-      console.log("getChanges", res);
-
-      this.database.abortAllRequest();
-      return this.database.deleteDatabase();
-    });
+          db.abortAllRequest();
+          return db.deleteDatabase();
+        });
+      });
   }
 
   initListener() {
@@ -478,6 +485,27 @@ class DBService {
     });
   }
 
+  //pack = {level, length, startDateTime}
+  updateAdsPack(adsID, packName, pack) {
+    return this.db().then(db => {
+      log.info("localDB.updateAdsPack", db);
+      return db.getDocument(adsID, {})
+        .then((doc) => {
+          log.info("Found ads," , doc);
+          let documentRevision = doc._rev;
+
+          doc[packName] = pack;
+
+          return db.updateDocument(doc, adsID, documentRevision)
+            .then((res) => {
+              log.info("Updated Ads for new package", res);
+              return {
+                status:0
+              }
+            });
+        });
+    });
+  }
 }
 
 let dbService = new DBService();

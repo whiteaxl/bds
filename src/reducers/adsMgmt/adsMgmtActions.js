@@ -2,6 +2,9 @@
 
 const {
   ON_ADSMGMT_FIELD_CHANGE,
+  ON_SELECTED_PACKAGE_FIELD_CHANGE,
+  CHANGE_SELECTED_PACKAGE,
+  CHANGE_PACKAGE_FIELD
 } = require('../../lib/constants').default;
 
 import log from "../../lib/logUtil";
@@ -12,12 +15,39 @@ import localDB from '../../lib/localDB';
 
 import util from '../../lib/utils';
 
+import danhMuc from '../../assets/DanhMuc';
+
+
+
 export function onAdsMgmtFieldChange(field, value) {
   return {
     type: ON_ADSMGMT_FIELD_CHANGE,
     payload: {field: field, value: value}
   };
 }
+
+export function onSelectedPackageFieldChange(field, value) {
+  return {
+    type: ON_SELECTED_PACKAGE_FIELD_CHANGE,
+    payload: {field: field, value: value}
+  };
+}
+
+export function changeSelectedPackage(value) {
+  return {
+    type: CHANGE_SELECTED_PACKAGE,
+    payload: value
+  };
+}
+
+export function changePackageField(field, value) {
+  return {
+    type: CHANGE_PACKAGE_FIELD,
+    payload: {field, value}
+  };
+}
+
+
 
 function convertAds(e) {
   var diaChiFullName = e.place.diaChiFullName;
@@ -59,6 +89,33 @@ export function loadLikedList(userID) {
         }
         dispatch(onAdsMgmtFieldChange('refreshing', false));
       })
+  }
+}
+
+export function buyCurrentPackage(pack) {
+  return dispatch => {
+    let p = pack.packageSelected;
+    log.info("buyCurrentPackage, adsID", pack);
+    let newPack = {
+      level : danhMuc.package.getLevel(pack[p].levelName),
+      length : danhMuc.package.getLength(pack[p].lengthName),
+      startDateTime : new Date().getTime()
+    };
+
+
+    return localDB.updateAdsPack(pack.adsID, p, newPack).then((res) => {
+      dispatch(changePackageField('current_'+ p, pack[p].levelName));
+
+      dispatch(loadMySellRentList());
+
+      return {
+        status: 0
+      }
+    });
+
+    //update Ads
+    //update UI
+
   }
 }
 
