@@ -13,7 +13,7 @@ import React, {Component} from 'react';
 
 import { Text, View, Image, Dimensions, ScrollView, StyleSheet, StatusBar, TouchableHighlight, Linking } from 'react-native'
 
-var ShareManager = React.ShareManager;
+var ShareManager = require('react-native').NativeModules.ShareManager;
 
 import {Actions} from 'react-native-router-flux';
 
