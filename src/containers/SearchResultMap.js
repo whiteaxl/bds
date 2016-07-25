@@ -33,6 +33,7 @@ import Modal from 'react-native-modalbox';
 import LinearGradient from 'react-native-linear-gradient';
 
 import gui from '../lib/gui';
+import log from '../lib/logUtil';
 import DanhMuc from '../assets/DanhMuc';
 
 import apiUtils from '../lib/ApiUtils';
@@ -103,8 +104,8 @@ class SearchResultMap extends Component {
     console.log("Call SearchResultMap.constructor");
     super(props);
 
+    var region = this.props.search.map.region;
     if (Object.keys(this.props.search.form.fields.region).length <=0) {
-      var region = this.props.search.map.region;
       region.longitudeDelta = region.latitudeDelta * ASPECT_RATIO;
       this.props.actions.onSearchFieldChange("region", region);
     }
@@ -122,7 +123,8 @@ class SearchResultMap extends Component {
       editing: null,
       oldRegion: {},
       newRegion: this.props.search.form.fields.region,
-      drawMode: false
+      drawMode: false,
+      region: region
     }
   }
 
@@ -302,34 +304,36 @@ class SearchResultMap extends Component {
     }
 
     this.props.actions.onSearchFieldChange("region", region);
+    this.state.region = region;
 
     var geoBox = apiUtils.getBbox(region);
     this.props.actions.onSearchFieldChange("geoBox", geoBox);
-    
-    var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
-        radiusInKmSelectedIdx, dienTich, orderBy, place, huongNha, ngayDaDang, polygon} = this.props.search.form.fields;
-    
+
     if (this.state.polygons.length <= 0){
-      this._refreshListData({
-        loaiTin: loaiTin,
-        loaiNhaDat: loaiNhaDat,
-        soPhongNguSelectedIdx: soPhongNguSelectedIdx,
-        soTangSelectedIdx: soTangSelectedIdx,
-        soNhaTamSelectedIdx : soNhaTamSelectedIdx,
-        dienTich: dienTich,
-        gia: gia,
-        orderBy: orderBy,
-        geoBox: geoBox,
-        place: place,
-        radiusInKmSelectedIdx: radiusInKmSelectedIdx,
-        huongNha: huongNha,
-        ngayDaDang: ngayDaDang,
-        polygon: polygon});
+      this._refreshListData(geoBox, []);
     }
   }
 
-  _refreshListData(fields) {
+  _refreshListData(geoBox, polygon) {
     console.log("Call SearhResultMap._refreshListData");
+    var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
+        radiusInKmSelectedIdx, dienTich, orderBy, place, huongNha, ngayDaDang} = this.props.search.form.fields;
+    var fields = {
+      loaiTin: loaiTin,
+      loaiNhaDat: loaiNhaDat,
+      soPhongNguSelectedIdx: soPhongNguSelectedIdx,
+      soTangSelectedIdx: soTangSelectedIdx,
+      soNhaTamSelectedIdx : soNhaTamSelectedIdx,
+      dienTich: dienTich,
+      gia: gia,
+      orderBy: orderBy,
+      geoBox: geoBox,
+      place: place,
+      radiusInKmSelectedIdx: radiusInKmSelectedIdx,
+      huongNha: huongNha,
+      ngayDaDang: ngayDaDang,
+      polygon: polygon};
+
     this.props.actions.search(
         fields
         , () => {});
@@ -389,32 +393,15 @@ class SearchResultMap extends Component {
           var region = {
             latitude: data.currentLocation.lat,
             longitude: data.currentLocation.lon,
-            latitudeDelta: this.props.region.latitudeDelta,
-            longitudeDelta: this.props.region.longitudeDelta
+            latitudeDelta: this.state.region.latitudeDelta,
+            longitudeDelta: this.state.region.longitudeDelta
           };
 
           var geoBox = apiUtils.getBbox(region);
 
           this.props.actions.onSearchFieldChange("geoBox", geoBox);
 
-          var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
-              radiusInKmSelectedIdx, dienTich, orderBy, place, huongNha, ngayDaDang, polygon} = this.props.search.form.fields;
-
-          this._refreshListData({
-            loaiTin: loaiTin,
-            loaiNhaDat: loaiNhaDat,
-            soPhongNguSelectedIdx: soPhongNguSelectedIdx,
-            soTangSelectedIdx: soTangSelectedIdx,
-            soNhaTamSelectedIdx : soNhaTamSelectedIdx,
-            dienTich: dienTich,
-            gia: gia,
-            orderBy: orderBy,
-            geoBox: geoBox,
-            place: place,
-            radiusInKmSelectedIdx: radiusInKmSelectedIdx,
-            huongNha: huongNha,
-            ngayDaDang: ngayDaDang,
-            polygon: polygon});
+          this._refreshListData(geoBox, []);
 
           this.props.actions.onMapChange("region", region);
         },
@@ -564,33 +551,21 @@ class SearchResultMap extends Component {
     if (polygons.length > 0) {
         var geoBox = apiUtils.getPolygonBox(polygons[0]);
         this.props.actions.onSearchFieldChange("geoBox", geoBox);
-        this.props.actions.onSearchFieldChange("region", apiUtils.getRegion(geoBox));
+        var region = apiUtils.getRegion(geoBox);
+        this.props.actions.onSearchFieldChange("region", region);
+        this.state.region = region;
         var polygon = apiUtils.convertPolygon(polygons[0]);
         this.props.actions.onSearchFieldChange("polygon", polygon);
 
-        var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
-          radiusInKmSelectedIdx, dienTich, orderBy, place, huongNha, ngayDaDang} = this.props.search.form.fields;
-
-        this._refreshListData({
-          loaiTin: loaiTin,
-          loaiNhaDat: loaiNhaDat,
-          soPhongNguSelectedIdx: soPhongNguSelectedIdx,
-          soTangSelectedIdx: soTangSelectedIdx,
-          soNhaTamSelectedIdx : soNhaTamSelectedIdx,
-          dienTich: dienTich,
-          gia: gia,
-          orderBy: orderBy,
-          geoBox: geoBox,
-          place: place,
-          radiusInKmSelectedIdx: radiusInKmSelectedIdx,
-          huongNha: huongNha,
-          ngayDaDang: ngayDaDang,
-          polygon: polygon});
+        this._refreshListData(geoBox, polygon);
     }
   }
 
   _refreshPolygons(gestureState) {
-    var region = this.props.search.map.region;
+    var region = this.state.region;
+    if (isNaN(region.latitude) || isNaN(region.longitude)) {
+      return;
+    }
     var x0 = this._previousLeft + gestureState.dx;
     var y0 = this._previousTop + gestureState.dy;
     var lat = region.latitude + region.latitudeDelta*(0.5-(y0-5)/height)*1.17;
