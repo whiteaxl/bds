@@ -65,6 +65,7 @@ export default class AdsMgmt extends React.Component {
 
   componentDidMount() {
     log.info("AdsMgmt - componentDidMount");
+    this.props.actions.loadMySellRentList();
     this.props.actions.loadLikedList(this.props.global.currentUser.userID);
   }
 
