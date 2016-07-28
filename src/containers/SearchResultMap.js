@@ -111,7 +111,6 @@ class SearchResultMap extends Component {
     }
 
     this.state = {
-      firstLoad : true,
       modal: false,
       mapType: "Standard",
       mmarker:{},
@@ -295,14 +294,7 @@ class SearchResultMap extends Component {
   _onRegionChangeComplete(region) {
     console.log("Call SearhResultMap._onRegionChangeComplete");
 
-    if (this.state.firstLoad) {
-      this.setState({
-        firstLoad: false,
-        openDetailAdsModal: false
-      });
-      return;
-    }
-
+    this.props.actions.onMapChange("region", region);
     this.props.actions.onSearchFieldChange("region", region);
     this.state.region = region;
 
@@ -550,14 +542,11 @@ class SearchResultMap extends Component {
     });
     if (polygons.length > 0) {
         var geoBox = apiUtils.getPolygonBox(polygons[0]);
-        this.props.actions.onSearchFieldChange("geoBox", geoBox);
-        var region = apiUtils.getRegion(geoBox);
-        this.props.actions.onSearchFieldChange("region", region);
-        this.state.region = region;
         var polygon = apiUtils.convertPolygon(polygons[0]);
+        this.props.actions.onSearchFieldChange("geoBox", geoBox);
         this.props.actions.onSearchFieldChange("polygon", polygon);
-
         this._refreshListData(geoBox, polygon);
+
     }
   }
 
