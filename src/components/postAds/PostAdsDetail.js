@@ -27,7 +27,7 @@ import DanhMuc from '../../assets/DanhMuc';
 
 import LikeTabButton from '../LikeTabButton';
 
-import SegmentedControl from '../SegmentedControl';
+import SegmentedControl from '../SegmentedControl2';
 
 import dbService from "../../lib/localDB";
 
@@ -404,27 +404,31 @@ class PostAdsDetail extends Component {
 
     _renderSoTang() {
         return this._renderSegment("Số tầng", DanhMuc.getAdsSoTangValues(),
-            this.props.postAds.soTangSelectedIdx, this._onSegmentChanged.bind(this, 'soTangSelectedIdx'));
+            this.props.postAds.soTangSelectedIdx, this._onSegmentChanged.bind(this, 'soTangSelectedIdx'),
+            this.props.postAds.soTangText, "soTangText", () => {});
     }
 
     _renderPhongNgu() {
         return this._renderSegment("Số phòng ngủ", DanhMuc.getAdsSoPhongNguValues(),
-            this.props.postAds.soPhongNguSelectedIdx, this._onSegmentChanged.bind(this, 'soPhongNguSelectedIdx'));
+            this.props.postAds.soPhongNguSelectedIdx, this._onSegmentChanged.bind(this, 'soPhongNguSelectedIdx'),
+            this.props.postAds.soPhongNguText, "soPhongNguText", () => {});
     }
 
     _renderPhongTam() {
         return this._renderSegment("Số phòng tắm", DanhMuc.getAdsSoPhongTamValues(),
-            this.props.postAds.soNhaTamSelectedIdx, this._onSegmentChanged.bind(this, 'soNhaTamSelectedIdx'));
+            this.props.postAds.soNhaTamSelectedIdx, this._onSegmentChanged.bind(this, 'soNhaTamSelectedIdx'),
+            this.props.postAds.soNhaTamText, "soNhaTamText", () => {});
     }
 
     _onSegmentChanged(key, event) {
         this.onValueChange(key, event.nativeEvent.selectedSegmentIndex);
     }
 
-    _renderSegment(label, values, selectedIndexAttribute, onChange) {
+    _renderSegment(label, values, selectedIndexAttribute, onChange, textValue, textField, onTextChange) {
         return (
             <SegmentedControl label={label} values={values} selectedIndexAttribute={selectedIndexAttribute}
-                              onChange={onChange} />
+                              onChange={onChange} textValue={textValue} textField={textField}
+                              onTextChange={onTextChange} placeholder={"Khác"}/>
         );
     }
 
@@ -572,7 +576,8 @@ class PostAdsDetail extends Component {
 
     onSaveAds() {
         var {uploadUrls} = this.state;
-        var {loaiTin, loaiNhaDat, gia, donViTien, dienTich, soTangSelectedIdx, soPhongNguSelectedIdx, soNhaTamSelectedIdx, chiTiet, place} = this.props.postAds;
+        var {loaiTin, loaiNhaDat, gia, donViTien, dienTich, soTangSelectedIdx, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
+            soTangText, soPhongNguText, soNhaTamText, chiTiet, place} = this.props.postAds;
         var imageUrls = [];
         uploadUrls.map(function (uploadUrl) {
             imageUrls.push(rootUrl + uploadUrl);
