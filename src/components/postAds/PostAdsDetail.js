@@ -421,7 +421,21 @@ class PostAdsDetail extends Component {
     }
 
     _onSegmentChanged(key, event) {
-        this.onValueChange(key, event.nativeEvent.selectedSegmentIndex);
+        var index = event.nativeEvent.selectedSegmentIndex;
+        this.onValueChange(key, index);
+        // var value = '';
+        // if (key == 'soTangSelectedIdx') {
+        //     value = DanhMuc.getAdsSoTangByIndex(index);
+        //     this.onValueChange('soTangText', value);
+        // }
+        // else if (key == 'soPhongNguSelectedIdx') {
+        //     value = DanhMuc.getAdsSoPhongByIndex(index);
+        //     this.onValueChange('soPhongNguText', value);
+        // }
+        // else {
+        //     value = DanhMuc.getAdsSoPhongTamByIndex(index);
+        //     this.onValueChange('soNhaTamText', value);
+        // }
     }
 
     _renderSegment(label, values, selectedIndexAttribute, onChange, textValue, textField, onTextChange) {
@@ -576,8 +590,7 @@ class PostAdsDetail extends Component {
 
     onSaveAds() {
         var {uploadUrls} = this.state;
-        var {loaiTin, loaiNhaDat, gia, donViTien, dienTich, soTangSelectedIdx, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
-            soTangText, soPhongNguText, soNhaTamText, chiTiet, place} = this.props.postAds;
+        var {loaiTin, loaiNhaDat, gia, donViTien, dienTich, soTangText, soPhongNguText, soNhaTamText, chiTiet, place} = this.props.postAds;
         var imageUrls = [];
         uploadUrls.map(function (uploadUrl) {
             imageUrls.push(rootUrl + uploadUrl);
@@ -592,12 +605,9 @@ class PostAdsDetail extends Component {
             "phone": currentUser.phone,
             "userID": currentUser.userID
         };
-        var phongNgu = Number(DanhMuc.getAdsSoPhongByIndex(soPhongNguSelectedIdx));
-        phongNgu = phongNgu ? phongNgu : undefined;
-        var soTang = Number(DanhMuc.getAdsSoTangByIndex(soTangSelectedIdx));
-        soTang = soTang ? soTang : undefined;
-        var phongTam = Number(DanhMuc.getAdsSoPhongTamByIndex(soNhaTamSelectedIdx));
-        phongTam = phongTam ? phongTam : undefined;
+        var phongNgu = soPhongNguText != '' ? soPhongNguText : undefined;
+        var soTang = soTangText != '' ? soTangText : undefined;
+        var phongTam = soNhaTamText != '' ? soNhaTamText : undefined;
         var giaBan = DanhMuc.calculateGia(gia, donViTien, dienTich);
         dbService._createAds({loaiTin: loaiTinVal, loaiNha: loaiNhaDat,
             place: place, gia: Number(giaBan),
@@ -617,9 +627,12 @@ class PostAdsDetail extends Component {
         this.onValueChange("photos", [{uri: ''},{uri: ''},{uri: ''},{uri: ''}]);
         this.onValueChange("loaiTin", 'ban');
         this.onValueChange("loaiNhaDat", '');
-        this.onValueChange("soPhongNguSelectedIdx", 0);
-        this.onValueChange("soTangSelectedIdx", 0);
-        this.onValueChange("soNhaTamSelectedIdx", 0);
+        this.onValueChange("soPhongNguSelectedIdx", null);
+        this.onValueChange("soTangSelectedIdx", null);
+        this.onValueChange("soNhaTamSelectedIdx", null);
+        this.onValueChange("soPhongNguText", '');
+        this.onValueChange("soTangText", '');
+        this.onValueChange("soNhaTamText", '');
         this.onValueChange("dienTich", null);
         this.onValueChange("gia", null);
         this.onValueChange("place", {
