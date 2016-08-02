@@ -405,37 +405,54 @@ class PostAdsDetail extends Component {
     _renderSoTang() {
         return this._renderSegment("Số tầng", DanhMuc.getAdsSoTangValues(),
             this.props.postAds.soTangSelectedIdx, this._onSegmentChanged.bind(this, 'soTangSelectedIdx'),
-            this.props.postAds.soTangText, "soTangText", () => {});
+            this.props.postAds.soTangText, "soTangText", (key, value) => this._onSegmentTextChanged(key, value));
     }
 
     _renderPhongNgu() {
         return this._renderSegment("Số phòng ngủ", DanhMuc.getAdsSoPhongNguValues(),
             this.props.postAds.soPhongNguSelectedIdx, this._onSegmentChanged.bind(this, 'soPhongNguSelectedIdx'),
-            this.props.postAds.soPhongNguText, "soPhongNguText", () => {});
+            this.props.postAds.soPhongNguText, "soPhongNguText", (key, value) => this._onSegmentTextChanged(key, value));
     }
 
     _renderPhongTam() {
         return this._renderSegment("Số phòng tắm", DanhMuc.getAdsSoPhongTamValues(),
             this.props.postAds.soNhaTamSelectedIdx, this._onSegmentChanged.bind(this, 'soNhaTamSelectedIdx'),
-            this.props.postAds.soNhaTamText, "soNhaTamText", () => {});
+            this.props.postAds.soNhaTamText, "soNhaTamText", (key, value) => this._onSegmentTextChanged(key, value));
+    }
+
+    _onSegmentTextChanged(key, val) {
+        this.onValueChange(key, val);
+        if (isNaN(val) || val == '') {
+            return;
+        }
+        var value = Number(val) > 7 ? -1 : Number(val)-1;
+        if (key == 'soTangText') {
+            this.onValueChange('soTangSelectedIdx', value);
+        }
+        else if (key == 'soPhongNguText') {
+            this.onValueChange('soPhongNguSelectedIdx', value);
+        }
+        else {
+            this.onValueChange('soNhaTamSelectedIdx', value);
+        }
     }
 
     _onSegmentChanged(key, event) {
         var index = event.nativeEvent.selectedSegmentIndex;
         this.onValueChange(key, index);
-        // var value = '';
-        // if (key == 'soTangSelectedIdx') {
-        //     value = DanhMuc.getAdsSoTangByIndex(index);
-        //     this.onValueChange('soTangText', value);
-        // }
-        // else if (key == 'soPhongNguSelectedIdx') {
-        //     value = DanhMuc.getAdsSoPhongByIndex(index);
-        //     this.onValueChange('soPhongNguText', value);
-        // }
-        // else {
-        //     value = DanhMuc.getAdsSoPhongTamByIndex(index);
-        //     this.onValueChange('soNhaTamText', value);
-        // }
+        var value = '';
+        if (key == 'soTangSelectedIdx') {
+            value = DanhMuc.getAdsSoTangByIndex(index);
+            this.onValueChange('soTangText', value);
+        }
+        else if (key == 'soPhongNguSelectedIdx') {
+            value = DanhMuc.getAdsSoPhongByIndex(index);
+            this.onValueChange('soPhongNguText', value);
+        }
+        else {
+            value = DanhMuc.getAdsSoPhongTamByIndex(index);
+            this.onValueChange('soNhaTamText', value);
+        }
     }
 
     _renderSegment(label, values, selectedIndexAttribute, onChange, textValue, textField, onTextChange) {
@@ -537,7 +554,7 @@ class PostAdsDetail extends Component {
         if (uploadFiles.length === 0) {
             errors += ' (ảnh)';
         }
-        var {loaiNhaDat, place, gia, dienTich} = this.props.postAds;
+        var {loaiNhaDat, place, gia, dienTich, soTangText, soPhongNguText, soNhaTamText} = this.props.postAds;
         if (loaiNhaDat == '' || loaiNhaDat === 0) {
             errors += ' (loại nhà)';
         }
@@ -559,6 +576,15 @@ class PostAdsDetail extends Component {
         }
         if (dienTich && isNaN(dienTich)) {
             errors += ' (diện tích)';
+        }
+        if (soTangText && isNaN(soTangText)) {
+            errors += ' (số tầng)';
+        }
+        if (soPhongNguText && isNaN(soPhongNguText)) {
+            errors += ' (số phòng ngủ)';
+        }
+        if (soNhaTamText && isNaN(soNhaTamText)) {
+            errors += ' (số phòng tắm)';
         }
         if (errors != '') {
             errorMessage = 'Sai kiểu giá trị:' + errors + '!';
@@ -627,9 +653,9 @@ class PostAdsDetail extends Component {
         this.onValueChange("photos", [{uri: ''},{uri: ''},{uri: ''},{uri: ''}]);
         this.onValueChange("loaiTin", 'ban');
         this.onValueChange("loaiNhaDat", '');
-        this.onValueChange("soPhongNguSelectedIdx", null);
-        this.onValueChange("soTangSelectedIdx", null);
-        this.onValueChange("soNhaTamSelectedIdx", null);
+        this.onValueChange("soPhongNguSelectedIdx", -1);
+        this.onValueChange("soTangSelectedIdx", -1);
+        this.onValueChange("soNhaTamSelectedIdx", -1);
         this.onValueChange("soPhongNguText", '');
         this.onValueChange("soTangText", '');
         this.onValueChange("soNhaTamText", '');

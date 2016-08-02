@@ -373,25 +373,25 @@ class SearchResultDetail extends Component {
                 <View style={detailStyles.shareMainView}>
                   <View style={detailStyles.shareLeft}>
                     <View style={[detailStyles.circleContainer, {backgroundColor: '#0A5594'}]} >
-                      <RelandIcon onPress={this._onShare}
+                      <RelandIcon onPress={this._onShare.bind(this)}
                                   name="facebook" color={'white'}
                                   size={26} iconProps={{style: detailStyles.shareIcon}}>
                       </RelandIcon>
                     </View>
                     <View style={[detailStyles.circleContainer, {backgroundColor: '#EA9409'}]} >
-                      <RelandIcon onPress={() => this._onChat(mobile)}
+                      <RelandIcon onPress={() => this._onChat(rowData)}
                                   name="sms" color={'white'}
                                   size={26} iconProps={{style: detailStyles.shareIcon}}>
                       </RelandIcon>
                     </View>
                     <View style={[detailStyles.circleContainer, {backgroundColor: '#1E7AC0'}]} >
-                      <RelandIcon onPress={this._onShare}
+                      <RelandIcon onPress={this._onShare.bind(this)}
                                   name="zalo" color={'white'}
                                   size={32} iconProps={{style: [detailStyles.shareIcon,{marginLeft: 2, marginTop: 0.5}]}}>
                       </RelandIcon>
                     </View>
                     <View style={[detailStyles.circleContainer, {backgroundColor: '#CE0005'}]} >
-                      <RelandIcon onPress={this._onShare}
+                      <RelandIcon onPress={this._onShare.bind(this)}
                                   name="email" color={'white'}
                                   size={26} iconProps={{style: detailStyles.shareIcon}}>
                       </RelandIcon>
@@ -399,7 +399,7 @@ class SearchResultDetail extends Component {
                   </View>
                   <View style={detailStyles.shareRight}>
                     <View style={[detailStyles.circleContainer, {marginRight: 0}]} >
-                      <RelandIcon onPress={this._onShare}
+                      <RelandIcon onPress={this._onShare.bind(this)}
                                    name="share-o" color={'white'}
                                    size={26} iconProps={{style: detailStyles.shareIcon}}>
                       </RelandIcon>
