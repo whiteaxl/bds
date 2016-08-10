@@ -198,6 +198,14 @@ danhMuc.DonViTienKey = [
     5
 ];
 
+danhMuc.goiTin = [
+    "1",
+    "7",
+    "14",
+    "30",
+    "90"
+]
+
 danhMuc.getDanhMucKeys = function (hashDanhMuc) {
     var result = [];
     for (var k in hashDanhMuc) {

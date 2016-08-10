@@ -20,6 +20,8 @@ import placeUtil from "../../lib/PlaceUtil";
 
 import danhMuc from "../../assets/DanhMuc";
 
+import SegmentedControl from '../SegmentedControl';
+
 const actions = [
   globalActions,
   adsMgmtActions
@@ -57,15 +59,19 @@ class PackageUpdater extends Component {
     return "Gói vị trí";
   }
 
-  _renderMoneyLine(label, value) {
+  _renderMoneyLine(label, value, dotColor) {
     return (
       <View style={{flexDirection:'row'}}>
-        <Text style={{fontSize: 14, width: 130,fontFamily: gui.fontFamily}}>
-          {label}
-        </Text>
-        <Text style={{fontSize: 14, fontFamily: gui.fontFamily}}>
-          {value}
-        </Text>
+        <View style={[myStyles.dot, {backgroundColor: dotColor}]}>
+        </View>
+        <View style={{flexDirection:'column'}}>
+          <Text style={{fontSize: 14, fontFamily: gui.fontFamily}}>
+            {value}
+          </Text>
+          <Text style={{fontSize: 14, width: 130,fontFamily: gui.fontFamily}}>
+            {label}
+          </Text>
+        </View>
       </View>
     )
   }
@@ -109,6 +115,22 @@ class PackageUpdater extends Component {
     );
   }
 
+  _renderPackageSession(packageName, packageComment) {
+    return (
+        <View style={{flexDirection: 'column'}} key={packageName}>
+          {this._renderSegment(packageName, danhMuc.goiTin, -1, () => {})}
+          <Text style={[myStyles.label, {marginLeft: 17, marginBottom: 10}]}> {packageComment} </Text>
+        </View>
+    );
+  }
+
+  _renderSegment(label, values, selectedIndexAttribute, onChange) {
+    return (
+        <SegmentedControl label={label} values={values} selectedIndexAttribute={selectedIndexAttribute}
+                          onChange={onChange} />
+    );
+  }
+
   onApply() {
     Alert.alert(
       'Alert Title',
@@ -124,6 +146,14 @@ class PackageUpdater extends Component {
   }
 
   render() {
+    let packageNames = ['Đặc biệt', 'Cao cấp', 'Tiêu chuẩn'];
+    let packageComments = ['Sử dụng các gói TRANG CHỦ để tin của bạn luôn nằm trên các tin khác trong các BỘ SƯU TẬP ở màn hình chính.',
+      'Sử dụng các gói TRANG CHỦ để tin của bạn luôn nằm trên các tin khác trong các BỘ SƯU TẬP ở màn hình chính.',
+      'Sử dụng các gói LOGO để tin của bạn thu hút được nhiều sự chú ý của người xem hơn.'];
+    let packageSessions = [];
+    for (var i = 0; i < packageNames.length; i++) {
+      packageSessions.push(this._renderPackageSession(packageNames[i], packageComments[i]));
+    }
     return (
       <View style={myStyles.container}>
         <View style={myStyles.customPageHeader}>
@@ -155,27 +185,24 @@ class PackageUpdater extends Component {
           {this._renderTitleLine("TÀI KHOẢN VÀ PHÍ DỊCH VỤ")}
 
           <View style={{flexDirection: "row", paddingLeft: 19, backgroundColor:'white', paddingTop:8, paddingBottom: 8}}>
-            <Image
-              style={{width: 45, height: 45}}
-              resizeMode={Image.resizeMode.contain}
-              source={require('../../assets/image/goi/money.png')}
-            />
+            <View style={{paddingLeft: 13, paddingTop:5}}>
+              <Image
+                  style={{width: 45, height: 45}}
+                  resizeMode={Image.resizeMode.contain}
+                  source={require('../../assets/image/goi/money.png')}
+              />
+            </View>
 
             <View style={{paddingLeft: 13, paddingTop:5}}>
-              {this._renderMoneyLine("Tổng tài khoản:", "500k")}
-              {this._renderMoneyLine("Phí dịch vụ:", "100k")}
+              {this._renderMoneyLine("Tài khoản chính", "400k", '#1396E0')}
+              {this._renderMoneyLine("Tài khoản khuyến mại", "100k", '#DE6207')}
+              {this._renderMoneyLine("Phí dịch vụ", "150k", '#FB0007')}
             </View>
           </View>
 
-          {this._renderTitleLine("CHỌN GÓI DỊCH VỤ và SỐ NGÀY")}
+          {this._renderTitleLine("CÁC GÓI DỊCH VỤ")}
 
-          {this._renderPackageLine("Gói dịch vụ"
-            , this._getCurrentLevelName()
-            , () => Actions.PackageTypes())}
-
-          {this._renderPackageLine("Số ngày"
-            , this._getCurrentLength()
-            , () => Actions.PackageLengths())}
+          {packageSessions}
 
         </View>
       </View>
@@ -279,6 +306,14 @@ var myStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "flex-end",
     paddingRight: 4
+  },
+
+  dot : {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    marginRight: 10,
+    marginTop: 10
   },
 });
 
