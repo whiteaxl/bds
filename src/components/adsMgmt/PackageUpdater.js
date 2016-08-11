@@ -8,7 +8,7 @@ import * as adsMgmtActions from '../../reducers/adsMgmt/adsMgmtActions';
 import React, {Component} from 'react';
 
 import {Text, View, StyleSheet, TextInput, StatusBar, Dimensions,
-  TouchableHighlight, Image, Picker, Alert} from 'react-native'
+  TouchableHighlight, Image, Picker, Alert, ScrollView} from 'react-native'
 
 import TruliaIcon from '../TruliaIcon';
 
@@ -20,7 +20,7 @@ import placeUtil from "../../lib/PlaceUtil";
 
 import danhMuc from "../../assets/DanhMuc";
 
-import SegmentedControl from '../SegmentedControl';
+import SegmentedControl from '../SegmentedControlSelector';
 
 const actions = [
   globalActions,
@@ -62,13 +62,13 @@ class PackageUpdater extends Component {
   _renderMoneyLine(label, value, dotColor) {
     return (
       <View style={{flexDirection:'row'}}>
-        <View style={[myStyles.dot, {backgroundColor: dotColor}]}>
+        <View style={[myStyles.dot, {borderColor: dotColor}]}>
         </View>
         <View style={{flexDirection:'column'}}>
-          <Text style={{fontSize: 14, fontFamily: gui.fontFamily}}>
+          <Text style={{fontSize: 14, fontFamily: gui.fontFamily, fontWeight: 'bold'}}>
             {value}
           </Text>
-          <Text style={{fontSize: 14, width: 130,fontFamily: gui.fontFamily}}>
+          <Text style={{fontSize: 14, fontFamily: gui.fontFamily}}>
             {label}
           </Text>
         </View>
@@ -115,19 +115,24 @@ class PackageUpdater extends Component {
     );
   }
 
+  _onLevelSelect(val) {
+    this.props.actions.onSelectedPackageFieldChange("levelName", val);
+  }
+
   _renderPackageSession(packageName, packageComment) {
+    let checkColor = this._getCurrentLevelName() == packageName ? gui.mainColor : 'gray';
     return (
         <View style={{flexDirection: 'column'}} key={packageName}>
-          {this._renderSegment(packageName, danhMuc.goiTin, -1, () => {})}
+          {this._renderSegment(packageName, danhMuc.goiTin, -1, () => this._onLevelSelect(packageName), checkColor)}
           <Text style={[myStyles.label, {marginLeft: 17, marginBottom: 10}]}> {packageComment} </Text>
         </View>
     );
   }
 
-  _renderSegment(label, values, selectedIndexAttribute, onChange) {
+  _renderSegment(label, values, selectedIndexAttribute, onChange, checkColor) {
     return (
         <SegmentedControl label={label} values={values} selectedIndexAttribute={selectedIndexAttribute}
-                          onChange={onChange} />
+                          onChange={onChange} checkColor={checkColor}/>
     );
   }
 
@@ -181,11 +186,18 @@ class PackageUpdater extends Component {
 
         </View>
 
-        <View >
+        <ScrollView
+            ref={(scrollView) => { this._scrollView = scrollView; }}
+            automaticallyAdjustContentInsets={false}
+            vertical={true}
+            style={[myStyles.scrollView]}
+            //onScroll={this.handleScroll.bind(this)}
+            //scrollEventThrottle={1}
+        >
           {this._renderTitleLine("TÀI KHOẢN VÀ PHÍ DỊCH VỤ")}
 
           <View style={{flexDirection: "row", paddingLeft: 19, backgroundColor:'white', paddingTop:8, paddingBottom: 8}}>
-            <View style={{paddingLeft: 13, paddingTop:5}}>
+            <View style={{paddingLeft: 13, paddingTop:5, width: Dimensions.get('window').width/3, alignItems: 'center', justifyContent: 'center'}}>
               <Image
                   style={{width: 45, height: 45}}
                   resizeMode={Image.resizeMode.contain}
@@ -204,7 +216,7 @@ class PackageUpdater extends Component {
 
           {packageSessions}
 
-        </View>
+        </ScrollView>
       </View>
     )
   }
@@ -313,8 +325,13 @@ var myStyles = StyleSheet.create({
     height: 20,
     borderRadius: 10,
     marginRight: 10,
-    marginTop: 10
+    marginTop: 10,
+    backgroundColor: 'white',
+    borderWidth: 5
   },
+  scrollView: {
+    backgroundColor: 'white'
+  }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PackageUpdater);
