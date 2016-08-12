@@ -2,6 +2,7 @@
 
 const {
   ON_ME_FIELD_CHANGE,
+  ON_TOPUP_SCRATCH_FIELD_CHANGE
 } = require('../../lib/constants').default;
 
 import log from "../../lib/logUtil";
@@ -11,6 +12,13 @@ import userApi from '../../lib/userApi';
 export function onMeFieldChange(field, value) {
   return {
     type: ON_ME_FIELD_CHANGE,
+    payload: {field: field, value: value}
+  };
+}
+
+export function onTopupScratchFieldChange(field, value) {
+  return {
+    type: ON_TOPUP_SCRATCH_FIELD_CHANGE,
     payload: {field: field, value: value}
   };
 }

@@ -37,6 +37,9 @@ import PackageUpdater from '../components/adsMgmt/PackageUpdater';
 import PackageTypes from '../components/adsMgmt/PackageTypes';
 import PackageLengths from '../components/adsMgmt/PackageLengths';
 
+import Topup from '../components/me/Topup';
+import Topup_Scratch from '../components/me/Topup_Scratch';
+
 
 import SearchSuggestion from '../containers/PlacesAutoComplete';
 import Chat from './Chat';
@@ -164,6 +167,8 @@ class App extends React.Component {
           <Scene key='PackageTypes' component={PackageTypes} hideNavBar={true}/>
           <Scene key='PackageLengths' component={PackageLengths} hideNavBar={true}/>
 
+          <Scene key='Topup' component={Topup} hideNavBar={true}/>
+          <Scene key='Topup_Scratch' component={Topup_Scratch} hideNavBar={true}/>
 
         </Scene>
       </RouterWithRedux>

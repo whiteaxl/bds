@@ -13,8 +13,8 @@ export default class LineWithIcon extends Component {
 
   render() {
     return (
-      <TouchableOpacity onPress={this.coming}>
-        <View style={styles.settingLine}>
+      <TouchableOpacity onPress={this.props.onPress}>
+        <View style={[styles.settingLine, this.props.containerStyle]}>
           <Image
             style={styles.avatarIcon}
             resizeMode={Image.resizeMode.contain}

@@ -64,6 +64,10 @@ class MeContent extends Component {
     this.props.actions.logout();
   }
 
+  _onTopup() {
+    Actions.Topup();
+  }
+
   render() {
     log.info("Call MeContent render, currentUser:", this.props.global.currentUser);
     let avatarUri = this.props.global.currentUser.avatar ? {uri: this.props.global.currentUser.avatar} :
@@ -99,6 +103,7 @@ class MeContent extends Component {
         <View style={styles.boxSeparator}><Text/></View>
 
         <LineWithIcon iconSource = {require('../../assets/image/me/me_napTien.png')}
+                      onPress = {this._onTopup}
                       title = "Nạp tiền" />
         <View style={styles.lineSeparator}><Text/></View>
         <LineWithIcon iconSource = {require('../../assets/image/me/me_lichSu.png')}

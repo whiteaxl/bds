@@ -95,6 +95,8 @@ export default function globalReducer(state = initialState, action) {
           .setIn(['currentUser','avatar'], e.avatar)
           .setIn(['currentUser','adsLikes'], e.adsLikes)
           .setIn(['currentUser','saveSearch'], e.saveSearch)
+          .setIn(['currentUser','mainAccount'], e.account && e.account.main)
+          .setIn(['currentUser','bonusAccount'], e.account && e.account.bonus)
         ;
       } 
 

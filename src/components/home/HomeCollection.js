@@ -28,15 +28,22 @@ export default class HomeCollection extends Component {
   }
 
   _renderAds(ads, flex) {
-    return (
-      <TouchableOpacity onPress={() => this._onAdsPressed(ads)} style={{flex: flex}}>
-        <ImageItem ads={ads}/>
-      </TouchableOpacity>
-    );
+    if (ads) {
+      return (
+        <TouchableOpacity onPress={() => this._onAdsPressed(ads)} style={{flex: flex}}>
+          <ImageItem ads={ads}/>
+        </TouchableOpacity>
+      );
+    } else {
+      log.info("_renderAds null");
+
+      return null
+    }
   }
 
   render() {
     let {title1, title2, data, query} = this.props.collectionData;
+
     return(
       <View style={{flexDirection: "column"}}>
         <View style={styles.titleContainer}>
