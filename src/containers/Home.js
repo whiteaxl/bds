@@ -98,7 +98,7 @@ class Home extends Component {
           <View style={styles.home}>
             <RelandIcon
                         name="home" color="white" size={20}
-                        mainProps={{marginTop: 16, paddingLeft: 16, paddingRight: 16}}
+                        mainProps={{marginTop: 16, paddingLeft: 18, paddingRight: 16}}
             >
             </RelandIcon>
           </View>

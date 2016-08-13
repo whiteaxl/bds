@@ -72,7 +72,9 @@ export default class HomeCollection extends Component {
         </View>
 
         <TouchableOpacity style={{backgroundColor:'transparent'}} onPress={this._onSeeMore.bind(this)} >
-          <Text style={styles.moreDetailButton}>Xem thêm</Text>
+          <View style={styles.moreDetail}>
+            <Text style={styles.moreDetailButton}>Xem thêm</Text>
+          </View>
         </TouchableOpacity>
       </View>
     )
@@ -170,21 +172,27 @@ var styles = StyleSheet.create({
   rowItem: {
     flexDirection: "row",
   },
+  moreDetail: {
+    margin: 11,
+    marginLeft:23,
+    marginRight:23,
+    padding: 4,
+    paddingBottom: 5,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: gui.mainColor,
+    borderRadius: 5,
+    borderColor: 'transparent'
+  },
   moreDetailButton: {
-    margin: 12,
-    marginLeft:20,
-    marginRight:20,
-    padding: 5,
     alignItems: 'center',
     justifyContent: 'center',
     textAlign: 'center',
-    backgroundColor: gui.mainColor,
+    backgroundColor: 'transparent',
     color: 'white',
     fontFamily: gui.fontFamily,
     fontWeight: 'normal',
-    fontSize: gui.normalFontSize,
-    borderRadius: 5,
-    borderColor: 'transparent'
+    fontSize: 15
   },
   linearGradient: {
     backgroundColor : "transparent"
