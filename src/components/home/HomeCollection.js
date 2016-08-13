@@ -95,13 +95,10 @@ class ImageItem extends React.Component{
                         style={styles.linearGradient2}>
         </LinearGradient>
 
-        {/*
         <View style={styles.heartContent}>
           <TruliaIcon name="heart-o" mainProps={[styles.heartButton,{marginLeft: 30}]}
-                      color={'white'} size={20}/>
+                      color={'white'} size={22}/>
         </View>
-        */
-        }
 
         <View style={styles.itemContent}>
           <View style={{flex: 1, paddingRight: 7}}>
@@ -220,15 +217,17 @@ var styles = StyleSheet.create({
     color: 'white'
   },
   heartContent: {
+    position: 'absolute',
     backgroundColor: 'transparent',
-    alignItems: 'flex-start'
+    top: 3,
+    right: 10
   },
   heartButton: {
     marginTop: 5,
   },
 
   titleContainer : {
-    height: 75,
+    height: 74,
     alignItems:'center',
     justifyContent: 'center',
     /*
