@@ -98,22 +98,22 @@ class App extends React.Component {
           <Scene key='Launch' component={Launch} initial={true} title="Welcome" />
 
           <Scene key="Home" tabs={true} default="Main" type="replace" tabBarStyle={styles.tabBarStyle}>
-            <Scene key="Main" title="Duyệt nhanh" iconName={"list"} iconSize={19} icon={TabIcon}
+            <Scene key="Main" title="Trang chủ" iconName={"list"} iconSize={22} icon={TabIcon}
                    component={Home} onPress={()=>{
                       this.props.actions.loadHomeData();
                       Actions.Main()
                    }}
                    hideNavBar={true} initial={true}/>
 
-            <Scene key="Inbox" component={Inbox} title="Chat"
-                   iconName={"chat"} iconSize={20}
+            <Scene key="Inbox" component={Inbox} title="Tìm kiếm"
+                   iconName={"chat"} iconSize={22}
                    icon={TabIcon} hideNavBar={true} />
             <Scene key="activity" component={PostAds} title="Đăng tin"
-                   iconName={"camera-o"} iconSize={20} icon={TabIcon} hideNavBar={true}/>
+                   iconName={"camera-o"} iconSize={22} icon={TabIcon} hideNavBar={true}/>
             <Scene key="AdsMgmt" component={AdsMgmt} title="Quản lý tin" hideNavBar={true}
-                   iconName={"mgmt"} iconSize={19} icon={TabIcon}/>
+                   iconName={"mgmt"} iconSize={22} icon={TabIcon}/>
             <Scene key="Me" component={Me} title="Tôi" hideNavBar={true}
-                   iconName={"me"} iconSize={21} icon={TabIcon}/>
+                   iconName={"me"} iconSize={22} icon={TabIcon}/>
             {
               /*
             <Scene key="UpgradeAds11" component={UpgradePackgeSelector} hideNavBar={true} title="Upgrade"

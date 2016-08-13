@@ -106,11 +106,11 @@ class Home extends Component {
             <Text style={styles.titleText}>Trang chủ</Text>
           </View>
           <View style={styles.searchButton}>
-            <TruliaIcon onPress={this.handleSearchButton}
-                        name="search" color="white" size={18}
-                        mainProps={{paddingLeft: 16, paddingRight: 16}}
+            <RelandIcon onPress={this.handleSearchButton}
+                        name="chat" color="white" size={20}
+                        mainProps={{marginTop: 16, paddingLeft: 16, paddingRight: 16}}
             >
-            </TruliaIcon>
+            </RelandIcon>
           </View>
         </View>
 

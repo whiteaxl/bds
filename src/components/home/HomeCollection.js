@@ -11,7 +11,7 @@ import TruliaIcon from '../../components/TruliaIcon';
 
 import {Actions} from 'react-native-router-flux';
 
-var imageHeight = 143.3;
+var imageHeight = 143.1;
 
 export default class HomeCollection extends Component {
   _onAdsPressed(ads) {
@@ -54,7 +54,7 @@ export default class HomeCollection extends Component {
 
         <View style={styles.rowItem}>
           {this._renderAds(data[0], 0.55)}
-          <View style={{width:1.3}}/>
+          <View style={{width:0.5}}/>
           {this._renderAds(data[1], 0.45)}
         </View>
 
@@ -62,7 +62,7 @@ export default class HomeCollection extends Component {
 
         <View style={styles.rowItem}>
           {this._renderAds(data[2], 0.45)}
-          <View style={{width:1.3}}/>
+          <View style={{width:0.5}}/>
           {this._renderAds(data[3], 0.55)}
         </View>
 
@@ -155,13 +155,13 @@ var styles = StyleSheet.create({
   },
   categoryLabel: {
     fontFamily: gui.fontFamily,
-    fontSize: 17,
+    fontSize: 16,
     fontWeight: '500',
     backgroundColor: 'transparent'
   },
   arrowLabel: {
     fontFamily: gui.fontFamily,
-    fontSize: 13,
+    fontSize: 12,
     backgroundColor: 'transparent',
     color: gui.arrowColor,
     fontWeight: '500'
@@ -170,7 +170,7 @@ var styles = StyleSheet.create({
     flexDirection: "row",
   },
   moreDetail: {
-    margin: 11.5,
+    margin: 11,
     marginLeft:23,
     marginRight:23,
     marginBottom: 9.5,
