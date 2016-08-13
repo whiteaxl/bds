@@ -98,6 +98,20 @@ class PackageUpdater extends Component {
     return length;
   }
 
+  _getCurrentLengthIndex() {
+    let lengthName = this._getCurrentLength();
+    let lengthVal = danhMuc.package.getLength(lengthName);
+    let lengths = danhMuc.goiTin;
+    let index = -1;
+    for (var i = 0; i < lengths.length; i++) {
+      if (lengthVal == Number(lengths[i])) {
+        index = i;
+        break;
+      }
+    }
+    return index;
+  }
+
   _renderPackageLine(title, value, onPress) {
     return (
         <TouchableHighlight
@@ -119,14 +133,27 @@ class PackageUpdater extends Component {
     this.props.actions.onSelectedPackageFieldChange("levelName", val);
   }
 
-  _renderPackageSession(packageName, packageComment) {
-    let checkColor = this._getCurrentLevelName() == packageName ? gui.mainColor : 'gray';
+  _renderPackageSession(levelName, levelComment) {
+    let isSelectedLevel = this._getCurrentLevelName() == levelName;
+    let checkColor = isSelectedLevel ? gui.mainColor : 'gray';
     return (
-        <View style={{flexDirection: 'column'}} key={packageName}>
-          {this._renderSegment(packageName, danhMuc.goiTin, -1, () => this._onLevelSelect(packageName), checkColor)}
-          <Text style={[myStyles.label, {marginLeft: 17, marginBottom: 10}]}> {packageComment} </Text>
+        <View style={{flexDirection: 'column'}} key={levelName}>
+          {this._renderSegment(levelName, danhMuc.goiTin, isSelectedLevel ? this._getCurrentLengthIndex() : -1,
+              this._onSegmentChanged.bind(this, levelName), checkColor)}
+          <Text style={[myStyles.label, {marginLeft: 17, marginBottom: 10}]}> {levelComment} </Text>
         </View>
     );
+  }
+
+  _onSegmentChanged(levelName, event) {
+    this._onLevelSelect(levelName);
+    let lengthIndex = event.nativeEvent.selectedSegmentIndex;
+    let lengthName = '0 ngày';
+    if (lengthIndex > -1) {
+      let lengthVal = Number(danhMuc.goiTin[lengthIndex]);
+      lengthName = danhMuc.package.length[lengthVal];
+    }
+    this.props.actions.onSelectedPackageFieldChange("lengthName", lengthName);
   }
 
   _renderSegment(label, values, selectedIndexAttribute, onChange, checkColor) {
