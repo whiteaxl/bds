@@ -394,7 +394,7 @@ danhMuc.package = {
         3: "Tiêu chuẩn"
     }, 
     length : {
-        0: "0 ngày",
+        1: "1 ngày",
         7: "7 ngày",
         14: "14 ngày",
         30: "30 ngày",
