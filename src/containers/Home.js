@@ -15,6 +15,8 @@ import {Actions} from 'react-native-router-flux';
 
 import TruliaIcon from '../components/TruliaIcon';
 
+import RelandIcon from '../components/RelandIcon';
+
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 import LinearGradient from 'react-native-linear-gradient';
@@ -93,10 +95,23 @@ class Home extends Component {
     return (
       <View style={styles.fullWidthContainer}>
         <View style={styles.pageHeader}>
-          <TruliaIcon onPress={this.handleSearchButton}
-                      name="search" size={18} color={'white'}
-                      mainProps={styles.search} textProps={{paddingLeft: 10}}
-                      text="Tìm kiếm" />
+          <View style={styles.home}>
+            <RelandIcon
+                        name="home" color="white" size={20}
+                        mainProps={{marginTop: 16, paddingLeft: 16, paddingRight: 16}}
+            >
+            </RelandIcon>
+          </View>
+          <View style={styles.title}>
+            <Text style={styles.titleText}>Trang chủ</Text>
+          </View>
+          <View style={styles.searchButton}>
+            <TruliaIcon onPress={this.handleSearchButton}
+                        name="search" color="white" size={18}
+                        mainProps={{paddingLeft: 16, paddingRight: 16}}
+            >
+            </TruliaIcon>
+          </View>
         </View>
 
         <View style={styles.homeDetailInfo}>
@@ -113,6 +128,32 @@ class Home extends Component {
 
 
 var styles = StyleSheet.create({
+  home: {
+    paddingTop: 19,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: gui.mainColor
+  },
+  title: {
+    backgroundColor: 'transparent',
+    position: 'absolute',
+    left:52,
+    right:52
+  },
+  titleText: {
+    fontSize: 17,
+    fontWeight: '600',
+    marginBottom: 20,
+    marginTop: 32,
+    textAlign: 'center',
+    color: 'white'
+  },
+  searchButton: {
+    paddingTop: 24,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: gui.mainColor
+  },
   fullWidthContainer: {
     flex: 1,
     alignItems: 'stretch',
@@ -129,10 +170,12 @@ var styles = StyleSheet.create({
     marginBottom: 45
   },
   pageHeader: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      backgroundColor: gui.mainColor,
-      height: 61
+    top: 0,
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    justifyContent: 'space-between',
+    backgroundColor: gui.mainColor,
+    height: 63
   },
   search: {
     backgroundColor: gui.mainColor,

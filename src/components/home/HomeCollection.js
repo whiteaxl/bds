@@ -150,21 +150,22 @@ var styles = StyleSheet.create({
   boldTitle: {
     fontFamily: gui.fontFamily,
     fontSize: 12,
-    fontWeight: '600',
+    fontWeight: '500',
     backgroundColor: 'transparent',
     color: gui.mainColor
   },
   categoryLabel: {
     fontFamily: gui.fontFamily,
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 17,
+    fontWeight: '500',
     backgroundColor: 'transparent'
   },
   arrowLabel: {
     fontFamily: gui.fontFamily,
-    fontSize: 14,
+    fontSize: 13,
     backgroundColor: 'transparent',
-    color: gui.arrowColor
+    color: gui.arrowColor,
+    fontWeight: '500'
   },
   rowItem: {
     flexDirection: "row",
@@ -181,7 +182,9 @@ var styles = StyleSheet.create({
     color: 'white',
     fontFamily: gui.fontFamily,
     fontWeight: 'normal',
-    fontSize: gui.normalFontSize
+    fontSize: gui.normalFontSize,
+    borderRadius: 5,
+    borderColor: 'transparent'
   },
   linearGradient: {
     backgroundColor : "transparent"
