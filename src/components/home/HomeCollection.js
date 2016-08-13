@@ -54,19 +54,19 @@ export default class HomeCollection extends Component {
 
         <View style={styles.rowItem}>
           {this._renderAds(data[0], 0.55)}
-          <View style={{width:1}}/>
+          <View style={{width:1.5}}/>
           {this._renderAds(data[1], 0.45)}
         </View>
 
-        <View style={{height:1}}/>
+        <View style={{height:1.5}}/>
 
         <View style={styles.rowItem}>
           {this._renderAds(data[2], 0.45)}
-          <View style={{width:1}}/>
+          <View style={{width:1.5}}/>
           {this._renderAds(data[3], 0.55)}
         </View>
 
-        <View style={{height:1}}/>
+        <View style={{height:1.5}}/>
         <View style={{flex: 1}}>
           {this._renderAds(data[4], 1)}
         </View>
@@ -170,9 +170,10 @@ var styles = StyleSheet.create({
     flexDirection: "row",
   },
   moreDetail: {
-    margin: 11,
+    margin: 11.5,
     marginLeft:23,
     marginRight:23,
+    marginBottom: 9.5,
     padding: 4,
     paddingBottom: 5,
     alignItems: 'center',
@@ -230,6 +231,7 @@ var styles = StyleSheet.create({
     height: 74,
     alignItems:'center',
     justifyContent: 'center',
+    padding: 0
     /*
      borderColor: 'red',
      borderWidth : 1,

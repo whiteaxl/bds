@@ -175,7 +175,7 @@ var styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'space-between',
     backgroundColor: gui.mainColor,
-    height: 63
+    height: 62.5
   },
   search: {
     backgroundColor: gui.mainColor,
