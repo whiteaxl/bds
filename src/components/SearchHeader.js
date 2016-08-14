@@ -18,7 +18,7 @@ var CommonHeader = React.createClass({
     return <View style={mStyles.container}>
       <View style={mStyles.home}>
       <RelandIcon onPress={this._onHome}
-        name="home" color="white" size={20}
+        name="close" color="white" size={20}
         mainProps={{marginTop: 16, paddingLeft: 16, paddingRight: 16}}
         >
       </RelandIcon>
@@ -55,7 +55,7 @@ var mStyles = StyleSheet.create({
       alignItems: 'stretch',
       justifyContent: 'space-between',
       backgroundColor: gui.mainColor,
-      height: 60
+      height: 62.5
   },
   search: {
       marginTop: 15,

@@ -104,7 +104,7 @@ var myStyles = StyleSheet.create({
     },
     search: {
         backgroundColor: gui.mainColor,
-        height: 30
+        height: 32.5
     }
 });
 

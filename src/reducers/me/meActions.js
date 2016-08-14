@@ -8,6 +8,8 @@ const {
 import log from "../../lib/logUtil";
 
 import userApi from '../../lib/userApi';
+import topupApi from '../../lib/topupApi';
+
 
 export function onMeFieldChange(field, value) {
   return {
@@ -41,4 +43,22 @@ export function updateMyInfo(userDto) {
       })
   }
 }
+
+
+export function topupScratch(dto) {
+  log.info("meAction, topupScratch");
+
+  return dispatch => {
+    dispatch(onTopupScratchFieldChange('submitting', true));
+
+    return topupApi.topupScratch(dto)
+      .then(res => {
+        onTopupScratchFieldChange('submitting', false);
+
+        return res;
+      })
+  }
+
+}
+
 

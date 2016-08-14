@@ -16,7 +16,7 @@ import {Actions} from 'react-native-router-flux';
 import log from "../../lib/logUtil";
 import gui from "../../lib/gui";
 
-import LineWithIcon from './LineWithIcon';
+import danhMuc from "../../assets/DanhMuc";
 
 import LikeTabButton from "../LikeTabButton";
 
@@ -55,7 +55,36 @@ class Topup_Scratch extends Component {
   }
 
   _submit() {
-    alert("Coming soon!")
+    let scratch = this.props.me.topup.scratch;
+    //validate
+    if (!scratch.pin) {
+      alert("Bạn chưa nhập mã số thẻ cào!");
+      return;
+    }
+    if (!scratch.serial) {
+      alert("Bạn chưa nhập số serial!");
+      return;
+    }
+
+    var dto = {
+      type: scratch.type,
+      pin: scratch.pin,
+      serial: scratch.serial,
+      userID: this.props.global.currentUser.userID,
+      clientInfor : this.props.global.deviceInfo.deviceModel,
+      clientType : "App",
+      startDateTime : new Date().getTime(),
+    };
+
+    this.props.actions.topupScratch(dto).then((res) => {
+      if (res.status == 0) {
+        alert(`Thành công! Bạn nạp ${res.topupAmount}, được thêm vào tk chính ${res.mainAmount}, tk KM ${res.bonusAmount}` );
+        Actions.pop();
+      } else {
+        alert("Không thành công! " + res.msg);
+        log.error("topupScratch error", res);
+      }
+    });
   }
 
   render() {
@@ -80,16 +109,17 @@ class Topup_Scratch extends Component {
 
         <View >
           <View style = {{flex:1, flexDirection: 'row', paddingLeft: 5, paddingRight: 5}}>
-            <LikeTabButton name={'Mobifone'}
-                           onPress={() => this._onScratchTypeChange('Mobifone')}
-                           selected={scratchType === 'Mobifone'}>MOBIFONE</LikeTabButton>
-            <LikeTabButton name={'Viettel'}
-                           onPress={() => this._onScratchTypeChange('Viettel')}
-                           selected={scratchType === 'Viettel'}>VIETTEL</LikeTabButton>
+            <LikeTabButton name={danhMuc.telco.mobifone}
+                           onPress={() => this._onScratchTypeChange(danhMuc.telco.mobifone)}
+                           selected={scratchType === danhMuc.telco.mobifone}>{danhMuc.telco.mobifone.toUpperCase()}</LikeTabButton>
 
-            <LikeTabButton name={'Vinaphone'}
-                           onPress={() => this._onScratchTypeChange('Vinaphone')}
-                           selected={scratchType === 'Vinaphone'}>VINAPHONE</LikeTabButton>
+            <LikeTabButton name={danhMuc.telco.viettel}
+                           onPress={() => this._onScratchTypeChange(danhMuc.telco.viettel)}
+                           selected={scratchType === danhMuc.telco.viettel}>{danhMuc.telco.viettel.toUpperCase()}</LikeTabButton>
+
+            <LikeTabButton name={danhMuc.telco.vinaphone}
+                           onPress={() => this._onScratchTypeChange(danhMuc.telco.vinaphone)}
+                           selected={scratchType === danhMuc.telco.vinaphone}>{danhMuc.telco.vinaphone.toUpperCase()}</LikeTabButton>
           </View>
           <View style={myStyles.titleContainer}>
             <Text style={myStyles.title}>NHẬP MÃ SỐ THẺ CÀO</Text>
@@ -115,11 +145,13 @@ class Topup_Scratch extends Component {
           />
 
           <View style={myStyles.titleContainer}>
-            <Text style={myStyles.introText}>Số tiền ghi có trong tk chính là 60k</Text>
-            <Text style={myStyles.introText}>Số tiền ghi có trong tk KM là 10k</Text>
+            <View style={myStyles.introTextContainer}>
+              <Text style={myStyles.introText}>Số tiền ghi có trong tk chính là 60k</Text>
+              <Text style={myStyles.introText}>Số tiền ghi có trong tk KM là 10k</Text>
+            </View>
           </View>
 
-          <TouchableOpacity style={myStyles.napTheBtn} onPress={this._submit}>
+          <TouchableOpacity style={myStyles.napTheBtn} onPress={this._submit.bind(this)}>
             <Text style={myStyles.napTheBtnText}>Nạp thẻ</Text>
           </TouchableOpacity>
 
@@ -218,10 +250,6 @@ var myStyles = StyleSheet.create({
     fontSize: 14,
     fontFamily: gui.fontFamily,
     color: '#8A8A8A',
-    paddingLeft: 19,
-    paddingRight: 19,
-    paddingTop: 10,
-    paddingBottom: 10
   },
 
   input : {
@@ -242,6 +270,13 @@ var myStyles = StyleSheet.create({
     borderBottomColor: '#e6e6e6',
     borderBottomWidth: 1,
   },
+  introTextContainer : {
+    paddingLeft: 19,
+    paddingRight: 19,
+    paddingTop: 10,
+    paddingBottom: 10
+  },
+
   napTheBtnText : {
     color: "#ff000b",
     paddingTop: 12,

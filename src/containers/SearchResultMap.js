@@ -38,6 +38,8 @@ import DanhMuc from '../assets/DanhMuc';
 
 import apiUtils from '../lib/ApiUtils';
 
+import Button from 'react-native-button';
+
 var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / (height-110);
@@ -188,7 +190,7 @@ class SearchResultMap extends Component {
                     </TouchableOpacity>)}
               </View>
             <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} >
-              <View style={[styles.bubble, styles.button]}>
+              <View style={[styles.bubble, styles.button, {marginTop: 10}]}>
                 <Icon name="location-arrow" style={styles.mapIcon} size={20}></Icon>
               </View>
             </TouchableOpacity>
@@ -199,7 +201,13 @@ class SearchResultMap extends Component {
 
         <View style={styles.tabbar}>
           <View style={styles.searchListButton}>
-            <Icon.Button onPress={this._onLocalInfoPressed.bind(this)}
+            <Button onPress={this._onLocalInfoPressed.bind(this)}
+                    style={styles.searchListButtonText}>Thông tin khác</Button>
+            <Button onPress={this._onSaveSearchPressed}
+                    style={styles.searchListButtonText}>Lưu tìm kiếm</Button>
+            <Button onPress={this._onListPressed}
+                    style={styles.searchListButtonText}>Danh sách</Button>
+            {/*<Icon.Button onPress={this._onLocalInfoPressed.bind(this)}
                          name="location-arrow" backgroundColor="white"
                          underlayColor="gray" color={gui.mainColor}
                          style={styles.searchListButtonText} >
@@ -216,7 +224,7 @@ class SearchResultMap extends Component {
                          underlayColor="gray" color={gui.mainColor}
                          style={styles.searchListButtonText} >
               Danh sách
-            </Icon.Button>
+            </Icon.Button>*/}
           </View>
         </View>
 
@@ -256,14 +264,14 @@ class SearchResultMap extends Component {
       console.log(this.props.search.map.region);
       return (<View style={styles.resultContainer}>
         <View style={[styles.resultText]}>
-          <Text style={styles.mapIcon}>  Đang tải dữ liệu ... </Text>
+          <Text style={styles.resultIcon}>  Đang tải dữ liệu ... </Text>
         </View>
       </View>)
     }
 
     return (<View style={styles.resultContainer}>
       <View style={[styles.resultText]}>
-        <Text style={styles.mapIcon}>  Đang hiển thị {numberOfAds < MAX_VIEWABLE_ADS ? numberOfAds : MAX_VIEWABLE_ADS} trong tổng số {numberOfAds} tin. Zoom để xem thêm </Text>
+          <Text style={styles.resultIcon}>  {numberOfAds < MAX_VIEWABLE_ADS ? numberOfAds : MAX_VIEWABLE_ADS} / {numberOfAds} tin tìm thấy được hiển thị. Zoom bản đồ để xem thêm </Text>
       </View>
     </View>)
   }
@@ -334,11 +342,12 @@ class SearchResultMap extends Component {
 
   _renderLocalInfoModal(){
     return (
-     <Modal style={[styles.modal]} isOpen={this.state.openLocalInfo} position={"center"} ref={"localInfoModal"} isDisabled={false}>
+     <Modal style={[styles.modal]} isOpen={this.state.openLocalInfo} position={"center"} ref={"localInfoModal"} isDisabled={false}
+            backdrop={false} onClosingState={this._onCloseLocalInfo.bind(this)}>
       <View style={styles.modalHeader}>
         <TouchableOpacity style={{flexDirection: "row", alignItems: "flex-start",position:'absolute', left:15}}
                           onPress={this._onCloseLocalInfo.bind(this)}>
-          <RelandIcon name="close" color={gui.mainColor} />
+          <RelandIcon name="close" color={gui.mainColor} noAction={true}/>
         </TouchableOpacity>
         <Text style={styles.modalHeaderText}>Local info</Text>
       </View>
@@ -599,11 +608,13 @@ var styles = StyleSheet.create({
     alignItems: 'center',
   },
   searchListButtonText: {
-      marginLeft: 15,
-      marginRight: 15,
-      marginTop: 0,
-      marginBottom: 0,
-      flexDirection: 'column',
+      marginTop: 14,
+      paddingLeft: 0,
+      fontSize: gui.buttonFontSize,
+      fontFamily: gui.fontFamily,
+      fontWeight : '600',
+      color: '#1396E0',
+      textAlign: 'center'
   },
 
   map: {
@@ -631,10 +642,15 @@ var styles = StyleSheet.create({
     backgroundColor: gui.mainColor,
     paddingHorizontal: 5,
     paddingVertical: 5,
-    borderRadius: 10,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#C5C2BA',
+    alignItems: 'center',
+    justifyContent: 'center'
   },
   button: {
-    width: 50,
+    width: 43,
+    height: 38,
     paddingVertical: 5,
     alignItems: 'center',
     marginVertical: 5,
@@ -644,12 +660,19 @@ var styles = StyleSheet.create({
   },
   mapIcon: {
   },
+  resultIcon: {
+    color: 'white',
+    fontSize: gui.capitalizeFontSize,
+    fontFamily: gui.fontFamily,
+    fontWeight : 'normal',
+    textAlign: 'center'
+  },
   text: {
     color: 'white',
   },
   mapButtonContainer: {
     position: 'absolute',
-    top: height-200,
+    top: height-241,
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center',
@@ -660,7 +683,7 @@ var styles = StyleSheet.create({
 
   resultContainer: {
     position: 'absolute',
-    top: 60,
+    top: 77,
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
@@ -669,10 +692,14 @@ var styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   resultText: {
-    width: width,
-    alignItems: 'flex-start',
-    backgroundColor: 'white',
+    marginLeft: 10,
+    width: width-20,
+    height: 26,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#8F8F8E',
     opacity: 0.75,
+    borderRadius: 5
   },
 
   tabbar: {
