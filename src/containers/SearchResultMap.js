@@ -660,7 +660,7 @@ var styles = StyleSheet.create({
 
   resultContainer: {
     position: 'absolute',
-    top: 60,
+    top: 62.5,
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
