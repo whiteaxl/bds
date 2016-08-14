@@ -98,7 +98,7 @@ class App extends React.Component {
           <Scene key='Launch' component={Launch} initial={true} title="Welcome" />
 
           <Scene key="Home" tabs={true} default="Main" type="replace" tabBarStyle={styles.tabBarStyle}>
-            <Scene key="Main" title="Trang chủ" iconName={"list"} iconSize={22} icon={TabIcon}
+            <Scene key="Main" title="Trang chủ" iconName={"home-f"} iconSize={22} icon={TabIcon}
                    component={Home} onPress={()=>{
                       this.props.actions.loadHomeData();
                       Actions.Main()
@@ -106,7 +106,7 @@ class App extends React.Component {
                    hideNavBar={true} initial={true}/>
 
             <Scene key="Inbox" component={Inbox} title="Tìm kiếm"
-                   iconName={"chat"} iconSize={22}
+                   iconName={"search"} iconSize={22}
                    icon={TabIcon} hideNavBar={true} />
             <Scene key="activity" component={PostAds} title="Đăng tin"
                    iconName={"camera-o"} iconSize={22} icon={TabIcon} hideNavBar={true}/>

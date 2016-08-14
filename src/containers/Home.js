@@ -107,8 +107,8 @@ class Home extends Component {
           </View>
           <View style={styles.searchButton}>
             <RelandIcon onPress={this.handleSearchButton}
-                        name="chat" color="white" size={20}
-                        mainProps={{marginTop: 16, paddingLeft: 16, paddingRight: 16}}
+                        name="search-b" color="white" size={20}
+                        mainProps={{marginTop: 13, paddingLeft: 16, paddingRight: 16}}
             >
             </RelandIcon>
           </View>
