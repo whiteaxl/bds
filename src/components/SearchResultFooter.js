@@ -14,6 +14,7 @@ import gui from '../lib/gui';
 
 import findApi from '../lib/FindApi';
 
+import Button from 'react-native-button';
 
 
 // Create our component
@@ -22,8 +23,13 @@ var SearchResultFooter = React.createClass({
     return <View style={myStyles.searchButton}>
       <View style={myStyles.searchListButton}>
         <SortMenu isDiaDiem={PlaceUtil.isDiaDiem(this.props.place)}/>
-        <RelandIcon onPress={this._onAlertSaveSearch} name="save" size={24} text="Lưu tìm kiếm" textProps={myStyles.buttonText}/>
+          <Button onPress={this._onAlertSaveSearch}
+                  style={myStyles.buttonText}>Lưu tìm kiếm</Button>
+          <Button onPress={this._onMap}
+                  style={myStyles.buttonText}>Bản đồ</Button>
+        {/*<RelandIcon onPress={this._onAlertSaveSearch} name="save" size={24} text="Lưu tìm kiếm" textProps={myStyles.buttonText}/>
         <RelandIcon onPress={this._onMap} name="map" size={18} iconProps={{style: {marginTop: 6}}} text="Bản đồ" textProps={myStyles.buttonText}/>
+        */}
       </View>
     </View>
   },
@@ -86,8 +92,12 @@ var myStyles = StyleSheet.create({
   },
 
   buttonText: {
-      fontSize: 11,
+      fontSize: gui.buttonFontSize,
       fontFamily: gui.fontFamily,
+      fontWeight : 'normal',
+      color: '#1396E0',
+      textAlign: 'center',
+      marginTop: 10,
       paddingLeft: 0
   }
 });
