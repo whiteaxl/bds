@@ -138,6 +138,8 @@ class SearchResultMap extends Component {
 
     let viewableList = this._getViewableAds(listAds);
 
+    let drawIconColor = this.state.polygons && this.state.polygons.length == 0 && this.state.drawMode ? gui.mainColor : 'black';
+
     return (
       <View style={styles.fullWidthContainer}>
 
@@ -179,19 +181,24 @@ class SearchResultMap extends Component {
             )}
           </MapView>
           <View style={styles.mapButtonContainer}>
-              <View style={[styles.bubble, styles.button]}>
+            <TouchableOpacity onPress={this._onDrawPressed.bind(this)} >
+              <View style={[styles.bubble, styles.button, {flexDirection: 'column'}]}>
                 {this.state.polygons && this.state.polygons.length > 0 ? (
                     <RelandIcon name="close" color='black' mainProps={{flexDirection: 'row'}}
                                 size={20} textProps={{paddingLeft: 0}}
-                                onPress={this._onDrawPressed.bind(this)}></RelandIcon>) :
-                    (<TouchableOpacity onPress={this._onDrawPressed.bind(this)} >
+                                noAction={true}></RelandIcon>) :
+                    (
                       <Icon name="hand-o-up" style={styles.mapIcon} color={this.state.drawMode ? gui.mainColor : 'black'}
                             size={20}></Icon>
-                    </TouchableOpacity>)}
+                    )}
+                <Text style={[styles.drawIconText, {color: drawIconColor}]}>Vẽ tay</Text>
               </View>
+            </TouchableOpacity>
             <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} >
               <View style={[styles.bubble, styles.button, {marginTop: 10}]}>
-                <Icon name="location-arrow" style={styles.mapIcon} size={20}></Icon>
+                <RelandIcon name="local-info" color='black' mainProps={{flexDirection: 'row'}}
+                            size={20} textProps={{paddingLeft: 0}}
+                            noAction={true}></RelandIcon>
               </View>
             </TouchableOpacity>
           </View>
@@ -663,6 +670,12 @@ var styles = StyleSheet.create({
   resultIcon: {
     color: 'white',
     fontSize: gui.capitalizeFontSize,
+    fontFamily: gui.fontFamily,
+    fontWeight : 'normal',
+    textAlign: 'center'
+  },
+  drawIconText: {
+    fontSize: 9,
     fontFamily: gui.fontFamily,
     fontWeight : 'normal',
     textAlign: 'center'
