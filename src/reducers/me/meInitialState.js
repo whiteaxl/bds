@@ -1,11 +1,14 @@
 'use strict';
 
+import danhMuc from "../../assets/DanhMuc";
+
 const {Record, List} = require('immutable');
 
 var Scratch = Record({
-  type : "Mobifone",
+  type : danhMuc.telco.mobifone,
   pin: "",
-  serial: ""
+  serial: "",
+  submitting : false,
 });
 
 var Topup = Record({

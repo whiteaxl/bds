@@ -137,7 +137,7 @@ class Search extends Component {
 
     let loaiTin = this.props.search.form.fields.loaiTin;
 
-    var _scrollView: ScrollView;
+    var _scrollView;
     return (
       <View style={myStyles.fullWidthContainer}>
         <View style={[myStyles.searchFilter, {top: 65}]}>

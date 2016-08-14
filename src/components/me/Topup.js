@@ -58,7 +58,7 @@ class Topup extends Component {
 
   render() {
 
-    let main = this.props.global.currentUser.mainAccount;
+    let currentUser = this.props.global.currentUser;
 
     return (
       <View style={myStyles.container}>
@@ -78,8 +78,14 @@ class Topup extends Component {
         <View >
           <View style={myStyles.accountInfo}>
             <Text style={myStyles.introText}>Thong tin tai khoan:</Text>
-            <Text style={myStyles.introText}>    Tài khoản chính:</Text>
-            <Text style={myStyles.introText}>    tien {main}</Text>
+            <View style={{flexDirection: "row"}}>
+              <Text style={[myStyles.normalFont, {width: 200, paddingLeft: 10}]}>Tài khoản chính:</Text>
+              <Text style={[myStyles.normalFont, {fontWeight: 'bold'}]}>{currentUser.mainAccount}</Text>
+            </View>
+            <View style={{flexDirection: "row"}}>
+              <Text style={[myStyles.normalFont, {width: 200, paddingLeft: 10}]}>Tài khoản KM:</Text>
+              <Text style={[myStyles.normalFont, {fontWeight: 'bold'}]}>{currentUser.bonusAccount}</Text>
+            </View>
 
           </View>
 
@@ -124,6 +130,10 @@ var myStyles = StyleSheet.create({
   accountInfo: {
     flex: 1,
     height: 200,
+    paddingLeft: 19,
+    paddingRight: 19,
+    paddingTop: 10,
+    paddingBottom: 10
   },
 
   lineWithIconStyle : {
@@ -188,6 +198,12 @@ var myStyles = StyleSheet.create({
     color: '#8A8A8A'
   },
 
+  normalFont: {
+    fontSize: 14,
+    fontFamily: gui.fontFamily,
+    color: '#8A8A8A'
+  },
+
   introText: {
     fontSize: 14,
     fontFamily: gui.fontFamily,
@@ -195,7 +211,7 @@ var myStyles = StyleSheet.create({
     paddingLeft: 19,
     paddingRight: 19,
     paddingTop: 10,
-    paddingBottom: 10
+    paddingBottom: 10,
   },
 });
 

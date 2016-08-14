@@ -424,6 +424,12 @@ danhMuc.package = {
     }
 };
 
+danhMuc.telco = {
+  mobifone: "mobifone",
+  viettel : "viettel",
+  vinaphone : "vinaphone",
+};
+
 
 
 module.exports = danhMuc;
