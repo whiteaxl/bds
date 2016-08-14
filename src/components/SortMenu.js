@@ -21,8 +21,6 @@ import RelandIcon from './RelandIcon';
 import MMenuOption from './MMenuOption';
 import log from '../lib/logUtil';
 
-import Button from 'react-native-button';
-
 
 const actions = [
     globalActions,
@@ -116,7 +114,7 @@ class SortMenu extends Component {
             <View>
                 <Menu onSelect={(option) => this._onApply(option)}>
                     <MenuTrigger>
-                        <Button style={myStyles.sortText}>Sắp xếp</Button>
+                        <Text style={myStyles.sortText}>Sắp xếp</Text>
                         {/*<RelandIcon name="sort-alt" size={24} text="Sắp xếp" textProps={myStyles.sortText} noAction={true}/>*/}
                     </MenuTrigger>
                     <MenuOptions optionsContainerStyle={isDiaDiem ? myStyles.dropdownOptions : myStyles.dropdownOptions2}>
