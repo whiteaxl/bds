@@ -342,11 +342,12 @@ class SearchResultMap extends Component {
 
   _renderLocalInfoModal(){
     return (
-     <Modal style={[styles.modal]} isOpen={this.state.openLocalInfo} position={"center"} ref={"localInfoModal"} isDisabled={false}>
+     <Modal style={[styles.modal]} isOpen={this.state.openLocalInfo} position={"center"} ref={"localInfoModal"} isDisabled={false}
+            backdrop={false} onClosingState={this._onCloseLocalInfo.bind(this)}>
       <View style={styles.modalHeader}>
         <TouchableOpacity style={{flexDirection: "row", alignItems: "flex-start",position:'absolute', left:15}}
                           onPress={this._onCloseLocalInfo.bind(this)}>
-          <RelandIcon name="close" color={gui.mainColor} />
+          <RelandIcon name="close" color={gui.mainColor} noAction={true}/>
         </TouchableOpacity>
         <Text style={styles.modalHeaderText}>Local info</Text>
       </View>
