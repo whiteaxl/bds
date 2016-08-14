@@ -264,7 +264,7 @@ var myStyles = StyleSheet.create({
     sortText: {
         fontSize: gui.buttonFontSize
         , fontFamily: gui.fontFamily,
-        fontWeight : 'normal',
+        fontWeight : '600',
         color: '#1396E0',
         textAlign: 'center',
         marginTop: 10,

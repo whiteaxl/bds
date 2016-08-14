@@ -9,7 +9,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import log from '../../lib/logUtil';
 import DanhMuc from '../../assets/DanhMuc';
 
-var imgHeight = 180;
+var imgHeight = 179.5;
 
 var { createIconSet } = require('react-native-vector-icons');
 var glyphMap = { 'heart':59457, 'heart-o':59458};
