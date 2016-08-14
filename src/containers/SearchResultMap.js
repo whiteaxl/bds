@@ -720,9 +720,7 @@ var styles = StyleSheet.create({
     top: height-50,
     left: 0,
     right: 0,
-    bottom: 0,
-    borderTopWidth: 1,
-    borderColor : 'lightgray'
+    bottom: 0
   },
   searchListButton: {
       flexDirection: 'row',
