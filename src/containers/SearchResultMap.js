@@ -615,7 +615,7 @@ var styles = StyleSheet.create({
     alignItems: 'center',
   },
   searchListButtonText: {
-      marginTop: 14,
+      marginTop: 10,
       paddingLeft: 0,
       fontSize: gui.buttonFontSize,
       fontFamily: gui.fontFamily,
@@ -627,7 +627,7 @@ var styles = StyleSheet.create({
   map: {
     flex: 1,
     marginTop: 0,
-    marginBottom: 50
+    marginBottom: 44
   },
   mapView: {
     flex: 1,
@@ -717,7 +717,7 @@ var styles = StyleSheet.create({
 
   tabbar: {
     position: 'absolute',
-    top: height-50,
+    top: height-44,
     left: 0,
     right: 0,
     bottom: 0
