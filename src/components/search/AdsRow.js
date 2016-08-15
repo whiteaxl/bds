@@ -198,14 +198,14 @@ const myStyles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'left',
     backgroundColor: 'transparent',
-    marginLeft: 15,
+    marginLeft: 17,
     color: 'white'
   },
   text: {
     fontSize: 14,
     textAlign: 'left',
     backgroundColor: 'transparent',
-    marginLeft: 15,
+    marginLeft: 17,
     marginBottom: 15,
     margin: 5,
     marginTop: 2,
@@ -232,8 +232,8 @@ const myStyles = StyleSheet.create({
   },
 
   heartButton: {
-    marginBottom: 10,
-    paddingRight: 18
+    marginTop: 6,
+    paddingRight: 19
   },
   image: {
 
