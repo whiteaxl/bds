@@ -45,6 +45,10 @@ import ImagePreview from '../components/ImagePreview';
 
 import dbService from "../lib/localDB";
 
+import Chart from 'react-native-chart';
+
+import HomeCollection from '../components/home/HomeCollection';
+
 const actions = [
   globalActions,
   searchActions,
@@ -71,7 +75,7 @@ function mapDispatchToProps(dispatch) {
 
 var mapSize = Dimensions.get('window').width-30;
 
-var imgHeight = 256;
+var imgHeight = 368;
 
 var url = '';
 
@@ -414,11 +418,20 @@ class SearchResultDetail extends Component {
                   <Text style={{fontSize: 5}} />
                 </CollapsiblePanel>
                 <View style={detailStyles.lineBorder2} />
-                <CollapsiblePanel title="Môi giới" expanded={true}>
+                {/*<CollapsiblePanel title="Môi giới" expanded={true}>
                   <Text style={[detailStyles.textFullWidth,{marginTop: 0}]}>
                     Các môi giới đang bán nhà tương tự
                   </Text>
                   {moiGioiTuongTu}
+                </CollapsiblePanel>*/}
+                <CollapsiblePanel title="Phương Án Tài Chính" expanded={true}>
+                  <Text style={[detailStyles.textFullWidth,{marginTop: 0}]}>
+                    Cách lập phương án tài chính cho các dự án BĐS, giúp các doanh nghiệp lên kế hoạch đầu tư hiệu quả
+                  </Text>
+                  {this._renderPhuongAnTaiChinh()}
+                </CollapsiblePanel>
+                <CollapsiblePanel title="Những nhà đang bán gần nhà này" expanded={true}>
+                  {this.renderContent(this.props.search.collections)}
                 </CollapsiblePanel>
               </View>
             </View>
@@ -430,6 +443,65 @@ class SearchResultDetail extends Component {
         </View>
 		)
 	}
+
+  renderContent(collections) {
+    if (this.props.search.homeDataErrorMsg) {
+      return (
+          <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
+            <Text style={styles.welcome}>{this.props.search.homeDataErrorMsg}</Text>
+          </View>
+      )
+    }
+
+    return this.renderCollections(collections);
+  }
+
+  renderCollections(collections) {
+    return collections.map(e => {
+      return <HomeCollection key={e.title1} collectionData = {e} searchFromHome={this.props.actions.searchFromHome}/>
+    });
+  }
+
+  _renderPhuongAnTaiChinh() {
+    var data = [
+      [0, 400],
+      [1, 20]
+    ];
+    return (
+        <View style={{flexDirection: "row", justifyContent: 'center', backgroundColor:'white', paddingTop:8, paddingBottom: 8}}>
+          <View style={{paddingLeft: 13, paddingTop:5, width: Dimensions.get('window').width/3, alignItems: 'center', justifyContent: 'center'}}>
+            <Chart style={detailStyles.chart}
+                   data={data}
+                   verticalGridStep={5}
+                   showAxis={false}
+                   sliceColors={['#1396E0','#DE6207']}
+                   type={'pie'}>
+            </Chart>
+          </View>
+          <View style={{paddingLeft: 13, paddingTop:5}}>
+            {this._renderMoneyLine("Gốc", "400 triệu", '#1396E0')}
+            {this._renderMoneyLine("Lãi", "20 triệu", '#DE6207')}
+          </View>
+        </View>
+    );
+  }
+
+  _renderMoneyLine(label, value, dotColor) {
+    return (
+        <View style={{flexDirection:'row'}}>
+          <View style={[detailStyles.dot3, {borderColor: dotColor}]}>
+          </View>
+          <View style={{flexDirection:'column'}}>
+            <Text style={{fontSize: 14, fontFamily: gui.fontFamily, fontWeight: 'bold'}}>
+              {value}
+            </Text>
+            <Text style={{fontSize: 14, fontFamily: gui.fontFamily}}>
+              {label}
+            </Text>
+          </View>
+        </View>
+    )
+  }
 
   _onImagePreviewPressed() {
     if (this.state.modal) {
@@ -867,12 +939,21 @@ var detailStyles = StyleSheet.create({
     marginRight: 0,
     backgroundColor: '#C1C1C1'
   },
+  dot3 : {
+    width: 20,
+    height: 20,
+    borderRadius: 10,
+    marginRight: 10,
+    marginTop: 10,
+    backgroundColor: 'white',
+    borderWidth: 5
+  },
   imgItem: {
     flex:1,
     justifyContent: 'center',
     alignItems: 'center',
     width: Dimensions.get('window').width,
-    height: 256
+    height: imgHeight
   },
   searchMapView: {
     marginTop: 10,
@@ -1017,6 +1098,10 @@ var detailStyles = StyleSheet.create({
     fontWeight: 'normal',
     color: 'black',
     textAlign: 'left'
+  },
+  chart: {
+    width: 100,
+    height: 100
   }
 });
 

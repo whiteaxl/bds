@@ -22,6 +22,8 @@ import danhMuc from "../../assets/DanhMuc";
 
 import SegmentedControl from '../SegmentedControlSelector';
 
+import Chart from 'react-native-chart';
+
 const actions = [
   globalActions,
   adsMgmtActions
@@ -45,6 +47,12 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+
+const data = [
+  [0, 400],
+  [1, 100],
+  [2, 150]
+];
 
 class PackageUpdater extends Component {
   constructor(props) {
@@ -223,13 +231,20 @@ class PackageUpdater extends Component {
         >
           {this._renderTitleLine("TÀI KHOẢN VÀ PHÍ DỊCH VỤ")}
 
-          <View style={{flexDirection: "row", paddingLeft: 19, backgroundColor:'white', paddingTop:8, paddingBottom: 8}}>
+          <View style={{flexDirection: "row", justifyContent: 'center', backgroundColor:'white', paddingTop:8, paddingBottom: 8}}>
             <View style={{paddingLeft: 13, paddingTop:5, width: Dimensions.get('window').width/3, alignItems: 'center', justifyContent: 'center'}}>
-              <Image
+              <Chart style={myStyles.chart}
+                     data={data}
+                     verticalGridStep={5}
+                     showAxis={false}
+                     sliceColors={['#1396E0','#DE6207', '#FB0007']}
+                     type={'pie'}>
+              </Chart>
+              {/*<Image
                   style={{width: 45, height: 45}}
                   resizeMode={Image.resizeMode.contain}
                   source={require('../../assets/image/goi/money.png')}
-              />
+              />*/}
             </View>
 
             <View style={{paddingLeft: 13, paddingTop:5}}>
@@ -358,6 +373,10 @@ var myStyles = StyleSheet.create({
   },
   scrollView: {
     backgroundColor: 'white'
+  },
+  chart: {
+    width: 120,
+    height: 120
   }
 });
 
