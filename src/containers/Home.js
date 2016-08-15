@@ -91,20 +91,25 @@ class Home extends Component {
 
   render() {
     log.info("call home.render", this.props.search.collections, this.props.search.homeDataErrorMsg);
-
+    let logoIcon = require('../assets/image/logo.png');
     return (
       <View style={styles.fullWidthContainer}>
         <View style={styles.pageHeader}>
           <View style={styles.home}>
-            <RelandIcon
+            <Image
+                style={styles.logoIcon}
+                resizeMode={Image.resizeMode.cover}
+                source={logoIcon}
+            />
+            {/*<RelandIcon
                         name="home" color="white" size={20}
                         mainProps={{marginTop: 16, paddingLeft: 18, paddingRight: 16}}
             >
-            </RelandIcon>
+            </RelandIcon>*/}
           </View>
-          <View style={styles.title}>
+          {/*<View style={styles.title}>
             <Text style={styles.titleText}>Trang chủ</Text>
-          </View>
+          </View>*/}
           <View style={styles.searchButton}>
             <TruliaIcon onPress={this.handleSearchButton}
                         name="search" color="white" size={18}
@@ -128,6 +133,13 @@ class Home extends Component {
 
 
 var styles = StyleSheet.create({
+  logoIcon: {
+    height: 13,
+    width: 61.2,
+    marginTop: 0,
+    marginLeft: 18,
+    marginRight: 16
+  },
   home: {
     paddingTop: 19,
     alignItems: 'center',
@@ -137,8 +149,8 @@ var styles = StyleSheet.create({
   title: {
     backgroundColor: 'transparent',
     position: 'absolute',
-    left:52,
-    right:52
+    left:75,
+    right:75
   },
   titleText: {
     fontSize: 17,
