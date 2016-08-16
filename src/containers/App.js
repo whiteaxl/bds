@@ -39,6 +39,7 @@ import PackageLengths from '../components/adsMgmt/PackageLengths';
 
 import Topup from '../components/me/Topup';
 import Topup_Scratch from '../components/me/Topup_Scratch';
+import Topup_SMS from '../components/me/Topup_SMS';
 
 
 import SearchSuggestion from '../containers/PlacesAutoComplete';
@@ -169,6 +170,7 @@ class App extends React.Component {
 
           <Scene key='Topup' component={Topup} hideNavBar={true}/>
           <Scene key='Topup_Scratch' component={Topup_Scratch} hideNavBar={true}/>
+          <Scene key='Topup_SMS' component={Topup_SMS} hideNavBar={true}/>
 
         </Scene>
       </RouterWithRedux>

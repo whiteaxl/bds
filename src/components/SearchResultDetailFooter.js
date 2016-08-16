@@ -9,7 +9,7 @@ import RelandIcon from './RelandIcon';
 
 import gui from '../lib/gui';
 
-var Communications = require('react-native-communications');
+import Communications from 'react-native-communications';
 
 // Create our component
 var SearchResultDetailFooter = React.createClass({

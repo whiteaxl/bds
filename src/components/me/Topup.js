@@ -52,6 +52,7 @@ class Topup extends Component {
   _onIAP() {
   }
   _onSMS() {
+    Actions.Topup_SMS();
   }
   _onBank() {
   }
