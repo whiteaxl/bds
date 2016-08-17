@@ -134,8 +134,8 @@ class Home extends Component {
 
 var styles = StyleSheet.create({
   logoIcon: {
-    height: 18,
-    width: 85,
+    height: 21,
+    width: 99,
     marginTop: 0,
     marginLeft: 19,
     marginRight: 16
@@ -149,7 +149,7 @@ var styles = StyleSheet.create({
   title: {
     backgroundColor: 'transparent',
     position: 'absolute',
-    left:99,
+    left:113,
     right:60
   },
   titleText: {
@@ -179,7 +179,7 @@ var styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    marginBottom: 44
+    marginBottom: 43
   },
   pageHeader: {
     top: 0,

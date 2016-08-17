@@ -170,10 +170,10 @@ var styles = StyleSheet.create({
     flexDirection: "row",
   },
   moreDetail: {
-    margin: 11,
+    margin: 10,
     marginLeft:24,
     marginRight:24,
-    marginBottom: 9.5,
+    marginBottom: 11,
     padding: 4,
     paddingBottom: 5,
     alignItems: 'center',

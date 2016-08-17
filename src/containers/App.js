@@ -193,7 +193,7 @@ var styles = StyleSheet.create({
   },
 
   tabBarStyle : {
-    height: 44,
+    height: 43,
     borderTopWidth:1,
     borderTopColor: '#dcdbdc'
   },

@@ -233,7 +233,7 @@ const myStyles = StyleSheet.create({
 
   heartButton: {
     marginTop: 6,
-    paddingRight: 19
+    paddingRight: 23
   },
   image: {
 
