@@ -20,9 +20,11 @@ import placeUtil from "../../lib/PlaceUtil";
 
 import danhMuc from "../../assets/DanhMuc";
 
+import util from "../../lib/utils";
+
 import SegmentedControl from '../SegmentedControlSelector';
 
-import Chart from 'react-native-chart';
+import {Pie} from 'react-native-pathjs-charts';
 
 const actions = [
   globalActions,
@@ -47,12 +49,43 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
+const data = [{
+  "name": "",
+  "fillColor" : "#1396E0",
+  "value": 400
+}, {
+  "name": "",
+  "fillColor" : "#DE6207",
+  "value": 100
+}];
 
-const data = [
-  [0, 400],
-  [1, 100],
-  [2, 150]
+const pallete = [
+  util.hexToRgb("#1396E0"), util.hexToRgb("#DE6207")
 ];
+
+const options = {
+  margin: {
+    top: 2,
+    left: 2,
+    bottom: 2,
+    right: 2
+  },
+  width: 120,
+  height: 120,
+  r: 43,
+  R: 58,
+  legendPosition: 'topLeft',
+  animate: {
+      type: 'oneByOne',
+      duration: 200,
+      fillTransition: 3
+      },
+  label: {
+      fontFamily: gui.fontFamily,
+      fontSize: gui.buttonFontSize,
+      fontWeight: 'normal'
+      }
+};
 
 class PackageUpdater extends Component {
   constructor(props) {
@@ -233,13 +266,11 @@ class PackageUpdater extends Component {
 
           <View style={{flexDirection: "row", justifyContent: 'center', backgroundColor:'white', paddingTop:8, paddingBottom: 8}}>
             <View style={{paddingLeft: 13, paddingTop:5, width: Dimensions.get('window').width/3, alignItems: 'center', justifyContent: 'center'}}>
-              <Chart style={myStyles.chart}
-                     data={data}
-                     verticalGridStep={5}
-                     showAxis={false}
-                     sliceColors={['#1396E0','#DE6207', '#FB0007']}
-                     type={'pie'}>
-              </Chart>
+              <Pie
+                  data={data}
+                  options={options}
+                  pallete={pallete}
+                  accessorKey="value" />
               {/*<Image
                   style={{width: 45, height: 45}}
                   resizeMode={Image.resizeMode.contain}
@@ -373,10 +404,6 @@ var myStyles = StyleSheet.create({
   },
   scrollView: {
     backgroundColor: 'white'
-  },
-  chart: {
-    width: 120,
-    height: 120
   }
 });
 

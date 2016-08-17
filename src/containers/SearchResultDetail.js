@@ -45,7 +45,9 @@ import ImagePreview from '../components/ImagePreview';
 
 import dbService from "../lib/localDB";
 
-import Chart from 'react-native-chart';
+import {Pie} from 'react-native-pathjs-charts';
+
+import util from "../lib/utils";
 
 import HomeCollection from '../components/home/HomeCollection';
 
@@ -463,20 +465,49 @@ class SearchResultDetail extends Component {
   }
 
   _renderPhuongAnTaiChinh() {
-    var data = [
-      [0, 400],
-      [1, 20]
+    var data = [{
+      "name": "",
+      "fillColor" : "#1396E0",
+      "value": 400
+    }, {
+      "name": "",
+      "fillColor" : "#DE6207",
+      "value": 20
+    }];
+    var pallete = [
+      util.hexToRgb("#1396E0"), util.hexToRgb("#DE6207")
     ];
+    var options = {
+      margin: {
+        top: 2,
+        left: 2,
+        bottom: 2,
+        right: 2
+      },
+      width: 100,
+      height: 100,
+      r: 33,
+      R: 48,
+      legendPosition: 'topLeft',
+      animate: {
+        type: 'oneByOne',
+        duration: 200,
+        fillTransition: 3
+      },
+      label: {
+        fontFamily: gui.fontFamily,
+        fontSize: gui.buttonFontSize,
+        fontWeight: 'normal'
+      }
+    };
     return (
-        <View style={{flexDirection: "row", justifyContent: 'center', backgroundColor:'white', paddingTop:8, paddingBottom: 8}}>
+        <View style={{flexDirection: "row", alignItems: 'center', justifyContent: 'center', backgroundColor:'white', paddingTop:8, paddingBottom: 8}}>
           <View style={{paddingLeft: 13, paddingTop:5, width: Dimensions.get('window').width/3, alignItems: 'center', justifyContent: 'center'}}>
-            <Chart style={detailStyles.chart}
-                   data={data}
-                   verticalGridStep={5}
-                   showAxis={false}
-                   sliceColors={['#1396E0','#DE6207']}
-                   type={'pie'}>
-            </Chart>
+            <Pie
+                data={data}
+                options={options}
+                pallete={pallete}
+                accessorKey="value" />
           </View>
           <View style={{paddingLeft: 13, paddingTop:5}}>
             {this._renderMoneyLine("Gốc", "400 triệu", '#1396E0')}
@@ -1098,10 +1129,6 @@ var detailStyles = StyleSheet.create({
     fontWeight: 'normal',
     color: 'black',
     textAlign: 'left'
-  },
-  chart: {
-    width: 100,
-    height: 100
   }
 });
 
