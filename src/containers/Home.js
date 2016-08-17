@@ -113,7 +113,7 @@ class Home extends Component {
           <View style={styles.searchButton}>
             <TruliaIcon onPress={this.handleSearchButton}
                         name="search" color="white" size={18}
-                        mainProps={{paddingLeft: 16, paddingRight: 16}}
+                        mainProps={{paddingLeft: 16, paddingRight: 21}}
             >
             </TruliaIcon>
           </View>
@@ -134,14 +134,14 @@ class Home extends Component {
 
 var styles = StyleSheet.create({
   logoIcon: {
-    height: 13,
-    width: 61.2,
+    height: 18,
+    width: 85,
     marginTop: 0,
-    marginLeft: 18,
+    marginLeft: 19,
     marginRight: 16
   },
   home: {
-    paddingTop: 20,
+    paddingTop: 15,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: gui.mainColor
@@ -149,8 +149,8 @@ var styles = StyleSheet.create({
   title: {
     backgroundColor: 'transparent',
     position: 'absolute',
-    left:75,
-    right:75
+    left:99,
+    right:60
   },
   titleText: {
     fontSize: 17,
@@ -161,7 +161,7 @@ var styles = StyleSheet.create({
     color: 'white'
   },
   searchButton: {
-    paddingTop: 25,
+    paddingTop: 23,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: gui.mainColor
@@ -179,7 +179,7 @@ var styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    marginBottom: 45
+    marginBottom: 44
   },
   pageHeader: {
     top: 0,
@@ -187,7 +187,7 @@ var styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'space-between',
     backgroundColor: gui.mainColor,
-    height: 63
+    height: 64
   },
   search: {
     backgroundColor: gui.mainColor,

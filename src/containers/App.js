@@ -99,7 +99,7 @@ class App extends React.Component {
           <Scene key='Launch' component={Launch} initial={true} title="Welcome" />
 
           <Scene key="Home" tabs={true} default="Main" type="replace" tabBarStyle={styles.tabBarStyle}>
-            <Scene key="Main" title="Trang chủ" iconName={"home-f"} iconSize={22} icon={TabIcon}
+            <Scene key="Main" title="Trang chủ" iconName={"home-f"} iconSize={24} icon={TabIcon}
                    component={Home} onPress={()=>{
                       this.props.actions.loadHomeData();
                       Actions.Main()
@@ -107,14 +107,14 @@ class App extends React.Component {
                    hideNavBar={true} initial={true}/>
 
             <Scene key="Inbox" component={Inbox} title="Chat"
-                   iconName={"chat"} iconSize={22}
+                   iconName={"chat"} iconSize={24}
                    icon={TabIcon} hideNavBar={true} />
             <Scene key="activity" component={PostAds} title="Đăng tin"
-                   iconName={"camera-o"} iconSize={22} icon={TabIcon} hideNavBar={true}/>
+                   iconName={"camera-o"} iconSize={24} icon={TabIcon} hideNavBar={true}/>
             <Scene key="AdsMgmt" component={AdsMgmt} title="Quản lý tin" hideNavBar={true}
-                   iconName={"mgmt"} iconSize={22} icon={TabIcon}/>
+                   iconName={"mgmt"} iconSize={24} icon={TabIcon}/>
             <Scene key="Me" component={Me} title="Tôi" hideNavBar={true}
-                   iconName={"me"} iconSize={22} icon={TabIcon}/>
+                   iconName={"me"} iconSize={24} icon={TabIcon}/>
             {
               /*
             <Scene key="UpgradeAds11" component={UpgradePackgeSelector} hideNavBar={true} title="Upgrade"
@@ -188,12 +188,12 @@ var styles = StyleSheet.create({
   },
 
   tabIconText: {
-    fontSize:11,
+    fontSize:8,
     fontFamily: 'Open Sans'
   },
 
   tabBarStyle : {
-    height: 45,
+    height: 44,
     borderTopWidth:1,
     borderTopColor: '#dcdbdc'
   },
