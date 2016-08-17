@@ -106,8 +106,8 @@ class App extends React.Component {
                    }}
                    hideNavBar={true} initial={true}/>
 
-            <Scene key="Inbox" component={Inbox} title="Tìm kiếm"
-                   iconName={"search"} iconSize={22}
+            <Scene key="Inbox" component={Inbox} title="Chat"
+                   iconName={"chat"} iconSize={22}
                    icon={TabIcon} hideNavBar={true} />
             <Scene key="activity" component={PostAds} title="Đăng tin"
                    iconName={"camera-o"} iconSize={22} icon={TabIcon} hideNavBar={true}/>

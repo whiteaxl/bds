@@ -211,7 +211,7 @@ class SearchResultMap extends Component {
             <Button onPress={this._onLocalInfoPressed.bind(this)}
                     style={styles.searchListButtonText}>Thông tin khác</Button>
             <Button onPress={this._onSaveSearchPressed}
-                    style={styles.searchListButtonText}>Lưu tìm kiếm</Button>
+                    style={[styles.searchListButtonText, {fontWeight : '500'}]}>Lưu tìm kiếm</Button>
             <Button onPress={this._onListPressed}
                     style={styles.searchListButtonText}>Danh sách</Button>
             {/*<Icon.Button onPress={this._onLocalInfoPressed.bind(this)}
@@ -619,7 +619,7 @@ var styles = StyleSheet.create({
       paddingLeft: 0,
       fontSize: gui.buttonFontSize,
       fontFamily: gui.fontFamily,
-      fontWeight : '600',
+      fontWeight : 'normal',
       color: '#1396E0',
       textAlign: 'center'
   },

@@ -149,7 +149,7 @@ var styles = StyleSheet.create({
   boldTitle: {
     fontFamily: gui.fontFamily,
     fontSize: 12,
-    fontWeight: '500',
+    fontWeight: 'normal',
     backgroundColor: 'transparent',
     color: gui.mainColor
   },
@@ -164,7 +164,7 @@ var styles = StyleSheet.create({
     fontSize: 12,
     backgroundColor: 'transparent',
     color: gui.arrowColor,
-    fontWeight: '500'
+    fontWeight: 'normal'
   },
   rowItem: {
     flexDirection: "row",

@@ -141,7 +141,7 @@ var styles = StyleSheet.create({
     marginRight: 16
   },
   home: {
-    paddingTop: 19,
+    paddingTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: gui.mainColor
@@ -161,7 +161,7 @@ var styles = StyleSheet.create({
     color: 'white'
   },
   searchButton: {
-    paddingTop: 24,
+    paddingTop: 25,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: gui.mainColor
@@ -187,7 +187,7 @@ var styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'space-between',
     backgroundColor: gui.mainColor,
-    height: 62.5
+    height: 63
   },
   search: {
     backgroundColor: gui.mainColor,
