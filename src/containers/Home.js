@@ -141,7 +141,7 @@ var styles = StyleSheet.create({
     marginRight: 16
   },
   home: {
-    paddingTop: 15,
+    paddingTop: 16,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: gui.mainColor
@@ -179,7 +179,7 @@ var styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    marginBottom: 50
+    marginBottom: 49
   },
   pageHeader: {
     top: 0,

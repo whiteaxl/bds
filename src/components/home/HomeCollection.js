@@ -11,7 +11,9 @@ import TruliaIcon from '../../components/TruliaIcon';
 
 import {Actions} from 'react-native-router-flux';
 
-var imageHeight = 143.1;
+import MHeartIcon from '../MHeartIcon';
+
+var imageHeight = 143;
 
 export default class HomeCollection extends Component {
   _onAdsPressed(ads) {
@@ -96,8 +98,7 @@ class ImageItem extends React.Component{
         </LinearGradient>
 
         <View style={styles.heartContent}>
-          <TruliaIcon name="heart-o" mainProps={[styles.heartButton,{marginLeft: 30}]}
-                      color={'white'} size={22}/>
+          <MHeartIcon noAction={true} />
         </View>
 
         <View style={styles.itemContent}>
@@ -170,9 +171,9 @@ var styles = StyleSheet.create({
     flexDirection: "row",
   },
   moreDetail: {
-    margin: 10,
-    marginLeft:24,
-    marginRight:24,
+    margin: 9,
+    marginLeft:25,
+    marginRight:25,
     marginBottom: 11,
     padding: 4,
     paddingBottom: 5,
@@ -221,17 +222,19 @@ var styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: 'transparent',
     top: 3,
-    right: 10
+    right: 10,
+    alignSelf: 'auto'
   },
   heartButton: {
     marginTop: 5,
   },
 
   titleContainer : {
-    height: 74,
+    height: 72,
     alignItems:'center',
     justifyContent: 'center',
-    padding: 0
+    padding: 0,
+    marginBottom: 2
     /*
      borderColor: 'red',
      borderWidth : 1,
