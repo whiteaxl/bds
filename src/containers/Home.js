@@ -179,7 +179,7 @@ var styles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
-    marginBottom: 43
+    marginBottom: 50
   },
   pageHeader: {
     top: 0,

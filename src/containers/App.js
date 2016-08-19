@@ -188,12 +188,12 @@ var styles = StyleSheet.create({
   },
 
   tabIconText: {
-    fontSize:8,
+    fontSize:10,
     fontFamily: 'Open Sans'
   },
 
   tabBarStyle : {
-    height: 43,
+    height: 50,
     borderTopWidth:1,
     borderTopColor: '#dcdbdc'
   },
