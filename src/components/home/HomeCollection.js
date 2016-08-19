@@ -226,7 +226,7 @@ var styles = StyleSheet.create({
     alignSelf: 'auto'
   },
   heartButton: {
-    marginTop: 5,
+    marginTop: 6,
     marginLeft: 30
   },
 
