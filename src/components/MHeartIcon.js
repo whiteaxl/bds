@@ -18,12 +18,12 @@ class MHeartIcon extends React.Component{
             <View style={mainProps||styles.heartContent}>
                 <View style={styles.heartContent2}>
                     <TruliaIcon name="heart" mainProps={styles.heartButton1}
-                                color={color||'#4A443F'} size={size||22}
+                                color={bgColor||'#4A443F'} size={size||22}
                                 noAction={noAction}
                                 onPress={onPress}/>
                 </View>
                 <TruliaIcon name="heart-o" mainProps={styles.heartButton2}
-                            color={bgColor||'white'} size={size||22}
+                            color={color||'white'} size={size||22}
                             noAction={noAction}
                             onPress={onPress}/>
             </View>

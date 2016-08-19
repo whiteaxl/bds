@@ -8,8 +8,9 @@ import {Actions} from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 import log from '../../lib/logUtil';
 import DanhMuc from '../../assets/DanhMuc';
+import MHeartIcon from '../MHeartIcon';
 
-var imgHeight = 180;
+var imgHeight = 181;
 
 var { createIconSet } = require('react-native-vector-icons');
 var glyphMap = { 'heart':59457, 'heart-o':59458};
@@ -21,12 +22,13 @@ class AdsRow extends React.Component {
     //log.info("renderLikeIcon, ", ads.isLiked);
     const {adsLikes} = this.props;
     const isLiked = adsLikes && adsLikes.indexOf(ads.adsID) > -1;
-    const color = isLiked ? 'red' : 'white';
+    const color = isLiked ? '#A2A7AD' : 'white';
+    const bgColor = isLiked ? '#E50064' : '#4A443F';
 
     return (
       <TouchableHighlight underlayColor='transparent' style={{overflow: 'hidden'}} onPress={() => this.onLike(ads)}>
         <View style={myStyles.heartButton} >
-          <Icon color={color} name={'heart-o'} size={23}  />
+          <MHeartIcon color={color} bgColor={bgColor} size={23} noAction={true} />
         </View>
       </TouchableHighlight>
     )

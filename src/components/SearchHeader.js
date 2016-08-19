@@ -55,7 +55,7 @@ var mStyles = StyleSheet.create({
       alignItems: 'stretch',
       justifyContent: 'space-between',
       backgroundColor: gui.mainColor,
-      height: 63
+      height: 64
   },
   search: {
       marginTop: 21,
