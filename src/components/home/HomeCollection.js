@@ -98,7 +98,7 @@ class ImageItem extends React.Component{
         </LinearGradient>
 
         <View style={styles.heartContent}>
-          <MHeartIcon noAction={true} />
+          <MHeartIcon noAction={true} mainProps={styles.heartButton} />
         </View>
 
         <View style={styles.itemContent}>
@@ -227,6 +227,7 @@ var styles = StyleSheet.create({
   },
   heartButton: {
     marginTop: 5,
+    marginLeft: 30
   },
 
   titleContainer : {

@@ -15,15 +15,15 @@ class MHeartIcon extends React.Component{
     render() {
         var {onPress, mainProps, color, bgColor, size, noAction} = this.props;
         return (
-            <View style={styles.heartContent||mainProps}>
+            <View style={mainProps||styles.heartContent}>
                 <View style={styles.heartContent2}>
                     <TruliaIcon name="heart" mainProps={styles.heartButton1}
-                                color={'#4A443F'||color} size={22||size}
+                                color={color||'#4A443F'} size={size||22}
                                 noAction={noAction}
                                 onPress={onPress}/>
                 </View>
                 <TruliaIcon name="heart-o" mainProps={styles.heartButton2}
-                            color={'white'||bgColor} size={22||size}
+                            color={bgColor||'white'} size={size||22}
                             noAction={noAction}
                             onPress={onPress}/>
             </View>
@@ -33,9 +33,6 @@ class MHeartIcon extends React.Component{
 
 var styles = StyleSheet.create({
     heartContent: {
-        marginTop: 5,
-        marginLeft: 30,
-        alignSelf: 'auto'
     },
     heartContent2: {
         position: 'absolute',
