@@ -28,7 +28,7 @@ class AdsRow extends React.Component {
     return (
       <TouchableHighlight underlayColor='transparent' style={{overflow: 'hidden'}} onPress={() => this.onLike(ads)}>
         <View style={myStyles.heartButton} >
-          <MHeartIcon color={color} bgColor={bgColor} size={23} noAction={true} />
+          <MHeartIcon color={color} bgColor={bgColor} size={22} noAction={true} />
         </View>
       </TouchableHighlight>
     )
@@ -192,7 +192,7 @@ const myStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    top: imgHeight - 53,
+    top: imgHeight - 55,
     width: Dimensions.get('window').width
   },
   price: {
@@ -204,7 +204,7 @@ const myStyles = StyleSheet.create({
     color: 'white'
   },
   text: {
-    fontSize: 14,
+    fontSize: 13,
     textAlign: 'left',
     backgroundColor: 'transparent',
     marginLeft: 17,
@@ -235,7 +235,7 @@ const myStyles = StyleSheet.create({
 
   heartButton: {
     marginTop: 6,
-    paddingRight: 23
+    paddingRight: 25
   },
   image: {
 
