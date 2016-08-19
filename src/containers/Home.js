@@ -112,7 +112,7 @@ class Home extends Component {
           </View>*/}
           <View style={styles.searchButton}>
             <TruliaIcon onPress={this.handleSearchButton}
-                        name="search" color="white" size={18}
+                        name="search" color="white" size={20}
                         mainProps={{paddingLeft: 16, paddingRight: 21}}
             >
             </TruliaIcon>
