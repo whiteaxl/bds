@@ -49,6 +49,8 @@ import {Pie} from 'react-native-pathjs-charts';
 
 import util from "../lib/utils";
 
+import logUtil from '../lib/logUtil';
+
 import HomeCollection from '../components/home/HomeCollection';
 
 const actions = [
@@ -92,7 +94,8 @@ class SearchResultDetail extends Component {
     this.state = {
       'data' : null,
       loaded: false,
-      modal: false
+      modal: false,
+      headerOpacity: 0.45
     }
   }
   fetchData() {
@@ -279,32 +282,16 @@ class SearchResultDetail extends Component {
     }
 
     return (
-			<View style={detailStyles.fullWidthContainer}>
-        <View style={detailStyles.customPageHeader}>
-          <TruliaIcon onPress={this._onBack.bind(this)}
-            name="arrow-left" color="white"
-            mainProps={detailStyles.backButton} size={25} >
-          </TruliaIcon>
-          <View style={[detailStyles.shareMainView, {marginRight: 0, marginLeft: 0}]}>
-            <RelandIcon onPress={this._onShare.bind(this)}
-              name="share-o" color="white"
-              iconProps={{style: [detailStyles.shareButton, {paddingLeft: 25}]}} size={26} >
-            </RelandIcon>
-            <RelandIcon onPress={this._onShare.bind(this)}
-              name="more" color="white"
-              iconProps={{style: [detailStyles.shareButton, {paddingRight: 20}]}} size={30} >
-            </RelandIcon>
-          </View>
-        </View>
+        <View style={detailStyles.fullWidthContainer}>
         <View style={detailStyles.mainView}>
           <ScrollView
-            ref={(scrollView) => { _scrollView = scrollView; }}
-            automaticallyAdjustContentInsets={false}
-            vertical={true}
-            style={detailStyles.scrollView}
-            //onScroll={this.handleScroll.bind(this)}
-            //scrollEventThrottle={1}
-            >
+              ref={(scrollView) => { _scrollView = scrollView; }}
+              automaticallyAdjustContentInsets={false}
+              vertical={true}
+              style={detailStyles.scrollView}
+              onScroll={this.handleScroll.bind(this)}
+              scrollEventThrottle={30}
+          >
             <View style={detailStyles.searchContent}>
 
               <Swiper style={[detailStyles.wrapper,{backgroundColor: 'gray'}]} height={imgHeight}
@@ -439,6 +426,22 @@ class SearchResultDetail extends Component {
             </View>
           </ScrollView>
 
+          <View style={[detailStyles.customPageHeader, {opacity: this.state.headerOpacity}]}>
+            <TruliaIcon onPress={this._onBack.bind(this)}
+                        name="arrow-left" color={'white'}
+                        mainProps={detailStyles.backButton} size={25} >
+            </TruliaIcon>
+            <View style={[detailStyles.shareMainView, {marginRight: 0, marginLeft: 0}]}>
+              <RelandIcon onPress={this._onShare.bind(this)}
+                          name="share-o" color={'white'}
+                          iconProps={{style: [detailStyles.shareButton, {paddingLeft: 25}]}} size={26} >
+              </RelandIcon>
+              <RelandIcon onPress={this._onShare.bind(this)}
+                          name="more" color={'white'}
+                          iconProps={{style: [detailStyles.shareButton, {paddingRight: 20}]}} size={30} >
+              </RelandIcon>
+            </View>
+          </View>
         </View>
         <SearchResultDetailFooter mobile={mobile} onChat={() => this._onChat(rowData)}/>
         {this.state.modal ? <ImagePreview images={imageDataItems} closeModal={() => this.setState({modal: false}) }/> : null }
@@ -686,7 +689,16 @@ class SearchResultDetail extends Component {
     }
   }
 
- // handleScroll(event: Object) {
+ handleScroll(event: Object) {
+   if (event.nativeEvent.contentOffset.y <= imgHeight-90 && this.state.headerOpacity != 0.45) {
+     this.setState({
+       headerOpacity: 0.45
+     });
+   } else if (event.nativeEvent.contentOffset.y > imgHeight-90 && this.state.headerOpacity != 1) {
+     this.setState({
+       headerOpacity: 1
+     });
+   }
  //   if (event.nativeEvent.contentOffset.y <= imgHeight-30 && this.state.headerButtonColor != 'white') {
  //     StatusBarIOS.setStyle('light-content');
  //     this.setState({
@@ -698,7 +710,7 @@ class SearchResultDetail extends Component {
  //       headerButtonColor: gui.mainColor
  //     });
  //   }
- // }
+ }
 
   _onBack() {
     Actions.pop();
@@ -876,6 +888,8 @@ var detailStyles = StyleSheet.create({
   },
   scrollView: {
     flex: 1,
+    position: 'absolute',
+    height: Dimensions.get('window').height-44
   },
   fullWidthContainer: {
       flex: 1,
@@ -919,10 +933,15 @@ var detailStyles = StyleSheet.create({
       marginRight: 15
   },
   customPageHeader: {
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: Dimensions.get('window').width,
       flexDirection: 'row',
       alignItems: 'flex-start',
       justifyContent: 'space-between',
       backgroundColor: gui.mainColor,
+      // opacity: 0.55,
       height: 60
   },
 	search: {

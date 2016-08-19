@@ -46,15 +46,17 @@ class ImagePreview extends React.Component {
     }
 
     componentWillUnmount() {
-        if (this.props.owner != 'chat') {
-            Orientation.lockToPortrait();
-        }
+        // if (this.props.owner != 'chat') {
+        //     Orientation.lockToPortrait();
+        // }
     }
 
     componentWillMount() {
-        var isChatOwner = this.isChatOwner();
-        this.imageWidth = isChatOwner ? deviceWidth : deviceHeight;
-        this.imageHeight = isChatOwner ? deviceHeight : deviceWidth;
+        // var isChatOwner = this.isChatOwner();
+        // this.imageWidth = isChatOwner ? deviceWidth : deviceHeight;
+        // this.imageHeight = isChatOwner ? deviceHeight : deviceWidth;
+        this.imageWidth = deviceWidth;
+        this.imageHeight = deviceHeight;
 
         this.styles = {
             pagingText: {
@@ -161,9 +163,9 @@ class ImagePreview extends React.Component {
                 marginBottom: 10
             }
         };
-        if (this.props.owner != 'chat') {
-            Orientation.lockToLandscape();
-        }
+        // if (this.props.owner != 'chat') {
+        //     Orientation.lockToLandscape();
+        // }
     }
 
     closeModal() {
