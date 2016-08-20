@@ -236,7 +236,7 @@ class ImagePreview extends React.Component {
       top: 28,
       left: imageWidth/2-35,
     }}>
-                <RelandIcon name="camera" color="white"
+                <RelandIcon name="camera-o" color="white"
                             iconProps={{style: styles.pagingIcon}} size={16}
                             textProps={styles.pagingText}
                             mainProps={styles.pagingView}

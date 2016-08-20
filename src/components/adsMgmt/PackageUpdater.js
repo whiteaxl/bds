@@ -24,7 +24,7 @@ import util from "../../lib/utils";
 
 import SegmentedControl from '../SegmentedControlSelector';
 
-import {Pie} from 'react-native-pathjs-charts';
+import MChartView from '../MChartView';
 
 const actions = [
   globalActions,
@@ -49,44 +49,6 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-const data = [{
-  "name": "",
-  "fillColor" : "#1396E0",
-  "value": 400
-}, {
-  "name": "",
-  "fillColor" : "#DE6207",
-  "value": 100
-}];
-
-const pallete = [
-  util.hexToRgb("#1396E0"), util.hexToRgb("#DE6207")
-];
-
-const options = {
-  margin: {
-    top: 2,
-    left: 2,
-    bottom: 2,
-    right: 2
-  },
-  width: 120,
-  height: 120,
-  r: 43,
-  R: 58,
-  legendPosition: 'topLeft',
-  animate: {
-      type: 'oneByOne',
-      duration: 200,
-      fillTransition: 3
-      },
-  label: {
-      fontFamily: gui.fontFamily,
-      fontSize: gui.buttonFontSize,
-      fontWeight: 'normal'
-      }
-};
-
 class PackageUpdater extends Component {
   constructor(props) {
     super(props);
@@ -109,7 +71,7 @@ class PackageUpdater extends Component {
           <Text style={{fontSize: 14, fontFamily: gui.fontFamily, fontWeight: 'bold'}}>
             {value}
           </Text>
-          <Text style={{fontSize: 14, fontFamily: gui.fontFamily}}>
+          <Text style={{fontSize: 12, fontFamily: gui.fontFamily}}>
             {label}
           </Text>
         </View>
@@ -227,6 +189,47 @@ class PackageUpdater extends Component {
     for (var i = 0; i < packageNames.length; i++) {
       packageSessions.push(this._renderPackageSession(packageNames[i], packageComments[i]));
     }
+
+    let data = [{
+      "name": "",
+      "fillColor" : "#1396E0",
+      "value": 400
+    }, {
+      "name": "",
+      "fillColor" : "#DE6207",
+      "value": 100
+    }];
+
+    let pallete = [
+      util.hexToRgb("#1396E0"), util.hexToRgb("#DE6207")
+    ];
+
+    let options = {
+      margin: {
+        top: 2,
+        left: 2,
+        bottom: 2,
+        right: 2
+      },
+      width: 120,
+      height: 120,
+      r: 43,
+      R: 58,
+      legendPosition: 'topLeft',
+      animate: {
+        type: 'oneByOne',
+        duration: 200,
+        fillTransition: 3
+      },
+      label: {
+        fontFamily: gui.fontFamily,
+        fontSize: gui.buttonFontSize,
+        fontWeight: 'normal'
+      }
+    };
+
+    let chartTitle = 'Tổng tài khoản';
+    let chartTitleBold = '500k';
     return (
       <View style={myStyles.container}>
         <View style={myStyles.customPageHeader}>
@@ -266,11 +269,13 @@ class PackageUpdater extends Component {
 
           <View style={{flexDirection: "row", justifyContent: 'center', backgroundColor:'white', paddingTop:8, paddingBottom: 8}}>
             <View style={{paddingLeft: 13, paddingTop:5, width: Dimensions.get('window').width/3, alignItems: 'center', justifyContent: 'center'}}>
-              <Pie
+              <MChartView
                   data={data}
                   options={options}
                   pallete={pallete}
-                  accessorKey="value" />
+                  chartTitle={chartTitle}
+                  chartTitleBold={chartTitleBold}
+              />
               {/*<Image
                   style={{width: 45, height: 45}}
                   resizeMode={Image.resizeMode.contain}

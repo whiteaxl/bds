@@ -45,9 +45,9 @@ import ImagePreview from '../components/ImagePreview';
 
 import dbService from "../lib/localDB";
 
-import {Pie} from 'react-native-pathjs-charts';
-
 import util from "../lib/utils";
+
+import MChartView from '../components/MChartView';
 
 import logUtil from '../lib/logUtil';
 
@@ -324,17 +324,8 @@ class SearchResultDetail extends Component {
                   <SummaryText longText={chiTiet} expanded={false}>
                   </SummaryText>
                 </View>
-                <TouchableHighlight onPress={() => this._onDanDuongPressed()} underlayColor="transparent" >
-                  <View style={[detailStyles.lineBorder,detailStyles.danDuongView]}>
-                      <View style={detailStyles.danDuongLeftView}>
-                        <TruliaIcon name={"car"} size={20} color={gui.mainColor} text={"Dẫn đường"}
-                                    textProps={detailStyles.danDuongText} />
-                      </View>
-                      <View style={detailStyles.danDuongRightView}>
-                        <TruliaIcon name={"arrow-right"} size={20} color={"gray"} />
-                      </View>
-                  </View>
-                </TouchableHighlight>
+                {this._renderDanDuong()}
+                {this._renderStreetView()}
                 <View style={detailStyles.lineBorder} />
                 <CollapsiblePanel title="Đặc Điểm" expanded={true}>
                   {this.renderTitleProps("Loại tin rao", loaiNhaDat)}
@@ -404,7 +395,10 @@ class SearchResultDetail extends Component {
                   {this.renderTitleProps("Tên liên lạc", dangBoi)}
                   {this.renderTitleProps("Điện thoại", mobile)}
                   {this.renderTitleProps("Email", email)}
-                  <Text style={{fontSize: 5}} />
+                  <RelandIcon name={"plus"} size={20} color={'#EA9409'} text={"Lưu vào danh bạ"}
+                              mainProps={{flexDirection: 'row', paddingLeft: 3}}
+                              textProps={[detailStyles.danDuongText, {color: gui.mainColor}]}
+                              onPress={() => this._onAddContact(dangBoi, mobile, email)} />
                 </CollapsiblePanel>
                 <View style={detailStyles.lineBorder2} />
                 {/*<CollapsiblePanel title="Môi giới" expanded={true}>
@@ -449,6 +443,42 @@ class SearchResultDetail extends Component {
 		)
 	}
 
+  _onAddContact(dangBoi, mobile, email) {
+
+  }
+
+  _renderDanDuong() {
+    return (
+        <TouchableHighlight onPress={() => this._onDanDuongPressed()} underlayColor="transparent" >
+          <View style={[detailStyles.lineBorder,detailStyles.danDuongView]}>
+            <View style={detailStyles.danDuongLeftView}>
+              <TruliaIcon name={"car"} size={20} color={gui.mainColor} text={"Dẫn đường"}
+                          textProps={detailStyles.danDuongText} />
+            </View>
+            <View style={detailStyles.danDuongRightView}>
+              <TruliaIcon name={"arrow-right"} size={20} color={"gray"} />
+            </View>
+          </View>
+        </TouchableHighlight>
+    );
+  }
+
+  _renderStreetView() {
+    return (
+        <TouchableHighlight onPress={() => this._onStreetViewPressed()} underlayColor="transparent" >
+          <View style={[detailStyles.lineBorder,detailStyles.danDuongView]}>
+            <View style={detailStyles.danDuongLeftView}>
+              <RelandIcon name={"location"} size={20} color={gui.mainColor} text={"Street view"}
+                          mainProps={{flexDirection: 'row'}} textProps={detailStyles.danDuongText} />
+            </View>
+            <View style={detailStyles.danDuongRightView}>
+              <TruliaIcon name={"arrow-right"} size={20} color={"gray"} />
+            </View>
+          </View>
+        </TouchableHighlight>
+    );
+  }
+
   renderContent(collections) {
     if (this.props.search.homeDataErrorMsg) {
       return (
@@ -489,7 +519,7 @@ class SearchResultDetail extends Component {
       },
       width: 100,
       height: 100,
-      r: 33,
+      r: 38,
       R: 48,
       legendPosition: 'topLeft',
       animate: {
@@ -503,14 +533,18 @@ class SearchResultDetail extends Component {
         fontWeight: 'normal'
       }
     };
+    var chartTitle = 'Tổng tài khoản';
+    var chartTitleBold = '500 triệu';
     return (
         <View style={{flexDirection: "row", alignItems: 'center', justifyContent: 'center', backgroundColor:'white', paddingTop:8, paddingBottom: 8}}>
           <View style={{paddingLeft: 13, paddingTop:5, width: Dimensions.get('window').width/3, alignItems: 'center', justifyContent: 'center'}}>
-            <Pie
+            <MChartView
                 data={data}
                 options={options}
                 pallete={pallete}
-                accessorKey="value" />
+                chartTitle={chartTitle}
+                chartTitleBold={chartTitleBold}
+            />
           </View>
           <View style={{paddingLeft: 13, paddingTop:5}}>
             {this._renderMoneyLine("Gốc", "400 triệu", '#1396E0')}
@@ -529,7 +563,7 @@ class SearchResultDetail extends Component {
             <Text style={{fontSize: 14, fontFamily: gui.fontFamily, fontWeight: 'bold'}}>
               {value}
             </Text>
-            <Text style={{fontSize: 14, fontFamily: gui.fontFamily}}>
+            <Text style={{fontSize: 12, fontFamily: gui.fontFamily}}>
               {label}
             </Text>
           </View>
@@ -553,7 +587,7 @@ class SearchResultDetail extends Component {
       bottom: 20,
       left: 20,
     }}>
-          <RelandIcon name="camera" color="black"
+          <RelandIcon name="camera-o" color="black"
                  iconProps={{style: detailStyles.pagingIcon}} size={16}
                  textProps={detailStyles.pagingText}
                  mainProps={detailStyles.pagingView}
@@ -651,6 +685,10 @@ class SearchResultDetail extends Component {
         console.log('Don\'t know how to open URI: ' + this.state.geoUrl);
       }
     });
+  }
+
+  _onStreetViewPressed() {
+
   }
 
   renderTwoNormalProps(prop1, prop2) {
