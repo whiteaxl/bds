@@ -17,7 +17,7 @@ class MChartView extends React.Component{
 
     render() {
         var {mainProps, data, options, pallete, chartTitle, chartTitleBold} = this.props;
-        var titleWidth = options.width - 2*(options.R - options.r) - 10;
+        var titleWidth = options.width - 2*(options.R - options.r) - 20;
         return (
             <View style={mainProps||styles.chartContent}>
                 <Pie

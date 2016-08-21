@@ -159,7 +159,7 @@ class SearchResultDetail extends Component {
     //var listData = this.props.search.form.fields.listData;
 
     //var rowData = listData[rowIndex];
-    //console.log(rowData);
+    console.log(rowData);
     if (!rowData) {
         return (
           <View style={detailStyles.fullWidthContainer}>
@@ -317,10 +317,11 @@ class SearchResultDetail extends Component {
                     {diaChi}
                   </Text>
                 </View>
+                <View style={[detailStyles.lineBorder, {marginBottom: 5}]} />
                 {this.renderTwoNormalProps(loaiTin, loaiNhaDat)}
                 {this.renderTwoNormalProps(dienTich, soPhongNgu)}
                 {this.renderTwoNormalProps(soPhongTam, soNgayDaDangTin)}
-                <View style={[detailStyles.lineBorder, {marginBottom: 10}]} />
+                <View style={[detailStyles.lineBorder, {marginTop: 5, marginBottom: 10}]} />
                 <View style={detailStyles.chiTietText}>
                   <Text style={[detailStyles.textTitle, {marginLeft: 0}]}>Chi Tiết</Text>
                   <SummaryText longText={chiTiet} expanded={false}>
@@ -356,53 +357,9 @@ class SearchResultDetail extends Component {
                   </View>
                 </CollapsiblePanel>
                 <View style={detailStyles.lineBorder2} />
-                <View style={detailStyles.shareMainView}>
-                  <View style={detailStyles.shareLeft}>
-                    <View style={[detailStyles.circleContainer, {backgroundColor: '#0A5594'}]} >
-                      <RelandIcon onPress={this._onShare.bind(this)}
-                                  name="facebook" color={'white'}
-                                  size={26} iconProps={{style: detailStyles.shareIcon}}>
-                      </RelandIcon>
-                    </View>
-                    <View style={[detailStyles.circleContainer, {backgroundColor: '#EA9409'}]} >
-                      <RelandIcon onPress={() => this._onChat(rowData)}
-                                  name="sms" color={'white'}
-                                  size={26} iconProps={{style: detailStyles.shareIcon}}>
-                      </RelandIcon>
-                    </View>
-                    <View style={[detailStyles.circleContainer, {backgroundColor: '#1E7AC0'}]} >
-                      <RelandIcon onPress={this._onShare.bind(this)}
-                                  name="zalo" color={'white'}
-                                  size={32} iconProps={{style: [detailStyles.shareIcon,{marginLeft: 2, marginTop: 0.5}]}}>
-                      </RelandIcon>
-                    </View>
-                    <View style={[detailStyles.circleContainer, {backgroundColor: '#CE0005'}]} >
-                      <RelandIcon onPress={this._onShare.bind(this)}
-                                  name="email" color={'white'}
-                                  size={26} iconProps={{style: detailStyles.shareIcon}}>
-                      </RelandIcon>
-                    </View>
-                  </View>
-                  <View style={detailStyles.shareRight}>
-                    <View style={[detailStyles.circleContainer, {marginRight: 0}]} >
-                      <RelandIcon onPress={this._onShare.bind(this)}
-                                   name="share-o" color={'white'}
-                                   size={26} iconProps={{style: detailStyles.shareIcon}}>
-                      </RelandIcon>
-                    </View>
-                  </View>
-                </View>
+                {this._renderShareButtons(rowData)}
                 <View style={detailStyles.lineBorder2} />
-                <CollapsiblePanel title="Liên Hệ" expanded={true}>
-                  {this.renderTitleProps("Tên liên lạc", dangBoi)}
-                  {this.renderTitleProps("Điện thoại", mobile)}
-                  {this.renderTitleProps("Email", email)}
-                  <RelandIcon name={"plus-circle"} size={20} color={'#EA9409'} text={"Lưu vào danh bạ"}
-                              mainProps={{flexDirection: 'row', paddingLeft: 3}}
-                              textProps={[detailStyles.danDuongText, {color: gui.mainColor}]}
-                              onPress={() => this._onAddContact(dangBoi, mobile, email)} />
-                  <Text style={{fontSize: 5}} />
-                </CollapsiblePanel>
+                {this._renderLienHe(dangBoi, mobile, email)}
                 <View style={detailStyles.lineBorder2} />
                 {/*<CollapsiblePanel title="Môi giới" expanded={true}>
                   <Text style={[detailStyles.textFullWidth,{marginTop: 0}]}>
@@ -456,6 +413,61 @@ class SearchResultDetail extends Component {
 
   }
 
+  _renderShareButtons(rowData) {
+    return (
+      <View style={detailStyles.shareMainView}>
+        <View style={detailStyles.shareLeft}>
+          <View style={[detailStyles.circleContainer, {backgroundColor: '#0A5594'}]} >
+            <RelandIcon onPress={this._onShare.bind(this)}
+                        name="facebook" color={'white'}
+                        size={26} iconProps={{style: detailStyles.shareIcon}}>
+            </RelandIcon>
+          </View>
+          <View style={[detailStyles.circleContainer, {backgroundColor: '#EA9409'}]} >
+            <RelandIcon onPress={() => this._onChat(rowData)}
+                        name="sms" color={'white'}
+                        size={26} iconProps={{style: detailStyles.shareIcon}}>
+            </RelandIcon>
+          </View>
+          <View style={[detailStyles.circleContainer, {backgroundColor: '#1E7AC0'}]} >
+            <RelandIcon onPress={this._onShare.bind(this)}
+                        name="zalo" color={'white'}
+                        size={32} iconProps={{style: [detailStyles.shareIcon,{marginLeft: 2, marginTop: 0.5}]}}>
+            </RelandIcon>
+          </View>
+          <View style={[detailStyles.circleContainer, {backgroundColor: '#CE0005'}]} >
+            <RelandIcon onPress={this._onShare.bind(this)}
+                        name="email" color={'white'}
+                        size={26} iconProps={{style: detailStyles.shareIcon}}>
+            </RelandIcon>
+          </View>
+        </View>
+        <View style={detailStyles.shareRight}>
+          <View style={[detailStyles.circleContainer, {marginRight: 0}]} >
+            <RelandIcon onPress={this._onShare.bind(this)}
+                        name="share-o" color={'white'}
+                        size={26} iconProps={{style: detailStyles.shareIcon}}>
+            </RelandIcon>
+          </View>
+        </View>
+      </View>
+    );
+  }
+
+  _renderLienHe(dangBoi, mobile, email) {
+    return (
+      <CollapsiblePanel title="Liên Hệ" expanded={true}>
+        {this.renderTitleProps("Tên liên lạc", dangBoi)}
+        {this.renderTitleProps("Điện thoại", mobile)}
+        {this.renderTitleProps("Email", email)}
+        <RelandIcon name={"plus-circle"} size={20} color={'#EA9409'} text={"Lưu vào danh bạ"}
+                    mainProps={{flexDirection: 'row', paddingLeft: 3, marginTop: 3, marginBottom: 3}}
+                    textProps={[detailStyles.danDuongText, {color: gui.mainColor}]}
+                    onPress={() => this._onAddContact(dangBoi, mobile, email)} />
+        <Text style={{fontSize: 5}} />
+      </CollapsiblePanel>
+    );
+  }
   _renderDanDuong() {
     return (
         <TouchableHighlight onPress={() => this._onDanDuongPressed()} underlayColor="transparent" >
@@ -519,7 +531,7 @@ class SearchResultDetail extends Component {
       "value": 20
     }];
     var pallete = [
-      util.hexToRgb("#1396E0"), util.hexToRgb("#DE6207")
+      util.hexToRgb("#23B750"), util.hexToRgb("#EA9409")
     ];
     var options = {
       margin: {
@@ -528,10 +540,10 @@ class SearchResultDetail extends Component {
         bottom: 2,
         right: 2
       },
-      width: 100,
-      height: 100,
-      r: 38,
-      R: 48,
+      width: 120,
+      height: 120,
+      r: 48,
+      R: 58,
       legendPosition: 'topLeft',
       animate: {
         type: 'oneByOne',
@@ -545,7 +557,7 @@ class SearchResultDetail extends Component {
       }
     };
     var chartTitle = 'Tổng tài khoản';
-    var chartTitleBold = '500 triệu';
+    var chartTitleBold = '420 triệu';
     return (
         <View style={{flexDirection: "row", alignItems: 'center', justifyContent: 'center', backgroundColor:'white', paddingTop:8, paddingBottom: 8}}>
           <View style={{paddingLeft: 13, paddingTop:5, width: Dimensions.get('window').width/3, alignItems: 'center', justifyContent: 'center'}}>
@@ -558,8 +570,8 @@ class SearchResultDetail extends Component {
             />
           </View>
           <View style={{paddingLeft: 13, paddingTop:5}}>
-            {this._renderMoneyLine("Gốc", "400 triệu", '#1396E0')}
-            {this._renderMoneyLine("Lãi", "20 triệu", '#DE6207')}
+            {this._renderMoneyLine("Gốc", "400 triệu", '#23B750')}
+            {this._renderMoneyLine("Lãi", "20 triệu", '#EA9409')}
           </View>
         </View>
     );
@@ -570,7 +582,7 @@ class SearchResultDetail extends Component {
         <View style={{flexDirection:'row'}}>
           <View style={[detailStyles.dot3, {borderColor: dotColor}]}>
           </View>
-          <View style={{flexDirection:'column'}}>
+          <View style={{flexDirection:'column', marginTop: 10, marginBottom: 10}}>
             <Text style={{fontSize: 14, fontFamily: gui.fontFamily, fontWeight: 'bold'}}>
               {value}
             </Text>
@@ -705,7 +717,7 @@ class SearchResultDetail extends Component {
   renderTwoNormalProps(prop1, prop2) {
     if (prop1 || prop2) {
       return (
-          <View style={[detailStyles.searchDetailRowAlign,detailStyles.lineBorder]}>
+          <View style={[detailStyles.searchDetailRowAlign, {width: Dimensions.get('window').width - 30, marginLeft: 15}]}>
             <View style={{flexDirection: 'row'}}>
               <View style={detailStyles.dot2} />
               <Text style={detailStyles.textHalfWidth}>
@@ -1035,7 +1047,7 @@ var detailStyles = StyleSheet.create({
     width: 6,
     height: 6,
     borderRadius: 3,
-    marginTop: 16,
+    marginTop: 11,
     marginLeft: 18,
     marginRight: 0,
     backgroundColor: '#C1C1C1'
@@ -1105,8 +1117,8 @@ var detailStyles = StyleSheet.create({
     fontSize: 14,
     fontFamily: gui.fontFamily,
     color: 'black',
-    marginTop: 8,
-    marginBottom: 8,
+    marginTop: 3,
+    marginBottom: 3,
     marginLeft: 5,
     marginRight: 10,
     width: Dimensions.get('window').width/2-20

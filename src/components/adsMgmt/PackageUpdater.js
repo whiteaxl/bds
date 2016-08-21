@@ -67,7 +67,7 @@ class PackageUpdater extends Component {
       <View style={{flexDirection:'row'}}>
         <View style={[myStyles.dot, {borderColor: dotColor}]}>
         </View>
-        <View style={{flexDirection:'column'}}>
+        <View style={{flexDirection:'column', marginTop: 5, marginBottom: 5}}>
           <Text style={{fontSize: 14, fontFamily: gui.fontFamily, fontWeight: 'bold'}}>
             {value}
           </Text>
