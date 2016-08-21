@@ -213,7 +213,7 @@ class PackageUpdater extends Component {
       },
       width: 120,
       height: 120,
-      r: 43,
+      r: 46,
       R: 58,
       legendPosition: 'topLeft',
       animate: {

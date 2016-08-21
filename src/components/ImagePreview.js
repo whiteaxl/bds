@@ -32,7 +32,7 @@ var {
 class ImagePreview extends React.Component {
     constructor(props) {
         super(props);
-        StatusBar.setBarStyle('default');
+        StatusBar.setBarStyle('light-content');
         this.state ={
             offset: new Animated.Value(deviceHeight)
         }

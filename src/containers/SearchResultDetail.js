@@ -373,7 +373,7 @@ class SearchResultDetail extends Component {
                   </Text>
                   {this._renderPhuongAnTaiChinh()}
                 </CollapsiblePanel>
-                <CollapsiblePanel title="Những nhà đang bán gần nhà này" expanded={true}>
+                <CollapsiblePanel title="Khám phá thêm" expanded={true}>
                   {this.renderContent(this.props.search.collections)}
                 </CollapsiblePanel>
               </View>
@@ -387,16 +387,16 @@ class SearchResultDetail extends Component {
               <View style={[detailStyles.customPageHeader, {backgroundColor: this.state.headerColor}]}>
                 <TruliaIcon onPress={this._onBack.bind(this)}
                             name="arrow-left" color={'white'}
-                            mainProps={detailStyles.backButton} size={25} >
+                            mainProps={detailStyles.backButton} size={28} >
                 </TruliaIcon>
                 <View style={[detailStyles.shareMainView, {marginRight: 0, marginLeft: 0}]}>
                   <RelandIcon onPress={this._onShare.bind(this)}
                               name="share-o" color={'white'}
-                              iconProps={{style: [detailStyles.shareButton, {paddingLeft: 25}]}} size={26} >
+                              iconProps={{style: [detailStyles.shareButton, {paddingLeft: 25}]}} size={29} >
                   </RelandIcon>
                   <RelandIcon onPress={this._onShare.bind(this)}
                               name="more" color={'white'}
-                              iconProps={{style: [detailStyles.shareButton, {paddingRight: 20}]}} size={30} >
+                              iconProps={{style: [detailStyles.shareButton, {paddingRight: 20}]}} size={33} >
                   </RelandIcon>
                 </View>
               </View>
@@ -542,7 +542,7 @@ class SearchResultDetail extends Component {
       },
       width: 120,
       height: 120,
-      r: 48,
+      r: 46,
       R: 58,
       legendPosition: 'topLeft',
       animate: {
@@ -752,12 +752,10 @@ class SearchResultDetail extends Component {
 
  handleScroll(event: Object) {
    if (event.nativeEvent.contentOffset.y <= imgHeight-90 && this.state.headerColor != 'transparent') {
-     StatusBar.setBarStyle('light-content');
      this.setState({
        headerColor: 'transparent'
      });
    } else if (event.nativeEvent.contentOffset.y > imgHeight-90 && this.state.headerColor != gui.mainColor) {
-     StatusBar.setBarStyle('light-content');
      this.setState({
        headerColor: gui.mainColor
      });
