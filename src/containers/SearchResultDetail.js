@@ -401,6 +401,7 @@ class SearchResultDetail extends Component {
                               mainProps={{flexDirection: 'row', paddingLeft: 3}}
                               textProps={[detailStyles.danDuongText, {color: gui.mainColor}]}
                               onPress={() => this._onAddContact(dangBoi, mobile, email)} />
+                  <Text style={{fontSize: 5}} />
                 </CollapsiblePanel>
                 <View style={detailStyles.lineBorder2} />
                 {/*<CollapsiblePanel title="Môi giới" expanded={true}>
