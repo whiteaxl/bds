@@ -53,6 +53,8 @@ import logUtil from '../lib/logUtil';
 
 import HomeCollection from '../components/home/HomeCollection';
 
+import LinearGradient from 'react-native-linear-gradient';
+
 const actions = [
   globalActions,
   searchActions,
@@ -95,7 +97,7 @@ class SearchResultDetail extends Component {
       'data' : null,
       loaded: false,
       modal: false,
-      headerOpacity: 0.45
+      headerColor: 'transparent'
     }
   }
   fetchData() {
@@ -395,7 +397,7 @@ class SearchResultDetail extends Component {
                   {this.renderTitleProps("Tên liên lạc", dangBoi)}
                   {this.renderTitleProps("Điện thoại", mobile)}
                   {this.renderTitleProps("Email", email)}
-                  <RelandIcon name={"plus"} size={20} color={'#EA9409'} text={"Lưu vào danh bạ"}
+                  <RelandIcon name={"plus-circle"} size={20} color={'#EA9409'} text={"Lưu vào danh bạ"}
                               mainProps={{flexDirection: 'row', paddingLeft: 3}}
                               textProps={[detailStyles.danDuongText, {color: gui.mainColor}]}
                               onPress={() => this._onAddContact(dangBoi, mobile, email)} />
@@ -420,21 +422,27 @@ class SearchResultDetail extends Component {
             </View>
           </ScrollView>
 
-          <View style={[detailStyles.customPageHeader, {opacity: this.state.headerOpacity}]}>
-            <TruliaIcon onPress={this._onBack.bind(this)}
-                        name="arrow-left" color={'white'}
-                        mainProps={detailStyles.backButton} size={25} >
-            </TruliaIcon>
-            <View style={[detailStyles.shareMainView, {marginRight: 0, marginLeft: 0}]}>
-              <RelandIcon onPress={this._onShare.bind(this)}
-                          name="share-o" color={'white'}
-                          iconProps={{style: [detailStyles.shareButton, {paddingLeft: 25}]}} size={26} >
-              </RelandIcon>
-              <RelandIcon onPress={this._onShare.bind(this)}
-                          name="more" color={'white'}
-                          iconProps={{style: [detailStyles.shareButton, {paddingRight: 20}]}} size={30} >
-              </RelandIcon>
-            </View>
+          <View>
+            <LinearGradient colors={['transparent', 'rgba(255, 255, 255, 0.9)']}
+                            style={detailStyles.linearGradient}>
+              <Text style={{height: 60}}></Text>
+              <View style={[detailStyles.customPageHeader, {backgroundColor: this.state.headerColor}]}>
+                <TruliaIcon onPress={this._onBack.bind(this)}
+                            name="arrow-left" color={'white'}
+                            mainProps={detailStyles.backButton} size={25} >
+                </TruliaIcon>
+                <View style={[detailStyles.shareMainView, {marginRight: 0, marginLeft: 0}]}>
+                  <RelandIcon onPress={this._onShare.bind(this)}
+                              name="share-o" color={'white'}
+                              iconProps={{style: [detailStyles.shareButton, {paddingLeft: 25}]}} size={26} >
+                  </RelandIcon>
+                  <RelandIcon onPress={this._onShare.bind(this)}
+                              name="more" color={'white'}
+                              iconProps={{style: [detailStyles.shareButton, {paddingRight: 20}]}} size={30} >
+                  </RelandIcon>
+                </View>
+              </View>
+            </LinearGradient>
           </View>
         </View>
         <SearchResultDetailFooter mobile={mobile} onChat={() => this._onChat(rowData)}/>
@@ -468,8 +476,10 @@ class SearchResultDetail extends Component {
         <TouchableHighlight onPress={() => this._onStreetViewPressed()} underlayColor="transparent" >
           <View style={[detailStyles.lineBorder,detailStyles.danDuongView]}>
             <View style={detailStyles.danDuongLeftView}>
-              <RelandIcon name={"location"} size={20} color={gui.mainColor} text={"Street view"}
-                          mainProps={{flexDirection: 'row'}} textProps={detailStyles.danDuongText} />
+              <RelandIcon name={"street-view"} size={20} color={gui.mainColor} text={"Street view"}
+                          mainProps={{flexDirection: 'row'}}
+                          iconProps={{style: {marginRight: 0}}}
+                          textProps={[detailStyles.danDuongText, {paddingLeft: 0}]} />
             </View>
             <View style={detailStyles.danDuongRightView}>
               <TruliaIcon name={"arrow-right"} size={20} color={"gray"} />
@@ -728,13 +738,15 @@ class SearchResultDetail extends Component {
   }
 
  handleScroll(event: Object) {
-   if (event.nativeEvent.contentOffset.y <= imgHeight-90 && this.state.headerOpacity != 0.45) {
+   if (event.nativeEvent.contentOffset.y <= imgHeight-90 && this.state.headerColor != 'transparent') {
+     StatusBar.setBarStyle('light-content');
      this.setState({
-       headerOpacity: 0.45
+       headerColor: 'transparent'
      });
-   } else if (event.nativeEvent.contentOffset.y > imgHeight-90 && this.state.headerOpacity != 1) {
+   } else if (event.nativeEvent.contentOffset.y > imgHeight-90 && this.state.headerColor != gui.mainColor) {
+     StatusBar.setBarStyle('light-content');
      this.setState({
-       headerOpacity: 1
+       headerColor: gui.mainColor
      });
    }
  //   if (event.nativeEvent.contentOffset.y <= imgHeight-30 && this.state.headerButtonColor != 'white') {
@@ -978,7 +990,7 @@ var detailStyles = StyleSheet.create({
       flexDirection: 'row',
       alignItems: 'flex-start',
       justifyContent: 'space-between',
-      backgroundColor: gui.mainColor,
+      // backgroundColor: gui.mainColor,
       // opacity: 0.55,
       height: 60
   },
