@@ -45,6 +45,11 @@ class AdsListView extends React.Component {
       <SGListView
         dataSource={ds}
         renderRow={this.renderRow.bind(this)}
+        stickyHeaderIndices={[]}
+        initialListSize={1}
+        onEndReachedThreshold={1}
+        scrollRenderAheadDistance={3}
+        pageSize={5}
         //renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
         style={styles.searchListView}
       />
