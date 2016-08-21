@@ -54,7 +54,7 @@ module.exports = SearchResultDetailFooter;
 
 var myStyles = StyleSheet.create({
   searchListButtonItem1: {
-      backgroundColor: '#FB0007',
+      backgroundColor: '#F53113',
       width: Dimensions.get('window').width/3-10,
       borderRadius: 5,
       borderColor: '#E2E2E2',

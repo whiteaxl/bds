@@ -368,7 +368,7 @@ class SearchResultDetail extends Component {
                   {moiGioiTuongTu}
                 </CollapsiblePanel>*/}
                 <CollapsiblePanel title="Phương Án Tài Chính" expanded={true}>
-                  <Text style={[detailStyles.textFullWidth,{marginTop: 0}]}>
+                  <Text style={[detailStyles.textFullWidth,{marginTop: 0, color: '#9B9B9B'}]}>
                     Cách lập phương án tài chính cho các dự án BĐS, giúp các doanh nghiệp lên kế hoạch đầu tư hiệu quả
                   </Text>
                   {this._renderPhuongAnTaiChinh()}
@@ -474,10 +474,10 @@ class SearchResultDetail extends Component {
           <View style={[detailStyles.lineBorder,detailStyles.danDuongView]}>
             <View style={detailStyles.danDuongLeftView}>
               <TruliaIcon name={"car"} size={20} color={gui.mainColor} text={"Dẫn đường"}
-                          textProps={detailStyles.danDuongText} />
+                          textProps={detailStyles.danDuongText} onPress={() => this._onDanDuongPressed()}/>
             </View>
             <View style={detailStyles.danDuongRightView}>
-              <TruliaIcon name={"arrow-right"} size={20} color={"gray"} />
+              <TruliaIcon name={"arrow-right"} size={20} color={"gray"} onPress={() => this._onDanDuongPressed()}/>
             </View>
           </View>
         </TouchableHighlight>
@@ -492,10 +492,12 @@ class SearchResultDetail extends Component {
               <RelandIcon name={"street-view"} size={20} color={gui.mainColor} text={"Street view"}
                           mainProps={{flexDirection: 'row'}}
                           iconProps={{style: {marginRight: 0}}}
-                          textProps={[detailStyles.danDuongText, {paddingLeft: 0}]} />
+                          textProps={[detailStyles.danDuongText, {paddingLeft: 0}]}
+                          onPress={() => this._onStreetViewPressed()}/>
             </View>
             <View style={detailStyles.danDuongRightView}>
-              <TruliaIcon name={"arrow-right"} size={20} color={"gray"} />
+              <TruliaIcon name={"arrow-right"} size={20} color={"gray"}
+                          onPress={() => this._onStreetViewPressed()}/>
             </View>
           </View>
         </TouchableHighlight>
@@ -559,8 +561,8 @@ class SearchResultDetail extends Component {
     var chartTitle = 'Tổng tài khoản';
     var chartTitleBold = '420 triệu';
     return (
-        <View style={{flexDirection: "row", alignItems: 'center', justifyContent: 'center', backgroundColor:'white', paddingTop:8, paddingBottom: 8}}>
-          <View style={{paddingLeft: 13, paddingTop:5, width: Dimensions.get('window').width/3, alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{flexDirection: "row", alignItems: 'center', justifyContent: 'flex-start', backgroundColor:'white', paddingTop:8, paddingBottom: 8}}>
+          <View style={{paddingLeft: 13, paddingTop:5, width: Dimensions.get('window').width/2, alignItems: 'center', justifyContent: 'center'}}>
             <MChartView
                 data={data}
                 options={options}
@@ -752,10 +754,12 @@ class SearchResultDetail extends Component {
 
  handleScroll(event: Object) {
    if (event.nativeEvent.contentOffset.y <= imgHeight-90 && this.state.headerColor != 'transparent') {
+     StatusBar.setBarStyle('light-content');
      this.setState({
        headerColor: 'transparent'
      });
    } else if (event.nativeEvent.contentOffset.y > imgHeight-90 && this.state.headerColor != gui.mainColor) {
+     StatusBar.setBarStyle('light-content');
      this.setState({
        headerColor: gui.mainColor
      });
