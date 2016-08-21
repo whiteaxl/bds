@@ -32,7 +32,7 @@ var {
 class ImagePreview extends React.Component {
     constructor(props) {
         super(props);
-        StatusBar.setBarStyle('light-content');
+        StatusBar.setBarStyle('default');
         this.state ={
             offset: new Animated.Value(deviceHeight)
         }
@@ -46,6 +46,7 @@ class ImagePreview extends React.Component {
     }
 
     componentWillUnmount() {
+        StatusBar.setBarStyle('light-content');
         // if (this.props.owner != 'chat') {
         //     Orientation.lockToPortrait();
         // }
