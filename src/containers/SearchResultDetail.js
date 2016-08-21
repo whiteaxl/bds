@@ -159,7 +159,7 @@ class SearchResultDetail extends Component {
     //var listData = this.props.search.form.fields.listData;
 
     //var rowData = listData[rowIndex];
-    console.log(rowData);
+    // console.log(rowData);
     if (!rowData) {
         return (
           <View style={detailStyles.fullWidthContainer}>
