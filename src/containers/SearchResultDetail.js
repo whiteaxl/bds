@@ -423,7 +423,7 @@ class SearchResultDetail extends Component {
           </ScrollView>
 
           <View>
-            <LinearGradient colors={['transparent', 'rgba(255, 255, 255, 0.9)']}
+            <LinearGradient colors={['rgba(0, 0, 0, 0.9)', 'transparent']}
                             style={detailStyles.linearGradient}>
               <Text style={{height: 60}}></Text>
               <View style={[detailStyles.customPageHeader, {backgroundColor: this.state.headerColor}]}>
