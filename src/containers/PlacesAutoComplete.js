@@ -76,12 +76,14 @@ class PlacesAutoComplete extends React.Component {
 
     //if not call from Search page, then need perform action
     if (this.props.needReload) {
-      this.props.actions.search(
-        this.props.search.form.fields
-        , () => {
-          Actions.pop();
-        }
-      );
+      setTimeout(() => { //must wait for onSearchFieldChange("place", value) complete
+        this.props.actions.search(
+          this.props.search.form.fields
+          , () => {
+            Actions.pop();
+          }
+        );
+      }, 100);
     } else {
       Actions.pop();
     }
