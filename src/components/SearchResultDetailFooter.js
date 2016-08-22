@@ -83,7 +83,7 @@ var myStyles = StyleSheet.create({
   searchListButtonText1: {
       marginLeft: 10,
       alignItems: 'center',
-      backgroundColor: '#FB0007',
+      backgroundColor: '#F53113',
       color: 'white',
       fontFamily: gui.fontFamily,
       fontWeight: 'normal',
