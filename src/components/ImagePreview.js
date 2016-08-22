@@ -77,7 +77,7 @@ class ImagePreview extends React.Component {
             },
             pagingView: {
                 flexDirection: 'row',
-                backgroundColor: gui.mainColor,
+                backgroundColor: 'transparent',
                 borderRadius: 5
             },
             container: {
@@ -103,7 +103,7 @@ class ImagePreview extends React.Component {
             },
             imgView: {
                 justifyContent: 'center',
-                backgroundColor: 'transparent'
+                backgroundColor: 'black'
                 //
             },
             dot : {
@@ -191,14 +191,11 @@ class ImagePreview extends React.Component {
             this.props.images.map(function (imageUrl) {
                 imageItems.push(
                     <View style={styles.imgView} key={"img"+(imageIndex++)}>
-                        <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
-                                        style={styles.linearGradient}>
-                            <Image style={styles.imgItem}
-                                   source={{uri: `${imageUrl}`}}
-                                   resizeMode={Image.resizeMode.contain}
-                            >
-                            </Image>
-                        </LinearGradient>
+                        <Image style={styles.imgItem}
+                               source={{uri: `${imageUrl}`}}
+                               resizeMode={Image.resizeMode.contain}
+                        >
+                        </Image>
                     </View>
                 );
             });
@@ -219,7 +216,7 @@ class ImagePreview extends React.Component {
                         {imageItems}
                     </Swiper>
                     <View style={styles.closeView}>
-                        <RelandIcon name={"close"} color={gui.mainColor} mainProps={styles.closeBtn}
+                        <RelandIcon name={"close"} color={'white'} mainProps={styles.closeBtn}
                                     size={20} onPress={this.closeModal.bind(this)}>
                         </RelandIcon>
                     </View>
