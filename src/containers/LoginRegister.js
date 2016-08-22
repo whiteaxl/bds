@@ -22,6 +22,7 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 
 import gui from "../lib/gui";
 import log from "../lib/logUtil";
+import _ from "underscore";
 
 import LoginRegisterTabBar from "../components/login/LoginRegisterTabBar";
 
