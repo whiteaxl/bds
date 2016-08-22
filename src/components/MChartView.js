@@ -63,6 +63,7 @@ var styles = StyleSheet.create({
     title: {
         fontSize: 12,
         fontFamily: gui.fontFamily,
+        color: '#9C9C9C',
         backgroundColor: 'transparent',
         textAlign: 'center'
     },

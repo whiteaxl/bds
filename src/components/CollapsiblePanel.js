@@ -54,6 +54,8 @@ class CollapsiblePanel extends Component{
 
 
     render(){
+        let {mainProps, bodyProps} = this.props;
+
         let icon = this.icons['down'];
 
         if(this.state.expanded){
@@ -61,7 +63,7 @@ class CollapsiblePanel extends Component{
 
             //Step 5
             return (
-                <Animated.View style={[styles.container,{height: this.state.animation}]} >
+                <Animated.View style={[styles.container, mainProps,{height: this.state.animation}]} >
 
                   <TouchableOpacity
                     onPress={this.toggle.bind(this)}>
@@ -72,7 +74,7 @@ class CollapsiblePanel extends Component{
                             mainProps={styles.button} size={20} />
                     </View>
 
-                    <View style={styles.body} onLayout={this._setMaxHeight.bind(this)}>
+                    <View style={[styles.body, bodyProps]} onLayout={this._setMaxHeight.bind(this)}>
                         {this.props.children}
                     </View>
                   </TouchableOpacity>
@@ -82,7 +84,7 @@ class CollapsiblePanel extends Component{
         } else {
             //Step 5
             return (
-                <Animated.View style={[styles.container,{height: this.state.animation}]} >
+                <Animated.View style={[styles.container, mainProps, {height: this.state.animation}]} >
 
                   <TouchableOpacity
                     onPress={this.toggle.bind(this)}>

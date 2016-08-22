@@ -368,8 +368,8 @@ class SearchResultDetail extends Component {
                   </Text>
                   {moiGioiTuongTu}
                 </CollapsiblePanel>*/}
-                <CollapsiblePanel title="Phương Án Tài Chính" expanded={true}>
-                  <Text style={[detailStyles.textFullWidth,{marginTop: 0, color: '#9B9B9B'}]}>
+                <CollapsiblePanel title="Phương Án Tài Chính" expanded={true} bodyProps={{marginTop: 1}} mainProps={{marginBottom: 0}}>
+                  <Text style={[detailStyles.textFullWidth,{fontSize: 13, marginTop: 0, color: '#9C9C9C'}]}>
                     Cách lập phương án tài chính cho các dự án BĐS, giúp các doanh nghiệp lên kế hoạch đầu tư hiệu quả
                   </Text>
                   {this._renderPhuongAnTaiChinh()}
@@ -533,7 +533,7 @@ class SearchResultDetail extends Component {
     }, {
       "name": "",
       "fillColor" : "#DE6207",
-      "value": 20
+      "value": 100
     }];
     var pallete = [
       util.hexToRgb("#23B750"), util.hexToRgb("#EA9409")
@@ -545,10 +545,10 @@ class SearchResultDetail extends Component {
         bottom: 2,
         right: 2
       },
-      width: 120,
-      height: 120,
+      width: 126,
+      height: 126,
       r: 46,
-      R: 58,
+      R: 61,
       legendPosition: 'topLeft',
       animate: {
         type: 'oneByOne',
@@ -562,10 +562,10 @@ class SearchResultDetail extends Component {
       }
     };
     var chartTitle = 'Tổng tài khoản';
-    var chartTitleBold = '420 triệu';
+    var chartTitleBold = '500 triệu';
     return (
-        <View style={{flexDirection: "row", alignItems: 'center', justifyContent: 'flex-start', backgroundColor:'white', paddingTop:8}}>
-          <View style={{paddingLeft: 13, paddingTop:5, width: Dimensions.get('window').width/2, alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{flexDirection: "row", alignItems: 'center', justifyContent: 'flex-start', backgroundColor:'white', paddingTop:0}}>
+          <View style={{paddingLeft: 13, paddingTop:2, width: Dimensions.get('window').width/2, alignItems: 'center', justifyContent: 'center'}}>
             <MChartView
                 data={data}
                 options={options}
@@ -574,9 +574,9 @@ class SearchResultDetail extends Component {
                 chartTitleBold={chartTitleBold}
             />
           </View>
-          <View style={{paddingLeft: 13, paddingTop:5}}>
+          <View style={{paddingLeft: 13, paddingTop:2}}>
             {this._renderMoneyLine("Gốc", "400 triệu", '#23B750')}
-            {this._renderMoneyLine("Lãi", "20 triệu", '#EA9409')}
+            {this._renderMoneyLine("Lãi", "100 triệu", '#EA9409')}
           </View>
         </View>
     );
@@ -587,11 +587,11 @@ class SearchResultDetail extends Component {
         <View style={{flexDirection:'row'}}>
           <View style={[detailStyles.dot3, {borderColor: dotColor}]}>
           </View>
-          <View style={{flexDirection:'column', marginTop: 10, marginBottom: 10}}>
+          <View style={{flexDirection:'column', marginTop: 8, marginBottom: 8}}>
             <Text style={{fontSize: 14, fontFamily: gui.fontFamily, fontWeight: 'bold'}}>
               {value}
             </Text>
-            <Text style={{fontSize: 12, fontFamily: gui.fontFamily}}>
+            <Text style={{fontSize: 12, fontFamily: gui.fontFamily, color: '#9C9C9C'}}>
               {label}
             </Text>
           </View>
@@ -1058,13 +1058,13 @@ var detailStyles = StyleSheet.create({
     backgroundColor: '#C1C1C1'
   },
   dot3 : {
-    width: 20,
-    height: 20,
-    borderRadius: 10,
-    marginRight: 10,
-    marginTop: 10,
+    width: 16,
+    height: 16,
+    borderRadius: 8,
+    marginRight: 14,
+    marginTop: 18,
     backgroundColor: 'white',
-    borderWidth: 5
+    borderWidth: 3.5
   },
   imgItem: {
     flex:1,
