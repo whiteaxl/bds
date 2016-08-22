@@ -79,9 +79,10 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-var mapSize = Dimensions.get('window').width-30;
+var mapWidth = Dimensions.get('window').width-30;
+var mapHeight = (mapWidth-mapWidth%2)/2+19;
 
-var imgHeight = 368;
+var imgHeight = Dimensions.get('window').height/2;
 
 var url = '';
 
@@ -159,7 +160,7 @@ class SearchResultDetail extends Component {
     //var listData = this.props.search.form.fields.listData;
 
     //var rowData = listData[rowIndex];
-    console.log(rowData);
+    // console.log(rowData);
     if (!rowData) {
         return (
           <View style={detailStyles.fullWidthContainer}>
@@ -213,7 +214,7 @@ class SearchResultDetail extends Component {
     }
 
     var _scrollView: ScrollView;
-    var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=12&size='+mapSize+'x'+((mapSize-mapSize%2)/2)+'&markers=color:red|'+rowData.place.geo.lat+','+rowData.place.geo.lon+'&sensor=false';
+    var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=12&size='+mapWidth+'x'+mapHeight+'&markers=color:red|'+rowData.place.geo.lat+','+rowData.place.geo.lon+'&sensor=false';
     var imageItems = [];
     var imageDataItems = [];
     var imageIndex = 0;
@@ -317,11 +318,11 @@ class SearchResultDetail extends Component {
                     {diaChi}
                   </Text>
                 </View>
-                <View style={[detailStyles.lineBorder, {marginBottom: 5}]} />
+                <View style={[detailStyles.lineBorder, {marginBottom: 4}]} />
                 {this.renderTwoNormalProps(loaiTin, loaiNhaDat)}
                 {this.renderTwoNormalProps(dienTich, soPhongNgu)}
                 {this.renderTwoNormalProps(soPhongTam, soNgayDaDangTin)}
-                <View style={[detailStyles.lineBorder, {marginTop: 5, marginBottom: 10}]} />
+                <View style={[detailStyles.lineBorder, {marginTop: 5, marginBottom: 7}]} />
                 <View style={detailStyles.chiTietText}>
                   <Text style={[detailStyles.textTitle, {marginLeft: 0}]}>Chi Tiết</Text>
                   <SummaryText longText={chiTiet} expanded={false}>
@@ -368,11 +369,13 @@ class SearchResultDetail extends Component {
                   {moiGioiTuongTu}
                 </CollapsiblePanel>*/}
                 <CollapsiblePanel title="Phương Án Tài Chính" expanded={true}>
-                  <Text style={[detailStyles.textFullWidth,{marginTop: 0}]}>
+                  <Text style={[detailStyles.textFullWidth,{marginTop: 0, color: '#9B9B9B'}]}>
                     Cách lập phương án tài chính cho các dự án BĐS, giúp các doanh nghiệp lên kế hoạch đầu tư hiệu quả
                   </Text>
                   {this._renderPhuongAnTaiChinh()}
+                  <Text style={{fontSize: 5}} />
                 </CollapsiblePanel>
+                <View style={detailStyles.lineBorder2} />
                 <CollapsiblePanel title="Khám phá thêm" expanded={true}>
                   {this.renderContent(this.props.search.collections)}
                 </CollapsiblePanel>
@@ -460,8 +463,8 @@ class SearchResultDetail extends Component {
         {this.renderTitleProps("Tên liên lạc", dangBoi)}
         {this.renderTitleProps("Điện thoại", mobile)}
         {this.renderTitleProps("Email", email)}
-        <RelandIcon name={"plus-circle"} size={20} color={'#EA9409'} text={"Lưu vào danh bạ"}
-                    mainProps={{flexDirection: 'row', paddingLeft: 3, marginTop: 3, marginBottom: 3}}
+        <RelandIcon name={"plus-circle"} size={18} color={'#EA9409'} text={"Lưu vào danh bạ"}
+                    mainProps={{flexDirection: 'row', paddingLeft: 3, paddingTop: 9, paddingBottom: 5}}
                     textProps={[detailStyles.danDuongText, {color: gui.mainColor}]}
                     onPress={() => this._onAddContact(dangBoi, mobile, email)} />
         <Text style={{fontSize: 5}} />
@@ -474,10 +477,10 @@ class SearchResultDetail extends Component {
           <View style={[detailStyles.lineBorder,detailStyles.danDuongView]}>
             <View style={detailStyles.danDuongLeftView}>
               <TruliaIcon name={"car"} size={20} color={gui.mainColor} text={"Dẫn đường"}
-                          textProps={detailStyles.danDuongText} />
+                          textProps={detailStyles.danDuongText} onPress={() => this._onDanDuongPressed()}/>
             </View>
             <View style={detailStyles.danDuongRightView}>
-              <TruliaIcon name={"arrow-right"} size={20} color={"gray"} />
+              <TruliaIcon name={"arrow-right"} size={20} color={"gray"} onPress={() => this._onDanDuongPressed()}/>
             </View>
           </View>
         </TouchableHighlight>
@@ -492,10 +495,12 @@ class SearchResultDetail extends Component {
               <RelandIcon name={"street-view"} size={20} color={gui.mainColor} text={"Street view"}
                           mainProps={{flexDirection: 'row'}}
                           iconProps={{style: {marginRight: 0}}}
-                          textProps={[detailStyles.danDuongText, {paddingLeft: 0}]} />
+                          textProps={[detailStyles.danDuongText, {paddingLeft: 0}]}
+                          onPress={() => this._onStreetViewPressed()}/>
             </View>
             <View style={detailStyles.danDuongRightView}>
-              <TruliaIcon name={"arrow-right"} size={20} color={"gray"} />
+              <TruliaIcon name={"arrow-right"} size={20} color={"gray"}
+                          onPress={() => this._onStreetViewPressed()}/>
             </View>
           </View>
         </TouchableHighlight>
@@ -559,8 +564,8 @@ class SearchResultDetail extends Component {
     var chartTitle = 'Tổng tài khoản';
     var chartTitleBold = '420 triệu';
     return (
-        <View style={{flexDirection: "row", alignItems: 'center', justifyContent: 'center', backgroundColor:'white', paddingTop:8, paddingBottom: 8}}>
-          <View style={{paddingLeft: 13, paddingTop:5, width: Dimensions.get('window').width/3, alignItems: 'center', justifyContent: 'center'}}>
+        <View style={{flexDirection: "row", alignItems: 'center', justifyContent: 'flex-start', backgroundColor:'white', paddingTop:8}}>
+          <View style={{paddingLeft: 13, paddingTop:5, width: Dimensions.get('window').width/2, alignItems: 'center', justifyContent: 'center'}}>
             <MChartView
                 data={data}
                 options={options}
@@ -752,10 +757,12 @@ class SearchResultDetail extends Component {
 
  handleScroll(event: Object) {
    if (event.nativeEvent.contentOffset.y <= imgHeight-90 && this.state.headerColor != 'transparent') {
+     StatusBar.setBarStyle('light-content');
      this.setState({
        headerColor: 'transparent'
      });
    } else if (event.nativeEvent.contentOffset.y > imgHeight-90 && this.state.headerColor != gui.mainColor) {
+     StatusBar.setBarStyle('light-content');
      this.setState({
        headerColor: gui.mainColor
      });
@@ -902,7 +909,7 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   circleContainer: {
-    marginTop: 5,
+    marginTop: 4,
     marginBottom: 5,
     marginRight: 10,
     width: 36,
@@ -983,7 +990,7 @@ var detailStyles = StyleSheet.create({
     marginLeft: 3
   },
   chiTietText: {
-      marginBottom: 15,
+      marginBottom: 11,
       marginLeft: 15
   },
   shareMainView: {
@@ -1042,9 +1049,9 @@ var detailStyles = StyleSheet.create({
     bottom: 32
   },
   dot2 : {
-    width: 6,
-    height: 6,
-    borderRadius: 3,
+    width: 4,
+    height: 4,
+    borderRadius: 2,
     marginTop: 11,
     marginLeft: 18,
     marginRight: 0,
@@ -1067,24 +1074,24 @@ var detailStyles = StyleSheet.create({
     height: imgHeight
   },
   searchMapView: {
-    marginTop: 10,
-    marginBottom: 10,
+    marginTop: 7,
+    marginBottom: 3,
     alignItems: 'center',
     justifyContent: 'center'
   },
   imgMapView: {
-    width: mapSize,
-    height: mapSize/2,
+    width: mapWidth,
+    height: mapHeight,
   },
   mapViewButton: {
     backgroundColor: 'transparent',
-    width: mapSize,
+    width: mapWidth,
     marginLeft: 15,
     marginRight: 15
   },
   slideItem: {
     flex: 1, justifyContent: 'flex-start', alignItems: 'stretch',
-          backgroundColor: 'transparent', marginTop: 15
+          backgroundColor: 'transparent', marginTop: 7
   },
   price: {
     fontSize: 22,
@@ -1093,18 +1100,18 @@ var detailStyles = StyleSheet.create({
     textAlign: 'left',
     backgroundColor: 'transparent',
     color: '#BE0004',
-    marginBottom: 10,
+    marginBottom: 7,
     marginLeft: 15,
     marginRight: 15,
   },
   textTitle: {
     fontSize: 16,
     fontFamily: gui.fontFamily,
-    fontWeight: 'bold',
+    fontWeight: '600',
     textAlign: 'left',
     backgroundColor: 'transparent',
     color: 'black',
-    marginBottom: 10,
+    marginBottom: 16,
     marginLeft: 15,
     marginRight: 15,
   },
@@ -1116,7 +1123,7 @@ var detailStyles = StyleSheet.create({
     fontFamily: gui.fontFamily,
     color: 'black',
     marginTop: 3,
-    marginBottom: 3,
+    marginBottom: 4,
     marginLeft: 5,
     marginRight: 10,
     width: Dimensions.get('window').width/2-20
@@ -1143,7 +1150,7 @@ var detailStyles = StyleSheet.create({
     fontFamily: gui.fontFamily,
     color: 'black',
     marginTop: 3,
-    marginBottom: 3,
+    marginBottom: 2,
     marginLeft: 10,
     marginRight: 10,
     width: Dimensions.get('window').width/2-20
@@ -1157,7 +1164,7 @@ var detailStyles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'black',
     marginTop: 3,
-    marginBottom: 3,
+    marginBottom: 2,
     marginLeft: 10,
     marginRight: 10,
     width: Dimensions.get('window').width/2-20
@@ -1170,7 +1177,7 @@ var detailStyles = StyleSheet.create({
     fontFamily: gui.fontFamily,
     color: 'black',
     marginTop: 8,
-    marginBottom: 8,
+    marginBottom: 7,
     marginLeft: 0,
     marginRight: 0,
   },
@@ -1191,8 +1198,8 @@ var detailStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'stretch',
     justifyContent: 'space-between',
-    paddingTop: 8,
-    marginBottom: 8
+    paddingTop: 6,
+    marginBottom: 6
   },
   danDuongLeftView: {
     alignItems: 'center',

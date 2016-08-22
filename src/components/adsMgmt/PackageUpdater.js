@@ -267,8 +267,8 @@ class PackageUpdater extends Component {
         >
           {this._renderTitleLine("TÀI KHOẢN VÀ PHÍ DỊCH VỤ")}
 
-          <View style={{flexDirection: "row", justifyContent: 'center', backgroundColor:'white', paddingTop:8, paddingBottom: 8}}>
-            <View style={{paddingLeft: 13, paddingTop:5, width: Dimensions.get('window').width/3, alignItems: 'center', justifyContent: 'center'}}>
+          <View style={{flexDirection: "row", justifyContent: 'flex-start', backgroundColor:'white', paddingTop:8, paddingBottom: 8}}>
+            <View style={{paddingLeft: 13, paddingTop:5, width: Dimensions.get('window').width/2, alignItems: 'center', justifyContent: 'center'}}>
               <MChartView
                   data={data}
                   options={options}

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {StyleSheet,Text,View,Image,TouchableHighlight,Animated,Dimensions,TouchableOpacity} from 'react-native'; //Step 1
-
+import gui from '../lib/gui';
 
 class SummaryText extends Component{
     constructor(props){
@@ -138,10 +138,10 @@ var styles = StyleSheet.create({
         marginLeft: 0
     },
     button      : {
-        color   :'blue',
-        fontFamily: 'Open Sans',
+        color   : gui.mainColor,
+        fontFamily: gui.fontFamily,
         fontSize: 14,
-        fontWeight: 'bold',
+        fontWeight: '600',
         textAlign: 'left',
         backgroundColor: 'transparent',
         marginLeft: 0,

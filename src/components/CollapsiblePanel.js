@@ -106,7 +106,7 @@ var styles = StyleSheet.create({
         backgroundColor: 'transparent',
         marginLeft: 15,
         marginRight: 15,
-        marginTop: 10,
+        marginTop: 6,
         marginBottom: 10,
         overflow:'hidden',
         width: Dimensions.get('window').width-30
@@ -121,7 +121,8 @@ var styles = StyleSheet.create({
         flex    : 1,
         color   :'black',
         fontSize: 16,
-        fontWeight: 'bold',
+        fontFamily: gui.fontFamily,
+        fontWeight: '600',
         textAlign: 'left',
         backgroundColor: 'transparent',
         marginLeft: 0,
@@ -136,7 +137,7 @@ var styles = StyleSheet.create({
     },
     body        : {
         margin: 0,
-        marginTop: 10,
+        marginTop: 13,
     }
 });
 
