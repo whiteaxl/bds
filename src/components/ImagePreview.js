@@ -24,6 +24,8 @@ import gui from '../lib/gui';
 
 import LinearGradient from 'react-native-linear-gradient';
 
+import PhotoView from 'react-native-photo-view';
+
 var {
     height: deviceHeight,
     width: deviceWidth
@@ -191,11 +193,15 @@ class ImagePreview extends React.Component {
             this.props.images.map(function (imageUrl) {
                 imageItems.push(
                     <View style={styles.imgView} key={"img"+(imageIndex++)}>
-                        <Image style={styles.imgItem}
+                        <PhotoView style={styles.imgItem}
                                source={{uri: `${imageUrl}`}}
                                resizeMode={Image.resizeMode.contain}
+                               minimumZoomScale={0.5}
+                               maximumZoomScale={3}
+                               androidScaleType="center"
+                               onLoad={() => {}}
                         >
-                        </Image>
+                        </PhotoView>
                     </View>
                 );
             });

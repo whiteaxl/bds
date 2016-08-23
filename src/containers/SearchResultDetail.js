@@ -511,7 +511,7 @@ class SearchResultDetail extends Component {
     if (this.props.search.homeDataErrorMsg) {
       return (
           <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
-            <Text style={styles.welcome}>{this.props.search.homeDataErrorMsg}</Text>
+            <Text style={detailStyles.welcome}>{this.props.search.homeDataErrorMsg}</Text>
           </View>
       )
     }
