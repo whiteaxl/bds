@@ -26,6 +26,8 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import PhotoView from 'react-native-photo-view';
 
+import SearchResultDetailFooter from './SearchResultDetailFooter';
+
 var {
     height: deviceHeight,
     width: deviceWidth
@@ -186,7 +188,7 @@ class ImagePreview extends React.Component {
         console.log("Call ImagePreview.render");
         var styles = this.styles;
         var imageWidth = this.imageWidth;
-        var imageHeight = this.imageHeight;
+        var imageHeight = this.imageHeight-44;
         var imageItems = [];
         var imageIndex = 0;
         if (this.props.images) {
@@ -226,6 +228,7 @@ class ImagePreview extends React.Component {
                                     size={20} onPress={this.closeModal.bind(this)}>
                         </RelandIcon>
                     </View>
+                    <SearchResultDetailFooter mobile={this.props.mobile} onChat={this.props.onChat} />
                 </View>
             </Animated.View>
         )

@@ -55,6 +55,8 @@ import HomeCollection from '../components/home/HomeCollection';
 
 import LinearGradient from 'react-native-linear-gradient';
 
+import MHeartIcon from '../components/MHeartIcon';
+
 const actions = [
   globalActions,
   searchActions,
@@ -98,7 +100,9 @@ class SearchResultDetail extends Component {
       'data' : null,
       loaded: false,
       modal: false,
-      headerColor: 'transparent'
+      headerColor: 'black',
+      headerButtonColor: 'white',
+      heartBgColor: '#4A443F'
     }
   }
   fetchData() {
@@ -384,22 +388,27 @@ class SearchResultDetail extends Component {
           </ScrollView>
 
           <View>
-            <LinearGradient colors={['rgba(0, 0, 0, 0.9)', 'transparent']}
+            <LinearGradient colors={this.state.headerColor == 'black' ? ['rgba(0, 0, 0, 0.9)', 'transparent'] :
+                                                                        ['transparent', 'rgba(255, 255, 255, 0.9)']}
                             style={detailStyles.linearGradient}>
               <Text style={{height: 60}}></Text>
-              <View style={[detailStyles.customPageHeader, {backgroundColor: this.state.headerColor}]}>
+              <View style={[detailStyles.customPageHeader, {backgroundColor: 'transparent'}]}>
                 <TruliaIcon onPress={this._onBack.bind(this)}
-                            name="arrow-left" color={'white'}
-                            mainProps={detailStyles.backButton} size={28} >
+                            name="arrow-left" color={this.state.headerButtonColor}
+                            mainProps={[detailStyles.backButton, {marginTop: 28}]} size={28} >
                 </TruliaIcon>
                 <View style={[detailStyles.shareMainView, {marginRight: 0, marginLeft: 0}]}>
-                  <RelandIcon onPress={this._onShare.bind(this)}
+                  {/*<RelandIcon onPress={this._onShare.bind(this)}
                               name="share-o" color={'white'}
                               iconProps={{style: [detailStyles.shareButton, {paddingLeft: 25}]}} size={29} >
-                  </RelandIcon>
+                  </RelandIcon>*/}
+                  <View style={detailStyles.shareButton}>
+                    <MHeartIcon onPress={this._onShare.bind(this)} color={this.state.headerButtonColor}
+                                bgColor={this.state.heartBgColor} size={22} />
+                  </View>
                   <RelandIcon onPress={this._onShare.bind(this)}
-                              name="more" color={'white'}
-                              iconProps={{style: [detailStyles.shareButton, {paddingRight: 20}]}} size={33} >
+                              name="more" color={this.state.headerButtonColor}
+                              iconProps={{style: [detailStyles.shareButton, {paddingRight: 20, marginTop: 27}]}} size={33} >
                   </RelandIcon>
                 </View>
               </View>
@@ -407,7 +416,8 @@ class SearchResultDetail extends Component {
           </View>
         </View>
         <SearchResultDetailFooter mobile={mobile} onChat={() => this._onChat(rowData)}/>
-        {this.state.modal ? <ImagePreview images={imageDataItems} closeModal={() => this.setState({modal: false}) }/> : null }
+        {this.state.modal ? <ImagePreview images={imageDataItems} mobile={mobile} onChat={() => this._onChat(rowData)}
+                                          closeModal={() => this.setState({modal: false}) }/> : null }
         </View>
 		)
 	}
@@ -420,27 +430,21 @@ class SearchResultDetail extends Component {
     return (
       <View style={detailStyles.shareMainView}>
         <View style={detailStyles.shareLeft}>
-          <View style={[detailStyles.circleContainer, {backgroundColor: '#0A5594'}]} >
-            <RelandIcon onPress={this._onShare.bind(this)}
-                        name="facebook" color={'white'}
-                        size={26} iconProps={{style: detailStyles.shareIcon}}>
-            </RelandIcon>
-          </View>
           <View style={[detailStyles.circleContainer, {backgroundColor: '#EA9409'}]} >
             <RelandIcon onPress={() => this._onChat(rowData)}
                         name="sms" color={'white'}
                         size={26} iconProps={{style: detailStyles.shareIcon}}>
             </RelandIcon>
           </View>
-          <View style={[detailStyles.circleContainer, {backgroundColor: '#1E7AC0'}]} >
-            <RelandIcon onPress={this._onShare.bind(this)}
-                        name="zalo" color={'white'}
-                        size={32} iconProps={{style: [detailStyles.shareIcon,{marginLeft: 2, marginTop: 0.5}]}}>
-            </RelandIcon>
-          </View>
           <View style={[detailStyles.circleContainer, {backgroundColor: '#CE0005'}]} >
             <RelandIcon onPress={this._onShare.bind(this)}
                         name="email" color={'white'}
+                        size={26} iconProps={{style: detailStyles.shareIcon}}>
+            </RelandIcon>
+          </View>
+          <View style={[detailStyles.circleContainer, {backgroundColor: '#A6A6A6'}]} >
+            <RelandIcon onPress={this._onShare.bind(this)}
+                        name="copy-link" color={'white'}
                         size={26} iconProps={{style: detailStyles.shareIcon}}>
             </RelandIcon>
           </View>
@@ -463,10 +467,6 @@ class SearchResultDetail extends Component {
         {this.renderTitleProps("Tên liên lạc", dangBoi)}
         {this.renderTitleProps("Điện thoại", mobile)}
         {this.renderTitleProps("Email", email)}
-        <RelandIcon name={"plus-circle"} size={18} color={'#EA9409'} text={"Lưu vào danh bạ"}
-                    mainProps={{flexDirection: 'row', paddingLeft: 3, paddingTop: 9, paddingBottom: 5}}
-                    textProps={[detailStyles.danDuongText, {color: gui.mainColor}]}
-                    onPress={() => this._onAddContact(dangBoi, mobile, email)} />
         <Text style={{fontSize: 5}} />
       </CollapsiblePanel>
     );
@@ -756,15 +756,19 @@ class SearchResultDetail extends Component {
   }
 
  handleScroll(event: Object) {
-   if (event.nativeEvent.contentOffset.y <= imgHeight-90 && this.state.headerColor != 'transparent') {
+   if (event.nativeEvent.contentOffset.y <= imgHeight-90 && this.state.headerColor != 'black') {
      StatusBar.setBarStyle('light-content');
      this.setState({
-       headerColor: 'transparent'
+       headerColor: 'black',
+       headerButtonColor: 'white',
+       heartBgColor: '#4A443F'
      });
-   } else if (event.nativeEvent.contentOffset.y > imgHeight-90 && this.state.headerColor != gui.mainColor) {
-     StatusBar.setBarStyle('light-content');
+   } else if (event.nativeEvent.contentOffset.y > imgHeight-90 && this.state.headerColor != 'white') {
+     StatusBar.setBarStyle('default');
      this.setState({
-       headerColor: gui.mainColor
+       headerColor: 'white',
+       headerButtonColor: 'black',
+       heartBgColor: '#E1E1E1'
      });
    }
  //   if (event.nativeEvent.contentOffset.y <= imgHeight-30 && this.state.headerButtonColor != 'white') {
