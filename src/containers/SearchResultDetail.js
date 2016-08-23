@@ -374,7 +374,7 @@ class SearchResultDetail extends Component {
                 </CollapsiblePanel>*/}
                 <CollapsiblePanel title="Phương Án Tài Chính"
                                   subtitle="Cách lập phương án tài chính cho các dự án BĐS, giúp các doanh nghiệp lên kế hoạch đầu tư hiệu quả"
-                                  expanded={true} >
+                                  expanded={true} bodyProps={{marginTop: 9}} >
                   {this._renderPhuongAnTaiChinh()}
                   <Text style={{fontSize: 5}} />
                 </CollapsiblePanel>
