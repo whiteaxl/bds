@@ -407,8 +407,8 @@ class SearchResultDetail extends Component {
                                 bgColor={this.state.heartBgColor} size={22} />
                   </View>
                   <RelandIcon onPress={this._onShare.bind(this)}
-                              name="more" color={this.state.headerButtonColor}
-                              iconProps={{style: [detailStyles.shareButton, {paddingRight: 20, marginTop: 27}]}} size={33} >
+                              name="info" color={this.state.headerButtonColor}
+                              iconProps={{style: [detailStyles.shareButton, {paddingRight: 20, marginTop: 30}]}} size={25} >
                   </RelandIcon>
                 </View>
               </View>
