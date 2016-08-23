@@ -334,7 +334,7 @@ class SearchResultDetail extends Component {
                 </View>
                 {this._renderDanDuong()}
                 {this._renderStreetView()}
-                <View style={detailStyles.lineBorder} />
+                <View style={detailStyles.lineBorder2} />
                 <CollapsiblePanel title="Đặc Điểm" expanded={true}>
                   {this.renderTitleProps("Loại tin rao", loaiNhaDat)}
                   {this.renderTitleProps("Giá", gia)}
@@ -372,10 +372,9 @@ class SearchResultDetail extends Component {
                   </Text>
                   {moiGioiTuongTu}
                 </CollapsiblePanel>*/}
-                <CollapsiblePanel title="Phương Án Tài Chính" expanded={true} bodyProps={{marginTop: 1}} mainProps={{marginBottom: 0}}>
-                  <Text style={[detailStyles.textFullWidth,{fontSize: 13, marginTop: 0, color: '#9C9C9C'}]}>
-                    Cách lập phương án tài chính cho các dự án BĐS, giúp các doanh nghiệp lên kế hoạch đầu tư hiệu quả
-                  </Text>
+                <CollapsiblePanel title="Phương Án Tài Chính"
+                                  subtitle="Cách lập phương án tài chính cho các dự án BĐS, giúp các doanh nghiệp lên kế hoạch đầu tư hiệu quả"
+                                  expanded={true} >
                   {this._renderPhuongAnTaiChinh()}
                   <Text style={{fontSize: 5}} />
                 </CollapsiblePanel>
@@ -474,13 +473,15 @@ class SearchResultDetail extends Component {
   _renderDanDuong() {
     return (
         <TouchableHighlight onPress={() => this._onDanDuongPressed()} underlayColor="transparent" >
-          <View style={[detailStyles.lineBorder,detailStyles.danDuongView]}>
-            <View style={detailStyles.danDuongLeftView}>
-              <TruliaIcon name={"car"} size={20} color={gui.mainColor} text={"Dẫn đường"}
-                          textProps={detailStyles.danDuongText} onPress={() => this._onDanDuongPressed()}/>
-            </View>
-            <View style={detailStyles.danDuongRightView}>
-              <TruliaIcon name={"arrow-right"} size={20} color={"gray"} onPress={() => this._onDanDuongPressed()}/>
+          <View style={detailStyles.lineBorder2}>
+            <View style={[detailStyles.danDuongView, {marginLeft: 15, marginRight: 15}]}>
+              <View style={detailStyles.danDuongLeftView}>
+                <TruliaIcon name={"car"} size={20} color={gui.mainColor} text={"Dẫn đường"}
+                            textProps={detailStyles.danDuongText} onPress={() => this._onDanDuongPressed()}/>
+              </View>
+              <View style={detailStyles.danDuongRightView}>
+                <TruliaIcon name={"arrow-right"} size={20} color={"gray"} onPress={() => this._onDanDuongPressed()}/>
+              </View>
             </View>
           </View>
         </TouchableHighlight>
@@ -490,17 +491,19 @@ class SearchResultDetail extends Component {
   _renderStreetView() {
     return (
         <TouchableHighlight onPress={() => this._onStreetViewPressed()} underlayColor="transparent" >
-          <View style={[detailStyles.lineBorder,detailStyles.danDuongView]}>
-            <View style={detailStyles.danDuongLeftView}>
-              <RelandIcon name={"street-view"} size={20} color={gui.mainColor} text={"Street view"}
-                          mainProps={{flexDirection: 'row'}}
-                          iconProps={{style: {marginRight: 0}}}
-                          textProps={[detailStyles.danDuongText, {paddingLeft: 0}]}
-                          onPress={() => this._onStreetViewPressed()}/>
-            </View>
-            <View style={detailStyles.danDuongRightView}>
-              <TruliaIcon name={"arrow-right"} size={20} color={"gray"}
-                          onPress={() => this._onStreetViewPressed()}/>
+          <View style={detailStyles.lineBorder2}>
+            <View style={[detailStyles.danDuongView, {marginLeft: 15, marginRight: 15}]}>
+              <View style={detailStyles.danDuongLeftView}>
+                <RelandIcon name={"street-view"} size={20} color={gui.mainColor} text={"Street view"}
+                            mainProps={{flexDirection: 'row'}}
+                            iconProps={{style: {marginRight: 0}}}
+                            textProps={[detailStyles.danDuongText, {paddingLeft: 0}]}
+                            onPress={() => this._onStreetViewPressed()}/>
+              </View>
+              <View style={detailStyles.danDuongRightView}>
+                <TruliaIcon name={"arrow-right"} size={20} color={"gray"}
+                            onPress={() => this._onStreetViewPressed()}/>
+              </View>
             </View>
           </View>
         </TouchableHighlight>

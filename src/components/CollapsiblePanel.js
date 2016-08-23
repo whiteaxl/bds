@@ -17,6 +17,7 @@ class CollapsiblePanel extends Component{
 
         this.state = {       //Step 3
             title       : props.title,
+            subtitle    : props.subtitle,
             expanded    : props.expanded,
             animation   : new Animated.Value()
         };
@@ -67,11 +68,14 @@ class CollapsiblePanel extends Component{
 
                   <TouchableOpacity
                     onPress={this.toggle.bind(this)}>
-                    <View style={styles.titleContainer} onLayout={this._setMinHeight.bind(this)}>
-                        <Text style={styles.title}>{this.state.title}</Text>
-                        <TruliaIcon onPress={this.toggle.bind(this)}
-                            name={icon} color={'gray'}
-                            mainProps={styles.button} size={20} />
+                    <View  onLayout={this._setMinHeight.bind(this)}>
+                        <View style={styles.titleContainer}>
+                            <Text style={styles.title}>{this.state.title}</Text>
+                            <TruliaIcon onPress={this.toggle.bind(this)}
+                                name={icon} color={'gray'}
+                                mainProps={styles.button} size={20} />
+                        </View>
+                        {this.state.subtitle ? <Text style={styles.subtitle}>{this.state.subtitle}</Text> : null}
                     </View>
 
                     <View style={[styles.body, bodyProps]} onLayout={this._setMaxHeight.bind(this)}>
@@ -88,11 +92,14 @@ class CollapsiblePanel extends Component{
 
                   <TouchableOpacity
                     onPress={this.toggle.bind(this)}>
-                    <View style={styles.titleContainer} onLayout={this._setMinHeight.bind(this)}>
-                        <Text style={styles.title}>{this.state.title}</Text>
-                        <TruliaIcon onPress={this.toggle.bind(this)}
-                            name={icon} color={'gray'}
-                            mainProps={styles.button} size={20} />
+                      <View  onLayout={this._setMinHeight.bind(this)}>
+                        <View style={styles.titleContainer}>
+                            <Text style={styles.title}>{this.state.title}</Text>
+                            <TruliaIcon onPress={this.toggle.bind(this)}
+                                name={icon} color={'gray'}
+                                mainProps={styles.button} size={20} />
+                        </View>
+                        {this.state.subtitle ? <Text style={styles.subtitle}>{this.state.subtitle}</Text> : null}
                     </View>
                   </TouchableOpacity>
 
@@ -129,6 +136,14 @@ var styles = StyleSheet.create({
         backgroundColor: 'transparent',
         marginLeft: 0,
         width: Dimensions.get('window').width-60
+    },
+    subtitle    : {
+        fontSize: 13,
+        fontFamily: gui.fontFamily,
+        color: '#9C9C9C',
+        textAlign: 'left',
+        backgroundColor: 'transparent',
+        marginLeft: 0
     },
     button      : {
         marginTop: 0,
