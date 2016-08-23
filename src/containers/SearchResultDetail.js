@@ -433,19 +433,19 @@ class SearchResultDetail extends Component {
           <View style={[detailStyles.circleContainer, {backgroundColor: '#EA9409'}]} >
             <RelandIcon onPress={() => this._onChat(rowData)}
                         name="sms" color={'white'}
-                        size={26} iconProps={{style: detailStyles.shareIcon}}>
+                        size={20} iconProps={{style: detailStyles.shareIcon}}>
             </RelandIcon>
           </View>
           <View style={[detailStyles.circleContainer, {backgroundColor: '#CE0005'}]} >
             <RelandIcon onPress={this._onShare.bind(this)}
                         name="email" color={'white'}
-                        size={26} iconProps={{style: detailStyles.shareIcon}}>
+                        size={20} iconProps={{style: detailStyles.shareIcon}}>
             </RelandIcon>
           </View>
           <View style={[detailStyles.circleContainer, {backgroundColor: '#A6A6A6'}]} >
             <RelandIcon onPress={this._onShare.bind(this)}
                         name="copy-link" color={'white'}
-                        size={26} iconProps={{style: detailStyles.shareIcon}}>
+                        size={20} iconProps={{style: detailStyles.shareIcon}}>
             </RelandIcon>
           </View>
         </View>
@@ -453,7 +453,7 @@ class SearchResultDetail extends Component {
           <View style={[detailStyles.circleContainer, {marginRight: 0}]} >
             <RelandIcon onPress={this._onShare.bind(this)}
                         name="share-o" color={'white'}
-                        size={26} iconProps={{style: detailStyles.shareIcon}}>
+                        size={20} iconProps={{style: detailStyles.shareIcon}}>
             </RelandIcon>
           </View>
         </View>
@@ -916,9 +916,9 @@ var detailStyles = StyleSheet.create({
     marginTop: 4,
     marginBottom: 5,
     marginRight: 10,
-    width: 36,
-    height: 36,
-    borderRadius: 18,
+    width: 30,
+    height: 30,
+    borderRadius: 15,
     backgroundColor: '#A8A8A8'
   },
   shareIcon: {
@@ -928,7 +928,7 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   shareLeft: {
-    width: Dimensions.get('window').width-66,
+    width: Dimensions.get('window').width-60,
     flexDirection: 'row',
     alignItems: 'flex-start',
     marginTop: 8,
