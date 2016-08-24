@@ -103,7 +103,7 @@ var InitialState = Record({
         query : {loaiTin: 0} //search conditions
     }],
     homeDataErrorMsg : "",
-
+    autoLoadAds : false,
     //shared
     searchCalledFrom : "Search"
 });

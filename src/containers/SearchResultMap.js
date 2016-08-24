@@ -210,6 +210,17 @@ class SearchResultMap extends Component {
               </View>
             </TouchableOpacity>
           </View>
+
+          <View style={styles.refreshButton}>
+            <TouchableOpacity onPress={this._doRefreshListData.bind(this)} >
+              <View>
+                <RelandIcon name="update" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
+                            size={16} textProps={{paddingLeft: 0}}
+                            noAction={true}></RelandIcon>
+                <Text style={[styles.drawIconText, {fontSize: 8, color: gui.mainColor}]}>Refresh</Text>
+              </View>
+            </TouchableOpacity>
+          </View>
         </View>
 
         {this.state.showMessage ? this._renderTotalResultView(listAds.length, this.props.loading) : null}
@@ -325,9 +336,13 @@ class SearchResultMap extends Component {
     var geoBox = apiUtils.getBbox(region);
     this.props.actions.onSearchFieldChange("geoBox", geoBox);
 
-    if (this.state.polygons.length <= 0){
+    if (this.props.search.autoLoadAds && this.state.polygons.length <= 0){
       this._refreshListData(geoBox, []);
     }
+  }
+
+  _doRefreshListData() {
+    this._refreshListData(this.props.search.form.fields.geoBox, []);
   }
 
   _refreshListData(geoBox, polygon) {
@@ -702,6 +717,21 @@ var styles = StyleSheet.create({
     marginVertical: 5,
     marginBottom: 0,
     backgroundColor: 'transparent',
+  },
+  refreshButton: {
+    position: 'absolute',
+    top: height-178,
+    left: width/2-19,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: gui.mainColor,
+    width: 38,
+    height: 38,
+    backgroundColor: 'white',
+    opacity: 0.75,
   },
 
   resultContainer: {
