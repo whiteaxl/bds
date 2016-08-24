@@ -214,10 +214,10 @@ class SearchResultMap extends Component {
           <View style={styles.refreshButton}>
             <TouchableOpacity onPress={this._doRefreshListData.bind(this)} >
               <View>
-                <RelandIcon name="update" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
+                <RelandIcon name="refresh" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
                             size={16} textProps={{paddingLeft: 0}}
                             noAction={true}></RelandIcon>
-                <Text style={[styles.drawIconText, {fontSize: 8, color: gui.mainColor}]}>Refresh</Text>
+                <Text style={[styles.drawIconText, {fontSize: 6, color: gui.mainColor}]}>Refresh</Text>
               </View>
             </TouchableOpacity>
           </View>
@@ -720,16 +720,16 @@ var styles = StyleSheet.create({
   },
   refreshButton: {
     position: 'absolute',
-    top: height-178,
-    left: width/2-19,
+    top: height-170,
+    left: width/2-15,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
     borderWidth: 1,
     borderColor: gui.mainColor,
-    width: 38,
-    height: 38,
+    width: 30,
+    height: 30,
     backgroundColor: 'white',
     opacity: 0.75,
   },
