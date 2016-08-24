@@ -148,7 +148,33 @@ class SearchResultDetail extends Component {
   renderLoadingView() {
     return (
         <View style={detailStyles.fullWidthContainer}>
-          <CommonHeader headerTitle={"Chi tiết"} />
+          <View>
+            <LinearGradient colors={this.state.headerColor == 'black' ? ['rgba(0, 0, 0, 0.9)', 'transparent'] :
+                                                                        ['transparent', 'rgba(255, 255, 255, 0.9)']}
+                            style={detailStyles.linearGradient}>
+              <Text style={{height: 60}}></Text>
+              <View style={[detailStyles.customPageHeader, {backgroundColor: 'transparent'}]}>
+                <TruliaIcon onPress={this._onBack.bind(this)}
+                            name="arrow-left" color={this.state.headerButtonColor}
+                            mainProps={[detailStyles.backButton, {marginTop: 28}]} size={28} >
+                </TruliaIcon>
+                <View style={[detailStyles.shareMainView, {marginRight: 0, marginLeft: 0}]}>
+                  {/*<RelandIcon onPress={this._onShare.bind(this)}
+                   name="share-o" color={'white'}
+                   iconProps={{style: [detailStyles.shareButton, {paddingLeft: 25}]}} size={29} >
+                   </RelandIcon>*/}
+                  <View style={detailStyles.shareButton}>
+                    <MHeartIcon onPress={this._onShare.bind(this)} color={this.state.headerButtonColor}
+                                bgColor={this.state.heartBgColor} size={22} />
+                  </View>
+                  <RelandIcon onPress={this._onShare.bind(this)}
+                              name="info" color={this.state.headerButtonColor}
+                              iconProps={{style: [detailStyles.shareButton, {paddingRight: 20, marginTop: 30}]}} size={25} >
+                  </RelandIcon>
+                </View>
+              </View>
+            </LinearGradient>
+          </View>
           <View style={detailStyles.searchContent}>
             <GiftedSpinner />
           </View>

@@ -26,6 +26,8 @@ import log from '../lib/logUtil';
 
 import HomeCollection from '../components/home/HomeCollection';
 
+import GiftedSpinner from 'react-native-gifted-spinner';
+
 var { width, height } = Dimensions.get('window');
 var imageHeight = 143;
 
@@ -54,7 +56,7 @@ function mapDispatchToProps(dispatch) {
 
 
 class Home extends Component {
-  componentDidMount() {
+  componentWillMount() {
     log.info("call home.componentDidMount");
 
     this.props.actions.loadHomeData();
@@ -89,8 +91,48 @@ class Home extends Component {
     );
   }
 
+  _renderLoadingView() {
+    let logoIcon = require('../assets/image/logo.png');
+    return (
+      <View style={styles.fullWidthContainer}>
+        <View style={styles.pageHeader}>
+          <View style={styles.home}>
+            <Image
+                style={styles.logoIcon}
+                resizeMode={Image.resizeMode.cover}
+                source={logoIcon}
+            />
+            {/*<RelandIcon
+             name="home" color="white" size={20}
+             mainProps={{marginTop: 16, paddingLeft: 18, paddingRight: 16}}
+             >
+             </RelandIcon>*/}
+          </View>
+          {/*<View style={styles.title}>
+           <Text style={styles.titleText}>Trang chủ</Text>
+           </View>*/}
+          <View style={styles.searchButton}>
+            <TruliaIcon onPress={this.handleSearchButton}
+                        name="search" color="white" size={20}
+                        mainProps={{paddingLeft: 16, paddingRight: 21}}
+            >
+            </TruliaIcon>
+          </View>
+        </View>
+
+        <View style={styles.homeDetailInfo}>
+          {/*<Text> Loading ... </Text>*/}
+          <GiftedSpinner />
+        </View>
+      </View>
+    );
+  }
+
   render() {
     log.info("call home.render", this.props.search.collections, this.props.search.homeDataErrorMsg);
+    if (this.props.search.loadingHomeData) {
+      return this._renderLoadingView();
+    }
     let logoIcon = require('../assets/image/logo.png');
     return (
       <View style={styles.fullWidthContainer}>
