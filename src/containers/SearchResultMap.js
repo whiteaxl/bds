@@ -174,17 +174,17 @@ class SearchResultMap extends Component {
                 <MapView.Polygon
                     key={polygon.id}
                     coordinates={polygon.coordinates}
-                    strokeColor="#F00"
-                    fillColor="rgba(255,0,0,0.5)"
-                    strokeWidth={1}
+                    strokeColor={gui.mainColor}
+                    fillColor="rgba(0,168,230,0.5)"
+                    strokeWidth={2}
                 />
             ))}
             {this.state.editing && (
                 <MapView.Polyline
                     coordinates={this.state.editing.coordinates}
-                    strokeColor="#000"
-                    fillColor="rgba(255,0,0,0.5)"
-                    strokeWidth={1}
+                    strokeColor={gui.mainColor}
+                    fillColor="rgba(0,168,230,0.5)"
+                    strokeWidth={2}
                 />
             )}
           </MapView>
