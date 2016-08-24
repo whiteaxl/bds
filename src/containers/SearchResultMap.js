@@ -44,9 +44,9 @@ var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / (height-110);
 
-const LATITUDE = 37.78825;
-const LONGITUDE = -122.4324;
-const LATITUDE_DELTA = 0.0922;
+const LATITUDE = 20.95389909999999;
+const LONGITUDE = 105.75490945;
+const LATITUDE_DELTA = 0.08616620000177733;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 var id = 0;
 
@@ -141,6 +141,11 @@ class SearchResultMap extends Component {
 
     let drawIconColor = this.state.polygons && this.state.polygons.length == 0 && this.state.drawMode ? gui.mainColor : 'black';
 
+    var region = isNaN(this.props.search.map.region.latitude) ? this.props.search.form.fields.region : this.props.search.map.region;
+    console.log('region', region);
+    if (Object.keys(region).length <= 0 || isNaN(region.latitude)) {
+      region = {latitude: LATITUDE, longitude: LONGITUDE, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA};
+    }
     return (
       <View style={styles.fullWidthContainer}>
 
@@ -151,7 +156,7 @@ class SearchResultMap extends Component {
         <View style={styles.map}>
           <MapView
               ref="map"
-              region={isNaN(this.props.search.map.region.latitude) ? this.props.search.form.fields.region : this.props.search.map.region}
+              region={region}
               onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
               style={styles.mapView}
               mapType={this.state.mapType.toLowerCase()}
