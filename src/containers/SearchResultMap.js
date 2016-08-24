@@ -125,8 +125,9 @@ class SearchResultMap extends Component {
       oldRegion: {},
       newRegion: this.props.search.form.fields.region,
       drawMode: false,
-      region: region
-    }
+      region: region,
+      showMessage: true
+    };
   }
 
   render() {
@@ -204,7 +205,7 @@ class SearchResultMap extends Component {
           </View>
         </View>
 
-        {this._renderTotalResultView(listAds.length, this.props.loading)}
+        {this.state.showMessage ? this._renderTotalResultView(listAds.length, this.props.loading) : null}
 
         <View style={styles.tabbar}>
           <View style={styles.searchListButton}>
@@ -278,7 +279,7 @@ class SearchResultMap extends Component {
 
     return (<View style={styles.resultContainer}>
       <View style={[styles.resultText]}>
-          <Text style={styles.resultIcon}>  {numberOfAds < MAX_VIEWABLE_ADS ? numberOfAds : MAX_VIEWABLE_ADS} / {numberOfAds} tin tìm thấy được hiển thị. Zoom bản đồ để xem thêm </Text>
+          <Text style={styles.resultIcon}>  {numberOfAds < MAX_VIEWABLE_ADS ? numberOfAds : MAX_VIEWABLE_ADS} / {numberOfAds} tin tìm thấy được hiển thị </Text>
       </View>
     </View>)
   }
@@ -344,7 +345,8 @@ class SearchResultMap extends Component {
     this.props.actions.search(
         fields
         , () => {});
-    this.setState({openDetailAdsModal: false});
+    this.setState({openDetailAdsModal: false, showMessage: true});
+    setTimeout(() => this.setState({showMessage: false}), 5000);
   }
 
   _renderLocalInfoModal(){
@@ -668,7 +670,7 @@ var styles = StyleSheet.create({
   mapIcon: {
   },
   resultIcon: {
-    color: 'white',
+    color: 'black',
     fontSize: gui.capitalizeFontSize,
     fontFamily: gui.fontFamily,
     fontWeight : 'normal',
@@ -696,7 +698,7 @@ var styles = StyleSheet.create({
 
   resultContainer: {
     position: 'absolute',
-    top: 77,
+    top: 64,
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
@@ -705,14 +707,11 @@ var styles = StyleSheet.create({
     backgroundColor: 'transparent',
   },
   resultText: {
-    marginLeft: 10,
-    width: width-20,
-    height: 26,
+    width: width,
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#8F8F8E',
-    opacity: 0.75,
-    borderRadius: 5
+    backgroundColor: 'white',
+    opacity: 0.75
   },
 
   tabbar: {
