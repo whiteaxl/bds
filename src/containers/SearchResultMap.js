@@ -40,6 +40,8 @@ import apiUtils from '../lib/ApiUtils';
 
 import Button from 'react-native-button';
 
+import MHeartIcon from '../components/MHeartIcon';
+
 var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / (height-110);
@@ -253,8 +255,9 @@ class SearchResultMap extends Component {
                     <Text style={styles.detailAdsModalPrice}>{this.state.mmarker.price}</Text>
                     <Text style={styles.detailAdsModalText}>{this._getDiaChi(this.state.mmarker.diaChi)}</Text>
                   </View>
-                  <Icon.Button name="heart-o" backgroundColor="transparent"
-                               underlayColor="transparent" style={styles.detailAdsModalTextHeartButton}/>
+                  <View style={[styles.detailAdsModalTextHeartButton, {paddingRight: 18, paddingTop: 9}]}>
+                    <MHeartIcon noAction={true} color={'white'} size={19} />
+                  </View>
                 </View>
               </LinearGradient>
             </Image>
