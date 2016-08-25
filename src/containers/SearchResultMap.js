@@ -196,10 +196,12 @@ class SearchResultMap extends Component {
                                 size={20} textProps={{paddingLeft: 0}}
                                 noAction={true}></RelandIcon>) :
                     (
-                      <Icon name="hand-o-up" style={styles.mapIcon} color={this.state.drawMode ? gui.mainColor : 'black'}
-                            size={20}></Icon>
+                      <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                        <Icon name="hand-o-up" style={styles.mapIcon} color={this.state.drawMode ? gui.mainColor : 'black'}
+                              size={20}></Icon>
+                        <Text style={[styles.drawIconText, {color: drawIconColor}]}>Vẽ tay</Text>
+                      </View>
                     )}
-                <Text style={[styles.drawIconText, {color: drawIconColor}]}>Vẽ tay</Text>
               </View>
             </TouchableOpacity>
             <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} >
@@ -211,7 +213,7 @@ class SearchResultMap extends Component {
             </TouchableOpacity>
           </View>
 
-          <View style={styles.refreshButton}>
+          {this.props.search.autoLoadAds ? null : <View style={styles.refreshButton}>
             <TouchableOpacity onPress={this._doRefreshListData.bind(this)} >
               <View>
                 <RelandIcon name="refresh" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
@@ -220,7 +222,7 @@ class SearchResultMap extends Component {
                 <Text style={[styles.drawIconText, {fontSize: 6, color: gui.mainColor}]}>Refresh</Text>
               </View>
             </TouchableOpacity>
-          </View>
+          </View>}
         </View>
 
         {this.state.showMessage ? this._renderTotalResultView(listAds.length, this.props.loading) : null}
