@@ -228,7 +228,8 @@ class ImagePreview extends React.Component {
                                     size={20} onPress={this.closeModal.bind(this)}>
                         </RelandIcon>
                     </View>
-                    <SearchResultDetailFooter mobile={this.props.mobile} onChat={this.props.onChat} />
+                    <SearchResultDetailFooter mobile={this.props.mobile} onChat={this.props.onChat} isLiked={this.props.isLiked}
+                                              userID={this.props.userID} ads={this.props.ads} loggedIn={this.props.loggedIn} likeAds={this.props.likeAds}/>
                 </View>
             </Animated.View>
         )

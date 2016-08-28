@@ -188,6 +188,36 @@ class SearchResultDetail extends Component {
         </View>
     );
   }
+  _renderFooter(mobile, rowData) {
+    let isLiked = false;
+    let userID = null;
+    if (this.props.global.loggedIn) {
+      let currentUser = this.props.global.currentUser;
+      let adsLikes = currentUser && currentUser.adsLikes;
+      userID = currentUser && currentUser.userID;
+      isLiked = adsLikes && adsLikes.indexOf(rowData.adsID) > -1;
+    }
+    return (
+        <SearchResultDetailFooter mobile={mobile} onChat={() => this._onChat(rowData)} userID={userID}
+                                  isLiked={isLiked} ads={rowData} loggedIn={this.props.global.loggedIn}
+                                  likeAds={this.props.actions.likeAds}/>
+    );
+  }
+  _renderImagePreviewModal(imageDataItems, mobile, rowData) {
+    let isLiked = false;
+    let userID = null;
+    if (this.props.global.loggedIn) {
+      let currentUser = this.props.global.currentUser;
+      let adsLikes = currentUser && currentUser.adsLikes;
+      userID = currentUser && currentUser.userID;
+      isLiked = adsLikes && adsLikes.indexOf(rowData.adsID) > -1;
+    }
+    return (
+        <ImagePreview images={imageDataItems} mobile={mobile} onChat={() => this._onChat(rowData)}
+                      closeModal={() => this.setState({modal: false}) } isLiked={isLiked} ads={rowData} userID={userID}
+                      loggedIn={this.props.global.loggedIn} likeAds={this.props.actions.likeAds}/>
+    );
+  }
   render() {
     if (!this.state.loaded) {
       return this.renderLoadingView();
@@ -432,9 +462,8 @@ class SearchResultDetail extends Component {
 
           {this._renderHeaderBar()}
         </View>
-        <SearchResultDetailFooter mobile={mobile} onChat={() => this._onChat(rowData)}/>
-        {this.state.modal ? <ImagePreview images={imageDataItems} mobile={mobile} onChat={() => this._onChat(rowData)}
-                                          closeModal={() => this.setState({modal: false}) }/> : null }
+        {this._renderFooter(mobile, rowData)}
+        {this.state.modal ? this._renderImagePreviewModal(imageDataItems, mobile, rowData) : null }
         </View>
 		)
 	}

@@ -11,9 +11,12 @@ import gui from '../lib/gui';
 
 import Communications from 'react-native-communications';
 
+import {Actions} from 'react-native-router-flux';
+
 // Create our component
 var SearchResultDetailFooter = React.createClass({
   render: function() {
+    const color = this.props.isLiked ? '#E50064' : 'white';
     return <View style={myStyles.searchButton}>
       <View style={myStyles.searchListButton}>
           <TruliaIcon onPress={this.onCall} name="phone" color={'white'} size={18}
@@ -23,7 +26,7 @@ var SearchResultDetailFooter = React.createClass({
                       mainProps={[myStyles.searchListButtonItem2,{flexDirection: 'row'}]}
                       textProps={[myStyles.searchListButtonText2,{paddingLeft: 0}]}
                       text={'Chat'} />
-          <TruliaIcon onPress={this.onAlertComment} name="heart" color={'white'} size={18}
+          <TruliaIcon onPress={this.onLike} name="heart" color={color} size={18}
                       mainProps={myStyles.searchListButtonItem3} textProps={myStyles.searchListButtonText3}
                       text={'Lưu tin'} />
       </View>
@@ -32,19 +35,14 @@ var SearchResultDetailFooter = React.createClass({
   onCall() {
     Communications.phonecall(this.props.mobile, true);
   },
-  
-  onAlertComment() {
-    AlertIOS.prompt('Nhập comment', null,
-            [{
-              text: 'Thực hiện',
-              onPress: this.onComment
-            }, {
-              text: 'Thoát',
-              style: 'cancel',
-            }], 'plain-text', 'Default comment');
-  },
-  onComment(comment) {
-    console.log("Comment value: " + comment);
+
+  onLike() {
+    if (!this.props.loggedIn) {
+        //this.props.actions.onAuthFieldChange('activeRegisterLoginTab',0);
+        Actions.LoginRegister({page:1});
+    } else if (!this.props.isLiked) {
+        this.props.likeAds(this.props.userID, this.props.ads)
+    }
   }
 });
 

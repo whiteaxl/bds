@@ -20,18 +20,23 @@ var Icon = createIconSet(glyphMap, 'TruliaIcon');
 class AdsRow extends React.Component {
   renderLikeIcon(ads) {
     //log.info("renderLikeIcon, ", ads.isLiked);
-    const {adsLikes} = this.props;
-    const isLiked = adsLikes && adsLikes.indexOf(ads.adsID) > -1;
-    const color = isLiked ? '#A2A7AD' : 'white';
-    const bgColor = isLiked ? '#E50064' : '#4A443F';
+    let isLiked = this.isLiked(ads);
+    let color = isLiked ? '#A2A7AD' : 'white';
+    let bgColor = isLiked ? '#E50064' : '#4A443F';
+    let bgStyle = isLiked ? {} : {opacity: 0.55};
 
     return (
       <TouchableHighlight underlayColor='transparent' style={{overflow: 'hidden'}} onPress={() => this.onLike(ads)}>
         <View style={myStyles.heartButton} >
-          <MHeartIcon color={color} bgColor={bgColor} size={22} noAction={true} />
+          <MHeartIcon color={color} bgColor={bgColor} bgStyle={bgStyle} size={22} noAction={true} />
         </View>
       </TouchableHighlight>
     )
+  }
+
+  isLiked(ads) {
+    const {adsLikes} = this.props;
+    return adsLikes && adsLikes.indexOf(ads.adsID) > -1;
   }
 
   onLike(ads) {
@@ -39,7 +44,7 @@ class AdsRow extends React.Component {
     if (!this.props.loggedIn) {
       //this.props.actions.onAuthFieldChange('activeRegisterLoginTab',0);
       Actions.LoginRegister({page:1});
-    } else {
+    } else if (!this.isLiked(ads)) {
       this.props.likeAds(this.props.userID, ads)
     }
   }

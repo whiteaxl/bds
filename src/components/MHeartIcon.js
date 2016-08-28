@@ -13,11 +13,11 @@ class MHeartIcon extends React.Component{
     }
 
     render() {
-        var {onPress, mainProps, color, bgColor, size, noAction} = this.props;
+        var {onPress, mainProps, color, bgColor, size, noAction, bgStyle} = this.props;
         return (
             <View style={mainProps||styles.heartContent}>
                 <View style={styles.heartContent2}>
-                    <TruliaIcon name="heart" mainProps={styles.heartButton1}
+                    <TruliaIcon name="heart" mainProps={bgStyle||styles.heartButton1}
                                 color={bgColor||'#4A443F'} size={size||22}
                                 noAction={noAction}
                                 onPress={onPress}/>

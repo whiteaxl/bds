@@ -33,7 +33,9 @@ export default class HomeCollection extends Component {
     if (ads) {
       return (
         <TouchableOpacity onPress={() => this._onAdsPressed(ads)} style={{flex: flex}}>
-          <ImageItem ads={ads}/>
+          <ImageItem ads={ads} adsLikes={this.props.adsLikes} loggedIn={this.props.loggedIn}
+                     likeAds={this.props.likeAds} userID={this.props.userID}
+                     loadHomeData={this.props.loadHomeData}/>
         </TouchableOpacity>
       );
     } else {
@@ -88,6 +90,10 @@ class ImageItem extends React.Component{
   render() {
     let {cover, giaFmt, soPhongNguFmt, soPhongTamFmt, khuVuc} = this.props.ads;
     let detail = soPhongNguFmt ? soPhongNguFmt + " ": "" + (soPhongTamFmt || "");
+    let isLiked = this.isLiked();
+    let color = isLiked ? '#A2A7AD' : 'white';
+    let bgColor = isLiked ? '#E50064' : '#4A443F';
+    let bgStyle = isLiked ? {} : {opacity: 0.55};
 
     return (
       <Image style={[styles.imgItem]} resizeMode = {'cover'}
@@ -98,7 +104,7 @@ class ImageItem extends React.Component{
         </LinearGradient>
 
         <View style={styles.heartContent}>
-          <MHeartIcon noAction={true} mainProps={styles.heartButton} />
+          <MHeartIcon onPress={() => this.onLike()} color={color} bgColor={bgColor} bgStyle={bgStyle} mainProps={styles.heartButton} />
         </View>
 
         <View style={styles.itemContent}>
@@ -110,6 +116,20 @@ class ImageItem extends React.Component{
         </View>
       </Image>
     );
+  }
+
+  isLiked() {
+    const {adsLikes, ads} = this.props;
+    return adsLikes && adsLikes.indexOf(ads.adsID) > -1;
+  }
+
+  onLike() {
+    if (!this.props.loggedIn) {
+      //this.props.actions.onAuthFieldChange('activeRegisterLoginTab',0);
+      Actions.LoginRegister({page:1, onLoginSuccess: () => {this.props.loadHomeData(); Actions.pop()}});
+    } else if (!this.isLiked()) {
+      this.props.likeAds(this.props.userID, this.props.ads)
+    }
   }
 }
 

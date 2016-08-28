@@ -64,8 +64,18 @@ class Home extends Component {
   }
 
   renderCollections(collections) {
+    let adsLikes = [];
+    let userID = null;
+    if (this.props.global.loggedIn) {
+      let currentUser = this.props.global.currentUser;
+      adsLikes = currentUser && currentUser.adsLikes;
+      userID = currentUser && currentUser.userID;
+    }
     return collections.map(e => {
-      return <HomeCollection key={e.title1} collectionData = {e} searchFromHome={this.props.actions.searchFromHome}/>
+      return <HomeCollection key={e.title1} collectionData = {e} searchFromHome={this.props.actions.searchFromHome}
+                             adsLikes={adsLikes} loggedIn={this.props.global.loggedIn}
+                             likeAds={this.props.actions.likeAds} userID={userID}
+                             loadHomeData={this.props.actions.loadHomeData}/>
     });
   }
 
