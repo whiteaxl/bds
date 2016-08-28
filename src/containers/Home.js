@@ -9,7 +9,7 @@ import {Map} from 'immutable';
 
 import  React, {Component} from 'react';
 
-import { Text, StyleSheet, View, ScrollView, Image, Dimensions, TouchableOpacity } from 'react-native'
+import { Text, StyleSheet, View, ScrollView, Image, Dimensions, TouchableOpacity, StatusBar } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 
@@ -58,6 +58,7 @@ function mapDispatchToProps(dispatch) {
 class Home extends Component {
   componentWillMount() {
     log.info("call home.componentDidMount");
+    StatusBar.setBarStyle('light-content');
 
     this.props.actions.loadHomeData();
   }

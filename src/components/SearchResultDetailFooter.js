@@ -25,7 +25,7 @@ var SearchResultDetailFooter = React.createClass({
                       text={'Chat'} />
           <TruliaIcon onPress={this.onAlertComment} name="heart" color={'white'} size={18}
                       mainProps={myStyles.searchListButtonItem3} textProps={myStyles.searchListButtonText3}
-                      text={'Chia sẻ'} />
+                      text={'Lưu tin'} />
       </View>
     </View>
   },
@@ -54,30 +54,31 @@ module.exports = SearchResultDetailFooter;
 
 var myStyles = StyleSheet.create({
   searchListButtonItem1: {
-      backgroundColor: '#e50e27',
-      width: Dimensions.get('window').width/3-5,
+      backgroundColor: '#E73E21',
+      width: Dimensions.get('window').width/3-3,
       borderRadius: 5,
       borderColor: 'white',
       height: 38,
-      margin: 2,
+      marginLeft: 2,
       justifyContent: 'center'
   },
   searchListButtonItem2: {
       backgroundColor: '#f0a401',
-      width: Dimensions.get('window').width/3-5,
+      width: Dimensions.get('window').width/3-3,
       borderRadius: 5,
       borderColor: 'white',
       height: 38,
-      margin: 2,
+      marginLeft: 2,
       justifyContent: 'center'
   },
   searchListButtonItem3: {
       backgroundColor: '#00a8e6',
-      width: Dimensions.get('window').width/3-5,
+      width: Dimensions.get('window').width/3-3,
       borderRadius: 5,
       borderColor: 'white',
       height: 38,
-      margin: 2,
+      marginLeft: 2,
+      marginRight: 2,
       justifyContent: 'center'
   },
   searchListButtonText1: {
@@ -119,6 +120,6 @@ var myStyles = StyleSheet.create({
   },
   searchButton: {
       alignItems: 'center',
-      justifyContent: 'flex-end'
+      justifyContent: 'flex-start'
   },
 });

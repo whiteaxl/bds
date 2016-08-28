@@ -81,10 +81,11 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-var mapWidth = Dimensions.get('window').width-30;
-var mapHeight = (mapWidth-mapWidth%2)/2+19;
+var {width, height} = Dimensions.get('window');
+var mapWidth = width-44;
+var mapHeight = (width-width%2)/2+3;
 
-var imgHeight = Dimensions.get('window').height/2;
+var imgHeight = height/2;
 
 var url = '';
 
@@ -100,8 +101,9 @@ class SearchResultDetail extends Component {
       'data' : null,
       loaded: false,
       modal: false,
-      headerColor: 'black',
+      headerColor: 'transparent',
       headerButtonColor: 'white',
+      backButtonColor: 'white',
       heartBgColor: '#4A443F'
     }
   }
@@ -148,39 +150,43 @@ class SearchResultDetail extends Component {
   renderLoadingView() {
     return (
         <View style={detailStyles.fullWidthContainer}>
-          <View>
-            <LinearGradient colors={this.state.headerColor == 'black' ? ['rgba(0, 0, 0, 0.9)', 'transparent'] :
-                                                                        ['transparent', 'rgba(255, 255, 255, 0.9)']}
-                            style={detailStyles.linearGradient}>
-              <Text style={{height: 60}}></Text>
-              <View style={[detailStyles.customPageHeader, {backgroundColor: 'transparent'}]}>
-                <TruliaIcon onPress={this._onBack.bind(this)}
-                            name="arrow-left" color={this.state.headerButtonColor}
-                            mainProps={[detailStyles.backButton, {marginTop: 28}]} size={28} >
-                </TruliaIcon>
-                <View style={[detailStyles.shareMainView, {marginRight: 0, marginLeft: 0}]}>
-                  {/*<RelandIcon onPress={this._onShare.bind(this)}
-                   name="share-o" color={'white'}
-                   iconProps={{style: [detailStyles.shareButton, {paddingLeft: 25}]}} size={29} >
-                   </RelandIcon>*/}
-                  <View style={detailStyles.shareButton}>
-                    <MHeartIcon onPress={this._onShare.bind(this)} color={this.state.headerButtonColor}
-                                bgColor={this.state.heartBgColor} size={22} />
-                  </View>
-                  <RelandIcon onPress={this._onShare.bind(this)}
-                              name="info" color={this.state.headerButtonColor}
-                              iconProps={{style: [detailStyles.shareButton, {paddingRight: 20, marginTop: 30}]}} size={25} >
-                  </RelandIcon>
-                </View>
-              </View>
-            </LinearGradient>
-          </View>
+          {this._renderHeaderBar()}
           <View style={detailStyles.searchContent}>
             <GiftedSpinner />
           </View>
           <SearchResultDetailFooter />
         </View>
     )
+  }
+  _renderHeaderBar() {
+    return (
+        <View style={this.state.headerColor != 'transparent' ? detailStyles.headerContainer : {}}>
+          <LinearGradient colors={['rgba(0, 0, 0, 0.9)', 'transparent']}
+                          style={detailStyles.linearGradient}>
+            <Text style={{height: 60}}></Text>
+            <View style={[detailStyles.customPageHeader, {backgroundColor: this.state.headerColor}]}>
+              <TruliaIcon onPress={this._onBack.bind(this)}
+                          name="arrow-left" color={this.state.backButtonColor}
+                          mainProps={[detailStyles.backButton, {marginTop: 28, paddingLeft: 20}]} size={28} >
+              </TruliaIcon>
+              <View style={[detailStyles.shareMainView, {marginRight: 0, marginLeft: 0}]}>
+                <RelandIcon onPress={this._onShare.bind(this)}
+                            name="share-o" color={this.state.headerButtonColor}
+                            iconProps={{style: [detailStyles.shareButton, {paddingLeft: 25, paddingRight: 4, marginTop: 28}]}} size={28} >
+                </RelandIcon>
+                {/*<View style={detailStyles.shareButton}>
+                 <MHeartIcon onPress={this._onShare.bind(this)} color={this.state.headerButtonColor}
+                 bgColor={this.state.heartBgColor} size={22} />
+                 </View>*/}
+                <RelandIcon onPress={this._onShare.bind(this)}
+                            name="info" color={this.state.headerButtonColor}
+                            iconProps={{style: [detailStyles.shareButton, {paddingRight: 26, marginTop: 30}]}} size={25} >
+                </RelandIcon>
+              </View>
+            </View>
+          </LinearGradient>
+        </View>
+    );
   }
   render() {
     if (!this.state.loaded) {
@@ -230,7 +236,7 @@ class SearchResultDetail extends Component {
     if (soPhongTam) {
       soPhongTam = soPhongTam + ' phòng tắm';
     }
-    var ngayDangTin = rowData.ngayDangTin;
+    var ngayDangTin = rowData.ngayDangTinFmt;
     var soNgayDaDangTin = rowData.soNgayDaDangTinFmt;
 
     var chiTiet = rowData.chiTiet;
@@ -244,7 +250,7 @@ class SearchResultDetail extends Component {
     }
 
     var _scrollView: ScrollView;
-    var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=12&size='+mapWidth+'x'+mapHeight+'&markers=color:red|'+rowData.place.geo.lat+','+rowData.place.geo.lon+'&sensor=false';
+    var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=16&size='+mapWidth+'x'+mapHeight+'&markers=color:red|'+rowData.place.geo.lat+','+rowData.place.geo.lon+'&sensor=false';
     var imageItems = [];
     var imageDataItems = [];
     var imageIndex = 0;
@@ -323,7 +329,7 @@ class SearchResultDetail extends Component {
               vertical={true}
               style={detailStyles.scrollView}
               onScroll={this.handleScroll.bind(this)}
-              scrollEventThrottle={30}
+              scrollEventThrottle={1}
           >
             <View style={detailStyles.searchContent}>
 
@@ -344,35 +350,38 @@ class SearchResultDetail extends Component {
                   {gia}
                 </Text>
                 <View style={detailStyles.lineBorder}>
-                  <Text style={detailStyles.textFullWidth}>
+                  <Text style={[detailStyles.textFullWidth, {marginBottom: 8}]}>
                     {diaChi}
                   </Text>
                 </View>
                 <View style={[detailStyles.lineBorder, {marginBottom: 4}]} />
-                {this.renderTwoNormalProps(loaiTin, loaiNhaDat)}
-                {this.renderTwoNormalProps(dienTich, soPhongNgu)}
-                {this.renderTwoNormalProps(soPhongTam, soNgayDaDangTin)}
-                <View style={[detailStyles.lineBorder, {marginTop: 5, marginBottom: 7}]} />
+                {this.renderTwoNormalProps(loaiTin, loaiNhaDat, {marginTop: 11}, {marginTop: 4, marginBottom: 4})}
+                {this.renderTwoNormalProps(dienTich, soPhongNgu, {marginTop: 12}, {marginTop: 4, marginBottom: 4})}
+                {this.renderTwoNormalProps(soPhongTam, soNgayDaDangTin, {marginTop: 11}, {marginTop: 4, marginBottom: 4})}
+                <View style={[detailStyles.lineBorder, {marginTop: 4, marginBottom: 8}]} />
                 <View style={detailStyles.chiTietText}>
-                  <Text style={[detailStyles.textTitle, {marginLeft: 0}]}>Chi Tiết</Text>
-                  <SummaryText longText={chiTiet} expanded={false}>
+                  <Text style={[detailStyles.textTitle, {marginLeft: 0, marginBottom: 16}]}>Chi Tiết</Text>
+                  <SummaryText longText={chiTiet}
+                               expanded={false}>
                   </SummaryText>
                 </View>
                 {this._renderDanDuong()}
                 {this._renderStreetView()}
                 <View style={detailStyles.lineBorder2} />
-                <CollapsiblePanel title="Đặc Điểm" expanded={true}>
-                  {this.renderTitleProps("Loại tin rao", loaiNhaDat)}
-                  {this.renderTitleProps("Giá", gia)}
-                  {this.renderTitleProps("Giá/m²", giaM2)}
-                  {this.renderTitleProps("Số phòng ngủ", soPhongNguVal)}
-                  {this.renderTitleProps("Số phòng tắm", soPhongTamVal)}
-                  {this.renderTitleProps("Diện tích", dienTich)}
-                  {this.renderTitleProps("Hướng nhà", huongNha)}
-                  {this.renderTitleProps("Thuộc dự án", duAn)}
-                  {this.renderTitleProps("Ngày đăng tin", ngayDangTin)}
-                  {this.renderTitleProps("Lượt xem", luotXem)}
-                  {this.renderTitleProps("Địa chỉ", diaChi)}
+                <CollapsiblePanel title="Đặc Điểm" mainProps={{marginTop: 8, marginBottom: 8}}
+                    collapseProps={{marginTop: 15, marginBottom: 15}}
+                                  expanded={true}>
+                  {this.renderTitleProps("Loại tin rao", loaiNhaDat, {marginTop: 3, marginBottom: 2.2})}
+                  {this.renderTitleProps("Giá", gia, {marginTop: 3, marginBottom: 2.2})}
+                  {this.renderTitleProps("Giá/m²", giaM2, {marginTop: 3, marginBottom: 2.2})}
+                  {this.renderTitleProps("Số phòng ngủ", soPhongNguVal, {marginTop: 3, marginBottom: 2.2})}
+                  {this.renderTitleProps("Số phòng tắm", soPhongTamVal, {marginTop: 3, marginBottom: 2.2})}
+                  {this.renderTitleProps("Diện tích", dienTich, {marginTop: 3, marginBottom: 2.2})}
+                  {this.renderTitleProps("Hướng nhà", huongNha, {marginTop: 3, marginBottom: 2.2})}
+                  {this.renderTitleProps("Thuộc dự án", duAn, {marginTop: 3, marginBottom: 2.2})}
+                  {this.renderTitleProps("Ngày đăng tin", ngayDangTin, {marginTop: 3, marginBottom: 2.2})}
+                  {/*this.renderTitleProps("Lượt xem", luotXem, {marginTop: 3, marginBottom: 2.2})*/}
+                  {this.renderTitleProps("Địa chỉ", diaChi, {marginTop: 3, marginBottom: 2.2})}
                   <View style={detailStyles.viTriTitle}>
                     <Text style={detailStyles.viTriText}>
                       Vị Trí
@@ -399,46 +408,29 @@ class SearchResultDetail extends Component {
                   {moiGioiTuongTu}
                 </CollapsiblePanel>*/}
                 <CollapsiblePanel title="Phương Án Tài Chính"
-                                  subtitle="Cách lập phương án tài chính cho các dự án BĐS, giúp các doanh nghiệp lên kế hoạch đầu tư hiệu quả"
-                                  expanded={true} bodyProps={{marginTop: 9}} >
+                                    expanded={true} bodyProps={{marginTop: 0}}
+                                    mainProps={{marginTop: 8}}
+                                    collapseProps={{marginTop: 15, marginBottom: 15}}>
+                    <Text style={[detailStyles.textFullWidth,{fontSize: 13, marginTop: 0, color: '#9C9C9C'}]}>
+                      Tính trên cơ sở vay 70% giá trị nhà trong vòng 15 năm với lãi suất cố định 12%/năm theo số tiền vay
+                    </Text>
                   {this._renderPhuongAnTaiChinh()}
                   <Text style={{fontSize: 5}} />
                 </CollapsiblePanel>
                 <View style={detailStyles.lineBorder2} />
-                <CollapsiblePanel title="Khám phá thêm" expanded={true}>
-                  {this.renderContent(this.props.search.collections)}
-                </CollapsiblePanel>
+                <View style={{marginTop: 10.5, alignItems: 'center', justifyContent:'center'}}>
+                  <Text style={detailStyles.adsMore}>
+                    Khám Phá Thêm
+                  </Text>
+                  <View style={{width: width, marginTop: 10.5}}>
+                    {this.renderContent(this.props.search.collections)}
+                  </View>
+                </View>
               </View>
             </View>
           </ScrollView>
 
-          <View>
-            <LinearGradient colors={this.state.headerColor == 'black' ? ['rgba(0, 0, 0, 0.9)', 'transparent'] :
-                                                                        ['transparent', 'rgba(255, 255, 255, 0.9)']}
-                            style={detailStyles.linearGradient}>
-              <Text style={{height: 60}}></Text>
-              <View style={[detailStyles.customPageHeader, {backgroundColor: 'transparent'}]}>
-                <TruliaIcon onPress={this._onBack.bind(this)}
-                            name="arrow-left" color={this.state.headerButtonColor}
-                            mainProps={[detailStyles.backButton, {marginTop: 28}]} size={28} >
-                </TruliaIcon>
-                <View style={[detailStyles.shareMainView, {marginRight: 0, marginLeft: 0}]}>
-                  {/*<RelandIcon onPress={this._onShare.bind(this)}
-                              name="share-o" color={'white'}
-                              iconProps={{style: [detailStyles.shareButton, {paddingLeft: 25}]}} size={29} >
-                  </RelandIcon>*/}
-                  <View style={detailStyles.shareButton}>
-                    <MHeartIcon onPress={this._onShare.bind(this)} color={this.state.headerButtonColor}
-                                bgColor={this.state.heartBgColor} size={22} />
-                  </View>
-                  <RelandIcon onPress={this._onShare.bind(this)}
-                              name="info" color={this.state.headerButtonColor}
-                              iconProps={{style: [detailStyles.shareButton, {paddingRight: 20, marginTop: 30}]}} size={25} >
-                  </RelandIcon>
-                </View>
-              </View>
-            </LinearGradient>
-          </View>
+          {this._renderHeaderBar()}
         </View>
         <SearchResultDetailFooter mobile={mobile} onChat={() => this._onChat(rowData)}/>
         {this.state.modal ? <ImagePreview images={imageDataItems} mobile={mobile} onChat={() => this._onChat(rowData)}
@@ -455,22 +447,22 @@ class SearchResultDetail extends Component {
     return (
       <View style={detailStyles.shareMainView}>
         <View style={detailStyles.shareLeft}>
-          <View style={[detailStyles.circleContainer, {backgroundColor: '#EA9409'}]} >
+          <View style={[detailStyles.circleContainer, {backgroundColor: '#1DB423'}]} >
             <RelandIcon onPress={() => this._onChat(rowData)}
                         name="sms" color={'white'}
-                        size={20} iconProps={{style: detailStyles.shareIcon}}>
+                        size={26} iconProps={{style: detailStyles.shareIcon}}>
             </RelandIcon>
           </View>
           <View style={[detailStyles.circleContainer, {backgroundColor: '#CE0005'}]} >
             <RelandIcon onPress={this._onShare.bind(this)}
                         name="email" color={'white'}
-                        size={20} iconProps={{style: detailStyles.shareIcon}}>
+                        size={26} iconProps={{style: detailStyles.shareIcon}}>
             </RelandIcon>
           </View>
           <View style={[detailStyles.circleContainer, {backgroundColor: '#A6A6A6'}]} >
             <RelandIcon onPress={this._onShare.bind(this)}
                         name="copy-link" color={'white'}
-                        size={20} iconProps={{style: detailStyles.shareIcon}}>
+                        size={26} iconProps={{style: detailStyles.shareIcon}}>
             </RelandIcon>
           </View>
         </View>
@@ -478,7 +470,7 @@ class SearchResultDetail extends Component {
           <View style={[detailStyles.circleContainer, {marginRight: 0}]} >
             <RelandIcon onPress={this._onShare.bind(this)}
                         name="share-o" color={'white'}
-                        size={20} iconProps={{style: detailStyles.shareIcon}}>
+                        size={26} iconProps={{style: detailStyles.shareIcon}}>
             </RelandIcon>
           </View>
         </View>
@@ -488,10 +480,12 @@ class SearchResultDetail extends Component {
 
   _renderLienHe(dangBoi, mobile, email) {
     return (
-      <CollapsiblePanel title="Liên Hệ" expanded={true}>
-        {this.renderTitleProps("Tên liên lạc", dangBoi)}
-        {this.renderTitleProps("Điện thoại", mobile)}
-        {this.renderTitleProps("Email", email)}
+      <CollapsiblePanel title="Liên Hệ" mainProps={{marginTop: 8}}
+                        collapseProps={{marginTop: 15, marginBottom: 15}}
+                        expanded={true}>
+        {this.renderTitleProps("Tên liên lạc", dangBoi, {marginTop: 3, marginBottom: 2.2})}
+        {this.renderTitleProps("Điện thoại", mobile, {marginTop: 3, marginBottom: 2.2})}
+        {this.renderTitleProps("Email", email, {marginTop: 3, marginBottom: 2.2})}
         <Text style={{fontSize: 5}} />
       </CollapsiblePanel>
     );
@@ -499,8 +493,8 @@ class SearchResultDetail extends Component {
   _renderDanDuong() {
     return (
         <TouchableHighlight onPress={() => this._onDanDuongPressed()} underlayColor="transparent" >
-          <View style={detailStyles.lineBorder2}>
-            <View style={[detailStyles.danDuongView, {marginLeft: 15, marginRight: 15}]}>
+          <View style={detailStyles.lineBorder}>
+            <View style={[detailStyles.danDuongView, {marginLeft: 0, marginRight: 6.5}]}>
               <View style={detailStyles.danDuongLeftView}>
                 <TruliaIcon name={"car"} size={20} color={gui.mainColor} text={"Dẫn đường"}
                             textProps={detailStyles.danDuongText} onPress={() => this._onDanDuongPressed()}/>
@@ -517,8 +511,8 @@ class SearchResultDetail extends Component {
   _renderStreetView() {
     return (
         <TouchableHighlight onPress={() => this._onStreetViewPressed()} underlayColor="transparent" >
-          <View style={detailStyles.lineBorder2}>
-            <View style={[detailStyles.danDuongView, {marginLeft: 15, marginRight: 15}]}>
+          <View style={detailStyles.lineBorder}>
+            <View style={[detailStyles.danDuongView, {marginLeft: 0, marginRight: 6.5}]}>
               <View style={detailStyles.danDuongLeftView}>
                 <RelandIcon name={"street-view"} size={20} color={gui.mainColor} text={"Street view"}
                             mainProps={{flexDirection: 'row'}}
@@ -569,9 +563,9 @@ class SearchResultDetail extends Component {
     ];
     var options = {
       margin: {
-        top: 2,
+        top: 1,
         left: 2,
-        bottom: 2,
+        bottom: 1,
         right: 2
       },
       width: 126,
@@ -594,7 +588,7 @@ class SearchResultDetail extends Component {
     var chartTitleBold = '500 triệu';
     return (
         <View style={{flexDirection: "row", alignItems: 'center', justifyContent: 'flex-start', backgroundColor:'white', paddingTop:0}}>
-          <View style={{paddingLeft: 13, paddingTop:2, width: Dimensions.get('window').width/2, alignItems: 'center', justifyContent: 'center'}}>
+          <View style={{paddingLeft: 13, paddingTop:2, width: width/2, alignItems: 'center', justifyContent: 'center'}}>
             <MChartView
                 data={data}
                 options={options}
@@ -748,19 +742,19 @@ class SearchResultDetail extends Component {
 
   }
 
-  renderTwoNormalProps(prop1, prop2) {
+  renderTwoNormalProps(prop1, prop2, dotStyle, textStyle) {
     if (prop1 || prop2) {
       return (
-          <View style={[detailStyles.searchDetailRowAlign, {width: Dimensions.get('window').width - 30, marginLeft: 15}]}>
+          <View style={[detailStyles.searchDetailRowAlign, {width: width - 42.5, marginLeft: 20}]}>
             <View style={{flexDirection: 'row'}}>
-              <View style={detailStyles.dot2} />
-              <Text style={detailStyles.textHalfWidth}>
+              <View style={[detailStyles.dot2, dotStyle]} />
+              <Text style={[detailStyles.textHalfWidth, textStyle]}>
                 {prop1}
               </Text>
             </View>
             <View style={{flexDirection: 'row'}}>
-              <View style={detailStyles.dot2} />
-              <Text style={detailStyles.textHalfWidth}>
+              <View style={[detailStyles.dot2, dotStyle]} />
+              <Text style={[detailStyles.textHalfWidth, textStyle]}>
                 {prop2}
               </Text>
             </View>
@@ -769,14 +763,14 @@ class SearchResultDetail extends Component {
     }
   }
 
-  renderTitleProps(title, prop) {
+  renderTitleProps(title, prop, textStyle) {
     if (prop) {
       return (
         <View style={detailStyles.searchDetailRowAlign}>
-          <Text style={detailStyles.textHalfWidth2}>
+          <Text style={[detailStyles.textHalfWidth2, textStyle]}>
             {title}
           </Text>
-          <Text style={detailStyles.textHalfWidthBold2}>
+          <Text style={[detailStyles.textHalfWidthBold2, textStyle]}>
             {prop}
           </Text>
         </View>
@@ -785,19 +779,21 @@ class SearchResultDetail extends Component {
   }
 
  handleScroll(event: Object) {
-   if (event.nativeEvent.contentOffset.y <= imgHeight-90 && this.state.headerColor != 'black') {
+   if (event.nativeEvent.contentOffset.y <= imgHeight-60 && this.state.headerColor != 'transparent') {
      StatusBar.setBarStyle('light-content');
      this.setState({
-       headerColor: 'black',
+       headerColor: 'transparent',
        headerButtonColor: 'white',
-       heartBgColor: '#4A443F'
+       backButtonColor: 'white',
+       heartBgColor: '#323230'
      });
-   } else if (event.nativeEvent.contentOffset.y > imgHeight-90 && this.state.headerColor != 'white') {
+   } else if (event.nativeEvent.contentOffset.y > imgHeight-60 && this.state.headerColor != '#FEFEFE') {
      StatusBar.setBarStyle('default');
      this.setState({
-       headerColor: 'white',
+       headerColor: '#FEFEFE',
        headerButtonColor: 'black',
-       heartBgColor: '#E1E1E1'
+       backButtonColor: gui.mainColor,
+       heartBgColor: '#FEFEFE'
      });
    }
  //   if (event.nativeEvent.contentOffset.y <= imgHeight-30 && this.state.headerButtonColor != 'white') {
@@ -871,7 +867,7 @@ var detailStyles = StyleSheet.create({
   moiGioiInfo: {
     flexDirection: 'column',
     marginLeft: 8,
-    width: Dimensions.get('window').width - 192
+    width: width - 192
   },
   moiGioiImage: {
     width: 60,
@@ -942,12 +938,12 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   circleContainer: {
-    marginTop: 4,
-    marginBottom: 5,
+    marginTop: 0,
+    marginBottom: 0,
     marginRight: 10,
-    width: 30,
-    height: 30,
-    borderRadius: 15,
+    width: 36,
+    height: 36,
+    borderRadius: 18,
     backgroundColor: '#A8A8A8'
   },
   shareIcon: {
@@ -957,7 +953,7 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
   shareLeft: {
-    width: Dimensions.get('window').width-60,
+    width: width-80,
     flexDirection: 'row',
     alignItems: 'flex-start',
     marginTop: 8,
@@ -990,7 +986,7 @@ var detailStyles = StyleSheet.create({
   scrollView: {
     flex: 1,
     position: 'absolute',
-    height: Dimensions.get('window').height-44
+    height: height-44
   },
   fullWidthContainer: {
       flex: 1,
@@ -1020,24 +1016,28 @@ var detailStyles = StyleSheet.create({
     color: 'black',
     marginTop: 3,
     marginBottom: 3,
-    marginLeft: 3
+    marginLeft: 0
   },
   chiTietText: {
-      marginBottom: 11,
-      marginLeft: 15
+      marginBottom: 8,
+      marginLeft: 19.5
   },
   shareMainView: {
       flexDirection: 'row',
       marginTop: 0,
       marginBottom: 0,
-      marginLeft: 15,
-      marginRight: 15
+      marginLeft: 20,
+      marginRight: 20
+  },
+  headerContainer: {
+    borderBottomColor: '#D7D7D7',
+    borderBottomWidth: 0.5
   },
   customPageHeader: {
       position: 'absolute',
       top: 0,
       left: 0,
-      width: Dimensions.get('window').width,
+      width: width,
       flexDirection: 'row',
       alignItems: 'flex-start',
       justifyContent: 'space-between',
@@ -1046,7 +1046,7 @@ var detailStyles = StyleSheet.create({
       height: 60
   },
 	search: {
-      marginLeft: 15,
+      marginLeft: 20,
 			marginTop: 20,
 	    flexDirection: 'row',
 	    alignItems: 'center',
@@ -1082,11 +1082,11 @@ var detailStyles = StyleSheet.create({
     bottom: 32
   },
   dot2 : {
-    width: 4,
-    height: 4,
-    borderRadius: 2,
+    width: 5,
+    height: 5,
+    borderRadius: 2.5,
     marginTop: 11,
-    marginLeft: 18,
+    marginLeft: 20,
     marginRight: 0,
     backgroundColor: '#C1C1C1'
   },
@@ -1103,12 +1103,12 @@ var detailStyles = StyleSheet.create({
     flex:1,
     justifyContent: 'center',
     alignItems: 'center',
-    width: Dimensions.get('window').width,
+    width: width,
     height: imgHeight
   },
   searchMapView: {
     marginTop: 7,
-    marginBottom: 3,
+    marginBottom: 4,
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -1119,12 +1119,12 @@ var detailStyles = StyleSheet.create({
   mapViewButton: {
     backgroundColor: 'transparent',
     width: mapWidth,
-    marginLeft: 15,
-    marginRight: 15
+    marginLeft: 20,
+    marginRight: 20
   },
   slideItem: {
     flex: 1, justifyContent: 'flex-start', alignItems: 'stretch',
-          backgroundColor: 'transparent', marginTop: 7
+          backgroundColor: 'transparent', marginTop: 8
   },
   price: {
     fontSize: 22,
@@ -1133,9 +1133,9 @@ var detailStyles = StyleSheet.create({
     textAlign: 'left',
     backgroundColor: 'transparent',
     color: '#BE0004',
-    marginBottom: 7,
-    marginLeft: 15,
-    marginRight: 15,
+    marginBottom: 8,
+    marginLeft: 18.5,
+    marginRight: 20,
   },
   textTitle: {
     fontSize: 16,
@@ -1145,8 +1145,8 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     color: 'black',
     marginBottom: 16,
-    marginLeft: 15,
-    marginRight: 15,
+    marginLeft: 19.5,
+    marginRight: 22.5,
   },
   textHalfWidth: {
     textAlign: 'left',
@@ -1159,7 +1159,7 @@ var detailStyles = StyleSheet.create({
     marginBottom: 4,
     marginLeft: 5,
     marginRight: 10,
-    width: Dimensions.get('window').width/2-20
+    width: width/2-20
   },
   textHalfWidthBold: {
     textAlign: 'left',
@@ -1173,34 +1173,34 @@ var detailStyles = StyleSheet.create({
     marginBottom: 8,
     marginLeft: 10,
     marginRight: 10,
-    width: Dimensions.get('window').width/2-20
+    width: width/2-20
   },
   textHalfWidth2: {
     textAlign: 'left',
     alignItems: 'flex-start',
     backgroundColor: 'transparent',
-    fontSize: 13,
+    fontSize: 14,
     fontFamily: gui.fontFamily,
     color: 'black',
     marginTop: 3,
     marginBottom: 2,
-    marginLeft: 10,
-    marginRight: 10,
-    width: Dimensions.get('window').width/2-20
+    marginLeft: 9.5,
+    marginRight: 9.5,
+    width: width/2-19
   },
   textHalfWidthBold2: {
     textAlign: 'left',
     alignItems: 'flex-start',
     backgroundColor: 'transparent',
-    fontSize: 13,
+    fontSize: 14,
     fontFamily: gui.fontFamily,
     fontWeight: 'bold',
     color: 'black',
     marginTop: 3,
     marginBottom: 2,
-    marginLeft: 10,
-    marginRight: 10,
-    width: Dimensions.get('window').width/2-20
+    marginLeft: 9.5,
+    marginRight: 9.5,
+    width: width/2-19
   },
   textFullWidth: {
     textAlign: 'left',
@@ -1217,13 +1217,13 @@ var detailStyles = StyleSheet.create({
   lineBorder: {
     borderTopWidth: 1,
     borderTopColor: 'lightgray',
-    width: Dimensions.get('window').width - 30,
-    marginLeft: 15
+    width: width - 44,
+    marginLeft: 20
   },
   lineBorder2: {
     borderTopWidth: 1,
     borderTopColor: 'lightgray',
-    width: Dimensions.get('window').width,
+    width: width,
     marginLeft: 0,
     marginRight: 0
   },
@@ -1231,8 +1231,8 @@ var detailStyles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'stretch',
     justifyContent: 'space-between',
-    paddingTop: 6,
-    marginBottom: 6
+    paddingTop: 8,
+    marginBottom: 8
   },
   danDuongLeftView: {
     alignItems: 'center',
@@ -1249,6 +1249,13 @@ var detailStyles = StyleSheet.create({
     fontWeight: 'normal',
     color: 'black',
     textAlign: 'left'
+  },
+  adsMore: {
+    fontSize: 13,
+    fontFamily: gui.fontFamily,
+    fontWeight: 'normal',
+    color: '#f0a401',
+    textAlign: 'center'
   }
 });
 

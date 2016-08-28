@@ -55,7 +55,7 @@ class CollapsiblePanel extends Component{
 
 
     render(){
-        let {mainProps, bodyProps} = this.props;
+        let {mainProps, bodyProps, collapseProps} = this.props;
 
         let icon = this.icons['down'];
 
@@ -88,7 +88,7 @@ class CollapsiblePanel extends Component{
         } else {
             //Step 5
             return (
-                <Animated.View style={[styles.container, mainProps, {height: this.state.animation}]} >
+                <Animated.View style={[styles.container, collapseProps, {height: this.state.animation}]} >
 
                   <TouchableOpacity
                     onPress={this.toggle.bind(this)}>
@@ -113,12 +113,12 @@ class CollapsiblePanel extends Component{
 var styles = StyleSheet.create({
     container   : {
         backgroundColor: 'transparent',
-        marginLeft: 15,
-        marginRight: 15,
+        marginLeft: 19.5,
+        marginRight: 22.5,
         marginTop: 6,
         marginBottom: 10,
         overflow:'hidden',
-        width: Dimensions.get('window').width-30
+        width: Dimensions.get('window').width-43
     },
     titleContainer : {
         flexDirection: 'row',
@@ -135,7 +135,7 @@ var styles = StyleSheet.create({
         textAlign: 'left',
         backgroundColor: 'transparent',
         marginLeft: 0,
-        width: Dimensions.get('window').width-60
+        width: Dimensions.get('window').width-73
     },
     subtitle    : {
         fontSize: 13,

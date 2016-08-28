@@ -82,7 +82,7 @@ class SummaryText extends Component{
                   <TouchableOpacity
                     onPress={this.toggle.bind(this)}>
                     <View style={styles.minContainer} onLayout={this._setMaxHeight.bind(this)}>
-                        <Text style={styles.text}>{this.state.longText}</Text>
+                        <Text style={[styles.text, this.props.textProps]}>{this.state.longText}</Text>
                         <Text style={styles.button}>{icon}</Text>
                     </View>
                   </TouchableOpacity>
@@ -97,7 +97,7 @@ class SummaryText extends Component{
                   <TouchableOpacity
                     onPress={this.toggle.bind(this)}>
                     <View style={styles.maxContainer} onLayout={this._setMinHeight.bind(this)}>
-                        <Text style={styles.text}>{this.state.shortText}
+                        <Text style={[styles.text, this.props.textProps]}>{this.state.shortText}
                             <Text style={styles.button}>{icon}</Text>
                         </Text>
                     </View>
@@ -134,7 +134,7 @@ var styles = StyleSheet.create({
         fontSize: 14,
         textAlign: 'left',
         backgroundColor: 'transparent',
-        width: Dimensions.get('window').width-30,
+        width: Dimensions.get('window').width-43,
         marginLeft: 0
     },
     button      : {
