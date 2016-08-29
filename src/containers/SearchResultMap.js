@@ -40,6 +40,8 @@ import apiUtils from '../lib/ApiUtils';
 
 import Button from 'react-native-button';
 
+import PlaceUtil from '../lib/PlaceUtil';
+
 import MHeartIcon from '../components/MHeartIcon';
 
 var { width, height } = Dimensions.get('window');
@@ -133,7 +135,15 @@ class SearchResultMap extends Component {
   }
 
   render() {
-    console.log("Call SearchResultMap.render");
+    console.log("Call SearchResultMap.render, this.state.region=", this.state.region);
+
+    let place = this.props.search.form.fields.place;
+    let radius = null;
+    //let region = this.state.region;
+    console.log("RenderMAP, this.props.search.form.fields.place:", place);
+    if (PlaceUtil.isDiaDiem(place)) {
+      radius = place.radiusInKm;
+    }
 
     let listAds = this.props.listAds;
 
@@ -187,6 +197,20 @@ class SearchResultMap extends Component {
                     strokeWidth={2}
                 />
             )}
+            {/*
+            {
+              !this.state.editing && radius && (<MapView.Circle
+                  key = {"" + region.longitude + region.latitude + radius}
+                  center = {{longitude: this.state.region.longitude, latitude: this.state.region.latitude}}
+                  radius = {radius * 1000}
+                  strokeColor="#000"
+                  fillColor="rgba(255,0,0,0.1)"
+                  strokeWidth={1}
+                />
+              )
+            }
+             */}
+
           </MapView>
           <View style={styles.mapButtonContainer}>
             <TouchableOpacity onPress={this._onDrawPressed.bind(this)} >
@@ -224,6 +248,14 @@ class SearchResultMap extends Component {
             </TouchableOpacity>
           </View>}
         </View>
+
+        {/*
+        <Image
+          style={{height: 40, width: 40, position: "absolute", top: height/2, left:width/2}}
+          resizeMode={Image.resizeMode.contain}
+          source={require('../assets/image/map/circle_center.png')}
+        />
+        */}
 
         {this.state.showMessage ? this._renderTotalResultView(listAds.length, this.props.loading) : null}
 
@@ -300,7 +332,7 @@ class SearchResultMap extends Component {
 
     return (<View style={styles.resultContainer}>
       <View style={[styles.resultText]}>
-          <Text style={styles.resultIcon}>  {numberOfAds < MAX_VIEWABLE_ADS ? numberOfAds : MAX_VIEWABLE_ADS} / {numberOfAds} tin tìm thấy được hiển thị </Text>
+          <Text style={styles.resultIcon}>  {numberOfAds < MAX_VIEWABLE_ADS ? numberOfAds : MAX_VIEWABLE_ADS} / {numberOfAds} tin tìm thấy được hiển thị. Zoom bản đồ để xem thêm </Text>
       </View>
     </View>)
   }
@@ -333,7 +365,10 @@ class SearchResultMap extends Component {
 
     this.props.actions.onMapChange("region", region);
     this.props.actions.onSearchFieldChange("region", region);
-    this.state.region = region;
+    //this.state.region = region;
+    this.setState({
+      region :region
+    });
 
     var geoBox = apiUtils.getBbox(region);
     this.props.actions.onSearchFieldChange("geoBox", geoBox);
@@ -551,26 +586,26 @@ class SearchResultMap extends Component {
     return diaChi;
   }
 
-  _handleStartShouldSetPanResponder(e: Object, gestureState: Object): boolean {
+  _handleStartShouldSetPanResponder(e, gestureState) {
     // Should we become active when the user presses down on the circle?
     return true;
   }
 
-  _handleMoveShouldSetPanResponder(e: Object, gestureState: Object): boolean {
+  _handleMoveShouldSetPanResponder(e, gestureState) {
     // Should we become active when the user moves a touch over the circle?
     return true;
   }
 
-  _handlePanResponderGrant(e: Object, gestureState: Object) {
+  _handlePanResponderGrant(e, gestureState) {
     this._previousLeft = gestureState.x0;
     this._previousTop = gestureState.y0;
   }
 
-  _handlePanResponderMove(e: Object, gestureState: Object) {
+  _handlePanResponderMove(e, gestureState) {
     this._refreshPolygons(gestureState);
   }
 
-  _handlePanResponderEnd(e: Object, gestureState: Object) {
+  _handlePanResponderEnd(e, gestureState) {
     this._previousLeft += gestureState.dx;
     this._previousTop += gestureState.dy;
 
