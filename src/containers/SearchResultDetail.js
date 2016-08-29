@@ -179,7 +179,7 @@ class SearchResultDetail extends Component {
                  bgColor={this.state.heartBgColor} size={22} />
                  </View>*/}
                 <RelandIcon onPress={this._onShare.bind(this)}
-                            name="info" color={this.state.headerButtonColor}
+                            name="alert" color={this.state.headerButtonColor}
                             iconProps={{style: [detailStyles.shareButton, {paddingRight: 26, marginTop: 30}]}} size={25} >
                 </RelandIcon>
               </View>
@@ -359,7 +359,7 @@ class SearchResultDetail extends Component {
               vertical={true}
               style={detailStyles.scrollView}
               onScroll={this.handleScroll.bind(this)}
-              scrollEventThrottle={1}
+              scrollEventThrottle={200}
           >
             <View style={detailStyles.searchContent}>
 
@@ -427,7 +427,7 @@ class SearchResultDetail extends Component {
                   </View>
                 </CollapsiblePanel>
                 <View style={detailStyles.lineBorder2} />
-                {this._renderShareButtons(rowData)}
+                {this._renderShareButtons(mobile, email)}
                 <View style={detailStyles.lineBorder2} />
                 {this._renderLienHe(dangBoi, mobile, email)}
                 <View style={detailStyles.lineBorder2} />
@@ -472,18 +472,18 @@ class SearchResultDetail extends Component {
 
   }
 
-  _renderShareButtons(rowData) {
+  _renderShareButtons(mobile, email) {
     return (
       <View style={detailStyles.shareMainView}>
         <View style={detailStyles.shareLeft}>
           <View style={[detailStyles.circleContainer, {backgroundColor: '#1DB423'}]} >
-            <RelandIcon onPress={() => this._onChat(rowData)}
+            <RelandIcon onPress={() => this._onSms(mobile)}
                         name="sms" color={'white'}
                         size={26} iconProps={{style: detailStyles.shareIcon}}>
             </RelandIcon>
           </View>
           <View style={[detailStyles.circleContainer, {backgroundColor: '#CE0005'}]} >
-            <RelandIcon onPress={this._onShare.bind(this)}
+            <RelandIcon onPress={() => this._onEmail(email)}
                         name="email" color={'white'}
                         size={26} iconProps={{style: detailStyles.shareIcon}}>
             </RelandIcon>
@@ -513,8 +513,8 @@ class SearchResultDetail extends Component {
                         collapseProps={{marginTop: 15, marginBottom: 15}}
                         expanded={true}>
         {this.renderTitleProps("Tên liên lạc", dangBoi, {marginTop: 3, marginBottom: 2.2})}
-        {this.renderTitleProps("Điện thoại", mobile, {marginTop: 3, marginBottom: 2.2})}
-        {this.renderTitleProps("Email", email, {marginTop: 3, marginBottom: 2.2})}
+        {this.renderTitleProps("Điện thoại", mobile, {marginTop: 3, marginBottom: 2.2}, () => this._onCall(mobile))}
+        {this.renderTitleProps("Email", email, {marginTop: 3, marginBottom: 2.2}, () => this._onEmail(email))}
         <Text style={{fontSize: 5}} />
       </CollapsiblePanel>
     );
@@ -682,6 +682,14 @@ class SearchResultDetail extends Component {
     Communications.phonecall(phone, true);
   }
 
+  _onEmail(email) {
+    Communications.email([email], null, null, null, null);
+  }
+
+  _onSms(phone) {
+    Communications.text(phone, null);
+  }
+
   _onChat(ads) {
     if (!ads.dangBoi.userID) {
       alert(gui.ERR_NotRelandUser);
@@ -792,18 +800,33 @@ class SearchResultDetail extends Component {
     }
   }
 
-  renderTitleProps(title, prop, textStyle) {
+  renderTitleProps(title, prop, textStyle, onPress) {
     if (prop) {
-      return (
-        <View style={detailStyles.searchDetailRowAlign}>
-          <Text style={[detailStyles.textHalfWidth2, textStyle]}>
-            {title}
-          </Text>
-          <Text style={[detailStyles.textHalfWidthBold2, textStyle]}>
-            {prop}
-          </Text>
-        </View>
-      )
+      if (onPress) {
+        return (
+            <View style={detailStyles.searchDetailRowAlign}>
+              <Text style={[detailStyles.textHalfWidth2, textStyle]}>
+                {title}
+              </Text>
+              <TouchableHighlight onPress={onPress}>
+                <Text style={[detailStyles.textHalfWidthBold2, textStyle]}>
+                  {prop}
+                </Text>
+              </TouchableHighlight>
+            </View>
+        );
+      } else {
+        return (
+            <View style={detailStyles.searchDetailRowAlign}>
+              <Text style={[detailStyles.textHalfWidth2, textStyle]}>
+                {title}
+              </Text>
+              <Text style={[detailStyles.textHalfWidthBold2, textStyle]}>
+                {prop}
+              </Text>
+            </View>
+        );
+      }
     }
   }
 
