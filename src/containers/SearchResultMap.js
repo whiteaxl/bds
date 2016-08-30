@@ -44,6 +44,8 @@ import PlaceUtil from '../lib/PlaceUtil';
 
 import MHeartIcon from '../components/MHeartIcon';
 
+import LocationMarker from '../components/LocationMarker';
+
 var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / (height-110);
@@ -104,6 +106,21 @@ class SearchResultMap extends Component {
     });
     this._previousLeft = 20;
     this._previousTop = 84;
+    this.getCurrentLocation();
+  }
+
+  getCurrentLocation() {
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+          this.setState({
+            coordinate : position.coords
+          });
+        },
+        (error) => {
+          alert(error.message);
+        },
+        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
   }
 
   constructor(props) {
@@ -130,7 +147,11 @@ class SearchResultMap extends Component {
       newRegion: this.props.search.form.fields.region,
       drawMode: false,
       region: region,
-      showMessage: true
+      showMessage: true,
+      coordinate : {
+        latitude: LATITUDE,
+        longitude: LONGITUDE
+      }
     };
   }
 
@@ -210,7 +231,9 @@ class SearchResultMap extends Component {
               )
             }
              */}
-
+            <MapView.Marker coordinate={this.state.coordinate}>
+              <LocationMarker iconName={'local-info'} size={30} animation={true}/>
+            </MapView.Marker>
           </MapView>
           <View style={styles.mapButtonContainer}>
             <TouchableOpacity onPress={this._onDrawPressed.bind(this)} >

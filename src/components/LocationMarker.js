@@ -11,12 +11,21 @@ import RelandIcon from './RelandIcon';
 class LocationMarker extends React.Component{
     constructor(){
         super();
+        this.state = {
+            color: gui.mainColor
+        }
     }
 
     render() {
+        let {iconName, size, animation} = this.props;
+        let color = this.state.color;
+        if (animation) {
+            let newColor = color == '#f0a401' ? gui.mainColor: '#f0a401';
+            setTimeout(() => this.setState({color: newColor}), 1000);
+        }
         return (
             <View style={styles.container}>
-                <RelandIcon name={"home-marker"} size={40} color={gui.mainColor} mainProps={styles.markerIcon}/>
+                <RelandIcon name={iconName||"home-marker"} size={size||40} color={color} mainProps={styles.markerIcon}/>
             </View>
         );
     }
