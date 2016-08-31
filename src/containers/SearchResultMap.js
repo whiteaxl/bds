@@ -46,6 +46,8 @@ import MHeartIcon from '../components/MHeartIcon';
 
 import LocationMarker from '../components/LocationMarker';
 
+import * as Animatable from 'react-native-animatable';
+
 var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / (height-110);
@@ -127,11 +129,7 @@ class SearchResultMap extends Component {
     console.log("Call SearchResultMap.constructor");
     super(props);
 
-    var region = this.props.search.map.region;
-    if (Object.keys(this.props.search.form.fields.region).length <=0) {
-      region.longitudeDelta = region.latitudeDelta * ASPECT_RATIO;
-      this.props.actions.onSearchFieldChange("region", region);
-    }
+    var region = this.getInitialRegion();
 
     this.state = {
       modal: false,
@@ -155,6 +153,13 @@ class SearchResultMap extends Component {
     };
   }
 
+  getInitialRegion() {
+    var region = isNaN(this.props.search.map.region.latitude) ? this.props.search.form.fields.region : this.props.search.map.region;
+    if (Object.keys(region).length <= 0 || isNaN(region.latitude)) {
+      region = {latitude: LATITUDE, longitude: LONGITUDE, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA};
+    }
+    return region;
+  }
   render() {
     console.log("Call SearchResultMap.render, this.state.region=", this.state.region);
 
@@ -174,11 +179,8 @@ class SearchResultMap extends Component {
 
     let drawIconColor = this.state.polygons && this.state.polygons.length == 0 && this.state.drawMode ? gui.mainColor : 'black';
 
-    var region = isNaN(this.props.search.map.region.latitude) ? this.props.search.form.fields.region : this.props.search.map.region;
-    console.log('region', region);
-    if (Object.keys(region).length <= 0 || isNaN(region.latitude)) {
-      region = {latitude: LATITUDE, longitude: LONGITUDE, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA};
-    }
+    this.state.region = this.getInitialRegion();
+
     return (
       <View style={styles.fullWidthContainer}>
 
@@ -189,7 +191,7 @@ class SearchResultMap extends Component {
         <View style={styles.map}>
           <MapView
               ref="map"
-              region={region}
+              region={this.state.region}
               onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
               style={styles.mapView}
               mapType={this.state.mapType.toLowerCase()}
@@ -280,7 +282,7 @@ class SearchResultMap extends Component {
         />
         */}
 
-        {this.state.showMessage ? this._renderTotalResultView(listAds.length, this.props.loading) : null}
+        {this._renderTotalResultView(listAds.length, this.props.loading)}
 
         <View style={styles.tabbar}>
           <View style={styles.searchListButton}>
@@ -347,16 +349,20 @@ class SearchResultMap extends Component {
       console.log(this.props.search.form.fields.region);
       console.log(this.props.search.map.region);
       return (<View style={styles.resultContainer}>
-        <View style={[styles.resultText]}>
-          <Text style={styles.resultIcon}>  Đang tải dữ liệu ... </Text>
-        </View>
+        <Animatable.View animation={this.state.showMessage ? "fadeInDown" : "fadeOutUp"}>
+          <View style={[styles.resultText]}>
+            <Text style={styles.resultIcon}>  Đang tải dữ liệu ... </Text>
+          </View>
+        </Animatable.View>
       </View>)
     }
 
     return (<View style={styles.resultContainer}>
-      <View style={[styles.resultText]}>
-          <Text style={styles.resultIcon}>  {numberOfAds < MAX_VIEWABLE_ADS ? numberOfAds : MAX_VIEWABLE_ADS} / {numberOfAds} tin tìm thấy được hiển thị. Zoom bản đồ để xem thêm </Text>
-      </View>
+      <Animatable.View animation={this.state.showMessage ? "fadeInDown" : "fadeOutUp"}>
+        <View style={[styles.resultText]}>
+            <Text style={styles.resultIcon}>  {numberOfAds < MAX_VIEWABLE_ADS ? numberOfAds : MAX_VIEWABLE_ADS} / {numberOfAds} tin tìm thấy được hiển thị. Zoom bản đồ để xem thêm </Text>
+        </View>
+      </Animatable.View>
     </View>)
   }
 
@@ -472,6 +478,9 @@ class SearchResultMap extends Component {
 
   _onCurrentLocationPress(){
     console.log("Call SearchResultMap._onCurrentLocationPress");
+    if (this.state.polygons && this.state.polygons.length > 0) {
+      return;
+    }
 
     navigator.geolocation.getCurrentPosition(
         (position) => {
