@@ -36,13 +36,30 @@ const SearchForm = Record({
         orderBy: '',
         listData: [],
         marker: {},
-        geoBox: [],
+
+        geoBox: [], //Map will use this
+
         place: {
-            placeId: "ChIJKQqAE44ANTERDbkQYkF-mAI",
-            relandTypeName : "Tỉnh",
-            fullName: "Hanoi",
-            currentLocation : ''
+          placeName: 'Hà Nội',
+          fullName: 'Thành phố Hà Nội',
+          shortName: 'Thành phố Hà Nội',
+          placeType: 'T',
+          placeId: '1',
+          tinh: 'ha-noi',
+          huyen: null,
+          viewport: {
+            "northeast": {
+              "lat": 21.385027,
+              "lng": 106.0198859
+            },
+            "southwest": {
+              "lat": 20.562323,
+              "lng": 105.2854659
+            }
+          },
+          currentLocation : ''
         },
+
         radiusInKmSelectedIdx: 0,
         huongNha: '',
         ngayDaDang: 0, //batky

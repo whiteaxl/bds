@@ -15,6 +15,9 @@ import TruliaIcon from './TruliaIcon';
 
 import RelandIcon from './RelandIcon';
 
+import cfg from '../cfg';
+
+
 
 const GooglePlacesAutocomplete = React.createClass({
 
@@ -27,17 +30,12 @@ const GooglePlacesAutocomplete = React.createClass({
     getDefaultValue: React.PropTypes.func,
     timeout: React.PropTypes.number,
     onTimeout: React.PropTypes.func,
-    query: React.PropTypes.object,
-    GoogleReverseGeocodingQuery: React.PropTypes.object,
-    GooglePlacesSearchQuery: React.PropTypes.object,
     styles: React.PropTypes.object,
     textInputProps: React.PropTypes.object,
     enablePoweredByContainer: React.PropTypes.bool,
     predefinedPlaces: React.PropTypes.array,
     currentLocation: React.PropTypes.bool,
     currentLocationLabel: React.PropTypes.string,
-    nearbyPlacesAPI: React.PropTypes.string,
-    filterReverseGeocodingByTypes: React.PropTypes.array,
     predefinedPlacesAlwaysVisible: React.PropTypes.bool,
   },
 
@@ -51,25 +49,13 @@ const GooglePlacesAutocomplete = React.createClass({
       autoFocus: false,
       getDefaultValue: () => '',
       timeout: 20000,
-      onTimeout: () => console.warn('google places autocomplete: request timeout'),
-      query: {
-        key: 'missing api key',
-        language: 'en',
-        types: 'geocode',
-      },
-      GoogleReverseGeocodingQuery: {},
-      GooglePlacesSearchQuery: {
-        rankby: 'distance',
-        types: 'food',
-      },
+      onTimeout: () => console.warn('Places autocomplete: request timeout'),
       styles: {},
       textInputProps: {},
       enablePoweredByContainer: true,
       predefinedPlaces: [],
       currentLocation: false,
       currentLocationLabel: 'Vị trí hiện tại',
-      nearbyPlacesAPI: 'GooglePlacesSearch',
-      filterReverseGeocodingByTypes: [],
       predefinedPlacesAlwaysVisible: false,
     };
   },
@@ -98,6 +84,7 @@ const GooglePlacesAutocomplete = React.createClass({
       if (this.props.currentLocation === true) {
         res.unshift({
           description: this.props.currentLocationLabel,
+          shortName: this.props.currentLocationLabel,
           isCurrentLocation: true,
         });
       }
@@ -189,18 +176,8 @@ const GooglePlacesAutocomplete = React.createClass({
       });
     }
   },
-  _rewayDesc(desc) {
-    return desc ? desc.replace(", Vietnam", "") : "";
-  },
+
   _onPress(rowData) {
-
-    rowData.fullName = this._rewayDesc(rowData.description);
-
-    this.setState({
-      text: rowData.fullName
-    });
-
-
     if (rowData.isPredefinedPlace !== true && this.props.fetchDetails === true) {
       if (rowData.isLoading === true) {
         // already requesting
@@ -209,77 +186,18 @@ const GooglePlacesAutocomplete = React.createClass({
 
       this._abortRequests();
 
-      // display loader
-      this._enableRowLoader(rowData);
+      this.setState({
+        //text: rowData.fullName
+        text: rowData.shortName
+      });
 
-      console.log("Call FETCH DETAIL");
+      delete rowData.isLoading;
 
-      // fetch details
-      const request = new XMLHttpRequest();
-      this._requests.push(request);
-      request.timeout = this.props.timeout;
-      request.ontimeout = this.props.onTimeout;
-      request.onreadystatechange = () => {
-        if (request.readyState !== 4) {
-          return;
-        }
-        if (request.status === 200) {
-          const responseJSON = JSON.parse(request.responseText);
-          if (responseJSON.status === 'OK') {
+      this.props.onPress(rowData);
 
-            if (this.isMounted()) {
-              const details = responseJSON.result;
-
-              this._disableRowLoaders();
-              this._onBlur();
-
-              details.relandTypeName = rowData.relandTypeName;
-
-
-              this.setState({
-                text: this._rewayDesc(rowData.description)
-              });
-
-              delete rowData.isLoading;
-              //
-              details.formatted_address = this._rewayDesc(details.formatted_address);
-              this.props.onPress(rowData, details);
-            }
-          } else {
-            this._disableRowLoaders();
-            console.warn('google places autocomplete: ' + responseJSON.status);
-          }
-        } else {
-          this._disableRowLoaders();
-          console.warn('google places autocomplete: request could not be completed or has been aborted');
-        }
-      };
-
-      console.log("Detail for: " + rowData.place_id);
-
-      /*
-       url = 'https://maps.googleapis.com/maps/api/geocode/json?' + Qs.stringify({
-       //latlng: rowData + ',' + longitude,
-       place_id: rowData.place_id,
-       key: this.props.query.key
-       //...this.props.GoogleReverseGeocodingQuery,
-       });
-       */
-
-      let url = 'https://maps.googleapis.com/maps/api/place/details/json?' + Qs.stringify({
-          key: this.props.query.key,
-          placeid: rowData.place_id,
-          language: this.props.query.language
-        });
-
-      request.open('GET', url);
-
-      request.send();
     } else if (rowData.isCurrentLocation === true) {
-
       // display loader
       this._enableRowLoader(rowData);
-
 
       this.setState({
         text: rowData.description,
@@ -302,7 +220,7 @@ const GooglePlacesAutocomplete = React.createClass({
       let predefinedPlace = this._getPredefinedPlace(rowData);
 
       // sending predefinedPlace as details for predefined places
-      this.props.onPress(predefinedPlace, predefinedPlace);
+      this.props.onPress(predefinedPlace);
     }
   },
   _results: [],
@@ -340,74 +258,6 @@ const GooglePlacesAutocomplete = React.createClass({
   },
 
 
-  _requestNearby(latitude, longitude) {
-    this._abortRequests();
-    if (latitude !== undefined && longitude !== undefined && latitude !== null && longitude !== null) {
-      const request = new XMLHttpRequest();
-      this._requests.push(request);
-      request.timeout = this.props.timeout;
-      request.ontimeout = this.props.onTimeout;
-      request.onreadystatechange = () => {
-        if (request.readyState !== 4) {
-          return;
-        }
-        if (request.status === 200) {
-          const responseJSON = JSON.parse(request.responseText);
-
-          this._disableRowLoaders();
-
-          if (typeof responseJSON.results !== 'undefined') {
-            if (this.isMounted()) {
-              var results = [];
-              if (this.props.nearbyPlacesAPI === 'GoogleReverseGeocoding') {
-                results = this._filterResultsByTypes(responseJSON, this.props.filterReverseGeocodingByTypes);
-              } else {
-                results = responseJSON.results;
-              }
-
-              this.setState({
-                dataSource: this.state.dataSource.cloneWithRows(this.buildRowsFromResults(results)),
-              });
-            }
-          }
-          if (typeof responseJSON.error_message !== 'undefined') {
-            console.warn('google places autocomplete: ' + responseJSON.error_message);
-          }
-        } else {
-          // console.warn("google places autocomplete: request could not be completed or has been aborted");
-        }
-      };
-
-      let url = '';
-
-
-      if (this.props.nearbyPlacesAPI === 'GooglePlacesSearch') {
-        url = 'https://maps.googleapis.com/maps/api/place/nearbysearch/json?' + Qs.stringify({
-            location: latitude + ',' + longitude,
-            key: this.props.query.key,
-            ...this.props.GooglePlacesSearchQuery,
-          });
-
-      } else {
-        // your key must be allowed to use Google Maps Geocoding API
-        url = 'https://maps.googleapis.com/maps/api/geocode/json?' + Qs.stringify({
-            latlng: latitude + ',' + longitude,
-            key: this.props.query.key,
-            ...this.props.GoogleReverseGeocodingQuery,
-          });
-      }
-
-      request.open('GET', url);
-      request.send();
-    } else {
-      this._results = [];
-      this.setState({
-        dataSource: this.state.dataSource.cloneWithRows(this.buildRowsFromResults([])),
-      });
-    }
-  },
-
-
   _request(text) {
     this._abortRequests();
     if (text.length >= this.props.minLength) {
@@ -436,8 +286,14 @@ const GooglePlacesAutocomplete = React.createClass({
           // console.warn("google places autocomplete: request could not be completed or has been aborted");
         }
       };
+
+      /*
       request.open('GET', 'https://maps.googleapis.com/maps/api/place/autocomplete/json?&input='
         + encodeURI(text) + '&' + Qs.stringify(this.props.query));
+      request.send();
+      */
+
+      request.open('GET', cfg.rootUrl + "/place/autocomplete?input=" + encodeURI(text));
       request.send();
     } else {
       this._results = [];
@@ -447,7 +303,15 @@ const GooglePlacesAutocomplete = React.createClass({
     }
   },
   _onChangeText(text) {
-    this._request(text);
+    this.currentText = text;
+
+    let pre = text;
+    setTimeout(() => {
+      if (pre == this.currentText) {
+        this._request(pre);
+      }
+    }, 400);
+
     this.setState({
       text: text,
       listViewDisplayed: true,
@@ -492,18 +356,6 @@ const GooglePlacesAutocomplete = React.createClass({
     return 44;
   },
 
-  _getPlaceType(place) {
-    if (place.isCurrentLocation || place.isSaveSearch || place.isRecent) {
-      return '';
-    }
-
-    return placeUtil.getTypeName(place);
-  },
-
-  _isDiaDiem(place) {
-    return placeUtil.isDiaDiem(place);
-  },
-
   _renderRowIcon(rowData) {
     let source ;
     if (rowData.isSaveSearch) {
@@ -512,8 +364,6 @@ const GooglePlacesAutocomplete = React.createClass({
       source = require('../assets/image/search/recent.png');
     } else if (rowData.isCurrentLocation) {
       source = require('../assets/image/search/currentLocation.png');
-    }else if (this._isDiaDiem(rowData)) {
-      source = require('../assets/image/search/point.png');
     } else {
       source = require('../assets/image/search/notPoint.png');
     }
@@ -556,17 +406,15 @@ const GooglePlacesAutocomplete = React.createClass({
 
         numberOfLines={1}
       >
-        {this._rewayDesc(rowData.description)}
+        {rowData.shortName}
       </Text>
     );
   },
 
   _renderRow(rowData = {}) {
-
     console.log(rowData);
 
-    rowData.description = rowData.description || rowData.formatted_address || rowData.name;
-    rowData.relandTypeName = this._getPlaceType(rowData);
+    rowData.description = rowData.description || rowData.name;
     let rowHeight = this._getRowHight(rowData);
 
     return (
@@ -590,10 +438,6 @@ const GooglePlacesAutocomplete = React.createClass({
               {this._renderRowIcon(rowData)}
 
               {this._renderRowText(rowData)}
-
-              <Text style={{alignSelf: 'flex-end'}}>
-                {rowData.relandTypeName}
-              </Text>
             </View>
 
             {this._renderLoader(rowData)}
@@ -691,20 +535,6 @@ const GooglePlacesAutocomplete = React.createClass({
     );
   },
 });
-
-
-// this function is still present in the library to be retrocompatible with version < 1.1.0
-const create = function create(options = {}) {
-  return React.createClass({
-    render() {
-      return (
-        <GooglePlacesAutocomplete ref="GooglePlacesAutocomplete"
-          {...options}
-        />
-      );
-    },
-  });
-};
 
 
 var styles = StyleSheet.create({
@@ -806,4 +636,4 @@ const defaultStyles = {
 };
 
 
-module.exports = {GooglePlacesAutocomplete, create};
+module.exports = {GooglePlacesAutocomplete};

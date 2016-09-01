@@ -48,30 +48,31 @@ function mapDispatchToProps(dispatch) {
 
 var {GooglePlacesAutocomplete} = require('../components/GooglePlacesAutocomplete');
 
-//const homePlace = {description: 'Home', geometry: { location: { lat: 48.8152937, lng: 2.4597668 } }};
-
 class PlacesAutoComplete extends React.Component {
   constructor(props) {
     super(props);
     StatusBar.setBarStyle('default');
   }
 
-  _onPress(data, details = null) {
+  _onPress(data) {
     //console.log(data);
-    log.enter("PlacesAutocomplete._onPress", data, details);
+    log.enter("PlacesAutocomplete._onPress", data);
 
     if (data.isRecent || data.isSaveSearch) {
       this.props.actions.loadSavedSearch(data);
     } else {
+      /*
       let value = {
-        placeId: data.place_id,
-        relandTypeName: data.relandTypeName,
         fullName: data.fullName,
         currentLocation: data.currentLocation
       };
-      console.log("PlacesAutoComplete, place cridential=", value);
+      */
+      console.log("PlacesAutoComplete, place =", data);
 
-      this.props.actions.onSearchFieldChange("place", value);
+      data.fullName = data.shortName || data.fullName;
+
+      this.props.actions.onSearchFieldChange("place", data);
+      //this.props.actions.onSearchFieldChange("diaChinh", value);
     }
 
     //if not call from Search page, then need perform action
@@ -94,36 +95,6 @@ class PlacesAutoComplete extends React.Component {
   }
 
   render() {
-    /*
-    let predefinedPlaces = [
-      {
-        name : "Save 1",
-        desc : "Desc save 1",
-        isSaveSearch: true,
-        query : {}
-      },
-      {
-        name : "Save 2",
-        desc : "Desc save 2",
-        isSaveSearch: true
-      },
-      {
-        name : "recent 1",
-        desc : "Desc recent 1",
-        isRecent: true
-      },
-      {
-        name : "recent 2",
-        desc : "Desc recent 2",
-        isRecent: true
-      },
-      {
-        name : "recent 3",
-        desc : "Desc recent 3",
-        isRecent: true
-      },
-    ];
-    */
     log.info("Place Autocomplete - render, search=", this.props.search);
 
     let predefinedPlaces = [
@@ -140,17 +111,8 @@ class PlacesAutoComplete extends React.Component {
         fetchDetails={false}
         onPress={this._onPress.bind(this)}
         onCancelPress={this._onCancelPress.bind(this)}
-        onPress_original={(data, details = null) => {}} // 'details' is provided when fetchDetails = true
         getDefaultValue={() => {
           return ''; // text input default value
-        }}
-        query={{
-          // available options: https://developers.google.com/places/web-service/autocomplete
-          key: 'AIzaSyAnioOM0qiWwUoCz8hNS8B2YuzKiYYaDdU',
-          language: 'en', // language of the results
-          //types: 'geocode', // default: 'geocode', cities,regions
-          components:'country:vn' //restrict to VN
-
         }}
         styles={{
           description: {
@@ -178,22 +140,6 @@ class PlacesAutoComplete extends React.Component {
         }}
 
         currentLocation={true} // Will add a 'Vị trí Hiện tại' button at the top of the predefined places list
-        nearbyPlacesAPI='GoogleReverseGeocoding' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-        GoogleReverseGeocodingQuery={{
-          // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-        }}
-        GooglePlacesSearchQuery={{
-          // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-          //rankby: 'distance',
-          //types: 'food',
-        }}
-
-
-        //filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']}
-        // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-
-        //predefinedPlaces={[homePlace, workPlace]}
-
         predefinedPlacesAlwaysVisible={false}
         predefinedPlaces = {predefinedPlaces}
       />
