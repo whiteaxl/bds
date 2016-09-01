@@ -48,6 +48,11 @@ export default class HomeCollection extends Component {
   render() {
     let {title1, title2, data, query} = this.props.collectionData;
 
+    if (!data[0]) {
+      return (
+          <View>{null}</View>
+      );
+    }
     return(
       <View style={{flexDirection: "column"}}>
         <View style={styles.titleContainer}>

@@ -103,33 +103,9 @@ class Home extends Component {
   }
 
   _renderLoadingView() {
-    let logoIcon = require('../assets/image/logo.png');
     return (
       <View style={styles.fullWidthContainer}>
-        <View style={styles.pageHeader}>
-          <View style={styles.home}>
-            <Image
-                style={styles.logoIcon}
-                resizeMode={Image.resizeMode.cover}
-                source={logoIcon}
-            />
-            {/*<RelandIcon
-             name="home" color="white" size={20}
-             mainProps={{marginTop: 16, paddingLeft: 18, paddingRight: 16}}
-             >
-             </RelandIcon>*/}
-          </View>
-          {/*<View style={styles.title}>
-           <Text style={styles.titleText}>Trang chủ</Text>
-           </View>*/}
-          <View style={styles.searchButton}>
-            <TruliaIcon onPress={this.handleSearchButton}
-                        name="search" color="white" size={20}
-                        mainProps={{paddingLeft: 16, paddingRight: 21}}
-            >
-            </TruliaIcon>
-          </View>
-        </View>
+        {this._renderHeaderButtons()}
 
         <View style={styles.homeDetailInfo}>
           {/*<Text> Loading ... </Text>*/}
@@ -139,30 +115,24 @@ class Home extends Component {
     );
   }
 
-  render() {
-    log.info("call home.render", this.props.search.collections, this.props.search.homeDataErrorMsg);
-    if (this.props.search.loadingHomeData) {
-      return this._renderLoadingView();
-    }
+  _renderHeaderButtons() {
     let logoIcon = require('../assets/image/logo.png');
     return (
-      <View style={styles.fullWidthContainer}>
         <View style={styles.pageHeader}>
+          <View style={styles.home}>
+            <RelandIcon
+                name="map" color="white" size={18} onPress={this._onMapView.bind(this)}
+                mainProps={{marginTop: 12, paddingLeft: 18, paddingRight: 16}}
+            >
+            </RelandIcon>
+          </View>
           <View style={styles.home}>
             <Image
                 style={styles.logoIcon}
                 resizeMode={Image.resizeMode.cover}
                 source={logoIcon}
             />
-            {/*<RelandIcon
-                        name="home" color="white" size={20}
-                        mainProps={{marginTop: 16, paddingLeft: 18, paddingRight: 16}}
-            >
-            </RelandIcon>*/}
           </View>
-          {/*<View style={styles.title}>
-            <Text style={styles.titleText}>Trang chủ</Text>
-          </View>*/}
           <View style={styles.searchButton}>
             <TruliaIcon onPress={this.handleSearchButton}
                         name="search" color="white" size={20}
@@ -171,6 +141,21 @@ class Home extends Component {
             </TruliaIcon>
           </View>
         </View>
+    );
+  }
+
+  _onMapView() {
+    Actions.SearchResultMap({type: "reset"});
+  }
+
+  render() {
+    log.info("call home.render", this.props.search.collections, this.props.search.homeDataErrorMsg);
+    if (this.props.search.loadingHomeData) {
+      return this._renderLoadingView();
+    }
+    return (
+      <View style={styles.fullWidthContainer}>
+        {this._renderHeaderButtons()}
 
         <View style={styles.homeDetailInfo}>
           {this.renderContent(this.props.search.collections)}
@@ -214,7 +199,7 @@ var styles = StyleSheet.create({
     color: 'white'
   },
   searchButton: {
-    paddingTop: 23,
+    paddingTop: 20,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: gui.mainColor

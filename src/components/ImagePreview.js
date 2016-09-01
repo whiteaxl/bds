@@ -93,7 +93,7 @@ class ImagePreview extends React.Component {
             closeView: {
                 position: 'absolute',
                 backgroundColor: 'transparent',
-                top: 32
+                top: 35
             },
             closeBtn: {
                 flexDirection: 'row',
@@ -225,7 +225,7 @@ class ImagePreview extends React.Component {
                     </Swiper>
                     <View style={styles.closeView}>
                         <RelandIcon name={"close"} color={'white'} mainProps={styles.closeBtn}
-                                    size={20} onPress={this.closeModal.bind(this)}>
+                                    size={14} onPress={this.closeModal.bind(this)}>
                         </RelandIcon>
                     </View>
                     <SearchResultDetailFooter mobile={this.props.mobile} onChat={this.props.onChat} isLiked={this.props.isLiked}

@@ -15,8 +15,8 @@ export default class IntroSwiper extends React.Component {
   render() {
     return (
       <Swiper style={styles.wrapper} showsButtons={false} //autoplay={true} autoplayTimeout={5}
-              dot={<View style={[styles.dot, {backgroundColor: 'white'}]} />}
-              activeDot={<View style={[styles.dot, {backgroundColor: 'red'}]}/>}
+              dot={<View style={[styles.dot, {backgroundColor: 'transparent'}]} />}
+              activeDot={<View style={[styles.dot, {backgroundColor: 'transparent'}]}/>}
       >
         <View style={styles.slide} title={
           <Text style={styles.text} numberOfLines={2}></Text>}
@@ -27,7 +27,7 @@ export default class IntroSwiper extends React.Component {
           />
         </View>
 
-        <View style={styles.slide}
+        {/*<View style={styles.slide}
           title={<Text style={styles.text} numberOfLines={1}></Text>}>
           <Image
             style={styles.image}
@@ -48,7 +48,7 @@ export default class IntroSwiper extends React.Component {
             resizeMode={Image.resizeMode.cover}
             source={require('../assets/image/welcome/welcome.png')}
           />
-        </View>
+        </View>*/}
 
       </Swiper>
     );

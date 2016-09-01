@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
   searchListView: {
     marginTop: 30,
     margin: 0,
-    backgroundColor: 'gray'
+    backgroundColor: 'white'
   },
 });
 

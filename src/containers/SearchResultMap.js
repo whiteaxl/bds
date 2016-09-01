@@ -111,6 +111,14 @@ class SearchResultMap extends Component {
     this.getCurrentLocation();
   }
 
+  componentDidMount() {
+    this._refreshListData(this.props.search.form.fields.geoBox, [], () => {});
+  }
+
+  componentWillUnmount() {
+    clearTimeout(this.timer);
+  }
+
   getCurrentLocation() {
     navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -146,10 +154,7 @@ class SearchResultMap extends Component {
       drawMode: false,
       region: region,
       showMessage: true,
-      coordinate : {
-        latitude: LATITUDE,
-        longitude: LONGITUDE
-      }
+      coordinate : null
     };
   }
 
@@ -177,9 +182,7 @@ class SearchResultMap extends Component {
 
     let viewableList = this._getViewableAds(listAds);
 
-    let drawIconColor = this.state.polygons && this.state.polygons.length == 0 && this.state.drawMode ? gui.mainColor : 'black';
-
-    this.state.region = this.getInitialRegion();
+    var region = this.getInitialRegion();
 
     return (
       <View style={styles.fullWidthContainer}>
@@ -191,7 +194,7 @@ class SearchResultMap extends Component {
         <View style={styles.map}>
           <MapView
               ref="map"
-              region={this.state.region}
+              region={region}
               onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
               style={styles.mapView}
               mapType={this.state.mapType.toLowerCase()}
@@ -233,45 +236,19 @@ class SearchResultMap extends Component {
               )
             }
              */}
-            <MapView.Marker coordinate={this.state.coordinate}>
+            {this.state.coordinate ? <MapView.Marker coordinate={this.state.coordinate}>
               <LocationMarker iconName={'local-info'} size={30} animation={true}/>
-            </MapView.Marker>
+            </MapView.Marker> : null}
           </MapView>
           <View style={styles.mapButtonContainer}>
-            <TouchableOpacity onPress={this._onDrawPressed.bind(this)} >
-              <View style={[styles.bubble, styles.button, {flexDirection: 'column'}]}>
-                {this.state.polygons && this.state.polygons.length > 0 ? (
-                    <RelandIcon name="close" color='black' mainProps={{flexDirection: 'row'}}
-                                size={20} textProps={{paddingLeft: 0}}
-                                noAction={true}></RelandIcon>) :
-                    (
-                      <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                        <Icon name="hand-o-up" style={styles.mapIcon} color={this.state.drawMode ? gui.mainColor : 'black'}
-                              size={20}></Icon>
-                        <Text style={[styles.drawIconText, {color: drawIconColor}]}>Vẽ tay</Text>
-                      </View>
-                    )}
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} >
-              <View style={[styles.bubble, styles.button, {marginTop: 10}]}>
-                <RelandIcon name="local-info" color='black' mainProps={{flexDirection: 'row'}}
-                            size={20} textProps={{paddingLeft: 0}}
-                            noAction={true}></RelandIcon>
-              </View>
-            </TouchableOpacity>
+            {this._renderDrawButton()}
+            {this._renderCurrentPosButton()}
           </View>
 
-          {this.props.search.autoLoadAds ? null : <View style={styles.refreshButton}>
-            <TouchableOpacity onPress={this._doRefreshListData.bind(this)} >
-              <View>
-                <RelandIcon name="refresh" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
-                            size={16} textProps={{paddingLeft: 0}}
-                            noAction={true}></RelandIcon>
-                <Text style={[styles.drawIconText, {fontSize: 6, color: gui.mainColor}]}>Refresh</Text>
-              </View>
-            </TouchableOpacity>
-          </View>}
+          {this._renderRefreshButton()}
+          {this._renderPreviousButton()}
+          {this._renderNextButton()}
+
         </View>
 
         {/*
@@ -287,7 +264,7 @@ class SearchResultMap extends Component {
         <View style={styles.tabbar}>
           <View style={styles.searchListButton}>
             <Button onPress={this._onLocalInfoPressed.bind(this)}
-                    style={styles.searchListButtonText}>Thông tin khác</Button>
+                    style={styles.searchListButtonText}>Tiện ích</Button>
             <Button onPress={this._onSaveSearchPressed}
                     style={[styles.searchListButtonText, {fontWeight : '500'}]}>Lưu tìm kiếm</Button>
             <Button onPress={this._onListPressed}
@@ -343,13 +320,133 @@ class SearchResultMap extends Component {
     )
   }
 
+  _renderNextButton() {
+    return (
+        <View style={styles.nextButton}>
+          {this.state.polygons && this.state.polygons.length > 0 ?
+              <View>
+                <RelandIcon name="next" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
+                            size={16} textProps={{paddingLeft: 0}}
+                            noAction={true}></RelandIcon>
+                <Text style={[styles.drawIconText, {fontSize: 6, color: gui.mainColor}]}>Sau</Text>
+              </View> :
+              <TouchableOpacity onPress={this._doNextPage.bind(this)} >
+                <View>
+                  <RelandIcon name="next" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
+                              size={16} textProps={{paddingLeft: 0}}
+                              noAction={true}></RelandIcon>
+                  <Text style={[styles.drawIconText, {fontSize: 6, color: gui.mainColor}]}>Sau</Text>
+                </View>
+              </TouchableOpacity>}
+        </View>
+    );
+  }
+
+  _renderPreviousButton() {
+    return (
+        <View style={styles.previousButton}>
+          {this.state.polygons && this.state.polygons.length > 0 ?
+              <View>
+                <RelandIcon name="previous" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
+                            size={16} textProps={{paddingLeft: 0}}
+                            noAction={true}></RelandIcon>
+                <Text style={[styles.drawIconText, {fontSize: 6, color: gui.mainColor}]}>Trước</Text>
+              </View> :
+              <TouchableOpacity onPress={this._doPreviousPage.bind(this)} >
+                <View>
+                  <RelandIcon name="previous" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
+                              size={16} textProps={{paddingLeft: 0}}
+                              noAction={true}></RelandIcon>
+                  <Text style={[styles.drawIconText, {fontSize: 6, color: gui.mainColor}]}>Trước</Text>
+                </View>
+              </TouchableOpacity>}
+        </View>
+    );
+  }
+
+  _renderRefreshButton() {
+    return (
+        this.props.search.autoLoadAds ? null :
+            <View style={styles.refreshButton}>
+              {this.state.polygons && this.state.polygons.length > 0 ?
+                  <View>
+                    <RelandIcon name="refresh" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
+                                size={16} textProps={{paddingLeft: 0}}
+                                noAction={true}></RelandIcon>
+                    <Text style={[styles.drawIconText, {fontSize: 6, color: gui.mainColor}]}>Refresh</Text>
+                  </View> :
+                  <TouchableOpacity onPress={this._doRefreshListData.bind(this)} >
+                    <View>
+                      <RelandIcon name="refresh" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
+                                  size={16} textProps={{paddingLeft: 0}}
+                                  noAction={true}></RelandIcon>
+                      <Text style={[styles.drawIconText, {fontSize: 6, color: gui.mainColor}]}>Refresh</Text>
+                    </View>
+                  </TouchableOpacity>}
+            </View>
+    );
+  }
+
+  _renderCurrentPosButton() {
+    return (
+        this.state.polygons && this.state.polygons.length > 0 ?
+            <View style={[styles.bubble, styles.button, {marginTop: 10}]}>
+              <RelandIcon name="local-info" color='black' mainProps={{flexDirection: 'row'}}
+                          size={20} textProps={{paddingLeft: 0}}
+                          noAction={true}></RelandIcon>
+            </View> :
+            <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} >
+              <View style={[styles.bubble, styles.button, {marginTop: 10}]}>
+                <RelandIcon name="local-info" color='black' mainProps={{flexDirection: 'row'}}
+                            size={20} textProps={{paddingLeft: 0}}
+                            noAction={true}></RelandIcon>
+              </View>
+            </TouchableOpacity>
+    );
+  }
+  _renderDrawButton() {
+    let drawIconColor = this.state.polygons && this.state.polygons.length == 0 && this.state.drawMode ? gui.mainColor : 'black';
+    return (
+        <TouchableOpacity onPress={this._onDrawPressed.bind(this)} >
+          <View style={[styles.bubble, styles.button, {flexDirection: 'column'}]}>
+            {this.state.polygons && this.state.polygons.length > 0 ? (
+                <RelandIcon name="close" color='black' mainProps={{flexDirection: 'row'}}
+                            size={13} textProps={{paddingLeft: 0}}
+                            noAction={true}></RelandIcon>) :
+                (
+                    <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                      <Icon name="hand-o-up" style={styles.mapIcon} color={this.state.drawMode ? gui.mainColor : 'black'}
+                            size={20}></Icon>
+                      <Text style={[styles.drawIconText, {color: drawIconColor}]}>Vẽ tay</Text>
+                    </View>
+                )}
+          </View>
+        </TouchableOpacity>
+    );
+  }
+
+  _doPreviousPage() {
+    if (this.state.polygons && this.state.polygons.length > 0) {
+      return;
+    }
+    this._refreshListData(this.props.search.form.fields.geoBox, [], () => {});
+  }
+
+  _doNextPage() {
+    if (this.state.polygons && this.state.polygons.length > 0) {
+      return;
+    }
+    this._refreshListData(this.props.search.form.fields.geoBox, [], () => {});
+  }
+
   _renderTotalResultView(numberOfAds, loading){
     if(loading){
       console.log("SearchResultMap_renderTotalResultView");
       console.log(this.props.search.form.fields.region);
       console.log(this.props.search.map.region);
       return (<View style={styles.resultContainer}>
-        <Animatable.View animation={this.state.showMessage ? "fadeIn" : "fadeOut"}>
+        <Animatable.View animation={this.state.showMessage ? "fadeIn" : "fadeOut"}
+                         duration={this.state.showMessage ? 500 : 1000}>
           <View style={[styles.resultText]}>
             <Text style={styles.resultIcon}>  Đang tải dữ liệu ... </Text>
           </View>
@@ -358,7 +455,8 @@ class SearchResultMap extends Component {
     }
 
     return (<View style={styles.resultContainer}>
-      <Animatable.View animation={this.state.showMessage ? "fadeIn" : "fadeOut"}>
+      <Animatable.View animation={this.state.showMessage ? "fadeIn" : "fadeOut"}
+                       duration={this.state.showMessage ? 500 : 1000}>
         <View style={[styles.resultText]}>
             <Text style={styles.resultIcon}>  {numberOfAds < MAX_VIEWABLE_ADS ? numberOfAds : MAX_VIEWABLE_ADS} / {numberOfAds} tin tìm thấy được hiển thị. Zoom bản đồ để xem thêm </Text>
         </View>
@@ -403,15 +501,18 @@ class SearchResultMap extends Component {
     this.props.actions.onSearchFieldChange("geoBox", geoBox);
 
     if (this.props.search.autoLoadAds && this.state.polygons.length <= 0){
-      this._refreshListData(geoBox, []);
+      this._refreshListData(geoBox, [], () => {});
     }
   }
 
   _doRefreshListData() {
-    this._refreshListData(this.props.search.form.fields.geoBox, []);
+    if (this.state.polygons && this.state.polygons.length > 0) {
+      return;
+    }
+    this._refreshListData(this.props.search.form.fields.geoBox, [], () => {});
   }
 
-  _refreshListData(geoBox, polygon) {
+  _refreshListData(geoBox, polygon, refreshCallback) {
     console.log("Call SearhResultMap._refreshListData");
     var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, place, huongNha, ngayDaDang} = this.props.search.form.fields;
@@ -433,9 +534,10 @@ class SearchResultMap extends Component {
 
     this.props.actions.search(
         fields
-        , () => {});
+        , refreshCallback);
     this.setState({openDetailAdsModal: false, showMessage: true});
-    setTimeout(() => this.setState({showMessage: false}), 5000);
+    clearTimeout(this.timer);
+    this.timer = setTimeout(() => this.setState({showMessage: false}), 5000);
   }
 
   _renderLocalInfoModal(){
@@ -445,7 +547,7 @@ class SearchResultMap extends Component {
       <View style={styles.modalHeader}>
         <TouchableOpacity style={{flexDirection: "row", alignItems: "flex-start",position:'absolute', left:15}}
                           onPress={this._onCloseLocalInfo.bind(this)}>
-          <RelandIcon name="close" color={gui.mainColor} noAction={true}/>
+          <RelandIcon name="close" color={gui.mainColor} size={13} noAction={true}/>
         </TouchableOpacity>
         <Text style={styles.modalHeaderText}>Local info</Text>
       </View>
@@ -499,11 +601,15 @@ class SearchResultMap extends Component {
             longitudeDelta: this.state.region.longitudeDelta
           };
 
+          this.setState({
+            region :region
+          });
+
           var geoBox = apiUtils.getBbox(region);
 
           this.props.actions.onSearchFieldChange("geoBox", geoBox);
 
-          this._refreshListData(geoBox, []);
+          this._refreshListData(geoBox, [], () => {});
 
           this.props.actions.onMapChange("region", region);
         },
@@ -643,20 +749,28 @@ class SearchResultMap extends Component {
 
     var { editing } = this.state;
     var polygons = editing ? [editing] : [];
-    this.setState({
-        openDetailAdsModal: false,
-        polygons: polygons,
-        editing: null,
-        openDraw: false,
-        drawMode: false
-    });
+
     if (polygons.length > 0) {
         var geoBox = apiUtils.getPolygonBox(polygons[0]);
         var polygon = apiUtils.convertPolygon(polygons[0]);
         this.props.actions.onSearchFieldChange("geoBox", geoBox);
         this.props.actions.onSearchFieldChange("polygon", polygon);
-        this._refreshListData(geoBox, polygon);
-
+        this._refreshListData(geoBox, polygon, () => this.setState({
+          openDetailAdsModal: false,
+          polygons: polygons,
+          editing: null,
+          openDraw: false,
+          drawMode: false,
+          region: this.getInitialRegion()
+        }));
+    } else {
+      this.setState({
+        openDetailAdsModal: false,
+        polygons: polygons,
+        editing: null,
+        openDraw: false,
+        drawMode: false
+      });
     }
   }
 
@@ -796,7 +910,37 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: gui.mainColor,
+    borderColor: '#C5C2BA',
+    width: 30,
+    height: 30,
+    backgroundColor: 'white',
+    opacity: 0.75,
+  },
+  previousButton: {
+    position: 'absolute',
+    top: height-170,
+    left: width/2-60,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#C5C2BA',
+    width: 30,
+    height: 30,
+    backgroundColor: 'white',
+    opacity: 0.75,
+  },
+  nextButton: {
+    position: 'absolute',
+    top: height-170,
+    left: width/2+30,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#C5C2BA',
     width: 30,
     height: 30,
     backgroundColor: 'white',
@@ -818,7 +962,7 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
-    opacity: 0.75
+    opacity: 0.85
   },
 
   tabbar: {
@@ -832,6 +976,8 @@ var styles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-around',
       backgroundColor: 'white',
+      borderTopWidth: 1,
+      borderColor : 'lightgray'
   },
   sumBds: {
     marginBottom: 10,

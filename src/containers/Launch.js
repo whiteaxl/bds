@@ -7,7 +7,8 @@ import {
   Text,
   View,
   Image,
-  TouchableHighlight
+  TouchableHighlight,
+  Dimensions
 } from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
@@ -22,6 +23,8 @@ import * as authActions from '../reducers/auth/authActions';
 import {Map} from 'immutable';
 
 import IntroSwiper from '../components/IntroSwiper';
+
+import gui from '../lib/gui';
 
 const actions = [
   globalActions,
@@ -66,23 +69,27 @@ class Launch extends React.Component {
         Actions.LoginRegister();
     }
 
+  componentDidMount() {
+    setTimeout(this.enterApp.bind(this), 3000);
+  }
+
   render() {
 		return (
 			<View style={styles.container}>
 				<View style={styles.swiper}>
 		      <IntroSwiper />
 				</View>
-				<View style={styles.buttonControl} >
+              {/*<View style={styles.buttonControl} >
           <TouchableHighlight style={styles.batDauBtn}
               onPress={this.enterApp.bind(this)}>
             <Text style={styles.batDauText}> BẮT ĐẦU </Text>
           </TouchableHighlight>
 
-          <Text style={styles.termLine}>
+                  <Text style={styles.termLine}>
             Bằng việc đăng ký, bạn đồng ý với
             <Text style={{color: 'lightblue'}}> Điều Khoản Dịch Vụ </Text>
             </Text>
-         </View>
+         </View>*/}
 			</View>
 		);
 	}
@@ -104,13 +111,13 @@ var styles = StyleSheet.create({
   	alignItems : 'center',
     //position: 'absolute',
     padding: 15,
-    bottom: 35
+    bottom: 70
   },
 
   batDauBtn : {
-    width: 240,
-    height: 50,
-    backgroundColor: 'red',//gui.mainColor,
+    width: Dimensions.get('window').width-130,
+    height: 30,
+    backgroundColor: gui.mainColor,
     borderRadius : 5,
     alignItems: 'center',
     justifyContent : 'center'

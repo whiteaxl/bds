@@ -163,7 +163,7 @@ class SearchResultDetail extends Component {
         <View style={this.state.headerColor != 'transparent' ? detailStyles.headerContainer : {}}>
           <LinearGradient colors={['rgba(0, 0, 0, 0.9)', 'transparent']}
                           style={detailStyles.linearGradient}>
-            <Text style={{height: 60}}></Text>
+            <Text style={{height: 64}}></Text>
             <View style={[detailStyles.customPageHeader, {backgroundColor: this.state.headerColor}]}>
               <TruliaIcon onPress={this._onBack.bind(this)}
                           name="arrow-left" color={this.state.backButtonColor}
@@ -388,7 +388,7 @@ class SearchResultDetail extends Component {
                 {this.renderTwoNormalProps(loaiTin, loaiNhaDat, {marginTop: 11}, {marginTop: 4, marginBottom: 4})}
                 {this.renderTwoNormalProps(dienTich, soPhongNgu, {marginTop: 12}, {marginTop: 4, marginBottom: 4})}
                 {this.renderTwoNormalProps(soPhongTam, soNgayDaDangTin, {marginTop: 11}, {marginTop: 4, marginBottom: 4})}
-                <View style={[detailStyles.lineBorder, {marginTop: 4, marginBottom: 8}]} />
+                <View style={[detailStyles.lineBorder2, {marginTop: 4, marginBottom: 8}]} />
                 <View style={detailStyles.chiTietText}>
                   <Text style={[detailStyles.textTitle, {marginLeft: 0, marginBottom: 16}]}>Chi Tiết</Text>
                   <SummaryText longText={chiTiet}
@@ -398,34 +398,10 @@ class SearchResultDetail extends Component {
                 {this._renderDanDuong()}
                 {this._renderStreetView()}
                 <View style={detailStyles.lineBorder2} />
-                <CollapsiblePanel title="Đặc Điểm" mainProps={{marginTop: 8, marginBottom: 8}}
-                    collapseProps={{marginTop: 15, marginBottom: 15}}
-                                  expanded={true}>
-                  {this.renderTitleProps("Loại tin rao", loaiNhaDat, {marginTop: 3, marginBottom: 2.2})}
-                  {this.renderTitleProps("Giá", gia, {marginTop: 3, marginBottom: 2.2})}
-                  {this.renderTitleProps("Giá/m²", giaM2, {marginTop: 3, marginBottom: 2.2})}
-                  {this.renderTitleProps("Số phòng ngủ", soPhongNguVal, {marginTop: 3, marginBottom: 2.2})}
-                  {this.renderTitleProps("Số phòng tắm", soPhongTamVal, {marginTop: 3, marginBottom: 2.2})}
-                  {this.renderTitleProps("Diện tích", dienTich, {marginTop: 3, marginBottom: 2.2})}
-                  {this.renderTitleProps("Hướng nhà", huongNha, {marginTop: 3, marginBottom: 2.2})}
-                  {this.renderTitleProps("Thuộc dự án", duAn, {marginTop: 3, marginBottom: 2.2})}
-                  {this.renderTitleProps("Ngày đăng tin", ngayDangTin, {marginTop: 3, marginBottom: 2.2})}
-                  {/*this.renderTitleProps("Lượt xem", luotXem, {marginTop: 3, marginBottom: 2.2})*/}
-                  {this.renderTitleProps("Địa chỉ", diaChi, {marginTop: 3, marginBottom: 2.2})}
-                  <View style={detailStyles.viTriTitle}>
-                    <Text style={detailStyles.viTriText}>
-                      Vị Trí
-                    </Text>
-                  </View>
-                  <View style={detailStyles.searchMapView}>
-                    <TouchableHighlight onPress={() => this._onMapPressed()}
-                      style={detailStyles.mapViewButton}>
-                      <Image style={detailStyles.imgMapView}
-                         source={{uri: `${mapUrl}`}}>
-                      </Image>
-                    </TouchableHighlight>
-                  </View>
-                </CollapsiblePanel>
+                {this._renderDacDiem(loaiNhaDat, gia, giaM2, soPhongNguVal, soPhongTamVal, dienTich,
+                    huongNha, duAn, ngayDangTin, luotXem, diaChi)}
+                <View style={detailStyles.lineBorder2} />
+                {this._renderViTri(mapUrl)}
                 <View style={detailStyles.lineBorder2} />
                 {this._renderShareButtons(mobile, email)}
                 <View style={detailStyles.lineBorder2} />
@@ -468,42 +444,84 @@ class SearchResultDetail extends Component {
 		)
 	}
 
+  _renderDacDiem(loaiNhaDat, gia, giaM2, soPhongNguVal, soPhongTamVal, dienTich, huongNha, duAn, ngayDangTin, luotXem, diaChi) {
+    return (
+        <CollapsiblePanel title="Đặc Điểm" mainProps={{marginTop: 8, marginBottom: 8}}
+                          collapseProps={{marginTop: 15, marginBottom: 15}}
+                          expanded={true}>
+          {this.renderTitleProps("Loại tin rao", loaiNhaDat, {marginTop: 3, marginBottom: 2.2})}
+          {this.renderTitleProps("Giá", gia, {marginTop: 3, marginBottom: 2.2})}
+          {this.renderTitleProps("Giá/m²", giaM2, {marginTop: 3, marginBottom: 2.2})}
+          {this.renderTitleProps("Số phòng ngủ", soPhongNguVal, {marginTop: 3, marginBottom: 2.2})}
+          {this.renderTitleProps("Số phòng tắm", soPhongTamVal, {marginTop: 3, marginBottom: 2.2})}
+          {this.renderTitleProps("Diện tích", dienTich, {marginTop: 3, marginBottom: 2.2})}
+          {this.renderTitleProps("Hướng nhà", huongNha, {marginTop: 3, marginBottom: 2.2})}
+          {this.renderTitleProps("Thuộc dự án", duAn, {marginTop: 3, marginBottom: 2.2})}
+          {this.renderTitleProps("Ngày đăng tin", ngayDangTin, {marginTop: 3, marginBottom: 2.2})}
+          {/*this.renderTitleProps("Lượt xem", luotXem, {marginTop: 3, marginBottom: 2.2})*/}
+          {this.renderTitleProps("Địa chỉ", diaChi, {marginTop: 3, marginBottom: 2.2})}
+          <Text style={{fontSize: 5}} />
+        </CollapsiblePanel>
+    );
+  }
+
+  _renderViTri(mapUrl) {
+    return (
+        <CollapsiblePanel title="Vị Trí" mainProps={{marginTop: 8}}
+                          collapseProps={{marginTop: 15, marginBottom: 15}}
+                          expanded={true}>
+          <TouchableHighlight onPress={() => this._onMapPressed()}
+              style={detailStyles.mapViewButton}>
+            <Image style={detailStyles.imgMapView}
+              source={{uri: `${mapUrl}`}}>
+            </Image>
+          </TouchableHighlight>
+          <Text style={{fontSize: 5}} />
+        </CollapsiblePanel>
+    );
+  }
+
   _onAddContact(dangBoi, mobile, email) {
 
   }
 
   _renderShareButtons(mobile, email) {
     return (
-      <View style={detailStyles.shareMainView}>
-        <View style={detailStyles.shareLeft}>
-          <View style={[detailStyles.circleContainer, {backgroundColor: '#1DB423'}]} >
-            <RelandIcon onPress={() => this._onSms(mobile)}
-                        name="sms" color={'white'}
-                        size={26} iconProps={{style: detailStyles.shareIcon}}>
-            </RelandIcon>
+      <CollapsiblePanel title="Chia Sẻ" mainProps={{marginTop: 8, marginBottom: 8}}
+                        collapseProps={{marginTop: 15, marginBottom: 15}}
+                        expanded={true}>
+        <View style={detailStyles.shareMainView}>
+          <View style={detailStyles.shareLeft}>
+            <View style={[detailStyles.circleContainer, {backgroundColor: '#1DB423'}]} >
+              <RelandIcon onPress={() => this._onSms(mobile)}
+                          name="sms" color={'white'}
+                          size={26} iconProps={{style: detailStyles.shareIcon}}>
+              </RelandIcon>
+            </View>
+            <View style={[detailStyles.circleContainer, {backgroundColor: '#CE0005'}]} >
+              <RelandIcon onPress={() => this._onEmail(email)}
+                          name="email" color={'white'}
+                          size={26} iconProps={{style: detailStyles.shareIcon}}>
+              </RelandIcon>
+            </View>
+            <View style={[detailStyles.circleContainer, {backgroundColor: '#A6A6A6'}]} >
+              <RelandIcon onPress={this._onShare.bind(this)}
+                          name="copy-link" color={'white'}
+                          size={26} iconProps={{style: detailStyles.shareIcon}}>
+              </RelandIcon>
+            </View>
           </View>
-          <View style={[detailStyles.circleContainer, {backgroundColor: '#CE0005'}]} >
-            <RelandIcon onPress={() => this._onEmail(email)}
-                        name="email" color={'white'}
-                        size={26} iconProps={{style: detailStyles.shareIcon}}>
-            </RelandIcon>
-          </View>
-          <View style={[detailStyles.circleContainer, {backgroundColor: '#A6A6A6'}]} >
-            <RelandIcon onPress={this._onShare.bind(this)}
-                        name="copy-link" color={'white'}
-                        size={26} iconProps={{style: detailStyles.shareIcon}}>
-            </RelandIcon>
+          <View style={detailStyles.shareRight}>
+            <View style={[detailStyles.circleContainer, {marginRight: 0}]} >
+              <RelandIcon onPress={this._onShare.bind(this)}
+                          name="share-o" color={'white'}
+                          size={26} iconProps={{style: detailStyles.shareIcon}}>
+              </RelandIcon>
+            </View>
           </View>
         </View>
-        <View style={detailStyles.shareRight}>
-          <View style={[detailStyles.circleContainer, {marginRight: 0}]} >
-            <RelandIcon onPress={this._onShare.bind(this)}
-                        name="share-o" color={'white'}
-                        size={26} iconProps={{style: detailStyles.shareIcon}}>
-            </RelandIcon>
-          </View>
-        </View>
-      </View>
+        <Text style={{fontSize: 5}} />
+      </CollapsiblePanel>
     );
   }
 
@@ -526,8 +544,8 @@ class SearchResultDetail extends Component {
   _renderDanDuong() {
     return (
         <TouchableHighlight onPress={() => this._onDanDuongPressed()} underlayColor="transparent" >
-          <View style={detailStyles.lineBorder}>
-            <View style={[detailStyles.danDuongView, {marginLeft: 0, marginRight: 6.5}]}>
+          <View style={detailStyles.lineBorder2}>
+            <View style={[detailStyles.danDuongView, {marginLeft: 20, marginRight: 29}]}>
               <View style={detailStyles.danDuongLeftView}>
                 <TruliaIcon name={"car"} size={20} color={gui.mainColor} text={"Dẫn đường"}
                             textProps={detailStyles.danDuongText} onPress={() => this._onDanDuongPressed()}/>
@@ -544,8 +562,8 @@ class SearchResultDetail extends Component {
   _renderStreetView() {
     return (
         <TouchableHighlight onPress={() => this._onStreetViewPressed()} underlayColor="transparent" >
-          <View style={detailStyles.lineBorder}>
-            <View style={[detailStyles.danDuongView, {marginLeft: 0, marginRight: 6.5}]}>
+          <View style={detailStyles.lineBorder2}>
+            <View style={[detailStyles.danDuongView, {marginLeft: 20, marginRight: 29}]}>
               <View style={detailStyles.danDuongLeftView}>
                 <RelandIcon name={"street-view"} size={20} color={gui.mainColor} text={"Street view"}
                             mainProps={{flexDirection: 'row'}}
@@ -897,7 +915,8 @@ var detailStyles = StyleSheet.create({
   pagingView: {
     flexDirection: 'row',
     backgroundColor: 'white',
-    borderRadius: 5
+    borderRadius: 5,
+    opacity: 0.75
   },
   moiGioiStar: {
     marginRight: 5
@@ -1080,10 +1099,10 @@ var detailStyles = StyleSheet.create({
   },
   shareMainView: {
       flexDirection: 'row',
-      marginTop: 0,
-      marginBottom: 0,
-      marginLeft: 20,
-      marginRight: 20
+      // marginTop: 0,
+      // marginBottom: 0,
+      // marginLeft: 20,
+      // marginRight: 20
   },
   headerContainer: {
     borderBottomColor: '#D7D7D7',
@@ -1099,7 +1118,7 @@ var detailStyles = StyleSheet.create({
       justifyContent: 'space-between',
       // backgroundColor: gui.mainColor,
       // opacity: 0.55,
-      height: 60
+      height: 64
   },
 	search: {
       marginLeft: 20,
@@ -1175,8 +1194,8 @@ var detailStyles = StyleSheet.create({
   mapViewButton: {
     backgroundColor: 'transparent',
     width: mapWidth,
-    marginLeft: 20,
-    marginRight: 20
+    // marginLeft: 20,
+    // marginRight: 20
   },
   slideItem: {
     flex: 1, justifyContent: 'flex-start', alignItems: 'stretch',
