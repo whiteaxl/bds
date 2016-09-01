@@ -26,7 +26,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import PhotoView from 'react-native-photo-view';
 
-import SearchResultDetailFooter from './SearchResultDetailFooter';
+import SearchResultDetailFooter from './detail/SearchResultDetailFooter';
 
 var {
     height: deviceHeight,

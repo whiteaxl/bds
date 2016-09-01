@@ -349,7 +349,7 @@ class SearchResultMap extends Component {
       console.log(this.props.search.form.fields.region);
       console.log(this.props.search.map.region);
       return (<View style={styles.resultContainer}>
-        <Animatable.View animation={this.state.showMessage ? "fadeInDown" : "fadeOutUp"}>
+        <Animatable.View animation={this.state.showMessage ? "fadeIn" : "fadeOut"}>
           <View style={[styles.resultText]}>
             <Text style={styles.resultIcon}>  Đang tải dữ liệu ... </Text>
           </View>
@@ -358,7 +358,7 @@ class SearchResultMap extends Component {
     }
 
     return (<View style={styles.resultContainer}>
-      <Animatable.View animation={this.state.showMessage ? "fadeInDown" : "fadeOutUp"}>
+      <Animatable.View animation={this.state.showMessage ? "fadeIn" : "fadeOut"}>
         <View style={[styles.resultText]}>
             <Text style={styles.resultIcon}>  {numberOfAds < MAX_VIEWABLE_ADS ? numberOfAds : MAX_VIEWABLE_ADS} / {numberOfAds} tin tìm thấy được hiển thị. Zoom bản đồ để xem thêm </Text>
         </View>

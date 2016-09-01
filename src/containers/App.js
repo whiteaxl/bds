@@ -32,6 +32,7 @@ import RegisterMoreInfor from '../components/login/RegisterMoreInfor';
 import Me from './Me';
 import AdsMgmt from './AdsMgmt';
 import UpgradePackgeSelector from '../components/adsMgmt/UpgradePackgeSelector';
+import AdsAlertUs from '../components/detail/AdsAlertUs';
 
 import PackageUpdater from '../components/adsMgmt/PackageUpdater';
 import PackageTypes from '../components/adsMgmt/PackageTypes';
@@ -130,6 +131,7 @@ class App extends React.Component {
           <Scene key='SearchResultList' component={SearchResultList} title="Danh sách" hideNavBar={true}/>
           <Scene key='SearchResultMap' component={SearchResultMap} title="Bản đồ" hideNavBar={true}/>
           <Scene key='PropertyTypes' component={PropertyTypes} title="Loại nhà đất" hideNavBar={true}/>
+          <Scene key='AdsAlertUs' component={AdsAlertUs} title="Thông báo cho chúng tôi" hideNavBar={true}/>
 
           <Scene key='HuongNha' component={HuongNha} title="Hướng nhà" hideNavBar={true}/>
           <Scene key='SquareImageCropper' component={SquareImageCropper} title="Image Cropper" hideNavBar={true}/>

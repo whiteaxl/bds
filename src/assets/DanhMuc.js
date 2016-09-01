@@ -198,6 +198,24 @@ danhMuc.DonViTienKey = [
     5
 ];
 
+danhMuc.AdsAlertUs = {
+    1: "Thông tin vị trí không chính xác",
+    2: "Hình ảnh không phù hợp",
+    3: "Tin bài sao chép",
+    4: "Nội dung thông tin không có thật",
+    5: "Nhà đã được bán",
+    6: "Khác"
+};
+
+danhMuc.AdsAlertUsKey = [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+];
+
 danhMuc.goiTin = [
     "1",
     "7",
@@ -260,6 +278,10 @@ danhMuc.getHuongNhaValues = function () {
 
 danhMuc.getDonViTienValues = function () {
     return danhMuc.getDanhMucValues(danhMuc.DonViTien);
+}
+
+danhMuc.getAdsAlertUsValues = function () {
+    return danhMuc.getDanhMucValues(danhMuc.AdsAlertUs);
 }
 
 danhMuc.getRadiusInKmValues = function () {

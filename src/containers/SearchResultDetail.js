@@ -19,7 +19,7 @@ import {Actions} from 'react-native-router-flux';
 
 import DanhMuc from '../assets/DanhMuc';
 
-import SearchResultDetailFooter from '../components/SearchResultDetailFooter';
+import SearchResultDetailFooter from '../components/detail/SearchResultDetailFooter';
 import CommonHeader from '../components/CommonHeader';
 
 import Swiper from 'react-native-swiper';
@@ -178,7 +178,7 @@ class SearchResultDetail extends Component {
                  <MHeartIcon onPress={this._onShare.bind(this)} color={this.state.headerButtonColor}
                  bgColor={this.state.heartBgColor} size={22} />
                  </View>*/}
-                <RelandIcon onPress={this._onShare.bind(this)}
+                <RelandIcon onPress={this._onAdsAlertUs.bind(this)}
                             name="alert" color={this.state.headerButtonColor}
                             iconProps={{style: [detailStyles.shareButton, {paddingRight: 26, marginTop: 30}]}} size={25} >
                 </RelandIcon>
@@ -505,6 +505,10 @@ class SearchResultDetail extends Component {
         </View>
       </View>
     );
+  }
+
+  _onAdsAlertUs() {
+    Actions.AdsAlertUs();
   }
 
   _renderLienHe(dangBoi, mobile, email) {

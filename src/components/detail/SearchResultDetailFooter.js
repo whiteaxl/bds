@@ -3,11 +3,11 @@ import React, {Component} from 'react';
 
 import {View, Text, StyleSheet, Dimensions, AlertIOS } from 'react-native';
 
-import TruliaIcon from './TruliaIcon';
+import TruliaIcon from './../TruliaIcon';
 
-import RelandIcon from './RelandIcon';
+import RelandIcon from './../RelandIcon';
 
-import gui from '../lib/gui';
+import gui from '../../lib/gui';
 
 import Communications from 'react-native-communications';
 

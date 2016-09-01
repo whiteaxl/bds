@@ -47,7 +47,8 @@ const SearchForm = Record({
         huongNha: '',
         ngayDaDang: 0, //batky
         polygon: [],
-        region : {}
+        region : {},
+        alertUs: ''
     }))
 
 });
