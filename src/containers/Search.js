@@ -167,21 +167,9 @@ class Search extends Component {
                 </Text>
               </View>
 
-              <TouchableOpacity style={myStyles.searchFilterAttribute3}
-                onPress={this._onPressGiaHandle.bind(this)}>
-                <Text style={myStyles.searchAttributeLabel}>
-                  Mức giá
-                </Text>
-
-                <View style={{flexDirection: "row", alignItems: "flex-end"}}>
-                  <Text style={myStyles.searchAttributeValue}> {this._getGiaValue()} </Text>
-                  <TruliaIcon name="arrow-down" color={gui.arrowColor} size={18} />
-                </View>
-              </TouchableOpacity>
-
               <TouchableOpacity
                 onPress={this._onPropertyTypesPressed}>
-                <View style={myStyles.searchFilterAttributeExt}>
+                <View style={myStyles.searchFilterAttributeExt3}>
                   <Text style={myStyles.searchAttributeLabel}>
                   Loại nhà đất
                   </Text>
@@ -192,6 +180,18 @@ class Search extends Component {
                 </View>
               </TouchableOpacity>
 
+                <TouchableOpacity style={myStyles.searchFilterAttribute}
+                                  onPress={this._onPressDienTichHandle.bind(this)}>
+                    <Text style={myStyles.searchAttributeLabel}>
+                        Diện tích
+                    </Text>
+
+                    <View style={{flexDirection: "row", alignItems: "flex-end"}}>
+                        <Text style={myStyles.searchAttributeValue}>{this._getDienTichValue()} </Text>
+                        <TruliaIcon name="arrow-down" color={gui.arrowColor} size={18} />
+                    </View>
+                </TouchableOpacity>
+
               {this._renderSoPhongNgu()}
 
               {this._renderSoTang()}
@@ -200,20 +200,21 @@ class Search extends Component {
 
               {this._renderBanKinhTimKiem()}
 
-              <TouchableOpacity style={myStyles.searchFilterAttribute}
-                  onPress={this._onPressDienTichHandle.bind(this)}>
-                <Text style={myStyles.searchAttributeLabel}>
-                  Diện tích
-                </Text>
+                <TouchableOpacity style={myStyles.searchFilterAttribute}
+                                  onPress={this._onPressGiaHandle.bind(this)}>
+                    <Text style={myStyles.searchAttributeLabel}>
+                        Mức giá
+                    </Text>
 
-                <View style={{flexDirection: "row", alignItems: "flex-end"}}>
-                  <Text style={myStyles.searchAttributeValue}>{this._getDienTichValue()} </Text>
-                  <TruliaIcon name="arrow-down" color={gui.arrowColor} size={18} />
-                </View>
-              </TouchableOpacity>
+                    <View style={{flexDirection: "row", alignItems: "flex-end"}}>
+                        <Text style={myStyles.searchAttributeValue}> {this._getGiaValue()} </Text>
+                        <TruliaIcon name="arrow-down" color={gui.arrowColor} size={18} />
+                    </View>
+                </TouchableOpacity>
+
               </View>
 
-              <View style={myStyles.searchMoreFilterButton}>
+              <View style={[myStyles.searchMoreFilterButton, {marginTop: 7}]}>
                 <View style={[myStyles.searchMoreFilterAttribute, myStyles.searchMoreSeparator]}>
                   <Text />
                 </View>
