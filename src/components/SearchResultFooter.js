@@ -68,7 +68,7 @@ var SearchResultFooter = React.createClass({
 
   _onMap() {
     console.log("On Map pressed!");
-    Actions.SearchResultMap({type: "reset"});
+    Actions.SearchResultMap({type: "reset", viewport: this.props.place.viewport});
     console.log("On Map pressed completed");
   }
 });

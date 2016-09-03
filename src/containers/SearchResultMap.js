@@ -112,7 +112,7 @@ class SearchResultMap extends Component {
   }
 
   componentDidMount() {
-    this._refreshListData(this.props.search.form.fields.geoBox, [], () => {});
+    //this._refreshListData(this.props.search.form.fields.geoBox, [], () => {});
   }
 
   componentWillUnmount() {
@@ -137,7 +137,7 @@ class SearchResultMap extends Component {
     console.log("Call SearchResultMap.constructor");
     super(props);
 
-    var region = this.getInitialRegion();
+    var region = this.props.search.form.fields.region;  //always in reset mode, so this method will be called every time...
 
     this.state = {
       modal: false,
@@ -165,6 +165,28 @@ class SearchResultMap extends Component {
     }
     return region;
   }
+  _getHeaderTitle() {
+      let place = this.props.search.form.fields.place;
+
+      //1. Search by diaChinh, then name = diaChinh's name
+      if (place.placeId) {
+          return place.fullName;
+      }
+
+      let placeName;
+      let r = this.state.region;
+      //2. Search by Polygon: name is just center
+      if (this.state.polygons && this.state.polygons.length) {
+          //placeName = `[${r.latitude}, ${r.longitude}]`
+          placeName = 'Tìm theo Vẽ tay'
+      } else { //others: banKinh or currentLocation
+          //let geoBox = apiUtils.getBbox(r);
+          //placeName = geoBox.toString()
+          placeName = 'Tìm tất cả theo khung nhìn'
+      }
+
+      return placeName;
+  }
   render() {
     console.log("Call SearchResultMap.render, this.state.region=", this.state.region);
 
@@ -184,11 +206,14 @@ class SearchResultMap extends Component {
 
     var region = this.getInitialRegion();
 
+      //placeName = this.props.placeFullName
+      let placeName = this._getHeaderTitle();
+
     return (
       <View style={styles.fullWidthContainer}>
 
         <View style={styles.search}>
-          <SearchHeader placeName={this.props.placeFullName} containerForm="SearchResultMap"/>
+          <SearchHeader placeName={placeName} containerForm="SearchResultMap"/>
         </View>
 
         <View style={styles.map}>
@@ -290,7 +315,7 @@ class SearchResultMap extends Component {
           </View>
         </View>
 
-        <Modal style={styles.adsModal} isOpen={this.state.openDetailAdsModal} position={"bottom"}
+        <Modal animationDuration={100} style={styles.adsModal} isOpen={this.state.openDetailAdsModal} position={"bottom"}
                ref={"detailAdsModal"} isDisabled={false} onPress={this._onDetailAdsPress.bind(this)}>
           <View style={styles.detailAdsModal}>
           <TouchableOpacity onPress={this._onDetailAdsPress.bind(this)}>
@@ -634,6 +659,10 @@ class SearchResultMap extends Component {
 
           this.props.actions.onSearchFieldChange("geoBox", geoBox);
 
+          let place = this.props.search.form.fields.place;
+          place.placeId = null;
+
+          this.props.actions.onSearchFieldChange("place", place);
           this.props.actions.onSearchFieldChange("pageNo", 1);
           this._refreshListData(geoBox, [], () => {}, 1);
 
@@ -696,7 +725,7 @@ class SearchResultMap extends Component {
     console.log("Call SearchResultMap._onMarkerPress");
     console.log(marker.id);
     console.log(this.state.markedList);
-    var markedList = this.state.markedList
+    var markedList = this.state.markedList;
 
     markedList.push(marker.id);
 

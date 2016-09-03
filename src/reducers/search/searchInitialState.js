@@ -50,11 +50,11 @@ const SearchForm = Record({
           viewport: {
             "northeast": {
               "lat": 21.385027,
-              "lng": 106.0198859
+              "lon": 106.0198859
             },
             "southwest": {
               "lat": 20.562323,
-              "lng": 105.2854659
+              "lon": 105.2854659
             }
           },
           currentLocation : ''

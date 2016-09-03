@@ -5,6 +5,7 @@ import RangeUtils from "../lib/RangeUtils"
 
 import DanhMuc from "../assets/DanhMuc"
 import cfg from "../cfg";
+import cancelablFetch from 'react-native-cancelable-fetch'
 
 var rootUrl = `http://${cfg.server}:5000/api`;
 var findUrl = rootUrl + "/find";
@@ -14,9 +15,12 @@ var homeData4AppUrl = rootUrl + "/homeData4App";
 var countUrl = rootUrl + "/count";
 
 
+
 var maxRows = 200;
 
 var Api = {
+  _requests : [],
+  _requestCnt : 0,
 
   convertFieldsToQueryParams : function(fields){
     var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
@@ -86,16 +90,28 @@ var Api = {
     return JSON.stringify(tmp);
   },
 
+    _abortRequest: function() {
+        for (let i = 0; i < this._requests.length; i++) {
+            cancelablFetch.abort(this._requests[i]);
+        }
+        this._requests = [];
+    },
+
   getItems: function(params) {
     console.log(findUrl + "?" + JSON.stringify(params));
-    return fetch(`${findUrl}`, {
+
+    this._abortRequest();
+
+    this._requests.push(++this._requestCnt);
+
+    return cancelablFetch(findUrl, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(params)
-    })
+    }, this._requestCnt)
     .then(ApiUtils.checkStatus)
     .then(response => response.json())
     .catch(e => {
