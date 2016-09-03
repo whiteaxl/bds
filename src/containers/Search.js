@@ -282,12 +282,32 @@ class Search extends Component {
     this.props.actions.onResetCountResult();
     this.props.actions.onShowMsgChange(true);
 
-    setTimeout(this._handleSearchAction.bind(this), 10);
+    this._handleSearchAction([], '', 1, gui.MAX_ITEM);
  }
 
- _handleSearchAction(){
+ _handleSearchAction(newGeoBox, newOrderBy, newPageNo, newLimit){
+     var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
+         radiusInKmSelectedIdx, dienTich, orderBy, geoBox, place, huongNha, ngayDaDang, polygon, pageNo, limit} = this.props.search.form.fields;
+     var fields = {
+         loaiTin: loaiTin,
+         loaiNhaDat: loaiNhaDat,
+         soPhongNguSelectedIdx: soPhongNguSelectedIdx,
+         soTangSelectedIdx: soTangSelectedIdx,
+         soNhaTamSelectedIdx : soNhaTamSelectedIdx,
+         dienTich: dienTich,
+         gia: gia,
+         orderBy: newOrderBy || orderBy,
+         geoBox: newGeoBox || geoBox,
+         place: place,
+         radiusInKmSelectedIdx: radiusInKmSelectedIdx,
+         huongNha: huongNha,
+         ngayDaDang: ngayDaDang,
+         polygon: polygon,
+         pageNo: newPageNo || pageNo,
+         limit: newLimit || limit};
+
      this.props.actions.search(
-         this.props.search.form.fields
+         fields
          , () => {});
 
  }

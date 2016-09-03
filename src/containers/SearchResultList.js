@@ -78,8 +78,18 @@ class SearchResultList extends Component {
         };
     }
 
+    componentWillMount() {
+        this.state.messageDone = false;
+        this.props.actions.onShowMsgChange(true);
+    }
+
     componentWillUnmount() {
         clearTimeout(this.timer);
+    }
+
+    _onHideMessage() {
+        this.props.actions.onShowMsgChange(false);
+        this.state.messageDone = false;
     }
 
     render() {
@@ -87,10 +97,8 @@ class SearchResultList extends Component {
         //log.info(this.props);
         if (this.props.showMessage && !this.state.messageDone) {
             this.state.messageDone = true;
-            if (this.timer) {
-                clearTimeout(this.timer);
-            }
-            this.timer = setTimeout(() => {this.state.messageDone = false; this.props.actions.onShowMsgChange(false)}, 5000);
+            clearTimeout(this.timer);
+            this.timer = setTimeout(() => {this._onHideMessage()}, 5000);
         }
         return (
             <MenuContext style={{ flex : 1 }}>

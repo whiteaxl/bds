@@ -98,6 +98,7 @@ class SearchResultMap extends Component {
   _previousTop = 0
 
   componentWillMount() {
+    this.state.showMessage = true;
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder.bind(this),
       onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder.bind(this),
@@ -469,7 +470,7 @@ class SearchResultMap extends Component {
     }
     let pageNo = this.props.search.form.fields.pageNo;
 
-    let totalPages = this.props.countResult/ this.props.search.form.fields.limit;
+    let totalPages = this.props.search.countResult/ this.props.search.form.fields.limit;
 
     if (pageNo >= totalPages) {
       return;

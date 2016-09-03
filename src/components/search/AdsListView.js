@@ -54,11 +54,11 @@ class AdsListView extends React.Component {
         stickyHeaderIndices={[]}
         initialListSize={1}
         onEndReachedThreshold={1}
-        onEndReached={this._onEndReached.bind(this)}
+        // onEndReached={this._onEndReached.bind(this)}
         scrollRenderAheadDistance={3}
         pageSize={5}
-        onScroll={this.handleScroll.bind(this)}
-        scrollEventThrottle={200}
+        // onScroll={this.handleScroll.bind(this)}
+        // scrollEventThrottle={200}
         //renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
         style={styles.searchListView}
       />
@@ -80,13 +80,33 @@ class AdsListView extends React.Component {
       this.state.pageNo = pageNo+1;
       myProps.actions.onSearchFieldChange("pageNo", this.state.pageNo);
       myProps.actions.onShowMsgChange(true);
-      setTimeout(this._handleSearchAction.bind(this), 10);
+      this._handleSearchAction(this.state.pageNo);
     }
   }
 
-  _handleSearchAction(){
+  _handleSearchAction(newPageNo){
+    var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
+        radiusInKmSelectedIdx, dienTich, orderBy, geoBox, place, huongNha, ngayDaDang, polygon, pageNo, limit} = this.props.fields;
+    var fields = {
+      loaiTin: loaiTin,
+      loaiNhaDat: loaiNhaDat,
+      soPhongNguSelectedIdx: soPhongNguSelectedIdx,
+      soTangSelectedIdx: soTangSelectedIdx,
+      soNhaTamSelectedIdx : soNhaTamSelectedIdx,
+      dienTich: dienTich,
+      gia: gia,
+      orderBy: orderBy,
+      geoBox: geoBox,
+      place: place,
+      radiusInKmSelectedIdx: radiusInKmSelectedIdx,
+      huongNha: huongNha,
+      ngayDaDang: ngayDaDang,
+      polygon: polygon,
+      pageNo: newPageNo || pageNo,
+      limit: limit};
+
     this.props.actions.search(
-        this.props.fields
+        fields
         , () => {});
   }
 
@@ -104,7 +124,7 @@ class AdsListView extends React.Component {
         this.state.pageNo = pageNo-1;
         myProps.actions.onSearchFieldChange("pageNo", this.state.pageNo);
         myProps.actions.onShowMsgChange(true);
-        setTimeout(this._handleSearchAction.bind(this), 10);
+        this._handleSearchAction(this.state.pageNo);
       }
     }
   }
