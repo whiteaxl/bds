@@ -65,7 +65,9 @@ const SearchForm = Record({
         ngayDaDang: 0, //batky
         polygon: [],
         region : {},
-        alertUs: ''
+        alertUs: '',
+        limit: 25,
+        pageNo: 1
     }))
 
 });
@@ -79,6 +81,7 @@ var InitialState = Record({
 
     form: new SearchForm,
     loadingFromServer : false,
+    countingFromServer: false,
     map : new (Record({
         type: "Standard",
         region: {latitude: 20.95389909999999,
@@ -123,6 +126,8 @@ var InitialState = Record({
     homeDataErrorMsg : "",
     autoLoadAds : true,
     //shared
-    searchCalledFrom : "Search"
+    searchCalledFrom : "Search",
+    countResult: 0,
+    showMessage: true
 });
 export default InitialState;

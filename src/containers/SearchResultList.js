@@ -31,6 +31,8 @@ import findApi from '../lib/FindApi';
 
 import AdsListView from '../components/search/AdsListView';
 
+import * as Animatable from 'react-native-animatable';
+
 
 const actions = [
   globalActions,
@@ -44,11 +46,14 @@ function mapStateToProps(state) {
     return {
         listAds: state.search.result.listAds,
         loading: state.search.loadingFromServer,
+        counting: state.search.countingFromServer,
         errorMsg: state.search.result.errorMsg,
         adsLikes: currentUser && currentUser.adsLikes,
         loggedIn: state.global.loggedIn,
         userID: currentUser && currentUser.userID,
-        fields : state.search.form.fields
+        fields : state.search.form.fields,
+        showMessage: state.search.showMessage,
+        countResult: state.search.countResult
     };
 }
 
@@ -68,11 +73,25 @@ class SearchResultList extends Component {
     constructor(props) {
         super(props);
         StatusBar.setBarStyle('light-content');
+        this.state = {
+            messageDone: false
+        };
+    }
+
+    componentWillUnmount() {
+        clearTimeout(this.timer);
     }
 
     render() {
         log.info("Call SearchResultList render");
         //log.info(this.props);
+        if (this.props.showMessage && !this.state.messageDone) {
+            this.state.messageDone = true;
+            if (this.timer) {
+                clearTimeout(this.timer);
+            }
+            this.timer = setTimeout(() => {this.state.messageDone = false; this.props.actions.onShowMsgChange(false)}, 5000);
+        }
         return (
             <MenuContext style={{ flex : 1 }}>
             <View style={myStyles.fullWidthContainer}>
@@ -81,6 +100,8 @@ class SearchResultList extends Component {
                 </View>
 
                 <AdsListView {...this.props} />
+
+                {this._renderTotalResultView()}
 
                 <SearchResultFooter place = {this.props.fields.place}
                                     loggedIn = {this.props.loggedIn}
@@ -91,6 +112,32 @@ class SearchResultList extends Component {
             </View>
             </MenuContext>
         )
+    }
+
+    _renderTotalResultView(){
+        let {listAds, loading, counting, showMessage, fields} = this.props;
+        let numberOfAds = listAds.length;
+        let pageNo = fields.pageNo;
+        let limit = fields.limit;
+        if(loading || counting){
+            return (<View style={myStyles.resultContainer}>
+                <Animatable.View animation={showMessage ? "fadeIn" : "fadeOut"}
+                                 duration={showMessage ? 500 : 1000}>
+                    <View style={[myStyles.resultText]}>
+                        <Text style={myStyles.resultIcon}>  Đang tải dữ liệu ... </Text>
+                    </View>
+                </Animatable.View>
+            </View>)
+        }
+
+        return (<View style={myStyles.resultContainer}>
+            <Animatable.View animation={showMessage ? "fadeIn" : "fadeOut"}
+                             duration={showMessage ? 500 : 1000}>
+                <View style={[myStyles.resultText]}>
+                    <Text style={myStyles.resultIcon}>  {(pageNo-1)*limit+1}-{(pageNo-1)*limit+numberOfAds} / {this.props.countResult} tin tìm thấy được hiển thị </Text>
+                </View>
+            </Animatable.View>
+        </View>)
     }
 }
 
@@ -105,6 +152,30 @@ var myStyles = StyleSheet.create({
     search: {
         backgroundColor: gui.mainColor,
         height: 34
+    },
+    resultContainer: {
+        position: 'absolute',
+        top: 64,
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        marginVertical: 0,
+        marginBottom: 0,
+        backgroundColor: 'transparent',
+    },
+    resultText: {
+        width: Dimensions.get('window').width,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'white',
+        opacity: 0.85
+    },
+    resultIcon: {
+        color: 'black',
+        fontSize: gui.capitalizeFontSize,
+        fontFamily: gui.fontFamily,
+        fontWeight : 'normal',
+        textAlign: 'center'
     }
 });
 

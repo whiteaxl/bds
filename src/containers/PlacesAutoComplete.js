@@ -58,6 +58,8 @@ class PlacesAutoComplete extends React.Component {
     //console.log(data);
     log.enter("PlacesAutocomplete._onPress", data);
 
+    this.props.actions.onShowMsgChange(true);
+
     if (data.isRecent || data.isSaveSearch) {
       this.props.actions.loadSavedSearch(data);
     } else {

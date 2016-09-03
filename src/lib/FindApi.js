@@ -11,6 +11,7 @@ var findUrl = rootUrl + "/find";
 var placeUrl = rootUrl + "/findPlace";
 var detailUrl = rootUrl + "/detail";
 var homeData4AppUrl = rootUrl + "/homeData4App";
+var countUrl = rootUrl + "/count";
 
 
 var maxRows = 200;
@@ -19,7 +20,7 @@ var Api = {
 
   convertFieldsToQueryParams : function(fields){
     var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
-      radiusInKmSelectedIdx, dienTich, orderBy, place, geoBox, huongNha, ngayDaDang, polygon} = fields;
+      radiusInKmSelectedIdx, dienTich, orderBy, place, geoBox, huongNha, ngayDaDang, polygon, pageNo, limit} = fields;
 
     if (place) {
       place.radiusInKm = DanhMuc.getRadiusInKmByIndex(radiusInKmSelectedIdx) || undefined;
@@ -41,10 +42,11 @@ var Api = {
       'orderBy' : orderBy || undefined,
       'place':place || undefined,
       'geoBox' : geoBox.length===4 ? geoBox : undefined,
-      'limit' : maxRows || undefined,
+      'limit' : limit || maxRows || undefined,
       'huongNha' : huongNha || undefined,
       'ngayDaDang' : ngayDaDang || undefined,
-      'polygon' : polygon || undefined
+      'polygon' : polygon || undefined,
+      'pageNo' : pageNo || undefined
     };
 
     return params
@@ -60,7 +62,7 @@ var Api = {
     };
 
     let {loaiTin, loaiNhaDat, giaBETWEEN, soPhongNguGREATER, soTangGREATER, dienTichBETWEEN,
-      orderBy, place, geoBox, limit, huongNha, ngayDaDang, polygon, soPhongTamGREATER
+      orderBy, place, geoBox, limit, huongNha, ngayDaDang, polygon, pageNo, soPhongTamGREATER
     } = query;
 
     let tmp = {
@@ -74,9 +76,11 @@ var Api = {
       'orderBy' : orderBy ,
       'place':place ? place.fullName + "-" + place.radiusInKm : undefined ,
       'geoBox' : geoBox,
+      'limit' : limit || maxRows || undefined,
       'hướng' : huongNha || undefined,
       'ngày' : ngayDaDang == 0 ? undefined : ngayDaDang,
-      'polygon' : polygon || undefined
+      'polygon' : polygon || undefined,
+      'pageNo' : pageNo || undefined
     };
 
     return JSON.stringify(tmp);
@@ -99,6 +103,24 @@ var Api = {
       return e;
     });
   },
+
+    countItems: function(params) {
+        console.log(countUrl + "?" + JSON.stringify(params));
+        return fetch(`${countUrl}`, {
+            method: 'POST',
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(params)
+        })
+            .then(ApiUtils.checkStatus)
+            .then(response => response.json())
+            .catch(e => {
+                console.log("Error when count: " + countUrl,e);
+                return e;
+            });
+    },
 
 //return result = {length:1, list=[{name:'', geo:{lon, lat}]}
     getPlaces(queryText) {

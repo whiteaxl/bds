@@ -10,6 +10,12 @@ import log from '../../lib/logUtil';
 import GiftedSpinner from 'react-native-gifted-spinner';
 
 class AdsListView extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      pageNo: props.fields.pageNo
+    }
+  }
   render() {
     log.info("Call SearchResultList._getListContent");
 
@@ -48,12 +54,59 @@ class AdsListView extends React.Component {
         stickyHeaderIndices={[]}
         initialListSize={1}
         onEndReachedThreshold={1}
+        onEndReached={this._onEndReached.bind(this)}
         scrollRenderAheadDistance={3}
         pageSize={5}
+        onScroll={this.handleScroll.bind(this)}
+        scrollEventThrottle={200}
         //renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
         style={styles.searchListView}
       />
     )
+  }
+
+  _onEndReached() {
+    let myProps = this.props;
+
+    if (myProps.loading || myProps.counting || myProps.showMessage) {
+      return;
+    }
+    
+    let pageNo = this.state.pageNo;
+
+    let totalPages = myProps.countResult/ myProps.fields.limit;
+
+    if (totalPages && pageNo < totalPages) {
+      this.state.pageNo = pageNo+1;
+      myProps.actions.onSearchFieldChange("pageNo", this.state.pageNo);
+      myProps.actions.onShowMsgChange(true);
+      setTimeout(this._handleSearchAction.bind(this), 10);
+    }
+  }
+
+  _handleSearchAction(){
+    this.props.actions.search(
+        this.props.fields
+        , () => {});
+  }
+
+  handleScroll(event: Object) {
+    if (event.nativeEvent.contentOffset.y < -100) {
+      let myProps = this.props;
+
+      if (myProps.loading || myProps.counting || myProps.showMessage) {
+        return;
+      }
+
+      let pageNo = this.state.pageNo;
+
+      if (pageNo > 1) {
+        this.state.pageNo = pageNo-1;
+        myProps.actions.onSearchFieldChange("pageNo", this.state.pageNo);
+        myProps.actions.onShowMsgChange(true);
+        setTimeout(this._handleSearchAction.bind(this), 10);
+      }
+    }
   }
 
   renderRow(rowData) {

@@ -14,6 +14,11 @@ import localStorage from '../../lib/localStorage';
 const InitialState = require('./searchInitialState').default;
 
 const {
+  ON_RESET_COUNT_RESULT,
+  ON_SHOW_MSG_CHANGE,
+  ON_COUNTING_CHANGE,
+  FETCH_COUNT_SUCCESS,
+  FETCH_COUNT_FAIL,
   ON_SEARCH_FIELD_CHANGE,
   SET_SEARCH_LOAI_TIN,
   SEARCH_STATE_LOADING,
@@ -71,20 +76,27 @@ export default function searchReducer(state = initialState, action) {
       return state.setIn(['result', 'errorMsg'], action.payload)
         .set("loadingFromServer", false);
 
+    case ON_SHOW_MSG_CHANGE:
+      return state.set("showMessage", action.payload);
+
+    case ON_RESET_COUNT_RESULT:
+      return state.set("countResult", 0);
+
     case FETCH_SEARCH_RESULT_SUCCESS :
+    {
       let {data, query} = action.payload;
 
       let recentSearchList = state.recentSearchList;
       let searchObj = {
-        name : 'Search at ' + moment().format("DD-MM-YYYY HH:mm:ss"),
-        timeModified : new Date().getTime(),
-        query : query,
-        isRecent : true,
+        name: 'Search at ' + moment().format("DD-MM-YYYY HH:mm:ss"),
+        timeModified: new Date().getTime(),
+        query: query,
+        isRecent: true,
         desc: findApi.convertQuery2String(query),
       };
 
       recentSearchList.push(searchObj);
-      recentSearchList.sort((a,b) => b.timeModified - a.timeModified);
+      recentSearchList.sort((a, b) => b.timeModified - a.timeModified);
       let LIMIT = gui.LIMIT_RECENT_SEARCH;
       recentSearchList = recentSearchList.slice(0, LIMIT);
 
@@ -94,17 +106,37 @@ export default function searchReducer(state = initialState, action) {
       }
 
       return state.setIn(['result', "listAds"], data.list)
-        .setIn(['result', "viewport"], data.viewport)
-        .set("state", SEARCH_STATE_SUCCESS)
-        .setIn(['result', "errorMsg"], null)
-        .set("loadingFromServer", false)
-        .setIn(["map", "region"], ApiUtils.getRegionByViewport(data.viewport))
-        .set("recentSearchList", recentSearchList)
-        ;
+          .setIn(['result', "viewport"], data.viewport)
+          .set("state", SEARCH_STATE_SUCCESS)
+          .setIn(['result', "errorMsg"], null)
+          .set("loadingFromServer", false)
+          .setIn(["map", "region"], ApiUtils.getRegionByViewport(data.viewport))
+          .set("recentSearchList", recentSearchList)
+          ;
+    }
 
     case CHANGE_LOADING_SEARCH_RESULT :
     {
       return state.set("loadingFromServer", action.payload)
+    }
+
+    case FETCH_COUNT_FAIL:
+      return state.setIn(['result', 'errorMsg'], action.payload)
+          .set("countingFromServer", false);
+
+    case FETCH_COUNT_SUCCESS :
+    {
+      let {data} = action.payload;
+
+      return state.set("countResult", data.countResult)
+          .setIn(['result', "errorMsg"], null)
+          .set("countingFromServer", false)
+          ;
+    }
+
+    case ON_COUNTING_CHANGE :
+    {
+      return state.set("countingFromServer", action.payload)
     }
 
     case CHANGE_SEARCH_CALLED_FROM :

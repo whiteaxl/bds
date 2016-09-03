@@ -259,7 +259,7 @@ class SearchResultMap extends Component {
         />
         */}
 
-        {this._renderTotalResultView(listAds.length, this.props.loading)}
+        {this._renderTotalResultView()}
 
         <View style={styles.tabbar}>
           <View style={styles.searchListButton}>
@@ -429,18 +429,39 @@ class SearchResultMap extends Component {
     if (this.state.polygons && this.state.polygons.length > 0) {
       return;
     }
-    this._refreshListData(this.props.search.form.fields.geoBox, [], () => {});
+    let pageNo = this.props.search.form.fields.pageNo;
+    if (pageNo <= 1) {
+      return;
+    }
+    pageNo = pageNo - 1;
+    this.props.actions.onSearchFieldChange("pageNo", pageNo);
+    this._refreshListData(this.props.search.form.fields.geoBox, [], () => {}, pageNo);
   }
 
   _doNextPage() {
     if (this.state.polygons && this.state.polygons.length > 0) {
       return;
     }
-    this._refreshListData(this.props.search.form.fields.geoBox, [], () => {});
+    let pageNo = this.props.search.form.fields.pageNo;
+
+    let totalPages = this.props.countResult/ this.props.search.form.fields.limit;
+
+    if (pageNo >= totalPages) {
+      return;
+    }
+
+    pageNo = pageNo + 1;
+    this.props.actions.onSearchFieldChange("pageNo", pageNo);
+    this._refreshListData(this.props.search.form.fields.geoBox, [], () => {}, pageNo);
   }
 
-  _renderTotalResultView(numberOfAds, loading){
-    if(loading){
+  _renderTotalResultView(){
+    let {loading, counting, listAds, search} = this.props;
+    let numberOfAds = listAds.length;
+    let countResult = search.countResult;
+    let pageNo = search.form.fields.pageNo;
+    let limit = search.form.fields.limit;
+    if(loading || counting){
       console.log("SearchResultMap_renderTotalResultView");
       console.log(this.props.search.form.fields.region);
       console.log(this.props.search.map.region);
@@ -458,7 +479,7 @@ class SearchResultMap extends Component {
       <Animatable.View animation={this.state.showMessage ? "fadeIn" : "fadeOut"}
                        duration={this.state.showMessage ? 500 : 1000}>
         <View style={[styles.resultText]}>
-            <Text style={styles.resultIcon}>  {numberOfAds < MAX_VIEWABLE_ADS ? numberOfAds : MAX_VIEWABLE_ADS} / {numberOfAds} tin tìm thấy được hiển thị. Zoom bản đồ để xem thêm </Text>
+            <Text style={styles.resultIcon}>  {(pageNo-1)*limit+1}-{(pageNo-1)*limit+numberOfAds} / {countResult} tin tìm thấy được hiển thị. Zoom bản đồ để xem thêm </Text>
         </View>
       </Animatable.View>
     </View>)
@@ -501,7 +522,8 @@ class SearchResultMap extends Component {
     this.props.actions.onSearchFieldChange("geoBox", geoBox);
 
     if (this.props.search.autoLoadAds && this.state.polygons.length <= 0){
-      this._refreshListData(geoBox, [], () => {});
+      this.props.actions.onSearchFieldChange("pageNo", 1);
+      this._refreshListData(geoBox, [], () => {}, 1);
     }
   }
 
@@ -509,13 +531,14 @@ class SearchResultMap extends Component {
     if (this.state.polygons && this.state.polygons.length > 0) {
       return;
     }
-    this._refreshListData(this.props.search.form.fields.geoBox, [], () => {});
+    this.props.actions.onSearchFieldChange("pageNo", 1);
+    this._refreshListData(this.props.search.form.fields.geoBox, [], () => {}, 1);
   }
 
-  _refreshListData(geoBox, polygon, refreshCallback) {
+  _refreshListData(geoBox, polygon, refreshCallback, newPageNo) {
     console.log("Call SearhResultMap._refreshListData");
     var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
-        radiusInKmSelectedIdx, dienTich, orderBy, place, huongNha, ngayDaDang} = this.props.search.form.fields;
+        radiusInKmSelectedIdx, dienTich, orderBy, place, huongNha, ngayDaDang, pageNo, limit} = this.props.search.form.fields;
     var fields = {
       loaiTin: loaiTin,
       loaiNhaDat: loaiNhaDat,
@@ -530,7 +553,9 @@ class SearchResultMap extends Component {
       radiusInKmSelectedIdx: radiusInKmSelectedIdx,
       huongNha: huongNha,
       ngayDaDang: ngayDaDang,
-      polygon: polygon};
+      polygon: polygon,
+      pageNo: newPageNo || pageNo,
+      limit: limit};
 
     this.props.actions.search(
         fields
@@ -609,7 +634,8 @@ class SearchResultMap extends Component {
 
           this.props.actions.onSearchFieldChange("geoBox", geoBox);
 
-          this._refreshListData(geoBox, [], () => {});
+          this.props.actions.onSearchFieldChange("pageNo", 1);
+          this._refreshListData(geoBox, [], () => {}, 1);
 
           this.props.actions.onMapChange("region", region);
         },
@@ -755,6 +781,7 @@ class SearchResultMap extends Component {
         var polygon = apiUtils.convertPolygon(polygons[0]);
         this.props.actions.onSearchFieldChange("geoBox", geoBox);
         this.props.actions.onSearchFieldChange("polygon", polygon);
+        this.props.actions.onSearchFieldChange("pageNo", 1);
         this._refreshListData(geoBox, polygon, () => this.setState({
           openDetailAdsModal: false,
           polygons: polygons,
@@ -762,7 +789,7 @@ class SearchResultMap extends Component {
           openDraw: false,
           drawMode: false,
           region: this.getInitialRegion()
-        }));
+        }), 1);
     } else {
       this.setState({
         openDetailAdsModal: false,

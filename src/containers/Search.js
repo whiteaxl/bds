@@ -278,6 +278,9 @@ class Search extends Component {
     }
     this.props.actions.onSearchFieldChange("geoBox", []);
     this.props.actions.onSearchFieldChange("orderBy", '');
+    this.props.actions.onSearchFieldChange("pageNo", 1);
+    this.props.actions.onResetCountResult();
+    this.props.actions.onShowMsgChange(true);
 
     setTimeout(this._handleSearchAction.bind(this), 10);
  }
@@ -300,10 +303,11 @@ class Search extends Component {
     this.props.actions.onSearchFieldChange("soNhaTamSelectedIdx", 0);
     this.props.actions.onSearchFieldChange("dienTich", RangeUtils.BAT_KY_RANGE);
     this.props.actions.onSearchFieldChange("gia", RangeUtils.BAT_KY_RANGE);
-    this.props.actions.onSearchFieldChange("orderBy", '');
     this.props.actions.onSearchFieldChange("radiusInKmSelectedIdx", 0);
     this.props.actions.onSearchFieldChange("huongNha", '');
     this.props.actions.onSearchFieldChange("ngayDaDang", '');
+    this.props.actions.onShowMsgChange(true);
+    this.props.actions.onResetCountResult();
     this.setState({showMore: false});
   }
 
