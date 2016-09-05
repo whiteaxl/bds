@@ -121,8 +121,8 @@ class Home extends Component {
         <View style={styles.pageHeader}>
           <View style={styles.home}>
             <RelandIcon
-                name="map" color="white" size={18} onPress={this._onMapView.bind(this)}
-                mainProps={{marginTop: 12, paddingLeft: 18, paddingRight: 16}}
+                name="loc-map" color="white" size={24} onPress={this._onMapView.bind(this)}
+                mainProps={{marginTop: 17, paddingLeft: 18, paddingRight: 16}}
             >
             </RelandIcon>
           </View>
