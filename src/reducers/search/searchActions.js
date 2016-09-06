@@ -220,6 +220,12 @@ export function count(credential, successCallback) {
   }
 }
 
+export function abortSearch() {
+  return dispatch => {
+    return Api._abortRequest();
+  }
+}
+
 export function searchFromHome(query, successCallback) {
   return dispatch => {
     dispatch(changeSearchCalledFrom("Home"));

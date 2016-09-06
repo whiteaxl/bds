@@ -692,12 +692,23 @@ class SearchResultMap extends Component {
     console.log("SearchResultMap._onDrawPressed");
 
     var {polygons} = this.props.search;
-    this.setState({
-      openDetailAdsModal: false,
-      editing: null,
-      openDraw: !polygons || polygons.length === 0
-    });
-    this.props.actions.onDrawModeChange(!polygons || polygons.length === 0);
+    var openDraw = !polygons || polygons.length === 0;
+    if (openDraw) {
+      this.props.actions.abortSearch();
+      clearTimeout(this.timer);
+      this.setState({
+        showMessage: false,
+        openDetailAdsModal: false,
+        editing: null,
+        openDraw: openDraw});
+    } else {
+      this.setState({
+        openDetailAdsModal: false,
+        editing: null,
+        openDraw: openDraw
+      });
+    }
+    this.props.actions.onDrawModeChange(openDraw);
     this.props.actions.onPolygonsChange([]);
     this.props.actions.onSearchFieldChange("polygon", []);
   }

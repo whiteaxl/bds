@@ -53,7 +53,8 @@ function mapStateToProps(state) {
         userID: currentUser && currentUser.userID,
         fields : state.search.form.fields,
         showMessage: state.search.showMessage,
-        countResult: state.search.countResult
+        countResult: state.search.countResult,
+        polygons: state.search.polygons
     };
 }
 
@@ -92,6 +93,27 @@ class SearchResultList extends Component {
         this.state.messageDone = false;
     }
 
+    _getHeaderTitle() {
+        let place = this.props.fields.place;
+
+        //1. Search by diaChinh, then name = diaChinh's name
+        if (this.props.polygons && this.props.polygons.length) {
+            //placeName = `[${r.latitude}, ${r.longitude}]`
+            return 'Tìm theo Vẽ tay';
+        }
+
+        let placeName;
+        //2. Search by Polygon: name is just center
+        if (place.placeId) {
+            placeName = place.fullName;
+        } else { //others: banKinh or currentLocation
+            //let geoBox = apiUtils.getBbox(r);
+            //placeName = geoBox.toString()
+            placeName = 'Tìm tất cả theo khung nhìn'
+        }
+
+        return placeName;
+    }
     render() {
         log.info("Call SearchResultList render");
         //log.info(this.props);
@@ -100,11 +122,12 @@ class SearchResultList extends Component {
             clearTimeout(this.timer);
             this.timer = setTimeout(() => {this._onHideMessage()}, 5000);
         }
+        let placeName = this._getHeaderTitle();
         return (
             <MenuContext style={{ flex : 1 }}>
             <View style={myStyles.fullWidthContainer}>
                 <View style={myStyles.search}>
-                    <SearchHeader placeName={this.props.fields.place.fullName}/>
+                    <SearchHeader placeName={placeName}/>
                 </View>
 
                 <AdsListView {...this.props} />
