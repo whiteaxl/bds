@@ -128,6 +128,8 @@ var InitialState = Record({
     //shared
     searchCalledFrom : "Search",
     countResult: 0,
-    showMessage: true
+    showMessage: true,
+    drawMode: false,
+    polygons: []
 });
 export default InitialState;

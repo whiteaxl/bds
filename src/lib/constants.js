@@ -1,6 +1,8 @@
 import keyMirror from 'key-mirror';
 
 export default keyMirror({
+  ON_POLYGONS_CHANGE: null,
+  ON_DRAW_MODE_CHANGE: null,
   ON_RESET_COUNT_RESULT: null,
   ON_SHOW_MSG_CHANGE: null,
   ON_COUNTING_CHANGE: null,

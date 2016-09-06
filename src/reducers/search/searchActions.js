@@ -11,6 +11,8 @@ import db from '../../lib/localDB';
 import localStorage  from '../../lib/localStorage';
 
 const {
+  ON_POLYGONS_CHANGE,
+  ON_DRAW_MODE_CHANGE,
   ON_RESET_COUNT_RESULT,
   ON_SHOW_MSG_CHANGE,
   ON_COUNTING_CHANGE,
@@ -105,6 +107,20 @@ export function onShowMsgChange(loading) {
   }
 }
 
+export function onDrawModeChange(loading) {
+  return {
+    type: ON_DRAW_MODE_CHANGE,
+    payload: loading
+  }
+}
+
+export function onPolygonsChange(loading) {
+  return {
+    type: ON_POLYGONS_CHANGE,
+    payload: loading
+  }
+}
+
 export function onResetCountResult() {
   return {
     type: ON_RESET_COUNT_RESULT,
@@ -141,8 +157,8 @@ export function setLoadingDetail() {
 }
 
 function callApiSearch(params, dispatch, successCallback) {
-  dispatch(changeLoadingSearchResult(true));
   callApiCount(params, dispatch, successCallback);
+  dispatch(changeLoadingSearchResult(true));
 
   return Api.getItems(params)
     .then((data) => {
@@ -188,7 +204,6 @@ function callApiCount(params, dispatch, successCallback) {
 }
 
 export function search(credential, successCallback) {
-  count(credential, successCallback);
   return dispatch => {
     let params = Api.convertFieldsToQueryParams(credential);
     dispatch(changeSearchCalledFrom("Search"));

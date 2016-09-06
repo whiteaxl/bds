@@ -65,7 +65,7 @@ class TopModal extends React.Component {
   constructor(props) {
     super(props);
     this.state ={
-      offset: new Animated.Value(deviceHeight),
+      offset: new Animated.Value(181),
     }
   }
 
@@ -79,7 +79,7 @@ class TopModal extends React.Component {
   closeModal() {
     Animated.timing(this.state.offset, {
       duration: 500,
-      toValue: deviceHeight
+      toValue: 181
     }).start(this.props.closeModal);
 
     //Actions.SearchResultDetail({adsID: this.props.adsID});
@@ -148,8 +148,8 @@ var styles = StyleSheet.create({
   thumb: {
     justifyContent: 'flex-end',
     alignItems: 'stretch',
-    marginTop: 2*deviceHeight/3,
-    height: deviceHeight/3,
+    marginTop: deviceHeight-181,
+    height: 181,
     width: deviceWidth,
     alignSelf: 'auto'
   },
@@ -183,7 +183,7 @@ var styles = StyleSheet.create({
     backgroundColor: 'transparent',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    top: deviceHeight/3-60,
+    top: 121,
     width: deviceWidth
   }
 });

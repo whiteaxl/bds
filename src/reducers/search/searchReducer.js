@@ -14,6 +14,8 @@ import localStorage from '../../lib/localStorage';
 const InitialState = require('./searchInitialState').default;
 
 const {
+  ON_POLYGONS_CHANGE,
+  ON_DRAW_MODE_CHANGE,
   ON_RESET_COUNT_RESULT,
   ON_SHOW_MSG_CHANGE,
   ON_COUNTING_CHANGE,
@@ -78,6 +80,12 @@ export default function searchReducer(state = initialState, action) {
 
     case ON_SHOW_MSG_CHANGE:
       return state.set("showMessage", action.payload);
+
+    case ON_DRAW_MODE_CHANGE:
+      return state.set("drawMode", action.payload);
+
+    case ON_POLYGONS_CHANGE:
+      return state.set("polygons", action.payload);
 
     case ON_RESET_COUNT_RESULT:
       return state.set("countResult", 0);

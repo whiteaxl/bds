@@ -127,6 +127,10 @@ class SearchResultList extends Component {
         let numberOfAds = listAds.length;
         let pageNo = fields.pageNo;
         let limit = fields.limit;
+        let endAdsIndex = (pageNo-1)*limit+numberOfAds;
+        let rangeAds = (endAdsIndex > 0 ? ((pageNo-1)*limit+1) + "-" + endAdsIndex : "0") + " / " + this.props.countResult;
+        let textValue = rangeAds + " tin tìm thấy được hiển thị";
+        
         if(loading || counting){
             return (<View style={myStyles.resultContainer}>
                 <Animatable.View animation={showMessage ? "fadeIn" : "fadeOut"}
@@ -142,7 +146,7 @@ class SearchResultList extends Component {
             <Animatable.View animation={showMessage ? "fadeIn" : "fadeOut"}
                              duration={showMessage ? 500 : 1000}>
                 <View style={[myStyles.resultText]}>
-                    <Text style={myStyles.resultIcon}>  {(pageNo-1)*limit+1}-{(pageNo-1)*limit+numberOfAds} / {this.props.countResult} tin tìm thấy được hiển thị </Text>
+                    <Text style={myStyles.resultIcon}>  {textValue} </Text>
                 </View>
             </Animatable.View>
         </View>)
