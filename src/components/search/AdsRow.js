@@ -9,6 +9,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import log from '../../lib/logUtil';
 import DanhMuc from '../../assets/DanhMuc';
 import MHeartIcon from '../MHeartIcon';
+import Swipeout from '../MSwipeout';
 
 var imgHeight = 181;
 
@@ -167,7 +168,8 @@ class AdsRow extends React.Component {
 class MyImage extends React.Component {
   render() {
     return(
-      <View style={myStyles.slide} key={"img"+(this.props.imageIndex)}>
+      <Swipeout right={[]} left={[]} key={"img"+(this.props.imageIndex)}>
+      <View style={myStyles.slide}>
         <TouchableHighlight onPress={() => Actions.SearchResultDetail({adsID: this.props.ads.adsID, source: 'server'})}>
           <Image style={myStyles.thumb} source={{uri: `${this.props.imageUrl}`}}>
             <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.9)']}
@@ -176,6 +178,7 @@ class MyImage extends React.Component {
           </Image>
         </TouchableHighlight>
       </View>
+      </Swipeout>
     );
   }
 }

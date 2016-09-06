@@ -57,6 +57,8 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import MHeartIcon from '../components/MHeartIcon';
 
+import Swipeout from '../components/MSwipeout';
+
 const actions = [
   globalActions,
   searchActions,
@@ -289,26 +291,30 @@ class SearchResultDetail extends Component {
       rowData.image.images.map(function(imageUrl) {
         imageDataItems.push(imageUrl);
         imageItems.push(
-          <View style={detailStyles.slide} key={"img"+(imageIndex++)}>
+          <Swipeout right={[]} left={[]} key={"img"+(imageIndex++)}>
+          <View style={detailStyles.slide}>
             <TouchableHighlight onPress={imagePreviewAction} underlayColor="transparent" >
             <Image style={detailStyles.imgItem}
                source={{uri: `${imageUrl}`}}>
             </Image>
             </TouchableHighlight>
           </View>
+          </Swipeout>
         );
       });
       if (imageItems.length == 0) {
         var imageUrl = rowData.image.cover;
         imageDataItems.push(imageUrl);
         imageItems.push(
-          <View style={detailStyles.slide} key={"img"+(imageIndex)}>
+          <Swipeout right={[]} left={[]} key={"img"+(imageIndex)}>
+          <View style={detailStyles.slide}>
             <TouchableHighlight onPress={imagePreviewAction} underlayColor="transparent" >
             <Image style={detailStyles.imgItem}
                source={{uri: `${imageUrl}`}}>
             </Image>
             </TouchableHighlight>
           </View>
+          </Swipeout>
         );
       }
       url = rowData.image.cover;

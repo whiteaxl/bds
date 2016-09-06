@@ -51,6 +51,8 @@ import LocationMarker from '../components/LocationMarker';
 
 import * as Animatable from 'react-native-animatable';
 
+import Swipeout from '../components/MSwipeout';
+
 var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / (height-110);
@@ -60,6 +62,7 @@ const LONGITUDE = 105.75490945;
 const LATITUDE_DELTA = 0.08616620000177733;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 var id = 0;
+var currentAdsIndex = 0;
 
 const MAX_VIEWABLE_ADS = 25;
 /**
@@ -217,6 +220,20 @@ class SearchResultMap extends Component {
       //placeName = this.props.placeFullName
       let placeName = this._getHeaderTitle();
 
+    let allMarkers = [];
+    if (!this.props.search.drawMode || (this.props.search.polygons && this.props.search.polygons.length > 0)) {
+      for (let i=0; i < viewableList.length; i++) {
+        let marker = viewableList[i];
+        allMarkers.push(
+            <MapView.Marker key={marker.id} coordinate={marker.coordinate}
+                // onSelect={()=>this._onMarkerPress(marker)}
+                // onDeselect={this._onMarkerDeselect.bind(this)}
+                            onPress={()=>this._onMarkerPress(marker, i)}>
+              <PriceMarker color={this.state.mmarker && this.state.mmarker.id == marker.id ? '#E73E21' :
+                    (this.state.markedList.indexOf(marker.id)>=0 ? "grey" : gui.mainColor)} amount={marker.price}/>
+            </MapView.Marker>);
+      }
+    }
     return (
       <View style={styles.fullWidthContainer}>
 
@@ -232,15 +249,7 @@ class SearchResultMap extends Component {
               style={styles.mapView}
               mapType={this.state.mapType.toLowerCase()}
           >
-            {(!this.props.search.drawMode || (this.props.search.polygons && this.props.search.polygons.length > 0)) && viewableList.map( marker =>(
-                <MapView.Marker key={marker.id} coordinate={marker.coordinate}
-                                // onSelect={()=>this._onMarkerPress(marker)}
-                                // onDeselect={this._onMarkerDeselect.bind(this)}
-                                onPress={()=>this._onMarkerPress(marker)}>
-                  <PriceMarker color={this.state.mmarker && this.state.mmarker.id == marker.id ? '#E73E21' :
-                  (this.state.markedList.indexOf(marker.id)>=0 ? "grey" : gui.mainColor)} amount={marker.price}/>
-                </MapView.Marker>
-            ))}
+            {allMarkers}
             {this.props.search.polygons.map(polygon => (
                 <MapView.Polygon
                     key={polygon.id}
@@ -327,6 +336,8 @@ class SearchResultMap extends Component {
 
         <Modal animationDuration={100} style={styles.adsModal} isOpen={this.state.openDetailAdsModal} position={"bottom"}
                ref={"detailAdsModal"} isDisabled={false} onPress={this._onDetailAdsPress.bind(this)}>
+          <Swipeout right={[{text: 'Sau', color: gui.mainColor, backgroundColor: 'transparent', onPress: this._onNextAds.bind(this)}]}
+                    left={[{text: 'Trước', color: gui.mainColor, backgroundColor: 'transparent', onPress: this._onPreviousAds.bind(this)}]}>
           <View style={styles.detailAdsModal}>
           <TouchableOpacity onPress={this._onDetailAdsPress.bind(this)}>
             <Image style={styles.detailAdsModalThumb} source={{uri: `${this.state.mmarker.cover}`}} >
@@ -345,6 +356,7 @@ class SearchResultMap extends Component {
             </Image>
           </TouchableOpacity>
           </View>
+          </Swipeout>
         </Modal>
         
         {this._renderLocalInfoModal()}
@@ -353,6 +365,26 @@ class SearchResultMap extends Component {
         
       </View>
     )
+  }
+
+  _onNextAds() {
+    let viewableList = this._getViewableAds(this.props.listAds);
+    if (currentAdsIndex >= viewableList.length) {
+      return;
+    }
+    currentAdsIndex++;
+    let marker = viewableList[currentAdsIndex];
+    this._onMarkerPress(marker, currentAdsIndex);
+  }
+
+  _onPreviousAds() {
+    let viewableList = this._getViewableAds(this.props.listAds);
+    if (currentAdsIndex <= 0) {
+      return;
+    }
+    currentAdsIndex--;
+    let marker = viewableList[currentAdsIndex];
+    this._onMarkerPress(marker, currentAdsIndex);
   }
 
   _renderNextButton() {
@@ -745,13 +777,14 @@ class SearchResultMap extends Component {
     this.props.actions.onSearchFieldChange("polygon", []);
   }
 
-  _onMarkerPress(marker) {
+  _onMarkerPress(marker, index) {
     console.log("Call SearchResultMap._onMarkerPress");
     console.log(marker.id);
     console.log(this.state.markedList);
     var markedList = this.state.markedList;
 
     markedList.push(marker.id);
+    currentAdsIndex = index;
 
     this.setState({
       openDetailAdsModal: true,
