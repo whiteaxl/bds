@@ -20,7 +20,9 @@ class LocationMarker extends React.Component{
     }
 
     componentDidMount() {
-        this.timer = setTimeout(() => this.setState({color: '#f0a401'}), 500);
+        if (this.props.animation) {
+            this.timer = setTimeout(() => this.setState({color: '#f0a401'}), 500);
+        }
     }
 
     componentWillUnmount() {

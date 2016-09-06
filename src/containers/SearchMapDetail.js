@@ -134,7 +134,7 @@ class SearchMapDetail extends Component {
                 mapType={this.state.mapType}
             >
               {markerList.map( marker =>(
-                  <MapView.Marker key={marker.id} coordinate={marker.coordinate}>
+                  <MapView.Marker key={marker.id} coordinate={marker.coordinate} calloutOffset={{x: 0, y: 10}}>
                     <LocationMarker/>
                     <MapView.Callout tooltip height={58} style={{position: 'relative', alignItems: 'center', justifyContent: 'center'}}>
                       <DirectionMarker fontSize={17} diaChi={marker.diaChi} onPress={()=>this._onMarkerPress(marker)}/>

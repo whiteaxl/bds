@@ -234,8 +234,9 @@ class SearchResultMap extends Component {
           >
             {(!this.props.search.drawMode || (this.props.search.polygons && this.props.search.polygons.length > 0)) && viewableList.map( marker =>(
                 <MapView.Marker key={marker.id} coordinate={marker.coordinate}
-                                onSelect={()=>this._onMarkerPress(marker)}
-                                onDeselect={this._onMarkerDeselect.bind(this)}>
+                                // onSelect={()=>this._onMarkerPress(marker)}
+                                // onDeselect={this._onMarkerDeselect.bind(this)}
+                                onPress={()=>this._onMarkerPress(marker)}>
                   <PriceMarker color={this.state.mmarker && this.state.mmarker.id == marker.id ? '#E73E21' :
                   (this.state.markedList.indexOf(marker.id)>=0 ? "grey" : gui.mainColor)} amount={marker.price}/>
                 </MapView.Marker>
