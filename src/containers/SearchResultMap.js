@@ -107,7 +107,7 @@ class SearchResultMap extends Component {
   _previousTop = 0
 
   componentWillMount() {
-    this.state.showMessage = true;
+    this.props.actions.onShowMsgChange(true);
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder.bind(this),
       onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder.bind(this),
@@ -123,9 +123,8 @@ class SearchResultMap extends Component {
 
   componentDidMount() {
     //this._refreshListData(this.props.search.form.fields.geoBox, [], () => {});
-    this.setState({showMessage: true});
     clearTimeout(this.timer);
-    this.timer = setTimeout(() => this.setState({showMessage: false}), 5000);
+    this.timer = setTimeout(() => this.props.actions.onShowMsgChange(false), 5000);
   }
 
   componentWillUnmount() {
@@ -164,7 +163,6 @@ class SearchResultMap extends Component {
       oldRegion: {},
       newRegion: this.props.search.form.fields.region,
       region: region,
-      showMessage: true,
       coordinate : null
     };
   }
@@ -575,8 +573,8 @@ class SearchResultMap extends Component {
       console.log(this.props.search.form.fields.region);
       console.log(this.props.search.map.region);
       return (<View style={styles.resultContainer}>
-        <Animatable.View animation={this.state.showMessage ? "fadeIn" : "fadeOut"}
-                         duration={this.state.showMessage ? 500 : 1000}>
+        <Animatable.View animation={this.props.search.showMessage ? "fadeIn" : "fadeOut"}
+                         duration={this.props.search.showMessage ? 500 : 1000}>
           <View style={[styles.resultText]}>
             <Text style={styles.resultIcon}>  Đang tải dữ liệu ... </Text>
           </View>
@@ -585,8 +583,8 @@ class SearchResultMap extends Component {
     }
 
     return (<View style={styles.resultContainer}>
-      <Animatable.View animation={this.state.showMessage ? "fadeIn" : "fadeOut"}
-                       duration={this.state.showMessage ? 500 : 1000}>
+      <Animatable.View animation={this.props.search.showMessage ? "fadeIn" : "fadeOut"}
+                       duration={this.props.search.showMessage ? 500 : 1000}>
         <View style={[styles.resultText]}>
             <Text style={styles.resultIcon}>  {textValue} </Text>
         </View>
@@ -670,9 +668,10 @@ class SearchResultMap extends Component {
     this.props.actions.search(
         fields
         , refreshCallback);
-    this.setState({openDetailAdsModal: false, showMessage: true});
+    this.props.actions.onShowMsgChange(true);
+    this.setState({openDetailAdsModal: false});
     clearTimeout(this.timer);
-    this.timer = setTimeout(() => this.setState({showMessage: false}), 5000);
+    this.timer = setTimeout(() => this.props.actions.onShowMsgChange(false), 5000);
   }
 
   _renderLocalInfoModal(){
@@ -768,8 +767,8 @@ class SearchResultMap extends Component {
     if (openDraw) {
       this.props.actions.abortSearch();
       clearTimeout(this.timer);
+      this.props.actions.onShowMsgChange(false);
       this.setState({
-        showMessage: false,
         openDetailAdsModal: false,
         editing: null,
         openDraw: openDraw});
