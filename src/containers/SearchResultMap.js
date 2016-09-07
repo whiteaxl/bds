@@ -569,7 +569,7 @@ class SearchResultMap extends Component {
     let pageNo = search.form.fields.pageNo;
     let limit = search.form.fields.limit;
     let endAdsIndex = (pageNo-1)*limit+numberOfAds;
-    let rangeAds = (endAdsIndex > 0 ? ((pageNo-1)*limit+1) + "-" + endAdsIndex : "0") + " / " + countResult;
+    let rangeAds = (endAdsIndex > 0 ? ((pageNo-1)*limit+1) + "-" + endAdsIndex : "0") + " / " + (countResult > 0 ? countResult: endAdsIndex);
     let textValue = rangeAds + " tin tìm thấy được hiển thị. Zoom bản đồ để xem thêm";
 
     if(loading || counting){
@@ -622,12 +622,13 @@ class SearchResultMap extends Component {
   _onRegionChangeComplete(region) {
     console.log("Call SearhResultMap._onRegionChangeComplete");
 
+    this.state.region = region;
+    // this.setState({
+    //   region :region
+    // });
+
     this.props.actions.onMapChange("region", region);
     this.props.actions.onSearchFieldChange("region", region);
-    //this.state.region = region;
-    this.setState({
-      region :region
-    });
 
     var geoBox = apiUtils.getBbox(region);
     this.props.actions.onSearchFieldChange("geoBox", geoBox);
@@ -935,8 +936,7 @@ class SearchResultMap extends Component {
         this._refreshListData(geoBox, polygon, () => this.setState({
           openDetailAdsModal: false,
           editing: null,
-          openDraw: false,
-          region: this.getInitialRegion()
+          openDraw: false
         }), 1);
     } else {
       this.setState({
@@ -956,8 +956,8 @@ class SearchResultMap extends Component {
     }
     var x0 = this._previousLeft + gestureState.dx;
     var y0 = this._previousTop + gestureState.dy;
-    var lat = region.latitude + region.latitudeDelta*(0.5-(y0-5)/height)*1.17;
-    var lon = region.longitude + region.longitudeDelta*(x0/width-0.5)*1.07;
+    var lat = region.latitude + region.latitudeDelta*(0.5-(y0-64)/(height-110));
+    var lon = region.longitude + region.longitudeDelta*(x0/width-0.5);
     var coordinate = {latitude: lat, longitude: lon};
     var { editing } = this.state;
     if (!editing) {
