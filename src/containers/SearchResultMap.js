@@ -51,7 +51,7 @@ import LocationMarker from '../components/LocationMarker';
 
 import * as Animatable from 'react-native-animatable';
 
-import Swipeout from '../components/MSwipeout';
+import Swipeout from '../components/MSwipeout2';
 
 var { width, height } = Dimensions.get('window');
 
@@ -334,30 +334,7 @@ class SearchResultMap extends Component {
           </View>
         </View>
 
-        <Modal animationDuration={100} style={styles.adsModal} isOpen={this.state.openDetailAdsModal} position={"bottom"}
-               ref={"detailAdsModal"} isDisabled={false} onPress={this._onDetailAdsPress.bind(this)}>
-          <Swipeout right={[{text: 'Sau', color: gui.mainColor, backgroundColor: 'transparent', onPress: this._onNextAds.bind(this)}]}
-                    left={[{text: 'Trước', color: gui.mainColor, backgroundColor: 'transparent', onPress: this._onPreviousAds.bind(this)}]}>
-          <View style={styles.detailAdsModal}>
-          <TouchableOpacity onPress={this._onDetailAdsPress.bind(this)}>
-            <Image style={styles.detailAdsModalThumb} source={{uri: `${this.state.mmarker.cover}`}} >
-              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
-                              style={styles.detailAdsModalLinearGradient}>
-                <View style={styles.detailAdsModalDetail}>
-                  <View>
-                    <Text style={styles.detailAdsModalPrice}>{this.state.mmarker.price}</Text>
-                    <Text style={styles.detailAdsModalText}>{this._getDiaChi(this.state.mmarker.diaChi)}</Text>
-                  </View>
-                  <View style={[styles.detailAdsModalTextHeartButton, {paddingRight: 18, paddingTop: 9}]}>
-                    <MHeartIcon noAction={true} color={'white'} size={19} />
-                  </View>
-                </View>
-              </LinearGradient>
-            </Image>
-          </TouchableOpacity>
-          </View>
-          </Swipeout>
-        </Modal>
+        {this._renderAdsModal()}
         
         {this._renderLocalInfoModal()}
 
@@ -367,9 +344,72 @@ class SearchResultMap extends Component {
     )
   }
 
+  _renderAdsModal() {
+    let viewableList = this._getViewableAds(this.props.listAds);
+    let leftMarker = currentAdsIndex <= 0 ? null : viewableList[currentAdsIndex-1];
+    let rightMarker = currentAdsIndex >= viewableList.length-1 ? null : viewableList[currentAdsIndex+1];
+    return (
+        <Modal animationDuration={100} style={styles.adsModal} isOpen={this.state.openDetailAdsModal} position={"bottom"}
+               ref={"detailAdsModal"} isDisabled={false} onPress={this._onDetailAdsPress.bind(this)}>
+          <Swipeout right={[{component: rightMarker ? <View style={styles.detailAdsModal}>
+                <Image style={styles.detailAdsModalThumb} source={{uri: `${rightMarker.cover}`}} >
+                  <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
+                                  style={styles.detailAdsModalLinearGradient}>
+                    <View style={styles.detailAdsModalDetail}>
+                      <View>
+                        <Text style={styles.detailAdsModalPrice}>{rightMarker.price}</Text>
+                        <Text style={styles.detailAdsModalText}>{this._getDiaChi(rightMarker.diaChi)}</Text>
+                      </View>
+                      <View style={[styles.detailAdsModalTextHeartButton, {paddingRight: 18, paddingTop: 9}]}>
+                        <MHeartIcon noAction={true} color={'white'} size={19} />
+                      </View>
+                    </View>
+                  </LinearGradient>
+                </Image>
+            </View> : null, text: '', backgroundColor: 'transparent',
+              width: width, height: 181}]} onSwipeRightSuccess={this._onNextAds.bind(this)}
+                    left={[{component: leftMarker ? <View style={styles.detailAdsModal}>
+                <Image style={styles.detailAdsModalThumb} source={{uri: `${leftMarker.cover}`}} >
+                  <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
+                                  style={styles.detailAdsModalLinearGradient}>
+                    <View style={styles.detailAdsModalDetail}>
+                      <View>
+                        <Text style={styles.detailAdsModalPrice}>{leftMarker.price}</Text>
+                        <Text style={styles.detailAdsModalText}>{this._getDiaChi(leftMarker.diaChi)}</Text>
+                      </View>
+                      <View style={[styles.detailAdsModalTextHeartButton, {paddingRight: 18, paddingTop: 9}]}>
+                        <MHeartIcon noAction={true} color={'white'} size={19} />
+                      </View>
+                    </View>
+                  </LinearGradient>
+                </Image>
+            </View> : null, text: '', backgroundColor: 'transparent',
+              width: width, height: 181}]} onSwipeLeftSuccess={this._onPreviousAds.bind(this)}>
+            <View style={styles.detailAdsModal}>
+              <TouchableOpacity onPress={this._onDetailAdsPress.bind(this)}>
+                <Image style={styles.detailAdsModalThumb} source={{uri: `${this.state.mmarker.cover}`}} >
+                  <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
+                                  style={styles.detailAdsModalLinearGradient}>
+                    <View style={styles.detailAdsModalDetail}>
+                      <View>
+                        <Text style={styles.detailAdsModalPrice}>{this.state.mmarker.price}</Text>
+                        <Text style={styles.detailAdsModalText}>{this._getDiaChi(this.state.mmarker.diaChi)}</Text>
+                      </View>
+                      <View style={[styles.detailAdsModalTextHeartButton, {paddingRight: 18, paddingTop: 9}]}>
+                        <MHeartIcon noAction={true} color={'white'} size={19} />
+                      </View>
+                    </View>
+                  </LinearGradient>
+                </Image>
+              </TouchableOpacity>
+            </View>
+          </Swipeout>
+        </Modal>
+    );
+  }
   _onNextAds() {
     let viewableList = this._getViewableAds(this.props.listAds);
-    if (currentAdsIndex >= viewableList.length) {
+    if (currentAdsIndex >= viewableList.length-1) {
       return;
     }
     currentAdsIndex++;
