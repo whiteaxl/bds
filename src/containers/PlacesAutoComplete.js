@@ -59,7 +59,9 @@ class PlacesAutoComplete extends React.Component {
     log.enter("PlacesAutocomplete._onPress", data);
 
     this.props.actions.onShowMsgChange(true);
+    this.props.actions.onSearchFieldChange("geoBox", []);
     this.props.actions.onPolygonsChange([]);
+    this.props.actions.onSearchFieldChange("polygon", []);
 
     if (data.isRecent || data.isSaveSearch) {
       this.props.actions.loadSavedSearch(data);

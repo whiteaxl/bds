@@ -537,11 +537,10 @@ class SearchResultMap extends Component {
       return;
     }
     let pageNo = this.props.search.form.fields.pageNo;
-    if (pageNo <= 1) {
-      return;
+    if (pageNo > 1) {
+      pageNo = pageNo - 1;
+      this.props.actions.onSearchFieldChange("pageNo", pageNo);
     }
-    pageNo = pageNo - 1;
-    this.props.actions.onSearchFieldChange("pageNo", pageNo);
     this._refreshListData(this.props.search.form.fields.geoBox, [], () => {}, pageNo);
   }
 
@@ -553,12 +552,11 @@ class SearchResultMap extends Component {
 
     let totalPages = this.props.search.countResult/ this.props.search.form.fields.limit;
 
-    if (pageNo >= totalPages) {
-      return;
+    if (pageNo < totalPages) {
+      pageNo = pageNo + 1;
+      this.props.actions.onSearchFieldChange("pageNo", pageNo);
     }
 
-    pageNo = pageNo + 1;
-    this.props.actions.onSearchFieldChange("pageNo", pageNo);
     this._refreshListData(this.props.search.form.fields.geoBox, [], () => {}, pageNo);
   }
 
