@@ -279,7 +279,7 @@ class SearchResultMap extends Component {
             }
              */}
             {this.state.coordinate ? <MapView.Marker coordinate={this.state.coordinate}>
-              <LocationMarker iconName={'local-info'} size={30} animation={true}/>
+              <LocationMarker iconName={'cur-pos'} size={30} animation={true}/>
             </MapView.Marker> : null}
           </MapView>
           <View style={styles.mapButtonContainer}>
@@ -496,13 +496,13 @@ class SearchResultMap extends Component {
     return (
         this.props.search.polygons && this.props.search.polygons.length > 0 ?
             <View style={[styles.bubble, styles.button, {marginTop: 10}]}>
-              <RelandIcon name="local-info" color='black' mainProps={{flexDirection: 'row'}}
+              <RelandIcon name="direction" color='black' mainProps={{flexDirection: 'row'}}
                           size={20} textProps={{paddingLeft: 0}}
                           noAction={true}></RelandIcon>
             </View> :
             <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} >
               <View style={[styles.bubble, styles.button, {marginTop: 10}]}>
-                <RelandIcon name="local-info" color='black' mainProps={{flexDirection: 'row'}}
+                <RelandIcon name="direction" color='black' mainProps={{flexDirection: 'row'}}
                             size={20} textProps={{paddingLeft: 0}}
                             noAction={true}></RelandIcon>
               </View>

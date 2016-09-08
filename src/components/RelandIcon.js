@@ -13,7 +13,7 @@ var glyphMap = { 'inbox':'1','camera': 59396,'camera-o': 59397,'map':59392, 'sor
                 'twitter-o': 59422, 'twitter': 59423, 'sms': 59424, 'location-o': 59425, 'location': 59426, 'close': 59427,
                 'home-marker': 59428, 'close-circle': 59429, 'list':59430, 'me':59431, 'mgmt':59432, 'plus':59433, 'photos':59434,
                 'update' : 59435, 'home-f' : 59436, 'search-b' : 59437, 'local-info': 59438, 'plus-circle': 59439, 'street-view': 59440,
-                'copy-link': 59441, 'alert': 59442, 'refresh': 59443, 'previous': 59444, 'next': 59445, 'loc-map': 59446};
+                'copy-link': 59441, 'alert': 59442, 'refresh': 59443, 'previous': 59444, 'next': 59445, 'loc-map': 59446, 'direction': 59447, 'cur-pos': 59448};
 var Icon = createIconSet(glyphMap, 'RelandIcon');
 
 class RelandIconButton extends React.Component {
