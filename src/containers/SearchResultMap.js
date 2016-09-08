@@ -107,6 +107,7 @@ class SearchResultMap extends Component {
   _previousTop = 0
 
   componentWillMount() {
+    this._fillCountAds(() => {});
     this.props.actions.onShowMsgChange(true);
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder.bind(this),
@@ -123,8 +124,7 @@ class SearchResultMap extends Component {
 
   componentDidMount() {
     //this._refreshListData(this.props.search.form.fields.geoBox, [], () => {});
-    clearTimeout(this.timer);
-    this.timer = setTimeout(() => this.props.actions.onShowMsgChange(false), 5000);
+    this._onSetupMessageTimeout();
   }
 
   componentWillUnmount() {
@@ -426,14 +426,17 @@ class SearchResultMap extends Component {
   }
 
   _renderNextButton() {
+    let pageNo = this.props.search.form.fields.pageNo;
+    let totalPages = this.props.search.countResult/ this.props.search.form.fields.limit;
+    let hasNextPage = pageNo < totalPages;
     return (
         <View style={styles.nextButton}>
-          {this.props.search.polygons && this.props.search.polygons.length > 0 ?
+          {!hasNextPage ?
               <View>
-                <RelandIcon name="next" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
+                <RelandIcon name="next" color={'#C5C2BA'} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
                             size={16} textProps={{paddingLeft: 0}}
                             noAction={true}></RelandIcon>
-                <Text style={[styles.drawIconText, {fontSize: 6, color: gui.mainColor}]}>Sau</Text>
+                <Text style={[styles.drawIconText, {fontSize: 6, color: '#C5C2BA'}]}>Sau</Text>
               </View> :
               <TouchableOpacity onPress={this._doNextPage.bind(this)} >
                 <View>
@@ -448,14 +451,16 @@ class SearchResultMap extends Component {
   }
 
   _renderPreviousButton() {
+    let pageNo = this.props.search.form.fields.pageNo;
+    let hasPreviousPage = pageNo > 1;
     return (
         <View style={styles.previousButton}>
-          {this.props.search.polygons && this.props.search.polygons.length > 0 ?
+          {!hasPreviousPage ?
               <View>
-                <RelandIcon name="previous" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
+                <RelandIcon name="previous" color={'#C5C2BA'} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
                             size={16} textProps={{paddingLeft: 0}}
                             noAction={true}></RelandIcon>
-                <Text style={[styles.drawIconText, {fontSize: 6, color: gui.mainColor}]}>Trước</Text>
+                <Text style={[styles.drawIconText, {fontSize: 6, color: '#C5C2BA'}]}>Trước</Text>
               </View> :
               <TouchableOpacity onPress={this._doPreviousPage.bind(this)} >
                 <View>
@@ -473,21 +478,14 @@ class SearchResultMap extends Component {
     return (
         this.props.search.autoLoadAds ? null :
             <View style={styles.refreshButton}>
-              {this.props.search.polygons && this.props.search.polygons.length > 0 ?
-                  <View>
-                    <RelandIcon name="refresh" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
-                                size={16} textProps={{paddingLeft: 0}}
-                                noAction={true}></RelandIcon>
-                    <Text style={[styles.drawIconText, {fontSize: 6, color: gui.mainColor}]}>Refresh</Text>
-                  </View> :
-                  <TouchableOpacity onPress={this._doRefreshListData.bind(this)} >
-                    <View>
-                      <RelandIcon name="refresh" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
-                                  size={16} textProps={{paddingLeft: 0}}
-                                  noAction={true}></RelandIcon>
-                      <Text style={[styles.drawIconText, {fontSize: 6, color: gui.mainColor}]}>Refresh</Text>
-                    </View>
-                  </TouchableOpacity>}
+              <TouchableOpacity onPress={this._doRefreshListData.bind(this)} >
+                <View>
+                  <RelandIcon name="refresh" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
+                              size={16} textProps={{paddingLeft: 0}}
+                              noAction={true}></RelandIcon>
+                  <Text style={[styles.drawIconText, {fontSize: 6, color: gui.mainColor}]}>Refresh</Text>
+                </View>
+              </TouchableOpacity>
             </View>
     );
   }
@@ -531,21 +529,15 @@ class SearchResultMap extends Component {
   }
 
   _doPreviousPage() {
-    if (this.props.search.polygons && this.props.search.polygons.length > 0) {
-      return;
-    }
     let pageNo = this.props.search.form.fields.pageNo;
     if (pageNo > 1) {
       pageNo = pageNo - 1;
       this.props.actions.onSearchFieldChange("pageNo", pageNo);
     }
-    this._refreshListData(this.props.search.form.fields.geoBox, [], () => {}, pageNo);
+    this._refreshListData(this.props.search.form.fields.geoBox, null, this._onSetupMessageTimeout.bind(this), pageNo);
   }
 
   _doNextPage() {
-    if (this.props.search.polygons && this.props.search.polygons.length > 0) {
-      return;
-    }
     let pageNo = this.props.search.form.fields.pageNo;
 
     let totalPages = this.props.search.countResult/ this.props.search.form.fields.limit;
@@ -555,7 +547,13 @@ class SearchResultMap extends Component {
       this.props.actions.onSearchFieldChange("pageNo", pageNo);
     }
 
-    this._refreshListData(this.props.search.form.fields.geoBox, [], () => {}, pageNo);
+    this._refreshListData(this.props.search.form.fields.geoBox, null, this._onSetupMessageTimeout.bind(this), pageNo);
+  }
+
+  _fillCountAds(countCallback) {
+      this.props.actions.count(
+          this.props.search.form.fields
+          , countCallback);
   }
 
   _renderTotalResultView(){
@@ -631,22 +629,19 @@ class SearchResultMap extends Component {
 
     if (this.props.search.autoLoadAds && this.props.search.polygons.length <= 0){
       this.props.actions.onSearchFieldChange("pageNo", 1);
-      this._refreshListData(geoBox, [], () => {}, 1);
+      this._refreshListData(geoBox, [], this._onSetupMessageTimeout.bind(this), 1);
     }
   }
 
   _doRefreshListData() {
-    if (this.props.search.polygons && this.props.search.polygons.length > 0) {
-      return;
-    }
     this.props.actions.onSearchFieldChange("pageNo", 1);
-    this._refreshListData(this.props.search.form.fields.geoBox, [], () => {}, 1);
+    this._refreshListData(this.props.search.form.fields.geoBox, null, this._onSetupMessageTimeout.bind(this), 1);
   }
 
-  _refreshListData(geoBox, polygon, refreshCallback, newPageNo) {
+  _refreshListData(geoBox, newPolygon, refreshCallback, newPageNo) {
     console.log("Call SearhResultMap._refreshListData");
     var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
-        radiusInKmSelectedIdx, dienTich, orderBy, place, huongNha, ngayDaDang, pageNo, limit} = this.props.search.form.fields;
+        radiusInKmSelectedIdx, dienTich, orderBy, place, huongNha, ngayDaDang, polygon, pageNo, limit} = this.props.search.form.fields;
     var fields = {
       loaiTin: loaiTin,
       loaiNhaDat: loaiNhaDat,
@@ -661,7 +656,7 @@ class SearchResultMap extends Component {
       radiusInKmSelectedIdx: radiusInKmSelectedIdx,
       huongNha: huongNha,
       ngayDaDang: ngayDaDang,
-      polygon: polygon,
+      polygon: newPolygon || polygon,
       pageNo: newPageNo || pageNo,
       limit: limit};
 
@@ -670,8 +665,12 @@ class SearchResultMap extends Component {
         , refreshCallback);
     this.props.actions.onShowMsgChange(true);
     this.setState({openDetailAdsModal: false});
-    clearTimeout(this.timer);
-    this.timer = setTimeout(() => this.props.actions.onShowMsgChange(false), 5000);
+    this._fillCountAds(() => {});
+  }
+
+  _onSetupMessageTimeout() {
+      clearTimeout(this.timer);
+      this.timer = setTimeout(() => this.props.actions.onShowMsgChange(false), 10000);
   }
 
   _renderLocalInfoModal(){
@@ -748,7 +747,7 @@ class SearchResultMap extends Component {
 
           this.props.actions.onSearchFieldChange("place", place);
           this.props.actions.onSearchFieldChange("pageNo", 1);
-          this._refreshListData(geoBox, [], () => {}, 1);
+          this._refreshListData(geoBox, [], this._onSetupMessageTimeout.bind(this), 1);
 
           this.props.actions.onMapChange("region", region);
         },
@@ -930,20 +929,21 @@ class SearchResultMap extends Component {
         this.props.actions.onSearchFieldChange("geoBox", geoBox);
         this.props.actions.onSearchFieldChange("polygon", polygon);
         this.props.actions.onSearchFieldChange("pageNo", 1);
-        this._refreshListData(geoBox, polygon, () => this.setState({
+        this._refreshListData(geoBox, polygon, () => this._updateMapView(polygons), 1);
+    } else {
+        this._updateMapView(polygons);
+    }
+  }
+
+  _updateMapView(polygons) {
+      this.setState({
           openDetailAdsModal: false,
           editing: null,
           openDraw: false
-        }), 1);
-    } else {
-      this.setState({
-        openDetailAdsModal: false,
-        editing: null,
-        openDraw: false
       });
-    }
-    this.props.actions.onDrawModeChange(false);
-    this.props.actions.onPolygonsChange(polygons);
+      this.props.actions.onDrawModeChange(false);
+      this.props.actions.onPolygonsChange(polygons);
+      this._onSetupMessageTimeout();
   }
 
   _refreshPolygons(gestureState) {

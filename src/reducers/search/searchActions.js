@@ -157,7 +157,6 @@ export function setLoadingDetail() {
 }
 
 function callApiSearch(params, dispatch, successCallback) {
-  callApiCount(params, dispatch, successCallback);
   dispatch(changeLoadingSearchResult(true));
 
   return Api.getItems(params)

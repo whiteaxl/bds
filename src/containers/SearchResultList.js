@@ -81,6 +81,7 @@ class SearchResultList extends Component {
 
     componentWillMount() {
         this.state.messageDone = false;
+        this._fillCountAds(() => {});
         this.props.actions.onShowMsgChange(true);
     }
 
@@ -114,13 +115,16 @@ class SearchResultList extends Component {
 
         return placeName;
     }
+    _onSetupMessageTimeout() {
+        clearTimeout(this.timer);
+        this.timer = setTimeout(() => {this._onHideMessage()}, 5000);
+    }
     render() {
         log.info("Call SearchResultList render");
         //log.info(this.props);
         if (this.props.showMessage && !this.state.messageDone) {
             this.state.messageDone = true;
-            clearTimeout(this.timer);
-            this.timer = setTimeout(() => {this._onHideMessage()}, 5000);
+            this._fillCountAds(this._onSetupMessageTimeout.bind(this));
         }
         let placeName = this._getHeaderTitle();
         return (
@@ -143,6 +147,12 @@ class SearchResultList extends Component {
             </View>
             </MenuContext>
         )
+    }
+
+    _fillCountAds(countCallback) {
+        this.props.actions.count(
+            this.props.fields
+            , countCallback);
     }
 
     _renderTotalResultView(){
