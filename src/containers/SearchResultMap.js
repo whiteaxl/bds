@@ -630,12 +630,14 @@ class SearchResultMap extends Component {
     if (this.props.search.autoLoadAds && this.props.search.polygons.length <= 0){
       this.props.actions.onSearchFieldChange("pageNo", 1);
       this._refreshListData(geoBox, [], this._onSetupMessageTimeout.bind(this), 1);
+      this._fillCountAds(() => {});
     }
   }
 
   _doRefreshListData() {
     this.props.actions.onSearchFieldChange("pageNo", 1);
     this._refreshListData(this.props.search.form.fields.geoBox, null, this._onSetupMessageTimeout.bind(this), 1);
+    this._fillCountAds(() => {});
   }
 
   _refreshListData(geoBox, newPolygon, refreshCallback, newPageNo) {
@@ -665,7 +667,6 @@ class SearchResultMap extends Component {
         , refreshCallback);
     this.props.actions.onShowMsgChange(true);
     this.setState({openDetailAdsModal: false});
-    this._fillCountAds(() => {});
   }
 
   _onSetupMessageTimeout() {
@@ -748,6 +749,7 @@ class SearchResultMap extends Component {
           this.props.actions.onSearchFieldChange("place", place);
           this.props.actions.onSearchFieldChange("pageNo", 1);
           this._refreshListData(geoBox, [], this._onSetupMessageTimeout.bind(this), 1);
+          this._fillCountAds(() => {});
 
           this.props.actions.onMapChange("region", region);
         },
@@ -930,6 +932,7 @@ class SearchResultMap extends Component {
         this.props.actions.onSearchFieldChange("polygon", polygon);
         this.props.actions.onSearchFieldChange("pageNo", 1);
         this._refreshListData(geoBox, polygon, () => this._updateMapView(polygons), 1);
+        this._fillCountAds(() => {});
     } else {
         this._updateMapView(polygons);
     }
