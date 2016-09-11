@@ -74,6 +74,18 @@ var ApiUtils = {
                   viewport.northeast.lat, viewport.northeast.lon];
 
     return ApiUtils.getRegion(geoBox);
+  },
+
+  getViewport: function(region) {
+    var geoBox = this.getBbox(region);
+    return this.getViewportByBox(geoBox);
+  },
+
+  getViewportByBox: function(geoBox) {
+    var viewport = {};
+    viewport.southwest = {lat: geoBox[0], lon: geoBox[1]};
+    viewport.northeast = {lat: geoBox[2], lon: geoBox[3]};
+    return viewport;
   }
 };
 

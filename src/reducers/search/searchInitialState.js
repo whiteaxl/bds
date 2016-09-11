@@ -27,47 +27,40 @@ const SearchForm = Record({
     fields: new (Record({
         loaiTin: 'ban',
         loaiNhaDat: '',
-        soPhongNguSelectedIdx: 0,
-        soTangSelectedIdx: 0,
-        soNhaTamSelectedIdx : 0,
-        dienTich: RangeUtils.BAT_KY_RANGE,
         gia: RangeUtils.BAT_KY_RANGE,
         giaPicker : RangeUtils.sellPriceRange.getPickerData(),
-        orderBy: '',
-        listData: [],
-        marker: {},
-
-        geoBox: [], //Map will use this
-
-        place: {
-          placeName: 'Hà Nội',
-          fullName: 'Thành phố Hà Nội',
-          shortName: 'Thành phố Hà Nội',
-          placeType: 'T',
-          placeId: '1',
-          tinh: 'ha-noi',
-          huyen: null,
-          viewport: {
-            "northeast": {
-              "lat": 21.385027,
-              "lon": 106.0198859
+        dienTich: RangeUtils.BAT_KY_RANGE,
+        ngayDaDang: '', //batky
+        soPhongNguSelectedIdx: 0,
+        soNhaTamSelectedIdx: 0,
+        huongNha: 0,
+        viewport: {
+            northeast: {
+                lat: 21.385027,
+                lon: 106.0198859
             },
-            "southwest": {
-              "lat": 20.562323,
-              "lon": 105.2854659
+            southwest: {
+                lat: 20.562323,
+                lon: 105.2854659
             }
-          },
-          currentLocation : ''
         },
-
-        radiusInKmSelectedIdx: 0,
-        huongNha: '',
-        ngayDaDang: 0, //batky
         polygon: [],
-        region : {},
-        alertUs: '',
+        radiusInKmSelectedIdx: 0,
+        center : {lat: 20.964828952112263, lon: 105.78077258623863},
+        diaChinh : {
+            tinhKhongDau : "ha-noi",
+            huyenKhongDau : "cau-giay",
+            xaKhongDau : '',
+            duAnKhongDau : '',
+            fullName : 'Cầu Giấy, Hà Nội'
+        },
+        orderBy: '',
         limit: 25,
-        pageNo: 1
+        pageNo: 1,
+        isIncludeCountInResponse: true,
+
+        marker: {}
+
     }))
 
 });
@@ -81,23 +74,16 @@ var InitialState = Record({
 
     form: new SearchForm,
     loadingFromServer : false,
-    countingFromServer: false,
     map : new (Record({
         type: "Standard",
-        region: {latitude: 20.95389909999999,
-                 longitude: 105.75490945,
-                 longitudeDelta: 0.06102071125314978,
-                 latitudeDelta: 0.08616620000177733}
+        polygons: [],
+        autoLoadAds : true
     })),
 
     result: new (Record({
         listAds: [],
         errorMsg: "",
-        viewport : {
-            center: {lat:0, lon:0},
-            northeast : {lat:0, lon:0},
-            southwest : {lat:0, lon:0}
-        }
+        totalCount : 0
 
     })),
 
@@ -124,12 +110,10 @@ var InitialState = Record({
         query : {loaiTin: 0} //search conditions
     }],
     homeDataErrorMsg : "",
-    autoLoadAds : true,
     //shared
     searchCalledFrom : "Search",
-    countResult: 0,
     showMessage: true,
     drawMode: false,
-    polygons: []
+    alertUs: ''
 });
 export default InitialState;

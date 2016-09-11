@@ -194,7 +194,7 @@ class Search extends Component {
 
               {this._renderSoPhongNgu()}
 
-              {this._renderSoTang()}
+              {/*this._renderSoTang()*/}
 
               {this._renderSoNhaTam()}
 
@@ -256,7 +256,7 @@ class Search extends Component {
         </View>
 
        <View style={myStyles.pageHeader}>
-        <SearchInput placeName={this.props.search.form.fields.place.fullName}/>
+        <SearchInput placeName={this.props.search.form.fields.diaChinh.fullName}/>
        </View>
       </View>
     );
@@ -277,48 +277,41 @@ class Search extends Component {
 
       Actions.SearchResultList({type: "reset"});
     }
-    this.props.actions.onSearchFieldChange("geoBox", []);
+    this.props.actions.onSearchFieldChange("viewport", {});
     this.props.actions.onSearchFieldChange("orderBy", '');
     this.props.actions.onSearchFieldChange("pageNo", 1);
-    this.props.actions.onResetCountResult();
     this.props.actions.onShowMsgChange(true);
 
     this._handleSearchAction([], '', 1, gui.MAX_ITEM);
  }
 
- _handleSearchAction(newGeoBox, newOrderBy, newPageNo, newLimit){
-     var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
-         radiusInKmSelectedIdx, dienTich, orderBy, geoBox, place, huongNha, ngayDaDang, polygon, pageNo, limit} = this.props.search.form.fields;
+ _handleSearchAction(newViewport, newOrderBy, newPageNo, newLimit){
+     var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
+         radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
+         polygon, pageNo, limit, isIncludeCountInResponse} = this.props.search.form.fields;
      var fields = {
          loaiTin: loaiTin,
          loaiNhaDat: loaiNhaDat,
          soPhongNguSelectedIdx: soPhongNguSelectedIdx,
-         soTangSelectedIdx: soTangSelectedIdx,
          soNhaTamSelectedIdx : soNhaTamSelectedIdx,
          dienTich: dienTich,
          gia: gia,
          orderBy: newOrderBy || orderBy,
-         geoBox: newGeoBox || geoBox,
-         place: place,
+         viewport: newViewport || viewport,
+         diaChinh: diaChinh,
+         center: center,
          radiusInKmSelectedIdx: radiusInKmSelectedIdx,
          huongNha: huongNha,
          ngayDaDang: ngayDaDang,
          polygon: polygon,
          pageNo: newPageNo || pageNo,
-         limit: newLimit || limit};
+         limit: newLimit || limit,
+         isIncludeCountInResponse: isIncludeCountInResponse};
 
      this.props.actions.search(
          fields
          , () => {});
-
-     this._fillCountAds(fields, () => {});
  }
-
-    _fillCountAds(fields, countCallback) {
-        this.props.actions.count(
-            fields
-            , countCallback);
-    }
 
   onMoreOption() {
     this.setState({showMore: true});
@@ -327,7 +320,6 @@ class Search extends Component {
   onResetFilters() {
     this.props.actions.onSearchFieldChange("loaiNhaDat", '');
     this.props.actions.onSearchFieldChange("soPhongNguSelectedIdx", 0);
-    this.props.actions.onSearchFieldChange("soTangSelectedIdx", 0);
     this.props.actions.onSearchFieldChange("soNhaTamSelectedIdx", 0);
     this.props.actions.onSearchFieldChange("dienTich", RangeUtils.BAT_KY_RANGE);
     this.props.actions.onSearchFieldChange("gia", RangeUtils.BAT_KY_RANGE);
@@ -335,7 +327,6 @@ class Search extends Component {
     this.props.actions.onSearchFieldChange("huongNha", '');
     this.props.actions.onSearchFieldChange("ngayDaDang", '');
     this.props.actions.onShowMsgChange(true);
-    this.props.actions.onResetCountResult();
     this.setState({showMore: false});
   }
 
@@ -393,8 +384,7 @@ class Search extends Component {
   }
 
   _renderBanKinhTimKiem() {
-        let place = this.props.search.form.fields.place;
-        if (this.showBanKinhTimKiem(place)){
+        if (this.showBanKinhTimKiem()){
             return this._renderSegment("Bán kính tìm kiếm (Km)", DanhMuc.getRadiusInKmValues(),
                 this.props.search.form.fields["radiusInKmSelectedIdx"], this._onBanKinhTimKiemChanged.bind(this));
         }
@@ -529,9 +519,9 @@ class Search extends Component {
       }
   }
 
-  showBanKinhTimKiem(place){
-    // return PlaceUtil.isDiaDiem(place);
-      return place.currentLocation && !isNaN(place.currentLocation.lat);
+  showBanKinhTimKiem(){
+      let {center} = this.props.search.form.fields;
+      return center && !isNaN(center.lat);
   }
 }
 

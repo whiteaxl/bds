@@ -14,13 +14,10 @@ import localStorage from '../../lib/localStorage';
 const InitialState = require('./searchInitialState').default;
 
 const {
+  ON_ALERT_US_CHANGE,
   ON_POLYGONS_CHANGE,
   ON_DRAW_MODE_CHANGE,
-  ON_RESET_COUNT_RESULT,
   ON_SHOW_MSG_CHANGE,
-  ON_COUNTING_CHANGE,
-  FETCH_COUNT_SUCCESS,
-  FETCH_COUNT_FAIL,
   ON_SEARCH_FIELD_CHANGE,
   SET_SEARCH_LOAI_TIN,
   SEARCH_STATE_LOADING,
@@ -29,7 +26,6 @@ const {
   FETCH_SEARCH_RESULT_FAIL,
   FETCH_SEARCH_RESULT_SUCCESS,
   CHANGE_LOADING_SEARCH_RESULT,
-  ON_MAP_CHANGE,
   SEARCH_LIST_LIKE_SUCCESS,
   ON_DB_CHANGE,
   SEARCH_LOAD_SAVED_SEARCH,
@@ -85,10 +81,10 @@ export default function searchReducer(state = initialState, action) {
       return state.set("drawMode", action.payload);
 
     case ON_POLYGONS_CHANGE:
-      return state.set("polygons", action.payload);
+      return state.setIn(['map', 'polygons'], action.payload);
 
-    case ON_RESET_COUNT_RESULT:
-      return state.set("countResult", 0);
+    case ON_ALERT_US_CHANGE:
+      return state.set("alertUs", action.payload);
 
     case FETCH_SEARCH_RESULT_SUCCESS :
     {
@@ -114,12 +110,11 @@ export default function searchReducer(state = initialState, action) {
       }
 
       return state.setIn(['result', "listAds"], data.list)
-          .setIn(['result', "viewport"], data.viewport)
           .set("state", SEARCH_STATE_SUCCESS)
           .setIn(['result', "errorMsg"], null)
           .set("loadingFromServer", false)
-          .setIn(["map", "region"], ApiUtils.getRegionByViewport(data.viewport))
           .set("recentSearchList", recentSearchList)
+          .setIn(['result', "totalCount"], data.totalCount)
           ;
     }
 
@@ -128,35 +123,9 @@ export default function searchReducer(state = initialState, action) {
       return state.set("loadingFromServer", action.payload)
     }
 
-    case FETCH_COUNT_FAIL:
-      return state.setIn(['result', 'errorMsg'], action.payload)
-          .set("countingFromServer", false);
-
-    case FETCH_COUNT_SUCCESS :
-    {
-      let {data} = action.payload;
-
-      return state.set("countResult", data.countResult)
-          .setIn(['result', "errorMsg"], null)
-          .set("countingFromServer", false)
-          ;
-    }
-
-    case ON_COUNTING_CHANGE :
-    {
-      return state.set("countingFromServer", action.payload)
-    }
-
     case CHANGE_SEARCH_CALLED_FROM :
     {
       return state.set("searchCalledFrom", action.payload)
-    }
-
-    case ON_MAP_CHANGE :
-    {
-      const {field, value} = action.payload;
-      let nextState = state.setIn(['map', field], value);
-      return nextState;
     }
 
     case ON_DB_CHANGE:
@@ -197,17 +166,18 @@ export default function searchReducer(state = initialState, action) {
         .setIn(['form', 'fields', "loaiTin"], cred.loaiTin)
         .setIn(['form', 'fields', "loaiNhaDat"], cred.loaiNhaDat)
         .setIn(['form', 'fields', "soPhongNguSelectedIdx"], cred.soPhongNguSelectedIdx)
-        .setIn(['form', 'fields', "soTangSelectedIdx"], cred.soTangSelectedIdx)
         .setIn(['form', 'fields', "soNhaTamSelectedIdx"], cred.soNhaTamSelectedIdx)
         .setIn(['form', 'fields', "dienTich"], cred.dienTich)
         .setIn(['form', 'fields', "gia"], cred.gia)
         .setIn(['form', 'fields', "orderBy"], cred.orderBy)
-        .setIn(['form', 'fields', "geoBox"], cred.geoBox)
-        .setIn(['form', 'fields', "place"], cred.place)
+        .setIn(['form', 'fields', "viewport"], cred.viewport)
+        .setIn(['form', 'fields', "diaChinh"], cred.diaChinh)
         .setIn(['form', 'fields', "radiusInKmSelectedIdx"], cred.radiusInKmSelectedIdx)
+        .setIn(['form', 'fields', "center"], cred.center)
         .setIn(['form', 'fields', "huongNha"], cred.huongNha)
         .setIn(['form', 'fields', "ngayDaDang"], cred.ngayDaDang)
         .setIn(['form', 'fields', "polygon"], cred.polygon)
+        .setIn(['form', 'fields', "isIncludeCountInResponse"], cred.isIncludeCountInResponse)
         ;
       return next;
     }
@@ -269,25 +239,32 @@ function buildSaveSearch(saveSearch) {
 
 
 function buildSearchCredentialFromSavedSearch(query) {
-  let {place, loaiTin, loaiNhaDat, soPhongNguGREATER, soTangGREATER, soPhongTamGREATER
-    , dienTichBETWEEN, giaBETWEEN, orderBy, geoBox, huongNha, ngayDaDang, polygon} = query;
+  let {diaChinh, loaiTin, loaiNhaDat, soPhongNguGREATER, soPhongTamGREATER
+    , dienTichBETWEEN, giaBETWEEN, orderBy, viewport, huongNha, ngayDangTinGREATER, polygon
+      , circle, isIncludeCountInResponse} = query;
 
+  let ngayDaDang = 0;
+  if (ngayDangTinGREATER) {
+    let now = moment();
+    let ngayDangTin = moment(ngayDangTinGREATER, 'YYYYMMDD');
+    ngayDaDang = now.diff(ngayDangTin, 'days');
+  }
   let ret = {
     loaiTin: loaiTin == 0 ? 'ban' : 'thue',
     loaiNhaDat: loaiNhaDat || '',
     soPhongNguSelectedIdx: danhMuc.getIdx(danhMuc.SoPhongNgu, soPhongNguGREATER),
-    soTangSelectedIdx: danhMuc.getIdx(danhMuc.SoTang, query.soTangGREATER),
     soNhaTamSelectedIdx : danhMuc.getIdx(danhMuc.SoPhongTam, soPhongTamGREATER),
     dienTich: RangeUtils.dienTichRange.rangeVal2Display(dienTichBETWEEN),
     gia: RangeUtils.sellPriceRange.rangeVal2Display(giaBETWEEN),
-    orderBy: orderBy || '',
-    geoBox: geoBox || [],
-    place: place,
-    radiusInKmSelectedIdx: danhMuc.getIdx(danhMuc.RadiusInKm, place.radiusInKm),
-    huongNha: huongNha,
+    orderBy: Object.keys(orderBy).length == 2 ? orderBy.name + orderBy.type : '',
+    viewport: viewport,
+    diaChinh : diaChinh,
+    center: circle.center || {},
+    radiusInKmSelectedIdx: danhMuc.getIdx(danhMuc.RadiusInKm, circle.radius),
+    huongNha: huongNha && huongNha.length > 0 ? huongNha[0] : 0,
     ngayDaDang: ngayDaDang, //batky
     polygon: polygon,
-    region : {}
+    isIncludeCountInResponse: isIncludeCountInResponse
   };
 
   return ret;

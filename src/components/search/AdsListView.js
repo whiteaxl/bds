@@ -85,13 +85,12 @@ class AdsListView extends React.Component {
   }
 
   _handleSearchAction(newPageNo){
-    var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
+    var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, geoBox, place, huongNha, ngayDaDang, polygon, pageNo, limit} = this.props.fields;
     var fields = {
       loaiTin: loaiTin,
       loaiNhaDat: loaiNhaDat,
       soPhongNguSelectedIdx: soPhongNguSelectedIdx,
-      soTangSelectedIdx: soTangSelectedIdx,
       soNhaTamSelectedIdx : soNhaTamSelectedIdx,
       dienTich: dienTich,
       gia: gia,

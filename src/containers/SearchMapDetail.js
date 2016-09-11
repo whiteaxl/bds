@@ -58,7 +58,7 @@ function mapStateToProps(state) {
   return {
     ... state,
     errorMsg: state.search.result.errorMsg,
-    placeFullName: state.search.form.fields.place.fullName
+    diaChinhFullName: state.search.form.fields.diaChinh.fullName
   };
 }
 

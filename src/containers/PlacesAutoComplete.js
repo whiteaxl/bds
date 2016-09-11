@@ -59,7 +59,7 @@ class PlacesAutoComplete extends React.Component {
     log.enter("PlacesAutocomplete._onPress", data);
 
     this.props.actions.onShowMsgChange(true);
-    this.props.actions.onSearchFieldChange("geoBox", []);
+    this.props.actions.onSearchFieldChange("viewport", {});
     this.props.actions.onPolygonsChange([]);
     this.props.actions.onSearchFieldChange("polygon", []);
 
@@ -76,8 +76,10 @@ class PlacesAutoComplete extends React.Component {
 
       data.fullName = data.shortName || data.fullName;
 
-      this.props.actions.onSearchFieldChange("place", data);
-      //this.props.actions.onSearchFieldChange("diaChinh", value);
+      this.props.actions.onSearchFieldChange("viewport", data.viewport);
+      let diaChinh = {tinhKhongDau: data.tinh, huyenKhongDau: data.huyen,
+          xaKhongDau: data.xa, fullName: data.fullName};
+      this.props.actions.onSearchFieldChange("diaChinh", diaChinh);
     }
 
     //if not call from Search page, then need perform action

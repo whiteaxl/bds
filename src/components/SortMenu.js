@@ -162,15 +162,15 @@ class SortMenu extends Component {
         //     }
         // }
         this.props.actions.onSearchFieldChange("orderBy", newOrderBy);
-        var {loaiTin, loaiNhaDat, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
-            dienTich, gia, giaPicker, listData, marker, geoBox, place, radiusInKmSelectedIdx,
-            huongNha, ngayDaDang, polygon, region, pageNo} = this.props.search.form.fields;
+        var {loaiTin, loaiNhaDat, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
+            dienTich, gia, giaPicker, listData, marker, viewport, diaChinh, center, radiusInKmSelectedIdx,
+            huongNha, ngayDaDang, polygon, region, pageNo, isIncludeCountInResponse} = this.props.search.form.fields;
         this.props.actions.search(
             {loaiTin: loaiTin, loaiNhaDat: loaiNhaDat, soPhongNguSelectedIdx: soPhongNguSelectedIdx,
-                soTangSelectedIdx: soTangSelectedIdx, soNhaTamSelectedIdx: soNhaTamSelectedIdx,
+                soNhaTamSelectedIdx: soNhaTamSelectedIdx, viewport: viewport, diaChinh: diaChinh, center: center,
                 dienTich: dienTich, gia: gia, giaPicker: giaPicker, orderBy: newOrderBy, listData: listData,
-                marker: marker, geoBox: geoBox, place: place, radiusInKmSelectedIdx: radiusInKmSelectedIdx,
-                huongNha: huongNha, ngayDaDang: ngayDaDang, polygon: polygon, region: region, pageNo: pageNo}
+                marker: marker, radiusInKmSelectedIdx: radiusInKmSelectedIdx, huongNha: huongNha, ngayDaDang: ngayDaDang,
+                polygon: polygon, region: region, pageNo: pageNo, isIncludeCountInResponse: isIncludeCountInResponse}
             , () => { }
         );
     }

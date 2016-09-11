@@ -53,8 +53,8 @@ function convertAds(e) {
   var diaChiFullName = e.place.diaChiFullName;
   e.diaChi = diaChiFullName;
   e.dienTichFmt = util.getDienTichDisplay(e.dienTich);
-  e.soPhongNguFmt = e.soPhongNgu ? e.soPhongNgu + "pn" : null;
-  e.soTangFmt = e.soTang ? e.soTang + "t" : null;
+  e.soPhongNguFmt = e.soPhongNgu ? e.soPhongNgu + "p.ngủ" : null;
+  e.soTangFmt = e.soTang ? e.soTang + "tầng" : null;
   e.giaFmt = util.getPriceDisplay(e.gia, e.loaiTin);
   return e;
 }

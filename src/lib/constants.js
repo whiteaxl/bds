@@ -1,15 +1,11 @@
 import keyMirror from 'key-mirror';
 
 export default keyMirror({
+  ON_ALERT_US_CHANGE: null,
   ON_POLYGONS_CHANGE: null,
   ON_DRAW_MODE_CHANGE: null,
-  ON_RESET_COUNT_RESULT: null,
   ON_SHOW_MSG_CHANGE: null,
-  ON_COUNTING_CHANGE: null,
-  FETCH_COUNT_SUCCESS: null,
-  FETCH_COUNT_FAIL: null,
 
-  ON_MAP_CHANGE: null,
   ON_SEARCH_FIELD_CHANGE : null,
   SEARCH_STATE_INPUT: null,
   SEARCH_STATE_LOADING: null,

@@ -11,13 +11,10 @@ import db from '../../lib/localDB';
 import localStorage  from '../../lib/localStorage';
 
 const {
+  ON_ALERT_US_CHANGE,
   ON_POLYGONS_CHANGE,
   ON_DRAW_MODE_CHANGE,
-  ON_RESET_COUNT_RESULT,
   ON_SHOW_MSG_CHANGE,
-  ON_COUNTING_CHANGE,
-  FETCH_COUNT_SUCCESS,
-  FETCH_COUNT_FAIL,
   ON_SEARCH_FIELD_CHANGE,
   SET_SEARCH_LOAI_TIN,
   FETCH_SEARCH_RESULT_FAIL,
@@ -27,7 +24,6 @@ const {
   FETCH_DETAIL_SUCCESS,
   SET_LOADING_DETAIL,
   SEARCH_STATE_INPUT,
-  ON_MAP_CHANGE,
   SEARCH_LIST_LIKE_SUCCESS,
   SEARCH_LOAD_SAVED_SEARCH,
   CHANGE_LOADING_HOME_DATA,
@@ -35,13 +31,6 @@ const {
   CHANGE_SEARCH_CALLED_FROM
 
 } = require('../../lib/constants').default;
-
-export function onMapChange(field, value) {
-  return {
-    type: ON_MAP_CHANGE,
-    payload: {field: field, value: value}
-  };
-}
 
 export function onSearchFieldChange(field, value) {
   return {
@@ -79,27 +68,6 @@ export function changeLoadingSearchResult(loading) {
   }
 }
 
-export function fetchCountFail(error) {
-  return {
-    type: FETCH_COUNT_FAIL,
-    payload: error
-  };
-}
-
-export function fetchCountSuccess(data) {
-  return {
-    type: FETCH_COUNT_SUCCESS,
-    payload: data
-  }
-}
-
-export function onCountingChange(loading) {
-  return {
-    type: ON_COUNTING_CHANGE,
-    payload: loading
-  }
-}
-
 export function onShowMsgChange(loading) {
   return {
     type: ON_SHOW_MSG_CHANGE,
@@ -121,10 +89,10 @@ export function onPolygonsChange(loading) {
   }
 }
 
-export function onResetCountResult() {
+export function onAlertUsChange(loading) {
   return {
-    type: ON_RESET_COUNT_RESULT,
-    payload: null
+    type: ON_ALERT_US_CHANGE,
+    payload: loading
   }
 }
 
@@ -179,43 +147,12 @@ function callApiSearch(params, dispatch, successCallback) {
     });
 }
 
-function callApiCount(params, dispatch, successCallback) {
-  dispatch(onCountingChange(true));
-
-  return Api.countItems(params)
-      .then((data) => {
-        if (data) {
-          //let listAds = data.list;
-          log.info("searchActions.count, Number of result: " + data.countResult);
-          //log.info("searchActions.search", data);
-
-          dispatch(fetchCountSuccess({data}));
-
-          successCallback();
-        } else if (data.error) {
-          dispatch(fetchCountFail(data.error));
-        }
-        else {
-          dispatch(fetchCountFail(gui.ERR_LoiKetNoiMayChu));
-          //Alert.alert(gui.ERR_LoiKetNoiMayChu)
-        }
-      });
-}
-
 export function search(credential, successCallback) {
   return dispatch => {
     let params = Api.convertFieldsToQueryParams(credential);
     dispatch(changeSearchCalledFrom("Search"));
 
     return callApiSearch(params, dispatch, successCallback)
-  }
-}
-
-export function count(credential, successCallback) {
-  return dispatch => {
-    let params = Api.convertFieldsToQueryParams(credential);
-
-    return callApiCount(params, dispatch, successCallback)
   }
 }
 

@@ -8,11 +8,10 @@ import cfg from "../cfg";
 import cancelablFetch from 'react-native-cancelable-fetch'
 
 var rootUrl = `http://${cfg.server}:5000/api`;
-var findUrl = rootUrl + "/find";
+var findUrl = rootUrl + "/v2/find";
 var placeUrl = rootUrl + "/findPlace";
 var detailUrl = rootUrl + "/detail";
 var homeData4AppUrl = rootUrl + "/homeData4App";
-var countUrl = rootUrl + "/count";
 
 
 
@@ -23,14 +22,13 @@ var Api = {
   _requestCnt : 0,
 
   convertFieldsToQueryParams : function(fields){
-    var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
-      radiusInKmSelectedIdx, dienTich, orderBy, place, geoBox, huongNha, ngayDaDang, polygon, pageNo, limit} = fields;
+    var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
+      radiusInKmSelectedIdx, dienTich, orderBy, diaChinh, center, viewport, huongNha, ngayDaDang, polygon, pageNo, limit, isIncludeCountInResponse} = fields;
 
-    if (place) {
-      place.radiusInKm = DanhMuc.getRadiusInKmByIndex(radiusInKmSelectedIdx) || undefined;
-      if (place.currentLocation==="") {
-        place.currentLocation = undefined;
-      }
+    let circle = {};
+    if (Object.keys(center).length == 2) {
+      circle.radius = DanhMuc.getRadiusInKmByIndex(radiusInKmSelectedIdx) || undefined;
+      circle.center = center;
     }
 
     let giaRange = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange ;
@@ -40,17 +38,18 @@ var Api = {
       'loaiNhaDat' : loaiNhaDat || undefined,
       'giaBETWEEN' : gia ? giaRange.toValRange(gia) : gia,
       'soPhongNguGREATER' : DanhMuc.getSoPhongByIndex(soPhongNguSelectedIdx) || undefined,
-      'soTangGREATER' : DanhMuc.getSoTangByIndex(soTangSelectedIdx) || undefined,
       'soPhongTamGREATER' : DanhMuc.getSoPhongTamByIndex(soNhaTamSelectedIdx) || undefined,
       'dienTichBETWEEN' : dienTich ? RangeUtils.dienTichRange.toValRange(dienTich) : undefined,
-      'orderBy' : orderBy || undefined,
-      'place':place || undefined,
-      'geoBox' : geoBox.length===4 ? geoBox : undefined,
+      'orderBy' : orderBy ? {name: DanhMuc.getOrderKey(orderBy), type: DanhMuc.getOrderType(orderBy)} : undefined,
+      'diaChinh': Object.keys(diaChinh).length == 2 ? diaChinh : undefined,
+      'circle' : Object.keys(circle).length == 2 ? circle : undefined,
+      'viewport' : Object.keys(viewport).length == 2 ? viewport : undefined,
       'limit' : limit || maxRows || undefined,
-      'huongNha' : huongNha || undefined,
-      'ngayDaDang' : ngayDaDang || undefined,
-      'polygon' : polygon || undefined,
-      'pageNo' : pageNo || undefined
+      'huongNha' : [huongNha] || undefined,
+      'ngayDangTinGREATER' : DanhMuc.getDateFromNow(ngayDaDang) || undefined,
+      'polygon' : polygon.length ? polygon : undefined,
+      'pageNo' : pageNo || undefined,
+      'isIncludeCountInResponse' : isIncludeCountInResponse || undefined
     };
 
     return params
@@ -65,26 +64,28 @@ var Api = {
       return range;
     };
 
-    let {loaiTin, loaiNhaDat, giaBETWEEN, soPhongNguGREATER, soTangGREATER, dienTichBETWEEN,
-      orderBy, place, geoBox, limit, huongNha, ngayDaDang, polygon, pageNo, soPhongTamGREATER
+    let {loaiTin, loaiNhaDat, giaBETWEEN, soPhongNguGREATER, dienTichBETWEEN,
+      orderBy, limit, huongNha, ngayDangTinGREATER, polygon, pageNo, soPhongTamGREATER,
+      diaChinh, circle, viewport, isIncludeCountInResponse
     } = query;
 
     let tmp = {
       'tin' : loaiTin,
-      'nhàDat' : loaiNhaDat == 0 ? undefined : loaiNhaDat,
+      'nhà đất' : loaiNhaDat == 0 ? undefined : loaiNhaDat,
       'giá' : toStrRange(giaBETWEEN),
       'ngủ' : soPhongNguGREATER == 0 ? undefined : soPhongNguGREATER,
       'tắm' : soPhongTamGREATER == 0 ? undefined : soPhongTamGREATER,
-      'tầng' : soTangGREATER == 0 ? undefined : soTangGREATER,
       'dt' : toStrRange(dienTichBETWEEN),
       'orderBy' : orderBy ,
-      'place':place ? place.fullName + "-" + place.radiusInKm : undefined ,
-      'geoBox' : geoBox,
+      'diaChinh': diaChinh ,
+      'viewport' : viewport,
+      'circle' : circle,
       'limit' : limit || maxRows || undefined,
       'hướng' : huongNha || undefined,
-      'ngày' : ngayDaDang == 0 ? undefined : ngayDaDang,
+      'ngày' : ngayDangTinGREATER || undefined,
       'polygon' : polygon || undefined,
-      'pageNo' : pageNo || undefined
+      'pageNo' : pageNo || undefined,
+      'isIncludeCountInResponse' : isIncludeCountInResponse || undefined
     };
 
     return JSON.stringify(tmp);
@@ -119,24 +120,6 @@ var Api = {
       return e;
     });
   },
-
-    countItems: function(params) {
-        console.log(countUrl + "?" + JSON.stringify(params));
-        return fetch(`${countUrl}`, {
-            method: 'POST',
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(params)
-        })
-            .then(ApiUtils.checkStatus)
-            .then(response => response.json())
-            .catch(e => {
-                console.log("Error when count: " + countUrl,e);
-                return e;
-            });
-    },
 
 //return result = {length:1, list=[{name:'', geo:{lon, lat}]}
     getPlaces(queryText) {

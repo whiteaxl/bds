@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 var danhMuc = {};
 
 danhMuc.BAT_KY = "Bất kỳ";
@@ -243,6 +245,22 @@ danhMuc.goiTin = [
     "30",
     "90"
 ]
+
+danhMuc.getOrderKey = function (key) {
+    return key.indexOf("DESC") !== -1 ? key.substring(0, key.length-4) :
+        key.substring(0, key.length-3);
+}
+
+danhMuc.getOrderType = function (key) {
+    return (key && key.indexOf("ASC") !== -1) ? "ASC" : "DESC";
+}
+
+danhMuc.getDateFromNow = function (days) {
+    if (!days || days == '') {
+        return undefined;
+    }
+    return moment().subtract('days', days).format('YYYYMMDD');
+}
 
 danhMuc.getDanhMucKeys = function (hashDanhMuc) {
     var result = [];

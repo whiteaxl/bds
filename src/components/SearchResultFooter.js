@@ -22,7 +22,7 @@ var SearchResultFooter = React.createClass({
   render: function() {
     return <View style={myStyles.searchButton}>
       <View style={myStyles.searchListButton}>
-        <SortMenu isDiaDiem={PlaceUtil.isDiaDiem(this.props.place)}/>
+        <SortMenu isDiaDiem={Object.keys(this.props.center).length == 2 && !isNaN(this.props.center.lat)}/>
           <Button onPress={this._onAlertSaveSearch}
                   style={[myStyles.buttonText, {fontWeight : '500'}]}>Lưu tìm kiếm</Button>
           <Button onPress={this._onMap}
@@ -68,7 +68,7 @@ var SearchResultFooter = React.createClass({
 
   _onMap() {
     console.log("On Map pressed!");
-    Actions.SearchResultMap({type: "reset", viewport: this.props.place.viewport});
+    Actions.SearchResultMap({type: "reset", viewport: this.props.viewport});
     console.log("On Map pressed completed");
   }
 });

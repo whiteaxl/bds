@@ -58,11 +58,11 @@ class AdsAlertUs extends Component {
     }
 
     setAlertUs(option) {
-        this.props.actions.onSearchFieldChange("alertUs", option);
+        this.props.actions.onAlertUsChange(option);
     }
 
     getAdsAlertUsVal() {
-        var alertUsVal = this.props.search.form.fields.alertUs;
+        var alertUsVal = this.props.search.alertUs;
         var adsAlertUsValues = DanhMuc.getAdsAlertUsValues();
         if (!alertUsVal) {
             alertUsVal = adsAlertUsValues[0];

@@ -49,14 +49,13 @@ function mapStateToProps(state) {
     return {
         listAds: state.search.result.listAds,
         loading: state.search.loadingFromServer,
-        counting: state.search.countingFromServer,
         errorMsg: state.search.result.errorMsg,
         adsLikes: currentUser && currentUser.adsLikes,
         loggedIn: state.global.loggedIn,
         userID: currentUser && currentUser.userID,
         fields : state.search.form.fields,
         showMessage: state.search.showMessage,
-        countResult: state.search.countResult,
+        totalCount: state.search.result.totalCount,
         polygons: state.search.polygons
     };
 }
@@ -87,7 +86,6 @@ class SearchResultList extends Component {
     }
 
     componentDidMount() {
-        // this._fillCountAds(() => {});
         this.props.actions.onShowMsgChange(true);
     }
 
@@ -101,7 +99,7 @@ class SearchResultList extends Component {
     }
 
     _getHeaderTitle() {
-        let place = this.props.fields.place;
+        let diaChinh = this.props.fields.diaChinh;
 
         //1. Search by diaChinh, then name = diaChinh's name
         if (this.props.polygons && this.props.polygons.length) {
@@ -111,8 +109,8 @@ class SearchResultList extends Component {
 
         let placeName;
         //2. Search by Polygon: name is just center
-        if (place.placeId) {
-            placeName = place.fullName;
+        if (diaChinh.tinhKhongDau) {
+            placeName = diaChinh.fullName;
         } else { //others: banKinh or currentLocation
             //let geoBox = apiUtils.getBbox(r);
             //placeName = geoBox.toString()
@@ -130,7 +128,6 @@ class SearchResultList extends Component {
         //log.info(this.props);
         if (this.props.showMessage && !this.state.messageDone) {
             this.state.messageDone = true;
-            // this._fillCountAds(() => {});
             this._onSetupMessageTimeout();
         }
         let placeName = this._getHeaderTitle();
@@ -145,7 +142,8 @@ class SearchResultList extends Component {
 
                 {this._renderTotalResultView()}
 
-                <SearchResultFooter place = {this.props.fields.place}
+                <SearchResultFooter center = {this.props.fields.center}
+                                    viewport = {this.props.fields.viewport}
                                     loggedIn = {this.props.loggedIn}
                                     saveSearch = {this.props.actions.saveSearch}
                                     query = {findApi.convertFieldsToQueryParams(this.props.fields)}
@@ -156,23 +154,17 @@ class SearchResultList extends Component {
         )
     }
 
-    _fillCountAds(countCallback) {
-        this.props.actions.count(
-            this.props.fields
-            , countCallback);
-    }
-
     _renderTotalResultView(){
-        let {listAds, loading, counting, showMessage, fields} = this.props;
+        let {listAds, loading, showMessage, fields} = this.props;
         let numberOfAds = listAds.length;
         let pageNo = fields.pageNo;
         let limit = fields.limit;
-        let countResult = this.props.countResult;
+        let totalCount = this.props.totalCount;
         let endAdsIndex = (pageNo-1)*limit+numberOfAds;
-        let rangeAds = (endAdsIndex > 0 ? ((pageNo-1)*limit+1) + "-" + endAdsIndex : "0") + " / " + (countResult > 0 ? countResult: endAdsIndex);
+        let rangeAds = totalCount > 0 ? (endAdsIndex > 0 ? ((pageNo-1)*limit+1) + "-" + endAdsIndex : "0") + " / " + totalCount : numberOfAds;
         let textValue = rangeAds + " tin tìm thấy được hiển thị";
         
-        if(loading || counting){
+        if(loading){
             return (<View style={myStyles.resultContainer}>
                 {/*<Animatable.View animation={showMessage ? "fadeIn" : "fadeOut"}
                                  duration={showMessage ? 500 : 1000}>
