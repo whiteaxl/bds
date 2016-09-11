@@ -127,7 +127,7 @@ class App extends React.Component {
 
           <Scene key='LoginRegister' component={LoginRegister} title="Register Screen" direction="vertical"/>
 
-          <Scene key='Search' component={Search} title="Tìm kiếm" hideNavBar={true} direction="vertical"/>
+          <Scene key='Search' component={Search} title="Tìm kiếm" hideNavBar={true} direction="vertical" />
           <Scene key='SearchResultList' component={SearchResultList} title="Danh sách" hideNavBar={true}/>
           <Scene key='SearchResultMap' component={SearchResultMap} title="Bản đồ" hideNavBar={true}/>
           <Scene key='PropertyTypes' component={PropertyTypes} title="Loại nhà đất" hideNavBar={true}/>

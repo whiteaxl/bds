@@ -131,7 +131,7 @@ class AdsListView extends React.Component {
 
   renderRow(rowData) {
     return (
-      <AdsRow ads={rowData}
+      <AdsRow ads={rowData} noCoverUrl={this.props.noCoverUrl}
               userID = {this.props.userID}
               likeAds = {this.props.actions.likeAds}
               loggedIn = {this.props.loggedIn}

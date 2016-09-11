@@ -33,6 +33,9 @@ import AdsListView from '../components/search/AdsListView';
 
 import * as Animatable from 'react-native-animatable';
 
+import cfg from "../cfg";
+
+const noCoverUrl = cfg.noCoverUrl;
 
 const actions = [
   globalActions,
@@ -81,7 +84,10 @@ class SearchResultList extends Component {
 
     componentWillMount() {
         this.state.messageDone = false;
-        this._fillCountAds(() => {});
+    }
+
+    componentDidMount() {
+        // this._fillCountAds(() => {});
         this.props.actions.onShowMsgChange(true);
     }
 
@@ -124,7 +130,8 @@ class SearchResultList extends Component {
         //log.info(this.props);
         if (this.props.showMessage && !this.state.messageDone) {
             this.state.messageDone = true;
-            this._fillCountAds(this._onSetupMessageTimeout.bind(this));
+            // this._fillCountAds(() => {});
+            this._onSetupMessageTimeout();
         }
         let placeName = this._getHeaderTitle();
         return (
@@ -134,7 +141,7 @@ class SearchResultList extends Component {
                     <SearchHeader placeName={placeName}/>
                 </View>
 
-                <AdsListView {...this.props} />
+                <AdsListView {...this.props} noCoverUrl={noCoverUrl} />
 
                 {this._renderTotalResultView()}
 
@@ -167,12 +174,12 @@ class SearchResultList extends Component {
         
         if(loading || counting){
             return (<View style={myStyles.resultContainer}>
-                <Animatable.View animation={showMessage ? "fadeIn" : "fadeOut"}
+                {/*<Animatable.View animation={showMessage ? "fadeIn" : "fadeOut"}
                                  duration={showMessage ? 500 : 1000}>
                     <View style={[myStyles.resultText]}>
                         <Text style={myStyles.resultIcon}>  Đang tải dữ liệu ... </Text>
                     </View>
-                </Animatable.View>
+                </Animatable.View>*/}
             </View>)
         }
 

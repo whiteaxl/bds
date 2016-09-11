@@ -22,7 +22,7 @@ export default class IntroSwiper extends React.Component {
           <Text style={styles.text} numberOfLines={2}></Text>}
         >
           <Image
-            style={styles.image}
+            style={styles.image} resizeMode = {'cover'}
             source={require('../assets/image/welcome/welcome.png')}
           />
         </View>

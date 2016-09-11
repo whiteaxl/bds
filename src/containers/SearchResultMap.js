@@ -20,7 +20,8 @@ import { Text,
     Image,
     SegmentedControlIOS,
     PanResponder,
-    AlertIOS } from 'react-native';
+    AlertIOS,
+    StatusBar } from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -148,6 +149,7 @@ class SearchResultMap extends Component {
   constructor(props) {
     console.log("Call SearchResultMap.constructor");
     super(props);
+    StatusBar.setBarStyle('light-content');
 
     var region = this.props.search.form.fields.region;  //always in reset mode, so this method will be called every time...
 
@@ -168,7 +170,8 @@ class SearchResultMap extends Component {
   }
 
   getInitialRegion() {
-    var region = isNaN(this.props.search.map.region.latitude) ? this.props.search.form.fields.region : this.props.search.map.region;
+    var isDrawed = this.props.search.polygons && this.props.search.polygons.length > 0;
+    var region = isNaN(this.props.search.map.region.latitude) || isDrawed ? this.props.search.form.fields.region : this.props.search.map.region;
     if (Object.keys(region).length <= 0 || isNaN(region.latitude)) {
       region = {latitude: LATITUDE, longitude: LONGITUDE, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA};
     }
@@ -627,9 +630,9 @@ class SearchResultMap extends Component {
     var geoBox = apiUtils.getBbox(region);
     this.props.actions.onSearchFieldChange("geoBox", geoBox);
 
-    if (this.props.search.autoLoadAds && this.props.search.polygons.length <= 0){
+    if (this.props.search.autoLoadAds){
       this.props.actions.onSearchFieldChange("pageNo", 1);
-      this._refreshListData(geoBox, [], this._onSetupMessageTimeout.bind(this), 1);
+      this._refreshListData(geoBox, null, this._onSetupMessageTimeout.bind(this), 1);
       this._fillCountAds(() => {});
     }
   }
@@ -930,6 +933,7 @@ class SearchResultMap extends Component {
         var polygon = apiUtils.convertPolygon(polygons[0]);
         this.props.actions.onSearchFieldChange("geoBox", geoBox);
         this.props.actions.onSearchFieldChange("polygon", polygon);
+        this.props.actions.onSearchFieldChange("place", {});
         this.props.actions.onSearchFieldChange("pageNo", 1);
         this._refreshListData(geoBox, polygon, () => this._updateMapView(polygons), 1);
         this._fillCountAds(() => {});

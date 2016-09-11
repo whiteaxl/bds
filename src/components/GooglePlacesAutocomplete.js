@@ -310,7 +310,7 @@ const GooglePlacesAutocomplete = React.createClass({
       if (pre == this.currentText) {
         this._request(pre);
       }
-    }, 400);
+    }, 100);
 
     this.setState({
       text: text,

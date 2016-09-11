@@ -8,7 +8,7 @@ import * as searchActions from '../reducers/search/searchActions';
 import {Map} from 'immutable';
 
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, StatusBar, ScrollView } from 'react-native';
+import {View, Text, StyleSheet, StatusBar, ScrollView, Dimensions } from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
 
@@ -47,12 +47,13 @@ function mapDispatchToProps(dispatch) {
 
 const orderTypes1 = [
     'Mặc định',
-    'Ngày đăng',
-    'Giá (Tăng dần)',
-    'Giá (Giảm dần)',
-    'Giá/m²',
-    'Số phòng ngủ',
-    'Diện tích'
+    'Ngày đăng mới nhất',
+    'Giá tăng dần',
+    'Giá giảm dần',
+    'Giá/m² tăng dần',
+    'Giá/m² giảm dần',
+    'Diện tích tăng dần',
+    'Diện tích giảm dần'
 ];
 
 const orderKeys1 = [
@@ -60,30 +61,33 @@ const orderKeys1 = [
     'ngayDangTinDESC',
     'giaASC',
     'giaDESC',
+    'giaM2ASC',
     'giaM2DESC',
-    'soPhongNguASC',
+    'dienTichASC',
     'dienTichDESC'
 ];
 
 const orderTypes2 = [
     'Mặc định',
-    'Ngày đăng',
-    'Giá (Tăng dần)',
-    'Giá (Giảm dần)',
-    'Giá/m²',
-    'Số phòng ngủ',
-    'Khoảng cách',
-    'Diện tích'
+    'Ngày đăng mới nhất',
+    'Khoảng cách gần tâm nhất',
+    'Giá tăng dần',
+    'Giá giảm dần',
+    'Giá/m² tăng dần',
+    'Giá/m² giảm dần',
+    'Diện tích tăng dần',
+    'Diện tích giảm dần'
 ];
 
 const orderKeys2 = [
     '',
     'ngayDangTinDESC',
+    'khoangCachASC',
     'giaASC',
     'giaDESC',
+    'giaM2ASC',
     'giaM2DESC',
-    'soPhongNguASC',
-    'khoangCachDESC',
+    'dienTichASC',
     'dienTichDESC'
 ];
 
@@ -99,7 +103,7 @@ class SortMenu extends Component {
         var optionList = [];
         for (var i = 0; i < orderTypes.length; i++) {
             var orderType = orderTypes[i];
-            var isSelected = (this._getOrderKey(orderType) == this._getOrderKey(orderBy));
+            var isSelected = (orderType == orderBy);
             var isLastRow = (i == orderTypes.length-1);
             var optionProps = (i == 0) ? {marginTop: 10} : (isLastRow ? {marginBottom: 10} : {});
             optionList.push(
@@ -143,42 +147,43 @@ class SortMenu extends Component {
 
     _onApply(option) {
         var {isDiaDiem} = this.props;
-        var oldOrderBy = this.props.search.form.fields.orderBy;
-        var oldSortType = this._getSortType(oldOrderBy);
+        // var oldOrderBy = this.props.search.form.fields.orderBy;
+        // var oldSortType = this._getSortType(oldOrderBy);
         var newOrderBy = this.getKeyByValue(option, isDiaDiem);
-        if (this._getOrderKey(newOrderBy) == this._getOrderKey(oldOrderBy) &&
-            (newOrderBy.indexOf("ngayDangTin") !== -1
-            || newOrderBy.indexOf("giaM2") !== -1
-            || newOrderBy.indexOf("soPhongNgu") !== -1
-            || newOrderBy.indexOf("khoangCach") !== -1
-            || newOrderBy.indexOf("dienTich") !== -1)) {
-            newOrderBy = this._getOrderKey(newOrderBy);
-            if ('giaASC' != newOrderBy && 'giaDESC' != newOrderBy) {
-                newOrderBy = (oldSortType == "ASC") ? newOrderBy + "DESC" : newOrderBy + "ASC";
-            }
-        }
+        // if (this._getOrderKey(newOrderBy) == this._getOrderKey(oldOrderBy) &&
+        //     (newOrderBy.indexOf("ngayDangTin") !== -1
+        //     || newOrderBy.indexOf("giaM2") !== -1
+        //     || newOrderBy.indexOf("soPhongNgu") !== -1
+        //     || newOrderBy.indexOf("khoangCach") !== -1
+        //     || newOrderBy.indexOf("dienTich") !== -1)) {
+        //     newOrderBy = this._getOrderKey(newOrderBy);
+        //     if ('giaASC' != newOrderBy && 'giaDESC' != newOrderBy) {
+        //         newOrderBy = (oldSortType == "ASC") ? newOrderBy + "DESC" : newOrderBy + "ASC";
+        //     }
+        // }
         this.props.actions.onSearchFieldChange("orderBy", newOrderBy);
         var {loaiTin, loaiNhaDat, soPhongNguSelectedIdx, soTangSelectedIdx, soNhaTamSelectedIdx,
             dienTich, gia, giaPicker, listData, marker, geoBox, place, radiusInKmSelectedIdx,
-            huongNha, ngayDaDang, polygon, region} = this.props.search.form.fields;
+            huongNha, ngayDaDang, polygon, region, pageNo} = this.props.search.form.fields;
         this.props.actions.search(
             {loaiTin: loaiTin, loaiNhaDat: loaiNhaDat, soPhongNguSelectedIdx: soPhongNguSelectedIdx,
                 soTangSelectedIdx: soTangSelectedIdx, soNhaTamSelectedIdx: soNhaTamSelectedIdx,
                 dienTich: dienTich, gia: gia, giaPicker: giaPicker, orderBy: newOrderBy, listData: listData,
                 marker: marker, geoBox: geoBox, place: place, radiusInKmSelectedIdx: radiusInKmSelectedIdx,
-                huongNha: huongNha, ngayDaDang: ngayDaDang, polygon: polygon, region: region}
+                huongNha: huongNha, ngayDaDang: ngayDaDang, polygon: polygon, region: region, pageNo: pageNo}
             , () => { }
         );
     }
 
     getValueByKey(key, isDiaDiem) {
-        var findKey = this._getOrderKey(key);
+        // var findKey = this._getOrderKey(key);
+        var findKey = key;
         var orderTypes = isDiaDiem ? orderTypes2 : orderTypes1;
         var orderKeys = isDiaDiem ? orderKeys2 : orderKeys1;
         var value = '';
         for (var i = 0; i < orderKeys.length; i++) {
             var orderKey = orderKeys[i];
-            orderKey = this._getOrderKey(orderKey);
+            // orderKey = this._getOrderKey(orderKey);
             if (findKey == orderKey) {
                 value = orderTypes[i];
                 break;
@@ -248,16 +253,18 @@ var myStyles = StyleSheet.create({
     dropdownOptions: {
         borderColor: '#ccc',
         borderWidth: 1,
-        marginTop: -320,
+        marginTop: -370,
         left: 10,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        width: 2*Dimensions.get('window').width/3-10
     },
     dropdownOptions2: {
         borderColor: '#ccc',
         borderWidth: 1,
-        marginTop: -280,
+        marginTop: -330,
         left: 10,
-        overflow: 'hidden'
+        overflow: 'hidden',
+        width: 2*Dimensions.get('window').width/3-10
     },
     sortText: {
         fontSize: gui.buttonFontSize

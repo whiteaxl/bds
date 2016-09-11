@@ -9,7 +9,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import log from '../../lib/logUtil';
 import DanhMuc from '../../assets/DanhMuc';
 import MHeartIcon from '../MHeartIcon';
-import Swipeout from '../MSwipeout';
+import Swipeout from '../MSwipeout2';
 
 var imgHeight = 181;
 
@@ -55,42 +55,42 @@ class AdsRow extends React.Component {
     if (ads.image) {
       if (!ads.image.images || ads.image.images.length===0) {
         return (
-          <MyImage imageIndex={0} ads={ads} imageUrl={ads.image.cover} />
+          <MyImage imageIndex={0} ads={ads} imageUrl={ads.image.cover} noCoverUrl={this.props.noCoverUrl} />
         )
       }
 
       let list = [];
       for (var i=0; i < ads.image.images.length ; i++) {
-        if (i==0) {
-          list.push(ads.image.images[i]);
-        } else {
-          list.push(ads.image.images[i]);
-        }
+        list.push(ads.image.images[i]);
       }
 
       return list.map(imageUrl => {
-        return <MyImage key={imageIndex} imageIndex={imageIndex++} ads={ads} imageUrl={imageUrl} />
+        return <MyImage key={imageIndex} imageIndex={imageIndex++} ads={ads} imageUrl={imageUrl}
+                        noCoverUrl={this.props.noCoverUrl}/>
       });
 
     } else {
       return (
-        <MyImage imageIndex={0} ads={ads} imageUrl={''} />
+        <MyImage imageIndex={0} ads={ads} imageUrl={this.props.noCoverUrl} noCoverUrl={this.props.noCoverUrl} />
       );
     }
   }
 
-  getMoreInfo(loaiNhaDat, dienTich, soPhongNgu, soTang) {
+  getMoreInfo(loaiTin, loaiNhaDat, dienTich, soPhongNgu, soTang) {
     var moreInfo = '';
-    if (loaiNhaDat == DanhMuc.LoaiNhaDatKey[1]) {
+    var loaiNhaDatKeys = loaiTin ? DanhMuc.LoaiNhaDatThueKey : DanhMuc.LoaiNhaDatBanKey;
+    if (loaiNhaDat == loaiNhaDatKeys[1]) {
       moreInfo = ' ' + dienTich + soPhongNgu;
     }
-    if ((loaiNhaDat == DanhMuc.LoaiNhaDatKey[2])
-      || (loaiNhaDat == DanhMuc.LoaiNhaDatKey[3])
-      || (loaiNhaDat == DanhMuc.LoaiNhaDatKey[4])) {
+    else if ( !loaiTin && ((loaiNhaDat == loaiNhaDatKeys[2])
+      || (loaiNhaDat == loaiNhaDatKeys[3])
+      || (loaiNhaDat == loaiNhaDatKeys[4])) ||
+        loaiTin && ((loaiNhaDat == loaiNhaDatKeys[2])
+        || (loaiNhaDat == loaiNhaDatKeys[3])
+        || (loaiNhaDat == loaiNhaDatKeys[6]))) {
       moreInfo = ' ' + dienTich + soTang;
     }
-    if ((loaiNhaDat == DanhMuc.LoaiNhaDatKey[5])
-      || (loaiNhaDat == DanhMuc.LoaiNhaDatKey[6])) {
+    else {
       moreInfo = ' ' + dienTich;
     }
     return moreInfo;
@@ -98,7 +98,8 @@ class AdsRow extends React.Component {
 
   render() {
     const {ads} = this.props;
-    
+
+    var loaiTin = ads.loaiTin;
     var diaChi = ads.diaChi;
     var loaiNhaDat = ads.loaiNhaDat;
     var dienTich = '';
@@ -107,12 +108,12 @@ class AdsRow extends React.Component {
     }
     var soPhongNgu = '';
     if (ads.soPhongNguFmt) {
-      soPhongNgu = " " + ads.soPhongNguFmt;
+      soPhongNgu = "   " + ads.soPhongNguFmt;
     }
 
     var soTang = '';
     if (ads.soTangFmt) {
-      soTang = " " + ads.soTangFmt;
+      soTang = "   " + ads.soTangFmt;
     }
     var maxDiaChiLength = 25;
 
@@ -128,13 +129,13 @@ class AdsRow extends React.Component {
     if (diaChi.length < ads.diaChi.length) {
       diaChi = diaChi + '...';
     }
-    var moreInfo = this.getMoreInfo(loaiNhaDat, dienTich, soPhongNgu, soTang);
+    var moreInfo = this.getMoreInfo(loaiTin, loaiNhaDat, dienTich, soPhongNgu, soTang);
 
     return (
       <View key={ads.adsID}>
         <View style={myStyles.detail}>
           <Swiper style={myStyles.wrapper} height={imgHeight}
-                  showsButtons={false} autoplay={false} loop={false}
+                  showsButtons={false} autoplay={false} loop={false} bounces={true}
                   dot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]} />}
                   activeDot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]}/>}
           >
@@ -166,19 +167,30 @@ class AdsRow extends React.Component {
 }
 
 class MyImage extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      downloaded: false
+    }
+  }
   render() {
     return(
-      <Swipeout right={[]} left={[]} key={"img"+(this.props.imageIndex)}>
-      <View style={myStyles.slide}>
+      <View style={myStyles.slide} key={"img"+(this.props.imageIndex)}>
         <TouchableHighlight onPress={() => Actions.SearchResultDetail({adsID: this.props.ads.adsID, source: 'server'})}>
-          <Image style={myStyles.thumb} source={{uri: `${this.props.imageUrl}`}}>
-            <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.9)']}
+          { this.state.downloaded ?
+          <Image style={myStyles.thumb} source={{uri: `${this.props.imageUrl}`}} >
+            <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.55)']}
                             style={myStyles.linearGradient2}>
             </LinearGradient>
-          </Image>
+          </Image> :
+          <Image style={myStyles.thumb} source={{uri: `${this.props.noCoverUrl}`}}
+                 onLoadEnd={() => this.setState({downloaded: true})}>
+            <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.55)']}
+                            style={myStyles.linearGradient2}>
+            </LinearGradient>
+          </Image> }
         </TouchableHighlight>
       </View>
-      </Swipeout>
     );
   }
 }
@@ -194,7 +206,9 @@ const myStyles = StyleSheet.create({
     marginBottom: 3,
     bottom: 32
   },
-  wrapper: {},
+  wrapper: {
+    backgroundColor: 'black'
+  },
   searchListViewRowAlign: {
     position: 'absolute',
     backgroundColor: 'transparent',

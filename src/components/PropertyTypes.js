@@ -49,10 +49,13 @@ function mapDispatchToProps(dispatch) {
 }
 
 var loaiNhaDatValues = [];
+var loaiNhaDatKeys = [];
 
 class PropertyTypes extends Component {
   constructor(props) {
     super(props);
+    var loaiTin = this.getLoaiTin();
+    loaiNhaDatKeys = loaiTin=='ban' ? DanhMuc.LoaiNhaDatBanKey : DanhMuc.LoaiNhaDatThueKey;
     var loaiNhaDatVal = this.getLoaiNhaDatVal();
     this.state = {
         loaiNhaDat: loaiNhaDatVal
@@ -117,8 +120,8 @@ class PropertyTypes extends Component {
 
   getValueByKey(values, key) {
     var value = '';
-    for (var i = 0; i < DanhMuc.LoaiNhaDatKey.length; i++) {
-      var loaiKey = DanhMuc.LoaiNhaDatKey[i];
+    for (var i = 0; i < loaiNhaDatKeys.length; i++) {
+      var loaiKey = loaiNhaDatKeys[i];
       if (key === loaiKey) {
         value = values[i];
         break;
@@ -133,7 +136,7 @@ class PropertyTypes extends Component {
     for (var i = 0; i < values.length; i++) {
       var oneValue = values[i];
       if (value === oneValue) {
-        key = DanhMuc.LoaiNhaDatKey[i];
+        key = loaiNhaDatKeys[i];
         break;
       }
     }

@@ -8,7 +8,8 @@ import {
   View,
   Image,
   TouchableHighlight,
-  Dimensions
+  Dimensions,
+  StatusBar
 } from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
@@ -53,6 +54,7 @@ function mapDispatchToProps(dispatch) {
 class Launch extends React.Component {
   constructor(props) {
     super(props);
+    StatusBar.setBarStyle('light-content');
     this.state = {
       user:null
     };

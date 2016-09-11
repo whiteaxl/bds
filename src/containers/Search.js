@@ -214,7 +214,7 @@ class Search extends Component {
 
               </View>
 
-              <View style={[myStyles.searchMoreFilterButton, {marginTop: 7}]}>
+              <View style={myStyles.searchMoreFilterButton}>
                 <View style={[myStyles.searchMoreFilterAttribute, myStyles.searchMoreSeparator]}>
                   <Text />
                 </View>
@@ -264,6 +264,7 @@ class Search extends Component {
 
   onCancel() {
     Actions.pop();
+    StatusBar.setBarStyle('light-content');
   }
 
   onApply() {
@@ -310,7 +311,14 @@ class Search extends Component {
          fields
          , () => {});
 
+     this._fillCountAds(fields, () => {});
  }
+
+    _fillCountAds(fields, countCallback) {
+        this.props.actions.count(
+            fields
+            , countCallback);
+    }
 
   onMoreOption() {
     this.setState({showMore: true});
@@ -362,6 +370,7 @@ class Search extends Component {
     } else if (0 != this.props.search.form.fields.soPhongNguSelectedIdx) {
       this.props.actions.onSearchFieldChange("soPhongNguSelectedIdx", 0);
     }
+      return null;
   }
 
   _renderSoTang() {
@@ -380,6 +389,7 @@ class Search extends Component {
     }else if (0 != this.props.search.form.fields.soNhaTamSelectedIdx) {
       this.props.actions.onSearchFieldChange("soNhaTamSelectedIdx", 0);
     }
+      return null;
   }
 
   _renderBanKinhTimKiem() {
@@ -488,7 +498,17 @@ class Search extends Component {
   }
 
   showSoPhongNgu(){
-    return true;
+    var {loaiTin, loaiNhaDat} = this.props.search.form.fields;
+    var loaiNhaDatKeys = loaiTin ? DanhMuc.LoaiNhaDatThueKey : DanhMuc.LoaiNhaDatBanKey;
+      if (loaiNhaDat == loaiNhaDatKeys[0]
+      || loaiNhaDat == loaiNhaDatKeys[1]
+      || loaiNhaDat == loaiNhaDatKeys[2]
+      || loaiNhaDat == loaiNhaDatKeys[3]
+      || loaiNhaDat == loaiNhaDatKeys[4]) {
+          return true;
+      } else {
+          return false;
+      }
   }
 
   showSoTang(){
@@ -496,11 +516,22 @@ class Search extends Component {
   }
 
   showSoNhaTam(){
-    return true;
+      var {loaiTin, loaiNhaDat} = this.props.search.form.fields;
+      var loaiNhaDatKeys = loaiTin ? DanhMuc.LoaiNhaDatThueKey : DanhMuc.LoaiNhaDatBanKey;
+      if (loaiNhaDat == loaiNhaDatKeys[0]
+          || loaiNhaDat == loaiNhaDatKeys[1]
+          || loaiNhaDat == loaiNhaDatKeys[2]
+          || loaiNhaDat == loaiNhaDatKeys[3]
+          || loaiNhaDat == loaiNhaDatKeys[4]) {
+          return true;
+      } else {
+          return false;
+      }
   }
 
   showBanKinhTimKiem(place){
-    return PlaceUtil.isDiaDiem(place);
+    // return PlaceUtil.isDiaDiem(place);
+      return place.currentLocation && !isNaN(place.currentLocation.lat);
   }
 }
 
@@ -600,7 +631,7 @@ var myStyles = StyleSheet.create({
     backgroundColor: '#f8f8f8'
   },
   searchFilterDetail: {
-    flex: 1,
+    flex: 0,
     flexDirection:"column"
     //borderWidth:1,
     //borderColor: "green"

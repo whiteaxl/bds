@@ -104,7 +104,7 @@ class ImageItem extends React.Component{
       <Image style={[styles.imgItem]} resizeMode = {'cover'}
              source={{uri: cover}}>
 
-        <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.9)']}
+        <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.55)']}
                         style={styles.linearGradient2}>
         </LinearGradient>
 

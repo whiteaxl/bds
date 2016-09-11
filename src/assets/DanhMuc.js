@@ -20,29 +20,49 @@ danhMuc.LoaiNhaDatBan = {
     0 : BAT_KY,
     1  : "Bán căn hộ chung cư",
     2  : "Bán nhà riêng",
-    3  : "Bán nhà mặt phố", 
-    4  : "Bán biệt thự, liền kề", 
-    5  : "Bán đất", 
-    99 : "Bán các bds khác"
+    3  : "Bán biệt thự, liền kề",
+    4  : "Bán nhà mặt phố",
+    5  : "Bán đất nền dự án",
+    6  : "Bán đất",
+    7  : "Bán trang trại, khu nghỉ dưỡng",
+    8  : "Bán kho, nhà xưởng",
+    99 : "Bán loại bất động sản khác"
 }
 
 danhMuc.LoaiNhaDatThue = {
     0 : BAT_KY,
     1 : "Cho Thuê căn hộ chung cư",
     2 : "Cho Thuê nhà riêng",
-    3 : "Cho Thuê nhà mặt phố", 
-    4 : "Cho Thuê văn phòng", 
-    5 : "Cho Thuê cửa hàng, ki-ốt",
-    99: "Cho Thuê các bds khác"
+    3 : "Cho Thuê nhà mặt phố",
+    4 : "Cho thuê nhà trọ, phòng trọ",
+    5 : "Cho Thuê văn phòng",
+    6 : "Cho Thuê cửa hàng, ki-ốt",
+    7 : "Cho thuê kho, nhà xưởng, đất",
+    99: "Cho Thuê loại bất động sản khác"
 }
 
-danhMuc.LoaiNhaDatKey = [
+danhMuc.LoaiNhaDatBanKey = [
     0,
     1,
     2,
     3,
     4,
     5,
+    6,
+    7,
+    8,
+    99
+];
+
+danhMuc.LoaiNhaDatThueKey = [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
     99
 ];
 
