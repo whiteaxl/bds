@@ -202,8 +202,6 @@ class SearchResultMap extends Component {
 
     let viewableList = this._getViewableAds(listAds);
 
-    var region = this.getInitialRegion();
-
       //placeName = this.props.diaChinhFullName
       let placeName = this._getHeaderTitle();
 
@@ -231,7 +229,7 @@ class SearchResultMap extends Component {
         <View style={styles.map}>
           <MapView
               ref="map"
-              region={region}
+              region={this.state.region}
               onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
               style={styles.mapView}
               mapType={this.state.mapType.toLowerCase()}
@@ -540,13 +538,12 @@ class SearchResultMap extends Component {
   }
 
   _renderTotalResultView(){
-    let {loading, listAds, search} = this.props;
+    let {loading, listAds, search, totalCount} = this.props;
     let numberOfAds = listAds.length;
-    let countResult = search.countResult;
     let pageNo = search.form.fields.pageNo;
     let limit = search.form.fields.limit;
     let endAdsIndex = (pageNo-1)*limit+numberOfAds;
-    let rangeAds = countResult > 0 ? (endAdsIndex > 0 ? ((pageNo-1)*limit+1) + "-" + endAdsIndex : "0") + " / " + countResult : numberOfAds;
+    let rangeAds = totalCount > 0 ? (endAdsIndex > 0 ? ((pageNo-1)*limit+1) + "-" + endAdsIndex : "0") + " / " + totalCount : numberOfAds;
     let textValue = rangeAds + " tin tìm thấy được hiển thị. Zoom bản đồ để xem thêm";
 
     if(loading){
@@ -597,12 +594,13 @@ class SearchResultMap extends Component {
   _onRegionChangeComplete(region) {
     console.log("Call SearhResultMap._onRegionChangeComplete");
 
-    this.state.region = region;
-    // this.setState({
-    //   region :region
-    // });
+    // this.state.region = region;
+    this.setState({
+      region :region
+    });
 
     let viewport = apiUtils.getViewport(region);
+    console.log('viewport', viewport);
     this.props.actions.onSearchFieldChange("viewport", viewport);
 
     if (this.props.search.map.autoLoadAds){
@@ -620,8 +618,8 @@ class SearchResultMap extends Component {
     console.log("Call SearhResultMap._refreshListData");
     var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
-        polygon, pageNo, limit, isIncludeCountInResponse} = this.props.search.form.fields;
-    var isHavingCount = excludeCount ? false : isIncludeCountInResponse;
+        polygon, pageNo, limit} = this.props.search.form.fields;
+    var isHavingCount = excludeCount ? false : true;
     var fields = {
       loaiTin: loaiTin,
       loaiNhaDat: loaiNhaDat,
@@ -902,23 +900,25 @@ class SearchResultMap extends Component {
 
     if (polygons.length > 0) {
         var geoBox = apiUtils.getPolygonBox(polygons[0]);
-        var viewport = apiUtils.getViewportByBox(geoBox);
+        var region = apiUtils.getRegion(geoBox);
+        var viewport = apiUtils.getViewport(region);
         var polygon = apiUtils.convertPolygon(polygons[0]);
         this.props.actions.onSearchFieldChange("viewport", viewport);
         this.props.actions.onSearchFieldChange("polygon", polygon);
         this.props.actions.onSearchFieldChange("diaChinh", {});
         this.props.actions.onSearchFieldChange("pageNo", 1);
-        this._refreshListData(viewport, polygon, () => this._updateMapView(polygons), 1);
+        this._refreshListData(viewport, polygon, () => this._updateMapView(polygons, region), 1);
     } else {
         this._updateMapView(polygons);
     }
   }
 
-  _updateMapView(polygons) {
+  _updateMapView(polygons, region) {
       this.setState({
           openDetailAdsModal: false,
           editing: null,
-          openDraw: false
+          openDraw: false,
+          region: region || this.state.region
       });
       this.props.actions.onDrawModeChange(false);
       this.props.actions.onPolygonsChange(polygons);
