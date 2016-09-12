@@ -11,7 +11,7 @@ var rootUrl = `http://${cfg.server}:5000/api`;
 var findUrl = rootUrl + "/v2/find";
 var placeUrl = rootUrl + "/findPlace";
 var detailUrl = rootUrl + "/detail";
-var homeData4AppUrl = rootUrl + "/homeData4App";
+var homeData4AppUrl = rootUrl + "/v2/homeData4App";
 
 
 
@@ -26,30 +26,41 @@ var Api = {
       radiusInKmSelectedIdx, dienTich, orderBy, diaChinh, center, viewport, huongNha, ngayDaDang, polygon, pageNo, limit, isIncludeCountInResponse} = fields;
 
     let circle = {};
-    if (Object.keys(center).length == 2) {
+    if (center) {
       circle.radius = DanhMuc.getRadiusInKmByIndex(radiusInKmSelectedIdx) || undefined;
       circle.center = center;
     }
+    if (!circle.radius || !circle.center) {
+      circle = undefined;
+    }
+
+    if (viewport || viewport.length == 0 ) {
+      viewport = undefined;
+    }
+    if (polygon || polygon.length == 0 ) {
+      polygon = undefined;
+    }
+
 
     let giaRange = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange ;
 
     var params = {
       'loaiTin' : 'ban' === loaiTin ? 0 : 1,
-      'loaiNhaDat' : loaiNhaDat || undefined,
+      'loaiNhaDat' : loaiNhaDat ? [loaiNhaDat] : undefined,
       'giaBETWEEN' : gia ? giaRange.toValRange(gia) : gia,
-      'soPhongNguGREATER' : DanhMuc.getSoPhongByIndex(soPhongNguSelectedIdx) || undefined,
-      'soPhongTamGREATER' : DanhMuc.getSoPhongTamByIndex(soNhaTamSelectedIdx) || undefined,
+      'soPhongNguGREATER' : Number(DanhMuc.getSoPhongByIndex(soPhongNguSelectedIdx)) || undefined,
+      'soPhongTamGREATER' : Number(DanhMuc.getSoPhongTamByIndex(soNhaTamSelectedIdx)) || undefined,
       'dienTichBETWEEN' : dienTich ? RangeUtils.dienTichRange.toValRange(dienTich) : undefined,
       'orderBy' : orderBy ? {name: DanhMuc.getOrderKey(orderBy), type: DanhMuc.getOrderType(orderBy)} : undefined,
-      'diaChinh': Object.keys(diaChinh).length == 2 ? diaChinh : undefined,
-      'circle' : Object.keys(circle).length == 2 ? circle : undefined,
-      'viewport' : Object.keys(viewport).length == 2 ? viewport : undefined,
-      'limit' : limit || maxRows || undefined,
+      'diaChinh': diaChinh,
+      'circle' : circle,
+      'viewport' : viewport ,
+      'limit' : limit || maxRows || 250, //default is 250 limit
       'huongNha' : [huongNha] || undefined,
       'ngayDangTinGREATER' : DanhMuc.getDateFromNow(ngayDaDang) || undefined,
-      'polygon' : polygon.length ? polygon : undefined,
-      'pageNo' : pageNo || undefined,
-      'isIncludeCountInResponse' : isIncludeCountInResponse || undefined
+      'polygon' : polygon ? polygon : undefined,
+      'pageNo' : pageNo || 1, //default is page 1
+      'isIncludeCountInResponse' : isIncludeCountInResponse || false //default is false
     };
 
     return params
@@ -102,7 +113,6 @@ var Api = {
     console.log(findUrl + "?" + JSON.stringify(params));
 
     this._abortRequest();
-
     this._requests.push(++this._requestCnt);
 
     return cancelablFetch(findUrl, {

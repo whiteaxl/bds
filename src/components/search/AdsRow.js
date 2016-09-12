@@ -55,7 +55,7 @@ class AdsRow extends React.Component {
     if (ads.image) {
       if (!ads.image.images || ads.image.images.length===0) {
         return (
-          <MyImage imageIndex={0} ads={ads} imageUrl={ads.image.cover} noCoverUrl={this.props.noCoverUrl} />
+          <MyImage imageIndex={0} ads={ads} imageUrl={ads.image.cover}/>
         )
       }
 
@@ -65,13 +65,12 @@ class AdsRow extends React.Component {
       }
 
       return list.map(imageUrl => {
-        return <MyImage key={imageIndex} imageIndex={imageIndex++} ads={ads} imageUrl={imageUrl}
-                        noCoverUrl={this.props.noCoverUrl}/>
+        return <MyImage key={imageIndex} imageIndex={imageIndex++} ads={ads} imageUrl={imageUrl}/>
       });
 
     } else {
       return (
-        <MyImage imageIndex={0} ads={ads} imageUrl={this.props.noCoverUrl} noCoverUrl={this.props.noCoverUrl} />
+        <MyImage imageIndex={0} ads={ads} imageUrl={this.props.noCoverUrl}/>
       );
     }
   }
@@ -169,26 +168,16 @@ class AdsRow extends React.Component {
 class MyImage extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      downloaded: false
-    }
   }
   render() {
     return(
       <View style={myStyles.slide} key={"img"+(this.props.imageIndex)}>
         <TouchableHighlight onPress={() => Actions.SearchResultDetail({adsID: this.props.ads.adsID, source: 'server'})}>
-          { this.state.downloaded ?
-          <Image style={myStyles.thumb} source={{uri: `${this.props.imageUrl}`}} >
+          <Image style={myStyles.thumb} source={{uri: `${this.props.imageUrl}`}} defaultSource={require('../../assets/image/no_cover.jpg')} >
             <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.55)']}
                             style={myStyles.linearGradient2}>
             </LinearGradient>
-          </Image> :
-          <Image style={myStyles.thumb} source={{uri: `${this.props.noCoverUrl}`}}
-                 onLoadEnd={() => this.setState({downloaded: true})}>
-            <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.55)']}
-                            style={myStyles.linearGradient2}>
-            </LinearGradient>
-          </Image> }
+          </Image>
         </TouchableHighlight>
       </View>
     );

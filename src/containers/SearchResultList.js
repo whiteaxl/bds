@@ -124,7 +124,7 @@ class SearchResultList extends Component {
         this.timer = setTimeout(() => {this._onHideMessage()}, 5000);
     }
     render() {
-        log.info("Call SearchResultList render");
+        log.info("Call SearchResultList render", this.props.fields);
         //log.info(this.props);
         if (this.props.showMessage && !this.state.messageDone) {
             this.state.messageDone = true;

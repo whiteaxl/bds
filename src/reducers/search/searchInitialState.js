@@ -16,7 +16,7 @@ const defaultItemInCollection = {
     soPhongNguFmt : "",
     soPhongTamFmt : "",
     dienTichFmt : "",
-    cover : "http://203.162.13.40:5000/web/asset/img/reland_house_large.jpg"
+    cover : "http://203.162.13.177:5000/web/asset/img/no_cover.jpg"
 };
 
 
@@ -44,14 +44,15 @@ const SearchForm = Record({
                 lon: 105.2854659
             }
         },
-        polygon: [],
+        polygon: [], //[{lat, lon}]
+
         radiusInKmSelectedIdx: 0,
-        center : {lat: 20.964828952112263, lon: 105.78077258623863},
+        center : null , //{lat, lon}
         diaChinh : {
             tinhKhongDau : "ha-noi",
             huyenKhongDau : "cau-giay",
-            xaKhongDau : '',
-            duAnKhongDau : '',
+            xaKhongDau : undefined,
+            duAnKhongDau : undefined,
             fullName : 'Cầu Giấy, Hà Nội'
         },
         orderBy: '',
