@@ -89,16 +89,19 @@ class PlacesAutoComplete extends React.Component {
           this.props.search.form.fields
           , () => {
             Actions.pop();
+            StatusBar.setBarStyle('light-content');
           }
         );
       }, 100);
     } else {
       Actions.pop();
+      StatusBar.setBarStyle('light-content');
     }
   }
 
   _onCancelPress() {
     Actions.pop();
+    StatusBar.setBarStyle('light-content');
   }
 
   render() {

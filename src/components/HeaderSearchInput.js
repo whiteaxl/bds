@@ -19,7 +19,7 @@ export default class HeaderSearchInput extends Component {
   render() {
     return(
         <View style={styles.container}>
-          <TouchableOpacity
+          <TouchableOpacity style={{marginTop: 20, justifyContent: 'center', alignItems: 'center'}}
               onPress={() => Actions.SearchSuggestion({needReload: true})}
           >
             <Text style={styles.titleText}> {this.props.placeName}</Text>
@@ -37,7 +37,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left:0, 
     right:0,
-    height: 50,
+    height: 64,
+    justifyContent: 'center',
+    alignItems: 'center'
   },
   textInput : {
     fontSize: 15, 
@@ -70,8 +72,6 @@ const styles = StyleSheet.create({
   titleText: {
     fontSize: 16,
     fontWeight: '600',
-    marginBottom: 20,
-    marginTop: 30,
     textAlign: 'center',
     color: 'white'
   },
