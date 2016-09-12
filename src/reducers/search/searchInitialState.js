@@ -56,7 +56,7 @@ const SearchForm = Record({
             fullName : 'Cầu Giấy, Hà Nội'
         },
         orderBy: '',
-        limit: 25,
+        limit: 250,
         pageNo: 1,
         isIncludeCountInResponse: true,
 

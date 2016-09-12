@@ -64,7 +64,6 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 var id = 0;
 var currentAdsIndex = 0;
 
-const MAX_VIEWABLE_ADS = 25;
 /**
 * ## Redux boilerplate
 */
@@ -161,12 +160,13 @@ class SearchResultMap extends Component {
       markedList:[],
       editing: null,
       region: region,
-      coordinate : null
+      coordinate : null,
+      pageNo: 1
     };
   }
 
   getInitialRegion() {
-    var viewport = this.props.search.form.fields.viewport;
+    var {viewport} = this.props.search.form.fields;
     var region = Object.keys(viewport).length == 2 ? apiUtils.getRegionByViewport(viewport) : {};
     if (Object.keys(region).length <= 0 || isNaN(region.latitude)) {
       region = {latitude: LATITUDE, longitude: LONGITUDE, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA};
@@ -413,8 +413,8 @@ class SearchResultMap extends Component {
   }
 
   _renderNextButton() {
-    let {pageNo, limit} = this.props.search.form.fields;
-    let totalPages = this.props.totalCount/ limit;
+    let {pageNo} = this.state;
+    let totalPages = this.props.totalCount/ gui.MAX_VIEWABLE_ADS;
     let hasNextPage = pageNo < totalPages;
     return (
         <View style={styles.nextButton}>
@@ -438,7 +438,7 @@ class SearchResultMap extends Component {
   }
 
   _renderPreviousButton() {
-    let pageNo = this.props.search.form.fields.pageNo;
+    let {pageNo} = this.state;
     let hasPreviousPage = pageNo > 1;
     return (
         <View style={styles.previousButton}>
@@ -516,34 +516,40 @@ class SearchResultMap extends Component {
   }
 
   _doPreviousPage() {
-    let pageNo = this.props.search.form.fields.pageNo;
+    let {pageNo} = this.state;
     if (pageNo > 1) {
       pageNo = pageNo - 1;
-      this.props.actions.onSearchFieldChange("pageNo", pageNo);
+      this.setState({pageNo: pageNo});
     }
-    this._refreshListData(null, null, this._onSetupMessageTimeout.bind(this), pageNo, null, true);
+    this.props.actions.onShowMsgChange(true);
+    this._onSetupMessageTimeout.bind(this);
   }
 
   _doNextPage() {
-    let {pageNo, limit} = this.props.search.form.fields;
+    let {pageNo} = this.state;
 
-    let totalPages = this.props.totalCount/ limit;
+    let totalPages = this.props.totalCount/ gui.MAX_VIEWABLE_ADS;
 
     if (pageNo < totalPages) {
       pageNo = pageNo + 1;
-      this.props.actions.onSearchFieldChange("pageNo", pageNo);
+      this.setState({pageNo: pageNo});
     }
-
-    this._refreshListData(null, null, this._onSetupMessageTimeout.bind(this), pageNo, null, true);
+    this.props.actions.onShowMsgChange(true);
+    this._onSetupMessageTimeout.bind(this);
   }
 
   _renderTotalResultView(){
     let {loading, listAds, search, totalCount} = this.props;
+    let {pageNo} = this.state;
+    let beginAdsIndex = (pageNo-1)*gui.MAX_VIEWABLE_ADS+1;
     let numberOfAds = listAds.length;
-    let pageNo = search.form.fields.pageNo;
-    let limit = search.form.fields.limit;
-    let endAdsIndex = (pageNo-1)*limit+numberOfAds;
-    let rangeAds = totalCount > 0 ? (endAdsIndex > 0 ? ((pageNo-1)*limit+1) + "-" + endAdsIndex : "0") + " / " + totalCount : numberOfAds;
+    if (numberOfAds > (pageNo-1)*gui.MAX_VIEWABLE_ADS) {
+      numberOfAds = listAds.length > pageNo*gui.MAX_VIEWABLE_ADS ? gui.MAX_VIEWABLE_ADS : listAds.length - (pageNo-1)*gui.MAX_VIEWABLE_ADS;
+    } else {
+      numberOfAds = 0;
+    }
+    let endAdsIndex = (pageNo-1)*gui.MAX_VIEWABLE_ADS+numberOfAds;
+    let rangeAds = totalCount > 0 && totalCount != numberOfAds ? (endAdsIndex > 0 ? beginAdsIndex + "-" + endAdsIndex : "0") + " / " + totalCount : numberOfAds;
     let textValue = rangeAds + " tin tìm thấy được hiển thị. Zoom bản đồ để xem thêm";
 
     if(loading){
@@ -570,11 +576,15 @@ class SearchResultMap extends Component {
 
   _getViewableAds(listAds){
       var markerList = [];
+      let {pageNo} = this.state;
 
       if (listAds) {
-        var i = 0;
-        listAds.map(function(item){
-          if (item.place && item.place.geo.lat && item.place.geo.lon && i < MAX_VIEWABLE_ADS) {
+        for (var i=0; i<listAds.length; i++) {
+          if (i < (pageNo-1)*gui.MAX_VIEWABLE_ADS || i >= pageNo*gui.MAX_VIEWABLE_ADS) {
+            continue;
+          }
+          var item = listAds[i];
+          if (item.place && item.place.geo.lat && item.place.geo.lon) {
             let marker = {
               coordinate: {latitude: item.place.geo.lat, longitude: item.place.geo.lon},
               price: item.giaFmt,
@@ -582,14 +592,13 @@ class SearchResultMap extends Component {
               cover: item.image.cover,
               diaChi: item.place.diaChi,
               dienTich: item.dienTich
-                      };
-                      markerList.push(marker);
-                      i++;
-                  }
-              });
+            };
+            markerList.push(marker);
           }
-          return markerList;
+        }
       }
+      return markerList;
+    }
 
   _onRegionChangeComplete(region) {
     console.log("Call SearhResultMap._onRegionChangeComplete");
@@ -600,21 +609,18 @@ class SearchResultMap extends Component {
     });
 
     let viewport = apiUtils.getViewport(region);
-    console.log('viewport', viewport);
     this.props.actions.onSearchFieldChange("viewport", viewport);
 
     if (this.props.search.map.autoLoadAds){
-      this.props.actions.onSearchFieldChange("pageNo", 1);
-      this._refreshListData(viewport, null, this._onSetupMessageTimeout.bind(this), 1);
+      this._refreshListData(viewport, null, this._onSetupMessageTimeout.bind(this));
     }
   }
 
   _doRefreshListData() {
-    this.props.actions.onSearchFieldChange("pageNo", 1);
-    this._refreshListData(null, null, this._onSetupMessageTimeout.bind(this), 1);
+    this._refreshListData(null, null, this._onSetupMessageTimeout.bind(this));
   }
 
-  _refreshListData(newViewport, newPolygon, refreshCallback, newPageNo, newCenter, excludeCount) {
+  _refreshListData(newViewport, newPolygon, refreshCallback, newCenter, excludeCount, newDiaChinh) {
     console.log("Call SearhResultMap._refreshListData");
     var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
@@ -629,21 +635,22 @@ class SearchResultMap extends Component {
       gia: gia,
       orderBy: orderBy,
       viewport: newViewport || viewport,
-      diaChinh: diaChinh,
+      diaChinh: newDiaChinh || diaChinh,
       center: newCenter || center,
       radiusInKmSelectedIdx: radiusInKmSelectedIdx,
       huongNha: huongNha,
       ngayDaDang: ngayDaDang,
       polygon: newPolygon || polygon,
-      pageNo: newPageNo || pageNo,
+      pageNo: pageNo,
       limit: limit,
       isIncludeCountInResponse: isHavingCount};
+    console.log('fields', fields);
 
     this.props.actions.search(
         fields
         , refreshCallback);
     this.props.actions.onShowMsgChange(true);
-    this.setState({openDetailAdsModal: false});
+    this.setState({openDetailAdsModal: false, pageNo: 1});
   }
 
   _onSetupMessageTimeout() {
@@ -723,8 +730,7 @@ class SearchResultMap extends Component {
           let center = {lat: region.latitude, lon: region.longitude};
 
           this.props.actions.onSearchFieldChange("center", center);
-          this.props.actions.onSearchFieldChange("pageNo", 1);
-          this._refreshListData(viewport, [], this._onSetupMessageTimeout.bind(this), 1, center);
+          this._refreshListData(viewport, [], this._onSetupMessageTimeout.bind(this), center);
         },
         (error) => {
           alert(error.message);
@@ -906,8 +912,7 @@ class SearchResultMap extends Component {
         this.props.actions.onSearchFieldChange("viewport", viewport);
         this.props.actions.onSearchFieldChange("polygon", polygon);
         this.props.actions.onSearchFieldChange("diaChinh", {});
-        this.props.actions.onSearchFieldChange("pageNo", 1);
-        this._refreshListData(viewport, polygon, () => this._updateMapView(polygons, region), 1);
+        this._refreshListData(viewport, polygon, () => this._updateMapView(polygons, region), {}, false, {});
     } else {
         this._updateMapView(polygons);
     }

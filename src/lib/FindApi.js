@@ -15,7 +15,7 @@ var homeData4AppUrl = rootUrl + "/v2/homeData4App";
 
 
 
-var maxRows = 200;
+var maxRows = 250;
 
 var Api = {
   _requests : [],
@@ -34,10 +34,10 @@ var Api = {
       circle = undefined;
     }
 
-    if (viewport || viewport.length == 0 ) {
+    if (viewport && viewport.length == 0 ) {
       viewport = undefined;
     }
-    if (polygon || polygon.length == 0 ) {
+    if (polygon && polygon.length == 0 ) {
       polygon = undefined;
     }
 
@@ -55,7 +55,7 @@ var Api = {
       'diaChinh': diaChinh,
       'circle' : circle,
       'viewport' : viewport ,
-      'limit' : limit || maxRows || 250, //default is 250 limit
+      'limit' : limit || maxRows, //default is 250 limit
       'huongNha' : [huongNha] || undefined,
       'ngayDangTinGREATER' : DanhMuc.getDateFromNow(ngayDaDang) || undefined,
       'polygon' : polygon ? polygon : undefined,

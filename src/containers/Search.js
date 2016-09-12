@@ -277,7 +277,6 @@ class Search extends Component {
 
       Actions.SearchResultList({type: "reset"});
     }
-    this.props.actions.onSearchFieldChange("viewport", {});
     this.props.actions.onSearchFieldChange("orderBy", '');
     this.props.actions.onSearchFieldChange("pageNo", 1);
     this.props.actions.onShowMsgChange(true);
