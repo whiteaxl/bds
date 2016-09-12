@@ -23,6 +23,8 @@ import RangeUtils from "../lib/RangeUtils"
 
 import RangePicker from "../components/RangePicker"
 
+import RangePicker2 from "../components/RangePicker2"
+
 import DanhMuc from "../assets/DanhMuc"
 
 import SearchInput from '../components/SearchInputExt';
@@ -59,13 +61,15 @@ function mapDispatchToProps(dispatch) {
 }
 
 class Search extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     StatusBar.setBarStyle('default');
 
     this.state = {
       showMore: false,
-      showNgayDaDang: false
+      showNgayDaDang: false,
+      showGia: false,
+      showDienTich: false
     };
   }
 
@@ -74,11 +78,15 @@ class Search extends Component {
   }
 
   _onPressGiaHandle(){
-    this.pickerGia.toggle();
+    // this.pickerGia.toggle();
+      var {showGia} = this.state;
+      this.setState({showGia: !showGia});
   }
 
   _onPressDienTichHandle(){
-    this.pickerDienTich.toggle();
+    // this.pickerDienTich.toggle();
+      var {showDienTich} = this.state;
+      this.setState({showDienTich: !showDienTich});
   }
 
   _onPressNgayDaDangHandle() {
@@ -180,17 +188,7 @@ class Search extends Component {
                 </View>
               </TouchableOpacity>
 
-                <TouchableOpacity style={myStyles.searchFilterAttribute}
-                                  onPress={this._onPressDienTichHandle.bind(this)}>
-                    <Text style={myStyles.searchAttributeLabel}>
-                        Diện tích
-                    </Text>
-
-                    <View style={{flexDirection: "row", alignItems: "flex-end"}}>
-                        <Text style={myStyles.searchAttributeValue}>{this._getDienTichValue()} </Text>
-                        <TruliaIcon name="arrow-down" color={gui.arrowColor} size={18} />
-                    </View>
-                </TouchableOpacity>
+                {this._renderDienTich()}
 
               {this._renderSoPhongNgu()}
 
@@ -200,17 +198,7 @@ class Search extends Component {
 
               {this._renderBanKinhTimKiem()}
 
-                <TouchableOpacity style={myStyles.searchFilterAttribute}
-                                  onPress={this._onPressGiaHandle.bind(this)}>
-                    <Text style={myStyles.searchAttributeLabel}>
-                        Mức giá
-                    </Text>
-
-                    <View style={{flexDirection: "row", alignItems: "flex-end"}}>
-                        <Text style={myStyles.searchAttributeValue}> {this._getGiaValue()} </Text>
-                        <TruliaIcon name="arrow-down" color={gui.arrowColor} size={18} />
-                    </View>
-                </TouchableOpacity>
+                {this._renderGia()}
 
               </View>
 
@@ -238,21 +226,6 @@ class Search extends Component {
             <Button onPress={this.onApply.bind(this)}
             style={myStyles.searchButtonText}>Thực hiện</Button>
           </View>
-        </View>
-
-        <View>
-          <RangePicker ref={pickerGia => this.pickerGia = pickerGia}
-                    pickerTitle = "Chọn Giá"
-                    pickerData={this.props.search.form.fields.giaPicker}
-                    selectedValue={this.props.search.form.fields.gia}
-                    onPickerDone={(pickedValue) => {this._onGiaChanged(pickedValue)}}
-              />
-          <RangePicker ref={pickerDienTich => this.pickerDienTich = pickerDienTich}
-                    pickerTitle = "Chọn Diện Tích"
-                    pickerData={RangeUtils.dienTichRange.getPickerData()}
-                    selectedValue={this.props.search.form.fields.dienTich}
-                    onPickerDone={(pickedValue) => {this._onDienTichChanged(pickedValue)}}
-              />
         </View>
 
        <View style={myStyles.pageHeader}>
@@ -323,7 +296,7 @@ class Search extends Component {
     this.props.actions.onSearchFieldChange("dienTich", RangeUtils.BAT_KY_RANGE);
     this.props.actions.onSearchFieldChange("gia", RangeUtils.BAT_KY_RANGE);
     this.props.actions.onSearchFieldChange("radiusInKmSelectedIdx", 0);
-    this.props.actions.onSearchFieldChange("huongNha", '');
+    this.props.actions.onSearchFieldChange("huongNha", 0);
     this.props.actions.onSearchFieldChange("ngayDaDang", '');
     this.props.actions.onShowMsgChange(true);
     this.setState({showMore: false});
@@ -351,6 +324,94 @@ class Search extends Component {
 
     _onBanKinhTimKiemChanged(event) {
         this.props.actions.onSearchFieldChange("radiusInKmSelectedIdx", event.nativeEvent.selectedSegmentIndex);
+    }
+
+    _renderDienTich() {
+        var {showDienTich} = this.state;
+        var iconName = showDienTich ? "arrow-up" : "arrow-down";
+        return (
+            <View>
+                <TouchableOpacity
+                                  onPress={this._onPressDienTichHandle.bind(this)}>
+                    <View style={myStyles.searchFilterAttribute}>
+                        <Text style={myStyles.searchAttributeLabel}>
+                            Diện tích
+                        </Text>
+
+                        <View style={{flexDirection: "row", alignItems: "flex-end"}}>
+                            <Text style={myStyles.searchAttributeValue}>{this._getDienTichValue()} </Text>
+                            <TruliaIcon name={iconName} color={gui.arrowColor} size={18} />
+                        </View>
+                    </View>
+                    {this._renderDienTichPicker()}
+                </TouchableOpacity>
+            </View>
+        );
+    }
+
+    _renderDienTichPicker() {
+        var {showDienTich} = this.state;
+        if (showDienTich) {
+
+            {/*<RangePicker ref={pickerDienTich => this.pickerDienTich = pickerDienTich}
+             pickerTitle = "Chọn Diện Tích"
+             pickerData={RangeUtils.dienTichRange.getPickerData()}
+             selectedValue={this.props.search.form.fields.dienTich}
+             onPickerDone={(pickedValue) => {this._onDienTichChanged(pickedValue)}}
+             />*/}
+
+            return (
+                <RangePicker2 ref={pickerDienTich => this.pickerDienTich = pickerDienTich}
+                              pickerData={RangeUtils.dienTichRange.getPickerData()}
+                              selectedValue={this.props.search.form.fields.dienTich}
+                              onPickerDone={(pickedValue) => {this._onDienTichChanged(pickedValue)}}
+                />
+            );
+        }
+    }
+
+    _renderGia() {
+        var {showGia} = this.state;
+        var iconName = showGia ? "arrow-up" : "arrow-down";
+        return (
+            <View>
+                <TouchableOpacity
+                    onPress={this._onPressGiaHandle.bind(this)}>
+                    <View style={myStyles.searchFilterAttribute}>
+                        <Text style={myStyles.searchAttributeLabel}>
+                            Mức giá
+                        </Text>
+
+                        <View style={{flexDirection: "row", alignItems: "flex-end"}}>
+                            <Text style={myStyles.searchAttributeValue}> {this._getGiaValue()} </Text>
+                            <TruliaIcon name={iconName} color={gui.arrowColor} size={18} />
+                        </View>
+                    </View>
+                    {this._renderGiaPicker()}
+                </TouchableOpacity>
+            </View>
+        );
+    }
+
+    _renderGiaPicker() {
+        var {showGia} = this.state;
+        if (showGia) {
+
+            {/*<RangePicker ref={pickerGia => this.pickerGia = pickerGia}
+             pickerTitle = "Chọn Giá"
+             pickerData={this.props.search.form.fields.giaPicker}
+             selectedValue={this.props.search.form.fields.gia}
+             onPickerDone={(pickedValue) => {this._onGiaChanged(pickedValue)}}
+             />*/}
+
+            return (
+                <RangePicker2 ref={pickerGia => this.pickerGia = pickerGia}
+                              pickerData={this.props.search.form.fields.giaPicker}
+                              selectedValue={this.props.search.form.fields.gia}
+                              onPickerDone={(pickedValue) => {this._onGiaChanged(pickedValue)}}
+                />
+            );
+        }
     }
 
   _renderSoPhongNgu(){

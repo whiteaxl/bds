@@ -259,7 +259,7 @@ danhMuc.getDateFromNow = function (days) {
     if (!days || days == '') {
         return undefined;
     }
-    return moment().subtract('days', days).format('YYYYMMDD');
+    return moment().subtract(days, 'days').format('YYYYMMDD');
 }
 
 danhMuc.getDanhMucKeys = function (hashDanhMuc) {
