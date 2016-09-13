@@ -912,21 +912,24 @@ class SearchResultMap extends Component {
         this.props.actions.onSearchFieldChange("viewport", viewport);
         this.props.actions.onSearchFieldChange("polygon", polygon);
         this.props.actions.onSearchFieldChange("diaChinh", {});
-        this._refreshListData(viewport, polygon, () => this._updateMapView(polygons, region), {}, false, {});
+        this._refreshListData(viewport, polygon, () => {}, {}, false, {});
+        this._updateMapView(polygons, region);
     } else {
         this._updateMapView(polygons);
     }
   }
 
   _updateMapView(polygons, region) {
-      this.setState({
+      setTimeout(() => {
+        this.setState({
           openDetailAdsModal: false,
           editing: null,
           openDraw: false,
           region: region || this.state.region
-      });
-      this.props.actions.onDrawModeChange(false);
-      this.props.actions.onPolygonsChange(polygons);
+        });
+        this.props.actions.onDrawModeChange(false);
+        this.props.actions.onPolygonsChange(polygons)
+      }, 100);
       this._onSetupMessageTimeout();
   }
 
