@@ -211,7 +211,7 @@ export function likeAds(userID, rowData) {
     db.likeAds(dto).then((res) => {
       if (res.status === 0) {
         dispatch(likeSuccess(res.adsLikes));
-        Alert.alert("Thành công!");
+        // Alert.alert("Thành công!");
       } else {
         Alert.alert("Không thành công!");
       }

@@ -337,13 +337,13 @@ class SearchResultMap extends Component {
 
   _renderAdsModal() {
     let viewableList = this._getViewableAds(this.props.listAds);
-    let isLiked = this.isLiked();
-    let color = isLiked ? '#A2A7AD' : 'white';
-    let bgColor = isLiked ? '#E50064' : '#4A443F';
-    let bgStyle = isLiked ? {} : {opacity: 0.55};
     let allItems = [];
     let i = 0;
     viewableList.map((mmarker) => {
+      let isLiked = this.isLiked(mmarker.id);
+      let color = isLiked ? '#A2A7AD' : 'white';
+      let bgColor = isLiked ? '#E50064' : '#4A443F';
+      let bgStyle = isLiked ? {} : {opacity: 0.55};
       allItems.push(
           <View style={styles.detailAdsModal} key={i++}>
             <TouchableOpacity onPress={this._onDetailAdsPress.bind(this)}>
@@ -380,22 +380,24 @@ class SearchResultMap extends Component {
     );
   }
 
-  isLiked() {
+  isLiked(adsID) {
     const {adsLikes} = this.props;
-    return adsLikes && adsLikes.indexOf(this.state.mmarker.id) > -1;
+    return adsLikes && adsLikes.indexOf(adsID) > -1;
   }
 
   onLike() {
     if (!this.props.loggedIn) {
       //this.props.actions.onAuthFieldChange('activeRegisterLoginTab',0);
       Actions.LoginRegister({page:1});
-    } else if (!this.isLiked()) {
+    } else {
       let adsIndex = (this.state.pageNo-1)*gui.MAX_VIEWABLE_ADS + currentAdsIndex;
       let ads = this.props.listAds[adsIndex];
-      this.props.actions.likeAds(this.props.userID, ads);
+      if (!this.isLiked(ads.adsID)) {
+        this.props.actions.likeAds(this.props.userID, ads);
+      }
     }
   }
-  
+
   onrefreshCurrentAds(index) {
     let viewableList = this._getViewableAds(this.props.listAds);
     currentAdsIndex = index;
