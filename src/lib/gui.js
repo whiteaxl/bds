@@ -43,8 +43,11 @@ gui.defaultLocation = {
 	lon : 105.75490945
 };
 
-gui.MAX_ITEM = 250
+gui.MAX_ITEM = 250;
 
 gui.MAX_VIEWABLE_ADS = 25;
+
+gui.LATITUDE_DELTA = 0.08616620000177733;
+gui.LONGITUDE_DELTA = 0.0608263772712121;
 
 module.exports = gui;

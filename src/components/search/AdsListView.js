@@ -79,7 +79,7 @@ class AdsListView extends React.Component {
     if (totalPages && pageNo < totalPages) {
       this.state.pageNo = pageNo+1;
       myProps.actions.onSearchFieldChange("pageNo", this.state.pageNo);
-      myProps.actions.onShowMsgChange(true);
+      // myProps.actions.onShowMsgChange(true);
       this._handleSearchAction(this.state.pageNo);
     }
   }
@@ -122,7 +122,7 @@ class AdsListView extends React.Component {
       if (pageNo > 1) {
         this.state.pageNo = pageNo-1;
         myProps.actions.onSearchFieldChange("pageNo", this.state.pageNo);
-        myProps.actions.onShowMsgChange(true);
+        // myProps.actions.onShowMsgChange(true);
         this._handleSearchAction(this.state.pageNo);
       }
     }

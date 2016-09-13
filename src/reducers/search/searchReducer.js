@@ -17,7 +17,6 @@ const {
   ON_ALERT_US_CHANGE,
   ON_POLYGONS_CHANGE,
   ON_DRAW_MODE_CHANGE,
-  ON_SHOW_MSG_CHANGE,
   ON_SEARCH_FIELD_CHANGE,
   SET_SEARCH_LOAI_TIN,
   SEARCH_STATE_LOADING,
@@ -73,9 +72,6 @@ export default function searchReducer(state = initialState, action) {
     case FETCH_SEARCH_RESULT_FAIL:
       return state.setIn(['result', 'errorMsg'], action.payload)
         .set("loadingFromServer", false);
-
-    case ON_SHOW_MSG_CHANGE:
-      return state.set("showMessage", action.payload);
 
     case ON_DRAW_MODE_CHANGE:
       return state.set("drawMode", action.payload);
@@ -256,7 +252,7 @@ function buildSearchCredentialFromSavedSearch(query) {
     soNhaTamSelectedIdx : danhMuc.getIdx(danhMuc.SoPhongTam, soPhongTamGREATER),
     dienTich: RangeUtils.dienTichRange.rangeVal2Display(dienTichBETWEEN),
     gia: RangeUtils.sellPriceRange.rangeVal2Display(giaBETWEEN),
-    orderBy: Object.keys(orderBy).length == 2 ? orderBy.name + orderBy.type : '',
+    orderBy: orderBy && Object.keys(orderBy).length == 2 ? orderBy.name + orderBy.type : '',
     viewport: viewport,
     diaChinh : diaChinh,
     center: circle.center || {},

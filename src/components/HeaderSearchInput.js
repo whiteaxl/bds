@@ -20,7 +20,8 @@ export default class HeaderSearchInput extends Component {
     return(
         <View style={styles.container}>
           <TouchableOpacity style={{marginTop: 20, justifyContent: 'center', alignItems: 'center'}}
-              onPress={() => Actions.SearchSuggestion({needReload: true, refreshRegion: this.props.refreshRegion})}
+              onPress={() => Actions.SearchSuggestion({needReload: true, refreshRegion: this.props.refreshRegion,
+                    onShowMessage: this.props.onShowMessage})}
           >
             <Text style={styles.titleText}> {this.props.placeName}</Text>
           </TouchableOpacity>

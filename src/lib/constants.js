@@ -4,7 +4,6 @@ export default keyMirror({
   ON_ALERT_US_CHANGE: null,
   ON_POLYGONS_CHANGE: null,
   ON_DRAW_MODE_CHANGE: null,
-  ON_SHOW_MSG_CHANGE: null,
 
   ON_SEARCH_FIELD_CHANGE : null,
   SEARCH_STATE_INPUT: null,

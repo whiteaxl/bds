@@ -77,25 +77,16 @@ class SearchResultList extends Component {
         super(props);
         StatusBar.setBarStyle('light-content');
         this.state = {
-            messageDone: false
+            showMessage: false
         };
     }
 
-    componentWillMount() {
-        this.state.messageDone = false;
-    }
-
     componentDidMount() {
-        this.props.actions.onShowMsgChange(true);
+        this._onShowMessage();
     }
 
     componentWillUnmount() {
         clearTimeout(this.timer);
-    }
-
-    _onHideMessage() {
-        this.props.actions.onShowMsgChange(false);
-        this.state.messageDone = false;
     }
 
     _getHeaderTitle() {
@@ -119,23 +110,23 @@ class SearchResultList extends Component {
 
         return placeName;
     }
+    _onShowMessage() {
+        this.setState({showMessage: true});
+        this._onSetupMessageTimeout();
+    }
     _onSetupMessageTimeout() {
         clearTimeout(this.timer);
-        this.timer = setTimeout(() => {this._onHideMessage()}, 5000);
+        this.timer = setTimeout(() => {this.setState({showMessage: false})}, 10000);
     }
     render() {
         log.info("Call SearchResultList render", this.props.fields);
         //log.info(this.props);
-        if (this.props.showMessage && !this.state.messageDone) {
-            this.state.messageDone = true;
-            this._onSetupMessageTimeout();
-        }
         let placeName = this._getHeaderTitle();
         return (
             <MenuContext style={{ flex : 1 }}>
             <View style={myStyles.fullWidthContainer}>
                 <View style={myStyles.search}>
-                    <SearchHeader placeName={placeName}/>
+                    <SearchHeader placeName={placeName} onShowMessage={() => this._onShowMessage()}/>
                 </View>
 
                 <AdsListView {...this.props} noCoverUrl={noCoverUrl} />
@@ -155,7 +146,8 @@ class SearchResultList extends Component {
     }
 
     _renderTotalResultView(){
-        let {listAds, loading, showMessage, fields} = this.props;
+        let {listAds, loading} = this.props;
+        let {showMessage} = this.state;
         let numberOfAds = listAds.length;
         let totalCount = this.props.totalCount;
         let rangeAds = totalCount > 0 ? totalCount : numberOfAds;
@@ -174,7 +166,7 @@ class SearchResultList extends Component {
 
         return (<View style={myStyles.resultContainer}>
             <Animatable.View animation={showMessage ? "fadeIn" : "fadeOut"}
-                             duration={showMessage ? 500 : 1000}>
+                             duration={showMessage ? 500 : 3000}>
                 <View style={[myStyles.resultText]}>
                     <Text style={myStyles.resultIcon}>  {textValue} </Text>
                 </View>

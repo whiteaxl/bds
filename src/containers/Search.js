@@ -252,9 +252,9 @@ class Search extends Component {
     }
     this.props.actions.onSearchFieldChange("orderBy", '');
     this.props.actions.onSearchFieldChange("pageNo", 1);
-    this.props.actions.onShowMsgChange(true);
 
     this._handleSearchAction([], '', 1, gui.MAX_ITEM);
+      this.props.onShowMessage && this.props.onShowMessage();
  }
 
  _handleSearchAction(newViewport, newOrderBy, newPageNo, newLimit){
@@ -298,7 +298,6 @@ class Search extends Component {
     this.props.actions.onSearchFieldChange("radiusInKmSelectedIdx", 0);
     this.props.actions.onSearchFieldChange("huongNha", 0);
     this.props.actions.onSearchFieldChange("ngayDaDang", '');
-    this.props.actions.onShowMsgChange(true);
     this.setState({showMore: false});
   }
 

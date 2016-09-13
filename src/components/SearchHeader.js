@@ -24,7 +24,8 @@ var CommonHeader = React.createClass({
       </RelandIcon>
       </View>
       <View style={mStyles.text}>
-        <HeaderSearchInput placeName={this.props.placeName} refreshRegion={this.props.refreshRegion}/>
+        <HeaderSearchInput placeName={this.props.placeName} refreshRegion={this.props.refreshRegion}
+                           onShowMessage={this.props.onShowMessage}/>
       </View>
       <View style={mStyles.search}>
       <TruliaIcon onPress={this._onSearch}
@@ -41,7 +42,7 @@ var CommonHeader = React.createClass({
   },
 
   _onSearch: function(){
-    Actions.Search({needBack:true});
+    Actions.Search({needBack:true, onShowMessage: this.props.onShowMessage});
   }
 });
 

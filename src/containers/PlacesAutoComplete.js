@@ -58,7 +58,6 @@ class PlacesAutoComplete extends React.Component {
     //console.log(data);
     log.enter("PlacesAutocomplete._onPress", data);
 
-    this.props.actions.onShowMsgChange(true);
     this.props.actions.onSearchFieldChange("viewport", {});
     this.props.actions.onPolygonsChange([]);
     this.props.actions.onSearchFieldChange("polygon", []);
@@ -77,6 +76,7 @@ class PlacesAutoComplete extends React.Component {
       data.fullName = data.shortName || data.fullName;
 
       this.props.actions.onSearchFieldChange("viewport", data.viewport);
+      this.props.actions.onSearchFieldChange("center", data.center);
       let diaChinh = {tinhKhongDau: data.tinh, huyenKhongDau: data.huyen,
           xaKhongDau: data.xa, fullName: data.fullName};
       this.props.actions.onSearchFieldChange("diaChinh", diaChinh);
@@ -87,17 +87,17 @@ class PlacesAutoComplete extends React.Component {
       setTimeout(() => { //must wait for onSearchFieldChange("place", value) complete
         this.props.actions.search(
           this.props.search.form.fields
-          , () => {
-            Actions.pop();
-            StatusBar.setBarStyle('light-content');
-          }
+          , () => {}
         );
-        this.props.refreshRegion();
+        Actions.pop();
+        StatusBar.setBarStyle('light-content');
+        this.props.refreshRegion && this.props.refreshRegion();
       }, 1000);
     } else {
       Actions.pop();
       StatusBar.setBarStyle('light-content');
     }
+    this.props.onShowMessage && this.props.onShowMessage();
   }
 
   _onCancelPress() {

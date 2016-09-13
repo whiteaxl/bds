@@ -15,6 +15,8 @@ import TruliaIcon from './TruliaIcon';
 
 import RelandIcon from './RelandIcon';
 
+import apiUtils from '../lib/ApiUtils';
+
 import cfg from '../cfg';
 
 
@@ -132,6 +134,9 @@ const GooglePlacesAutocomplete = React.createClass({
   getCurrentLocation() {
     navigator.geolocation.getCurrentPosition(
       (position) => {
+        
+        this._abortRequests();
+
         //this._requestNearby(position.coords.latitude, position.coords.longitude);
         let data = {
           name: "Vị trí hiện tại",
@@ -141,6 +146,18 @@ const GooglePlacesAutocomplete = React.createClass({
             "lon": position.coords.longitude
           }
         };
+
+        var region = {
+          latitude: data.currentLocation.lat,
+          longitude: data.currentLocation.lon,
+          latitudeDelta: gui.LATITUDE_DELTA,
+          longitudeDelta: gui.LONGITUDE_DELTA
+        };
+
+        data.viewport = apiUtils.getViewport(region);
+
+        data.center = {lat: region.latitude, lon: region.longitude};
+
         this.props.onPress(data, null);
       },
       (error) => {

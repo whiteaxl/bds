@@ -121,6 +121,7 @@ var Api = {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
+      timeout: 0,
       body: JSON.stringify(params)
     }, this._requestCnt)
     .then(ApiUtils.checkStatus)
@@ -139,6 +140,7 @@ var Api = {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json'
             },
+            timeout: 0,
             body: JSON.stringify(
                 {
                     text: queryText
@@ -161,6 +163,7 @@ var Api = {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
             },
+            timeout: 0,
             body: JSON.stringify(params)
         })
             .then(ApiUtils.checkStatus)
@@ -189,6 +192,7 @@ var Api = {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
       },
+      timeout: 0,
       body: JSON.stringify(lastSearchObj)
     })
       .then(ApiUtils.checkStatus)

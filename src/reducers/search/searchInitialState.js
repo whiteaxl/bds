@@ -113,7 +113,6 @@ var InitialState = Record({
     homeDataErrorMsg : "",
     //shared
     searchCalledFrom : "Search",
-    showMessage: true,
     drawMode: false,
     alertUs: ''
 });

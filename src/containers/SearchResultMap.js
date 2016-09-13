@@ -109,7 +109,6 @@ class SearchResultMap extends Component {
   _previousTop = 0
 
   componentWillMount() {
-    this.props.actions.onShowMsgChange(true);
     this._panResponder = PanResponder.create({
       onStartShouldSetPanResponder: this._handleStartShouldSetPanResponder.bind(this),
       onMoveShouldSetPanResponder: this._handleMoveShouldSetPanResponder.bind(this),
@@ -124,7 +123,7 @@ class SearchResultMap extends Component {
   }
 
   componentDidMount() {
-    this._onSetupMessageTimeout();
+    this._onShowMessage();
   }
 
   componentWillUnmount() {
@@ -163,7 +162,8 @@ class SearchResultMap extends Component {
       editing: null,
       region: region,
       coordinate : null,
-      pageNo: 1
+      pageNo: 1,
+      showMessage: false
     };
   }
 
@@ -216,7 +216,7 @@ class SearchResultMap extends Component {
       for (let i=0; i < viewableList.length; i++) {
         let marker = viewableList[i];
         allMarkers.push(
-            <MapView.Marker key={marker.id} coordinate={marker.coordinate}
+            <MapView.Marker key={i} coordinate={marker.coordinate}
                 // onSelect={()=>this._onMarkerPress(marker)}
                 // onDeselect={this._onMarkerDeselect.bind(this)}
                             onPress={()=>this._onMarkerPress(marker, i)}>
@@ -229,7 +229,8 @@ class SearchResultMap extends Component {
       <View style={styles.fullWidthContainer}>
 
         <View style={styles.search}>
-          <SearchHeader placeName={placeName} containerForm="SearchResultMap" refreshRegion={() => this.refreshRegion()}/>
+          <SearchHeader placeName={placeName} containerForm="SearchResultMap"
+                        refreshRegion={() => this.refreshRegion()} onShowMessage={() => this._onShowMessage()}/>
         </View>
 
         <View style={styles.map}>
@@ -537,8 +538,7 @@ class SearchResultMap extends Component {
       pageNo = pageNo - 1;
       this.setState({pageNo: pageNo});
     }
-    this.props.actions.onShowMsgChange(true);
-    this._onSetupMessageTimeout.bind(this);
+    this._onShowMessage();
   }
 
   _doNextPage() {
@@ -550,13 +550,12 @@ class SearchResultMap extends Component {
       pageNo = pageNo + 1;
       this.setState({pageNo: pageNo});
     }
-    this.props.actions.onShowMsgChange(true);
-    this._onSetupMessageTimeout.bind(this);
+    this._onShowMessage();
   }
 
   _renderTotalResultView(){
-    let {loading, listAds, search, totalCount} = this.props;
-    let {pageNo} = this.state;
+    let {loading, listAds, totalCount} = this.props;
+    let {pageNo, showMessage} = this.state;
     let beginAdsIndex = (pageNo-1)*gui.MAX_VIEWABLE_ADS+1;
     let numberOfAds = listAds.length;
     if (numberOfAds > (pageNo-1)*gui.MAX_VIEWABLE_ADS) {
@@ -584,8 +583,8 @@ class SearchResultMap extends Component {
     }
 
     return (<View style={styles.resultContainer}>
-      <Animatable.View animation={this.props.search.showMessage ? "fadeIn" : "fadeOut"}
-                       duration={this.props.search.showMessage ? 500 : 3000}>
+      <Animatable.View animation={showMessage ? "fadeIn" : "fadeOut"}
+                       duration={showMessage ? 500 : 3000}>
         <View style={[styles.resultText]}>
             <Text style={styles.resultIcon}>  {textValue} </Text>
         </View>
@@ -668,13 +667,17 @@ class SearchResultMap extends Component {
     this.props.actions.search(
         fields
         , refreshCallback);
-    this.props.actions.onShowMsgChange(true);
     this.setState({openDetailAdsModal: false, pageNo: 1});
+    this._onShowMessage();
   }
 
+  _onShowMessage() {
+    this.setState({showMessage: true});
+    this._onSetupMessageTimeout();
+  }
   _onSetupMessageTimeout() {
       clearTimeout(this.timer);
-      this.timer = setTimeout(() => this.props.actions.onShowMsgChange(false), 10000);
+      this.timer = setTimeout(() => this.setState({showMessage: false}), 10000);
   }
 
   _renderLocalInfoModal(){
@@ -766,10 +769,10 @@ class SearchResultMap extends Component {
     if (openDraw) {
       this.props.actions.abortSearch();
       clearTimeout(this.timer);
-      this.props.actions.onShowMsgChange(false);
       this.setState({
         openDetailAdsModal: false,
         editing: null,
+        showMessage: false,
         openDraw: openDraw});
     } else {
       this.setState({
@@ -988,7 +991,7 @@ class SearchResultMap extends Component {
 var styles = StyleSheet.create({
   loadingContent: {
     width: width,
-    height: height-64,
+    height: height-128,
     alignItems: 'center',
     justifyContent: 'center'
   },

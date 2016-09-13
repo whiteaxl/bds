@@ -14,7 +14,6 @@ const {
   ON_ALERT_US_CHANGE,
   ON_POLYGONS_CHANGE,
   ON_DRAW_MODE_CHANGE,
-  ON_SHOW_MSG_CHANGE,
   ON_SEARCH_FIELD_CHANGE,
   SET_SEARCH_LOAI_TIN,
   FETCH_SEARCH_RESULT_FAIL,
@@ -64,13 +63,6 @@ export function fetchSearchResultSuccess(data) {
 export function changeLoadingSearchResult(loading) {
   return {
     type: CHANGE_LOADING_SEARCH_RESULT,
-    payload: loading
-  }
-}
-
-export function onShowMsgChange(loading) {
-  return {
-    type: ON_SHOW_MSG_CHANGE,
     payload: loading
   }
 }

@@ -107,7 +107,7 @@ class Home extends Component {
       <View style={styles.fullWidthContainer}>
         {this._renderHeaderButtons()}
 
-        <View style={styles.homeDetailInfo}>
+        <View style={[styles.homeDetailInfo, {marginBottom: 64}]}>
           {/*<Text> Loading ... </Text>*/}
           <GiftedSpinner />
         </View>
