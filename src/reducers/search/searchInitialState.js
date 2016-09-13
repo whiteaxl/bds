@@ -36,12 +36,12 @@ const SearchForm = Record({
         huongNha: 0,
         viewport: {
             northeast: {
-                lat: 21.056312807785538,
-                lon: 105.80947658832449
+                lat: 21.0594115,
+                lon: 105.8134889
             },
             southwest: {
-                lat: 21.000965664548257,
-                lon: 105.7703864175771
+                lat: 21.0009685,
+                lon: 105.7680415
             }
         },
         polygon: [], //[{lat, lon}]
@@ -53,7 +53,7 @@ const SearchForm = Record({
             huyenKhongDau : "cau-giay",
             xaKhongDau : undefined,
             duAnKhongDau : undefined,
-            fullName : 'Cầu Giấy, Hà Nội'
+            fullName : 'Quận Cầu Giấy, Hà Nội'
         },
         orderBy: '',
         limit: 250,

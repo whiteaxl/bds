@@ -53,6 +53,8 @@ import * as Animatable from 'react-native-animatable';
 
 import Swiper from 'react-native-swiper';
 
+import GiftedSpinner from "../components/GiftedSpinner";
+
 var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / (height-110);
@@ -83,6 +85,7 @@ function mapStateToProps(state) {
     totalCount: state.search.result.totalCount,
     diaChinhFullName: state.search.form.fields.diaChinh.fullName,
     loggedIn: state.global.loggedIn,
+    adsLikes: currentUser && currentUser.adsLikes,
     userID: currentUser && currentUser.userID,
     loading: state.search.loadingFromServer
   };
@@ -166,7 +169,7 @@ class SearchResultMap extends Component {
 
   getInitialRegion() {
     var {viewport} = this.props.search.form.fields;
-    var region = Object.keys(viewport).length == 2 ? apiUtils.getRegionByViewport(viewport) : {};
+    var region = viewport && Object.keys(viewport).length == 2 ? apiUtils.getRegionByViewport(viewport) : {};
     if (Object.keys(region).length <= 0 || isNaN(region.latitude)) {
       region = {latitude: LATITUDE, longitude: LONGITUDE, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA};
     }
@@ -334,6 +337,10 @@ class SearchResultMap extends Component {
 
   _renderAdsModal() {
     let viewableList = this._getViewableAds(this.props.listAds);
+    let isLiked = this.isLiked();
+    let color = isLiked ? '#A2A7AD' : 'white';
+    let bgColor = isLiked ? '#E50064' : '#4A443F';
+    let bgStyle = isLiked ? {} : {opacity: 0.55};
     let allItems = [];
     let i = 0;
     viewableList.map((mmarker) => {
@@ -349,7 +356,7 @@ class SearchResultMap extends Component {
                       <Text style={styles.detailAdsModalText}>{this._getDiaChi(mmarker.diaChi)}</Text>
                     </View>
                     <View style={[styles.detailAdsModalTextHeartButton, {paddingRight: 18, paddingTop: 9}]}>
-                      <MHeartIcon noAction={true} color={'white'} size={19} />
+                      <MHeartIcon onPress={() => this.onLike()} color={color} bgColor={bgColor} bgStyle={bgStyle} size={19} />
                     </View>
                   </View>
                 </LinearGradient>
@@ -372,6 +379,23 @@ class SearchResultMap extends Component {
         </Modal>
     );
   }
+
+  isLiked() {
+    const {adsLikes} = this.props;
+    return adsLikes && adsLikes.indexOf(this.state.mmarker.id) > -1;
+  }
+
+  onLike() {
+    if (!this.props.loggedIn) {
+      //this.props.actions.onAuthFieldChange('activeRegisterLoginTab',0);
+      Actions.LoginRegister({page:1});
+    } else if (!this.isLiked()) {
+      let adsIndex = (this.state.pageNo-1)*gui.MAX_VIEWABLE_ADS + currentAdsIndex;
+      let ads = this.props.listAds[adsIndex];
+      this.props.actions.likeAds(this.props.userID, ads);
+    }
+  }
+  
   onrefreshCurrentAds(index) {
     let viewableList = this._getViewableAds(this.props.listAds);
     currentAdsIndex = index;
@@ -545,12 +569,15 @@ class SearchResultMap extends Component {
     if(loading){
       console.log("SearchResultMap_renderTotalResultView");
       return (<View style={styles.resultContainer}>
-        <Animatable.View animation={this.props.search.showMessage ? "fadeIn" : "fadeOut"}
+        {/*<Animatable.View animation={this.props.search.showMessage ? "fadeIn" : "fadeOut"}
                          duration={this.props.search.showMessage ? 500 : 3000}>
           <View style={[styles.resultText]}>
             <Text style={styles.resultIcon}>  Đang tải dữ liệu ... </Text>
           </View>
-        </Animatable.View>
+        </Animatable.View>*/}
+        <View style={styles.loadingContent}>
+          <GiftedSpinner />
+        </View>
       </View>)
     }
 
@@ -957,6 +984,12 @@ class SearchResultMap extends Component {
 
 // Later on in your styles..
 var styles = StyleSheet.create({
+  loadingContent: {
+    width: width,
+    height: height-64,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
   dot: {
     width: 8,
     height: 8,

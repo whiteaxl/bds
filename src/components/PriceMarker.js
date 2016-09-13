@@ -28,6 +28,7 @@ var styles = StyleSheet.create({
   container: {
     flexDirection: 'column',
     alignSelf: 'flex-start',
+    overflow: 'hidden',
   },
   bubble: {
     flex: 0,
