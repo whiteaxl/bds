@@ -103,7 +103,8 @@ class ImagePreview extends React.Component {
             },
             imgSlide: {
                 marginTop: 0,
-                marginBottom: 0
+                marginBottom: 0,
+                backgroundColor: 'black'
             },
             imgView: {
                 justifyContent: 'center',
@@ -213,7 +214,7 @@ class ImagePreview extends React.Component {
             <Animated.View style={[styles.modal, styles.flexCenter, {transform: [{translateY: this.state.offset}]}]}>
                 <View style={styles.container}>
                     <Swiper style={styles.imgSlide} width={imageWidth} height={imageHeight}
-                            showsButtons={false} autoplay={false} loop={false}
+                            showsButtons={false} autoplay={false} loop={false} bounces={true}
                             dot={<View style={[styles.dot, {backgroundColor: 'transparent'}]} />}
                             activeDot={<View style={[styles.dot, {backgroundColor: 'transparent'}]}/>}
                             renderPagination={renderPagination}

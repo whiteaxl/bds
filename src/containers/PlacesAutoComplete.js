@@ -92,7 +92,8 @@ class PlacesAutoComplete extends React.Component {
             StatusBar.setBarStyle('light-content');
           }
         );
-      }, 100);
+        this.props.refreshRegion();
+      }, 1000);
     } else {
       Actions.pop();
       StatusBar.setBarStyle('light-content');

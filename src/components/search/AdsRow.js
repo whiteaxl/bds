@@ -9,7 +9,6 @@ import LinearGradient from 'react-native-linear-gradient';
 import log from '../../lib/logUtil';
 import DanhMuc from '../../assets/DanhMuc';
 import MHeartIcon from '../MHeartIcon';
-import Swipeout from '../MSwipeout2';
 
 var imgHeight = 181;
 

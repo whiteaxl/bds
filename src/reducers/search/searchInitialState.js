@@ -36,12 +36,12 @@ const SearchForm = Record({
         huongNha: 0,
         viewport: {
             northeast: {
-                lat: 21.385027,
-                lon: 106.0198859
+                lat: 21.056312807785538,
+                lon: 105.80947658832449
             },
             southwest: {
-                lat: 20.562323,
-                lon: 105.2854659
+                lat: 21.000965664548257,
+                lon: 105.7703864175771
             }
         },
         polygon: [], //[{lat, lon}]

@@ -158,8 +158,8 @@ class SearchResultList extends Component {
         let {listAds, loading, showMessage, fields} = this.props;
         let numberOfAds = listAds.length;
         let totalCount = this.props.totalCount;
-        let rangeAds = totalCount > 0 && totalCount != numberOfAds ? numberOfAds + " / " + totalCount : numberOfAds;
-        let textValue = rangeAds + " tin tìm thấy được hiển thị";
+        let rangeAds = totalCount > 0 ? totalCount : numberOfAds;
+        let textValue = "Tìm thấy " + rangeAds + " tin";
         
         if(loading){
             return (<View style={myStyles.resultContainer}>

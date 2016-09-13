@@ -57,8 +57,6 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import MHeartIcon from '../components/MHeartIcon';
 
-import Swipeout from '../components/MSwipeout';
-
 const actions = [
   globalActions,
   searchActions,
@@ -291,30 +289,26 @@ class SearchResultDetail extends Component {
       rowData.image.images.map(function(imageUrl) {
         imageDataItems.push(imageUrl);
         imageItems.push(
-          <Swipeout right={[]} left={[]} key={"img"+(imageIndex++)}>
-          <View style={detailStyles.slide}>
+          <View style={detailStyles.slide} key={"img"+(imageIndex++)}>
             <TouchableHighlight onPress={imagePreviewAction} underlayColor="transparent" >
             <Image style={detailStyles.imgItem}
                source={{uri: `${imageUrl}`}}>
             </Image>
             </TouchableHighlight>
           </View>
-          </Swipeout>
         );
       });
       if (imageItems.length == 0) {
         var imageUrl = rowData.image.cover;
         imageDataItems.push(imageUrl);
         imageItems.push(
-          <Swipeout right={[]} left={[]} key={"img"+(imageIndex)}>
-          <View style={detailStyles.slide}>
+          <View style={detailStyles.slide} key={"img"+(imageIndex)}>
             <TouchableHighlight onPress={imagePreviewAction} underlayColor="transparent" >
             <Image style={detailStyles.imgItem}
                source={{uri: `${imageUrl}`}}>
             </Image>
             </TouchableHighlight>
           </View>
-          </Swipeout>
         );
       }
       url = rowData.image.cover;
@@ -370,7 +364,7 @@ class SearchResultDetail extends Component {
             <View style={detailStyles.searchContent}>
 
               <Swiper style={[detailStyles.wrapper,{backgroundColor: 'gray'}]} height={imgHeight}
-                      showsButtons={false} autoplay={false} loop={false}
+                      showsButtons={false} autoplay={false} loop={false} bounces={true}
                       dot={<View style={[detailStyles.dot, {backgroundColor: 'transparent'}]} />}
                       activeDot={<View style={[detailStyles.dot, {backgroundColor: 'transparent'}]}/>}
                       renderPagination={this._renderPagination}

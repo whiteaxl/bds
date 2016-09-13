@@ -24,7 +24,7 @@ var CommonHeader = React.createClass({
       </RelandIcon>
       </View>
       <View style={mStyles.text}>
-        <HeaderSearchInput placeName={this.props.placeName}/>
+        <HeaderSearchInput placeName={this.props.placeName} refreshRegion={this.props.refreshRegion}/>
       </View>
       <View style={mStyles.search}>
       <TruliaIcon onPress={this._onSearch}

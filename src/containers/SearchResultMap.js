@@ -51,7 +51,7 @@ import LocationMarker from '../components/LocationMarker';
 
 import * as Animatable from 'react-native-animatable';
 
-import Swipeout from '../components/MSwipeout2';
+import Swiper from 'react-native-swiper';
 
 var { width, height } = Dimensions.get('window');
 
@@ -79,7 +79,6 @@ function mapStateToProps(state) {
   return {
     ... state,
     listAds: state.search.result.listAds,
-    viewport: state.search.result.viewport,
     errorMsg: state.search.result.errorMsg,
     totalCount: state.search.result.totalCount,
     diaChinhFullName: state.search.form.fields.diaChinh.fullName,
@@ -193,6 +192,10 @@ class SearchResultMap extends Component {
 
       return placeName;
   }
+  refreshRegion() {
+    var region = this.getInitialRegion();
+    this.setState({region: region});
+  }
   render() {
     console.log("Call SearchResultMap.render, this.state.region=", this.state.region);
 
@@ -202,8 +205,8 @@ class SearchResultMap extends Component {
 
     let viewableList = this._getViewableAds(listAds);
 
-      //placeName = this.props.diaChinhFullName
-      let placeName = this._getHeaderTitle();
+    //placeName = this.props.diaChinhFullName
+    let placeName = this._getHeaderTitle();
 
     let allMarkers = [];
     if (!this.props.search.drawMode || (this.props.search.map.polygons && this.props.search.map.polygons.length > 0)) {
@@ -223,7 +226,7 @@ class SearchResultMap extends Component {
       <View style={styles.fullWidthContainer}>
 
         <View style={styles.search}>
-          <SearchHeader placeName={placeName} containerForm="SearchResultMap"/>
+          <SearchHeader placeName={placeName} containerForm="SearchResultMap" refreshRegion={() => this.refreshRegion()}/>
         </View>
 
         <View style={styles.map}>
@@ -331,66 +334,49 @@ class SearchResultMap extends Component {
 
   _renderAdsModal() {
     let viewableList = this._getViewableAds(this.props.listAds);
-    let leftMarker = currentAdsIndex <= 0 ? null : viewableList[currentAdsIndex-1];
-    let rightMarker = currentAdsIndex >= viewableList.length-1 ? null : viewableList[currentAdsIndex+1];
+    let allItems = [];
+    let i = 0;
+    viewableList.map((mmarker) => {
+      allItems.push(
+          <View style={styles.detailAdsModal} key={i++}>
+            <TouchableOpacity onPress={this._onDetailAdsPress.bind(this)}>
+              <Image style={styles.detailAdsModalThumb} source={{uri: `${mmarker.cover}`}} >
+                <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
+                                style={styles.detailAdsModalLinearGradient}>
+                  <View style={styles.detailAdsModalDetail}>
+                    <View>
+                      <Text style={styles.detailAdsModalPrice}>{mmarker.price}</Text>
+                      <Text style={styles.detailAdsModalText}>{this._getDiaChi(mmarker.diaChi)}</Text>
+                    </View>
+                    <View style={[styles.detailAdsModalTextHeartButton, {paddingRight: 18, paddingTop: 9}]}>
+                      <MHeartIcon noAction={true} color={'white'} size={19} />
+                    </View>
+                  </View>
+                </LinearGradient>
+              </Image>
+            </TouchableOpacity>
+          </View>
+      );
+    });
     return (
         <Modal animationDuration={100} style={styles.adsModal} isOpen={this.state.openDetailAdsModal} position={"bottom"}
                ref={"detailAdsModal"} isDisabled={false} onPress={this._onDetailAdsPress.bind(this)}>
-          <Swipeout right={[{component: rightMarker ? <View style={styles.detailAdsModal}>
-                <Image style={styles.detailAdsModalThumb} source={{uri: `${rightMarker.cover}`}} >
-                  <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
-                                  style={styles.detailAdsModalLinearGradient}>
-                    <View style={styles.detailAdsModalDetail}>
-                      <View>
-                        <Text style={styles.detailAdsModalPrice}>{rightMarker.price}</Text>
-                        <Text style={styles.detailAdsModalText}>{this._getDiaChi(rightMarker.diaChi)}</Text>
-                      </View>
-                      <View style={[styles.detailAdsModalTextHeartButton, {paddingRight: 18, paddingTop: 9}]}>
-                        <MHeartIcon noAction={true} color={'white'} size={19} />
-                      </View>
-                    </View>
-                  </LinearGradient>
-                </Image>
-            </View> : null, text: '', backgroundColor: 'transparent',
-              width: width, height: 181}]} onSwipeRightSuccess={this._onNextAds.bind(this)}
-                    left={[{component: leftMarker ? <View style={styles.detailAdsModal}>
-                <Image style={styles.detailAdsModalThumb} source={{uri: `${leftMarker.cover}`}} >
-                  <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
-                                  style={styles.detailAdsModalLinearGradient}>
-                    <View style={styles.detailAdsModalDetail}>
-                      <View>
-                        <Text style={styles.detailAdsModalPrice}>{leftMarker.price}</Text>
-                        <Text style={styles.detailAdsModalText}>{this._getDiaChi(leftMarker.diaChi)}</Text>
-                      </View>
-                      <View style={[styles.detailAdsModalTextHeartButton, {paddingRight: 18, paddingTop: 9}]}>
-                        <MHeartIcon noAction={true} color={'white'} size={19} />
-                      </View>
-                    </View>
-                  </LinearGradient>
-                </Image>
-            </View> : null, text: '', backgroundColor: 'transparent',
-              width: width, height: 181}]} onSwipeLeftSuccess={this._onPreviousAds.bind(this)}>
-            <View style={styles.detailAdsModal}>
-              <TouchableOpacity onPress={this._onDetailAdsPress.bind(this)}>
-                <Image style={styles.detailAdsModalThumb} source={{uri: `${this.state.mmarker.cover}`}} >
-                  <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
-                                  style={styles.detailAdsModalLinearGradient}>
-                    <View style={styles.detailAdsModalDetail}>
-                      <View>
-                        <Text style={styles.detailAdsModalPrice}>{this.state.mmarker.price}</Text>
-                        <Text style={styles.detailAdsModalText}>{this._getDiaChi(this.state.mmarker.diaChi)}</Text>
-                      </View>
-                      <View style={[styles.detailAdsModalTextHeartButton, {paddingRight: 18, paddingTop: 9}]}>
-                        <MHeartIcon noAction={true} color={'white'} size={19} />
-                      </View>
-                    </View>
-                  </LinearGradient>
-                </Image>
-              </TouchableOpacity>
-            </View>
-          </Swipeout>
+          <Swiper style={styles.wrapper} height={181} index={currentAdsIndex}
+                  onMomentumScrollEnd={(e, state) => {this.onrefreshCurrentAds(state.index)}}
+                  showsButtons={false} autoplay={false} loop={false} bounces={true}
+                  dot={<View style={[styles.dot, {backgroundColor: 'transparent'}]} />}
+                  activeDot={<View style={[styles.dot, {backgroundColor: 'transparent'}]}/>}
+          >
+            {allItems}
+          </Swiper>
         </Modal>
     );
+  }
+  onrefreshCurrentAds(index) {
+    let viewableList = this._getViewableAds(this.props.listAds);
+    currentAdsIndex = index;
+    let marker = viewableList[currentAdsIndex];
+    this._onMarkerPress(marker, currentAdsIndex);
   }
   _onNextAds() {
     let viewableList = this._getViewableAds(this.props.listAds);
@@ -505,8 +491,12 @@ class SearchResultMap extends Component {
                             noAction={true}></RelandIcon>) :
                 (
                     <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                      <Icon name="hand-o-up" style={styles.mapIcon} color={this.props.search.drawMode ? gui.mainColor : 'black'}
-                            size={20}></Icon>
+                      {/*<Icon name="hand-o-up" style={styles.mapIcon} color={this.props.search.drawMode ? gui.mainColor : 'black'}
+                            size={20}></Icon>*/}
+                      <RelandIcon name="hand-o-up" color={this.props.search.drawMode ? gui.mainColor : 'black'}
+                                  mainProps={{flexDirection: 'row'}}
+                                  size={20} textProps={{paddingLeft: 0}}
+                                  noAction={true}></RelandIcon>
                       <Text style={[styles.drawIconText, {color: drawIconColor}]}>Vẽ tay</Text>
                     </View>
                 )}
@@ -550,13 +540,13 @@ class SearchResultMap extends Component {
     }
     let endAdsIndex = (pageNo-1)*gui.MAX_VIEWABLE_ADS+numberOfAds;
     let rangeAds = totalCount > 0 && totalCount != numberOfAds ? (endAdsIndex > 0 ? beginAdsIndex + "-" + endAdsIndex : "0") + " / " + totalCount : numberOfAds;
-    let textValue = rangeAds + " tin tìm thấy được hiển thị. Zoom bản đồ để xem thêm";
+    let textValue = "Đang hiển thị từ " + rangeAds + " tin nằm trong khung hình";
 
     if(loading){
       console.log("SearchResultMap_renderTotalResultView");
       return (<View style={styles.resultContainer}>
         <Animatable.View animation={this.props.search.showMessage ? "fadeIn" : "fadeOut"}
-                         duration={this.props.search.showMessage ? 500 : 1000}>
+                         duration={this.props.search.showMessage ? 500 : 3000}>
           <View style={[styles.resultText]}>
             <Text style={styles.resultIcon}>  Đang tải dữ liệu ... </Text>
           </View>
@@ -566,7 +556,7 @@ class SearchResultMap extends Component {
 
     return (<View style={styles.resultContainer}>
       <Animatable.View animation={this.props.search.showMessage ? "fadeIn" : "fadeOut"}
-                       duration={this.props.search.showMessage ? 500 : 1000}>
+                       duration={this.props.search.showMessage ? 500 : 3000}>
         <View style={[styles.resultText]}>
             <Text style={styles.resultIcon}>  {textValue} </Text>
         </View>
@@ -967,6 +957,19 @@ class SearchResultMap extends Component {
 
 // Later on in your styles..
 var styles = StyleSheet.create({
+  dot: {
+    width: 8,
+    height: 8,
+    borderRadius: 4,
+    marginLeft: 3,
+    marginRight: 3,
+    marginTop: 3,
+    marginBottom: 3,
+    bottom: 32
+  },
+  wrapper: {
+    backgroundColor: 'transparent'
+  },
   fullWidthContainer: {
     flex: 1,
     alignItems: 'stretch',
