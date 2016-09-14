@@ -253,7 +253,14 @@ class SearchResultDetail extends Component {
       giaM2 = Math.round(giaM2) + 'tr/m²';
     }
     var soTang = rowData.soTang;
+    if (soTang) {
+      soTang = soTang + ' tầng';
+    }
     var huongNha = DanhMuc.HuongNha[rowData.huongNha];
+    var huongNhaText = '';
+    if (rowData.huongNha) {
+      huongNhaText = "Hướng " + huongNha;
+    }
     var duAn = rowData.duAn;
     var luotXem = rowData.luotXem;
     var soPhongNguVal = rowData.soPhongNgu;
@@ -385,9 +392,9 @@ class SearchResultDetail extends Component {
                   </Text>
                 </View>
                 <View style={[detailStyles.lineBorder, {marginBottom: 4}]} />
-                {this.renderTwoNormalProps(loaiTin, loaiNhaDat, {marginTop: 11}, {marginTop: 4, marginBottom: 4})}
-                {this.renderTwoNormalProps(dienTich, soPhongNgu, {marginTop: 12}, {marginTop: 4, marginBottom: 4})}
-                {this.renderTwoNormalProps(soPhongTam, soNgayDaDangTin, {marginTop: 11}, {marginTop: 4, marginBottom: 4})}
+                {this.renderTwoNormalProps(loaiNhaDat, dienTich, {marginTop: 11}, {marginTop: 4, marginBottom: 4})}
+                {this.renderTwoNormalProps(soTang, soPhongNgu, {marginTop: 12}, {marginTop: 4, marginBottom: 4})}
+                {this.renderTwoNormalProps(huongNhaText, soNgayDaDangTin, {marginTop: 11}, {marginTop: 4, marginBottom: 4})}
                 <View style={[detailStyles.lineBorder2, {marginTop: 4, marginBottom: 8}]} />
                 <View style={detailStyles.chiTietText}>
                   <Text style={[detailStyles.textTitle, {marginLeft: 0, marginBottom: 16}]}>Chi Tiết</Text>
