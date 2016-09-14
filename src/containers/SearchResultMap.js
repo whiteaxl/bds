@@ -59,6 +59,7 @@ var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / (height-110);
 
+const PADDING = 0.000000000005;
 const LATITUDE = 20.95389909999999;
 const LONGITUDE = 105.75490945;
 const LATITUDE_DELTA = 0.08616620000177733;
@@ -577,7 +578,7 @@ class SearchResultMap extends Component {
           </View>
         </Animatable.View>*/}
         <View style={styles.loadingContent}>
-          <GiftedSpinner />
+          <GiftedSpinner size="large" />
         </View>
       </View>)
     }
@@ -621,6 +622,10 @@ class SearchResultMap extends Component {
   _onRegionChangeComplete(region) {
     console.log("Call SearhResultMap._onRegionChangeComplete");
 
+    if (!this.hasRegionChange(region)) {
+      return;
+    }
+
     // this.state.region = region;
     this.setState({
       region :region
@@ -632,6 +637,14 @@ class SearchResultMap extends Component {
     if (this.props.search.map.autoLoadAds){
       this._refreshListData(viewport, null, this._onSetupMessageTimeout.bind(this));
     }
+  }
+
+  hasRegionChange(region) {
+    let oldRegion = this.state.region;
+    return !(oldRegion && Math.abs(oldRegion.latitude - region.latitude) <= PADDING
+        && Math.abs(oldRegion.longitude - region.longitude) <= PADDING
+        && Math.abs(oldRegion.latitudeDelta - region.latitudeDelta) <= PADDING
+        && Math.abs(oldRegion.longitudeDelta - region.longitudeDelta) <= PADDING);
   }
 
   _doRefreshListData() {

@@ -22,9 +22,10 @@ import gui from "../lib/gui";
 import log from "../lib/logUtil";
 
 import AdsMgmtTabBar from "../components/adsMgmt/AdsMgmtTabBar";
-import AdsMgmtHeader from "../components/adsMgmt/AdsMgmtHeader";
 import AdsListTab from '../components/adsMgmt/AdsListTab';
 import LoginRegister from '../containers/LoginRegister';
+
+import HomeHeader from '../components/home/HomeHeader';
 
 
 const actions = [
@@ -75,9 +76,7 @@ export default class AdsMgmt extends React.Component {
 
       return (
         <View style={{flex: 1, marginBottom: 45}}>
-          <View style={styles.header}>
-            <AdsMgmtHeader />
-          </View>
+          <HomeHeader/>
 
           <ScrollableTabView page={page} initialPage={0}
                              renderTabBar={this.renderTabBar.bind(this)}

@@ -13,7 +13,7 @@ export default class GiftedSpinner extends React.Component {
     return (
       <ActivityIndicator
         animating={true}
-        size="small"
+        size={this.props.size||"small"}
         {...this.props}
       />
     );

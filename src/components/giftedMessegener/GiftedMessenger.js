@@ -440,7 +440,7 @@ class GiftedMessenger extends Component {
       if (this.props.isLoadingEarlierMessages) {
         return (
           <View style={this.styles.loadEarlierMessages}>
-            <GiftedSpinner />
+            <GiftedSpinner size="large" />
           </View>
         );
       }

@@ -14,8 +14,8 @@ var ApiUtils = {
   },
 
   getBbox: function(region){
-  	var latMax = region.latitude + region.latitudeDelta/2;
-    var lonMax = region.longitude + region.longitudeDelta/2;
+  	var latMax = region.latitude + region.latitudeDelta/2.0;
+    var lonMax = region.longitude + region.longitudeDelta/2.0;
     var latMin = latMax - region.latitudeDelta;
     var lonMin = lonMax - region.longitudeDelta;
     return [latMin, lonMin, latMax, lonMax];
@@ -65,8 +65,8 @@ var ApiUtils = {
   getRegion: function(geoBox){
     var latitudeDelta = geoBox[2] - geoBox[0];
     var longitudeDelta = geoBox[3] - geoBox[1];
-    var latitude = geoBox[2] - latitudeDelta/2;
-    var longitude = geoBox[3] - longitudeDelta/2;
+    var latitude = geoBox[2] - latitudeDelta/2.0;
+    var longitude = geoBox[3] - longitudeDelta/2.0;
     return {latitude: latitude, longitude: longitude, latitudeDelta: latitudeDelta, longitudeDelta: longitudeDelta};
   },
 

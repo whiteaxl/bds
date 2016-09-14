@@ -9,6 +9,8 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import TruliaIcon from '../../components/TruliaIcon';
 
+import DanhMuc from '../../assets/DanhMuc';
+
 import {Actions} from 'react-native-router-flux';
 
 import MHeartIcon from '../MHeartIcon';
@@ -93,8 +95,8 @@ export default class HomeCollection extends Component {
 
 class ImageItem extends React.Component{
   render() {
-    let {cover, giaFmt, soPhongNguFmt, soPhongTamFmt, khuVuc} = this.props.ads;
-    let detail = soPhongNguFmt ? soPhongNguFmt + " ": "" + (soPhongTamFmt || "");
+    let {cover, giaFmt, khuVuc} = this.props.ads;
+    let detail = this.getMoreInfo(this.props.ads);
     let isLiked = this.isLiked();
     let color = isLiked ? '#A2A7AD' : 'white';
     let bgColor = isLiked ? '#E50064' : '#4A443F';
@@ -121,6 +123,41 @@ class ImageItem extends React.Component{
         </View>
       </Image>
     );
+  }
+
+  getMoreInfo(ads) {
+    var loaiTin = ads.loaiTin;
+    var loaiNhaDat = ads.loaiNhaDat;
+    var dienTich = '';
+    if (ads.dienTichFmt) {
+      dienTich = ads.dienTichFmt;
+    }
+    var soPhongNgu = '';
+    if (ads.soPhongNguFmt) {
+      soPhongNgu = "   " + ads.soPhongNguFmt;
+    }
+
+    var soTang = '';
+    if (ads.soTangFmt) {
+      soTang = "   " + ads.soTangFmt;
+    }
+    var moreInfo = '';
+    var loaiNhaDatKeys = loaiTin ? DanhMuc.LoaiNhaDatThueKey : DanhMuc.LoaiNhaDatBanKey;
+    if (loaiNhaDat == loaiNhaDatKeys[1]) {
+      moreInfo = dienTich + soPhongNgu;
+    }
+    else if ( !loaiTin && ((loaiNhaDat == loaiNhaDatKeys[2])
+        || (loaiNhaDat == loaiNhaDatKeys[3])
+        || (loaiNhaDat == loaiNhaDatKeys[4])) ||
+        loaiTin && ((loaiNhaDat == loaiNhaDatKeys[2])
+        || (loaiNhaDat == loaiNhaDatKeys[3])
+        || (loaiNhaDat == loaiNhaDatKeys[6]))) {
+      moreInfo = dienTich + soTang;
+    }
+    else {
+      moreInfo = dienTich;
+    }
+    return moreInfo;
   }
 
   isLiked() {

@@ -152,7 +152,7 @@ class SearchResultDetail extends Component {
         <View style={detailStyles.fullWidthContainer}>
           {this._renderHeaderBar()}
           <View style={detailStyles.searchContent}>
-            <GiftedSpinner />
+            <GiftedSpinner size="large" />
           </View>
           <SearchResultDetailFooter />
         </View>

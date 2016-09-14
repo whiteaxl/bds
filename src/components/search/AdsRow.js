@@ -101,7 +101,7 @@ class AdsRow extends React.Component {
     var diaChi = ads.diaChi;
     var loaiNhaDat = ads.loaiNhaDat;
     var dienTich = '';
-    if (ads.dienTich) {
+    if (ads.dienTichFmt) {
       dienTich = '· ' + ads.dienTichFmt;
     }
     var soPhongNgu = '';

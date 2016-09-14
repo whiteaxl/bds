@@ -16,7 +16,8 @@ import * as inboxActions from '../reducers/inbox/inboxActions';
 
 import LoginRegister from './LoginRegister';
 import InboxContent from "../components/inbox/InboxContent";
-import InboxHeader from '../components/inbox/InboxHeader';
+import HomeHeader from '../components/home/HomeHeader';
+
 import LikeTabButton from '../components/LikeTabButton';
 
 import dbService from "../lib/localDB";
@@ -86,7 +87,7 @@ class Inbox extends Component {
 		if (this.props.global.loggedIn) {
 			return (
 				<View style={styles.container}>
-					<InboxHeader headerTitle={"Chat"}/>
+					<HomeHeader />
 					<View style = {styles.tabbar}>
 						<LikeTabButton name={'all'}
 													 onPress={this._onLoaiTinChange.bind(this)}

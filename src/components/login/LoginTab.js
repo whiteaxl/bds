@@ -105,7 +105,7 @@ class LoginTab extends React.Component {
       (this.props.global.loggedIn && !this.props.global.currentUser.userID)) {
       return (
         <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
-          <GiftedSpinner />
+          <GiftedSpinner size="large" />
         </View>
       )
     }

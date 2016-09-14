@@ -14,7 +14,8 @@ import {connect} from 'react-redux';
 import * as globalActions from '../reducers/global/globalActions';
 import * as chatActions from '../reducers/chat/chatActions';
 
-import ChatHeader from "../components/chat/ChatHeader";
+import HomeHeader from '../components/home/HomeHeader';
+
 import ChatContent from "../components/chat/ChatContent";
 
 
@@ -49,7 +50,7 @@ class Chat extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ChatHeader partner={this.props.chat.partner}/>
+        <HomeHeader/>
         <ChatContent/>
       </View>
     );

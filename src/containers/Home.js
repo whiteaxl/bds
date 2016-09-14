@@ -28,6 +28,8 @@ import HomeCollection from '../components/home/HomeCollection';
 
 import GiftedSpinner from 'react-native-gifted-spinner';
 
+import HomeHeader from '../components/home/HomeHeader';
+
 var { width, height } = Dimensions.get('window');
 var imageHeight = 143;
 
@@ -105,47 +107,14 @@ class Home extends Component {
   _renderLoadingView() {
     return (
       <View style={styles.fullWidthContainer}>
-        {this._renderHeaderButtons()}
+        <HomeHeader />
 
         <View style={[styles.homeDetailInfo, {marginBottom: 64}]}>
           {/*<Text> Loading ... </Text>*/}
-          <GiftedSpinner />
+          <GiftedSpinner size="large" />
         </View>
       </View>
     );
-  }
-
-  _renderHeaderButtons() {
-    let logoIcon = require('../assets/image/logo.png');
-    return (
-        <View style={styles.pageHeader}>
-          <View style={styles.home}>
-            <RelandIcon
-                name="loc-map" color="white" size={24} onPress={this._onMapView.bind(this)}
-                mainProps={{marginTop: 17, paddingLeft: 18, paddingRight: 16}}
-            >
-            </RelandIcon>
-          </View>
-          <View style={styles.home}>
-            <Image
-                style={styles.logoIcon}
-                resizeMode={Image.resizeMode.cover}
-                source={logoIcon}
-            />
-          </View>
-          <View style={styles.searchButton}>
-            <TruliaIcon onPress={this.handleSearchButton}
-                        name="search" color="white" size={20}
-                        mainProps={{paddingLeft: 16, paddingRight: 21}}
-            >
-            </TruliaIcon>
-          </View>
-        </View>
-    );
-  }
-
-  _onMapView() {
-    Actions.SearchResultMap({type: "reset"});
   }
 
   render() {
@@ -155,7 +124,7 @@ class Home extends Component {
     }
     return (
       <View style={styles.fullWidthContainer}>
-        {this._renderHeaderButtons()}
+        <HomeHeader />
 
         <View style={styles.homeDetailInfo}>
           {this.renderContent(this.props.search.collections)}
@@ -163,10 +132,6 @@ class Home extends Component {
       </View>
 		)
 	}
-
-  handleSearchButton() {
-    Actions.Search();
-  }
 }
 
 

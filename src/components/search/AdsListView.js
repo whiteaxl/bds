@@ -24,7 +24,7 @@ class AdsListView extends React.Component {
       return (
         <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
           {/*<Text> Loading ... </Text>*/}
-          <GiftedSpinner />
+          <GiftedSpinner size="large" />
         </View>
       )
     }

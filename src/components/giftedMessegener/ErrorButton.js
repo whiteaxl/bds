@@ -50,7 +50,7 @@ export default class ErrorButton extends React.Component {
             borderRadius: 0,
           }]}
         >
-          <GiftedSpinner />
+          <GiftedSpinner size="large" />
         </View>
       );
     }

@@ -235,9 +235,10 @@ class AdsListTab extends Component {
 
   _renderText(rowData) {
     var diaChi = rowData.diaChi;
+    var loaiTin = rowData.loaiTin;
     var loaiNhaDat = rowData.loaiNhaDat;
     var dienTich = '';
-    if (rowData.dienTich) {
+    if (rowData.dienTichFmt) {
       dienTich = '· ' + rowData.dienTichFmt;
     }
     var soPhongNgu = '';
@@ -264,7 +265,7 @@ class AdsListTab extends Component {
       diaChi = diaChi + '...';
     }
 
-    var moreInfo = this.getMoreInfo(loaiNhaDat, dienTich, soPhongNgu, soTang);
+    var moreInfo = this.getMoreInfo(loaiTin, loaiNhaDat, dienTich, soPhongNgu, soTang);
     var moreInfoWithoutDot = moreInfo.substring(3);
 
     if (this.props.name == 'likedTab') {
@@ -306,18 +307,21 @@ class AdsListTab extends Component {
     );
   }
 
-  getMoreInfo(loaiNhaDat, dienTich, soPhongNgu, soTang) {
+  getMoreInfo(loaiTin, loaiNhaDat, dienTich, soPhongNgu, soTang) {
     var moreInfo = '';
-    if (loaiNhaDat == DanhMuc.LoaiNhaDatKey[1]) {
+    var loaiNhaDatKeys = loaiTin ? DanhMuc.LoaiNhaDatThueKey : DanhMuc.LoaiNhaDatBanKey;
+    if (loaiNhaDat == loaiNhaDatKeys[1]) {
       moreInfo = ' ' + dienTich + soPhongNgu;
     }
-    if ((loaiNhaDat == DanhMuc.LoaiNhaDatKey[2])
-      || (loaiNhaDat == DanhMuc.LoaiNhaDatKey[3])
-      || (loaiNhaDat == DanhMuc.LoaiNhaDatKey[4])) {
+    else if ( !loaiTin && ((loaiNhaDat == loaiNhaDatKeys[2])
+        || (loaiNhaDat == loaiNhaDatKeys[3])
+        || (loaiNhaDat == loaiNhaDatKeys[4])) ||
+        loaiTin && ((loaiNhaDat == loaiNhaDatKeys[2])
+        || (loaiNhaDat == loaiNhaDatKeys[3])
+        || (loaiNhaDat == loaiNhaDatKeys[6]))) {
       moreInfo = ' ' + dienTich + soTang;
     }
-    if ((loaiNhaDat == DanhMuc.LoaiNhaDatKey[5])
-      || (loaiNhaDat == DanhMuc.LoaiNhaDatKey[6])) {
+    else {
       moreInfo = ' ' + dienTich;
     }
     return moreInfo;

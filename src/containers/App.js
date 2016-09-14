@@ -101,10 +101,7 @@ class App extends React.Component {
 
           <Scene key="Home" tabs={true} default="Main" type="replace" tabBarStyle={styles.tabBarStyle}>
             <Scene key="Main" title="Trang chủ" iconName={"home-f"} iconSize={26} icon={TabIcon}
-                   component={Home} onPress={()=>{
-                      this.props.actions.loadHomeData();
-                      Actions.Main()
-                   }}
+                   component={Home}
                    hideNavBar={true} initial={true}/>
 
             <Scene key="Inbox" component={Inbox} title="Chat"

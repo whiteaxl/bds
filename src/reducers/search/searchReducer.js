@@ -87,6 +87,7 @@ export default function searchReducer(state = initialState, action) {
       let {data, query} = action.payload;
 
       let recentSearchList = state.recentSearchList;
+      query.polygon = undefined;
       let searchObj = {
         name: 'Search at ' + moment().format("DD-MM-YYYY HH:mm:ss"),
         timeModified: new Date().getTime(),
@@ -101,7 +102,14 @@ export default function searchReducer(state = initialState, action) {
       recentSearchList = recentSearchList.slice(0, LIMIT);
 
       //update lastSearch if called from search screen
-      if (state.searchCalledFrom == 'Search') {
+      let hasDiaChinhChange = false;
+      if (recentSearchList && recentSearchList.length > 0) {
+        let oldQuery = recentSearchList[0];
+        let oldDiaChinh = oldQuery.diaChinh;
+        let diaChinh = query.diaChinh;
+        hasDiaChinhChange = diaChinh && diaChinh.length > 0 && oldDiaChinh.fullName != diaChinh.fullName;
+      }
+      if (state.searchCalledFrom == 'Search' && hasDiaChinhChange) {
         localStorage.setLastSearch(JSON.stringify(searchObj));
       }
 

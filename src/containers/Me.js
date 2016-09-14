@@ -20,7 +20,8 @@ import ScrollableTabView from 'react-native-scrollable-tab-view';
 import gui from "../lib/gui";
 import log from "../lib/logUtil";
 
-import MeHeader from "../components/me/MeHeader";
+import HomeHeader from '../components/home/HomeHeader';
+
 import MeContent from "../components/me/MeContent";
 import LoginRegister from '../containers/LoginRegister';
 
@@ -66,10 +67,7 @@ export default class Me extends React.Component {
 
       return (
         <View style={{flex: 1, marginBottom: 45}}>
-          <View style={styles.header}>
-            <MeHeader />
-          </View>
-
+          <HomeHeader/>
           <MeContent/>
         </View>
       )
