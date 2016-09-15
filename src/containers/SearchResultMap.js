@@ -680,12 +680,12 @@ class SearchResultMap extends Component {
     this.props.actions.search(
         fields
         , refreshCallback);
-    this.setState({openDetailAdsModal: false, pageNo: 1});
+    this.setState({pageNo: 1});
     this._onShowMessage();
   }
 
   _onShowMessage() {
-    this.setState({showMessage: true});
+    this.setState({openDetailAdsModal: false, showMessage: true});
     this._onSetupMessageTimeout();
   }
   _onSetupMessageTimeout() {
