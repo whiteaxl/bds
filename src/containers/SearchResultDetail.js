@@ -39,7 +39,7 @@ import RelandIcon from '../components/RelandIcon';
 
 import Button from 'react-native-button';
 
-var Communications = require('react-native-communications');
+import Communications from '../components/detail/MCommunications';
 
 import ImagePreview from '../components/ImagePreview';
 
