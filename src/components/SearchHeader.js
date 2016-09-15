@@ -42,7 +42,7 @@ var CommonHeader = React.createClass({
   },
 
   _onSearch: function(){
-    Actions.Search({needBack:true, onShowMessage: this.props.onShowMessage});
+    Actions.Search({needBack:true, onShowMessage: this.props.onShowMessage, refreshRegion: this.props.refreshRegion});
   }
 });
 

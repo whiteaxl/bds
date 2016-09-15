@@ -213,7 +213,7 @@ class SearchResultMap extends Component {
     let placeName = this._getHeaderTitle();
 
     let allMarkers = [];
-    if (!this.props.search.drawMode || (this.props.search.map.polygons && this.props.search.map.polygons.length > 0)) {
+    if (!this.props.loading && (!this.props.search.drawMode || (this.props.search.map.polygons && this.props.search.map.polygons.length > 0))) {
       for (let i=0; i < viewableList.length; i++) {
         let marker = viewableList[i];
         allMarkers.push(

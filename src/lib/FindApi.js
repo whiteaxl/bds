@@ -26,7 +26,7 @@ var Api = {
       radiusInKmSelectedIdx, dienTich, orderBy, diaChinh, center, viewport, huongNha, ngayDaDang, polygon, pageNo, limit, isIncludeCountInResponse} = fields;
 
     let circle = {};
-    if (center) {
+    if (center && center.length > 0) {
       circle.radius = DanhMuc.getRadiusInKmByIndex(radiusInKmSelectedIdx) || undefined;
       circle.center = center;
     }
@@ -52,7 +52,7 @@ var Api = {
       'soPhongTamGREATER' : Number(DanhMuc.getSoPhongTamByIndex(soNhaTamSelectedIdx)) || undefined,
       'dienTichBETWEEN' : dienTich ? RangeUtils.dienTichRange.toValRange(dienTich) : undefined,
       'orderBy' : orderBy ? {name: DanhMuc.getOrderKey(orderBy), type: DanhMuc.getOrderType(orderBy)} : undefined,
-      'diaChinh': diaChinh,
+      'diaChinh': diaChinh && diaChinh.length > 0 ? diaChinh : undefined,
       'circle' : circle,
       'viewport' : viewport ,
       'limit' : limit || maxRows, //default is 250 limit

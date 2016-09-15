@@ -254,7 +254,8 @@ class Search extends Component {
     this.props.actions.onSearchFieldChange("pageNo", 1);
 
     this._handleSearchAction([], '', 1, gui.MAX_ITEM);
-      this.props.onShowMessage && this.props.onShowMessage();
+    this.props.refreshRegion && this.props.refreshRegion();
+    this.props.onShowMessage && this.props.onShowMessage();
  }
 
  _handleSearchAction(newViewport, newOrderBy, newPageNo, newLimit){
