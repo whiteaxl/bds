@@ -69,7 +69,7 @@ var Api = {
   //query json that sent to server
   convertQuery2String(query) {
     let toStrRange = (range) => {
-      if (range[0] == 0 && range[1] == DanhMuc.BIG) {
+      if (range && range[0] == 0 && range[1] == DanhMuc.BIG) {
         return undefined;
       }
       return range;
