@@ -253,12 +253,12 @@ class Search extends Component {
     this.props.actions.onSearchFieldChange("orderBy", '');
     this.props.actions.onSearchFieldChange("pageNo", 1);
 
-    this._handleSearchAction([], '', 1, gui.MAX_ITEM);
+    this._handleSearchAction('', 1, gui.MAX_ITEM);
     this.props.refreshRegion && this.props.refreshRegion();
     this.props.onShowMessage && this.props.onShowMessage();
  }
 
- _handleSearchAction(newViewport, newOrderBy, newPageNo, newLimit){
+ _handleSearchAction(newOrderBy, newPageNo, newLimit){
      var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
          radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
          polygon, pageNo, limit, isIncludeCountInResponse} = this.props.search.form.fields;
@@ -270,7 +270,7 @@ class Search extends Component {
          dienTich: dienTich,
          gia: gia,
          orderBy: newOrderBy || orderBy,
-         viewport: newViewport || viewport,
+         viewport: viewport,
          diaChinh: diaChinh,
          center: center,
          radiusInKmSelectedIdx: radiusInKmSelectedIdx,
