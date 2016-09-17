@@ -436,6 +436,44 @@ class DBService {
     });
   }
 
+    //{userID, adsID}
+    unlikeAds(dto) {
+        return this.db().then(db => {
+            log.info("localDB.unlikeAds", db);
+            return db.getDocument(dto.userID, {})
+                .then((doc) => {
+                    log.info("Found user," , doc);
+                    let documentRevision = doc._rev;
+
+                    let {adsLikes} = doc;
+                    let idx = adsLikes ? adsLikes.indexOf(dto.adsID) : null;
+
+                    if (idx && idx > -1) {
+                        return {
+                            status:1,
+                            msg : gui.ERR_LIKED
+                        }
+                    }
+
+                    if (!adsLikes) adsLikes=[];
+
+                    adsLikes.splice(idx, 1);
+
+                    doc.adsLikes = adsLikes;
+
+                    return db.updateDocument(doc, doc.userID, documentRevision)
+                        .then((res) => {
+                            log.info("Updated document for unlikeAds", res);
+                            return {
+                                status:0,
+                                msg : "Ngon",
+                                adsLikes: adsLikes
+                            }
+                        });
+                });
+        });
+    }
+
   //saveSearch {userID, searchObj}
   saveSearch(dto) {
     return this.db().then(db => {

@@ -198,6 +198,7 @@ class ImagePreview extends React.Component {
                     <View style={styles.imgView} key={"img"+(imageIndex++)}>
                         <PhotoView style={styles.imgItem}
                                source={{uri: `${imageUrl}`}}
+                               loadingIndicatorSource={require('../assets/image/no_cover.jpg')}
                                resizeMode={Image.resizeMode.contain}
                                minimumZoomScale={0.5}
                                maximumZoomScale={3}
@@ -230,7 +231,8 @@ class ImagePreview extends React.Component {
                         </RelandIcon>
                     </View>
                     <SearchResultDetailFooter mobile={this.props.mobile} onChat={this.props.onChat} isLiked={this.props.isLiked}
-                                              userID={this.props.userID} ads={this.props.ads} loggedIn={this.props.loggedIn} likeAds={this.props.likeAds}/>
+                                              userID={this.props.userID} ads={this.props.ads} loggedIn={this.props.loggedIn}
+                                              likeAds={this.props.likeAds} unlikeAds={this.props.unlikeAds}/>
                 </View>
             </Animated.View>
         )

@@ -36,7 +36,8 @@ export default class HomeCollection extends Component {
       return (
         <TouchableOpacity onPress={() => this._onAdsPressed(ads)} style={{flex: flex}}>
           <ImageItem ads={ads} adsLikes={this.props.adsLikes} loggedIn={this.props.loggedIn}
-                     likeAds={this.props.likeAds} userID={this.props.userID}
+                     likeAds={this.props.likeAds}
+                     unlikeAds={this.props.unlikeAds} userID={this.props.userID}
                      loadHomeData={this.props.loadHomeData}/>
         </TouchableOpacity>
       );
@@ -104,7 +105,7 @@ class ImageItem extends React.Component{
 
     return (
       <Image style={[styles.imgItem]} resizeMode = {'cover'}
-             source={{uri: cover}}>
+             source={{uri: cover}} defaultSource={require('../../assets/image/no_cover.jpg')}>
 
         <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.55)']}
                         style={styles.linearGradient2}>
@@ -169,8 +170,12 @@ class ImageItem extends React.Component{
     if (!this.props.loggedIn) {
       //this.props.actions.onAuthFieldChange('activeRegisterLoginTab',0);
       Actions.LoginRegister({page:1, onLoginSuccess: () => {this.props.loadHomeData(); Actions.pop()}});
-    } else if (!this.isLiked()) {
-      this.props.likeAds(this.props.userID, this.props.ads)
+    } else {
+      if (!this.isLiked()) {
+        this.props.likeAds(this.props.userID, this.props.ads)
+      } else {
+        this.props.unlikeAds(this.props.userID, this.props.ads.adsID)
+      }
     }
   }
 }

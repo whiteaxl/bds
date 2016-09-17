@@ -24,6 +24,7 @@ const {
   SET_LOADING_DETAIL,
   SEARCH_STATE_INPUT,
   SEARCH_LIST_LIKE_SUCCESS,
+  SEARCH_LIST_UNLIKE_SUCCESS,
   SEARCH_LOAD_SAVED_SEARCH,
   CHANGE_LOADING_HOME_DATA,
   LOAD_HOME_DATA_DONE,
@@ -193,6 +194,13 @@ export function likeSuccess(payload) {
   }
 }
 
+export function unlikeSuccess(payload) {
+  return {
+    type: SEARCH_LIST_UNLIKE_SUCCESS,
+    payload: payload
+  }
+}
+
 export function likeAds(userID, rowData) {
   return dispatch => {
     let dto = {
@@ -203,6 +211,24 @@ export function likeAds(userID, rowData) {
     db.likeAds(dto).then((res) => {
       if (res.status === 0) {
         dispatch(likeSuccess(res.adsLikes));
+        // Alert.alert("Thành công!");
+      } else {
+        Alert.alert("Không thành công!");
+      }
+    });
+  }
+}
+
+export function unlikeAds(userID, adsID) {
+  return dispatch => {
+    let dto = {
+      userID: userID,
+      adsID: adsID
+    };
+
+    db.unlikeAds(dto).then((res) => {
+      if (res.status === 0) {
+        dispatch(unlikeSuccess(res.adsLikes));
         // Alert.alert("Thành công!");
       } else {
         Alert.alert("Không thành công!");

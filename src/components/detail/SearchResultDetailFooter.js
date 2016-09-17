@@ -40,8 +40,12 @@ var SearchResultDetailFooter = React.createClass({
     if (!this.props.loggedIn) {
         //this.props.actions.onAuthFieldChange('activeRegisterLoginTab',0);
         Actions.LoginRegister({page:1});
-    } else if (!this.props.isLiked) {
-        this.props.likeAds(this.props.userID, this.props.ads)
+    } else {
+        if (!this.props.isLiked) {
+            this.props.likeAds(this.props.userID, this.props.ads)
+        } else {
+            this.props.unlikeAds(this.props.userID, this.props.ads.adsID)
+        }
     }
   }
 });

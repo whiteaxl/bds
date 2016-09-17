@@ -12,7 +12,8 @@ const {
   ON_DB_CHANGE,
   REGISTER_PUSHTOKEN_SUCCESS,
 
-  SEARCH_LIST_LIKE_SUCCESS
+  SEARCH_LIST_LIKE_SUCCESS,
+  SEARCH_LIST_UNLIKE_SUCCESS,
 } = require('../../lib/constants').default;
 
 import InitialState from './globalInitialState';
@@ -110,6 +111,12 @@ export default function globalReducer(state = initialState, action) {
     }
 
     case SEARCH_LIST_LIKE_SUCCESS :
+    {
+      log.info("globalReducer ", action.payload);
+      return state.setIn(['currentUser','adsLikes'], action.payload)
+    }
+
+    case SEARCH_LIST_UNLIKE_SUCCESS :
     {
       log.info("globalReducer ", action.payload);
       return state.setIn(['currentUser','adsLikes'], action.payload)

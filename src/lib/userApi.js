@@ -10,6 +10,7 @@ var userApiUrl = cfg.rootUrl + "/user/";
 var requestVerifyCodeUrl = userApiUrl + "requestVerifyCode";
 var registerUser = userApiUrl + "registerUser";
 var likeAdsUrl = cfg.rootUrl + "/likeAds";
+var unlikeAdsUrl = cfg.rootUrl + "/unlikeAds";
 var getAdsLikesUrl = cfg.rootUrl + "/user/getAdsLikes";
 
 var userApi = {
@@ -118,6 +119,32 @@ var userApi = {
           msg: gui.ERR_LoiKetNoiMayChu
         }
       });
+  },
+
+  //{userID and adsID}
+  unlikeAds(dto) {
+    const url  = unlikeAdsUrl;
+    log.info("Call fetch ", url, dto);
+
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dto)
+    })
+        .then(ApiUtils.checkStatus)
+        .then(response => {
+          return response.json()
+        })
+        .catch(e => {
+          log.info("Error in unlikeAds", e);
+          return {
+            status : 101,
+            msg: gui.ERR_LoiKetNoiMayChu
+          }
+        });
   },
 
   getAdsLikes(userID) {

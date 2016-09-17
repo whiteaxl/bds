@@ -76,7 +76,8 @@ class Home extends Component {
     return collections.map(e => {
       return <HomeCollection key={e.title1} collectionData = {e} searchFromHome={this.props.actions.searchFromHome}
                              adsLikes={adsLikes} loggedIn={this.props.global.loggedIn}
-                             likeAds={this.props.actions.likeAds} userID={userID}
+                             likeAds={this.props.actions.likeAds}
+                             unlikeAds={this.props.actions.unlikeAds} userID={userID}
                              loadHomeData={this.props.actions.loadHomeData}/>
     });
   }

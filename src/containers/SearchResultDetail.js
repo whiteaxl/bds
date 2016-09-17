@@ -200,7 +200,8 @@ class SearchResultDetail extends Component {
     return (
         <SearchResultDetailFooter mobile={mobile} onChat={() => this._onChat(rowData)} userID={userID}
                                   isLiked={isLiked} ads={rowData} loggedIn={this.props.global.loggedIn}
-                                  likeAds={this.props.actions.likeAds}/>
+                                  likeAds={this.props.actions.likeAds}
+                                  unlikeAds={this.props.actions.unlikeAds}/>
     );
   }
   _renderImagePreviewModal(imageDataItems, mobile, rowData) {
@@ -215,7 +216,8 @@ class SearchResultDetail extends Component {
     return (
         <ImagePreview images={imageDataItems} mobile={mobile} onChat={() => this._onChat(rowData)}
                       closeModal={() => this.setState({modal: false}) } isLiked={isLiked} ads={rowData} userID={userID}
-                      loggedIn={this.props.global.loggedIn} likeAds={this.props.actions.likeAds}/>
+                      loggedIn={this.props.global.loggedIn} likeAds={this.props.actions.likeAds}
+                      unlikeAds={this.props.actions.unlikeAds}/>
     );
   }
   render() {
@@ -299,7 +301,7 @@ class SearchResultDetail extends Component {
           <View style={detailStyles.slide} key={"img"+(imageIndex++)}>
             <TouchableHighlight onPress={imagePreviewAction} underlayColor="transparent" >
             <Image style={detailStyles.imgItem}
-               source={{uri: `${imageUrl}`}}>
+               source={{uri: `${imageUrl}`}} defaultSource={require('../assets/image/no_cover.jpg')}>
             </Image>
             </TouchableHighlight>
           </View>
@@ -312,7 +314,7 @@ class SearchResultDetail extends Component {
           <View style={detailStyles.slide} key={"img"+(imageIndex)}>
             <TouchableHighlight onPress={imagePreviewAction} underlayColor="transparent" >
             <Image style={detailStyles.imgItem}
-               source={{uri: `${imageUrl}`}}>
+               source={{uri: `${imageUrl}`}} defaultSource={require('../assets/image/no_cover.jpg')}>
             </Image>
             </TouchableHighlight>
           </View>

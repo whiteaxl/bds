@@ -44,8 +44,12 @@ class AdsRow extends React.Component {
     if (!this.props.loggedIn) {
       //this.props.actions.onAuthFieldChange('activeRegisterLoginTab',0);
       Actions.LoginRegister({page:1});
-    } else if (!this.isLiked(ads)) {
-      this.props.likeAds(this.props.userID, ads)
+    } else {
+      if (!this.isLiked(ads)) {
+        this.props.likeAds(this.props.userID, ads)
+      } else {
+        this.props.unlikeAds(this.props.userID, ads.adsID)
+      }
     }
   }
 

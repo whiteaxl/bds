@@ -349,7 +349,8 @@ class SearchResultMap extends Component {
       allItems.push(
           <View style={styles.detailAdsModal} key={i++}>
             <TouchableOpacity onPress={this._onDetailAdsPress.bind(this)}>
-              <Image style={styles.detailAdsModalThumb} source={{uri: `${mmarker.cover}`}} >
+              <Image style={styles.detailAdsModalThumb} source={{uri: `${mmarker.cover}`}}
+                     defaultSource={require('../assets/image/no_cover.jpg')}>
                 <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
                                 style={styles.detailAdsModalLinearGradient}>
                   <View style={styles.detailAdsModalDetail}>
@@ -396,6 +397,8 @@ class SearchResultMap extends Component {
       let ads = this.props.listAds[adsIndex];
       if (!this.isLiked(ads.adsID)) {
         this.props.actions.likeAds(this.props.userID, ads);
+      } else {
+        this.props.actions.unlikeAds(this.props.userID, ads.adsID);
       }
     }
   }
