@@ -40,12 +40,17 @@ var styles = StyleSheet.create({
         top: 0,
         right: 0,
         left: 0,
-        bottom: 0
+        bottom: 0,
+        paddingLeft: 20
     },
     heartButton1: {
-        opacity: 0.55
+        opacity: 0.55,
+        paddingLeft: 20,
+        paddingBottom: 20
     },
     heartButton2: {
+        paddingLeft: 20,
+        paddingBottom: 20
     }
 });
 
