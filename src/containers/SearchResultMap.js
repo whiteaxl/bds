@@ -578,7 +578,7 @@ class SearchResultMap extends Component {
           </View>
         </Animatable.View>*/}
         <View style={styles.loadingContent}>
-          <GiftedSpinner size="large" />
+          <GiftedSpinner color="white" />
         </View>
       </View>)
     }
@@ -1003,8 +1003,9 @@ class SearchResultMap extends Component {
 // Later on in your styles..
 var styles = StyleSheet.create({
   loadingContent: {
-    width: width,
-    height: height-128,
+    position: 'absolute',
+    top: -22,
+    left: 80,
     alignItems: 'center',
     justifyContent: 'center'
   },
