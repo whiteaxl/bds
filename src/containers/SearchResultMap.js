@@ -28,7 +28,7 @@ import RelandIcon from '../components/RelandIcon';
 import MapView from 'react-native-maps';
 
 import SearchHeader from '../components/SearchHeader';
-import PriceMarker from '../components/PriceMarker';
+import PriceMarker from '../components/PriceMarker2';
 
 import Modal from 'react-native-modalbox';
 import LinearGradient from 'react-native-linear-gradient';
@@ -221,7 +221,7 @@ class SearchResultMap extends Component {
                 // onSelect={()=>this._onMarkerPress(marker)}
                 // onDeselect={this._onMarkerDeselect.bind(this)}
                             onPress={()=>this._onMarkerPress(marker, i)}>
-              <PriceMarker color={this.state.mmarker && this.state.mmarker.id == marker.id ? '#E73E21' :
+              <PriceMarker duplicate={marker.duplicate} color={this.state.mmarker && this.state.mmarker.id == marker.id ? '#E73E21' :
                     (this.state.markedList.indexOf(marker.id)>=0 ? "grey" : gui.mainColor)} amount={marker.price}/>
             </MapView.Marker>);
       }
@@ -431,7 +431,8 @@ class SearchResultMap extends Component {
 
   _renderNextButton() {
     let {pageNo} = this.state;
-    let totalPages = this.props.totalCount/ gui.MAX_VIEWABLE_ADS;
+    let totalCount = gui.MAX_ITEM > this.props.totalCount ? this.props.totalCount : gui.MAX_ITEM;
+    let totalPages = totalCount/ gui.MAX_VIEWABLE_ADS;
     let hasNextPage = pageNo < totalPages;
     return (
         <View style={styles.nextButton}>
@@ -548,7 +549,8 @@ class SearchResultMap extends Component {
   _doNextPage() {
     let {pageNo} = this.state;
 
-    let totalPages = this.props.totalCount/ gui.MAX_VIEWABLE_ADS;
+    let totalCount = gui.MAX_ITEM > this.props.totalCount ? this.props.totalCount : gui.MAX_ITEM;
+    let totalPages = totalCount/ gui.MAX_VIEWABLE_ADS;
 
     if (pageNo < totalPages) {
       pageNo = pageNo + 1;
@@ -599,6 +601,8 @@ class SearchResultMap extends Component {
   _getViewableAds(listAds){
       var markerList = [];
       let {pageNo} = this.state;
+      let dupCount = {};
+      let markerData = {};
 
       if (listAds) {
         for (var i=0; i<listAds.length; i++) {
@@ -607,17 +611,32 @@ class SearchResultMap extends Component {
           }
           var item = listAds[i];
           if (item.place && item.place.geo.lat && item.place.geo.lon) {
-            let marker = {
-              coordinate: {latitude: item.place.geo.lat, longitude: item.place.geo.lon},
-              price: item.giaFmt,
-              id: item.adsID,
-              cover: item.image.cover,
-              diaChi: item.place.diaChi,
-              dienTich: item.dienTich
-            };
-            markerList.push(marker);
+            let adsID = item.adsID;
+            if (!dupCount[adsID] || Math.abs(markerData[adsID].place.geo.lat - item.place.geo.lat) > PADDING
+                || Math.abs(markerData[adsID].place.geo.lon - item.place.geo.lon) > PADDING) {
+              dupCount[adsID] = 1;
+              markerData[adsID] = item;
+            } else {
+              dupCount[adsID]++;
+              if (item.gia && (!markerData[adsID].gia || item.gia < markerData[adsID].gia)) {
+                markerData[adsID] = item;
+              }
+            }
           }
         }
+      }
+      for (var k in markerData) {
+        let item = markerData[k];
+        let marker = {
+          coordinate: {latitude: item.place.geo.lat, longitude: item.place.geo.lon},
+          price: item.giaFmt,
+          id: item.adsID,
+          cover: item.image.cover,
+          diaChi: item.place.diaChi,
+          dienTich: item.dienTich,
+          duplicate: dupCount[k]
+        };
+        markerList.push(marker);
       }
       return markerList;
     }
