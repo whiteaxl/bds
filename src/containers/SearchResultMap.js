@@ -28,7 +28,8 @@ import RelandIcon from '../components/RelandIcon';
 import MapView from 'react-native-maps';
 
 import SearchHeader from '../components/SearchHeader';
-import PriceMarker from '../components/PriceMarker2';
+import PriceMarker from '../components/PriceMarker';
+import PriceMarker2 from '../components/PriceMarker2';
 
 import Modal from 'react-native-modalbox';
 import LinearGradient from 'react-native-linear-gradient';
@@ -124,7 +125,7 @@ class SearchResultMap extends Component {
   }
 
   componentDidMount() {
-    this._onShowMessage();
+    // this._onShowMessage();
   }
 
   componentWillUnmount() {
@@ -221,8 +222,12 @@ class SearchResultMap extends Component {
                 // onSelect={()=>this._onMarkerPress(marker)}
                 // onDeselect={this._onMarkerDeselect.bind(this)}
                             onPress={()=>this._onMarkerPress(marker, i)}>
-              <PriceMarker duplicate={marker.duplicate} color={this.state.mmarker && this.state.mmarker.id == marker.id ? '#E73E21' :
+              {marker.duplicate == 1 ?
+              <PriceMarker color={this.state.mmarker && this.state.mmarker.id == marker.id ? '#E73E21' :
+                    (this.state.markedList.indexOf(marker.id)>=0 ? "grey" : gui.mainColor)} amount={marker.price}/> :
+              <PriceMarker2 duplicate={marker.duplicate} color={this.state.mmarker && this.state.mmarker.id == marker.id ? '#E73E21' :
                     (this.state.markedList.indexOf(marker.id)>=0 ? "grey" : gui.mainColor)} amount={marker.price}/>
+              }
             </MapView.Marker>);
       }
     }
@@ -602,7 +607,7 @@ class SearchResultMap extends Component {
       var markerList = [];
       let {pageNo} = this.state;
       let dupCount = {};
-      let markerData = {};
+      let markerData = [];
 
       if (listAds) {
         for (var i=0; i<listAds.length; i++) {
@@ -611,22 +616,30 @@ class SearchResultMap extends Component {
           }
           var item = listAds[i];
           if (item.place && item.place.geo.lat && item.place.geo.lon) {
-            let adsID = item.adsID;
-            if (!dupCount[adsID] || Math.abs(markerData[adsID].place.geo.lat - item.place.geo.lat) > PADDING
-                || Math.abs(markerData[adsID].place.geo.lon - item.place.geo.lon) > PADDING) {
-              dupCount[adsID] = 1;
-              markerData[adsID] = item;
+            let indexOfItem = markerData.findIndex((oldItem) =>
+                  Math.abs(oldItem.place.geo.lat - item.place.geo.lat) <= PADDING
+                  && Math.abs(oldItem.place.geo.lon - item.place.geo.lon) <= PADDING);
+            if (markerData.length === 0 || indexOfItem === -1) {
+              dupCount[item.adsID] = 1;
+              markerData.push(item);
             } else {
-              dupCount[adsID]++;
-              if (item.gia && (!markerData[adsID].gia || item.gia < markerData[adsID].gia)) {
-                markerData[adsID] = item;
+              let validAdsId;
+              if (item.gia && (!markerData[indexOfItem].gia || item.gia < markerData[indexOfItem].gia)) {
+                validAdsId = item.adsID;
+                let oldAdsId = markerData[indexOfItem].adsID;
+                dupCount[validAdsId] = dupCount[oldAdsId] + 1;
+                dupCount[oldAdsId] = 0;
+                markerData[indexOfItem] = item;
+              } else {
+                validAdsId = markerData[indexOfItem].adsID;
+                dupCount[validAdsId] = dupCount[validAdsId] + 1;
               }
             }
           }
         }
       }
-      for (var k in markerData) {
-        let item = markerData[k];
+      for (var i=0; i<markerData.length; i++) {
+        let item = markerData[i];
         let marker = {
           coordinate: {latitude: item.place.geo.lat, longitude: item.place.geo.lon},
           price: item.giaFmt,
@@ -634,10 +647,11 @@ class SearchResultMap extends Component {
           cover: item.image.cover,
           diaChi: item.place.diaChi,
           dienTich: item.dienTich,
-          duplicate: dupCount[k]
+          duplicate: dupCount[item.adsID]
         };
         markerList.push(marker);
       }
+    console.log('markerList', markerList);
       return markerList;
     }
 
