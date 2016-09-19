@@ -52,7 +52,7 @@ var Api = {
       'soPhongTamGREATER' : Number(DanhMuc.getSoPhongTamByIndex(soNhaTamSelectedIdx)) || undefined,
       'dienTichBETWEEN' : dienTich ? RangeUtils.dienTichRange.toValRange(dienTich) : undefined,
       'orderBy' : orderBy ? {name: DanhMuc.getOrderKey(orderBy), type: DanhMuc.getOrderType(orderBy)} : undefined,
-      'diaChinh': diaChinh && diaChinh.length > 0 ? diaChinh : undefined,
+      'diaChinh': diaChinh && Object.keys(diaChinh).length > 0 ? diaChinh : undefined,
       'circle' : circle,
       'viewport' : viewport ,
       'limit' : limit || maxRows, //default is 250 limit
