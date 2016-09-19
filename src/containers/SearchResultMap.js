@@ -1220,14 +1220,14 @@ var styles = StyleSheet.create({
     top: height-44,
     left: 0,
     right: 0,
-    bottom: 0
+    bottom: 0,
+    borderTopWidth: 1,
+    borderColor : 'lightgray'
   },
   searchListButton: {
       flexDirection: 'row',
       justifyContent: 'space-around',
-      backgroundColor: 'white',
-      borderTopWidth: 1,
-      borderColor : 'lightgray'
+      backgroundColor: 'white'
   },
   sumBds: {
     marginBottom: 10,

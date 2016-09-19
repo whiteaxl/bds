@@ -81,14 +81,14 @@ var myStyles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-around',
       backgroundColor: 'white',
-      borderTopWidth: 1,
-      borderColor : 'lightgray',
       height: 44
   },
 
   searchButton: {
       alignItems: 'stretch',
-      justifyContent: 'flex-end'
+      justifyContent: 'flex-end',
+      borderTopWidth: 1,
+      borderColor : 'lightgray'
   },
 
   buttonText: {

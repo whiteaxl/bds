@@ -2,7 +2,7 @@
 
 import AdsRow from './AdsRow';
 import React from 'react';
-import { StyleSheet, ListView, View, Text } from 'react-native';
+import { StyleSheet, ListView, View, Text, Dimensions } from 'react-native';
 import SGListView from 'react-native-sglistview';
 import gui from '../../lib/gui';
 var myDs = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
@@ -154,7 +154,8 @@ const styles = StyleSheet.create({
   searchListView: {
     marginTop: 30,
     margin: 0,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    height: Dimensions.get('window').height-108
   },
 });
 
