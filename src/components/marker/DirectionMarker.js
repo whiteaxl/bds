@@ -7,8 +7,8 @@ var {
   TouchableHighlight
 }  = require('react-native');
 
-import gui from '../lib/gui';
-import TruliaIcon from './TruliaIcon';
+import gui from '../../lib/gui';
+import TruliaIcon from './../TruliaIcon';
 
 class DirectionMarker extends React.Component{
     constructor(){

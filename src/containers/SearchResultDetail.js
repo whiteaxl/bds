@@ -609,14 +609,21 @@ class SearchResultDetail extends Component {
   }
 
   _renderPhuongAnTaiChinh() {
+    let mainAccount = 400;
+    let bonusAccount = 100;
+    // if (this.props.global.loggedIn) {
+    //   let currentUser = this.props.global.currentUser;
+    //   mainAccount = currentUser.mainAccount;
+    //   bonusAccount = currentUser.bonusAccount;
+    // }
     var data = [{
       "name": "",
       "fillColor" : "#1396E0",
-      "value": 400
+      "value": mainAccount
     }, {
       "name": "",
       "fillColor" : "#DE6207",
-      "value": 100
+      "value": bonusAccount
     }];
     var pallete = [
       util.hexToRgb("#23B750"), util.hexToRgb("#EA9409")
@@ -645,7 +652,7 @@ class SearchResultDetail extends Component {
       }
     };
     var chartTitle = 'Tổng tài khoản';
-    var chartTitleBold = '500 triệu';
+    var chartTitleBold = (mainAccount+bonusAccount) + ' triệu';
     return (
         <View style={{flexDirection: "row", alignItems: 'center', justifyContent: 'flex-start', backgroundColor:'white', paddingTop:0}}>
           <View style={{paddingLeft: 13, paddingTop:2, width: width/2, alignItems: 'center', justifyContent: 'center'}}>
@@ -658,8 +665,8 @@ class SearchResultDetail extends Component {
             />
           </View>
           <View style={{paddingLeft: 13, paddingTop:2}}>
-            {this._renderMoneyLine("Gốc", "400 triệu", '#23B750')}
-            {this._renderMoneyLine("Lãi", "100 triệu", '#EA9409')}
+            {this._renderMoneyLine("Gốc", mainAccount + " triệu", '#23B750')}
+            {this._renderMoneyLine("Lãi", bonusAccount + " triệu", '#EA9409')}
           </View>
         </View>
     );

@@ -28,8 +28,8 @@ import RelandIcon from '../components/RelandIcon';
 import MapView from 'react-native-maps';
 
 import SearchHeader from '../components/SearchHeader';
-import PriceMarker from '../components/PriceMarker';
-import PriceMarker2 from '../components/PriceMarker2';
+import PriceMarker from '../components/marker/PriceMarker';
+import PriceMarker2 from '../components/marker/PriceMarker2';
 
 import Modal from 'react-native-modalbox';
 import LinearGradient from 'react-native-linear-gradient';
@@ -48,7 +48,7 @@ import PlaceUtil from '../lib/PlaceUtil';
 
 import MHeartIcon from '../components/MHeartIcon';
 
-import LocationMarker from '../components/LocationMarker';
+import LocationMarker from '../components/marker/LocationMarker';
 
 import * as Animatable from 'react-native-animatable';
 
@@ -442,14 +442,14 @@ class SearchResultMap extends Component {
     return (
         <View style={styles.nextButton}>
           {!hasNextPage ?
-              <View>
+              <View style={styles.pagingView}>
                 <RelandIcon name="next" color={'#C5C2BA'} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
                             size={16} textProps={{paddingLeft: 0}}
                             noAction={true}></RelandIcon>
                 <Text style={[styles.drawIconText, {fontSize: 6, color: '#C5C2BA'}]}>Sau</Text>
               </View> :
               <TouchableOpacity onPress={this._doNextPage.bind(this)} >
-                <View>
+                <View style={styles.pagingView}>
                   <RelandIcon name="next" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
                               size={16} textProps={{paddingLeft: 0}}
                               noAction={true}></RelandIcon>
@@ -466,14 +466,14 @@ class SearchResultMap extends Component {
     return (
         <View style={styles.previousButton}>
           {!hasPreviousPage ?
-              <View>
+              <View style={styles.pagingView}>
                 <RelandIcon name="previous" color={'#C5C2BA'} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
                             size={16} textProps={{paddingLeft: 0}}
                             noAction={true}></RelandIcon>
                 <Text style={[styles.drawIconText, {fontSize: 6, color: '#C5C2BA'}]}>Trước</Text>
               </View> :
               <TouchableOpacity onPress={this._doPreviousPage.bind(this)} >
-                <View>
+                <View style={styles.pagingView}>
                   <RelandIcon name="previous" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
                               size={16} textProps={{paddingLeft: 0}}
                               noAction={true}></RelandIcon>
@@ -489,7 +489,7 @@ class SearchResultMap extends Component {
         this.props.search.map.autoLoadAds ? null :
             <View style={styles.refreshButton}>
               <TouchableOpacity onPress={this._doRefreshListData.bind(this)} >
-                <View>
+                <View style={styles.pagingView}>
                   <RelandIcon name="refresh" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
                               size={16} textProps={{paddingLeft: 0}}
                               noAction={true}></RelandIcon>
@@ -1195,6 +1195,12 @@ var styles = StyleSheet.create({
     height: 30,
     backgroundColor: 'white',
     opacity: 0.75,
+  },
+  pagingView: {
+    paddingTop: 2,
+    width: 28,
+    height: 28,
+    backgroundColor: 'transparent'
   },
 
   resultContainer: {

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 
-import gui from '../lib/gui';
+import gui from '../../lib/gui';
 
 var {
   StyleSheet,

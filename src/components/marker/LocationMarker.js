@@ -5,8 +5,8 @@ var {
     View,
 } = require('react-native');
 
-import gui from '../lib/gui';
-import RelandIcon from './RelandIcon';
+import gui from '../../lib/gui';
+import RelandIcon from './../RelandIcon';
 
 var currentColor = gui.mainColor;
 

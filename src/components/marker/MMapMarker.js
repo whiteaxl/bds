@@ -12,14 +12,14 @@ import PriceMarker from './PriceMarker';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 
-import * as globalActions from '../reducers/global/globalActions';
-import * as searchActions from '../reducers/search/searchActions';
+import * as globalActions from '../../reducers/global/globalActions';
+import * as searchActions from '../../reducers/search/searchActions';
 
 import {Map} from 'immutable';
 
 import {Actions} from 'react-native-router-flux';
 
-import gui from '../lib/gui';
+import gui from '../../lib/gui';
 
 const actions = [
   globalActions,

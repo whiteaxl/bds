@@ -16,9 +16,9 @@ import MapView from 'react-native-maps';
 
 import CommonHeader from '../components/CommonHeader';
 
-import DirectionMarker from '../components/DirectionMarker';
+import DirectionMarker from '../components/marker/DirectionMarker';
 
-import LocationMarker from '../components/LocationMarker';
+import LocationMarker from '../components/marker/LocationMarker';
 
 import gui from '../lib/gui';
 
