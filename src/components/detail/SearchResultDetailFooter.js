@@ -56,7 +56,7 @@ module.exports = SearchResultDetailFooter;
 
 var myStyles = StyleSheet.create({
   searchListButtonItem1: {
-      backgroundColor: '#E73E21',
+      backgroundColor: '#F53113',
       width: Dimensions.get('window').width/3-3,
       borderRadius: 5,
       borderColor: 'white',
@@ -65,7 +65,7 @@ var myStyles = StyleSheet.create({
       justifyContent: 'center'
   },
   searchListButtonItem2: {
-      backgroundColor: '#f0a401',
+      backgroundColor: '#E99409',
       width: Dimensions.get('window').width/3-3,
       borderRadius: 5,
       borderColor: 'white',
@@ -74,7 +74,7 @@ var myStyles = StyleSheet.create({
       justifyContent: 'center'
   },
   searchListButtonItem3: {
-      backgroundColor: '#00a8e6',
+      backgroundColor: '#1396E0',
       width: Dimensions.get('window').width/3-3,
       borderRadius: 5,
       borderColor: 'white',
