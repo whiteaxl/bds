@@ -246,6 +246,9 @@ class SearchResultMap extends Component {
               onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
               style={styles.mapView}
               mapType={this.state.mapType.toLowerCase()}
+              rotateEnabled={false}
+              showsUserLocation={true}
+              followUserLocation={true}
           >
             {allMarkers}
             {this.props.search.map.polygons.map(polygon => (
@@ -278,9 +281,9 @@ class SearchResultMap extends Component {
               )
             }
              */}
-            {this.state.coordinate ? <MapView.Marker coordinate={this.state.coordinate}>
+            {/*this.state.coordinate ? <MapView.Marker coordinate={this.state.coordinate}>
               <LocationMarker iconName={'cur-pos'} size={30} animation={true}/>
-            </MapView.Marker> : null}
+            </MapView.Marker> : null*/}
           </MapView>
           <View style={styles.mapButtonContainer}>
             {this._renderDrawButton()}
@@ -638,6 +641,7 @@ class SearchResultMap extends Component {
           }
         }
       }
+    console.log('markerData', markerData);
       for (var i=0; i<markerData.length; i++) {
         let item = markerData[i];
         let marker = {
@@ -651,7 +655,6 @@ class SearchResultMap extends Component {
         };
         markerList.push(marker);
       }
-    console.log('markerList', markerList);
       return markerList;
     }
 
