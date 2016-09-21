@@ -138,12 +138,39 @@ class Search extends Component {
     return ngayDaDang + " ngày";
   }
 
+  _getHeaderTitle() {
+    let diaChinh = this.props.search.form.fields.diaChinh;
+
+    //1. Search by diaChinh, then name = diaChinh's name
+    if (this.props.search.map.polygons && this.props.search.map.polygons.length) {
+        //placeName = `[${r.latitude}, ${r.longitude}]`
+        return 'Trong khu vực đã vẽ';
+    }
+
+    if (this.props.search.form.fields.center && Object.keys(this.props.search.form.fields.center).length > 0) {
+        return 'Xung quanh vị trí của bạn';
+    }
+
+    let placeName;
+    let r = this.state.region;
+    //2. Search by Polygon: name is just center
+    if (diaChinh.tinhKhongDau) {
+        placeName = diaChinh.fullName;
+    } else { //others: banKinh or currentLocation
+        placeName = 'Tìm tất cả theo khung nhìn'
+    }
+
+    return placeName;
+  }
+
   render() {
     //log.info(RangeUtils.sellPriceRange.getPickerData());
     log.info("CALL Search.render");
     //log.info(this.props);
 
     let loaiTin = this.props.search.form.fields.loaiTin;
+
+    let placeName = this._getHeaderTitle();
 
     var _scrollView;
     return (
@@ -229,7 +256,7 @@ class Search extends Component {
         </View>
 
        <View style={myStyles.pageHeader}>
-        <SearchInput placeName={this.props.search.form.fields.diaChinh.fullName}/>
+        <SearchInput placeName={placeName}/>
        </View>
       </View>
     );

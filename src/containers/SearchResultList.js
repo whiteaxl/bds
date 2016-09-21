@@ -56,7 +56,7 @@ function mapStateToProps(state) {
         fields : state.search.form.fields,
         showMessage: state.search.showMessage,
         totalCount: state.search.result.totalCount,
-        polygons: state.search.polygons
+        polygons: state.search.map.polygons
     };
 }
 
@@ -82,7 +82,7 @@ class SearchResultList extends Component {
     }
 
     componentDidMount() {
-        this._onShowMessage();
+        // this._onShowMessage();
     }
 
     componentWillUnmount() {
@@ -95,7 +95,11 @@ class SearchResultList extends Component {
         //1. Search by diaChinh, then name = diaChinh's name
         if (this.props.polygons && this.props.polygons.length) {
             //placeName = `[${r.latitude}, ${r.longitude}]`
-            return 'Tìm theo Vẽ tay';
+            return 'Trong khu vực đã vẽ';
+        }
+
+        if (this.props.fields.center && Object.keys(this.props.fields.center).length > 0) {
+            return 'Xung quanh vị trí của bạn';
         }
 
         let placeName;
@@ -151,7 +155,7 @@ class SearchResultList extends Component {
         let numberOfAds = listAds.length;
         let totalCount = this.props.totalCount;
         let rangeAds = totalCount > 0 ? totalCount : numberOfAds;
-        let textValue = "Tìm thấy " + rangeAds + " tin";
+        let textValue = "Tìm thấy " + rangeAds + " kết quả";
         
         if(loading){
             return (<View style={myStyles.resultContainer}>

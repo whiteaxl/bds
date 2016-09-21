@@ -183,7 +183,11 @@ class SearchResultMap extends Component {
       //1. Search by diaChinh, then name = diaChinh's name
       if (this.props.search.map.polygons && this.props.search.map.polygons.length) {
           //placeName = `[${r.latitude}, ${r.longitude}]`
-          return 'Tìm theo Vẽ tay';
+          return 'Trong khu vực đã vẽ';
+      }
+
+      if (this.props.search.form.fields.center && Object.keys(this.props.search.form.fields.center).length > 0) {
+        return 'Xung quanh vị trí của bạn';
       }
 
       let placeName;
@@ -505,19 +509,13 @@ class SearchResultMap extends Component {
 
   _renderCurrentPosButton() {
     return (
-        this.props.search.map.polygons && this.props.search.map.polygons.length > 0 ?
-            <View style={[styles.bubble, styles.button, {marginTop: 10}]}>
-              <RelandIcon name="direction" color='black' mainProps={{flexDirection: 'row'}}
-                          size={20} textProps={{paddingLeft: 0}}
-                          noAction={true}></RelandIcon>
-            </View> :
-            <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} >
-              <View style={[styles.bubble, styles.button, {marginTop: 10}]}>
-                <RelandIcon name="direction" color='black' mainProps={{flexDirection: 'row'}}
-                            size={20} textProps={{paddingLeft: 0}}
-                            noAction={true}></RelandIcon>
-              </View>
-            </TouchableOpacity>
+        <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} >
+          <View style={[styles.bubble, styles.button, {marginTop: 10}]}>
+            <RelandIcon name="direction" color='black' mainProps={{flexDirection: 'row'}}
+                        size={20} textProps={{paddingLeft: 0}}
+                        noAction={true}></RelandIcon>
+          </View>
+        </TouchableOpacity>
     );
   }
   _renderDrawButton() {
@@ -579,7 +577,7 @@ class SearchResultMap extends Component {
     }
     let endAdsIndex = (pageNo-1)*gui.MAX_VIEWABLE_ADS+numberOfAds;
     let rangeAds = totalCount > 0 && totalCount != numberOfAds ? (endAdsIndex > 0 ? beginAdsIndex + "-" + endAdsIndex : "0") + " / " + totalCount : numberOfAds;
-    let textValue = "Đang hiển thị từ " + rangeAds + " tin nằm trong khung hình";
+    let textValue = "Đang hiển thị từ " + rangeAds + " kết quả nằm trong khung hình";
 
     if(loading){
       console.log("SearchResultMap_renderTotalResultView");
@@ -772,9 +770,6 @@ class SearchResultMap extends Component {
 
   _onCurrentLocationPress(){
     console.log("Call SearchResultMap._onCurrentLocationPress");
-    if (this.props.search.map.polygons && this.props.search.map.polygons.length > 0) {
-      return;
-    }
 
     navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -800,6 +795,9 @@ class SearchResultMap extends Component {
           let viewport = apiUtils.getViewport(region);
 
           this.props.actions.onSearchFieldChange("viewport", viewport);
+          this.props.actions.onPolygonsChange([]);
+          this.props.actions.onSearchFieldChange("polygon", []);
+          this.props.actions.onSearchFieldChange("diaChinh", {});
 
           let center = {lat: region.latitude, lon: region.longitude};
 

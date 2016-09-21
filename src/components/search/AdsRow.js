@@ -62,15 +62,18 @@ class AdsRow extends React.Component {
         )
       }
 
-      let list = [];
-      for (var i=0; i < ads.image.images.length ; i++) {
-        list.push(ads.image.images[i]);
-      }
+      // let list = [];
+      // for (var i=0; i < ads.image.images.length ; i++) {
+      //   list.push(ads.image.images[i]);
+      // }
+      //
+      // return list.map(imageUrl => {
+      //   return <MyImage key={imageIndex} imageIndex={imageIndex++} ads={ads} imageUrl={imageUrl}/>
+      // });
 
-      return list.map(imageUrl => {
-        return <MyImage key={imageIndex} imageIndex={imageIndex++} ads={ads} imageUrl={imageUrl}/>
-      });
-
+      return (
+          <MyImage imageIndex={0} ads={ads} imageUrl={ads.image.images[0]}/>
+      );
     } else {
       return (
         <MyImage imageIndex={0} ads={ads} imageUrl={this.props.noCoverUrl}/>
@@ -136,13 +139,14 @@ class AdsRow extends React.Component {
     return (
       <View key={ads.adsID}>
         <View style={myStyles.detail}>
-          <Swiper style={myStyles.wrapper} height={imgHeight}
+          {/*<Swiper style={myStyles.wrapper} height={imgHeight}
                   showsButtons={false} autoplay={false} loop={false} bounces={true}
                   dot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]} />}
                   activeDot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]}/>}
           >
             {this.renderImageStack(ads)}
-          </Swiper>
+          </Swiper>*/}
+          {this.renderImageStack(ads)}
 
           <View style={myStyles.searchListViewRowAlign}
                 onStartShouldSetResponder={(evt) => false}

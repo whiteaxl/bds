@@ -48,7 +48,7 @@ class AdsListView extends React.Component {
     let ds = myDs.cloneWithRows(myProps.listAds);
 
     return (
-      <SGListView
+      <ListView
         dataSource={ds}
         renderRow={this.renderRow.bind(this)}
         stickyHeaderIndices={[]}
