@@ -44,7 +44,7 @@ class ImagePreview extends React.Component {
 
     componentDidMount() {
         Animated.timing(this.state.offset, {
-            duration: 500,
+            duration: 300,
             toValue: 0
         }).start();
     }
@@ -176,7 +176,7 @@ class ImagePreview extends React.Component {
 
     closeModal() {
         Animated.timing(this.state.offset, {
-            duration: 500,
+            duration: 300,
             toValue: deviceHeight
         }).start(this.props.closeModal);
     }
@@ -200,7 +200,7 @@ class ImagePreview extends React.Component {
                                source={{uri: `${imageUrl}`}}
                                loadingIndicatorSource={require('../assets/image/no_cover.jpg')}
                                resizeMode={Image.resizeMode.contain}
-                               minimumZoomScale={0.5}
+                               minimumZoomScale={1}
                                maximumZoomScale={3}
                                androidScaleType="center"
                                onLoad={() => {}}
@@ -232,7 +232,8 @@ class ImagePreview extends React.Component {
                     </View>
                     <SearchResultDetailFooter mobile={this.props.mobile} onChat={this.props.onChat} isLiked={this.props.isLiked}
                                               userID={this.props.userID} ads={this.props.ads} loggedIn={this.props.loggedIn}
-                                              likeAds={this.props.likeAds} unlikeAds={this.props.unlikeAds}/>
+                                              likeAds={this.props.likeAds} unlikeAds={this.props.unlikeAds}
+                                              style={{backgroundColor: 'black', borderTopColor: 'black'}}/>
                 </View>
             </Animated.View>
         )

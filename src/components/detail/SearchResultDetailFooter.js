@@ -18,7 +18,7 @@ var SearchResultDetailFooter = React.createClass({
   render: function() {
     const color = this.props.isLiked ? '#E50064' : 'white';
     return <View style={myStyles.searchButton}>
-      <View style={myStyles.searchListButton}>
+      <View style={[myStyles.searchListButton, this.props.style]}>
           <TruliaIcon onPress={this.onCall} name="phone" color={'white'} size={18}
                       mainProps={myStyles.searchListButtonItem1} textProps={myStyles.searchListButtonText1}
                       text={'Gọi điện'} />

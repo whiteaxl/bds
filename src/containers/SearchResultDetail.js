@@ -372,7 +372,7 @@ class SearchResultDetail extends Component {
           >
             <View style={detailStyles.searchContent}>
 
-              <Swiper style={[detailStyles.wrapper,{backgroundColor: 'gray'}]} height={imgHeight}
+              <Swiper style={[detailStyles.wrapper,{backgroundColor: 'white'}]} height={imgHeight}
                       showsButtons={false} autoplay={false} loop={false} bounces={true}
                       dot={<View style={[detailStyles.dot, {backgroundColor: 'transparent'}]} />}
                       activeDot={<View style={[detailStyles.dot, {backgroundColor: 'transparent'}]}/>}
@@ -869,7 +869,7 @@ class SearchResultDetail extends Component {
   }
 
  handleScroll(event: Object) {
-   if (event.nativeEvent.contentOffset.y <= imgHeight-60 && this.state.headerColor != 'transparent') {
+   if (event.nativeEvent.contentOffset.y <= imgHeight-64 && this.state.headerColor != 'transparent') {
      StatusBar.setBarStyle('light-content');
      this.setState({
        headerColor: 'transparent',
@@ -877,7 +877,7 @@ class SearchResultDetail extends Component {
        backButtonColor: 'white',
        heartBgColor: '#323230'
      });
-   } else if (event.nativeEvent.contentOffset.y > imgHeight-60 && this.state.headerColor != '#FEFEFE') {
+   } else if (event.nativeEvent.contentOffset.y > imgHeight-64 && this.state.headerColor != '#FEFEFE') {
      StatusBar.setBarStyle('default');
      this.setState({
        headerColor: '#FEFEFE',
