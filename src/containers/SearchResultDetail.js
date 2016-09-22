@@ -275,6 +275,10 @@ class SearchResultDetail extends Component {
     if (soPhongTam) {
       soPhongTam = soPhongTam + ' phòng tắm';
     }
+
+    var isChungCu = rowData.loaiNhaDat == 1;
+    let soTangOrNhaTam = isChungCu ? soPhongTam : soTang;
+
     var ngayDangTin = rowData.ngayDangTinFmt;
     var soNgayDaDangTin = rowData.soNgayDaDangTinFmt;
 
@@ -395,7 +399,7 @@ class SearchResultDetail extends Component {
                 </View>
                 <View style={[detailStyles.lineBorder, {marginBottom: 4}]} />
                 {this.renderTwoNormalProps(loaiNhaDat, dienTich, {marginTop: 11}, {marginTop: 4, marginBottom: 4})}
-                {this.renderTwoNormalProps(soTang, soPhongNgu, {marginTop: 12}, {marginTop: 4, marginBottom: 4})}
+                {this.renderTwoNormalProps(soTangOrNhaTam, soPhongNgu, {marginTop: 12}, {marginTop: 4, marginBottom: 4})}
                 {this.renderTwoNormalProps(huongNhaText, soNgayDaDangTin, {marginTop: 11}, {marginTop: 4, marginBottom: 4})}
                 <View style={[detailStyles.lineBorder2, {marginTop: 4, marginBottom: 8}]} />
                 <View style={detailStyles.chiTietText}>
@@ -457,7 +461,10 @@ class SearchResultDetail extends Component {
     return (
         <CollapsiblePanel title="Đặc Điểm" mainProps={{marginTop: 8, marginBottom: 8}}
                           collapseProps={{marginTop: 15, marginBottom: 15}}
-                          expanded={true}>
+                          expanded={true} bodyProps={{marginTop: 0}}>
+          <Text style={[detailStyles.textFullWidth,{fontSize: 13, marginTop: 0, color: '#9C9C9C'}]}>
+            Thông tin tổng quan về bất động sản này
+          </Text>
           {this.renderTitleProps("Loại tin rao", loaiNhaDat, {marginTop: 3, marginBottom: 2.2})}
           {this.renderTitleProps("Giá", gia, {marginTop: 3, marginBottom: 2.2})}
           {this.renderTitleProps("Giá/m²", giaM2, {marginTop: 3, marginBottom: 2.2})}
@@ -478,7 +485,10 @@ class SearchResultDetail extends Component {
     return (
         <CollapsiblePanel title="Vị Trí" mainProps={{marginTop: 8}}
                           collapseProps={{marginTop: 15, marginBottom: 15}}
-                          expanded={true}>
+                          expanded={true} bodyProps={{marginTop: 0}}>
+          <Text style={[detailStyles.textFullWidth,{fontSize: 13, marginTop: 0, color: '#9C9C9C'}]}>
+            Vị trí của bất động sản này trên bản đồ
+          </Text>
           <TouchableHighlight onPress={() => this._onMapPressed()}
               style={detailStyles.mapViewButton}>
             <Image style={detailStyles.imgMapView}
@@ -498,7 +508,10 @@ class SearchResultDetail extends Component {
     return (
       <CollapsiblePanel title="Chia Sẻ" mainProps={{marginTop: 8, marginBottom: 8}}
                         collapseProps={{marginTop: 15, marginBottom: 15}}
-                        expanded={true}>
+                        expanded={true} bodyProps={{marginTop: 0}}>
+        <Text style={[detailStyles.textFullWidth,{fontSize: 13, marginTop: 0, color: '#9C9C9C'}]}>
+          Chia sẻ bất động sản này với người thân
+        </Text>
         <View style={detailStyles.shareMainView}>
           <View style={detailStyles.shareLeft}>
             <View style={[detailStyles.circleContainer, {backgroundColor: '#1DB423'}]} >
@@ -542,7 +555,10 @@ class SearchResultDetail extends Component {
     return (
       <CollapsiblePanel title="Liên Hệ" mainProps={{marginTop: 8}}
                         collapseProps={{marginTop: 15, marginBottom: 15}}
-                        expanded={true}>
+                        expanded={true} bodyProps={{marginTop: 0}}>
+        <Text style={[detailStyles.textFullWidth,{fontSize: 13, marginTop: 0, color: '#9C9C9C'}]}>
+          Thông tin liên hệ của người đăng tin
+        </Text>
         {this.renderTitleProps("Tên liên lạc", dangBoi, {marginTop: 3, marginBottom: 2.2})}
         {this.renderTitleProps("Điện thoại", mobile, {marginTop: 3, marginBottom: 2.2}, () => this._onCall(mobile))}
         {this.renderTitleProps("Email", email, {marginTop: 3, marginBottom: 2.2}, () => this._onEmail(email))}
