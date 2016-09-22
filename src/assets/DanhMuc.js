@@ -3,15 +3,17 @@ import moment from 'moment';
 var danhMuc = {};
 
 danhMuc.BAT_KY = "Bất kỳ";
-var {BAT_KY} = danhMuc;
-
 danhMuc.BIG =9999999;
+danhMuc.CHUA_XAC_DINH = "Chưa xác định";
+danhMuc.THOA_THUAN = "Thỏa thuận";
 
-danhMuc.sellStepValues = [0, 1000, 2000, 3000, 5000, 7000, 10000, 20000, 30000]; //trieu
+var {BAT_KY, BIG, THOA_THUAN} = danhMuc;
 
-danhMuc.rentStepValues = [0, 2, 5, 10, 20, 50, 100, 500]; //by month
+danhMuc.sellStepValues = [-1, 0, 500, 800, 1000, 2000, 3000, 5000, 7000, 10000, 20000, 30000]; //trieu
 
-danhMuc.dienTichStepValues = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 150, 200, 250, 300, 400, 500];
+danhMuc.rentStepValues = [-1, 0, 1, 3, 5, 10, 40, 70, 100]; //by month
+
+danhMuc.dienTichStepValues = [-1, 0, 30, 50, 80, 100, 150, 200, 250, 300, 500];
 
 danhMuc.loaiTin = {
     0 : "Bán",
@@ -209,7 +211,7 @@ danhMuc.DonViTien = {
     2: "Tỷ",
     3: "Trăm nghìn/m²",
     4: "Triệu/m²",
-    5: "Thỏa thuận"
+    5: THOA_THUAN
 };
 
 danhMuc.DonViTienKey = [

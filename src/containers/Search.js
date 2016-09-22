@@ -37,6 +37,8 @@ import SegmentedControl from '../components/SegmentedControl';
 
 import log from '../lib/logUtil';
 
+import PickerExt from '../components/picker/PickerExt';
+
 const actions = [
   globalActions,
   searchActions
@@ -95,11 +97,13 @@ class Search extends Component {
   }
 
   _onGiaChanged(pickedValue) {
-    let value = pickedValue;
+    let {loaiTin, gia} = this.props.search.form.fields;
+    let giaStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
+    let value = giaStepValues.rangeVal2Display(pickedValue.split('_'));
     this.props.actions.onSearchFieldChange("gia", value);
   }
   _onDienTichChanged(pickedValue) {
-    let value = pickedValue;
+    let value = RangeUtils.dienTichRange.rangeVal2Display(pickedValue.split('_'));
     this.props.actions.onSearchFieldChange("dienTich", value);
   }
 
@@ -370,31 +374,54 @@ class Search extends Component {
                             <TruliaIcon name={iconName} color={gui.arrowColor} size={18} />
                         </View>
                     </View>
-                    {this._renderDienTichPicker()}
                 </TouchableOpacity>
+                {this._renderDienTichPicker()}
             </View>
+        );
+    }
+
+    _renderPickerExt(pickerRange, rangeStepValues, fromPlaceholder, toPlaceholder, onTextChange,
+                     pickerSelectedValue, onPickerValueChange) {
+        return (
+            <PickerExt pickerRange={pickerRange} rangeStepValues={rangeStepValues} fromPlaceholder={fromPlaceholder}
+                       toPlaceholder={toPlaceholder} onTextChange={onTextChange}
+                       pickerSelectedValue={pickerSelectedValue} onPickerValueChange={onPickerValueChange} />
         );
     }
 
     _renderDienTichPicker() {
         var {showDienTich} = this.state;
         if (showDienTich) {
-
-            {/*<RangePicker ref={pickerDienTich => this.pickerDienTich = pickerDienTich}
-             pickerTitle = "Chọn Diện Tích"
-             pickerData={RangeUtils.dienTichRange.getPickerData()}
-             selectedValue={this.props.search.form.fields.dienTich}
-             onPickerDone={(pickedValue) => {this._onDienTichChanged(pickedValue)}}
-             />*/}
-
-            return (
-                <RangePicker2 ref={pickerDienTich => this.pickerDienTich = pickerDienTich}
-                              pickerData={RangeUtils.dienTichRange.getPickerData()}
-                              selectedValue={this.props.search.form.fields.dienTich}
-                              onPickerDone={(pickedValue) => {this._onDienTichChanged(pickedValue)}}
-                />
-            );
+            let rangeStepValues = RangeUtils.dienTichRange;
+            let pickerRange = rangeStepValues.getAllRangeVal();
+            let fromPlaceholder = '';
+            let toPlaceholder = '';
+            let onTextChange = this._onDienTichInputChange.bind(this);
+            let dienTichRange = rangeStepValues.toValRange(this.props.search.form.fields.dienTich);
+            let pickerSelectedValue = dienTichRange[0] + '_' + dienTichRange[1];
+            let onPickerValueChange = this._onDienTichChanged.bind(this);
+            return this._renderPickerExt(pickerRange, rangeStepValues, fromPlaceholder, toPlaceholder,
+                onTextChange, pickerSelectedValue, onPickerValueChange);
         }
+    }
+
+    _onDienTichInputChange(index, val) {
+        let {dienTich} = this.props.search.form.fields;
+        dienTich[index] = val;
+        let other = dienTich[1-index];
+        if (DanhMuc.CHUA_XAC_DINH == other) {
+            other = 0;
+        } else if (DanhMuc.BAT_KY == other) {
+            other = -1;
+        } else if (other && other.indexOf(" ") != -1) {
+            other = Number(other.substring(0, other.indexOf(" ")));
+        } else {
+            other = -1;
+        }
+        dienTich[1-index] = other;
+
+        let value = RangeUtils.dienTichRange.rangeVal2Display(dienTich);
+        this.props.actions.onSearchFieldChange("dienTich", value);
     }
 
     _renderGia() {
@@ -414,8 +441,8 @@ class Search extends Component {
                             <TruliaIcon name={iconName} color={gui.arrowColor} size={18} />
                         </View>
                     </View>
-                    {this._renderGiaPicker()}
                 </TouchableOpacity>
+                {this._renderGiaPicker()}
             </View>
         );
     }
@@ -423,22 +450,42 @@ class Search extends Component {
     _renderGiaPicker() {
         var {showGia} = this.state;
         if (showGia) {
-
-            {/*<RangePicker ref={pickerGia => this.pickerGia = pickerGia}
-             pickerTitle = "Chọn Giá"
-             pickerData={this.props.search.form.fields.giaPicker}
-             selectedValue={this.props.search.form.fields.gia}
-             onPickerDone={(pickedValue) => {this._onGiaChanged(pickedValue)}}
-             />*/}
-
-            return (
-                <RangePicker2 ref={pickerGia => this.pickerGia = pickerGia}
-                              pickerData={this.props.search.form.fields.giaPicker}
-                              selectedValue={this.props.search.form.fields.gia}
-                              onPickerDone={(pickedValue) => {this._onGiaChanged(pickedValue)}}
-                />
-            );
+            var {loaiTin, gia} = this.props.search.form.fields;
+            var rangeStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
+            let pickerRange = rangeStepValues.getAllRangeVal();
+            let fromPlaceholder = '';
+            let toPlaceholder = '';
+            let onTextChange = this._onGiaInputChange.bind(this);
+            let giaRange = rangeStepValues.toValRange(gia);
+            let pickerSelectedValue = giaRange[0] + '_' + giaRange[1];
+            let onPickerValueChange = this._onGiaChanged.bind(this);
+            return this._renderPickerExt(pickerRange, rangeStepValues, fromPlaceholder, toPlaceholder,
+                onTextChange, pickerSelectedValue, onPickerValueChange);
         }
+    }
+
+    _onGiaInputChange(index, val) {
+        let {loaiTin, gia} = this.props.search.form.fields;
+        var rangeStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
+        gia[index] = val;
+        let other = gia[1-index];
+        if (DanhMuc.THOA_THUAN == other) {
+            other = 0;
+        } else if (DanhMuc.BAT_KY == other) {
+            other = -1;
+        } else if (other && other.indexOf(" ") != -1) {
+            if (other.indexOf("tỷ") != -1) {
+                other = 1000 * Number(other.substring(0, other.indexOf(" ")));
+            } else {
+                other = Number(other.substring(0, other.indexOf(" ")));
+            }
+        } else {
+            other = -1;
+        }
+        gia[1-index] = other;
+
+        let value = rangeStepValues.rangeVal2Display(gia);
+        this.props.actions.onSearchFieldChange("gia", value);
     }
 
   _renderSoPhongNgu(){
@@ -549,8 +596,8 @@ class Search extends Component {
                 <TruliaIcon name={iconName} color={gui.arrowColor} size={18} />
               </View>
              </View>
-            {this._renderNgayDaDangPicker()}
           </TouchableOpacity>
+          {this._renderNgayDaDangPicker()}
         </View>
     );
   }

@@ -2,7 +2,7 @@
 
 import  React from 'react';
 
-import {View, Text, Navigator, Platform, StyleSheet} from 'react-native';
+import {View, Text, Navigator, Platform, StyleSheet, PanResponder} from 'react-native';
 import {Scene, Router, TabBar, Modal, Schema, Actions, Reducer, Switch} from 'react-native-router-flux';
 
 import Launch from './Launch';
@@ -91,6 +91,22 @@ class TabIcon extends React.Component {
 class App extends React.Component {
   render() {
 
+    var _panResponder = PanResponder.create({
+      onMoveShouldSetPanResponder: (e, gestureState) => {},
+      onMoveShouldSetPanResponderCapture: (e, gestureState) => {},
+      onStartShouldSetPanResponder: (e, gestureState) => {},
+      onStartShouldSetPanResponderCapture: (e, gestureState) => {},
+      onPanResponderReject: (e, gestureState) => {},
+      onPanResponderGrant: (e, gestureState) => {},
+      onPanResponderStart: (e, gestureState) => {},
+      onPanResponderEnd: (e, gestureState) => {},
+      onPanResponderRelease: (e, gestureState) => {},
+      onPanResponderMove: (e, gestureState) => {},
+      onPanResponderTerminate: (e, gestureState) => {},
+      onPanResponderTerminationRequest: (e, gestureState) => {},
+      onShouldBlockNativeResponder: (e, gestureState) => {},
+    });
+
     return (
       <RouterWithRedux >
 
@@ -124,7 +140,7 @@ class App extends React.Component {
 
           <Scene key='LoginRegister' component={LoginRegister} title="Register Screen" direction="vertical"/>
 
-          <Scene key='Search' component={Search} title="Tìm kiếm" hideNavBar={true} direction="vertical"/>
+          <Scene key='Search' component={Search} title="Tìm kiếm" hideNavBar={true} direction="vertical" panHandlers={_panResponder.panHandlers}/>
           <Scene key='SearchResultList' component={SearchResultList} title="Danh sách" hideNavBar={true}/>
           <Scene key='SearchResultMap' component={SearchResultMap} title="Bản đồ" hideNavBar={true}/>
           <Scene key='PropertyTypes' component={PropertyTypes} title="Loại nhà đất" hideNavBar={true}/>

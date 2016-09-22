@@ -5,11 +5,14 @@ import danhMuc from "../assets/DanhMuc";
 
 var BIG = danhMuc.BIG;
 
-var {sellStepValues,rentStepValues,dienTichStepValues, BAT_KY} = danhMuc;
+var {sellStepValues,rentStepValues,dienTichStepValues, BAT_KY, CHUA_XAC_DINH, THOA_THUAN} = danhMuc;
 
 function getPriceStepsDisplay(val) {
-	if (val == 0 || val == BIG) {
+	if (val == -1 || val == BIG) {
 		return BAT_KY;
+	}
+	if (val == 0) {
+		return THOA_THUAN;
 	}
 
 	if (val < 1000) {
@@ -20,8 +23,11 @@ function getPriceStepsDisplay(val) {
 }
 
 function getDienTichStepsDisplay(val) {
-	if (val == 0 || val == BIG) {
+	if (val == -1 || val == BIG) {
 		return BAT_KY;
+	}
+	if (val == 0) {
+		return CHUA_XAC_DINH;
 	}
 
 	return val + " m²";
@@ -60,16 +66,31 @@ class IncRange {
 		return this._map[display];
 	}
 
+	getAllRangeVal() {
+		var ret = [];
+		var len = this.stepsVal.length;
+		for (var i=0; i<len; i++) {
+			var val = this.stepsVal[i];
+			if (val == -1 || val == 0) {
+				ret.push([val, val]);
+			} else {
+				ret.push([this.stepsVal[i-1], val]);
+			}
+		}
+		ret.push([this.stepsVal[len-1], BIG]);
+		return ret;
+	}
+
 	toValRange(displayArr) {
-		let fromVal = this._map[displayArr[0]];
-		let toVal = this._map[displayArr[1]];
-		toVal = toVal == 0 ? BIG : toVal;
+		let fromVal = displayArr[0] == -1 ? -1 : (displayArr[0] == 0 ? 0 : this._map[displayArr[0]]);
+		let toVal = displayArr[1] == -1 ? -1 : (displayArr[1] == 0 ? 0 : this._map[displayArr[1]]);
+		toVal = toVal == -1 ? BIG : toVal;
 
 		return [fromVal, toVal];
 	}
 
 	rangeVal2Display(rangeVal) {
-		console.log("rangeVal=", rangeVal);
+		// console.log("rangeVal=", rangeVal);
 		let fromDisplay = this.getDisplay(rangeVal[0]);
 		let toDisplay = this.getDisplay(rangeVal[1]);
 
@@ -91,9 +112,18 @@ var RangeUtils = {
 	    if (fromVal == BAT_KY && toVal == BAT_KY ) {
 	        return BAT_KY;
 	    }
+		if (fromVal == CHUA_XAC_DINH && toVal == CHUA_XAC_DINH ) {
+			return CHUA_XAC_DINH;
+		}
+		if (fromVal == THOA_THUAN && toVal == THOA_THUAN ) {
+			return THOA_THUAN;
+		}
+		if (fromVal == CHUA_XAC_DINH || fromVal == THOA_THUAN) {
+			fromVal = 0;
+		}
 
 	    return fromVal + " - " + toVal;
-	}, 
+	},
 
 	BAT_KY_RANGE : [BAT_KY, BAT_KY],
 	
