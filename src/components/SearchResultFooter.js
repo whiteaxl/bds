@@ -42,7 +42,7 @@ var SearchResultFooter = React.createClass({
     if (!this.props.loggedIn) {
       Actions.LoginRegister({page:1});
     } else {
-      var name = this.props.place.fullName;
+      var name = this.props.placeName;
       AlertIOS.prompt('Tên tìm kiếm cần lưu', 'Ví dụ: Gần chỗ làm, gần bệnh viện',
         [{
           text: 'Lưu lại',

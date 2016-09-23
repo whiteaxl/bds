@@ -85,7 +85,9 @@ var styles = StyleSheet.create({
         alignSelf: 'center'
     },
     pickerItem: {
-        width: Dimensions.get('window').width
+        width: Dimensions.get('window').width,
+        fontSize: gui.normalFontSize,
+        fontFamily: gui.fontFamily
     }
 });
 

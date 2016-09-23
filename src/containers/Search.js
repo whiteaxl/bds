@@ -855,7 +855,8 @@ var myStyles = StyleSheet.create({
     borderTopColor: gui.separatorLine
   },
   ngayDaDangItem: {
-
+    fontSize: gui.normalFontSize,
+    fontFamily: gui.fontFamily
   }
 });
 

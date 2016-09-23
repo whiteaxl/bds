@@ -116,7 +116,7 @@ class PlacesAutoComplete extends React.Component {
     return (
 
       <GooglePlacesAutocomplete
-        placeholder='Tìm kiếm'
+        placeholder='Nhập khu vực cần tìm'
         minLength={2} // minimum length of text to search
         autoFocus={true}
         fetchDetails={false}

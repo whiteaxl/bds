@@ -525,7 +525,7 @@ const GooglePlacesAutocomplete = React.createClass({
         >
           <View style={defaultStyles.inputView}>
             <TruliaIcon name="search" size={14} color={'white'}
-                        mainProps={{marginRight: 5}}></TruliaIcon>
+                        mainProps={{marginRight: 7}}></TruliaIcon>
             <TextInput
               { ...userProps }
               ref="textInput"
@@ -534,6 +534,7 @@ const GooglePlacesAutocomplete = React.createClass({
               onChangeText={onChangeText ? text => {this._onChangeText(text); onChangeText(text)} : this._onChangeText}
               value={this.state.text}
               placeholder={this.props.placeholder}
+              placeholderTextColor={"white"}
               onFocus={onFocus ? () => {this._onFocus(); onFocus()} : this._onFocus}
               clearButtonMode="while-editing"
             />
@@ -541,7 +542,7 @@ const GooglePlacesAutocomplete = React.createClass({
 
           <TouchableHighlight underlayColor="transparent" onPress={this.props.onCancelPress}>
             <Text style={defaultStyles.cancel}>
-              Thoát
+              Hủy
             </Text>
           </TouchableHighlight>
 

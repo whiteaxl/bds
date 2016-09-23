@@ -45,7 +45,8 @@ const styles = StyleSheet.create({
         height: 50
     },
     searchIcon: {
-        marginLeft: 10
+        marginLeft: 10,
+        marginRight: 2
     },
     searchContainer: {
         marginTop: 26,

@@ -140,6 +140,7 @@ class SearchResultList extends Component {
                 <SearchResultFooter center = {this.props.fields.center}
                                     viewport = {this.props.fields.viewport}
                                     loggedIn = {this.props.loggedIn}
+                                    placeName = {placeName}
                                     saveSearch = {this.props.actions.saveSearch}
                                     query = {findApi.convertFieldsToQueryParams(this.props.fields)}
                                     userID = {this.props.userID}
