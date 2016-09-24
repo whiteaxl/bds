@@ -11,7 +11,7 @@ var gui = {
 	normalFontSize : 16,
 	buttonFontSize: 16,
 	capitalizeFontSize: 13,
-	LIMIT_RECENT_SEARCH : 3,
+	LIMIT_RECENT_SEARCH : 10,
 	LIMIT_SAVE_SEARCH : 5,
 
 	//Error msg
