@@ -41,16 +41,35 @@ var Api = {
       polygon = undefined;
     }
 
-
     let giaRange = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange ;
+
+    let giaLabel = 'giaBETWEEN';
+    let giaVal = undefined;
+    if (gia) {
+        if (gia[0] === DanhMuc.THOA_THUAN && gia[1] === DanhMuc.THOA_THUAN) {
+            giaLabel = 'gia';
+            giaVal = -1;
+        } else {
+            giaVal = giaRange.toValRange(gia);
+        }
+    }
+
+    let dienTichLabel = 'dienTichBETWEEN';
+    let dienTichVal = undefined;
+    if (dienTich) {
+        if (dienTich[0] === DanhMuc.CHUA_XAC_DINH && dienTich[1] === DanhMuc.CHUA_XAC_DINH) {
+            dienTichLabel = 'dienTich';
+            dienTichVal = -1;
+        } else {
+            dienTichVal = RangeUtils.dienTichRange.toValRange(dienTich);
+        }
+    }
 
     var params = {
       'loaiTin' : 'ban' === loaiTin ? 0 : 1,
       'loaiNhaDat' : loaiNhaDat ? [loaiNhaDat] : undefined,
-      'giaBETWEEN' : gia ? giaRange.toValRange(gia) : gia,
       'soPhongNguGREATER' : Number(DanhMuc.getSoPhongByIndex(soPhongNguSelectedIdx)) || undefined,
       'soPhongTamGREATER' : Number(DanhMuc.getSoPhongTamByIndex(soNhaTamSelectedIdx)) || undefined,
-      'dienTichBETWEEN' : dienTich ? RangeUtils.dienTichRange.toValRange(dienTich) : undefined,
       'orderBy' : orderBy ? {name: DanhMuc.getOrderKey(orderBy), type: DanhMuc.getOrderType(orderBy)} : undefined,
       'diaChinh': diaChinh && Object.keys(diaChinh).length > 0 ? diaChinh : undefined,
       'circle' : circle,
@@ -62,6 +81,9 @@ var Api = {
       'pageNo' : pageNo || 1, //default is page 1
       'isIncludeCountInResponse' : isIncludeCountInResponse || false //default is false
     };
+
+    params[giaLabel] = giaVal;
+    params[dienTichLabel] = dienTichVal;
 
     return params
   },

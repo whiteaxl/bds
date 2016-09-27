@@ -21,23 +21,17 @@ import TruliaIcon from '../components/TruliaIcon'
 import LikeTabButton from '../components/LikeTabButton';
 import RangeUtils from "../lib/RangeUtils"
 
-import RangePicker from "../components/RangePicker"
-
-import RangePicker2 from "../components/RangePicker2"
-
 import DanhMuc from "../assets/DanhMuc"
 
 import SearchInput from '../components/SearchInputExt';
-
-import PlaceUtil from '../lib/PlaceUtil';
-
-import apiUtils from '../lib/ApiUtils';
 
 import SegmentedControl from '../components/SegmentedControl';
 
 import log from '../lib/logUtil';
 
 import PickerExt from '../components/picker/PickerExt';
+
+import PickerExt2 from '../components/picker/PickerExt2';
 
 const actions = [
   globalActions,
@@ -67,7 +61,7 @@ class Search extends Component {
     super(props);
     StatusBar.setBarStyle('default');
 
-    let {dienTich, gia} = this.props.search.form.fields;
+    let {dienTich, gia, ngayDaDang} = this.props.search.form.fields;
     let initGia = [];
     Object.assign(initGia, gia);
     let initDienTich = [];
@@ -79,7 +73,8 @@ class Search extends Component {
       showGia: false,
       showDienTich: false,
       initGia: initGia,
-      initDienTich: initDienTich
+      initDienTich: initDienTich,
+      initNgayDaDang: ngayDaDang
     };
   }
 
@@ -124,6 +119,7 @@ class Search extends Component {
   _onNgayDaDangChanged(pickedValue) {
     let value = pickedValue;
     this.props.actions.onSearchFieldChange("ngayDaDang", value);
+    this.setState({initNgayDaDang: value});
   }
 
   _getGiaValue() {
@@ -344,7 +340,7 @@ class Search extends Component {
     this.props.actions.onSearchFieldChange("radiusInKmSelectedIdx", 0);
     this.props.actions.onSearchFieldChange("huongNha", 0);
     this.props.actions.onSearchFieldChange("ngayDaDang", '');
-    this.setState({initGia: RangeUtils.BAT_KY_RANGE, initDienTich: RangeUtils.BAT_KY_RANGE, showMore: false});
+    this.setState({initGia: RangeUtils.BAT_KY_RANGE, initDienTich: RangeUtils.BAT_KY_RANGE, initNgayDaDang: 0, showMore: false});
   }
 
   _onPropertyTypesPressed() {
@@ -625,22 +621,30 @@ class Search extends Component {
   }
 
   _renderNgayDaDangPicker() {
-    var {showNgayDaDang} = this.state;
+    var {showNgayDaDang, initNgayDaDang} = this.state;
     if (showNgayDaDang) {
-      return (
-          <PickerIOS ref={pickerNgayDaDang => this.pickerNgayDaDang = pickerNgayDaDang}
-                 selectedValue={this.props.search.form.fields.ngayDaDang}
-                 onValueChange={(pickedValue) => {this._onNgayDaDangChanged(pickedValue)}}
-                 itemStyle={myStyles.ngayDaDangItem}
-          >
-            {DanhMuc.getNgayDaDangValues().map((ngayDaDangKey) => (
-                <PickerIOS.Item key={ngayDaDangKey}
-                                value={ngayDaDangKey}
-                                label={DanhMuc.NgayDaDang[ngayDaDangKey]} />
-            ))}
-          </PickerIOS>
-      );
+        let pickerRange = DanhMuc.getNgayDaDangValues();
+        let fromPlaceholder = '';
+        let toPlaceholder = '';
+        let onTextChange = this._onNgayDaDangInputChange.bind(this);
+        let pickerSelectedValue = initNgayDaDang;
+        let onPickerValueChange = this._onNgayDaDangChanged.bind(this);
+        let val2Display = this._ngayDaDangVal2Display.bind(this);
+        let onPress = this._onPressNgayDaDangHandle.bind(this);
+        let inputLabel = 'ngày';
+        return <PickerExt2 pickerRange={pickerRange} val2Display={val2Display} fromPlaceholder={fromPlaceholder}
+                   toPlaceholder={toPlaceholder} onTextChange={onTextChange}
+                   pickerSelectedValue={pickerSelectedValue} onPickerValueChange={onPickerValueChange}
+                   onPress={onPress} inputLabel={inputLabel} />
     }
+  }
+  
+  _onNgayDaDangInputChange(value) {
+      this.props.actions.onSearchFieldChange("ngayDaDang", value);
+  }
+    
+  _ngayDaDangVal2Display(ngayDaDangKey) {
+      return DanhMuc.NgayDaDang[ngayDaDangKey];
   }
 
   showSoPhongNgu(){
