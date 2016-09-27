@@ -240,12 +240,14 @@ class SearchResultDetail extends Component {
         )
     }
 
-    var loaiTin = DanhMuc.getLoaiTinValue(rowData.loaiTin);
-    var loaiNhaDat = rowData.loaiTin ? DanhMuc.LoaiNhaDatThue[rowData.loaiNhaDat] :  DanhMuc.LoaiNhaDatBan[rowData.loaiNhaDat];
+    var loaiTinVal = rowData.loaiTin;
+    var loaiTin = DanhMuc.getLoaiTinValue(loaiTinVal);
+    var loaiNhaDat = loaiTinVal ? DanhMuc.LoaiNhaDatThue[rowData.loaiNhaDat] :  DanhMuc.LoaiNhaDatBan[rowData.loaiNhaDat];
     var diaChi = rowData.place.diaChi;
     var dienTich = '';
     dienTich = rowData.dienTichFmt;
 
+    var giaVal = rowData.gia;
     var gia = rowData.giaFmt;
     if (gia) {
       gia = gia.replace('TỶ','Tỷ');
@@ -426,17 +428,7 @@ class SearchResultDetail extends Component {
                   </Text>
                   {moiGioiTuongTu}
                 </CollapsiblePanel>*/}
-                <CollapsiblePanel title="Phương Án Tài Chính"
-                                    expanded={true} bodyProps={{marginTop: 0}}
-                                    mainProps={{marginTop: 8}}
-                                    collapseProps={{marginTop: 15, marginBottom: 15}}>
-                    <Text style={[detailStyles.textFullWidth,{fontSize: 13, marginTop: 0, color: '#9C9C9C'}]}>
-                      Tính trên cơ sở vay 70% giá trị nhà trong vòng 15 năm với lãi suất cố định 12%/năm theo số tiền vay
-                    </Text>
-                  {this._renderPhuongAnTaiChinh()}
-                  <Text style={{fontSize: 5}} />
-                </CollapsiblePanel>
-                <View style={detailStyles.lineBorder2} />
+                {this._renderPhuongAnTaiChinh(giaVal, loaiTinVal)}
                 <View style={{marginTop: 10.5, alignItems: 'center', justifyContent:'center'}}>
                   <Text style={detailStyles.adsMore}>
                     Khám Phá Thêm
@@ -624,14 +616,22 @@ class SearchResultDetail extends Component {
     });
   }
 
-  _renderPhuongAnTaiChinh() {
-    let mainAccount = 400;
-    let bonusAccount = 100;
-    // if (this.props.global.loggedIn) {
-    //   let currentUser = this.props.global.currentUser;
-    //   mainAccount = currentUser.mainAccount;
-    //   bonusAccount = currentUser.bonusAccount;
-    // }
+  _renderPhuongAnTaiChinh(giaVal, loaiTinVal) {
+    if (loaiTinVal || !giaVal) {
+      return null;
+    }
+    let mainAccount = 0.7*giaVal;
+    let bonusAccount = 0;
+    let months = 12*15;
+    let principal = mainAccount;
+    let payment = mainAccount / months;
+    for (let i=0; i<months; i++) {
+      let interest = 0.12*principal/12;
+      bonusAccount = bonusAccount + interest;
+      principal = principal - payment;
+    }
+    let mainAccountFmt = util.getPriceDisplay(mainAccount, loaiTinVal);
+    let bonusAccountFmt = util.getPriceDisplay(bonusAccount, loaiTinVal);
     var data = [{
       "name": "",
       "fillColor" : "#1396E0",
@@ -667,24 +667,36 @@ class SearchResultDetail extends Component {
         fontWeight: 'normal'
       }
     };
-    var chartTitle = 'Tổng tài khoản';
-    var chartTitleBold = (mainAccount+bonusAccount) + ' triệu';
+    var chartTitle = 'Tổng';
+    var chartTitleBold = util.getPriceDisplay(mainAccount+bonusAccount, loaiTinVal);
     return (
-        <View style={{flexDirection: "row", alignItems: 'center', justifyContent: 'flex-start', backgroundColor:'white', paddingTop:0}}>
-          <View style={{paddingLeft: 13, paddingTop:2, width: width/2, alignItems: 'center', justifyContent: 'center'}}>
-            <MChartView
-                data={data}
-                options={options}
-                pallete={pallete}
-                chartTitle={chartTitle}
-                chartTitleBold={chartTitleBold}
-            />
-          </View>
-          <View style={{paddingLeft: 13, paddingTop:2}}>
-            {this._renderMoneyLine("Gốc", mainAccount + " triệu", '#23B750')}
-            {this._renderMoneyLine("Lãi", bonusAccount + " triệu", '#EA9409')}
-          </View>
-        </View>
+      <View>
+        <CollapsiblePanel title="Phương Án Tài Chính"
+                          expanded={true} bodyProps={{marginTop: 0}}
+                          mainProps={{marginTop: 8}}
+                          collapseProps={{marginTop: 15, marginBottom: 15}}>
+          <Text style={[detailStyles.textFullWidth,{fontSize: 13, marginTop: 0, color: '#9C9C9C'}]}>
+            Tính trên cơ sở vay 70% giá trị nhà trong vòng 15 năm với lãi suất cố định 12%/năm theo số tiền vay
+          </Text>
+            <View style={{flexDirection: "row", alignItems: 'center', justifyContent: 'flex-start', backgroundColor:'white', paddingTop:0}}>
+              <View style={{paddingLeft: 13, paddingTop:2, width: width/2, alignItems: 'center', justifyContent: 'center'}}>
+                <MChartView
+                    data={data}
+                    options={options}
+                    pallete={pallete}
+                    chartTitle={chartTitle}
+                    chartTitleBold={chartTitleBold}
+                />
+              </View>
+              <View style={{paddingLeft: 13, paddingTop:2}}>
+                {this._renderMoneyLine("Gốc", mainAccountFmt, '#23B750')}
+                {this._renderMoneyLine("Lãi", bonusAccountFmt, '#EA9409')}
+              </View>
+            </View>
+          <Text style={{fontSize: 5}} />
+        </CollapsiblePanel>
+        <View style={detailStyles.lineBorder2} />
+      </View>
     );
   }
 
@@ -862,7 +874,7 @@ class SearchResultDetail extends Component {
               <Text style={[detailStyles.textHalfWidth2, textStyle]}>
                 {title}
               </Text>
-              <TouchableHighlight onPress={onPress}>
+              <TouchableHighlight onPress={onPress} underlayColor="transparent">
                 <Text style={[detailStyles.textHalfWidthBold2, textStyle]}>
                   {prop}
                 </Text>

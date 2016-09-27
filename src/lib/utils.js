@@ -33,22 +33,30 @@ var locDauInt = function (str) {
   return str;
 };
 
-util.getPriceDisplay = function (val, loaiTin) {
-  if (!val) {
-    return "Thỏa thuận";
-  }
+util.roundToTwo = function(num) {
+  return +(Math.round(num + "e+2")  + "e-2");
+}
 
-  if (loaiTin === 0) { //ban
-    if (val < 1000) {
-      return val + " TRIỆU";
+util.getPriceDisplay = function (val, loaiTin) {
+  try {
+    if (!val) {
+      return "Thỏa thuận";
     }
 
-    return (val / 1000).toFixed(2) + " TỶ";
-  } else {
-    return val.toFixed(2) + " TRIỆU/THÁNG";
+    val = Number(val);
+
+    if (loaiTin===0) { //ban
+      if (val < 1000) {
+        return util.roundToTwo(val) + " TRIỆU";
+      }
+
+      return util.roundToTwo(val/1000) + " TỶ";
+    } else {
+      return util.roundToTwo(val) +  " TRIỆU";
+    }
+  } catch(ex) {
+    console.log("Error when getPriceDisplay of " + val, ex)
   }
-
-
 };
 
 util.getDienTichDisplay = function (val) {

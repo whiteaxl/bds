@@ -67,11 +67,19 @@ class Search extends Component {
     super(props);
     StatusBar.setBarStyle('default');
 
+    let {dienTich, gia} = this.props.search.form.fields;
+    let initGia = [];
+    Object.assign(initGia, gia);
+    let initDienTich = [];
+    Object.assign(initDienTich, dienTich);
+
     this.state = {
       showMore: false,
       showNgayDaDang: false,
       showGia: false,
-      showDienTich: false
+      showDienTich: false,
+      initGia: initGia,
+      initDienTich: initDienTich
     };
   }
 
@@ -101,10 +109,16 @@ class Search extends Component {
     let giaStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
     let value = giaStepValues.rangeVal2Display(pickedValue.split('_'));
     this.props.actions.onSearchFieldChange("gia", value);
+    var initGia = [];
+    Object.assign(initGia, value);
+    this.setState({initGia: initGia});
   }
   _onDienTichChanged(pickedValue) {
     let value = RangeUtils.dienTichRange.rangeVal2Display(pickedValue.split('_'));
     this.props.actions.onSearchFieldChange("dienTich", value);
+    var initDienTich = [];
+    Object.assign(initDienTich, value);
+    this.setState({initDienTich: initDienTich});
   }
 
   _onNgayDaDangChanged(pickedValue) {
@@ -330,7 +344,7 @@ class Search extends Component {
     this.props.actions.onSearchFieldChange("radiusInKmSelectedIdx", 0);
     this.props.actions.onSearchFieldChange("huongNha", 0);
     this.props.actions.onSearchFieldChange("ngayDaDang", '');
-    this.setState({showMore: false});
+    this.setState({initGia: RangeUtils.BAT_KY_RANGE, initDienTich: RangeUtils.BAT_KY_RANGE, showMore: false});
   }
 
   _onPropertyTypesPressed() {
@@ -381,34 +395,38 @@ class Search extends Component {
     }
 
     _renderPickerExt(pickerRange, rangeStepValues, fromPlaceholder, toPlaceholder, onTextChange,
-                     pickerSelectedValue, onPickerValueChange) {
+                     pickerSelectedValue, onPickerValueChange, onPress, inputLabel) {
         return (
             <PickerExt pickerRange={pickerRange} rangeStepValues={rangeStepValues} fromPlaceholder={fromPlaceholder}
                        toPlaceholder={toPlaceholder} onTextChange={onTextChange}
-                       pickerSelectedValue={pickerSelectedValue} onPickerValueChange={onPickerValueChange} />
+                       pickerSelectedValue={pickerSelectedValue} onPickerValueChange={onPickerValueChange}
+                       onPress={onPress} inputLabel={inputLabel} />
         );
     }
 
     _renderDienTichPicker() {
-        var {showDienTich} = this.state;
+        var {showDienTich, initDienTich} = this.state;
         if (showDienTich) {
             let rangeStepValues = RangeUtils.dienTichRange;
             let pickerRange = rangeStepValues.getAllRangeVal();
             let fromPlaceholder = '';
             let toPlaceholder = '';
             let onTextChange = this._onDienTichInputChange.bind(this);
-            let dienTichRange = rangeStepValues.toValRange(this.props.search.form.fields.dienTich);
+            let dienTichRange = rangeStepValues.toValRange(initDienTich);
             let pickerSelectedValue = dienTichRange[0] + '_' + dienTichRange[1];
             let onPickerValueChange = this._onDienTichChanged.bind(this);
             return this._renderPickerExt(pickerRange, rangeStepValues, fromPlaceholder, toPlaceholder,
-                onTextChange, pickerSelectedValue, onPickerValueChange);
+                onTextChange, pickerSelectedValue, onPickerValueChange,
+                this._onPressDienTichHandle.bind(this), "m²");
         }
     }
 
     _onDienTichInputChange(index, val) {
         let {dienTich} = this.props.search.form.fields;
-        dienTich[index] = val;
-        let other = dienTich[1-index];
+        let newDienTich = [];
+        Object.assign(newDienTich, dienTich);
+        newDienTich[index] = val;
+        let other = newDienTich[1-index];
         if (DanhMuc.CHUA_XAC_DINH == other) {
             other = 0;
         } else if (DanhMuc.BAT_KY == other) {
@@ -418,9 +436,9 @@ class Search extends Component {
         } else {
             other = -1;
         }
-        dienTich[1-index] = other;
+        newDienTich[1-index] = other;
 
-        let value = RangeUtils.dienTichRange.rangeVal2Display(dienTich);
+        let value = RangeUtils.dienTichRange.rangeVal2Display(newDienTich);
         this.props.actions.onSearchFieldChange("dienTich", value);
     }
 
@@ -448,27 +466,31 @@ class Search extends Component {
     }
 
     _renderGiaPicker() {
-        var {showGia} = this.state;
+        var {showGia, initGia} = this.state;
         if (showGia) {
-            var {loaiTin, gia} = this.props.search.form.fields;
+            var {loaiTin} = this.props.search.form.fields;
             var rangeStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
             let pickerRange = rangeStepValues.getAllRangeVal();
             let fromPlaceholder = '';
             let toPlaceholder = '';
             let onTextChange = this._onGiaInputChange.bind(this);
-            let giaRange = rangeStepValues.toValRange(gia);
+            let giaRange = rangeStepValues.toValRange(initGia);
             let pickerSelectedValue = giaRange[0] + '_' + giaRange[1];
             let onPickerValueChange = this._onGiaChanged.bind(this);
+            let inputLabel = 'ban' === loaiTin ? "tỷ" : "triệu";
             return this._renderPickerExt(pickerRange, rangeStepValues, fromPlaceholder, toPlaceholder,
-                onTextChange, pickerSelectedValue, onPickerValueChange);
+                onTextChange, pickerSelectedValue, onPickerValueChange,
+                this._onPressGiaHandle.bind(this), inputLabel);
         }
     }
 
     _onGiaInputChange(index, val) {
         let {loaiTin, gia} = this.props.search.form.fields;
-        var rangeStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
-        gia[index] = val;
-        let other = gia[1-index];
+        let rangeStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
+        let newGia = [];
+        Object.assign(newGia, gia);
+        newGia[index] = 1000 * val;
+        let other = String(newGia[1-index]);
         if (DanhMuc.THOA_THUAN == other) {
             other = 0;
         } else if (DanhMuc.BAT_KY == other) {
@@ -482,9 +504,9 @@ class Search extends Component {
         } else {
             other = -1;
         }
-        gia[1-index] = other;
+        newGia[1-index] = other;
 
-        let value = rangeStepValues.rangeVal2Display(gia);
+        let value = rangeStepValues.rangeVal2Display(newGia);
         this.props.actions.onSearchFieldChange("gia", value);
     }
 
