@@ -179,7 +179,11 @@ var Api = {
         var params = {
             'adsID' : adsID
         };
-        return fetch(`${detailUrl}`, {
+
+        this._abortRequest();
+        this._requests.push(++this._requestCnt);
+
+        return cancelablFetch(detailUrl, {
             method: 'POST',
             headers: {
                 'Accept': 'application/json',
@@ -187,10 +191,13 @@ var Api = {
             },
             timeout: 0,
             body: JSON.stringify(params)
-        })
+        }, this._requestCnt)
             .then(ApiUtils.checkStatus)
             .then(response => response.json())
-            .catch(e => e);
+            .catch(e => {
+                console.log("Error when getDetail: " + findUrl, e);
+                return e;
+            });
     },
 
     getGeocoding(lat, lon, callback) {

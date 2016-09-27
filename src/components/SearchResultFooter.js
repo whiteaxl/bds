@@ -1,6 +1,6 @@
 // Import some code we need
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, AlertIOS} from 'react-native';
+import {View, Text, StyleSheet, AlertIOS, Dimensions} from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
 
@@ -20,18 +20,16 @@ import Button from 'react-native-button';
 // Create our component
 var SearchResultFooter = React.createClass({
   render: function() {
-    return <View style={myStyles.searchButton}>
-      <View style={myStyles.searchListButton}>
+    return <View style={myStyles.searchListButton}>
         <SortMenu isDiaDiem={this.props.center}/>
           <Button onPress={this._onAlertSaveSearch}
                   style={[myStyles.buttonText, {fontWeight : '500'}]}>Lưu tìm kiếm</Button>
           <Button onPress={this._onMap}
-                  style={myStyles.buttonText}>Bản đồ</Button>
+                  style={[myStyles.buttonText, {textAlign: 'right', paddingRight: 17}]}>Bản đồ</Button>
         {/*<RelandIcon onPress={this._onAlertSaveSearch} name="save" size={24} text="Lưu tìm kiếm" textProps={myStyles.buttonText}/>
         <RelandIcon onPress={this._onMap} name="map" size={18} iconProps={{style: {marginTop: 6}}} text="Bản đồ" textProps={myStyles.buttonText}/>
         */}
       </View>
-    </View>
   },
 
   _onSort() {
@@ -84,13 +82,6 @@ var myStyles = StyleSheet.create({
       height: 44
   },
 
-  searchButton: {
-      alignItems: 'stretch',
-      justifyContent: 'flex-end',
-      borderTopWidth: 1,
-      borderColor : 'lightgray'
-  },
-
   buttonText: {
       fontSize: gui.buttonFontSize,
       fontFamily: gui.fontFamily,
@@ -98,7 +89,8 @@ var myStyles = StyleSheet.create({
       color: '#1396E0',
       textAlign: 'center',
       marginTop: 10,
-      paddingLeft: 0
+      paddingLeft: 0,
+      width: Dimensions.get('window').width/3
   }
 });
 

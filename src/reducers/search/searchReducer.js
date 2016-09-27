@@ -105,10 +105,14 @@ export default function searchReducer(state = initialState, action) {
       //update lastSearch if called from search screen
       let hasDiaChinhChange = false;
       if (recentSearchList && recentSearchList.length > 0) {
-        let oldQuery = recentSearchList[0];
-        let oldDiaChinh = oldQuery.diaChinh;
-        let diaChinh = query.diaChinh;
-        hasDiaChinhChange = diaChinh && diaChinh.length > 0 && oldDiaChinh.fullName != diaChinh.fullName;
+        if (recentSearchList.length > 1) {
+          let oldQuery = recentSearchList[1];
+          let oldDiaChinh = oldQuery.diaChinh;
+          let diaChinh = query.diaChinh;
+          hasDiaChinhChange = diaChinh && diaChinh.length > 0 && oldDiaChinh.fullName != diaChinh.fullName;
+        } else {
+          hasDiaChinhChange = true;
+        }
       }
       if (state.searchCalledFrom == 'Search' && hasDiaChinhChange) {
         localStorage.setLastSearch(JSON.stringify(searchObj));
@@ -254,6 +258,10 @@ function buildSearchCredentialFromSavedSearch(query) {
     let ngayDangTin = moment(ngayDangTinGREATER, 'YYYYMMDD');
     ngayDaDang = now.diff(ngayDangTin, 'days');
   }
+  let center = null;
+  if (circle && circle.center) {
+    center = circle.center;
+  }
   let ret = {
     loaiTin: loaiTin == 0 ? 'ban' : 'thue',
     loaiNhaDat: loaiNhaDat || '',
@@ -264,8 +272,8 @@ function buildSearchCredentialFromSavedSearch(query) {
     orderBy: orderBy && Object.keys(orderBy).length == 2 ? orderBy.name + orderBy.type : '',
     viewport: viewport,
     diaChinh : diaChinh,
-    center: circle.center || {},
-    radiusInKmSelectedIdx: danhMuc.getIdx(danhMuc.RadiusInKm, circle.radius),
+    center: center,
+    radiusInKmSelectedIdx: circle ? danhMuc.getIdx(danhMuc.RadiusInKm, circle.radius) : 0,
     huongNha: huongNha && huongNha.length > 0 ? huongNha[0] : 0,
     ngayDaDang: ngayDaDang, //batky
     polygon: polygon,

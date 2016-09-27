@@ -137,14 +137,16 @@ class SearchResultList extends Component {
 
                 {this._renderTotalResultView()}
 
-                <SearchResultFooter center = {this.props.fields.center}
-                                    viewport = {this.props.fields.viewport}
-                                    loggedIn = {this.props.loggedIn}
-                                    placeName = {placeName}
-                                    saveSearch = {this.props.actions.saveSearch}
-                                    query = {findApi.convertFieldsToQueryParams(this.props.fields)}
-                                    userID = {this.props.userID}
-                />
+                <View style={myStyles.searchButton}>
+                    <SearchResultFooter center = {this.props.fields.center}
+                                        viewport = {this.props.fields.viewport}
+                                        loggedIn = {this.props.loggedIn}
+                                        placeName = {placeName}
+                                        saveSearch = {this.props.actions.saveSearch}
+                                        query = {findApi.convertFieldsToQueryParams(this.props.fields)}
+                                        userID = {this.props.userID}
+                    />
+                </View>
             </View>
             </MenuContext>
         )
@@ -187,6 +189,15 @@ var myStyles = StyleSheet.create({
         flex: 1,
         alignItems: 'stretch',
         backgroundColor: 'white'
+    },
+    searchButton: {
+        position: 'absolute',
+        top: Dimensions.get('window').height-44,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        borderTopWidth: 1,
+        borderColor : 'lightgray'
     },
     search: {
         backgroundColor: gui.mainColor,

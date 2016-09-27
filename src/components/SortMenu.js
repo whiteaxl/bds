@@ -271,8 +271,9 @@ var myStyles = StyleSheet.create({
         , fontFamily: gui.fontFamily,
         fontWeight : 'normal',
         color: '#1396E0',
-        textAlign: 'center',
+        textAlign: 'left',
         marginTop: 10,
-        paddingLeft: 0
+        paddingLeft: 17,
+        width: Dimensions.get('window').width/3
     }
 });

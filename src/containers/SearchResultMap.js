@@ -60,7 +60,7 @@ var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / (height-110);
 
-const PADDING = 0.000000000005;
+const PADDING = 0.00000005;
 const LATITUDE = 20.95389909999999;
 const LONGITUDE = 105.75490945;
 const LATITUDE_DELTA = 0.08616620000177733;
@@ -313,11 +313,11 @@ class SearchResultMap extends Component {
         <View style={styles.tabbar}>
           <View style={styles.searchListButton}>
             <Button onPress={this._onLocalInfoPressed.bind(this)}
-                    style={styles.searchListButtonText}>Tiện ích</Button>
+                    style={[styles.searchListButtonText, {textAlign: 'left', paddingLeft: 17}]}>Tiện ích</Button>
             <Button onPress={this._onSaveSearchPressed.bind(this)}
                     style={[styles.searchListButtonText, {fontWeight : '500'}]}>Lưu tìm kiếm</Button>
             <Button onPress={this._onListPressed}
-                    style={styles.searchListButtonText}>Danh sách</Button>
+                    style={[styles.searchListButtonText, {textAlign: 'right', paddingRight: 17}]}>Danh sách</Button>
             {/*<Icon.Button onPress={this._onLocalInfoPressed.bind(this)}
                          name="location-arrow" backgroundColor="white"
                          underlayColor="gray" color={gui.mainColor}
@@ -577,7 +577,12 @@ class SearchResultMap extends Component {
     }
     let endAdsIndex = (pageNo-1)*gui.MAX_VIEWABLE_ADS+numberOfAds;
     let rangeAds = totalCount > 0 && totalCount != numberOfAds ? (endAdsIndex > 0 ? beginAdsIndex + "-" + endAdsIndex : "0") + " / " + totalCount : numberOfAds;
-    let textValue = "Đang hiển thị từ " + rangeAds + " kết quả nằm trong khung hình";
+    let textValue = "Đang hiển thị từ " + rangeAds + " kết quả phù hợp";
+    if (numberOfAds == 0) {
+      textValue = "Không tìm thấy kết quả nào. Hãy thay đổi tham số tìm kiếm";
+    } else if (totalCount == 0 || totalCount == numberOfAds) {
+      textValue = "Đang hiển thị " + rangeAds + " kết quả phù hợp";
+    }
 
     if(loading){
       console.log("SearchResultMap_renderTotalResultView");
@@ -1080,7 +1085,8 @@ var styles = StyleSheet.create({
       fontFamily: gui.fontFamily,
       fontWeight : 'normal',
       color: '#1396E0',
-      textAlign: 'center'
+      textAlign: 'center',
+      width: width/3
   },
 
   map: {
@@ -1234,7 +1240,8 @@ var styles = StyleSheet.create({
   searchListButton: {
       flexDirection: 'row',
       justifyContent: 'space-around',
-      backgroundColor: 'white'
+      backgroundColor: 'white',
+      alignItems: 'flex-end'
   },
   sumBds: {
     marginBottom: 10,
