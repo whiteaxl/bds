@@ -183,11 +183,15 @@ class SearchResultMap extends Component {
       //1. Search by diaChinh, then name = diaChinh's name
       if (this.props.search.map.polygons && this.props.search.map.polygons.length) {
           //placeName = `[${r.latitude}, ${r.longitude}]`
-          return 'Trong khu vực đã vẽ';
+          return 'Trong khu vực vẽ tay';
+      }
+
+      if (this.props.search.drawMode) {
+        return 'Vẽ khu vực muốn tìm';
       }
 
       if (this.props.search.form.fields.center && Object.keys(this.props.search.form.fields.center).length > 0) {
-        return 'Xung quanh vị trí của bạn';
+        return 'Xung quanh vị trí hiện tại';
       }
 
       let placeName;
@@ -525,7 +529,7 @@ class SearchResultMap extends Component {
           <View style={[styles.bubble, styles.button, {flexDirection: 'column'}]}>
             {this.props.search.map.polygons && this.props.search.map.polygons.length > 0 ? (
                 <RelandIcon name="close" color='black' mainProps={{flexDirection: 'row'}}
-                            size={13} textProps={{paddingLeft: 0}}
+                            size={15} textProps={{paddingLeft: 0}}
                             noAction={true}></RelandIcon>) :
                 (
                     <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
@@ -742,9 +746,9 @@ class SearchResultMap extends Component {
       <View style={styles.modalHeader}>
         <TouchableOpacity style={{flexDirection: "row", alignItems: "flex-start",position:'absolute', left:15}}
                           onPress={this._onCloseLocalInfo.bind(this)}>
-          <RelandIcon name="close" color={gui.mainColor} size={13} noAction={true}/>
+          <RelandIcon name="close" color={gui.mainColor} size={15} noAction={true}/>
         </TouchableOpacity>
-        <Text style={styles.modalHeaderText}>Local info</Text>
+        <Text style={styles.modalHeaderText}>Tiện ích</Text>
       </View>
       <View style={styles.modalTitle}>
          <Text style={styles.modalTitleText}>Loại bản đồ</Text>

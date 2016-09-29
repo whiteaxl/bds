@@ -44,7 +44,7 @@ var styles = StyleSheet.create({
   dupText: {
     fontFamily: gui.fontFamily,
     fontWeight: '600',
-    fontSize: 10,
+    fontSize: 11,
     color: 'white',
     backgroundColor: 'transparent'
   },
@@ -59,13 +59,13 @@ var styles = StyleSheet.create({
     alignSelf: 'flex-start',
     alignItems: 'flex-end',
     backgroundColor: '#FF5A5F',
-    padding: 2,
+    padding: 0,
     borderRadius: 3,
-    borderTopRightRadius: 11.5,
-    borderBottomRightRadius: 11.5,
+    borderTopRightRadius: 9.5,
+    borderBottomRightRadius: 9.5,
     borderColor: '#D23F44',
     borderWidth: 0.5,
-    paddingRight: 2
+    paddingLeft: 2
   },
   unit: {
     color: '#FFFFFF',

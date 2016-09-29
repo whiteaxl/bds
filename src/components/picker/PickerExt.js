@@ -91,7 +91,7 @@ var styles = StyleSheet.create({
         width: 80,
         textAlign: 'left',
         alignSelf: 'center',
-        backgroundColor: '#f8f8f8'
+        backgroundColor: 'white'
     },
     label: {
         fontSize: gui.normalFontSize,

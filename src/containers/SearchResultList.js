@@ -95,11 +95,11 @@ class SearchResultList extends Component {
         //1. Search by diaChinh, then name = diaChinh's name
         if (this.props.polygons && this.props.polygons.length) {
             //placeName = `[${r.latitude}, ${r.longitude}]`
-            return 'Trong khu vực đã vẽ';
+            return 'Trong khu vực vẽ tay';
         }
 
         if (this.props.fields.center && Object.keys(this.props.fields.center).length > 0) {
-            return 'Xung quanh vị trí của bạn';
+            return 'Xung quanh vị trí hiện tại';
         }
 
         let placeName;

@@ -18,8 +18,8 @@ var CommonHeader = React.createClass({
     return <View style={mStyles.container}>
       <View style={mStyles.home}>
       <RelandIcon onPress={this._onHome}
-        name="close" color="white" size={13}
-        mainProps={{marginTop: 9, paddingLeft: 20, paddingRight: 17}}
+        name="close" color="white" size={18}
+        mainProps={{flexDirection: 'row', paddingLeft: 20, paddingRight: 17}}
         >
       </RelandIcon>
       </View>

@@ -33,11 +33,16 @@ function getDienTichStepsDisplay(val) {
 	return val + " m²";
 }
 
+function getGiaUnitValue(unit) {
+	return unit == "tỷ" ? 1000 : 1;
+}
+
 
 class IncRange {
-	constructor(stepsVal, getDisplay) {
+	constructor(stepsVal, getDisplay, getUnitValue) {
 		this.stepsVal = stepsVal;
 		this.getDisplay = getDisplay;
+		this.getUnitValue = getUnitValue;
 		//calc display
 		this.stepsDisplay = stepsVal.map(getDisplay);
 		this._map = {};
@@ -82,8 +87,24 @@ class IncRange {
 	}
 
 	toValRange(displayArr) {
-		let fromVal = displayArr[0] == -1 ? -1 : (displayArr[0] == 0 ? 0 : this._map[displayArr[0]]);
-		let toVal = displayArr[1] == -1 ? -1 : (displayArr[1] == 0 ? 0 : this._map[displayArr[1]]);
+		let fromVal = displayArr[0] == -1 ? -1 : (displayArr[0] == 0 ? 0 :
+			(this._map[displayArr[0]] ? this._map[displayArr[0]] : displayArr[0]));
+		let toVal = displayArr[1] == -1 ? -1 : (displayArr[1] == 0 ? 0 :
+			(this._map[displayArr[1]] ? this._map[displayArr[1]] : displayArr[1]));
+		fromVal = String(fromVal);
+		if (fromVal && fromVal.indexOf(" ") != -1) {
+			let unitVal = this.getUnitValue ? this.getUnitValue(fromVal.substring(fromVal.indexOf(" ")+1)) : 1;
+			fromVal = Number(fromVal.substring(0, fromVal.indexOf(" ")))*unitVal;
+		} else {
+			fromVal = Number(fromVal);
+		}
+		toVal = String(toVal);
+		if (toVal && toVal.indexOf(" ") != -1) {
+			let unitVal = this.getUnitValue ? this.getUnitValue(toVal.substring(toVal.indexOf(" ")+1)) : 1;
+			toVal = Number(toVal.substring(0, toVal.indexOf(" ")))*unitVal;
+		} else {
+			toVal = Number(toVal);
+		}
 		toVal = toVal == -1 ? BIG : toVal;
 
 		return [fromVal, toVal];
@@ -101,8 +122,8 @@ class IncRange {
 
 
 var RangeUtils = {
-	sellPriceRange : new IncRange(sellStepValues, getPriceStepsDisplay),
-	rentPriceRange : new IncRange(rentStepValues, getPriceStepsDisplay),
+	sellPriceRange : new IncRange(sellStepValues, getPriceStepsDisplay, getGiaUnitValue),
+	rentPriceRange : new IncRange(rentStepValues, getPriceStepsDisplay, getGiaUnitValue),
 	dienTichRange : new IncRange(dienTichStepValues, getDienTichStepsDisplay), 
 	
 	//gia= [1 ty, 2ty]
@@ -119,7 +140,10 @@ var RangeUtils = {
 			return THOA_THUAN;
 		}
 		if (fromVal == CHUA_XAC_DINH || fromVal == THOA_THUAN) {
-			fromVal = 0;
+			fromVal = '0 m²';
+		}
+		if (toVal == CHUA_XAC_DINH) {
+			toVal = '0 m²';
 		}
 
 	    return fromVal + " - " + toVal;

@@ -14,7 +14,7 @@ var {
 
 class PickerExt2 extends React.Component {
     render() {
-        let {pickerRange, val2Display, fromPlaceholder, toPlaceholder, fromValue, toValue, onTextChange,
+        let {pickerRange, val2Display, inputPlaceholder, inputValue, onTextChange,
             pickerSelectedValue, onPickerValueChange, onPress, inputLabel} = this.props;
         let pickerItems = [];
         pickerRange.map((pickedValue) => {
@@ -32,8 +32,8 @@ class PickerExt2 extends React.Component {
                             secureTextEntry={false}
                             keyboardType={'numeric'}
                             style={styles.input}
-                            placeholder={toPlaceholder}
-                            value={toValue}
+                            placeholder={inputPlaceholder}
+                            value={inputValue}
                             onChangeText={(text) => onTextChange(text)}
                         />
                         <Text style={styles.label}>{inputLabel}</Text>
@@ -71,7 +71,7 @@ var styles = StyleSheet.create({
         width: 80,
         textAlign: 'left',
         alignSelf: 'center',
-        backgroundColor: '#f8f8f8'
+        backgroundColor: 'white'
     },
     label: {
         fontSize: gui.normalFontSize,
