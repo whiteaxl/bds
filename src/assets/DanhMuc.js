@@ -147,16 +147,18 @@ danhMuc.RadiusInKmKey = [
 
 danhMuc.NgayDaDang = {
     0: BAT_KY,
-    1: "1",
-    7: "7",
-    14: "14",
-    30: "30",
-    90: "90"
+    1: "1 ngày",
+    3: "3 ngày",
+    7: "7 ngày",
+    14: "14 ngày",
+    30: "30 ngày",
+    90: "90 ngày"
 }
 
 danhMuc.NgayDaDangKey = [
     0,
     1,
+    3,
     7,
     14,
     30,

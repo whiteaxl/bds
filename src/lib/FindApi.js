@@ -102,20 +102,24 @@ var Api = {
       diaChinh, circle, viewport, isIncludeCountInResponse
     } = query;
 
+    let loaiNhaDatVal = DanhMuc.loaiTin[loaiTin];
+    if (loaiNhaDat) {
+        loaiNhaDatVal = loaiTin == 0 ? DanhMuc.LoaiNhaDatBan[loaiNhaDat] : DanhMuc.LoaiNhaDatThue[loaiNhaDat];
+    }
+
     let tmp = {
-      'tin' : loaiTin,
-      'nhà đất' : loaiNhaDat == 0 ? undefined : loaiNhaDat,
+      'tin' : loaiNhaDatVal,
       'giá' : toStrRange(giaBETWEEN),
-      'ngủ' : soPhongNguGREATER == 0 ? undefined : soPhongNguGREATER,
-      'tắm' : soPhongTamGREATER == 0 ? undefined : soPhongTamGREATER,
-      'dt' : toStrRange(dienTichBETWEEN),
-      'orderBy' : orderBy ,
-      'diaChinh': diaChinh ,
-      'viewport' : viewport,
-      'circle' : circle,
+      'p.ngủ' : soPhongNguGREATER == 0 ? undefined : soPhongNguGREATER,
+      'p.tắm' : soPhongTamGREATER == 0 ? undefined : soPhongTamGREATER,
+      'diện tích' : toStrRange(dienTichBETWEEN),
+      'orderBy' : orderBy || undefined,
+      'diaChinh': diaChinh || undefined,
+      'viewport' : viewport || undefined,
+      'circle' : circle || undefined,
       'limit' : limit || maxRows || undefined,
       'hướng' : huongNha || undefined,
-      'ngày' : ngayDangTinGREATER || undefined,
+      'ngày đăng' : ngayDangTinGREATER || undefined,
       'polygon' : polygon || undefined,
       'pageNo' : pageNo || undefined,
       'isIncludeCountInResponse' : isIncludeCountInResponse || undefined
