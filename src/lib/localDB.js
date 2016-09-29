@@ -448,10 +448,10 @@ class DBService {
                     let {adsLikes} = doc;
                     let idx = adsLikes ? adsLikes.indexOf(dto.adsID) : null;
 
-                    if (idx && idx > -1) {
+                    if (idx && idx == -1) {
                         return {
                             status:1,
-                            msg : gui.ERR_LIKED
+                            msg : gui.ERR_UNLIKED
                         }
                     }
 

@@ -23,6 +23,7 @@ var gui = {
 	INFO_userCreatedSuccessfully : 'Bạn đã đăng ký thành công!',
 	ERR_PhoneExisted : 'Số điện thoại đã tồn tại!',
 	ERR_LIKED : "Lỗi! Bài đăng đã lưu từ trước",
+	ERR_UNLIKED : "Lỗi! Bài đăng không tồn tại",
 	ERR_UserNotExist : "Lỗi! User không tồn tại",
 	INF_ClickToRefresh : "Nhấn vào đây để lấy dữ liệu lại",
 	ERR_Saved : "Lỗi! Tên lưu tìm kiếm đã tồn tại!",
