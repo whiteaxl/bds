@@ -50,6 +50,7 @@ function mapStateToProps(state) {
 
     return {
         listAds: state.search.result.listAds,
+        allAdsItems: state.search.result.allAdsItems,
         loading: state.search.loadingFromServer,
         errorMsg: state.search.result.errorMsg,
         adsLikes: currentUser && currentUser.adsLikes,
@@ -156,9 +157,9 @@ class SearchResultList extends Component {
     }
 
     _renderTotalResultView(){
-        let {listAds, loading} = this.props;
+        let {loading, allAdsItems} = this.props;
         let {showMessage} = this.state;
-        let numberOfAds = listAds.length;
+        let numberOfAds = allAdsItems.length;
         let totalCount = this.props.totalCount;
         let rangeAds = totalCount > 0 ? totalCount : numberOfAds;
         let textValue = "Tìm thấy " + rangeAds + " kết quả phù hợp";
@@ -175,7 +176,7 @@ class SearchResultList extends Component {
                     </View>
                 </Animatable.View>*/}
                 <View style={myStyles.loadingContent}>
-                    {listAds.length > 0 ? <GiftedSpinner color="white" /> : null}
+                    {allAdsItems.length > 0 ? <GiftedSpinner color="white" /> : null}
                 </View>
             </View>)
         }

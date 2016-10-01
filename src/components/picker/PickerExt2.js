@@ -14,7 +14,7 @@ var {
 
 class PickerExt2 extends React.Component {
     render() {
-        let {pickerRange, val2Display, inputPlaceholder, inputValue, onTextChange,
+        let {pickerRange, val2Display, inputPlaceholder, inputValue, onTextChange, onTextFocus,
             pickerSelectedValue, onPickerValueChange, onPress, inputLabel} = this.props;
         let pickerItems = [];
         pickerRange.map((pickedValue) => {
@@ -35,6 +35,7 @@ class PickerExt2 extends React.Component {
                             placeholder={inputPlaceholder}
                             value={inputValue}
                             onChangeText={(text) => onTextChange(text)}
+                            onFocus={() => onTextFocus()}
                         />
                         <Text style={styles.label}>{inputLabel}</Text>
                     </View>
@@ -80,7 +81,8 @@ var styles = StyleSheet.create({
     },
     pickerItem: {
         fontSize: gui.normalFontSize,
-        fontFamily: gui.fontFamily
+        fontFamily: gui.fontFamily,
+        height: 180
     }
 });
 

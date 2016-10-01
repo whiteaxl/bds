@@ -18,6 +18,7 @@ const {
   ON_POLYGONS_CHANGE,
   ON_DRAW_MODE_CHANGE,
   ON_RESET_LIST_ADS,
+  ON_CHANGE_LIST_ADS,
   ON_SEARCH_FIELD_CHANGE,
   SET_SEARCH_LOAI_TIN,
   SEARCH_STATE_LOADING,
@@ -79,7 +80,10 @@ export default function searchReducer(state = initialState, action) {
       return state.set("drawMode", action.payload);
 
     case ON_RESET_LIST_ADS:
-      return state.setIn(['result', "listAds"], []);
+      return state.setIn(['result', "allAdsItems"], []);
+
+    case ON_CHANGE_LIST_ADS:
+      return state.setIn(['result', "allAdsItems"], action.payload);
 
     case ON_POLYGONS_CHANGE:
       return state.setIn(['map', 'polygons'], action.payload);
@@ -123,14 +127,24 @@ export default function searchReducer(state = initialState, action) {
       if (state.searchCalledFrom == 'Search' && hasDiaChinhChange) {
         localStorage.setLastSearch(JSON.stringify(searchObj));
       }
-
-      return state.setIn(['result', "listAds"], data.list)
-          .set("state", SEARCH_STATE_SUCCESS)
-          .setIn(['result', "errorMsg"], null)
-          .set("loadingFromServer", false)
-          .set("recentSearchList", recentSearchList)
-          .setIn(['result', "totalCount"], data.totalCount)
-          ;
+      if (query.pageNo == 1) {
+        return state.setIn(['result', "listAds"], data.list)
+            .setIn(['result', "allAdsItems"], data.list)
+            .set("state", SEARCH_STATE_SUCCESS)
+            .setIn(['result', "errorMsg"], null)
+            .set("loadingFromServer", false)
+            .set("recentSearchList", recentSearchList)
+            .setIn(['result', "totalCount"], data.totalCount)
+            ;
+      } else {
+        return state.setIn(['result', "listAds"], data.list)
+            .set("state", SEARCH_STATE_SUCCESS)
+            .setIn(['result', "errorMsg"], null)
+            .set("loadingFromServer", false)
+            .set("recentSearchList", recentSearchList)
+            .setIn(['result', "totalCount"], data.totalCount)
+            ;
+      }
     }
 
     case CHANGE_LOADING_SEARCH_RESULT :

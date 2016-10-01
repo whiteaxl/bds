@@ -84,7 +84,8 @@ var InitialState = Record({
     result: new (Record({
         listAds: [],
         errorMsg: "",
-        totalCount : 0
+        totalCount : 0,
+        allAdsItems: []
 
     })),
 

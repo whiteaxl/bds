@@ -12,18 +12,12 @@ import GiftedSpinner from 'react-native-gifted-spinner';
 class AdsListView extends React.Component {
   constructor(props) {
     super(props);
-    let listAds = [];
-    Object.assign(listAds, props.listAds);
-    this.state = {
-      pageNo: props.fields.pageNo,
-      listAds: listAds
-    }
   }
   render() {
     log.info("Call SearchResultList._getListContent");
 
     let myProps = this.props;
-    if (myProps.loading && myProps.listAds.length === 0) {
+    if (myProps.loading && myProps.allAdsItems.length === 0) {
       return (
         <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
           {/*<Text> Loading ... </Text>*/}
@@ -40,7 +34,7 @@ class AdsListView extends React.Component {
       )
     }
 
-    if (myProps.listAds.length === 0 ) {
+    if (myProps.allAdsItems.length === 0 ) {
       return (
         <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
           <Text style = {gui.styles.defaultText}> {gui.INF_KhongCoKetQua} </Text>
@@ -48,12 +42,7 @@ class AdsListView extends React.Component {
       )
     }
 
-    let {listAds} = this.state;
-    if (listAds.length == 0) {
-      listAds = listAds.concat(myProps.listAds);
-    }
-    // console.log('listAds', listAds);
-    let ds = myDs.cloneWithRows(listAds);
+    let ds = myDs.cloneWithRows(myProps.allAdsItems);
 
     return (
       <ListView
@@ -81,20 +70,20 @@ class AdsListView extends React.Component {
       return;
     }
     
-    let pageNo = this.state.pageNo;
-    let listAds = this.state.listAds;
+    let pageNo = myProps.fields.pageNo;
+    let allAdsItems = this.props.allAdsItems;
 
-    if (listAds.length >= gui.QUOTA_ITEM) {
+    if (allAdsItems.length >= gui.QUOTA_ITEM) {
       return;
     }
 
     let totalPages = myProps.totalCount/ myProps.fields.limit;
 
     if (totalPages && pageNo < totalPages) {
-      this.state.pageNo = pageNo+1;
-      myProps.actions.onSearchFieldChange("pageNo", this.state.pageNo);
+      pageNo = pageNo+1;
+      myProps.actions.onSearchFieldChange("pageNo", pageNo);
       // myProps.actions.onShowMsgChange(true);
-      this._handleSearchAction(this.state.pageNo);
+      this._handleSearchAction(pageNo);
     }
   }
 
@@ -127,10 +116,11 @@ class AdsListView extends React.Component {
   }
 
   _appendAdsList() {
-    let {listAds} = this.state;
-    listAds = listAds.concat(this.props.listAds);
-    // console.log('listAds', listAds);
-    this.setState({listAds: listAds});
+    console.log('_appendAdsList pageNo', this.props.fields.pageNo);
+    let allAdsItems = this.props.allAdsItems;
+    allAdsItems = allAdsItems.concat(this.props.listAds);
+    console.log('allAdsItems length', allAdsItems.length);
+    this.props.actions.onChangeAdsList(allAdsItems);
   }
 
   handleScroll(event: Object) {

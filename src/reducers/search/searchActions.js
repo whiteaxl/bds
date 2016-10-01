@@ -15,6 +15,7 @@ const {
   ON_POLYGONS_CHANGE,
   ON_DRAW_MODE_CHANGE,
   ON_RESET_LIST_ADS,
+  ON_CHANGE_LIST_ADS,
   ON_SEARCH_FIELD_CHANGE,
   SET_SEARCH_LOAI_TIN,
   FETCH_SEARCH_RESULT_FAIL,
@@ -80,6 +81,13 @@ export function onResetAdsList() {
   return {
     type: ON_RESET_LIST_ADS,
     payload: null
+  }
+}
+
+export function onChangeAdsList(listAds) {
+  return {
+    type: ON_CHANGE_LIST_ADS,
+    payload: listAds
   }
 }
 

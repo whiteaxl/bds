@@ -116,15 +116,20 @@ class Search extends Component {
 
   _onPressGiaHandle(){
     // this.pickerGia.toggle();
-      var {showGia, showDienTich} = this.state;
+      var {showGia} = this.state;
       this.setState({showGia: !showGia});
       if (!showGia) {
-          var scrollTo = Dimensions.get('window').height/2-210;
-          if (showDienTich) {
-              scrollTo = scrollTo + 255;
-          }
-          this._scrollView.scrollTo({y: scrollTo});
+          this._onScrollGia();
       }
+  }
+
+  _onScrollGia() {
+      var {showDienTich} = this.state;
+      var scrollTo = Dimensions.get('window').height/2-210;
+      if (showDienTich) {
+          scrollTo = scrollTo + 255;
+      }
+      this._scrollView.scrollTo({y: scrollTo});
   }
 
   _onPressDienTichHandle(){
@@ -132,23 +137,32 @@ class Search extends Component {
       var {showDienTich} = this.state;
       this.setState({showDienTich: !showDienTich});
       if (!showDienTich) {
-          this._scrollView.scrollTo({y: 0});
+          this._onScrollDienTich();
       }
   }
 
+  _onScrollDienTich() {
+      this._scrollView.scrollTo({y: 0});
+  }
+
   _onPressNgayDaDangHandle() {
-    var {showNgayDaDang, showGia, showDienTich} = this.state;
+    var {showNgayDaDang} = this.state;
     this.setState({showNgayDaDang: !showNgayDaDang});
     if (!showNgayDaDang) {
-        var scrollTo = Dimensions.get('window').height/2-168;
-        if (showGia) {
-            scrollTo = scrollTo + 255;
-        }
-        if (showDienTich) {
-            scrollTo = scrollTo + 255;
-        }
-        this._scrollView.scrollTo({y: scrollTo});
+        this._onScrollNgayDaDang();
     }
+  }
+
+  _onScrollNgayDaDang() {
+      var {showGia, showDienTich} = this.state;
+      var scrollTo = Dimensions.get('window').height/2-168;
+      if (showGia) {
+          scrollTo = scrollTo + 255;
+      }
+      if (showDienTich) {
+          scrollTo = scrollTo + 255;
+      }
+      this._scrollView.scrollTo({y: scrollTo});
   }
 
   _onGiaChanged(pickedValue) {
@@ -373,14 +387,8 @@ class Search extends Component {
 
   onApply() {
     log.info("Call Search.onApply");
+    this.props.actions.changeLoadingSearchResult(true);
 
-    if (this.props.needBack) {
-      Actions.pop();
-    } else {
-      log.info("Call open SearchResultList in reset mode");
-
-      Actions.SearchResultList({type: "reset"});
-    }
     var {loaiTin, gia, dienTich} = this.props.search.form.fields;
     let giaStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
     let giaVal = giaStepValues.toValRange(gia);
@@ -398,6 +406,13 @@ class Search extends Component {
     this.props.actions.onResetAdsList();
 
     this._handleSearchAction('', 1, gui.MAX_ITEM, newGia, newDienTich);
+    if (this.props.needBack) {
+        Actions.pop();
+    } else {
+        log.info("Call open SearchResultList in reset mode");
+
+        Actions.SearchResultList({type: "reset"});
+    }
     this.props.refreshRegion && this.props.refreshRegion();
     this.props.onShowMessage && this.props.onShowMessage();
  }
@@ -506,11 +521,11 @@ class Search extends Component {
         );
     }
 
-    _renderPickerExt(pickerRange, rangeStepValues, fromPlaceholder, toPlaceholder, onTextChange,
+    _renderPickerExt(pickerRange, rangeStepValues, fromPlaceholder, toPlaceholder, onTextChange, onTextFocus,
                      pickerSelectedValue, onPickerValueChange, onPress, inputLabel, fromValue, toValue, unitText) {
         return (
             <PickerExt pickerRange={pickerRange} rangeStepValues={rangeStepValues} fromPlaceholder={fromPlaceholder}
-                       toPlaceholder={toPlaceholder} onTextChange={onTextChange}
+                       toPlaceholder={toPlaceholder} onTextChange={onTextChange} onTextFocus={onTextFocus}
                        pickerSelectedValue={pickerSelectedValue} onPickerValueChange={onPickerValueChange}
                        onPress={onPress} inputLabel={inputLabel} fromValue={fromValue} toValue={toValue}
                        unitText={unitText}/>
@@ -525,11 +540,12 @@ class Search extends Component {
             let fromPlaceholder = 'Từ';
             let toPlaceholder = 'Đến';
             let onTextChange = this._onDienTichInputChange.bind(this);
+            let onTextFocus = this._onScrollDienTich.bind(this);
             let dienTichRange = rangeStepValues.toValRange(initDienTich);
             let pickerSelectedValue = dienTichRange[0] + '_' + dienTichRange[1];
             let onPickerValueChange = this._onDienTichChanged.bind(this);
             return this._renderPickerExt(pickerRange, rangeStepValues, fromPlaceholder, toPlaceholder,
-                onTextChange, pickerSelectedValue, onPickerValueChange,
+                onTextChange, onTextFocus, pickerSelectedValue, onPickerValueChange,
                 this._onPressDienTichHandle.bind(this), "m²", String(fromDienTich), String(toDienTich),
                 rangeStepValues.getUnitText());
         }
@@ -601,12 +617,13 @@ class Search extends Component {
             let fromPlaceholder = 'Từ';
             let toPlaceholder = 'Đến';
             let onTextChange = this._onGiaInputChange.bind(this);
+            let onTextFocus = this._onScrollGia.bind(this);
             let giaRange = rangeStepValues.toValRange(initGia);
             let pickerSelectedValue = giaRange[0] + '_' + giaRange[1];
             let onPickerValueChange = this._onGiaChanged.bind(this);
             let inputLabel = 'ban' === loaiTin ? "tỷ" : "triệu";
             return this._renderPickerExt(pickerRange, rangeStepValues, fromPlaceholder, toPlaceholder,
-                onTextChange, pickerSelectedValue, onPickerValueChange,
+                onTextChange, onTextFocus, pickerSelectedValue, onPickerValueChange,
                 this._onPressGiaHandle.bind(this), inputLabel, String(fromGia), String(toGia),
                 rangeStepValues.getUnitText());
         }
@@ -774,13 +791,14 @@ class Search extends Component {
         let pickerRange = DanhMuc.getNgayDaDangValues();
         let inputPlaceholder = '';
         let onTextChange = this._onNgayDaDangInputChange.bind(this);
+        let onTextFocus = this._onScrollNgayDaDang.bind(this);
         let pickerSelectedValue = initNgayDaDang;
         let onPickerValueChange = this._onNgayDaDangChanged.bind(this);
         let val2Display = this._ngayDaDangVal2Display.bind(this);
         let onPress = this._onPressNgayDaDangHandle.bind(this);
         let inputLabel = 'ngày';
         return <PickerExt2 pickerRange={pickerRange} val2Display={val2Display} inputPlaceholder={inputPlaceholder}
-                   inputValue={String(inputNgayDaDang)} onTextChange={onTextChange}
+                   inputValue={String(inputNgayDaDang)} onTextChange={onTextChange} onTextFocus={onTextFocus}
                    pickerSelectedValue={pickerSelectedValue} onPickerValueChange={onPickerValueChange}
                    onPress={onPress} inputLabel={inputLabel} />
     }

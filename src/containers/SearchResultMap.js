@@ -610,7 +610,10 @@ class SearchResultMap extends Component {
     if (endAdsIndex > pageNo*gui.MAX_VIEWABLE_ADS) {
         endAdsIndex = pageNo*gui.MAX_VIEWABLE_ADS;
     }
-    let rangeAds = totalCount > 0 && (totalCount != numberOfAds || totalCount > gui.MAX_VIEWABLE_ADS) ? (endAdsIndex > 0 ? beginAdsIndex + "-" + endAdsIndex : "0") + " / " + totalCount : numberOfAds;
+    if (totalCount < numberOfAds) {
+        totalCount = numberOfAds;
+    }
+    let rangeAds = totalCount > gui.MAX_VIEWABLE_ADS ? (endAdsIndex > 0 ? beginAdsIndex + "-" + endAdsIndex : "0") + " / " + totalCount : numberOfAds;
     let textValue = "Đang hiển thị từ " + rangeAds + " kết quả phù hợp";
     if (numberOfAds == 0) {
       textValue = "Không tìm thấy kết quả nào. Hãy thay đổi điều kiện tìm kiếm";

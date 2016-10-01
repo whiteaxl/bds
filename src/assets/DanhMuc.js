@@ -7,7 +7,7 @@ danhMuc.BIG =9999999;
 danhMuc.CHUA_XAC_DINH = "Chưa xác định";
 danhMuc.THOA_THUAN = "Thỏa thuận";
 
-var {BAT_KY, BIG, THOA_THUAN} = danhMuc;
+var {BAT_KY, BIG, THOA_THUAN, CHUA_XAC_DINH} = danhMuc;
 
 danhMuc.sellStepValues = [-1, 0, 500, 800, 1000, 2000, 3000, 5000, 7000, 10000, 20000, 30000]; //trieu
 
@@ -167,6 +167,7 @@ danhMuc.NgayDaDangKey = [
 
 danhMuc.HuongNha = {
     0: BAT_KY,
+    "-1" : CHUA_XAC_DINH,
     1: "Đông",
     2: "Tây",
     3: "Nam",
@@ -179,6 +180,7 @@ danhMuc.HuongNha = {
 
 danhMuc.HuongNhaKey = [
     0,
+    -1,
     1,
     2,
     3,
@@ -282,6 +284,15 @@ danhMuc.getDanhMucValues = function (hashDanhMuc) {
     return result;
 }
 
+danhMuc.getDanhMucHuongNhaValues = function () {
+    var result = [];
+    for (var i=0; i<danhMuc.HuongNhaKey.length; i++) {
+        var k = danhMuc.HuongNhaKey[i];
+        result.push(danhMuc.HuongNha[k]);
+    }
+    return result;
+}
+
 danhMuc.getLoaiNhaDatBanValues = function () {
     return danhMuc.getDanhMucValues(danhMuc.LoaiNhaDatBan);
 }
@@ -315,7 +326,7 @@ danhMuc.getAdsSoPhongTamValues = function () {
 }
 
 danhMuc.getHuongNhaValues = function () {
-    return danhMuc.getDanhMucValues(danhMuc.HuongNha);
+    return danhMuc.getDanhMucHuongNhaValues();
 }
 
 danhMuc.getDonViTienValues = function () {

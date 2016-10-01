@@ -162,15 +162,16 @@ class SortMenu extends Component {
         //     }
         // }
         this.props.actions.onSearchFieldChange("orderBy", newOrderBy);
+        this.props.actions.onSearchFieldChange("pageNo", 1);
         var {loaiTin, loaiNhaDat, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
             dienTich, gia, giaPicker, listData, marker, viewport, diaChinh, center, radiusInKmSelectedIdx,
-            huongNha, ngayDaDang, polygon, region, pageNo, isIncludeCountInResponse} = this.props.search.form.fields;
+            huongNha, ngayDaDang, polygon, region, limit, isIncludeCountInResponse} = this.props.search.form.fields;
         this.props.actions.search(
             {loaiTin: loaiTin, loaiNhaDat: loaiNhaDat, soPhongNguSelectedIdx: soPhongNguSelectedIdx,
                 soNhaTamSelectedIdx: soNhaTamSelectedIdx, viewport: viewport, diaChinh: diaChinh, center: center,
                 dienTich: dienTich, gia: gia, giaPicker: giaPicker, orderBy: newOrderBy, listData: listData,
                 marker: marker, radiusInKmSelectedIdx: radiusInKmSelectedIdx, huongNha: huongNha, ngayDaDang: ngayDaDang,
-                polygon: polygon, region: region, pageNo: pageNo, isIncludeCountInResponse: isIncludeCountInResponse}
+                polygon: polygon, region: region, limit: limit, pageNo: 1, isIncludeCountInResponse: isIncludeCountInResponse}
             , () => { }
         );
     }
@@ -253,18 +254,18 @@ var myStyles = StyleSheet.create({
     dropdownOptions: {
         borderColor: '#ccc',
         borderWidth: 1,
-        marginTop: -370,
+        marginTop: -350,
         left: 10,
         overflow: 'hidden',
-        width: 2*Dimensions.get('window').width/3-40
+        width: 226
     },
     dropdownOptions2: {
         borderColor: '#ccc',
         borderWidth: 1,
-        marginTop: -330,
+        marginTop: -310,
         left: 10,
         overflow: 'hidden',
-        width: 2*Dimensions.get('window').width/3-40
+        width: 226
     },
     sortText: {
         fontSize: gui.buttonFontSize
