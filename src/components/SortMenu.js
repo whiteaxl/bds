@@ -172,7 +172,7 @@ class SortMenu extends Component {
                 dienTich: dienTich, gia: gia, giaPicker: giaPicker, orderBy: newOrderBy, listData: listData,
                 marker: marker, radiusInKmSelectedIdx: radiusInKmSelectedIdx, huongNha: huongNha, ngayDaDang: ngayDaDang,
                 polygon: polygon, region: region, limit: limit, pageNo: 1, isIncludeCountInResponse: isIncludeCountInResponse}
-            , () => { }
+            , () => {this.props.scrollToTop()}
         );
     }
 

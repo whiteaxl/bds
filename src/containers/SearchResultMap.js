@@ -76,20 +76,94 @@ const actions = [
   searchActions
 ];
 
+function getAllUniquePosAds(listAds) {
+    let dupCount = {};
+    let markerList = [];
+    let markerData = [];
+    let dupMarker = {};
+    if (listAds) {
+        for (var i=0; i<listAds.length; i++) {
+            var item = listAds[i];
+            if (item.place && item.place.geo.lat && item.place.geo.lon) {
+                let indexOfItem = markerData.findIndex((oldItem) =>
+                Math.abs(oldItem.place.geo.lat - item.place.geo.lat) <= PADDING
+                && Math.abs(oldItem.place.geo.lon - item.place.geo.lon) <= PADDING);
+                if (markerData.length === 0 || indexOfItem === -1) {
+                    dupCount[item.adsID] = 1;
+                    markerData.push(item);
+                    let marker = {
+                        coordinate: {latitude: item.place.geo.lat, longitude: item.place.geo.lon},
+                        price: item.giaFmt,
+                        id: item.adsID,
+                        cover: item.image.cover,
+                        diaChi: item.place.diaChi,
+                        dienTich: item.dienTich,
+                        duplicate: dupCount[item.adsID]
+                    };
+                    markerList.push(marker);
+                    dupMarker[item.adsID] = [marker];
+                } else {
+                    let validAdsId;
+                    let oldMarker = markerList[indexOfItem];
+                    if (item.gia && (!markerData[indexOfItem].gia || item.gia < markerData[indexOfItem].gia)) {
+                        validAdsId = item.adsID;
+                        let oldAdsId = oldMarker.id;
+                        dupCount[validAdsId] = dupCount[oldAdsId] + 1;
+                        markerData[indexOfItem] = item;
+                        let marker = {
+                            coordinate: {latitude: item.place.geo.lat, longitude: item.place.geo.lon},
+                            price: item.giaFmt,
+                            id: item.adsID,
+                            cover: item.image.cover,
+                            diaChi: item.place.diaChi,
+                            dienTich: item.dienTich,
+                            duplicate: dupCount[validAdsId]
+                        };
+                        dupMarker[validAdsId] = [];
+                        dupMarker[validAdsId] = dupMarker[validAdsId].concat(dupMarker[oldAdsId]);
+                        dupMarker[validAdsId].push(marker);
+                        dupCount[oldAdsId] = 0;
+                        dupMarker[oldAdsId] = [];
+                        markerList[indexOfItem] = marker;
+                        oldMarker.duplicate = dupCount[validAdsId];
+                    } else {
+                        validAdsId = oldMarker.id;
+                        dupCount[validAdsId] = dupCount[validAdsId] + 1;
+                        let marker = {
+                            coordinate: {latitude: item.place.geo.lat, longitude: item.place.geo.lon},
+                            price: item.giaFmt,
+                            id: item.adsID,
+                            cover: item.image.cover,
+                            diaChi: item.place.diaChi,
+                            dienTich: item.dienTich,
+                            duplicate: dupCount[validAdsId]
+                        };
+                        dupMarker[validAdsId].push(marker);
+                        oldMarker.duplicate = dupCount[validAdsId];
+                    }
+                }
+            }
+        }
+    }
+    return {markerData: markerData, markerList: markerList, dupCount: dupCount, dupMarker: dupMarker};
+}
+
 function mapStateToProps(state) {
   console.log("SearchResultMap.mapStateToProps");
   let currentUser = state.global.currentUser;
-
+  let allUniquePosAds = getAllUniquePosAds(state.search.result.allAdsItems);
   return {
     ... state,
     listAds: state.search.result.listAds,
+    allAdsItems: state.search.result.allAdsItems,
     errorMsg: state.search.result.errorMsg,
     totalCount: state.search.result.totalCount,
     diaChinhFullName: state.search.form.fields.diaChinh.fullName,
     loggedIn: state.global.loggedIn,
     adsLikes: currentUser && currentUser.adsLikes,
     userID: currentUser && currentUser.userID,
-    loading: state.search.loadingFromServer
+    loading: state.search.loadingFromServer,
+    allUniquePosAds: allUniquePosAds
   };
 }
 
@@ -153,8 +227,6 @@ class SearchResultMap extends Component {
 
     var region = this.getInitialRegion();
 
-    let listAds = [];
-    Object.assign(listAds, props.listAds);
     this.state = {
       modal: false,
       mapType: "Standard",
@@ -168,7 +240,6 @@ class SearchResultMap extends Component {
       coordinate : null,
       pageNo: 1,
       showMessage: false,
-      listAds: listAds,
       mounting: true
     };
   }
@@ -211,17 +282,16 @@ class SearchResultMap extends Component {
   }
   refreshRegion() {
     var region = this.getInitialRegion();
-    this._onRefreshAdsList();
-    this.setState({region: region});
+    this.setState({region: region, pageNo: 1});
   }
   render() {
     console.log("Call SearchResultMap.render, this.state.region=", this.state.region);
 
-    let {listAds} = this.state;
+    let {allAdsItems} = this.props;
 
-    console.log("SearchResultMap: number of data " + listAds.length);
+    console.log("SearchResultMap: number of data " + allAdsItems.length);
 
-    let viewableList = this._getViewableAds(listAds);
+    let viewableList = this._getViewableAds();
 
     //placeName = this.props.diaChinhFullName
     let placeName = this._getHeaderTitle();
@@ -359,17 +429,22 @@ class SearchResultMap extends Component {
   }
 
   _renderAdsModal() {
-    let viewableList = this._getViewableAds(this.state.listAds);
+    let {dupMarker} = this.props.allUniquePosAds;
+    let selectedDupMarkers = dupMarker[this.state.mmarker.id];
+    if (!selectedDupMarkers) {
+        selectedDupMarkers = [];
+    }
     let allItems = [];
     let i = 0;
-    viewableList.map((mmarker) => {
-      let isLiked = this.isLiked(mmarker.id);
+      selectedDupMarkers.map((mmarker) => {
+      let markerId = mmarker.id;
+      let isLiked = this.isLiked(markerId);
       let color = isLiked ? '#A2A7AD' : 'white';
       let bgColor = isLiked ? '#E50064' : '#4A443F';
       let bgStyle = isLiked ? {} : {opacity: 0.55};
       allItems.push(
           <View style={styles.detailAdsModal} key={i++}>
-            <TouchableOpacity onPress={this._onDetailAdsPress.bind(this)}>
+            <TouchableOpacity onPress={() => {this._onDetailAdsPress(markerId)}}>
               <Image style={styles.detailAdsModalThumb} source={{uri: `${mmarker.cover}`}}
                      defaultSource={require('../assets/image/no_cover.jpg')}>
                 <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
@@ -380,7 +455,7 @@ class SearchResultMap extends Component {
                       <Text style={styles.detailAdsModalText}>{this._getDiaChi(mmarker.diaChi)}</Text>
                     </View>
                     <View style={[styles.detailAdsModalTextHeartButton, {paddingRight: 18, paddingTop: 9}]}>
-                      <MHeartIcon onPress={() => this.onLike()} color={color} bgColor={bgColor} bgStyle={bgStyle} size={19} />
+                      <MHeartIcon onPress={() => this.onLike(markerId)} color={color} bgColor={bgColor} bgStyle={bgStyle} size={19} />
                     </View>
                   </View>
                 </LinearGradient>
@@ -391,14 +466,22 @@ class SearchResultMap extends Component {
     });
     return (
         <Modal animationDuration={100} style={styles.adsModal} isOpen={this.state.openDetailAdsModal} position={"bottom"}
-               ref={"detailAdsModal"} isDisabled={false} onPress={this._onDetailAdsPress.bind(this)}>
-          <Swiper style={styles.wrapper} height={181} index={currentAdsIndex}
+               ref={"detailAdsModal"} isDisabled={false} onPress={() => {this._onDetailAdsPress(this.state.mmarker.id)}}>
+            {/*<Swiper style={styles.wrapper} height={181} index={currentAdsIndex}
                   onMomentumScrollEnd={(e, state) => {this.onrefreshCurrentAds(state.index)}}
                   showsButtons={false} autoplay={false} loop={false} bounces={true}
                   dot={<View style={[styles.dot, {backgroundColor: 'transparent'}]} />}
                   activeDot={<View style={[styles.dot, {backgroundColor: 'transparent'}]}/>}
           >
             {allItems}
+          </Swiper>*/}
+          <Swiper style={styles.wrapper} height={181}
+                    onMomentumScrollEnd={(e, state) => {this._onMarkerPress(this.state.mmarker, currentAdsIndex)}}
+                    showsButtons={false} autoplay={false} loop={false} bounces={true}
+                    dot={<View style={[styles.dot, {backgroundColor: 'transparent'}]} />}
+                    activeDot={<View style={[styles.dot, {backgroundColor: 'transparent'}]}/>}
+          >
+              {allItems}
           </Swiper>
         </Modal>
     );
@@ -409,29 +492,27 @@ class SearchResultMap extends Component {
     return adsLikes && adsLikes.indexOf(adsID) > -1;
   }
 
-  onLike() {
+  onLike(adsID) {
     if (!this.props.loggedIn) {
       //this.props.actions.onAuthFieldChange('activeRegisterLoginTab',0);
       Actions.LoginRegister({page:1});
     } else {
-      let adsIndex = (this.state.pageNo-1)*gui.MAX_VIEWABLE_ADS + currentAdsIndex;
-      let ads = this.state.listAds[adsIndex];
-      if (!this.isLiked(ads.adsID)) {
-        this.props.actions.likeAds(this.props.userID, ads);
+      if (!this.isLiked(adsID)) {
+        this.props.actions.likeAds(this.props.userID, adsID);
       } else {
-        this.props.actions.unlikeAds(this.props.userID, ads.adsID);
+        this.props.actions.unlikeAds(this.props.userID, adsID);
       }
     }
   }
 
   onrefreshCurrentAds(index) {
-    let viewableList = this._getViewableAds(this.state.listAds);
+    let viewableList = this._getViewableAds();
     currentAdsIndex = index;
     let marker = viewableList[currentAdsIndex];
     this._onMarkerPress(marker, currentAdsIndex);
   }
   _onNextAds() {
-    let viewableList = this._getViewableAds(this.state.listAds);
+    let viewableList = this._getViewableAds();
     if (currentAdsIndex >= viewableList.length-1) {
       return;
     }
@@ -441,7 +522,7 @@ class SearchResultMap extends Component {
   }
 
   _onPreviousAds() {
-    let viewableList = this._getViewableAds(this.state.listAds);
+    let viewableList = this._getViewableAds();
     if (currentAdsIndex <= 0) {
       return;
     }
@@ -450,10 +531,68 @@ class SearchResultMap extends Component {
     this._onMarkerPress(marker, currentAdsIndex);
   }
 
+  _calcLoadedMarkers() {
+      let {markerList} = this.props.allUniquePosAds;
+      return markerList.length;
+  }
+
+  _calcTotalMarkers() {
+      let {totalCount, allAdsItems} = this.props;
+      let totalMarkers = this._calcLoadedMarkers();
+      if (allAdsItems.length < totalCount) {
+          totalMarkers = (totalCount-allAdsItems.length) + totalMarkers;
+      }
+      return totalMarkers;
+  }
+
+  _calcTotalPages() {
+      let totalMarkers = this._calcTotalMarkers();
+      return totalMarkers / gui.MAX_VIEWABLE_ADS;
+  }
+
+  _calcBeginAdsIndex() {
+      let {markerList} = this.props.allUniquePosAds;
+      let {pageNo} = this.state;
+      let numberOfAds = markerList.length;
+      let beginMarkerIndex = (pageNo-1)*gui.MAX_VIEWABLE_ADS;
+      if (beginMarkerIndex > numberOfAds) {
+          beginMarkerIndex = numberOfAds;
+      }
+      let beginAdsIndex = 0;
+      for (let i=0; i<beginMarkerIndex; i++) {
+          let marker = markerList[i];
+          beginAdsIndex = beginAdsIndex + marker.duplicate;
+      }
+      return beginAdsIndex+1;
+  }
+
+  _calcEndAdsIndex() {
+      let {allAdsItems} = this.props;
+      let totalCount = allAdsItems.length;
+      let {markerList} = this.props.allUniquePosAds;
+      let {pageNo} = this.state;
+      let numberOfAds = markerList.length;
+      let endMarkerIndex = numberOfAds;
+      if (endMarkerIndex > pageNo*gui.MAX_VIEWABLE_ADS) {
+          endMarkerIndex = pageNo*gui.MAX_VIEWABLE_ADS;
+      }
+      let endAdsIndex = 0;
+      for (let i=0; i<endMarkerIndex; i++) {
+          let marker = markerList[i];
+          endAdsIndex = endAdsIndex + marker.duplicate;
+      }
+      if (totalCount > numberOfAds && numberOfAds < pageNo*gui.MAX_VIEWABLE_ADS) {
+          endAdsIndex = endAdsIndex + (totalCount - numberOfAds);
+      }
+      if (endAdsIndex > totalCount) {
+          endAdsIndex = totalCount;
+      }
+      return endAdsIndex;
+  }
+
   _renderNextButton() {
     let {pageNo} = this.state;
-
-    let totalPages = this.props.totalCount/ gui.MAX_VIEWABLE_ADS;
+    let totalPages = this._calcTotalPages();
     let hasNextPage = pageNo < totalPages;
     return (
         <View style={styles.nextButton}>
@@ -557,33 +696,36 @@ class SearchResultMap extends Component {
     let {pageNo} = this.state;
     if (pageNo > 1) {
       pageNo = pageNo - 1;
-      this.setState({pageNo: pageNo});
+      this.setState({pageNo: pageNo, mounting: false});
     }
-    this._onShowMessageWithoutRefresh();
+    this._onShowMessage();
   }
 
   _doNextPage() {
       console.log("Call SearchResultMap._doNextPage");
-    let {pageNo, listAds} = this.state;
+    let {pageNo} = this.state;
+    let {totalCount} = this.props;
     let dbPageNo = this.props.search.form.fields.pageNo;
     let dbLimit = this.props.search.form.fields.limit;
 
-    let dbTotalPages = this.props.totalCount/ dbLimit;
+    let dbTotalPages = totalCount/ dbLimit;
 
-    let totalPages = listAds.length / gui.MAX_VIEWABLE_ADS;
+    let totalMarkers = this._calcLoadedMarkers();
+    let totalPages = totalMarkers / gui.MAX_VIEWABLE_ADS;
 
-    if (pageNo < totalPages) {
+    if (pageNo < totalPages &&
+        (totalMarkers >= (pageNo+1)*gui.MAX_VIEWABLE_ADS || totalCount <= dbPageNo*dbLimit)) {
       pageNo = pageNo + 1;
-      this.setState({pageNo: pageNo});
-      this._onShowMessageWithoutRefresh();
+      this.setState({pageNo: pageNo, mounting: false});
+      this._onShowMessage();
     } else if (dbTotalPages && dbPageNo < dbTotalPages) {
         pageNo = pageNo + 1;
-        this.setState({pageNo: pageNo});
+        this.setState({pageNo: pageNo, mounting: false});
         dbPageNo = dbPageNo+1;
         this.props.actions.onSearchFieldChange("pageNo", dbPageNo);
         setTimeout(this._appendListData.bind(this), 100);
     } else {
-        this._onShowMessageWithoutRefresh();
+        this._onShowMessage();
     }
   }
 
@@ -603,16 +745,10 @@ class SearchResultMap extends Component {
   _renderTotalResultView(){
       console.log("Call SearchResultMap._renderTotalResultView");
     let {loading, totalCount} = this.props;
-    let {pageNo, showMessage, mounting, listAds} = this.state;
-    let beginAdsIndex = (pageNo-1)*gui.MAX_VIEWABLE_ADS+1;
-    let numberOfAds = listAds.length;
-    let endAdsIndex = numberOfAds;
-    if (endAdsIndex > pageNo*gui.MAX_VIEWABLE_ADS) {
-        endAdsIndex = pageNo*gui.MAX_VIEWABLE_ADS;
-    }
-    if (totalCount < numberOfAds) {
-        totalCount = numberOfAds;
-    }
+    let {showMessage, mounting} = this.state;
+    let numberOfAds = this._calcLoadedMarkers();
+    let beginAdsIndex = this._calcBeginAdsIndex();
+    let endAdsIndex = this._calcEndAdsIndex();
     let rangeAds = totalCount > gui.MAX_VIEWABLE_ADS ? (endAdsIndex > 0 ? beginAdsIndex + "-" + endAdsIndex : "0") + " / " + totalCount : numberOfAds;
     let textValue = "Đang hiển thị từ " + rangeAds + " kết quả phù hợp";
     if (numberOfAds == 0) {
@@ -631,7 +767,7 @@ class SearchResultMap extends Component {
           </View>
         </Animatable.View>*/}
         <View style={styles.loadingContent}>
-          <GiftedSpinner color="white" />
+            {loading ? <GiftedSpinner color="white" /> : null}
         </View>
       </View>)
     }
@@ -646,53 +782,16 @@ class SearchResultMap extends Component {
     </View>)
   }
 
-  _getViewableAds(listAds){
-      var markerList = [];
+  _getViewableAds(){
+      let markerList = [];
       let {pageNo} = this.state;
-      let dupCount = {};
-      let markerData = [];
-
-      if (listAds) {
-        for (var i=0; i<listAds.length; i++) {
-          if (i < (pageNo-1)*gui.MAX_VIEWABLE_ADS || i >= pageNo*gui.MAX_VIEWABLE_ADS) {
-            continue;
-          }
-          var item = listAds[i];
-          if (item.place && item.place.geo.lat && item.place.geo.lon) {
-            let indexOfItem = markerData.findIndex((oldItem) =>
-                  Math.abs(oldItem.place.geo.lat - item.place.geo.lat) <= PADDING
-                  && Math.abs(oldItem.place.geo.lon - item.place.geo.lon) <= PADDING);
-            if (markerData.length === 0 || indexOfItem === -1) {
-              dupCount[item.adsID] = 1;
-              markerData.push(item);
-            } else {
-              let validAdsId;
-              if (item.gia && (!markerData[indexOfItem].gia || item.gia < markerData[indexOfItem].gia)) {
-                validAdsId = item.adsID;
-                let oldAdsId = markerData[indexOfItem].adsID;
-                dupCount[validAdsId] = dupCount[oldAdsId] + 1;
-                dupCount[oldAdsId] = 0;
-                markerData[indexOfItem] = item;
-              } else {
-                validAdsId = markerData[indexOfItem].adsID;
-                dupCount[validAdsId] = dupCount[validAdsId] + 1;
-              }
-            }
-          }
+      let allMarkerList = this.props.allUniquePosAds.markerList;
+      console.log('markerData length', allMarkerList.length);
+      for (var i=0; i<allMarkerList.length; i++) {
+        if (i < (pageNo-1)*gui.MAX_VIEWABLE_ADS || i >= pageNo*gui.MAX_VIEWABLE_ADS) {
+          continue;
         }
-      }
-    console.log('markerData', markerData);
-      for (var i=0; i<markerData.length; i++) {
-        let item = markerData[i];
-        let marker = {
-          coordinate: {latitude: item.place.geo.lat, longitude: item.place.geo.lon},
-          price: item.giaFmt,
-          id: item.adsID,
-          cover: item.image.cover,
-          diaChi: item.place.diaChi,
-          dienTich: item.dienTich,
-          duplicate: dupCount[item.adsID]
-        };
+        let marker = allMarkerList[i];
         markerList.push(marker);
       }
       return markerList;
@@ -762,7 +861,7 @@ class SearchResultMap extends Component {
         fields
         , refreshCallback);
     if (!isAppend) {
-        this.setState({mounting: false});
+        this.setState({mounting: false, pageNo: 1});
         this._onShowMessage();
     }
   }
@@ -773,17 +872,9 @@ class SearchResultMap extends Component {
     this._onSetupMessageTimeout();
   }
 
-  _onShowMessageWithoutRefresh() {
-      console.log("Call SearchResultMap._onShowMessageWithoutRefresh");
-      this.setState({openDetailAdsModal: false, showMessage: true});
-      clearTimeout(this.timer);
-      this.timer = setTimeout(() => this.setState({showMessage: false}), 10000);
-  }
-
   _onSetupMessageTimeout() {
       console.log("Call SearchResultMap._onSetupMessageTimeout");
       clearTimeout(this.timer);
-      this._onRefreshAdsList();
       this.timer = setTimeout(() => this.setState({showMessage: false}), 10000);
   }
 
@@ -894,9 +985,9 @@ class SearchResultMap extends Component {
     this.props.actions.onSearchFieldChange("polygon", []);
   }
 
-  _onDetailAdsPress(){
+  _onDetailAdsPress(markerId){
     console.log("Call SearchResultMap._onDetailAdsPress");
-    Actions.SearchResultDetail({adsID: this.state.mmarker.id});
+    Actions.SearchResultDetail({adsID: markerId});
   }
 
   _onMapTypeChange(event){
@@ -1043,7 +1134,7 @@ class SearchResultMap extends Component {
         this.props.actions.onSearchFieldChange("polygon", polygon);
         this.props.actions.onSearchFieldChange("diaChinh", {});
         this.props.actions.onSearchFieldChange("pageNo", 1);
-        this._refreshListData(viewport, polygon, () => {this._onRefreshAdsList()}, {}, false, {});
+        this._refreshListData(viewport, polygon, () => {}, {}, false, {});
         this._updateMapView(polygons, region);
     } else {
         this._updateMapView(polygons);
@@ -1052,17 +1143,10 @@ class SearchResultMap extends Component {
 
   _onAppendAdsList() {
       console.log("Call SearchResultMap._onAppendAdsList");
-      let {listAds} = this.state;
-      listAds = listAds.concat(this.props.listAds);
-      // console.log('listAds', listAds.length, listAds);
-      this.setState({listAds: listAds});
-  }
-
-  _onRefreshAdsList() {
-      console.log("Call SearchResultMap._onRefreshAdsList");
-      let listAds = [];
-      Object.assign(listAds, this.props.listAds);
-      this.setState({listAds: listAds, pageNo: 1});
+      let {allAdsItems} = this.props;
+      allAdsItems = allAdsItems.concat(this.props.listAds);
+      console.log('allAdsItems length', allAdsItems.length);
+      this.props.actions.onChangeAdsList(allAdsItems);
   }
 
   _updateMapView(polygons, region) {

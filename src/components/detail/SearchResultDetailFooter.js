@@ -42,7 +42,7 @@ var SearchResultDetailFooter = React.createClass({
         Actions.LoginRegister({page:1});
     } else {
         if (!this.props.isLiked) {
-            this.props.likeAds(this.props.userID, this.props.ads)
+            this.props.likeAds(this.props.userID, this.props.ads.adsID)
         } else {
             this.props.unlikeAds(this.props.userID, this.props.ads.adsID)
         }

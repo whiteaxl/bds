@@ -179,7 +179,7 @@ class ImageItem extends React.Component{
       Actions.LoginRegister({page:1, onLoginSuccess: () => {this.props.loadHomeData(); Actions.pop()}});
     } else {
       if (!this.isLiked()) {
-        this.props.likeAds(this.props.userID, this.props.ads)
+        this.props.likeAds(this.props.userID, this.props.ads.adsID)
       } else {
         this.props.unlikeAds(this.props.userID, this.props.ads.adsID)
       }

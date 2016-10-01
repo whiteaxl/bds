@@ -13,6 +13,9 @@ class AdsListView extends React.Component {
   constructor(props) {
     super(props);
   }
+  _scrollToTop() {
+    this._listView.scrollTo({y: 0});
+  }
   render() {
     log.info("Call SearchResultList._getListContent");
 

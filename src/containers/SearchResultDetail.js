@@ -637,21 +637,17 @@ class SearchResultDetail extends Component {
     let months = 12*15;
     let principal = mainAccount;
     let payment = mainAccount / months;
-    for (let i=0; i<months; i++) {
-      let interest = 0.12*principal/12;
-      bonusAccount = bonusAccount + interest;
-      principal = principal - payment;
-    }
-    let mainAccountFmt = util.getPriceDisplay(mainAccount, loaiTinVal);
-    let bonusAccountFmt = util.getPriceDisplay(bonusAccount, loaiTinVal);
+    let interest = 0.12*principal/12;
+    let paymentFmt = util.getPriceDisplay(payment, loaiTinVal);
+    let interestFmt = util.getPriceDisplay(interest, loaiTinVal);
     var data = [{
       "name": "",
       "fillColor" : "#1396E0",
-      "value": mainAccount
+      "value": payment
     }, {
       "name": "",
       "fillColor" : "#DE6207",
-      "value": bonusAccount
+      "value": interest
     }];
     var pallete = [
       util.hexToRgb("#23B750"), util.hexToRgb("#EA9409")
@@ -680,7 +676,7 @@ class SearchResultDetail extends Component {
       }
     };
     var chartTitle = 'Tổng';
-    var chartTitleBold = util.getPriceDisplay(mainAccount+bonusAccount, loaiTinVal);
+    var chartTitleBold = util.getPriceDisplay(payment+interest, loaiTinVal);
     return (
       <View>
         <CollapsiblePanel title="Phương Án Tài Chính"
@@ -700,9 +696,9 @@ class SearchResultDetail extends Component {
                     chartTitleBold={chartTitleBold}
                 />
               </View>
-              <View style={{paddingLeft: 13, paddingTop:2}}>
-                {this._renderMoneyLine("Gốc", mainAccountFmt, '#23B750')}
-                {this._renderMoneyLine("Lãi", bonusAccountFmt, '#EA9409')}
+              <View style={{paddingLeft: 8, paddingTop:2}}>
+                {this._renderMoneyLine("Gốc", paymentFmt, '#23B750')}
+                {this._renderMoneyLine("Lãi", interestFmt, '#EA9409')}
               </View>
             </View>
           <Text style={{fontSize: 5}} />
@@ -1151,7 +1147,7 @@ var detailStyles = StyleSheet.create({
   },
   chiTietText: {
       marginBottom: 8,
-      marginLeft: 19.5
+      marginLeft: 20
   },
   shareMainView: {
       flexDirection: 'row',
@@ -1276,7 +1272,7 @@ var detailStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     color: 'black',
     marginBottom: 16,
-    marginLeft: 19.5,
+    marginLeft: 20,
     marginRight: 22.5,
   },
   textHalfWidth: {
@@ -1315,7 +1311,7 @@ var detailStyles = StyleSheet.create({
     color: 'black',
     marginTop: 3,
     marginBottom: 2,
-    marginLeft: 9.5,
+    marginLeft: 10,
     marginRight: 9.5,
     width: width/2-19
   },
@@ -1329,7 +1325,7 @@ var detailStyles = StyleSheet.create({
     color: 'black',
     marginTop: 3,
     marginBottom: 2,
-    marginLeft: 9.5,
+    marginLeft: 10,
     marginRight: 9.5,
     width: width/2-19
   },

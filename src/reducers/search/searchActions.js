@@ -217,11 +217,11 @@ export function unlikeSuccess(payload) {
   }
 }
 
-export function likeAds(userID, rowData) {
+export function likeAds(userID, adsID) {
   return dispatch => {
     let dto = {
       userID: userID,
-      adsID: rowData.adsID
+      adsID: adsID
     };
 
     db.likeAds(dto).then((res) => {

@@ -46,7 +46,7 @@ class AdsRow extends React.Component {
       Actions.LoginRegister({page:1});
     } else {
       if (!this.isLiked(ads)) {
-        this.props.likeAds(this.props.userID, ads)
+        this.props.likeAds(this.props.userID, ads.adsID)
       } else {
         this.props.unlikeAds(this.props.userID, ads.adsID)
       }

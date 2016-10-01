@@ -21,7 +21,7 @@ import Button from 'react-native-button';
 var SearchResultFooter = React.createClass({
   render: function() {
     return <View style={myStyles.searchListButton}>
-        <SortMenu isDiaDiem={this.props.center}/>
+        <SortMenu isDiaDiem={this.props.center} scrollToTop={this.props.scrollToTop}/>
           <Button onPress={this._onAlertSaveSearch}
                   style={[myStyles.buttonText, {fontWeight : '500'}]}>Lưu tìm kiếm</Button>
           <Button onPress={this._onMap}

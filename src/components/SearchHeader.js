@@ -17,11 +17,14 @@ var CommonHeader = React.createClass({
   render: function() {
     return <View style={mStyles.container}>
       <View style={mStyles.home}>
-      <RelandIcon onPress={this._onHome}
+      <TruliaIcon onPress={this._onHome}
+                  name="arrow-left" color={"white"}
+                  mainProps={{paddingLeft: 20, paddingRight: 17}} size={28} />
+          {/* <RelandIcon onPress={this._onHome}
         name="close" color="white" size={18}
         mainProps={{flexDirection: 'row', paddingLeft: 20, paddingRight: 17}}
         >
-      </RelandIcon>
+      </RelandIcon>*/}
       </View>
       <View style={mStyles.text}>
         <HeaderSearchInput placeName={this.props.placeName} refreshRegion={this.props.refreshRegion}

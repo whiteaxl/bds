@@ -136,7 +136,8 @@ class SearchResultList extends Component {
                 </View>
 
                 <View style={{marginTop: 30, height: Dimensions.get('window').height - 108}}>
-                    <AdsListView {...this.props} noCoverUrl={noCoverUrl} />
+                    <AdsListView ref={(adsListView) => { this._adsListView = adsListView; }}
+                        {...this.props} noCoverUrl={noCoverUrl} />
                 </View>
 
                 {this._renderTotalResultView()}
@@ -149,11 +150,16 @@ class SearchResultList extends Component {
                                         saveSearch = {this.props.actions.saveSearch}
                                         query = {findApi.convertFieldsToQueryParams(this.props.fields)}
                                         userID = {this.props.userID}
+                                        scrollToTop={this._scrollToTop.bind(this)}
                     />
                 </View>
             </View>
             </MenuContext>
         )
+    }
+
+    _scrollToTop() {
+        this._adsListView._scrollToTop();
     }
 
     _renderTotalResultView(){
