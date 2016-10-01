@@ -44,7 +44,8 @@ gui.defaultLocation = {
 	lon : 105.75490945
 };
 
-gui.MAX_ITEM = 250;
+gui.QUOTA_ITEM = 300;
+gui.MAX_ITEM = 100;
 
 gui.MAX_VIEWABLE_ADS = 25;
 

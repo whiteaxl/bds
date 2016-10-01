@@ -63,7 +63,7 @@ var mStyles = StyleSheet.create({
     },
     logoIcon: {
         height: 21,
-        width: 99,
+        width: 87,
         marginTop: 0,
         marginLeft: 19,
         marginRight: 16

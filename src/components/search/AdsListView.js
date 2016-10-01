@@ -12,15 +12,18 @@ import GiftedSpinner from 'react-native-gifted-spinner';
 class AdsListView extends React.Component {
   constructor(props) {
     super(props);
+    let listAds = [];
+    Object.assign(listAds, props.listAds);
     this.state = {
-      pageNo: props.fields.pageNo
+      pageNo: props.fields.pageNo,
+      listAds: listAds
     }
   }
   render() {
     log.info("Call SearchResultList._getListContent");
 
     let myProps = this.props;
-    if (myProps.loading) {
+    if (myProps.loading && myProps.listAds.length === 0) {
       return (
         <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
           {/*<Text> Loading ... </Text>*/}
@@ -45,18 +48,24 @@ class AdsListView extends React.Component {
       )
     }
 
-    let ds = myDs.cloneWithRows(myProps.listAds);
+    let {listAds} = this.state;
+    if (listAds.length == 0) {
+      listAds = listAds.concat(myProps.listAds);
+    }
+    // console.log('listAds', listAds);
+    let ds = myDs.cloneWithRows(listAds);
 
     return (
       <ListView
+        ref={(listView) => { this._listView = listView; }}
         dataSource={ds}
         renderRow={this.renderRow.bind(this)}
         stickyHeaderIndices={[]}
         initialListSize={1}
-        onEndReachedThreshold={1}
-        // onEndReached={this._onEndReached.bind(this)}
-        scrollRenderAheadDistance={3}
-        pageSize={5}
+        onEndReachedThreshold={200}
+        onEndReached={this._onEndReached.bind(this)}
+        // scrollRenderAheadDistance={3}
+        // pageSize={5}
         // onScroll={this.handleScroll.bind(this)}
         // scrollEventThrottle={200}
         //renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
@@ -67,14 +76,19 @@ class AdsListView extends React.Component {
 
   _onEndReached() {
     let myProps = this.props;
-
-    if (myProps.loading || myProps.counting || myProps.showMessage) {
+    console.log('onEndReached', myProps);
+    if (myProps.loading) {
       return;
     }
     
     let pageNo = this.state.pageNo;
+    let listAds = this.state.listAds;
 
-    let totalPages = myProps.countResult/ myProps.fields.limit;
+    if (listAds.length >= gui.QUOTA_ITEM) {
+      return;
+    }
+
+    let totalPages = myProps.totalCount/ myProps.fields.limit;
 
     if (totalPages && pageNo < totalPages) {
       this.state.pageNo = pageNo+1;
@@ -86,7 +100,8 @@ class AdsListView extends React.Component {
 
   _handleSearchAction(newPageNo){
     var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
-        radiusInKmSelectedIdx, dienTich, orderBy, geoBox, place, huongNha, ngayDaDang, polygon, pageNo, limit} = this.props.fields;
+        radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
+        polygon, pageNo, limit, isIncludeCountInResponse} = this.props.fields;
     var fields = {
       loaiTin: loaiTin,
       loaiNhaDat: loaiNhaDat,
@@ -95,25 +110,34 @@ class AdsListView extends React.Component {
       dienTich: dienTich,
       gia: gia,
       orderBy: orderBy,
-      geoBox: geoBox,
-      place: place,
+      viewport: viewport,
+      diaChinh: diaChinh,
+      center: center,
       radiusInKmSelectedIdx: radiusInKmSelectedIdx,
       huongNha: huongNha,
       ngayDaDang: ngayDaDang,
       polygon: polygon,
       pageNo: newPageNo || pageNo,
-      limit: limit};
+      limit: limit,
+      isIncludeCountInResponse: isIncludeCountInResponse};
 
     this.props.actions.search(
         fields
-        , () => {});
+        , () => {this._appendAdsList()});
+  }
+
+  _appendAdsList() {
+    let {listAds} = this.state;
+    listAds = listAds.concat(this.props.listAds);
+    // console.log('listAds', listAds);
+    this.setState({listAds: listAds});
   }
 
   handleScroll(event: Object) {
     if (event.nativeEvent.contentOffset.y < -100) {
       let myProps = this.props;
 
-      if (myProps.loading || myProps.counting || myProps.showMessage) {
+      if (myProps.loading) {
         return;
       }
 
@@ -152,10 +176,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#CCCCCC',
   },
   searchListView: {
-    marginTop: 30,
+    marginTop: 0,
     margin: 0,
-    backgroundColor: 'white',
-    height: Dimensions.get('window').height-108
+    backgroundColor: 'white'
   },
 });
 

@@ -253,18 +253,18 @@ var myStyles = StyleSheet.create({
     dropdownOptions: {
         borderColor: '#ccc',
         borderWidth: 1,
-        marginTop: -350,
+        marginTop: -370,
         left: 10,
         overflow: 'hidden',
-        width: 2*Dimensions.get('window').width/3-50
+        width: 2*Dimensions.get('window').width/3-40
     },
     dropdownOptions2: {
         borderColor: '#ccc',
         borderWidth: 1,
-        marginTop: -310,
+        marginTop: -330,
         left: 10,
         overflow: 'hidden',
-        width: 2*Dimensions.get('window').width/3-50
+        width: 2*Dimensions.get('window').width/3-40
     },
     sortText: {
         fontSize: gui.buttonFontSize

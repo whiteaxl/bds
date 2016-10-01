@@ -203,7 +203,7 @@ class Search extends Component {
     let giaVal = giaStepValues.toValRange(gia);
     giaVal.sort((a, b) => this._onArraySort(a, b));
     let newGia = giaStepValues.rangeVal2Display(giaVal);
-    return RangeUtils.getFromToDisplay(newGia);
+    return RangeUtils.getFromToDisplay(newGia, giaStepValues.getUnitText());
   }
 
   _getDienTichValue() {
@@ -211,7 +211,7 @@ class Search extends Component {
     let dienTichVal = RangeUtils.dienTichRange.toValRange(dienTich);
     dienTichVal.sort((a,b) => this._onArraySort(a, b));
     let newDienTich = RangeUtils.dienTichRange.rangeVal2Display(dienTichVal);
-    return RangeUtils.getFromToDisplay(newDienTich);
+    return RangeUtils.getFromToDisplay(newDienTich, RangeUtils.dienTichRange.getUnitText());
   }
 
   _getLoaiNhatDatValue() {
@@ -228,8 +228,8 @@ class Search extends Component {
   }
 
   _getNgayDaDangValue() {
-    var ngayDaDang = this.props.search.form.fields.ngayDaDang;
-    if (!ngayDaDang) {
+    var {ngayDaDang} = this.props.search.form.fields;
+    if (!ngayDaDang || ngayDaDang == 0) {
       return RangeUtils.BAT_KY;
     }
     return ngayDaDang + " ngày";
@@ -395,6 +395,7 @@ class Search extends Component {
     this.props.actions.onSearchFieldChange("dienTich", newDienTich);
     this.props.actions.onSearchFieldChange("orderBy", '');
     this.props.actions.onSearchFieldChange("pageNo", 1);
+    this.props.actions.onResetAdsList();
 
     this._handleSearchAction('', 1, gui.MAX_ITEM, newGia, newDienTich);
     this.props.refreshRegion && this.props.refreshRegion();
@@ -506,12 +507,13 @@ class Search extends Component {
     }
 
     _renderPickerExt(pickerRange, rangeStepValues, fromPlaceholder, toPlaceholder, onTextChange,
-                     pickerSelectedValue, onPickerValueChange, onPress, inputLabel, fromValue, toValue) {
+                     pickerSelectedValue, onPickerValueChange, onPress, inputLabel, fromValue, toValue, unitText) {
         return (
             <PickerExt pickerRange={pickerRange} rangeStepValues={rangeStepValues} fromPlaceholder={fromPlaceholder}
                        toPlaceholder={toPlaceholder} onTextChange={onTextChange}
                        pickerSelectedValue={pickerSelectedValue} onPickerValueChange={onPickerValueChange}
-                       onPress={onPress} inputLabel={inputLabel} fromValue={fromValue} toValue={toValue}/>
+                       onPress={onPress} inputLabel={inputLabel} fromValue={fromValue} toValue={toValue}
+                       unitText={unitText}/>
         );
     }
 
@@ -528,7 +530,8 @@ class Search extends Component {
             let onPickerValueChange = this._onDienTichChanged.bind(this);
             return this._renderPickerExt(pickerRange, rangeStepValues, fromPlaceholder, toPlaceholder,
                 onTextChange, pickerSelectedValue, onPickerValueChange,
-                this._onPressDienTichHandle.bind(this), "m²", String(fromDienTich), String(toDienTich));
+                this._onPressDienTichHandle.bind(this), "m²", String(fromDienTich), String(toDienTich),
+                rangeStepValues.getUnitText());
         }
     }
 
@@ -604,7 +607,8 @@ class Search extends Component {
             let inputLabel = 'ban' === loaiTin ? "tỷ" : "triệu";
             return this._renderPickerExt(pickerRange, rangeStepValues, fromPlaceholder, toPlaceholder,
                 onTextChange, pickerSelectedValue, onPickerValueChange,
-                this._onPressGiaHandle.bind(this), inputLabel, String(fromGia), String(toGia));
+                this._onPressGiaHandle.bind(this), inputLabel, String(fromGia), String(toGia),
+                rangeStepValues.getUnitText());
         }
     }
 
@@ -616,7 +620,7 @@ class Search extends Component {
         if (val === '') {
             val = -1;
         }
-        newGia[index] = 1000 * val;
+        newGia[index] = (val != -1) ? 1000 * val : -1;
         let other = String(newGia[1-index]);
         if (DanhMuc.THOA_THUAN == other) {
             other = 0;

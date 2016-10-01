@@ -7,6 +7,8 @@ import DanhMuc from "../assets/DanhMuc"
 import cfg from "../cfg";
 import cancelablFetch from 'react-native-cancelable-fetch'
 
+import moment from 'moment';
+
 var rootUrl = `http://${cfg.server}:5000/api`;
 var findUrl = rootUrl + "/v2/find";
 var placeUrl = rootUrl + "/findPlace";
@@ -132,12 +134,12 @@ var Api = {
     if (giaBETWEEN && (giaBETWEEN[0] != -1 || giaBETWEEN[1] != DanhMuc.BIG)) {
         let giaStepValues = loaiTin == 0 ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
         let newGia = giaStepValues.rangeVal2Display(giaBETWEEN);
-        strQuery = strQuery + ', ' + RangeUtils.getFromToDisplay(newGia);
+        strQuery = strQuery + ', ' + RangeUtils.getFromToDisplay(newGia, giaStepValues.getUnitText());
     }
     if (dienTichBETWEEN && (dienTichBETWEEN[0] != -1 || dienTichBETWEEN[1] != DanhMuc.BIG)) {
         let dienTichStepValues = RangeUtils.dienTichRange;
         let newDienTich = dienTichStepValues.rangeVal2Display(dienTichBETWEEN);
-        strQuery = strQuery + ', ' + RangeUtils.getFromToDisplay(newDienTich);
+        strQuery = strQuery + ', ' + RangeUtils.getFromToDisplay(newDienTich, dienTichStepValues.getUnitText());
     }
     if (soPhongNguGREATER) {
         strQuery = strQuery + ', ' + soPhongNguGREATER + ' p.ngủ';
@@ -157,9 +159,9 @@ var Api = {
     if (orderBy) {
         strQuery = strQuery + ', ' + orderBy.name + ' ' + orderBy.type;
     }
-    if (diaChinh && diaChinh.fullName) {
-        strQuery = strQuery + ', ' + diaChinh.fullName;
-    }
+    // if (diaChinh && diaChinh.fullName) {
+    //     strQuery = strQuery + ', ' + diaChinh.fullName;
+    // }
     if (viewport && Object.keys(viewport).length > 0) {
         strQuery = strQuery + ', {ĐôngBắc:' + this._replaceAll(JSON.stringify(viewport.northeast), "\"", "");
         strQuery = strQuery + ',TâyNam:' + this._replaceAll(JSON.stringify(viewport.southwest), "\"", "") + "}";

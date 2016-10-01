@@ -28,6 +28,10 @@ import PhotoView from 'react-native-photo-view';
 
 import SearchResultDetailFooter from './detail/SearchResultDetailFooter';
 
+import cfg from "../cfg";
+
+const noCoverUrl = cfg.noCoverUrl;
+
 var {
     height: deviceHeight,
     width: deviceWidth
@@ -194,10 +198,14 @@ class ImagePreview extends React.Component {
         var imageIndex = 0;
         if (this.props.images) {
             this.props.images.map(function (imageUrl) {
+                let imageUri = {uri: imageUrl};
+                if (noCoverUrl == imageUrl) {
+                    imageUri = require('../assets/image/reland_house_large.jpg');
+                }
                 imageItems.push(
                     <View style={styles.imgView} key={"img"+(imageIndex++)}>
                         <PhotoView style={styles.imgItem}
-                               source={{uri: `${imageUrl}`}}
+                               source={imageUri}
                                loadingIndicatorSource={require('../assets/image/no_cover.jpg')}
                                resizeMode={Image.resizeMode.contain}
                                minimumZoomScale={1}

@@ -17,6 +17,7 @@ const {
   ON_ALERT_US_CHANGE,
   ON_POLYGONS_CHANGE,
   ON_DRAW_MODE_CHANGE,
+  ON_RESET_LIST_ADS,
   ON_SEARCH_FIELD_CHANGE,
   SET_SEARCH_LOAI_TIN,
   SEARCH_STATE_LOADING,
@@ -77,6 +78,9 @@ export default function searchReducer(state = initialState, action) {
     case ON_DRAW_MODE_CHANGE:
       return state.set("drawMode", action.payload);
 
+    case ON_RESET_LIST_ADS:
+      return state.setIn(['result', "listAds"], []);
+
     case ON_POLYGONS_CHANGE:
       return state.setIn(['map', 'polygons'], action.payload);
 
@@ -89,8 +93,10 @@ export default function searchReducer(state = initialState, action) {
 
       let recentSearchList = state.recentSearchList;
       query.polygon = undefined;
+      let diaChinh = query.diaChinh;
+      let searchName = diaChinh && diaChinh.fullName ? diaChinh.fullName : 'Search at';
       let searchObj = {
-        name: 'Search at ' + moment().format("DD-MM-YYYY HH:mm:ss"),
+        name: searchName + '  ' + moment().format("DD-MM-YYYY HH:mm:ss"),
         timeModified: new Date().getTime(),
         query: query,
         isRecent: true,
@@ -107,9 +113,9 @@ export default function searchReducer(state = initialState, action) {
       if (recentSearchList && recentSearchList.length > 0) {
         if (recentSearchList.length > 1) {
           let oldQuery = recentSearchList[1];
-          let oldDiaChinh = oldQuery.diaChinh;
-          let diaChinh = query.diaChinh;
-          hasDiaChinhChange = diaChinh && diaChinh.length > 0 && oldDiaChinh.fullName != diaChinh.fullName;
+          let oldDiaChinh = oldQuery.query.diaChinh;
+          hasDiaChinhChange = diaChinh && Object.keys(diaChinh).length > 0 && oldDiaChinh.fullName &&
+              oldDiaChinh.fullName != diaChinh.fullName;
         } else {
           hasDiaChinhChange = true;
         }

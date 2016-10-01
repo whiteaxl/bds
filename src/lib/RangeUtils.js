@@ -33,15 +33,24 @@ function getDienTichStepsDisplay(val) {
 	return val + " m²";
 }
 
+function getDienTichUnitText() {
+	return "m²";
+}
+
+function getGiaUnitText() {
+	return "triệu";
+}
+
 function getGiaUnitValue(unit) {
 	return unit == "tỷ" ? 1000 : 1;
 }
 
 
 class IncRange {
-	constructor(stepsVal, getDisplay, getUnitValue) {
+	constructor(stepsVal, getDisplay, getUnitText, getUnitValue) {
 		this.stepsVal = stepsVal;
 		this.getDisplay = getDisplay;
+		this.getUnitText = getUnitText;
 		this.getUnitValue = getUnitValue;
 		//calc display
 		this.stepsDisplay = stepsVal.map(getDisplay);
@@ -88,9 +97,9 @@ class IncRange {
 
 	toValRange(displayArr) {
 		let fromVal = displayArr[0] == -1 ? -1 : (displayArr[0] == 0 ? 0 :
-			(this._map[displayArr[0]] ? this._map[displayArr[0]] : displayArr[0]));
+			(this._map[displayArr[0]] != undefined ? this._map[displayArr[0]] : displayArr[0]));
 		let toVal = displayArr[1] == -1 ? -1 : (displayArr[1] == 0 ? 0 :
-			(this._map[displayArr[1]] ? this._map[displayArr[1]] : displayArr[1]));
+			(this._map[displayArr[1]] != undefined ? this._map[displayArr[1]] : displayArr[1]));
 		fromVal = String(fromVal);
 		if (fromVal && fromVal.indexOf(" ") != -1) {
 			let unitVal = this.getUnitValue ? this.getUnitValue(fromVal.substring(fromVal.indexOf(" ")+1)) : 1;
@@ -122,28 +131,35 @@ class IncRange {
 
 
 var RangeUtils = {
-	sellPriceRange : new IncRange(sellStepValues, getPriceStepsDisplay, getGiaUnitValue),
-	rentPriceRange : new IncRange(rentStepValues, getPriceStepsDisplay, getGiaUnitValue),
-	dienTichRange : new IncRange(dienTichStepValues, getDienTichStepsDisplay), 
+	sellPriceRange : new IncRange(sellStepValues, getPriceStepsDisplay, getGiaUnitText, getGiaUnitValue),
+	rentPriceRange : new IncRange(rentStepValues, getPriceStepsDisplay, getGiaUnitText, getGiaUnitValue),
+	dienTichRange : new IncRange(dienTichStepValues, getDienTichStepsDisplay, getDienTichUnitText),
 	
 	//gia= [1 ty, 2ty]
-	getFromToDisplay:function(values) {
+	getFromToDisplay:function(values, unitText) {
 		let fromVal = values[0];
 	    let toVal  = values[1];
-	    if (fromVal == BAT_KY && toVal == BAT_KY ) {
+		let unitTextStr = unitText ? unitText : 'm²';
+		if ((fromVal == BAT_KY || fromVal == CHUA_XAC_DINH || fromVal == THOA_THUAN) && toVal == BAT_KY) {
+			return BAT_KY;
+		}
+	    if (fromVal == BAT_KY && (toVal == BAT_KY || toVal == CHUA_XAC_DINH || toVal == THOA_THUAN)) {
 	        return BAT_KY;
 	    }
-		if (fromVal == CHUA_XAC_DINH && toVal == CHUA_XAC_DINH ) {
+		if ((fromVal == BAT_KY || fromVal == CHUA_XAC_DINH) && toVal == CHUA_XAC_DINH ) {
 			return CHUA_XAC_DINH;
+		}
+		if ((fromVal == BAT_KY || fromVal == THOA_THUAN) && toVal == THOA_THUAN ) {
+			return THOA_THUAN;
 		}
 		if (fromVal == THOA_THUAN && toVal == THOA_THUAN ) {
 			return THOA_THUAN;
 		}
-		if (fromVal == CHUA_XAC_DINH || fromVal == THOA_THUAN) {
-			fromVal = '0 m²';
+		if (fromVal == BAT_KY || fromVal == CHUA_XAC_DINH || fromVal == THOA_THUAN) {
+			fromVal = '0 ' + unitTextStr;
 		}
 		if (toVal == CHUA_XAC_DINH) {
-			toVal = '0 m²';
+			toVal = '0 ' + unitTextStr;
 		}
 
 	    return fromVal + " - " + toVal;

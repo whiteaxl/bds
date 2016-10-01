@@ -15,6 +15,10 @@ import {Actions} from 'react-native-router-flux';
 
 import MHeartIcon from '../MHeartIcon';
 
+import cfg from "../../cfg";
+
+const noCoverUrl = cfg.noCoverUrl;
+
 var imageHeight = 143;
 
 export default class HomeCollection extends Component {
@@ -102,7 +106,10 @@ class ImageItem extends React.Component{
     let color = isLiked ? '#A2A7AD' : 'white';
     let bgColor = isLiked ? '#E50064' : '#4A443F';
     let bgStyle = isLiked ? {} : {opacity: 0.55};
-
+    let imageUri = {uri: cover};
+    if (noCoverUrl == cover) {
+      imageUri = require('../../assets/image/reland_house_large.jpg');
+    }
     return (
       <Image style={[styles.imgItem]} resizeMode = {'cover'}
              source={{uri: cover}} defaultSource={require('../../assets/image/no_cover.jpg')}>

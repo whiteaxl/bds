@@ -58,7 +58,7 @@ class AdsRow extends React.Component {
     if (ads.image) {
       if (!ads.image.images || ads.image.images.length===0) {
         return (
-          <MyImage imageIndex={0} ads={ads} imageUrl={ads.image.cover}/>
+          <MyImage imageIndex={0} ads={ads} imageUrl={ads.image.cover} noCoverUrl={this.props.noCoverUrl}/>
         )
       }
 
@@ -72,11 +72,11 @@ class AdsRow extends React.Component {
       // });
 
       return (
-          <MyImage imageIndex={0} ads={ads} imageUrl={ads.image.images[0]}/>
+          <MyImage imageIndex={0} ads={ads} imageUrl={ads.image.images[0]} noCoverUrl={this.props.noCoverUrl}/>
       );
     } else {
       return (
-        <MyImage imageIndex={0} ads={ads} imageUrl={this.props.noCoverUrl}/>
+        <MyImage imageIndex={0} ads={ads} imageUrl={this.props.noCoverUrl} noCoverUrl={this.props.noCoverUrl}/>
       );
     }
   }
@@ -177,10 +177,14 @@ class MyImage extends React.Component {
     super(props);
   }
   render() {
+    let imageUri = {uri: this.props.imageUrl};
+    if (this.props.noCoverUrl == this.props.imageUrl) {
+      imageUri = require('../../assets/image/reland_house_large.jpg');
+    }
     return(
       <View style={myStyles.slide} key={"img"+(this.props.imageIndex)}>
         <TouchableHighlight onPress={() => Actions.SearchResultDetail({adsID: this.props.ads.adsID, source: 'server'})}>
-          <Image style={myStyles.thumb} source={{uri: `${this.props.imageUrl}`}} defaultSource={require('../../assets/image/no_cover.jpg')} >
+          <Image style={myStyles.thumb} source={imageUri} defaultSource={require('../../assets/image/no_cover.jpg')} >
             <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.55)']}
                             style={myStyles.linearGradient2}>
             </LinearGradient>

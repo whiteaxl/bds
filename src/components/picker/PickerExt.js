@@ -15,12 +15,12 @@ var {
 class PickerExt extends React.Component {
     render() {
         let {pickerRange, rangeStepValues, fromPlaceholder, toPlaceholder, fromValue, toValue, onTextChange,
-            pickerSelectedValue, onPickerValueChange, onPress, inputLabel} = this.props;
+            pickerSelectedValue, onPickerValueChange, onPress, inputLabel, unitText} = this.props;
         let pickerItems = [];
         pickerRange.map((pickedValue) => {
             let key = pickedValue[0] + '_' + pickedValue[1];
             let label = RangeUtils.getFromToDisplay(
-                rangeStepValues.rangeVal2Display(pickedValue)
+                rangeStepValues.rangeVal2Display(pickedValue), unitText
             );
             pickerItems.push(<PickerIOS.Item key={key}
                                              value={key}

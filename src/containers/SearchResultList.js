@@ -33,6 +33,8 @@ import AdsListView from '../components/search/AdsListView';
 
 import * as Animatable from 'react-native-animatable';
 
+import GiftedSpinner from "../components/GiftedSpinner";
+
 import cfg from "../cfg";
 
 const noCoverUrl = cfg.noCoverUrl;
@@ -54,7 +56,6 @@ function mapStateToProps(state) {
         loggedIn: state.global.loggedIn,
         userID: currentUser && currentUser.userID,
         fields : state.search.form.fields,
-        showMessage: state.search.showMessage,
         totalCount: state.search.result.totalCount,
         polygons: state.search.map.polygons
     };
@@ -133,7 +134,9 @@ class SearchResultList extends Component {
                     <SearchHeader placeName={placeName} onShowMessage={() => this._onShowMessage()}/>
                 </View>
 
-                <AdsListView {...this.props} noCoverUrl={noCoverUrl} />
+                <View style={{marginTop: 30, height: Dimensions.get('window').height - 108}}>
+                    <AdsListView {...this.props} noCoverUrl={noCoverUrl} />
+                </View>
 
                 {this._renderTotalResultView()}
 
@@ -158,7 +161,10 @@ class SearchResultList extends Component {
         let numberOfAds = listAds.length;
         let totalCount = this.props.totalCount;
         let rangeAds = totalCount > 0 ? totalCount : numberOfAds;
-        let textValue = "Tìm thấy " + rangeAds + " kết quả";
+        let textValue = "Tìm thấy " + rangeAds + " kết quả phù hợp";
+        if (numberOfAds == 0) {
+            textValue = "Không tìm thấy kết quả nào. Hãy thay đổi điều kiện tìm kiếm";
+        }
         
         if(loading){
             return (<View style={myStyles.resultContainer}>
@@ -168,6 +174,9 @@ class SearchResultList extends Component {
                         <Text style={myStyles.resultIcon}>  Đang tải dữ liệu ... </Text>
                     </View>
                 </Animatable.View>*/}
+                <View style={myStyles.loadingContent}>
+                    {listAds.length > 0 ? <GiftedSpinner color="white" /> : null}
+                </View>
             </View>)
         }
 
@@ -185,6 +194,13 @@ class SearchResultList extends Component {
 
 // Later on in your styles..
 var myStyles = StyleSheet.create({
+    loadingContent: {
+        position: 'absolute',
+        top: -22,
+        left: 80,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
     fullWidthContainer: {
         flex: 1,
         alignItems: 'stretch',

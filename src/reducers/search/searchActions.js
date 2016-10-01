@@ -14,6 +14,7 @@ const {
   ON_ALERT_US_CHANGE,
   ON_POLYGONS_CHANGE,
   ON_DRAW_MODE_CHANGE,
+  ON_RESET_LIST_ADS,
   ON_SEARCH_FIELD_CHANGE,
   SET_SEARCH_LOAI_TIN,
   FETCH_SEARCH_RESULT_FAIL,
@@ -72,6 +73,13 @@ export function onDrawModeChange(loading) {
   return {
     type: ON_DRAW_MODE_CHANGE,
     payload: loading
+  }
+}
+
+export function onResetAdsList() {
+  return {
+    type: ON_RESET_LIST_ADS,
+    payload: null
   }
 }
 

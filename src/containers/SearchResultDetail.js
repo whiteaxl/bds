@@ -57,6 +57,10 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import MHeartIcon from '../components/MHeartIcon';
 
+import cfg from "../cfg";
+
+const noCoverUrl = cfg.noCoverUrl;
+
 const actions = [
   globalActions,
   searchActions,
@@ -303,11 +307,15 @@ class SearchResultDetail extends Component {
     if (rowData.image) {
       rowData.image.images.map(function(imageUrl) {
         imageDataItems.push(imageUrl);
+        let imageUri = {uri: imageUrl};
+        if (noCoverUrl == imageUrl) {
+          imageUri = require('../assets/image/reland_house_large.jpg');
+        }
         imageItems.push(
           <View style={detailStyles.slide} key={"img"+(imageIndex++)}>
             <TouchableHighlight onPress={imagePreviewAction} underlayColor="transparent" >
             <Image style={detailStyles.imgItem}
-               source={{uri: `${imageUrl}`}} defaultSource={require('../assets/image/no_cover.jpg')}>
+               source={imageUri} defaultSource={require('../assets/image/no_cover.jpg')}>
             </Image>
             </TouchableHighlight>
           </View>
@@ -316,11 +324,15 @@ class SearchResultDetail extends Component {
       if (imageItems.length == 0) {
         var imageUrl = rowData.image.cover;
         imageDataItems.push(imageUrl);
+        let imageUri = {uri: imageUrl};
+        if (noCoverUrl == imageUrl) {
+          imageUri = require('../assets/image/reland_house_large.jpg');
+        }
         imageItems.push(
           <View style={detailStyles.slide} key={"img"+(imageIndex)}>
             <TouchableHighlight onPress={imagePreviewAction} underlayColor="transparent" >
             <Image style={detailStyles.imgItem}
-               source={{uri: `${imageUrl}`}} defaultSource={require('../assets/image/no_cover.jpg')}>
+               source={imageUri} defaultSource={require('../assets/image/no_cover.jpg')}>
             </Image>
             </TouchableHighlight>
           </View>
