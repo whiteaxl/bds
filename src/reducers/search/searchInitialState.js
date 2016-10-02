@@ -26,8 +26,14 @@ const defaultItemInCollection = {
 const SearchForm = Record({
     fields: new (Record({
         loaiTin: 'ban',
-        loaiNhaDat: '',
-        gia: RangeUtils.BAT_KY_RANGE,
+        ban: {
+            loaiNhaDat: '',
+            gia: RangeUtils.BAT_KY_RANGE
+        },
+        thue: {
+            loaiNhaDat: '',
+            gia: RangeUtils.BAT_KY_RANGE
+        },
         giaPicker : RangeUtils.sellPriceRange.getPickerData(),
         dienTich: RangeUtils.BAT_KY_RANGE,
         ngayDaDang: '', //batky

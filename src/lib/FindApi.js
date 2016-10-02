@@ -24,8 +24,10 @@ var Api = {
   _requestCnt : 0,
 
   convertFieldsToQueryParams : function(fields){
-    var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
+    var {loaiTin, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
       radiusInKmSelectedIdx, dienTich, orderBy, diaChinh, center, viewport, huongNha, ngayDaDang, polygon, pageNo, limit, isIncludeCountInResponse} = fields;
+    let loaiNhaDat = fields[loaiTin].loaiNhaDat;
+    let gia = fields[loaiTin].gia;
 
     let circle = {};
     if (center && center.length > 0) {
@@ -156,28 +158,28 @@ var Api = {
         let ngayDaDang = now.diff(ngayDangTin, 'days');
         strQuery = strQuery + ', ' + ngayDaDang + ' ngày';
     }
-    if (orderBy) {
-        strQuery = strQuery + ', ' + orderBy.name + ' ' + orderBy.type;
-    }
+    // if (orderBy) {
+    //     strQuery = strQuery + ', ' + orderBy.name + ' ' + orderBy.type;
+    // }
     // if (diaChinh && diaChinh.fullName) {
     //     strQuery = strQuery + ', ' + diaChinh.fullName;
     // }
-    if (viewport && Object.keys(viewport).length > 0) {
-        strQuery = strQuery + ', {ĐôngBắc:' + this._replaceAll(JSON.stringify(viewport.northeast), "\"", "");
-        strQuery = strQuery + ',TâyNam:' + this._replaceAll(JSON.stringify(viewport.southwest), "\"", "") + "}";
-    }
-    if (circle && Object.keys(circle).length > 0) {
-        strQuery = strQuery + ', ' + this._replaceAll(JSON.stringify(circle), "\"", "");
-    }
-    if (limit) {
-        strQuery = strQuery + ', giới hạn ' + limit;
-    }
-    if (polygon) {
-        strQuery = strQuery + ', ' + this._replaceAll(JSON.stringify(polygon), "\"", "");
-    }
-    if (pageNo) {
-        strQuery = strQuery + ', trang ' + pageNo;
-    }
+    // if (viewport && Object.keys(viewport).length > 0) {
+    //     strQuery = strQuery + ', {ĐôngBắc:' + this._replaceAll(JSON.stringify(viewport.northeast), "\"", "");
+    //     strQuery = strQuery + ',TâyNam:' + this._replaceAll(JSON.stringify(viewport.southwest), "\"", "") + "}";
+    // }
+    // if (circle && Object.keys(circle).length > 0) {
+    //     strQuery = strQuery + ', ' + this._replaceAll(JSON.stringify(circle), "\"", "");
+    // }
+    // if (limit) {
+    //     strQuery = strQuery + ', giới hạn ' + limit;
+    // }
+    // if (polygon) {
+    //     strQuery = strQuery + ', ' + this._replaceAll(JSON.stringify(polygon), "\"", "");
+    // }
+    // if (pageNo) {
+    //     strQuery = strQuery + ', trang ' + pageNo;
+    // }
     // if (isIncludeCountInResponse) {
     //     strQuery = strQuery + ', includeCountInResponse';
     // }

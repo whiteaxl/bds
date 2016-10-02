@@ -66,7 +66,6 @@ export default function searchReducer(state = initialState, action) {
       }
 
       let nextState = state
-        .setIn(['form', 'fields', "gia"], RangeUtils.BAT_KY_RANGE)
         .setIn(['form', 'fields', "giaPicker"], pickerData)
         .setIn(['form', 'fields', "loaiTin"], value);
       return nextState;
@@ -96,15 +95,24 @@ export default function searchReducer(state = initialState, action) {
       let {data, query} = action.payload;
 
       let recentSearchList = state.recentSearchList;
-      query.polygon = undefined;
       let diaChinh = query.diaChinh;
-      let searchName = diaChinh && diaChinh.fullName ? diaChinh.fullName : 'Search at';
+      let polygon = query.polygon;
+      let searchName = '';
+      if (diaChinh != undefined && diaChinh.fullName && (diaChinh.fullName != gui.VI_TRI_HIEN_TAI)) {
+        searchName = diaChinh.fullName;
+      } else if (polygon && polygon.length > 0) {
+        searchName = 'Trong khu vực vẽ tay';
+      } else {
+        searchName = 'Xung quanh vị trí hiện tại';
+      }
+      query.polygon = undefined;
       let searchObj = {
-        name: searchName + '  ' + moment().format("DD-MM-YYYY HH:mm:ss"),
+        key: searchName + '  ' + moment().format("DD-MM-YYYY HH:mm:ss"),
+        name: searchName,
         timeModified: new Date().getTime(),
         query: query,
         isRecent: true,
-        desc: findApi.convertQuery2String(query),
+        desc: findApi.convertQuery2String(query)
       };
 
       recentSearchList.push(searchObj);
@@ -118,7 +126,8 @@ export default function searchReducer(state = initialState, action) {
         if (recentSearchList.length > 1) {
           let oldQuery = recentSearchList[1];
           let oldDiaChinh = oldQuery.query.diaChinh;
-          hasDiaChinhChange = diaChinh && Object.keys(diaChinh).length > 0 && oldDiaChinh.fullName &&
+          hasDiaChinhChange = diaChinh != undefined && diaChinh.fullName != gui.VI_TRI_HIEN_TAI &&
+              Object.keys(diaChinh).length > 0 && oldDiaChinh.fullName &&
               oldDiaChinh.fullName != diaChinh.fullName;
         } else {
           hasDiaChinhChange = true;
@@ -191,13 +200,16 @@ export default function searchReducer(state = initialState, action) {
 
       log.info("SEARCH_LOAD_SAVED_SEARCH, credential=", cred);
 
+      if (cred.loaiTin == 'ban') {
+
+      }
       let next = state
         .setIn(['form', 'fields', "loaiTin"], cred.loaiTin)
-        .setIn(['form', 'fields', "loaiNhaDat"], cred.loaiNhaDat)
+        .setIn(['form', 'fields', "ban"], cred.ban)
+        .setIn(['form', 'fields', "thue"], cred.thue)
         .setIn(['form', 'fields', "soPhongNguSelectedIdx"], cred.soPhongNguSelectedIdx)
         .setIn(['form', 'fields', "soNhaTamSelectedIdx"], cred.soNhaTamSelectedIdx)
         .setIn(['form', 'fields', "dienTich"], cred.dienTich)
-        .setIn(['form', 'fields', "gia"], cred.gia)
         .setIn(['form', 'fields', "orderBy"], cred.orderBy)
         .setIn(['form', 'fields', "viewport"], cred.viewport)
         .setIn(['form', 'fields', "diaChinh"], cred.diaChinh)
@@ -282,13 +294,26 @@ function buildSearchCredentialFromSavedSearch(query) {
   if (circle && circle.center) {
     center = circle.center;
   }
+  let ban = {};
+  let thue = {};
+  if (loaiTin == 0) {
+    ban.loaiNhaDat = loaiNhaDat || '';
+    ban.gia = RangeUtils.sellPriceRange.rangeVal2Display(giaBETWEEN);
+    thue.loaiNhaDat = '';
+    thue.gia = RangeUtils.BAT_KY_RANGE;
+  } else {
+    ban.loaiNhaDat = '';
+    ban.gia = RangeUtils.BAT_KY_RANGE;
+    thue.loaiNhaDat = loaiNhaDat || '';
+    thue.gia = RangeUtils.sellPriceRange.rangeVal2Display(giaBETWEEN);
+  }
   let ret = {
     loaiTin: loaiTin == 0 ? 'ban' : 'thue',
-    loaiNhaDat: loaiNhaDat || '',
+    ban: ban,
     soPhongNguSelectedIdx: danhMuc.getIdx(danhMuc.SoPhongNgu, soPhongNguGREATER),
     soNhaTamSelectedIdx : danhMuc.getIdx(danhMuc.SoPhongTam, soPhongTamGREATER),
     dienTich: RangeUtils.dienTichRange.rangeVal2Display(dienTichBETWEEN),
-    gia: RangeUtils.sellPriceRange.rangeVal2Display(giaBETWEEN),
+    thue: thue,
     orderBy: orderBy && Object.keys(orderBy).length == 2 ? orderBy.name + orderBy.type : '',
     viewport: viewport,
     diaChinh : diaChinh,

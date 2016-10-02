@@ -67,23 +67,28 @@ class PropertyTypes extends Component {
       return (func == 'search') ? search.form.fields.loaiTin : postAds.loaiTin;
   }
 
-  getLoaiNhaDat() {
+  getLoaiNhaDat(loaiTin) {
       var {func, search, postAds} = this.props;
-      return (func == 'search') ? search.form.fields.loaiNhaDat : postAds.loaiNhaDat;
+      return (func == 'search') ? search.form.fields[loaiTin].loaiNhaDat : postAds.loaiNhaDat;
   }
 
   setLoaiNhaDat(option) {
-      var {func} = this.props;
+      var {func, search} = this.props;
+      let loaiNhaDatVal = this.getKeyByValue(loaiNhaDatValues, option);
       if (func == 'search') {
-          this.props.actions.onSearchFieldChange("loaiNhaDat", this.getKeyByValue(loaiNhaDatValues, option));
+          var loaiTin = this.getLoaiTin();
+          var loaiNhaDatParent = {};
+          Object.assign(loaiNhaDatParent, search.form.fields[loaiTin]);
+          loaiNhaDatParent.loaiNhaDat = loaiNhaDatVal;
+          this.props.actions.onSearchFieldChange(loaiTin, loaiNhaDatParent);
       } else {
-          this.props.actions.onPostAdsFieldChange("loaiNhaDat", this.getKeyByValue(loaiNhaDatValues, option));
+          this.props.actions.onPostAdsFieldChange("loaiNhaDat", loaiNhaDatVal);
       }
   }
 
   getLoaiNhaDatVal() {
       var loaiTin = this.getLoaiTin();
-      var loaiNhaDat = this.getLoaiNhaDat();
+      var loaiNhaDat = this.getLoaiNhaDat(loaiTin);
       loaiNhaDatValues = loaiTin=='ban' ? DanhMuc.getLoaiNhaDatBanValues() : DanhMuc.getLoaiNhaDatThueValues() ;
       var loaiNhaDatVal = this.getValueByKey(loaiNhaDatValues, loaiNhaDat);
       if (!loaiNhaDatVal) {

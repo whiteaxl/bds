@@ -57,7 +57,7 @@ const GooglePlacesAutocomplete = React.createClass({
       enablePoweredByContainer: true,
       predefinedPlaces: [],
       currentLocation: false,
-      currentLocationLabel: 'Vị trí hiện tại',
+      currentLocationLabel: gui.VI_TRI_HIEN_TAI,
       predefinedPlacesAlwaysVisible: false,
     };
   },
@@ -139,8 +139,8 @@ const GooglePlacesAutocomplete = React.createClass({
 
         //this._requestNearby(position.coords.latitude, position.coords.longitude);
         let data = {
-          name: "Vị trí hiện tại",
-          fullName: "Full Vị trí hiện tại",
+          name: gui.VI_TRI_HIEN_TAI,
+          fullName: gui.VI_TRI_HIEN_TAI,
           currentLocation: {
             "lat": position.coords.latitude,
             "lon": position.coords.longitude
@@ -536,6 +536,7 @@ const GooglePlacesAutocomplete = React.createClass({
               value={this.state.text}
               placeholder={this.props.placeholder}
               placeholderTextColor={"white"}
+              selectionColor={'white'}
               onFocus={onFocus ? () => {this._onFocus(); onFocus()} : this._onFocus}
               clearButtonMode="while-editing"
             />

@@ -65,34 +65,9 @@ class Search extends Component {
     super(props);
     StatusBar.setBarStyle('default');
 
-    let {loaiTin, dienTich, gia, ngayDaDang} = this.props.search.form.fields;
-    let initGia = [];
-    Object.assign(initGia, gia);
-    let initDienTich = [];
-    Object.assign(initDienTich, dienTich);
-    let dienTichVal = RangeUtils.dienTichRange.toValRange(initDienTich);
-    let fromDienTich = dienTichVal[0];
-    let toDienTich = dienTichVal[1];
-    if (fromDienTich == -1 || fromDienTich == DanhMuc.BIG) {
-        fromDienTich = '';
-    }
-    if (toDienTich == -1 || toDienTich == DanhMuc.BIG) {
-        toDienTich = '';
-    }
-    let giaStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
-    let giaVal = giaStepValues.toValRange(initGia);
-    let fromGia = giaVal[0];
-    let toGia = giaVal[1];
-    if (fromGia == -1 || fromGia == DanhMuc.BIG) {
-        fromGia = '';
-    } else {
-        fromGia = fromGia / 1000;
-    }
-    if (toGia == -1 || toGia == DanhMuc.BIG) {
-        toGia = '';
-    } else {
-        toGia = toGia / 1000;
-    }
+    let {loaiTin, ngayDaDang} = this.props.search.form.fields;
+    let {initDienTich, fromDienTich, toDienTich} = this._initDienTich();
+    let {initGia, fromGia, toGia} = this._initGia(loaiTin);
     this.state = {
       showMore: false,
       showNgayDaDang: false,
@@ -110,8 +85,47 @@ class Search extends Component {
     };
   }
 
+  _initDienTich() {
+      let {dienTich} = this.props.search.form.fields;
+      let initDienTich = [];
+      Object.assign(initDienTich, dienTich);
+      let dienTichVal = RangeUtils.dienTichRange.toValRange(initDienTich);
+      let fromDienTich = dienTichVal[0];
+      let toDienTich = dienTichVal[1];
+      if (fromDienTich == -1 || fromDienTich == DanhMuc.BIG) {
+          fromDienTich = '';
+      }
+      if (toDienTich == -1 || toDienTich == DanhMuc.BIG) {
+          toDienTich = '';
+      }
+      return {initDienTich: initDienTich, fromDienTich: fromDienTich, toDienTich: toDienTich};
+  }
+
+  _initGia(loaiTin) {
+      let gia = this.props.search.form.fields[loaiTin].gia;
+      let initGia = [];
+      Object.assign(initGia, gia);
+      let giaStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
+      let giaVal = giaStepValues.toValRange(initGia);
+      let fromGia = giaVal[0];
+      let toGia = giaVal[1];
+      if (fromGia == -1 || fromGia == DanhMuc.BIG) {
+          fromGia = '';
+      } else {
+          fromGia = fromGia / 1000;
+      }
+      if (toGia == -1 || toGia == DanhMuc.BIG) {
+          toGia = '';
+      } else {
+          toGia = toGia / 1000;
+      }
+      return {initGia: initGia, fromGia: fromGia, toGia: toGia};
+  }
+
   _onLoaiTinChange(value) {
     this.props.actions.setSearchLoaiTin(value);
+    let {initGia, fromGia, toGia} = this._initGia(value);
+    this.setState({initGia: initGia, fromGia: fromGia, toGia: toGia});
   }
 
   _onPressGiaHandle(){
@@ -165,12 +179,20 @@ class Search extends Component {
       this._scrollView.scrollTo({y: scrollTo});
   }
 
+  _doChangeGia(loaiTin, giaVal) {
+      var parent = {};
+      Object.assign(parent, this.props.search.form.fields[loaiTin]);
+      parent.gia = giaVal;
+      this.props.actions.onSearchFieldChange(loaiTin, parent);
+  }
+
   _onGiaChanged(pickedValue) {
-    let {loaiTin, gia} = this.props.search.form.fields;
+    let {loaiTin} = this.props.search.form.fields;
+    let gia = this.props.search.form.fields[loaiTin].gia;
     let giaStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
     let giaVal = pickedValue.split('_');
     let value = giaStepValues.rangeVal2Display(giaVal);
-    this.props.actions.onSearchFieldChange("gia", value);
+    this._doChangeGia(loaiTin, value);
     var initGia = [];
     Object.assign(initGia, value);
     let fromGia = giaVal[0];
@@ -212,7 +234,8 @@ class Search extends Component {
 
   _getGiaValue() {
     //log.info(this.props.search.form.fields.gia)
-    let {loaiTin, gia} = this.props.search.form.fields;
+    let {loaiTin} = this.props.search.form.fields;
+    let gia = this.props.search.form.fields[loaiTin].gia;
     let giaStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
     let giaVal = giaStepValues.toValRange(gia);
     giaVal.sort((a, b) => this._onArraySort(a, b));
@@ -229,8 +252,9 @@ class Search extends Component {
   }
 
   _getLoaiNhatDatValue() {
-    return DanhMuc.getLoaiNhaDatForDisplay(this.props.search.form.fields.loaiTin ,
-                                               this.props.search.form.fields.loaiNhaDat);
+    let {loaiTin} = this.props.search.form.fields;
+    let loaiNhaDat = this.props.search.form.fields[loaiTin].loaiNhaDat;
+    return DanhMuc.getLoaiNhaDatForDisplay(loaiTin, loaiNhaDat);
   }
   
   _getHuongNhaValue() {
@@ -389,7 +413,8 @@ class Search extends Component {
     log.info("Call Search.onApply");
     this.props.actions.changeLoadingSearchResult(true);
 
-    var {loaiTin, gia, dienTich} = this.props.search.form.fields;
+    var {loaiTin, dienTich} = this.props.search.form.fields;
+    let gia = this.props.search.form.fields[loaiTin].gia;
     let giaStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
     let giaVal = giaStepValues.toValRange(gia);
     giaVal.sort((a, b) => this._onArraySort(a, b));
@@ -399,7 +424,7 @@ class Search extends Component {
     dienTichVal.sort((a,b) => this._onArraySort(a, b));
     let newDienTich = RangeUtils.dienTichRange.rangeVal2Display(dienTichVal);
 
-    this.props.actions.onSearchFieldChange("gia", newGia);
+    this._doChangeGia(loaiTin, newGia);
     this.props.actions.onSearchFieldChange("dienTich", newDienTich);
     this.props.actions.onSearchFieldChange("orderBy", '');
     this.props.actions.onSearchFieldChange("pageNo", 1);
@@ -428,16 +453,23 @@ class Search extends Component {
  }
 
  _handleSearchAction(newOrderBy, newPageNo, newLimit, newGia, newDienTich){
-     var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
+     var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
          radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
          polygon, pageNo, limit, isIncludeCountInResponse} = this.props.search.form.fields;
+     if (newGia) {
+         if (loaiTin == 'ban') {
+             ban.gia = newGia;
+         } else {
+             thue.gia = newGia;
+         }
+     }
      var fields = {
          loaiTin: loaiTin,
-         loaiNhaDat: loaiNhaDat,
+         ban: ban,
+         thue: thue,
          soPhongNguSelectedIdx: soPhongNguSelectedIdx,
          soNhaTamSelectedIdx : soNhaTamSelectedIdx,
          dienTich: newDienTich || dienTich,
-         gia: newGia || gia,
          orderBy: newOrderBy || orderBy,
          viewport: viewport,
          diaChinh: diaChinh,
@@ -460,11 +492,11 @@ class Search extends Component {
   }
 
   onResetFilters() {
-    this.props.actions.onSearchFieldChange("loaiNhaDat", '');
+    this.props.actions.onSearchFieldChange("ban", {loaiNhaDat: '', gia: RangeUtils.BAT_KY_RANGE});
+    this.props.actions.onSearchFieldChange("thue", {loaiNhaDat: '', gia: RangeUtils.BAT_KY_RANGE});
     this.props.actions.onSearchFieldChange("soPhongNguSelectedIdx", 0);
     this.props.actions.onSearchFieldChange("soNhaTamSelectedIdx", 0);
     this.props.actions.onSearchFieldChange("dienTich", RangeUtils.BAT_KY_RANGE);
-    this.props.actions.onSearchFieldChange("gia", RangeUtils.BAT_KY_RANGE);
     this.props.actions.onSearchFieldChange("radiusInKmSelectedIdx", 0);
     this.props.actions.onSearchFieldChange("huongNha", 0);
     this.props.actions.onSearchFieldChange("ngayDaDang", '');
@@ -630,7 +662,8 @@ class Search extends Component {
     }
 
     _onGiaInputChange(index, val) {
-        let {loaiTin, gia} = this.props.search.form.fields;
+        let {loaiTin} = this.props.search.form.fields;
+        let gia = this.props.search.form.fields[loaiTin].gia;
         let rangeStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
         let newGia = [];
         Object.assign(newGia, gia);
@@ -655,7 +688,7 @@ class Search extends Component {
         newGia[1-index] = other;
 
         let value = rangeStepValues.rangeVal2Display(newGia);
-        this.props.actions.onSearchFieldChange("gia", value);
+        this._doChangeGia(loaiTin, value);
         let fromGia = newGia[0];
         let toGia = newGia[1];
         if (fromGia == -1 || fromGia == DanhMuc.BIG) {
@@ -814,7 +847,8 @@ class Search extends Component {
   }
 
   showSoPhongNgu(){
-    var {loaiTin, loaiNhaDat} = this.props.search.form.fields;
+    var {loaiTin} = this.props.search.form.fields;
+    var loaiNhaDat = this.props.search.form.fields[loaiTin].loaiNhaDat;
     var loaiNhaDatKeys = loaiTin ? DanhMuc.LoaiNhaDatThueKey : DanhMuc.LoaiNhaDatBanKey;
       if (loaiNhaDat == loaiNhaDatKeys[0]
       || loaiNhaDat == loaiNhaDatKeys[1]
@@ -832,7 +866,8 @@ class Search extends Component {
   }
 
   showSoNhaTam(){
-      var {loaiTin, loaiNhaDat} = this.props.search.form.fields;
+      var {loaiTin} = this.props.search.form.fields;
+      var loaiNhaDat = this.props.search.form.fields[loaiTin].loaiNhaDat;
       var loaiNhaDatKeys = loaiTin ? DanhMuc.LoaiNhaDatThueKey : DanhMuc.LoaiNhaDatBanKey;
       if (loaiNhaDat == loaiNhaDatKeys[0]
           || loaiNhaDat == loaiNhaDatKeys[1]

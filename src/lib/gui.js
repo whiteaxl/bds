@@ -13,6 +13,7 @@ var gui = {
 	capitalizeFontSize: 13,
 	LIMIT_RECENT_SEARCH : 10,
 	LIMIT_SAVE_SEARCH : 5,
+	VI_TRI_HIEN_TAI: "Vị trí hiện tại",
 
 	//Error msg
 	ERR_LoiKetNoiMayChu : "Lỗi kết nối đến máy chủ!",
@@ -47,7 +48,7 @@ gui.defaultLocation = {
 gui.QUOTA_ITEM = 300;
 gui.MAX_ITEM = 100;
 
-gui.MAX_VIEWABLE_ADS = 15;
+gui.MAX_VIEWABLE_ADS = 20;
 
 gui.LATITUDE_DELTA = 0.08616620000177733;
 gui.LONGITUDE_DELTA = 0.0608263772712121;

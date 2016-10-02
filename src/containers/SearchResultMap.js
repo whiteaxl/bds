@@ -20,7 +20,8 @@ import { Text,
     SegmentedControlIOS,
     PanResponder,
     AlertIOS,
-    StatusBar } from 'react-native';
+    StatusBar,
+    ListView } from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -56,7 +57,17 @@ import Swiper from 'react-native-swiper';
 
 import GiftedSpinner from "../components/GiftedSpinner";
 
+import AdsRow from '../components/search/AdsRow';
+
 var { width, height } = Dimensions.get('window');
+
+var myDs = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+import cfg from "../cfg";
+
+const noCoverUrl = cfg.noCoverUrl;
+
+var imageHeight = 143;
 
 const ASPECT_RATIO = width / (height-110);
 
@@ -76,6 +87,24 @@ const actions = [
   searchActions
 ];
 
+function createMarkerObject(item, duplicate) {
+    let marker = {
+        coordinate: {latitude: item.place.geo.lat, longitude: item.place.geo.lon},
+        price: item.giaFmt,
+        id: item.adsID,
+        loaiTin: item.loaiTin,
+        loaiNhaDat: item.loaiNhaDat,
+        cover: item.image.cover,
+        diaChi: item.place.diaChi,
+        dienTich: item.dienTich,
+        dienTichFmt: item.dienTichFmt,
+        soPhongNguFmt: item.soPhongNguFmt,
+        soTangFmt: item.soTangFmt,
+        duplicate: duplicate
+    };
+    return marker;
+}
+
 function getAllUniquePosAds(listAds) {
     let dupCount = {};
     let markerList = [];
@@ -91,15 +120,7 @@ function getAllUniquePosAds(listAds) {
                 if (markerData.length === 0 || indexOfItem === -1) {
                     dupCount[item.adsID] = 1;
                     markerData.push(item);
-                    let marker = {
-                        coordinate: {latitude: item.place.geo.lat, longitude: item.place.geo.lon},
-                        price: item.giaFmt,
-                        id: item.adsID,
-                        cover: item.image.cover,
-                        diaChi: item.place.diaChi,
-                        dienTich: item.dienTich,
-                        duplicate: dupCount[item.adsID]
-                    };
+                    let marker = createMarkerObject(item, dupCount[item.adsID]);
                     markerList.push(marker);
                     dupMarker[item.adsID] = [marker];
                 } else {
@@ -110,15 +131,7 @@ function getAllUniquePosAds(listAds) {
                         let oldAdsId = oldMarker.id;
                         dupCount[validAdsId] = dupCount[oldAdsId] + 1;
                         markerData[indexOfItem] = item;
-                        let marker = {
-                            coordinate: {latitude: item.place.geo.lat, longitude: item.place.geo.lon},
-                            price: item.giaFmt,
-                            id: item.adsID,
-                            cover: item.image.cover,
-                            diaChi: item.place.diaChi,
-                            dienTich: item.dienTich,
-                            duplicate: dupCount[validAdsId]
-                        };
+                        let marker = createMarkerObject(item, dupCount[validAdsId]);
                         dupMarker[validAdsId] = [];
                         dupMarker[validAdsId] = dupMarker[validAdsId].concat(dupMarker[oldAdsId]);
                         dupMarker[validAdsId].push(marker);
@@ -129,15 +142,7 @@ function getAllUniquePosAds(listAds) {
                     } else {
                         validAdsId = oldMarker.id;
                         dupCount[validAdsId] = dupCount[validAdsId] + 1;
-                        let marker = {
-                            coordinate: {latitude: item.place.geo.lat, longitude: item.place.geo.lon},
-                            price: item.giaFmt,
-                            id: item.adsID,
-                            cover: item.image.cover,
-                            diaChi: item.place.diaChi,
-                            dienTich: item.dienTich,
-                            duplicate: dupCount[validAdsId]
-                        };
+                        let marker = createMarkerObject(item, dupCount[validAdsId]);
                         dupMarker[validAdsId].push(marker);
                         oldMarker.duplicate = dupCount[validAdsId];
                     }
@@ -443,7 +448,13 @@ class SearchResultMap extends Component {
       let bgColor = isLiked ? '#E50064' : '#4A443F';
       let bgStyle = isLiked ? {} : {opacity: 0.55};
       allItems.push(
-          <View style={styles.detailAdsModal} key={i++}>
+          <Swiper style={styles.wrapper} height={imageHeight} key={i++}
+                  onMomentumScrollEnd={(e, state) => {this._onMarkerPress(this.state.mmarker, currentAdsIndex)}}
+                  showsButtons={false} autoplay={false} loop={false} bounces={true}
+                  dot={<View style={[styles.dot, {backgroundColor: 'transparent'}]} />}
+                  activeDot={<View style={[styles.dot, {backgroundColor: 'transparent'}]}/>}
+          >
+          <View style={styles.detailAdsModal}>
             <TouchableOpacity onPress={() => {this._onDetailAdsPress(markerId)}}>
               <Image style={styles.detailAdsModalThumb} source={{uri: `${mmarker.cover}`}}
                      defaultSource={require('../assets/image/no_cover.jpg')}>
@@ -452,7 +463,7 @@ class SearchResultMap extends Component {
                   <View style={styles.detailAdsModalDetail}>
                     <View>
                       <Text style={styles.detailAdsModalPrice}>{mmarker.price}</Text>
-                      <Text style={styles.detailAdsModalText}>{this._getDiaChi(mmarker.diaChi)}</Text>
+                      <Text style={styles.detailAdsModalText}>{this._getDiaChi(mmarker.diaChi)}{this._getMoreInfo(mmarker)}</Text>
                     </View>
                     <View style={[styles.detailAdsModalTextHeartButton, {paddingRight: 18, paddingTop: 9}]}>
                       <MHeartIcon onPress={() => this.onLike(markerId)} color={color} bgColor={bgColor} bgStyle={bgStyle} size={19} />
@@ -462,29 +473,104 @@ class SearchResultMap extends Component {
               </Image>
             </TouchableOpacity>
           </View>
+          </Swiper>
       );
     });
+    if (allItems.length <= 1) {
+        return (
+            <Modal animationDuration={100} style={styles.adsModal} isOpen={this.state.openDetailAdsModal} position={"bottom"}
+                   ref={"detailAdsModal"} isDisabled={false} onPress={() => {this._onDetailAdsPress(this.state.mmarker.id)}}>
+                {/*<Swiper style={styles.wrapper} height={181} index={currentAdsIndex}
+                 onMomentumScrollEnd={(e, state) => {this.onrefreshCurrentAds(state.index)}}
+                 showsButtons={false} autoplay={false} loop={false} bounces={true}
+                 dot={<View style={[styles.dot, {backgroundColor: 'transparent'}]} />}
+                 activeDot={<View style={[styles.dot, {backgroundColor: 'transparent'}]}/>}
+                 >
+                 {allItems}
+                 </Swiper>*/}
+                    {allItems}
+            </Modal>
+        );
+    }
+
+    let ds = myDs.cloneWithRows(allItems);
+    let modalHeight = allItems.length > 2 ? imageHeight*2.25 : imageHeight*2;
     return (
-        <Modal animationDuration={100} style={styles.adsModal} isOpen={this.state.openDetailAdsModal} position={"bottom"}
+        <Modal animationDuration={100} style={[styles.adsModal,{height: modalHeight}]} isOpen={this.state.openDetailAdsModal} position={"bottom"}
                ref={"detailAdsModal"} isDisabled={false} onPress={() => {this._onDetailAdsPress(this.state.mmarker.id)}}>
-            {/*<Swiper style={styles.wrapper} height={181} index={currentAdsIndex}
-                  onMomentumScrollEnd={(e, state) => {this.onrefreshCurrentAds(state.index)}}
-                  showsButtons={false} autoplay={false} loop={false} bounces={true}
-                  dot={<View style={[styles.dot, {backgroundColor: 'transparent'}]} />}
-                  activeDot={<View style={[styles.dot, {backgroundColor: 'transparent'}]}/>}
-          >
-            {allItems}
-          </Swiper>*/}
-          <Swiper style={styles.wrapper} height={181}
-                    onMomentumScrollEnd={(e, state) => {this._onMarkerPress(this.state.mmarker, currentAdsIndex)}}
-                    showsButtons={false} autoplay={false} loop={false} bounces={true}
-                    dot={<View style={[styles.dot, {backgroundColor: 'transparent'}]} />}
-                    activeDot={<View style={[styles.dot, {backgroundColor: 'transparent'}]}/>}
-          >
-              {allItems}
-          </Swiper>
-        </Modal>
-    );
+
+              <ListView
+                  ref={(listView) => { this._listView = listView; }}
+                  dataSource={ds}
+                  renderRow={this.renderRow.bind(this)}
+                  stickyHeaderIndices={[]}
+                  initialListSize={1}
+                  style={styles.searchListView}
+              />
+          </Modal>
+      );
+  }
+
+    _getDiaChi(param){
+        var diaChi = param;
+        var originDiaChi = param;
+        if (diaChi) {
+            var maxDiaChiLength = 25;
+            var index = diaChi.indexOf(',', maxDiaChiLength-5);
+            var length = 0;
+            if (index !== -1 && index <= maxDiaChiLength) {
+                length = index;
+            } else {
+                index = diaChi.indexOf(' ', maxDiaChiLength-5);
+                length = index !== -1 && index <= maxDiaChiLength ? index : maxDiaChiLength;
+            }
+            diaChi = diaChi.substring(0,length);
+            if (diaChi.length < originDiaChi.length) {
+                diaChi = diaChi + '...';
+            }
+        }
+        return diaChi;
+    }
+
+    _getMoreInfo(mmarker) {
+        var loaiTin = mmarker.loaiTin;
+        var loaiNhaDat = mmarker.loaiNhaDat;
+        var dienTich = '';
+        if (mmarker.dienTichFmt) {
+            dienTich = ' · ' + mmarker.dienTichFmt;
+        }
+        var soPhongNgu = '';
+        if (mmarker.soPhongNguFmt) {
+            soPhongNgu = "   " + mmarker.soPhongNguFmt;
+        }
+
+        var soTang = '';
+        if (mmarker.soTangFmt) {
+            soTang = "   " + mmarker.soTangFmt;
+        }
+        var moreInfo = '';
+        var loaiNhaDatKeys = loaiTin ? DanhMuc.LoaiNhaDatThueKey : DanhMuc.LoaiNhaDatBanKey;
+        if (loaiNhaDat == loaiNhaDatKeys[1]) {
+            moreInfo = dienTich + soPhongNgu;
+        }
+        else if ( !loaiTin && ((loaiNhaDat == loaiNhaDatKeys[2])
+            || (loaiNhaDat == loaiNhaDatKeys[3])
+            || (loaiNhaDat == loaiNhaDatKeys[4])) ||
+            loaiTin && ((loaiNhaDat == loaiNhaDatKeys[2])
+            || (loaiNhaDat == loaiNhaDatKeys[3])
+            || (loaiNhaDat == loaiNhaDatKeys[6]))) {
+            moreInfo = dienTich + soTang;
+        }
+        else {
+            moreInfo = dienTich;
+        }
+        return moreInfo;
+    }
+
+  renderRow(rowData) {
+      return (
+          rowData
+      );
   }
 
   isLiked(adsID) {
@@ -833,17 +919,17 @@ class SearchResultMap extends Component {
 
   _refreshListData(newViewport, newPolygon, refreshCallback, newCenter, excludeCount, newDiaChinh, isAppend) {
     console.log("Call SearhResultMap._refreshListData");
-    var {loaiTin, loaiNhaDat, gia, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
+    var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
         polygon, pageNo, limit} = this.props.search.form.fields;
     var isHavingCount = excludeCount ? false : true;
     var fields = {
       loaiTin: loaiTin,
-      loaiNhaDat: loaiNhaDat,
+      ban: ban,
+      thue: thue,
       soPhongNguSelectedIdx: soPhongNguSelectedIdx,
       soNhaTamSelectedIdx : soNhaTamSelectedIdx,
       dienTich: dienTich,
-      gia: gia,
       orderBy: orderBy,
       viewport: newViewport || viewport,
       diaChinh: newDiaChinh || diaChinh,
@@ -945,7 +1031,7 @@ class SearchResultMap extends Component {
           this.props.actions.onSearchFieldChange("viewport", viewport);
           this.props.actions.onPolygonsChange([]);
           this.props.actions.onSearchFieldChange("polygon", []);
-          this.props.actions.onSearchFieldChange("diaChinh", {});
+          this.props.actions.onSearchFieldChange("diaChinh", {fullName: gui.VI_TRI_HIEN_TAI});
           this.props.actions.onSearchFieldChange("pageNo", 1);
 
           let center = {lat: region.latitude, lon: region.longitude};
@@ -1078,27 +1164,6 @@ class SearchResultMap extends Component {
     console.log("On List pressed completed!");
   }
 
-  _getDiaChi(param){
-    var diaChi = param;
-    var originDiaChi = param;
-    if (diaChi) {
-      var maxDiaChiLength = 35;
-      var index = diaChi.indexOf(',', maxDiaChiLength-5);
-      var length = 0;
-      if (index !== -1 && index <= maxDiaChiLength) {
-        length = index;
-      } else {
-        index = diaChi.indexOf(' ', maxDiaChiLength-5);
-        length = index !== -1 && index <= maxDiaChiLength ? index : maxDiaChiLength;
-      }
-      diaChi = diaChi.substring(0,length);
-      if (diaChi.length < originDiaChi.length) {
-        diaChi = diaChi + '...';
-      }
-    }
-    return diaChi;
-  }
-
   _handleStartShouldSetPanResponder(e, gestureState) {
     // Should we become active when the user presses down on the circle?
     return true;
@@ -1199,6 +1264,11 @@ class SearchResultMap extends Component {
 
 // Later on in your styles..
 var styles = StyleSheet.create({
+    searchListView:{
+        marginTop: 0,
+        margin: 0,
+        backgroundColor: 'white'
+    },
   loadingContent: {
     position: 'absolute',
     top: -22,
@@ -1476,7 +1546,7 @@ var styles = StyleSheet.create({
   adsModal: {
     justifyContent: 'center',
     alignItems: 'center',
-    height: 181,
+    height: imageHeight,
     width: width,
     marginVertical: 0,
   },
@@ -1485,13 +1555,13 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'transparent',
-    height: 181,
+    height: imageHeight,
     width: width
   },
   detailAdsModalThumb: {
     justifyContent: 'flex-end',
     alignItems: 'stretch',
-    height: 181,
+    height: imageHeight,
     width: width,
     alignSelf: 'auto'
   },
@@ -1525,7 +1595,7 @@ var styles = StyleSheet.create({
     backgroundColor: 'transparent',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    top: 121,
+    top: 83,
     width: width
   }
 });
