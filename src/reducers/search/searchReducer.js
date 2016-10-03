@@ -105,7 +105,7 @@ export default function searchReducer(state = initialState, action) {
       } else {
         searchName = 'Xung quanh vị trí hiện tại';
       }
-      query.polygon = undefined;
+      // query.polygon = undefined;
       let searchObj = {
         key: searchName + '  ' + moment().format("DD-MM-YYYY HH:mm:ss"),
         name: searchName,

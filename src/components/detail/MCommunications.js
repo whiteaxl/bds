@@ -3,7 +3,11 @@
 import {
     Linking,
     Platform,
+    Clipboard
 } from 'react-native';
+
+import SendSMS from 'react-native-sms';
+var Mailer = require('NativeModules').RNMail;
 
 const communication = {
     phonecall(phoneNumber, prompt) {
@@ -53,7 +57,7 @@ const communication = {
 
         // we use this Boolean to keep track of when we add a new parameter to the querystring
         // it helps us know when we need to add & to separate parameters
-        let valueAdded = false;
+        /*let valueAdded = false;
 
         if(isCorrectType('Array', arguments[0])) {
             let validAddresses = getValidArgumentsFromArray(arguments[0], 'String');
@@ -106,7 +110,19 @@ const communication = {
 
 
 
-        LaunchURL(url);
+        LaunchURL(url);*/
+
+        Mailer.mail({
+            subject: arguments[3] || undefined,
+            recipients: arguments[0] || undefined,
+            ccRecipients: arguments[1] || undefined,
+            bccRecipients: arguments[2] || undefined,
+            body: arguments[4] || undefined
+        }, (error, event) => {
+            if(error) {
+                console.log('Error', 'Could not send mail. Please send a mail to support@example.com');
+            }
+        });
     },
 
     text(phoneNumber = null, body = null) {
@@ -115,7 +131,7 @@ const communication = {
             return;
         }
 
-        let url = 'sms:';
+        /*let url = 'sms:';
 
         if(phoneNumber) {
             if(isCorrectType('String', phoneNumber)) {
@@ -137,7 +153,17 @@ const communication = {
             }
         }
 
-        LaunchURL(url);
+        LaunchURL(url);*/
+
+        SendSMS.send({
+            body: body,
+            recipients: [phoneNumber],
+            successTypes: ['sent', 'queued']
+        }, (completed, cancelled, error) => {
+
+            console.log('SMS Callback: completed: ' + completed + ' cancelled: ' + cancelled + 'error: ' + error);
+
+        });
     },
 
     web(address) {
@@ -151,6 +177,19 @@ const communication = {
             return;
         }
         LaunchURL(address);
+    },
+
+    copy(text) {
+        if(!text) {
+            console.log('Missing text argument');
+            return;
+        }
+        if(!isCorrectType('String', text)) {
+            console.log('text was not provided as a string, it was provided as '
+                + Object.prototype.toString.call(text).slice(8, -1));
+            return;
+        }
+        Clipboard.setString(text);
     }
 };
 

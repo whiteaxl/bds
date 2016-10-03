@@ -19,9 +19,11 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		146834051AC3E58100842450 /* libReact.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 146834041AC3E56700842450 /* libReact.a */; };
+		232E61471DA2D87400D372DB /* libRNMail.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 232E61421DA2D86B00D372DB /* libRNMail.a */; };
 		233B4D571D24539E00545D32 /* libRCTCameraRoll.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 233B4D491D24538300545D32 /* libRCTCameraRoll.a */; };
 		237826981D6254210077EE70 /* libART.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 237826971D6254160077EE70 /* libART.a */; };
 		2387601E1D353812009A9B92 /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 238760121D3537EA009A9B92 /* libRCTImageResizer.a */; };
+		239C9E0E1DA2D07E0045F8B2 /* libSendSMS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 239C9E0D1DA2D0560045F8B2 /* libSendSMS.a */; };
 		23A35FF41D64F22A00247A42 /* libRNSVG.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23A35FF31D64F20400247A42 /* libRNSVG.a */; };
 		23E8F5FA1CF3B8360071148B /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23E8F5EE1CF3B80A0071148B /* libRCTCamera.a */; };
 		23F4FE8C1D121E8D00249AD8 /* libRCTPushNotification.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 23F4FE8B1D121E7600249AD8 /* libRCTPushNotification.a */; };
@@ -117,6 +119,20 @@
 			remoteGlobalIDString = 83CBBA2E1A601D0E00E9B192;
 			remoteInfo = React;
 		};
+		232E61411DA2D86B00D372DB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 232E61271DA2D86B00D372DB /* RNMail.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 46FEDE7F1AFF192F00D3261C;
+			remoteInfo = RNMail;
+		};
+		232E61431DA2D86B00D372DB /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 232E61271DA2D86B00D372DB /* RNMail.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 46FEDE8A1AFF192F00D3261C;
+			remoteInfo = RNMailTests;
+		};
 		233B4D481D24538300545D32 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 233B4D401D24538200545D32 /* RCTCameraRoll.xcodeproj */;
@@ -137,6 +153,13 @@
 			proxyType = 2;
 			remoteGlobalIDString = 5D72D2E81C16249000E22EC1;
 			remoteInfo = RCTImageResizer;
+		};
+		239C9E0C1DA2D0560045F8B2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 239C9DF21DA2D0560045F8B2 /* SendSMS.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 95688E1A1D38251600F72D63;
+			remoteInfo = SendSMS;
 		};
 		23A35FF21D64F20400247A42 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -234,9 +257,11 @@
 		146833FF1AC3E56700842450 /* React.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = React.xcodeproj; path = "../node_modules/react-native/React/React.xcodeproj"; sourceTree = "<group>"; };
 		2320B78F1CAECF9D000861AD /* RCTShareManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCTShareManager.h; path = bds/RCTShareManager.h; sourceTree = "<group>"; };
 		2320B7901CAECF9D000861AD /* RCTShareManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTShareManager.m; path = bds/RCTShareManager.m; sourceTree = "<group>"; };
+		232E61271DA2D86B00D372DB /* RNMail.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNMail.xcodeproj; path = "../node_modules/react-native-mail/RNMail.xcodeproj"; sourceTree = "<group>"; };
 		233B4D401D24538200545D32 /* RCTCameraRoll.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCameraRoll.xcodeproj; path = "../node_modules/react-native/Libraries/CameraRoll/RCTCameraRoll.xcodeproj"; sourceTree = "<group>"; };
 		237826921D6254150077EE70 /* ART.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ART.xcodeproj; path = "../node_modules/react-native/Libraries/ART/ART.xcodeproj"; sourceTree = "<group>"; };
 		238760061D3537EA009A9B92 /* RCTImageResizer.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTImageResizer.xcodeproj; path = "../node_modules/react-native-image-resizer/ios/RCTImageResizer.xcodeproj"; sourceTree = "<group>"; };
+		239C9DF21DA2D0560045F8B2 /* SendSMS.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SendSMS.xcodeproj; path = "../node_modules/react-native-sms/SendSMS.xcodeproj"; sourceTree = "<group>"; };
 		23A35FD91D64F20400247A42 /* RNSVG.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNSVG.xcodeproj; path = "../node_modules/react-native-svg/ios/RNSVG.xcodeproj"; sourceTree = "<group>"; };
 		23E8F5E61CF3B80A0071148B /* RCTCamera.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RCTCamera.xcodeproj"; sourceTree = "<group>"; };
 		23F4FE861D121E7600249AD8 /* RCTPushNotification.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTPushNotification.xcodeproj; path = "../node_modules/react-native/Libraries/PushNotificationIOS/RCTPushNotification.xcodeproj"; sourceTree = "<group>"; };
@@ -282,6 +307,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				232E61471DA2D87400D372DB /* libRNMail.a in Frameworks */,
+				239C9E0E1DA2D07E0045F8B2 /* libSendSMS.a in Frameworks */,
 				23A35FF41D64F22A00247A42 /* libRNSVG.a in Frameworks */,
 				757B28981D63552400C2BEB0 /* libRNCarrierInfo.a in Frameworks */,
 				237826981D6254210077EE70 /* libART.a in Frameworks */,
@@ -399,6 +426,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		232E61281DA2D86B00D372DB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				232E61421DA2D86B00D372DB /* libRNMail.a */,
+				232E61441DA2D86B00D372DB /* RNMailTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
 		233B4D411D24538200545D32 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -419,6 +455,14 @@
 			isa = PBXGroup;
 			children = (
 				238760121D3537EA009A9B92 /* libRCTImageResizer.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		239C9DF31DA2D0560045F8B2 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				239C9E0D1DA2D0560045F8B2 /* libSendSMS.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -517,6 +561,8 @@
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				232E61271DA2D86B00D372DB /* RNMail.xcodeproj */,
+				239C9DF21DA2D0560045F8B2 /* SendSMS.xcodeproj */,
 				23A35FD91D64F20400247A42 /* RNSVG.xcodeproj */,
 				757B287E1D63550900C2BEB0 /* RNCarrierInfo.xcodeproj */,
 				237826921D6254150077EE70 /* ART.xcodeproj */,
@@ -732,8 +778,16 @@
 					ProjectRef = 75B73F651C8166C60088D254 /* RNDeviceInfo.xcodeproj */;
 				},
 				{
+					ProductGroup = 232E61281DA2D86B00D372DB /* Products */;
+					ProjectRef = 232E61271DA2D86B00D372DB /* RNMail.xcodeproj */;
+				},
+				{
 					ProductGroup = 23A35FDA1D64F20400247A42 /* Products */;
 					ProjectRef = 23A35FD91D64F20400247A42 /* RNSVG.xcodeproj */;
+				},
+				{
+					ProductGroup = 239C9DF31DA2D0560045F8B2 /* Products */;
+					ProjectRef = 239C9DF21DA2D0560045F8B2 /* SendSMS.xcodeproj */;
 				},
 			);
 			projectRoot = "";
@@ -800,6 +854,20 @@
 			remoteRef = 146834031AC3E56700842450 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
+		232E61421DA2D86B00D372DB /* libRNMail.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRNMail.a;
+			remoteRef = 232E61411DA2D86B00D372DB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		232E61441DA2D86B00D372DB /* RNMailTests.xctest */ = {
+			isa = PBXReferenceProxy;
+			fileType = wrapper.cfbundle;
+			path = RNMailTests.xctest;
+			remoteRef = 232E61431DA2D86B00D372DB /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
 		233B4D491D24538300545D32 /* libRCTCameraRoll.a */ = {
 			isa = PBXReferenceProxy;
 			fileType = archive.ar;
@@ -819,6 +887,13 @@
 			fileType = archive.ar;
 			path = libRCTImageResizer.a;
 			remoteRef = 238760111D3537EA009A9B92 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		239C9E0D1DA2D0560045F8B2 /* libSendSMS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libSendSMS.a;
+			remoteRef = 239C9E0C1DA2D0560045F8B2 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		23A35FF31D64F20400247A42 /* libRNSVG.a */ = {

@@ -340,22 +340,7 @@ class SearchResultDetail extends Component {
       }
       url = rowData.image.cover;
     }
-    text = 'Tôi đang rất quan tâm tới bất động sản bạn đang rao\n\n'
-        + loaiNhaDat + '\n' + diaChi;
-    if (gia) {
-      text = text + '\n' + gia;
-    }
-    if (dienTich) {
-      text = text + ', ' + dienTich;
-    }
-    if (soPhongNgu) {
-      text = text + '\n' + soPhongNgu;
-    }
-    if (soPhongTam) {
-      text = text + '\n' + soPhongTam;
-    }
-    text = text + '\n\n'
-        + 'xin vui lòng liên hệ lại sớm.';
+    this._createTextMessage(loaiNhaDat, diaChi, gia, dienTich, soPhongNgu, soPhongTam);
 
     var moiGioiTuongTu = [];
     if (rowData.moiGioiTuongTu) {
@@ -469,6 +454,29 @@ class SearchResultDetail extends Component {
 		)
 	}
 
+  _createTextMessage(loaiNhaDat, diaChi, gia, dienTich, soPhongNgu, soPhongTam) {
+    text = 'Tôi đang rất quan tâm tới bất động sản bạn đang rao:\n';
+    if (loaiNhaDat) {
+      text = text + '\n' + loaiNhaDat;
+    }
+    if (diaChi) {
+      text = text + '\n' + diaChi;
+    }
+    if (gia) {
+      text = text + '\n' + gia;
+    }
+    if (dienTich) {
+      text = text + ', ' + dienTich;
+    }
+    if (soPhongNgu) {
+      text = text + '\n' + soPhongNgu;
+    }
+    if (soPhongTam) {
+      text = text + '\n' + soPhongTam;
+    }
+    text = text + '\n\n'
+        + 'xin vui lòng liên hệ lại sớm.';
+  }
   _renderDacDiem(loaiNhaDat, gia, giaM2, soPhongNguVal, soPhongTamVal, dienTich, huongNha, duAn, ngayDangTin, luotXem, diaChi) {
     return (
         <CollapsiblePanel title="Đặc Điểm" mainProps={{marginTop: 8, marginBottom: 8}}
@@ -539,7 +547,7 @@ class SearchResultDetail extends Component {
               </RelandIcon>
             </View>
             <View style={[detailStyles.circleContainer, {backgroundColor: '#A6A6A6'}]} >
-              <RelandIcon onPress={this._onShare.bind(this)}
+              <RelandIcon onPress={this._onCopy.bind(this)}
                           name="copy-link" color={'white'}
                           size={26} iconProps={{style: detailStyles.shareIcon}}>
               </RelandIcon>
@@ -765,11 +773,16 @@ class SearchResultDetail extends Component {
   }
 
   _onEmail(email, loaiNhaDat) {
-    Communications.email([email], null, null, 'RE: ' + loaiNhaDat, text);
+    let subject = loaiNhaDat.replace('Bán', 'Mua');
+    Communications.email([email], null, null, 'V/v: ' + subject, text);
   }
 
   _onSms(phone) {
     Communications.text(phone, text);
+  }
+
+  _onCopy() {
+    Communications.copy(text);
   }
 
   _onChat(ads) {
@@ -948,7 +961,8 @@ class SearchResultDetail extends Component {
   }
 
   _onShare() {
-    ShareManager.share({text: text, url: url});
+    // ShareManager.share({text: text, url: url});
+    ShareManager.share({text: text});
   }
 
   _onLike() {
