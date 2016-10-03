@@ -202,7 +202,7 @@ class SearchResultDetail extends Component {
       isLiked = adsLikes && adsLikes.indexOf(rowData.adsID) > -1;
     }
     return (
-        <SearchResultDetailFooter mobile={mobile} onChat={() => this._onChat(rowData)} userID={userID}
+        <SearchResultDetailFooter mobile={mobile} onChat={() => this._onSms(mobile)} userID={userID}
                                   isLiked={isLiked} ads={rowData} loggedIn={this.props.global.loggedIn}
                                   likeAds={this.props.actions.likeAds}
                                   unlikeAds={this.props.actions.unlikeAds}/>
@@ -340,15 +340,23 @@ class SearchResultDetail extends Component {
       }
       url = rowData.image.cover;
     }
-    text = 'Check out this property | found using the Reland Mobile app\n\n'
-        + loaiNhaDat + '\n' + diaChi + '\n' + gia + ', ' + dienTich;
+    text = 'Tôi đang rất quan tâm tới bất động sản bạn đang rao\n\n'
+        + loaiNhaDat + '\n' + diaChi;
+    if (gia) {
+      text = text + '\n' + gia;
+    }
+    if (dienTich) {
+      text = text + ', ' + dienTich;
+    }
     if (soPhongNgu) {
       text = text + '\n' + soPhongNgu;
     }
     if (soPhongTam) {
       text = text + '\n' + soPhongTam;
     }
-    text = text + '\n';
+    text = text + '\n\n'
+        + 'xin vui lòng liên hệ lại sớm.';
+
     var moiGioiTuongTu = [];
     if (rowData.moiGioiTuongTu) {
       for (var i=0; i < rowData.moiGioiTuongTu.length; i++) {
@@ -430,7 +438,7 @@ class SearchResultDetail extends Component {
                 <View style={detailStyles.lineBorder2} />
                 {this._renderViTri(mapUrl)}
                 <View style={detailStyles.lineBorder2} />
-                {this._renderShareButtons(mobile, email)}
+                {this._renderShareButtons(mobile, email, loaiNhaDat)}
                 <View style={detailStyles.lineBorder2} />
                 {this._renderLienHe(dangBoi, mobile, email)}
                 <View style={detailStyles.lineBorder2} />
@@ -508,7 +516,7 @@ class SearchResultDetail extends Component {
 
   }
 
-  _renderShareButtons(mobile, email) {
+  _renderShareButtons(mobile, email, loaiNhaDat) {
     return (
       <CollapsiblePanel title="Chia Sẻ" mainProps={{marginTop: 8, marginBottom: 8}}
                         collapseProps={{marginTop: 15, marginBottom: 15}}
@@ -525,7 +533,7 @@ class SearchResultDetail extends Component {
               </RelandIcon>
             </View>
             <View style={[detailStyles.circleContainer, {backgroundColor: '#CE0005'}]} >
-              <RelandIcon onPress={() => this._onEmail(email)}
+              <RelandIcon onPress={() => this._onEmail(email, loaiNhaDat)}
                           name="email" color={'white'}
                           size={26} iconProps={{style: detailStyles.shareIcon}}>
               </RelandIcon>
@@ -756,12 +764,12 @@ class SearchResultDetail extends Component {
     Communications.phonecall(phone, true);
   }
 
-  _onEmail(email) {
-    Communications.email([email], null, null, null, null);
+  _onEmail(email, loaiNhaDat) {
+    Communications.email([email], null, null, 'RE: ' + loaiNhaDat, text);
   }
 
   _onSms(phone) {
-    Communications.text(phone, null);
+    Communications.text(phone, text);
   }
 
   _onChat(ads) {
