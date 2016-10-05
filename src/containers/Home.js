@@ -105,10 +105,10 @@ class Home extends Component {
     );
   }
 
-  _renderLoadingView() {
+  _renderLoadingView(placeName) {
     return (
       <View style={styles.fullWidthContainer}>
-        <HomeHeader />
+        <HomeHeader placeName={placeName} />
 
         <View style={[styles.homeDetailInfo, {marginBottom: 64}]}>
           {/*<Text> Loading ... </Text>*/}
@@ -118,14 +118,41 @@ class Home extends Component {
     );
   }
 
+  _getHeaderTitle() {
+    let diaChinh = this.props.search.form.fields.diaChinh;
+
+    //1. Search by diaChinh, then name = diaChinh's name
+    if (this.props.search.map.polygons && this.props.search.map.polygons.length) {
+      //placeName = `[${r.latitude}, ${r.longitude}]`
+      return 'Trong khu vực vẽ tay';
+    }
+
+    if (this.props.search.form.fields.center && Object.keys(this.props.search.form.fields.center).length > 0) {
+      return 'Xung quanh vị trí hiện tại';
+    }
+
+    let placeName;
+    //2. Search by Polygon: name is just center
+    if (diaChinh.tinhKhongDau) {
+      placeName = diaChinh.fullName;
+    } else { //others: banKinh or currentLocation
+      //let geoBox = apiUtils.getBbox(r);
+      //placeName = geoBox.toString()
+      placeName = 'Tìm tất cả theo khung nhìn'
+    }
+
+    return placeName;
+  }
+
   render() {
     log.info("call home.render", this.props.search.collections, this.props.search.homeDataErrorMsg);
+    let placeName = this._getHeaderTitle();
     if (this.props.search.loadingHomeData) {
-      return this._renderLoadingView();
+      return this._renderLoadingView(placeName);
     }
     return (
       <View style={styles.fullWidthContainer}>
-        <HomeHeader />
+        <HomeHeader placeName={placeName} />
 
         <View style={styles.homeDetailInfo}>
           {this.renderContent(this.props.search.collections)}

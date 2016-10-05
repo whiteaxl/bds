@@ -876,16 +876,18 @@ class SearchResultDetail extends Component {
 
   renderTwoNormalProps(prop1, prop2, dotStyle, textStyle) {
     if (prop1 || prop2) {
+      let dotIcon1Style = prop1 ? {} : {backgroundColor: 'transparent'};
+      let dotIcon2Style = prop2 ? {} : {backgroundColor: 'transparent'};
       return (
           <View style={[detailStyles.searchDetailRowAlign, {width: width - 42.5, marginLeft: 20}]}>
             <View style={{flexDirection: 'row'}}>
-              <View style={[detailStyles.dot2, dotStyle]} />
+              <View style={[detailStyles.dot2, dotIcon1Style, dotStyle]} />
               <Text style={[detailStyles.textHalfWidth, textStyle]}>
                 {prop1}
               </Text>
             </View>
             <View style={{flexDirection: 'row'}}>
-              <View style={[detailStyles.dot2, dotStyle]} />
+              <View style={[detailStyles.dot2, dotIcon2Style, dotStyle]} />
               <Text style={[detailStyles.textHalfWidth, textStyle]}>
                 {prop2}
               </Text>

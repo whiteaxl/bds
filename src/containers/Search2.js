@@ -60,7 +60,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-class Search extends Component {
+class Search2 extends Component {
   constructor(props) {
     super(props);
     StatusBar.setBarStyle('default');
@@ -309,7 +309,7 @@ class Search extends Component {
 
     return (
       <View style={myStyles.fullWidthContainer}>
-        <View style={[myStyles.searchFilter, {top: 65}]}>
+        <View style={[myStyles.searchFilter, {top: 25}]}>
 
           <View style={[myStyles.searchFilterButton]}>
             <View style = {{flex:1, flexDirection: 'row', paddingLeft: 5, paddingRight: 5}}>
@@ -393,9 +393,9 @@ class Search extends Component {
           </View>
         </View>
 
-       <View style={myStyles.pageHeader}>
+       {/*<View style={myStyles.pageHeader}>
         <SearchInput placeName={placeName}/>
-       </View>
+       </View>*/}
       </View>
     );
   }
@@ -452,9 +452,9 @@ class Search extends Component {
      return a - b;
  }
 
- _handleSearchAction(newOrderBy, newPageNo, newLimit, newGia, newDienTich, newViewport){
+ _handleSearchAction(newOrderBy, newPageNo, newLimit, newGia, newDienTich){
      var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
-         radiusInKmSelectedIdx, dienTich, orderBy, diaChinh, center, huongNha, ngayDaDang,
+         radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
          polygon, pageNo, limit, isIncludeCountInResponse} = this.props.search.form.fields;
      if (newGia) {
          if (loaiTin == 'ban') {
@@ -471,7 +471,7 @@ class Search extends Component {
          soNhaTamSelectedIdx : soNhaTamSelectedIdx,
          dienTich: newDienTich || dienTich,
          orderBy: newOrderBy || orderBy,
-         viewport: newViewport || undefined,
+         viewport: viewport,
          diaChinh: diaChinh,
          center: center,
          radiusInKmSelectedIdx: radiusInKmSelectedIdx,
@@ -1088,4 +1088,4 @@ var myStyles = StyleSheet.create({
   }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Search);
+export default connect(mapStateToProps, mapDispatchToProps)(Search2);

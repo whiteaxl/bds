@@ -28,7 +28,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import RelandIcon from '../components/RelandIcon';
 import MapView from 'react-native-maps';
 
-import SearchHeader from '../components/SearchHeader';
+import SearchHeader from '../components/SearchHeader2';
 import PriceMarker from '../components/marker/PriceMarker';
 import PriceMarker2 from '../components/marker/PriceMarker2';
 
@@ -302,7 +302,8 @@ class SearchResultMap extends Component {
     let placeName = this._getHeaderTitle();
 
     let allMarkers = [];
-    if (!this.props.loading && (!this.props.search.drawMode || (this.props.search.map.polygons && this.props.search.map.polygons.length > 0))) {
+    if (!this.props.search.drawMode || (!this.props.loading && this.props.search.map.polygons &&
+        this.props.search.map.polygons.length > 0)) {
       for (let i=0; i < viewableList.length; i++) {
         let marker = viewableList[i];
         allMarkers.push(
