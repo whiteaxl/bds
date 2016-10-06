@@ -5,6 +5,7 @@ import { Text, StyleSheet, View, ScrollView, Image, Dimensions, TouchableOpacity
 
 import gui from '../../lib/gui';
 import log from '../../lib/logUtil';
+import utils from '../../lib/utils';
 import LinearGradient from 'react-native-linear-gradient';
 
 import TruliaIcon from '../../components/TruliaIcon';
@@ -31,7 +32,6 @@ export default class HomeCollection extends Component {
     query.limit = gui.MAX_ITEM;
 
     Actions.SearchResultList({type: "reset"});
-
     this.props.searchFromHome(query, () => {});
   }
 
@@ -107,6 +107,7 @@ class ImageItem extends React.Component{
     let bgColor = isLiked ? '#E50064' : '#4A443F';
     let bgStyle = isLiked ? {} : {opacity: 0.55};
     let imageUri = {uri: cover};
+    
     if (noCoverUrl == cover) {
       imageUri = require('../../assets/image/reland_house_large.jpg');
     }

@@ -144,10 +144,17 @@ class Home extends Component {
     return placeName;
   }
 
+  _isTheFirstLoading(recentSearchList){
+    return (recentSearchList && recentSearchList.length <= 0)
+  }
+
   render() {
     log.info("call home.render", this.props.search.collections, this.props.search.homeDataErrorMsg);
     let placeName = this._getHeaderTitle();
-    if (this.props.search.loadingHomeData) {
+
+    let recentSearchList = this.props.search.recentSearchList;
+
+    if (this.props.search.loadingHomeData && this._isTheFirstLoading(recentSearchList)) {
       return this._renderLoadingView(placeName);
     }
     return (
