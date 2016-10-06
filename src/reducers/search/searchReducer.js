@@ -98,12 +98,15 @@ export default function searchReducer(state = initialState, action) {
       let diaChinh = query.diaChinh;
       let polygon = query.polygon;
       let searchName = '';
-      if (diaChinh != undefined && diaChinh.fullName && (diaChinh.fullName != gui.VI_TRI_HIEN_TAI)) {
+      if (diaChinh != undefined && diaChinh.fullName && diaChinh.fullName != undefined
+          && (diaChinh.fullName != gui.VI_TRI_HIEN_TAI)) {
         searchName = diaChinh.fullName;
       } else if (polygon && polygon.length > 0) {
         searchName = 'Trong khu vực vẽ tay';
+        query.diaChinh = {fullName: searchName};
       } else {
         searchName = 'Xung quanh vị trí hiện tại';
+        query.diaChinh = {fullName: searchName};
       }
       // query.polygon = undefined;
       let searchObj = {
@@ -127,7 +130,7 @@ export default function searchReducer(state = initialState, action) {
           let oldQuery = recentSearchList[1];
           let oldDiaChinh = oldQuery.query.diaChinh;
           hasDiaChinhChange = diaChinh != undefined && diaChinh.fullName != gui.VI_TRI_HIEN_TAI &&
-              Object.keys(diaChinh).length > 0 && oldDiaChinh.fullName &&
+              Object.keys(diaChinh).length > 0 && oldDiaChinh != undefined && oldDiaChinh.fullName &&
               oldDiaChinh.fullName != diaChinh.fullName;
         } else {
           hasDiaChinhChange = true;
@@ -220,7 +223,49 @@ export default function searchReducer(state = initialState, action) {
         .setIn(['form', 'fields', "polygon"], cred.polygon)
         .setIn(['form', 'fields', "isIncludeCountInResponse"], cred.isIncludeCountInResponse)
         ;
-      return next;
+
+      if (cred.polygon && cred.polygon.length > 0) {
+        let polygons = ApiUtils.convertPolygonForGUI(cred.polygon);
+        let geoBox = ApiUtils.getPolygonBox(polygons[0]);
+        let viewport = ApiUtils.getViewportByBox(geoBox);
+        return state
+            .setIn(['form', 'fields', "loaiTin"], cred.loaiTin)
+            .setIn(['form', 'fields', "ban"], cred.ban)
+            .setIn(['form', 'fields', "thue"], cred.thue)
+            .setIn(['form', 'fields', "soPhongNguSelectedIdx"], cred.soPhongNguSelectedIdx)
+            .setIn(['form', 'fields', "soNhaTamSelectedIdx"], cred.soNhaTamSelectedIdx)
+            .setIn(['form', 'fields', "dienTich"], cred.dienTich)
+            .setIn(['form', 'fields', "orderBy"], cred.orderBy)
+            .setIn(['form', 'fields', "viewport"], viewport)
+            .setIn(['form', 'fields', "diaChinh"], cred.diaChinh)
+            .setIn(['form', 'fields', "radiusInKmSelectedIdx"], cred.radiusInKmSelectedIdx)
+            .setIn(['form', 'fields', "center"], cred.center)
+            .setIn(['form', 'fields', "huongNha"], cred.huongNha)
+            .setIn(['form', 'fields', "ngayDaDang"], cred.ngayDaDang)
+            .setIn(['form', 'fields', "polygon"], cred.polygon)
+            .setIn(['form', 'fields', "isIncludeCountInResponse"], cred.isIncludeCountInResponse)
+            .setIn(['map', 'polygons'], polygons);
+      } else {
+        return state
+            .setIn(['form', 'fields', "loaiTin"], cred.loaiTin)
+            .setIn(['form', 'fields', "ban"], cred.ban)
+            .setIn(['form', 'fields', "thue"], cred.thue)
+            .setIn(['form', 'fields', "soPhongNguSelectedIdx"], cred.soPhongNguSelectedIdx)
+            .setIn(['form', 'fields', "soNhaTamSelectedIdx"], cred.soNhaTamSelectedIdx)
+            .setIn(['form', 'fields', "dienTich"], cred.dienTich)
+            .setIn(['form', 'fields', "orderBy"], cred.orderBy)
+            .setIn(['form', 'fields', "viewport"], cred.viewport)
+            .setIn(['form', 'fields', "diaChinh"], cred.diaChinh)
+            .setIn(['form', 'fields', "radiusInKmSelectedIdx"], cred.radiusInKmSelectedIdx)
+            .setIn(['form', 'fields', "center"], cred.center)
+            .setIn(['form', 'fields', "huongNha"], cred.huongNha)
+            .setIn(['form', 'fields', "ngayDaDang"], cred.ngayDaDang)
+            .setIn(['form', 'fields', "polygon"], cred.polygon)
+            .setIn(['form', 'fields', "isIncludeCountInResponse"], cred.isIncludeCountInResponse)
+            ;
+      }
+
+      // return next;
     }
 
     case CHANGE_LOADING_HOME_DATA :

@@ -61,6 +61,18 @@ var ApiUtils = {
     return convertedPolygon;
   },
 
+  convertPolygonForGUI(polygon){
+    var convertedPolygon = [];
+
+    polygon.map(function (one) {
+      var lat = one.lat;
+      var lon = one.lon;
+      convertedPolygon.push({latitude: lat, longitude: lon});
+    });
+
+    return [{id: 0, coordinates: convertedPolygon}];
+  },
+
   //lat1, lon1, lat2, lon2
   getRegion: function(geoBox){
     var latitudeDelta = geoBox[2] - geoBox[0];

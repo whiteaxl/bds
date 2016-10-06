@@ -10,7 +10,7 @@ import {Actions} from 'react-native-router-flux';
 
 import gui from '../lib/gui';
 
-import HeaderSearchInput from './HeaderSearchInput';
+import SearchInputExt from './SearchInputExt2';
 
 // Create our component
 var CommonHeader = React.createClass({
@@ -19,7 +19,7 @@ var CommonHeader = React.createClass({
       <View style={mStyles.home}>
       <TruliaIcon onPress={this._onHome}
                   name="arrow-left" color={"white"}
-                  mainProps={{paddingLeft: 20, paddingRight: 17}} size={28} />
+                  mainProps={{paddingLeft: 20, paddingRight: 7}} size={28} />
           {/* <RelandIcon onPress={this._onHome}
         name="close" color="white" size={18}
         mainProps={{flexDirection: 'row', paddingLeft: 20, paddingRight: 17}}
@@ -27,12 +27,12 @@ var CommonHeader = React.createClass({
       </RelandIcon>*/}
       </View>
       <View style={mStyles.text}>
-        <HeaderSearchInput placeName={this.props.placeName} refreshRegion={this.props.refreshRegion}
+        <SearchInputExt placeName={this.props.placeName} refreshRegion={this.props.refreshRegion}
                            onShowMessage={this.props.onShowMessage}/>
       </View>
       <View style={mStyles.search}>
       <TouchableOpacity onPress={this._onSearch} underlayColor="transparent"
-        style={{paddingLeft: 17, paddingRight: 21}}
+        style={{paddingLeft: 7, paddingRight: 21}}
         >
           <Text style={mStyles.titleText}>Bộ lọc</Text>
       </TouchableOpacity>
@@ -74,10 +74,10 @@ var mStyles = StyleSheet.create({
       backgroundColor: gui.mainColor
   },
   text: {
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     position: 'absolute',
-    left:55,
-    right:54
+    left:45,
+    right:44
   },
   titleText: {
       backgroundColor: 'transparent',

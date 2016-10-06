@@ -1060,6 +1060,7 @@ class SearchResultMap extends Component {
         editing: null,
         showMessage: false,
         openDraw: openDraw});
+        this.props.actions.onResetAdsList();
     } else {
       this.setState({
         openDetailAdsModal: false,
@@ -1273,7 +1274,7 @@ var styles = StyleSheet.create({
   loadingContent: {
     position: 'absolute',
     top: -22,
-    left: 80,
+    left: 60,
     alignItems: 'center',
     justifyContent: 'center'
   },
