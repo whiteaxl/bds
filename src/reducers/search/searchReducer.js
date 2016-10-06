@@ -136,7 +136,7 @@ export default function searchReducer(state = initialState, action) {
           hasDiaChinhChange = true;
         }
       }
-      if (state.searchCalledFrom == 'Search' && hasDiaChinhChange) {
+      if (state.searchCalledFrom == 'Search' /*&& hasDiaChinhChange*/) {
         localStorage.setLastSearch(JSON.stringify(searchObj));
       }
       if (query.pageNo == 1) {
