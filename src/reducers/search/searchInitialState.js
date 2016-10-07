@@ -61,6 +61,16 @@ const SearchForm = Record({
             duAnKhongDau : undefined,
             fullName : 'Quận Cầu Giấy, Hà Nội'
         },
+        diaChinhViewport: {
+            northeast: {
+                lat: 21.0594115,
+                lon: 105.8134889
+            },
+            southwest: {
+                lat: 21.0009685,
+                lon: 105.7680415
+            }
+        },
         orderBy: '',
         limit: 200,
         pageNo: 1,

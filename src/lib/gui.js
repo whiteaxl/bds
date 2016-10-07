@@ -16,12 +16,13 @@ var gui = {
 	VI_TRI_HIEN_TAI: "Vị trí hiện tại",
 
 	//Error msg
-	ERR_LoiKetNoiMayChu : "Lỗi kết nối đến máy chủ!",
-	INF_KhongCoKetQua : "Không có kết quả nào!",
+	ERR_LoiKetNoiMayChu : "", //"Lỗi kết nối đến máy chủ!", TODO: temporary change for this error
+	INF_KhongCoKetQua : "Không tìm thấy kết quả nào phù hợp. Hãy nhấn vào nút 'Lọc' để thay đổi điều kiện.",
 	INF_KhongCoGoiYNao : "Không có gợi ý nào!",
 	ERR_MaXacMinhSai : 'Mã xác minh sai!',
 	ERR_dataRequired : 'Chưa nhập ',
 	INFO_userCreatedSuccessfully : 'Bạn đã đăng ký thành công!',
+	INFO_ComingSoon : 'Tính năng đang được phát triển. Sẽ xuất hiện trong vài ngày tới !',
 	ERR_PhoneExisted : 'Số điện thoại đã tồn tại!',
 	ERR_LIKED : "Lỗi! Bài đăng đã lưu từ trước",
 	ERR_UNLIKED : "Lỗi! Bài đăng không tồn tại",
