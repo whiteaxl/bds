@@ -62,7 +62,7 @@ const SearchForm = Record({
             fullName : 'Quận Cầu Giấy, Hà Nội'
         },
         orderBy: '',
-        limit: 100,
+        limit: 200,
         pageNo: 1,
         isIncludeCountInResponse: true,
 

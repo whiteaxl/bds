@@ -149,6 +149,7 @@ class SearchResultDetail extends Component {
     );
   }
   componentWillMount() {
+    this.props.actions.loadHomeData();
     this.fetchData();
   }
   renderLoadingView() {

@@ -831,9 +831,9 @@ class SearchResultMap extends Component {
 
   _renderTotalResultView(){
       console.log("Call SearchResultMap._renderTotalResultView");
-    let {loading, totalCount} = this.props;
+    let {loading, totalCount, allAdsItems} = this.props;
     let {showMessage, mounting} = this.state;
-    let numberOfAds = this._calcLoadedMarkers();
+    let numberOfAds = allAdsItems.length;
     let beginAdsIndex = this._calcBeginAdsIndex();
     let endAdsIndex = this._calcEndAdsIndex();
     let rangeAds = totalCount > gui.MAX_VIEWABLE_ADS ? (endAdsIndex > 0 ? beginAdsIndex + "-" + endAdsIndex : "0") + " / " + totalCount : numberOfAds;
@@ -1274,7 +1274,7 @@ var styles = StyleSheet.create({
   loadingContent: {
     position: 'absolute',
     top: -22,
-    left: 60,
+    left: 55,
     alignItems: 'center',
     justifyContent: 'center'
   },

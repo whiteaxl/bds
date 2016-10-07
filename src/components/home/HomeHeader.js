@@ -1,7 +1,7 @@
 // Import some code we need
 import React, {Component} from 'react';
 
-import {View, Image, StyleSheet} from 'react-native';
+import {View, Image, StyleSheet, TouchableOpacity} from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
 
@@ -15,14 +15,22 @@ import gui from '../../lib/gui';
 var HomeHeader = React.createClass({
     render: function() {
         let logoIcon = require('../../assets/image/logo.png');
+        let locationIcon = require('../../assets/image/location.png');
         return (
             <View style={mStyles.pageHeader}>
                 <View style={mStyles.home}>
-                    <RelandIcon
+                    {/*<RelandIcon
                         name="loc-map" color="white" size={24} onPress={() => this._onMapView()}
                         mainProps={{marginTop: 17, paddingLeft: 18, paddingRight: 16}}
                     >
-                    </RelandIcon>
+                    </RelandIcon>*/}
+                    <TouchableOpacity onPress={() => this._onMapView()} underlayColor="transparent">
+                        <Image
+                            style={mStyles.locationIcon}
+                            resizeMode={Image.resizeMode.cover}
+                            source={locationIcon}
+                        />
+                    </TouchableOpacity>
                 </View>
                 <View style={mStyles.home}>
                     <Image
@@ -60,6 +68,13 @@ var mStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: gui.mainColor
+    },
+    locationIcon: {
+        height: 27,
+        width: 16,
+        marginTop: 0,
+        marginLeft: 18,
+        paddingRight: 16
     },
     logoIcon: {
         height: 21,

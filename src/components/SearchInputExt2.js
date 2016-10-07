@@ -55,10 +55,10 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: gui.searchHeaderBg,
+        backgroundColor: '#166CA5',
         borderRadius: 5,
         marginLeft: 0,
-        marginRight: 35,
+        marginRight: 10,
         height: 30
     },
     textInput : {

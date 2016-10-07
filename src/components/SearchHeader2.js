@@ -19,7 +19,7 @@ var CommonHeader = React.createClass({
       <View style={mStyles.home}>
       <TruliaIcon onPress={this._onHome}
                   name="arrow-left" color={"white"}
-                  mainProps={{paddingLeft: 20, paddingRight: 7}} size={28} />
+                  mainProps={{paddingLeft: 15, paddingRight: 7}} size={28} />
           {/* <RelandIcon onPress={this._onHome}
         name="close" color="white" size={18}
         mainProps={{flexDirection: 'row', paddingLeft: 20, paddingRight: 17}}
@@ -32,9 +32,9 @@ var CommonHeader = React.createClass({
       </View>
       <View style={mStyles.search}>
       <TouchableOpacity onPress={this._onSearch} underlayColor="transparent"
-        style={{paddingLeft: 7, paddingRight: 21}}
+        style={{paddingLeft: 7, paddingRight: 15}}
         >
-          <Text style={mStyles.titleText}>Bộ lọc</Text>
+          <Text style={mStyles.titleText}>Lọc</Text>
       </TouchableOpacity>
       </View>
     </View>
@@ -76,8 +76,8 @@ var mStyles = StyleSheet.create({
   text: {
     backgroundColor: 'transparent',
     position: 'absolute',
-    left:45,
-    right:44
+    left:40,
+    right:40
   },
   titleText: {
       backgroundColor: 'transparent',

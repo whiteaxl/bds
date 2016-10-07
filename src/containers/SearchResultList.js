@@ -20,7 +20,7 @@ import {Actions} from 'react-native-router-flux';
 
 import SearchResultFooter from '../components/SearchResultFooter';
 
-import SearchHeader from '../components/SearchHeader';
+import SearchHeader from '../components/SearchHeader2';
 
 import gui from '../lib/gui';
 
@@ -204,7 +204,7 @@ var myStyles = StyleSheet.create({
     loadingContent: {
         position: 'absolute',
         top: -22,
-        left: 80,
+        left: 55,
         alignItems: 'center',
         justifyContent: 'center'
     },
