@@ -40,7 +40,7 @@ class AdsListView extends React.Component {
     if (myProps.allAdsItems.length === 0 ) {
       return (
         <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
-          <Text style = {gui.styles.defaultText}> {gui.INF_KhongCoKetQua} </Text>
+          <Text style = {[gui.styles.defaultText,{textAlign:'center', fontSize:20}]}> {gui.INF_KhongCoKetQua} </Text>
         </View>
       )
     }

@@ -13,10 +13,12 @@ import * as authActions from '../reducers/auth/authActions';
 
 import RegisterTab from '../components/login/RegisterTab';
 import LoginTab from '../components/login/LoginTab';
+import ComingSoonTab from '../components/login/ComingSoonTab';
 
 import {Map} from 'immutable';
 
 import {Alert} from "react-native";
+import Button from 'react-native-button';
 
 import ScrollableTabView from 'react-native-scrollable-tab-view';
 
@@ -99,24 +101,40 @@ export default class LoginRegister extends React.Component {
       page = this.props.auth.activeRegisterLoginTab;
     }
 
-    return (
-      <ScrollableTabView page={page} initialPage={0}
-        renderTabBar={this.renderTabBar.bind(this)}
-        style={styles.container}
-                         tabBarUnderlineColor={gui.mainColor}
-                         tabBarActiveTextColor={gui.mainColor}
-                         onChangeTab={this.onChangeTab.bind(this)}
-      >
-        <RegisterTab tabLabel="ĐĂNG KÝ" ref="registerTab"
-                     onDidMount={this.onDidMountRegisterTab.bind(this)}
-        />
-        <LoginTab tabLabel="ĐĂNG NHẬP" ref="loginTab"
-                  onLoginSuccess={this.props.onLoginSuccess}
-                  onDidMount={this.onDidMountLoginTab.bind(this)}
-        />
-      </ScrollableTabView>
-    )
+      return (
+        <View style={{flex:1, alignItems:'center', justifyContent:'center',flexDirection: 'column'}}>
+            <Text style = {[gui.styles.defaultText,{textAlign:'center', fontSize:20}]}> {gui.INFO_ComingSoon} </Text>
+        </View>
+      )
   };
+
+/*
+    render(){
+        //let page = this.props.page;
+        let page;
+        if (page == null) {
+            page = this.props.auth.activeRegisterLoginTab;
+        }
+
+        return (
+            <ScrollableTabView page={page} initialPage={0}
+                               renderTabBar={this.renderTabBar.bind(this)}
+                               style={styles.container}
+                               tabBarUnderlineColor={gui.mainColor}
+                               tabBarActiveTextColor={gui.mainColor}
+                               onChangeTab={this.onChangeTab.bind(this)}
+            >
+                <RegisterTab tabLabel="ĐĂNG KÝ" ref="registerTab"
+                             onDidMount={this.onDidMountRegisterTab.bind(this)}
+                />
+                <LoginTab tabLabel="ĐĂNG NHẬP" ref="loginTab"
+                          onLoginSuccess={this.props.onLoginSuccess}
+                          onDidMount={this.onDidMountLoginTab.bind(this)}
+                />
+            </ScrollableTabView>
+        )
+    };
+    */
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginRegister);
@@ -130,7 +148,17 @@ var styles = StyleSheet.create({
         fontSize: 15,
         fontWeight: "bold"
     },
-
+    closeButton: {
+        paddingLeft: 0,
+        fontSize: 20,
+        fontFamily: gui.fontFamily,
+        fontWeight : 'bold',
+        color: 'white',
+        textAlign: 'center',
+        backgroundColor: '#1396E0',
+        borderRadius: 5,
+        width: 100
+    },
     input: {
         fontSize: 15,
         width: 200,

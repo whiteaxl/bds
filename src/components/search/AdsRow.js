@@ -26,13 +26,21 @@ class AdsRow extends React.Component {
     let bgStyle = isLiked ? {} : {opacity: 0.55};
 
     return (
-      <TouchableHighlight underlayColor='transparent' style={{overflow: 'hidden'}} onPress={() => this.onLike(ads)}>
+      <TouchableHighlight underlayColor='transparent' style={{overflow: 'hidden'}} >
         <View style={myStyles.heartButton} >
           <MHeartIcon color={color} bgColor={bgColor} bgStyle={bgStyle} size={22} noAction={true} />
         </View>
       </TouchableHighlight>
     )
   }
+
+  /*
+   <TouchableHighlight underlayColor='transparent' style={{overflow: 'hidden'}} onPress={() => this.onLike(ads)}>
+   <View style={myStyles.heartButton} >
+   <MHeartIcon color={color} bgColor={bgColor} bgStyle={bgStyle} size={22} noAction={true} />
+   </View>
+   </TouchableHighlight>
+  */
 
   isLiked(ads) {
     const {adsLikes} = this.props;

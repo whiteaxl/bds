@@ -482,6 +482,9 @@ class Search extends Component {
          limit: newLimit || limit,
          isIncludeCountInResponse: isIncludeCountInResponse};
 
+     //TODO: fix issue keep viewport of Map when researching, need to update with other fields of state
+     this.props.actions.onSearchFieldChange("viewport", this.props.search.form.fields.diaChinhViewport);
+
      this.props.actions.search(
          fields
          , () => {});

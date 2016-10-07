@@ -76,6 +76,7 @@ class PlacesAutoComplete extends React.Component {
       data.fullName = data.shortName || data.fullName;
 
       this.props.actions.onSearchFieldChange("viewport", data.viewport);
+      this.props.actions.onSearchFieldChange("diaChinhViewport", data.viewport);
       this.props.actions.onSearchFieldChange("center", data.center);
       let diaChinh = {tinhKhongDau: data.tinh, huyenKhongDau: data.huyen,
           xaKhongDau: data.xa, fullName: data.fullName};

@@ -14,6 +14,7 @@ class MHeartIcon extends React.Component{
 
     render() {
         var {onPress, mainProps, color, bgColor, size, noAction, bgStyle} = this.props;
+        onPress = undefined;
         return (
             <View style={mainProps||styles.heartContent}>
                 <View style={styles.heartContent2}>
