@@ -55,7 +55,7 @@ export default class HomeCollection extends Component {
   render() {
     let {title1, title2, data, query} = this.props.collectionData;
 
-    if (!data[0]) {
+    if (!data[0] || (data && data.length< 5)) {
       return (
           <View>{null}</View>
       );
