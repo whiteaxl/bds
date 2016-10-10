@@ -3,7 +3,6 @@
 import AdsRow from './AdsRow';
 import React from 'react';
 import { StyleSheet, ListView, View, Text, Dimensions } from 'react-native';
-import SGListView from 'react-native-sglistview';
 import gui from '../../lib/gui';
 var myDs = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 import log from '../../lib/logUtil';

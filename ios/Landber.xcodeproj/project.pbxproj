@@ -37,7 +37,6 @@
 		758115AE1CA7C14F001D4DBC /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 758115AD1CA7C14F001D4DBC /* FontAwesome.ttf */; };
 		75B73F751C81672D0088D254 /* libRNDeviceInfo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75B73F741C8166C60088D254 /* libRNDeviceInfo.a */; };
 		75D502701D1EDB8100BF7FE5 /* libRCTOrientation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75D502661D1EDAF300BF7FE5 /* libRCTOrientation.a */; };
-		75D9A9BA1CCDB15500CD638E /* libReactCBLite.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 75D9A9B91CCDB0CC00CD638E /* libReactCBLite.a */; };
 		75D9A9BC1CCDB17F00CD638E /* libsqlite3.0.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 75D9A9BB1CCDB17F00CD638E /* libsqlite3.0.tbd */; };
 		75D9A9BE1CCDB18D00CD638E /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75D9A9BD1CCDB18D00CD638E /* Security.framework */; };
 		75D9A9C01CCDB19500CD638E /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 75D9A9BF1CCDB19500CD638E /* CFNetwork.framework */; };
@@ -217,13 +216,6 @@
 			remoteGlobalIDString = 134814201AA4EA6300B7C361;
 			remoteInfo = RCTOrientation;
 		};
-		75D9A9B81CCDB0CC00CD638E /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 75D9A9B41CCDB0CC00CD638E /* ReactCBLite.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = BE8EFD251C0E6C6B00627BBA;
-			remoteInfo = ReactCBLite;
-		};
 		78C398B81ACF4ADC00677621 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 78C398B01ACF4ADC00677621 /* RCTLinking.xcodeproj */;
@@ -277,7 +269,6 @@
 		75B73F651C8166C60088D254 /* RNDeviceInfo.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RNDeviceInfo.xcodeproj; path = "../node_modules/react-native-device-info/RNDeviceInfo.xcodeproj"; sourceTree = "<group>"; };
 		75D502591D1EDAF300BF7FE5 /* RCTOrientation.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTOrientation.xcodeproj; path = "../node_modules/react-native-orientation/iOS/RCTOrientation.xcodeproj"; sourceTree = "<group>"; };
 		75D5026F1D1EDB0900BF7FE5 /* Orientation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Orientation.h; sourceTree = "<group>"; };
-		75D9A9B41CCDB0CC00CD638E /* ReactCBLite.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = ReactCBLite.xcodeproj; path = "../node_modules/react-native-couchbase-lite/ios/ReactCBLite.xcodeproj"; sourceTree = "<group>"; };
 		75D9A9BB1CCDB17F00CD638E /* libsqlite3.0.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.0.tbd; path = usr/lib/libsqlite3.0.tbd; sourceTree = SDKROOT; };
 		75D9A9BD1CCDB18D00CD638E /* Security.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Security.framework; path = System/Library/Frameworks/Security.framework; sourceTree = SDKROOT; };
 		75D9A9BF1CCDB19500CD638E /* CFNetwork.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CFNetwork.framework; path = System/Library/Frameworks/CFNetwork.framework; sourceTree = SDKROOT; };
@@ -322,7 +313,6 @@
 				75D9A9BE1CCDB18D00CD638E /* Security.framework in Frameworks */,
 				75D9A9BC1CCDB17F00CD638E /* libsqlite3.0.tbd in Frameworks */,
 				75F3DF351C575397009B3BDF /* libz.tbd in Frameworks */,
-				75D9A9BA1CCDB15500CD638E /* libReactCBLite.a in Frameworks */,
 				753605FC1CABB6D600E17AEA /* libAirMaps.a in Frameworks */,
 				750484731C9EC50E00730C8B /* libBVLinearGradient.a in Frameworks */,
 				754A44631CF19A3B00B09BFF /* libCBLJSViewCompiler.a in Frameworks */,
@@ -542,14 +532,6 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
-		75D9A9B51CCDB0CC00CD638E /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				75D9A9B91CCDB0CC00CD638E /* libReactCBLite.a */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 		78C398B11ACF4ADC00677621 /* Products */ = {
 			isa = PBXGroup;
 			children = (
@@ -571,7 +553,6 @@
 				75D502591D1EDAF300BF7FE5 /* RCTOrientation.xcodeproj */,
 				23F4FE861D121E7600249AD8 /* RCTPushNotification.xcodeproj */,
 				23E8F5E61CF3B80A0071148B /* RCTCamera.xcodeproj */,
-				75D9A9B41CCDB0CC00CD638E /* ReactCBLite.xcodeproj */,
 				753605EA1CABB6BF00E17AEA /* AirMaps.xcodeproj */,
 				7504846D1C9EC4DE00730C8B /* BVLinearGradient.xcodeproj */,
 				75B73F651C8166C60088D254 /* RNDeviceInfo.xcodeproj */,
@@ -766,10 +747,6 @@
 					ProjectRef = 146833FF1AC3E56700842450 /* React.xcodeproj */;
 				},
 				{
-					ProductGroup = 75D9A9B51CCDB0CC00CD638E /* Products */;
-					ProjectRef = 75D9A9B41CCDB0CC00CD638E /* ReactCBLite.xcodeproj */;
-				},
-				{
 					ProductGroup = 757B287F1D63550900C2BEB0 /* Products */;
 					ProjectRef = 757B287E1D63550900C2BEB0 /* RNCarrierInfo.xcodeproj */;
 				},
@@ -950,13 +927,6 @@
 			fileType = archive.ar;
 			path = libRCTOrientation.a;
 			remoteRef = 75D502651D1EDAF300BF7FE5 /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		75D9A9B91CCDB0CC00CD638E /* libReactCBLite.a */ = {
-			isa = PBXReferenceProxy;
-			fileType = archive.ar;
-			path = libReactCBLite.a;
-			remoteRef = 75D9A9B81CCDB0CC00CD638E /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		78C398B91ACF4ADC00677621 /* libRCTLinking.a */ = {

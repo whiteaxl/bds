@@ -1,7 +1,8 @@
-var ReactCBLite = require('react-native').NativeModules.ReactCBLite;
+//var ReactCBLite = require('react-native').NativeModules.ReactCBLite;
 //var {manager} = require('react-native-couchbase-lite');
 
-var {manager} = require('./relandCB');
+var ReactCBLite = {};
+var manager = function Dummy(){};
 
 import log from "../lib/logUtil";
 import cfg from "../cfg";
@@ -15,16 +16,18 @@ class DBService {
   constructor() {
     log.error("Call LOCAL DB constructor!!!");
 
+    return;
+
     this.adsDesignDocName = "ads";
     this.dbName = 'default';
     this.remoteDbUrl = `http://${cfg.server}:4984/${this.dbName}`;
 
     this.databaseUrl = 'http://admin:321@localhost:5984/';
 
+
     ReactCBLite.init(5984, 'admin', '321', e => {
       log.warn('initialized localDB!');
     });
-
     this.database = new manager(this.databaseUrl, this.dbName);
 
     //subscribe event

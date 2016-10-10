@@ -46,10 +46,6 @@ function mapDispatchToProps(dispatch) {
 import dbService from "../lib/localDB";
 
 
-var {manager} = require('react-native-couchbase-lite');
-var localDbName = 'default';
-var database = new manager('http://admin:321@localhost:5984/', localDbName);
-
 class Profile extends Component {
   constructor() {
     super();

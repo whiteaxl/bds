@@ -23,7 +23,6 @@ import RelandIcon from '../../components/RelandIcon';
 import GiftedSpinner from 'react-native-gifted-spinner';
 
 import log from '../../lib/logUtil';
-import localDB from '../../lib/localDB';
 
 const actions = [
   globalActions,
