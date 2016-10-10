@@ -114,9 +114,9 @@ class App extends React.Component {
         <Scene key="root" hideNavBar={true}
                titleStyle={styles.titleStyle}
         >
-          <Scene key='Launch' component={Launch} initial={true} title="Welcome" />
+          <Scene key='Launch' component={Launch} initial={false} title="Welcome" />
 
-          <Scene key="Home" tabs={true} default="Main" type="replace" tabBarStyle={styles.tabBarStyle}>
+          <Scene key="Home" tabs={true} default="Main" type="replace" initial={true} tabBarStyle={styles.tabBarStyle}>
             <Scene key="Main" title="Trang chủ" iconName={"home-f"} iconSize={26} icon={TabIcon}
                    component={Home}
                    hideNavBar={true} initial={true}/>
