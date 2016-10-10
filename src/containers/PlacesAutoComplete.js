@@ -154,6 +154,7 @@ class PlacesAutoComplete extends React.Component {
         currentLocation={true} // Will add a 'Vị trí Hiện tại' button at the top of the predefined places list
         predefinedPlacesAlwaysVisible={false}
         predefinedPlaces = {predefinedPlaces}
+        enablePoweredByContainer={false}
       />
     );
   }

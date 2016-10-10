@@ -65,11 +65,12 @@ class Search extends Component {
     super(props);
     StatusBar.setBarStyle('default');
 
-    let {loaiTin, ngayDaDang} = this.props.search.form.fields;
+    let {loaiTin, ngayDaDang, huongNha} = this.props.search.form.fields;
     let {initDienTich, fromDienTich, toDienTich} = this._initDienTich();
     let {initGia, fromGia, toGia} = this._initGia(loaiTin);
+    let showMore = ngayDaDang != '' || huongNha != 0;
     this.state = {
-      showMore: false,
+      showMore: showMore,
       showNgayDaDang: false,
       showGia: false,
       showDienTich: false,
