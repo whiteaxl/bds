@@ -249,18 +249,12 @@ class SearchResultDetail extends Component {
     var loaiTin = DanhMuc.getLoaiTinValue(loaiTinVal);
     var loaiNhaDat = loaiTinVal ? DanhMuc.LoaiNhaDatThue[rowData.loaiNhaDat] :  DanhMuc.LoaiNhaDatBan[rowData.loaiNhaDat];
     var diaChi = rowData.place.diaChi;
-    var dienTich = '';
-    dienTich = rowData.dienTichFmt;
+    var dienTich = rowData.dienTichFmt;
 
     var giaVal = rowData.gia;
     var gia = rowData.giaFmt;
-    if (gia) {
-      gia = gia.replace('TỶ','Tỷ');
-    }
-    var giaM2 = rowData.giaM2;
-    if (giaM2) {
-      giaM2 = Math.round(giaM2) + 'tr/m²';
-    }
+    var giaM2 = rowData.giaM2Fmt;
+
     var soTang = rowData.soTang;
     if (soTang) {
       soTang = soTang + ' tầng';
@@ -411,7 +405,7 @@ class SearchResultDetail extends Component {
                 {this.renderTwoNormalProps(huongNhaText, soNgayDaDangTin, {marginTop: 11}, {marginTop: 4, marginBottom: 4})}
                 <View style={[detailStyles.lineBorder2, {marginTop: 4, marginBottom: 8}]} />
                 <View style={detailStyles.chiTietText}>
-                  <Text style={[detailStyles.textTitle, {marginLeft: 0, marginBottom: 16}]}>Chi Tiết</Text>
+                  <Text style={[detailStyles.textTitle, {marginLeft: 0, marginBottom: 2}]}>Chi Tiết</Text>
                   <SummaryText longText={chiTiet}
                                expanded={false}>
                   </SummaryText>
@@ -420,7 +414,7 @@ class SearchResultDetail extends Component {
                 {this._renderStreetView()}
                 <View style={detailStyles.lineBorder2} />
                 {this._renderDacDiem(loaiNhaDat, gia, giaM2, soPhongNguVal, soPhongTamVal, dienTich,
-                    huongNha, duAn, ngayDangTin, luotXem, diaChi)}
+                    huongNha, duAn, ngayDangTin, luotXem, diaChi, rowData.maSo)}
                 <View style={detailStyles.lineBorder2} />
                 {this._renderViTri(mapUrl)}
                 <View style={detailStyles.lineBorder2} />
@@ -478,7 +472,7 @@ class SearchResultDetail extends Component {
     text = text + '\n\n'
         + 'xin vui lòng liên hệ lại sớm.';
   }
-  _renderDacDiem(loaiNhaDat, gia, giaM2, soPhongNguVal, soPhongTamVal, dienTich, huongNha, duAn, ngayDangTin, luotXem, diaChi) {
+  _renderDacDiem(loaiNhaDat, gia, giaM2, soPhongNguVal, soPhongTamVal, dienTich, huongNha, duAn, ngayDangTin, luotXem, diaChi, maSo) {
     return (
         <CollapsiblePanel title="Đặc Điểm" mainProps={{marginTop: 8, marginBottom: 8}}
                           collapseProps={{marginTop: 15, marginBottom: 15}}
@@ -497,6 +491,7 @@ class SearchResultDetail extends Component {
           {this.renderTitleProps("Ngày đăng tin", ngayDangTin, {marginTop: 3, marginBottom: 2.2})}
           {/*this.renderTitleProps("Lượt xem", luotXem, {marginTop: 3, marginBottom: 2.2})*/}
           {this.renderTitleProps("Địa chỉ", diaChi, {marginTop: 3, marginBottom: 2.2})}
+          {this.renderTitleProps("Mã số", maSo, {marginTop: 3, marginBottom: 2.2})}
           <Text style={{fontSize: 5}} />
         </CollapsiblePanel>
     );
