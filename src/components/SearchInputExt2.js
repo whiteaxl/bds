@@ -23,10 +23,12 @@ export default class SearchInputExt2 extends Component {
                         onShowMessage: this.props.onShowMessage})}
                 >
                     <View style={styles.searchContainer}>
-                            <TruliaIcon name="search" size={14} color="white"
+                            {this.props.isHeaderLoading && this.props.isHeaderLoading() ?
+                                <View style={{width: 26}} /> :
+                                <TruliaIcon name="search" size={14} color="white"
                                         mainProps={styles.searchIcon}
                             >
-                            </TruliaIcon>
+                            </TruliaIcon>}
                             <Text style={styles.titleText}> {this.props.placeName}</Text>
                     </View>
                 </TouchableOpacity>

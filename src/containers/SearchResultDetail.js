@@ -720,7 +720,7 @@ class SearchResultDetail extends Component {
             </View>
           <Text style={{fontSize: 5}} />
         </CollapsiblePanel>
-        <View style={detailStyles.lineBorder2} />
+        {/*<View style={detailStyles.lineBorder2} />*/}
       </View>
     );
   }

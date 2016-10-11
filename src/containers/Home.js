@@ -75,11 +75,17 @@ class Home extends Component {
     }
     return collections.map(e => {
       return <HomeCollection key={e.title1} collectionData = {e} searchFromHome={this.props.actions.searchFromHome}
+                             onResetSearch={() => this.onResetSearch()}
                              adsLikes={adsLikes} loggedIn={this.props.global.loggedIn}
                              likeAds={this.props.actions.likeAds}
                              unlikeAds={this.props.actions.unlikeAds} userID={userID}
                              loadHomeData={this.props.actions.loadHomeData}/>
     });
+  }
+
+  onResetSearch() {
+    this.props.actions.onSearchFieldChange("orderBy", '');
+    this.props.actions.onResetAdsList();
   }
 
   renderContent(collections) {
@@ -164,13 +170,43 @@ class Home extends Component {
         <View style={styles.homeDetailInfo}>
           {this.renderContent(this.props.search.collections)}
         </View>
+
+        {this._renderHeaderLoadingView()}
+
       </View>
 		)
 	}
+
+  _renderHeaderLoadingView() {
+    if (this.props.search.loadingHomeData) {
+      return (<View style={styles.resultContainer}>
+        <View style={styles.loadingContent}>
+          <GiftedSpinner color="white" />
+        </View>
+      </View>)
+    }
+  }
 }
 
 
 var styles = StyleSheet.create({
+  loadingContent: {
+    position: 'absolute',
+    top: -23,
+    left: 136,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  resultContainer: {
+    position: 'absolute',
+    top: 64,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    marginVertical: 0,
+    marginBottom: 0,
+    backgroundColor: 'transparent'
+  },
   logoIcon: {
     height: 21,
     width: 99,

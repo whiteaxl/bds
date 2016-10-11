@@ -329,7 +329,8 @@ class SearchResultMap extends Component {
 
         <View style={styles.search}>
           <SearchHeader placeName={placeName} containerForm="SearchResultMap"
-                        refreshRegion={() => this.refreshRegion()} onShowMessage={() => this._onShowMessage()}/>
+                        refreshRegion={() => this.refreshRegion()} onShowMessage={() => this._onShowMessage()}
+                        isHeaderLoading={() => this._isHeaderLoading()}/>
         </View>
 
         <View style={styles.map}>
@@ -437,6 +438,10 @@ class SearchResultMap extends Component {
       </View>
     )
   }
+
+    _isHeaderLoading() {
+        return this.props.loading;
+    }
 
   _renderAdsModal() {
     let {dupMarker} = this.props.allUniquePosAds;
@@ -1166,7 +1171,7 @@ class SearchResultMap extends Component {
 
   _onListPressed() {
     console.log("On List pressed!");
-    Actions.SearchResultList({type: "replace"});
+    Actions.SearchResultList({type: "replace", firstTimeFromMap: true});
     console.log("On List pressed completed!");
   }
 

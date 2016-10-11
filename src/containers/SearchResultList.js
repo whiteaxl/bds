@@ -78,8 +78,10 @@ class SearchResultList extends Component {
     constructor(props) {
         super(props);
         StatusBar.setBarStyle('light-content');
+        let firstTimeFromMap = props.firstTimeFromMap;
         this.state = {
-            showMessage: false
+            showMessage: false,
+            firstTimeFromMap: firstTimeFromMap
         };
     }
 
@@ -117,7 +119,7 @@ class SearchResultList extends Component {
         return placeName;
     }
     _onShowMessage() {
-        this.setState({showMessage: true});
+        this.setState({showMessage: true, firstTimeFromMap: false});
         this._onSetupMessageTimeout();
     }
     _onSetupMessageTimeout() {
@@ -132,7 +134,8 @@ class SearchResultList extends Component {
             <MenuContext style={{ flex : 1 }}>
             <View style={myStyles.fullWidthContainer}>
                 <View style={myStyles.search}>
-                    <SearchHeader placeName={placeName} onShowMessage={() => this._onShowMessage()}/>
+                    <SearchHeader placeName={placeName} onShowMessage={() => this._onShowMessage()}
+                                  isHeaderLoading={() => this._isHeaderLoading()}/>
                 </View>
 
                 <View style={{marginTop: 30, height: Dimensions.get('window').height - 108}}>
@@ -162,9 +165,14 @@ class SearchResultList extends Component {
         this._adsListView._scrollToTop();
     }
 
+    _isHeaderLoading() {
+        let {loading, allAdsItems} = this.props;
+        return loading && allAdsItems.length > 0;
+    }
+
     _renderTotalResultView(){
         let {loading, allAdsItems} = this.props;
-        let {showMessage} = this.state;
+        let {showMessage, firstTimeFromMap} = this.state;
         let numberOfAds = allAdsItems.length;
         let totalCount = this.props.totalCount;
         let rangeAds = totalCount > 0 ? totalCount : numberOfAds;
@@ -173,7 +181,7 @@ class SearchResultList extends Component {
             textValue = "Không tìm thấy kết quả nào. Hãy thay đổi điều kiện tìm kiếm";
         }
         
-        if(loading){
+        if(loading || firstTimeFromMap){
             return (<View style={myStyles.resultContainer}>
                 {/*<Animatable.View animation={showMessage ? "fadeIn" : "fadeOut"}
                                  duration={showMessage ? 500 : 1000}>
@@ -182,7 +190,7 @@ class SearchResultList extends Component {
                     </View>
                 </Animatable.View>*/}
                 <View style={myStyles.loadingContent}>
-                    {allAdsItems.length > 0 ? <GiftedSpinner color="white" /> : null}
+                    {this._isHeaderLoading() ? <GiftedSpinner color="white" /> : null}
                 </View>
             </View>)
         }

@@ -30,7 +30,7 @@ export default class HomeCollection extends Component {
   _onSeeMore() {
     let {query} = this.props.collectionData;
     query.limit = gui.MAX_ITEM;
-
+    this.props.onResetSearch();
     Actions.SearchResultList({type: "reset"});
     this.props.searchFromHome(query, () => {});
   }
