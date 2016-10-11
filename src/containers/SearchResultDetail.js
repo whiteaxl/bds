@@ -149,7 +149,7 @@ class SearchResultDetail extends Component {
     );
   }
   componentWillMount() {
-    this.props.actions.loadHomeData();
+    //this.props.actions.loadHomeData();
     this.fetchData();
   }
   renderLoadingView() {
@@ -435,14 +435,14 @@ class SearchResultDetail extends Component {
                   {moiGioiTuongTu}
                 </CollapsiblePanel>*/}
                 {this._renderPhuongAnTaiChinh(giaVal, loaiTinVal)}
-                <View style={{marginTop: 10.5, alignItems: 'center', justifyContent:'center'}}>
+                {/*<View style={{marginTop: 10.5, alignItems: 'center', justifyContent:'center'}}>
                   <Text style={detailStyles.adsMore}>
                     Khám Phá Thêm
                   </Text>
                   <View style={{width: width, marginTop: 10.5}}>
                     {this.renderContent(this.props.search.collections)}
                   </View>
-                </View>
+                </View>*/}
               </View>
             </View>
           </ScrollView>
@@ -657,6 +657,10 @@ class SearchResultDetail extends Component {
     let interest = 0.12*principal/12;
     let paymentFmt = util.getPriceDisplay(payment, loaiTinVal);
     let interestFmt = util.getPriceDisplay(interest, loaiTinVal);
+
+    paymentFmt = paymentFmt ? paymentFmt + "/THÁNG" : paymentFmt;
+    interestFmt = interestFmt ? interestFmt + "/THÁNG" : interestFmt;
+
     var data = [{
       "name": "",
       "fillColor" : "#1396E0",
@@ -694,6 +698,7 @@ class SearchResultDetail extends Component {
     };
     var chartTitle = 'Tổng';
     var chartTitleBold = util.getPriceDisplay(payment+interest, loaiTinVal);
+    
     return (
       <View>
         <CollapsiblePanel title="Phương Án Tài Chính"
