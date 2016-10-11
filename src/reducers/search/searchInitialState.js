@@ -55,8 +55,8 @@ const SearchForm = Record({
         radiusInKmSelectedIdx: 0,
         center : null , //{lat, lon}
         diaChinh : {
-            tinhKhongDau : "ha-noi",
-            huyenKhongDau : "cau-giay",
+            tinhKhongDau : "HN",
+            huyenKhongDau : "7",
             xaKhongDau : undefined,
             duAnKhongDau : undefined,
             fullName : 'Quận Cầu Giấy, Hà Nội'
