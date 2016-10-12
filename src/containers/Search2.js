@@ -352,15 +352,15 @@ class Search2 extends Component {
 
                 {this._renderDienTich()}
 
+                {this._renderGia()}
+
               {this._renderSoPhongNgu()}
 
               {/*this._renderSoTang()*/}
 
-              {this._renderSoNhaTam()}
+              {/*this._renderSoNhaTam()*/}
 
               {this._renderBanKinhTimKiem()}
-
-                {this._renderGia()}
 
               </View>
 
