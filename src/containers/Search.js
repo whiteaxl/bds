@@ -68,7 +68,8 @@ class Search extends Component {
     let {loaiTin, ngayDaDang, huongNha} = this.props.search.form.fields;
     let {initDienTich, fromDienTich, toDienTich} = this._initDienTich();
     let {initGia, fromGia, toGia} = this._initGia(loaiTin);
-    let showMore = ngayDaDang != '' || huongNha != 0;
+    // let showMore = ngayDaDang != '' || huongNha != 0;
+    let showMore = true;
     this.state = {
       showMore: showMore,
       showNgayDaDang: false,
@@ -140,9 +141,9 @@ class Search extends Component {
 
   _onScrollGia() {
       var {showDienTich} = this.state;
-      var scrollTo = Dimensions.get('window').height/2-210;
+      var scrollTo = Dimensions.get('window').height/2-330;
       if (showDienTich) {
-          scrollTo = scrollTo + 255;
+          scrollTo = scrollTo + 235;
       }
       this._scrollView.scrollTo({y: scrollTo});
   }
@@ -170,12 +171,12 @@ class Search extends Component {
 
   _onScrollNgayDaDang() {
       var {showGia, showDienTich} = this.state;
-      var scrollTo = Dimensions.get('window').height/2-168;
+      var scrollTo = Dimensions.get('window').height/2-258;
       if (showGia) {
-          scrollTo = scrollTo + 255;
+          scrollTo = scrollTo + 235;
       }
       if (showDienTich) {
-          scrollTo = scrollTo + 255;
+          scrollTo = scrollTo + 235;
       }
       this._scrollView.scrollTo({y: scrollTo});
   }
@@ -382,13 +383,15 @@ class Search extends Component {
         </View>
 
           {this.state.toggleState ? <Button onPress={() => dismissKeyboard()}
-                                            style={[myStyles.searchButtonText, {textAlign: 'right', color: gui.mainColor}]}>Xong</Button> : null}
-          <KeyboardSpacer onToggle={(toggleState) => this.onKeyboardToggle.bind(this, toggleState)}/>
+                                            style={[myStyles.searchButtonText2,
+                                            {textAlign: 'right', color: gui.mainColor,
+                                            backgroundColor: gui.separatorLine}]}>Xong</Button> : null}
+          <KeyboardSpacer topSpacing={-40} onToggle={(toggleState) => this.onKeyboardToggle.bind(this, toggleState)}/>
 
         <View style={myStyles.searchButton}>
           <View style={myStyles.searchButtonWrapper}>
             <Button onPress={this.onCancel}
-            style={myStyles.searchButtonText}>Thoát</Button>
+            style={myStyles.searchButtonText}>Hủy</Button>
             <Button onPress={this.onApply.bind(this)}
             style={myStyles.searchButtonText}>Thực hiện</Button>
           </View>
@@ -507,7 +510,7 @@ class Search extends Component {
 
     this.setState({initGia: RangeUtils.BAT_KY_RANGE, initDienTich: RangeUtils.BAT_KY_RANGE, initNgayDaDang: 0,
         fromDienTich: '', toDienTich: '', fromGia: '', toGia: '', inputNgayDaDang: '',
-        showMore: false, showGia: false, showDienTich: false, showNgayDaDang: false});
+        showMore: true, showGia: false, showDienTich: false, showNgayDaDang: false});
   }
 
   _onPropertyTypesPressed() {
@@ -936,6 +939,15 @@ var myStyles = StyleSheet.create({
       fontFamily: 'Open Sans',
       fontWeight : 'normal'
   },
+    searchButtonText2: {
+        margin: 0,
+        padding: 10,
+        paddingRight: 17,
+        color: 'white',
+        fontSize: gui.buttonFontSize,
+        fontFamily: 'Open Sans',
+        fontWeight : 'normal'
+    },
   searchMoreFilterButton: {
     flex: 0.5,
     alignItems: 'stretch',

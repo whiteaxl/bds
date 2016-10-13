@@ -1028,8 +1028,8 @@ class SearchResultMap extends Component {
           var region = {
             latitude: data.currentLocation.lat,
             longitude: data.currentLocation.lon,
-            latitudeDelta: this.state.region.latitudeDelta,
-            longitudeDelta: this.state.region.longitudeDelta
+            latitudeDelta: gui.LATITUDE_DELTA,
+            longitudeDelta: gui.LONGITUDE_DELTA
           };
 
           this.setState({
@@ -1142,19 +1142,19 @@ class SearchResultMap extends Component {
   }
 
   _onSaveSearchPressed() {
-    if (!this.props.loggedIn) {
-      Actions.LoginRegister({page:1});
-    } else {
-      var name = this.props.diaChinhFullName;
-      AlertIOS.prompt('Tên tìm kiếm cần lưu', 'Ví dụ: Gần chỗ làm, gần bệnh viện',
-          [{
-            text: 'Lưu lại',
-            onPress: this._onSaveSearch.bind(this)
-          }, {
-            text: 'Thoát',
-            style: 'cancel'
-          }], 'plain-text', name);
-    }
+    // if (!this.props.loggedIn) {
+    //   Actions.LoginRegister({page:1});
+    // } else {
+    //   var name = this.props.diaChinhFullName;
+    //   AlertIOS.prompt('Tên tìm kiếm cần lưu', 'Ví dụ: Gần chỗ làm, gần bệnh viện',
+    //       [{
+    //         text: 'Lưu lại',
+    //         onPress: this._onSaveSearch.bind(this)
+    //       }, {
+    //         text: 'Thoát',
+    //         style: 'cancel'
+    //       }], 'plain-text', name);
+    // }
   }
 
   _onSaveSearch(name) {

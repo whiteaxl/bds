@@ -68,7 +68,7 @@ var styles = StyleSheet.create({
         textAlign: 'center'
     },
     titleBold: {
-        fontSize: 14,
+        fontSize: 16,
         fontFamily: gui.fontFamily,
         fontWeight: 'bold',
         backgroundColor: 'transparent',

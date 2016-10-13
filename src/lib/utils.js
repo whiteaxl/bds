@@ -47,12 +47,12 @@ util.getPriceDisplay = function (val, loaiTin) {
 
     if (loaiTin===0) { //ban
       if (val < 1000) {
-        return util.roundToTwo(val) + " TRIỆU";
+        return util.roundToTwo(val) + " Triệu";
       }
 
-      return util.roundToTwo(val/1000) + " TỶ";
+      return util.roundToTwo(val/1000) + " Tỷ";
     } else {
-      return util.roundToTwo(val) +  " TRIỆU";
+      return util.roundToTwo(val) +  " Triệu";
     }
   } catch(ex) {
     console.log("Error when getPriceDisplay of " + val, ex)

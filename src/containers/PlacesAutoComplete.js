@@ -79,7 +79,7 @@ class PlacesAutoComplete extends React.Component {
       this.props.actions.onSearchFieldChange("diaChinhViewport", data.viewport);
       this.props.actions.onSearchFieldChange("center", data.center);
       let diaChinh = {tinhKhongDau: data.tinh, huyenKhongDau: data.huyen,
-          xaKhongDau: data.xa, fullName: data.fullName};
+          xaKhongDau: data.xa, duAnKhongDau: data.duAn, fullName: data.fullName};
       this.props.actions.onSearchFieldChange("diaChinh", diaChinh);
     }
 
@@ -117,7 +117,7 @@ class PlacesAutoComplete extends React.Component {
     return (
 
       <GooglePlacesAutocomplete
-        placeholder='Nhập khu vực cần tìm'
+        placeholder='Nhập Tỉnh, Huyện, Xã hoặc tên Dự án'
         minLength={2} // minimum length of text to search
         autoFocus={true}
         fetchDetails={false}

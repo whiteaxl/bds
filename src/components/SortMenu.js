@@ -96,7 +96,8 @@ class SortMenu extends Component {
         log.info("Call SortMenu render");
         var {isDiaDiem} = this.props;
         var orderBy = this.getValueByKey(this.props.search.form.fields.orderBy, isDiaDiem);
-        var orderTypes = isDiaDiem ? orderTypes2 : orderTypes1;
+        // var orderTypes = isDiaDiem ? orderTypes2 : orderTypes1;
+        var orderTypes = orderKeys1;
         if (!orderBy) {
             orderBy = orderTypes[0];
         }
@@ -179,8 +180,10 @@ class SortMenu extends Component {
     getValueByKey(key, isDiaDiem) {
         // var findKey = this._getOrderKey(key);
         var findKey = key;
-        var orderTypes = isDiaDiem ? orderTypes2 : orderTypes1;
-        var orderKeys = isDiaDiem ? orderKeys2 : orderKeys1;
+        // var orderTypes = isDiaDiem ? orderTypes2 : orderTypes1;
+        // var orderKeys = isDiaDiem ? orderKeys2 : orderKeys1;
+        var orderTypes = orderTypes1;
+        var orderKeys = orderKeys1;
         var value = '';
         for (var i = 0; i < orderKeys.length; i++) {
             var orderKey = orderKeys[i];
@@ -195,8 +198,10 @@ class SortMenu extends Component {
     }
 
     getKeyByValue(value, isDiaDiem) {
-        var orderTypes = isDiaDiem ? orderTypes2 : orderTypes1;
-        var orderKeys = isDiaDiem ? orderKeys2 : orderKeys1;
+        // var orderTypes = isDiaDiem ? orderTypes2 : orderTypes1;
+        // var orderKeys = isDiaDiem ? orderKeys2 : orderKeys1;
+        var orderTypes = orderTypes1;
+        var orderKeys = orderKeys1;
         var key = '';
         for (var i = 0; i < orderTypes.length; i++) {
             var orderType = orderTypes[i];

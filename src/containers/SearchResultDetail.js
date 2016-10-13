@@ -652,9 +652,9 @@ class SearchResultDetail extends Component {
     let interest = 0.12*principal/12;
     let paymentFmt = util.getPriceDisplay(payment, loaiTinVal);
     let interestFmt = util.getPriceDisplay(interest, loaiTinVal);
-
-    paymentFmt = paymentFmt ? paymentFmt + "/THÁNG" : paymentFmt;
-    interestFmt = interestFmt ? interestFmt + "/THÁNG" : interestFmt;
+    //
+    // paymentFmt = paymentFmt ? paymentFmt + "/Tháng" : paymentFmt;
+    // interestFmt = interestFmt ? interestFmt + "/Tháng" : interestFmt;
 
     var data = [{
       "name": "",
@@ -691,8 +691,9 @@ class SearchResultDetail extends Component {
         fontWeight: 'normal'
       }
     };
-    var chartTitle = 'Tổng';
     var chartTitleBold = util.getPriceDisplay(payment+interest, loaiTinVal);
+    var chartTitle = chartTitleBold.substring(chartTitleBold.indexOf(' ') + 1) + '/Tháng';
+    chartTitleBold = chartTitleBold.substring(0, chartTitleBold.indexOf(' '));
     
     return (
       <View>
@@ -713,9 +714,9 @@ class SearchResultDetail extends Component {
                     chartTitleBold={chartTitleBold}
                 />
               </View>
-              <View style={{paddingLeft: 8, paddingTop:2}}>
-                {this._renderMoneyLine("Gốc", paymentFmt, '#23B750')}
-                {this._renderMoneyLine("Lãi", interestFmt, '#EA9409')}
+              <View style={{paddingLeft: 0, paddingTop:2}}>
+                {this._renderMoneyLine("Tiền gốc trả hàng tháng", paymentFmt, '#23B750')}
+                {this._renderMoneyLine("Tiền lãi trả hàng tháng", interestFmt, '#EA9409')}
               </View>
             </View>
           <Text style={{fontSize: 5}} />
@@ -731,7 +732,7 @@ class SearchResultDetail extends Component {
           <View style={[detailStyles.dot3, {borderColor: dotColor}]}>
           </View>
           <View style={{flexDirection:'column', marginTop: 8, marginBottom: 8}}>
-            <Text style={{fontSize: 14, fontFamily: gui.fontFamily, fontWeight: 'bold'}}>
+            <Text style={{fontSize: 13, fontFamily: gui.fontFamily, fontWeight: 'bold'}}>
               {value}
             </Text>
             <Text style={{fontSize: 12, fontFamily: gui.fontFamily, color: '#9C9C9C'}}>

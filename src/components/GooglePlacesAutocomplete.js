@@ -204,8 +204,8 @@ const GooglePlacesAutocomplete = React.createClass({
       this._abortRequests();
 
       this.setState({
-        //text: rowData.fullName
-        text: rowData.shortName
+        text: rowData.fullName
+        // text: rowData.shortName
       });
 
       delete rowData.isLoading;
@@ -217,7 +217,7 @@ const GooglePlacesAutocomplete = React.createClass({
       this._enableRowLoader(rowData);
 
       this.setState({
-        text: rowData.description,
+        text: rowData.fullName,
       });
       this.triggerBlur(); // hide keyboard but not the results
 
@@ -227,7 +227,7 @@ const GooglePlacesAutocomplete = React.createClass({
 
     } else {
       this.setState({
-        text: rowData.description,
+        text: rowData.fullName,
       });
 
       this._onBlur();
