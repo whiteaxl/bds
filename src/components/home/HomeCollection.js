@@ -5,10 +5,8 @@ import { Text, StyleSheet, View, ScrollView, Image, Dimensions, TouchableOpacity
 
 import gui from '../../lib/gui';
 import log from '../../lib/logUtil';
-import utils from '../../lib/utils';
-import LinearGradient from 'react-native-linear-gradient';
 
-import TruliaIcon from '../../components/TruliaIcon';
+import LinearGradient from 'react-native-linear-gradient';
 
 import DanhMuc from '../../assets/DanhMuc';
 
@@ -55,7 +53,7 @@ export default class HomeCollection extends Component {
   render() {
     let {title1, title2, data, query} = this.props.collectionData;
 
-    if (!data[0] || (data && data.length< 5)) {
+    if (!data[0]) {
       return (
           <View>{null}</View>
       );
@@ -100,7 +98,7 @@ export default class HomeCollection extends Component {
 
 class ImageItem extends React.Component{
   render() {
-    let {cover, giaFmt, khuVuc} = this.props.ads;
+    let {adsID, cover, giaFmt, khuVuc} = this.props.ads;
     let detail = this.getMoreInfo(this.props.ads);
     let isLiked = this.isLiked();
     let color = isLiked ? '#A2A7AD' : 'white';
@@ -111,9 +109,14 @@ class ImageItem extends React.Component{
     if (noCoverUrl == cover) {
       imageUri = require('../../assets/image/reland_house_large.jpg');
     }
+
+    if (!adsID || adsID.length ==0 || adsID == 'EMPTY'){
+      imageUri = require('../../assets/image/no_cover_home.jpg');
+    }
+
     return (
       <Image style={[styles.imgItem]} resizeMode = {'cover'}
-             source={{uri: cover}} defaultSource={require('../../assets/image/no_cover.jpg')}>
+             source={imageUri} defaultSource={require('../../assets/image/no_cover.jpg')}>
 
         <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.55)']}
                         style={styles.linearGradient2}>
