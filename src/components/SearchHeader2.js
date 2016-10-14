@@ -19,7 +19,7 @@ var CommonHeader = React.createClass({
       <View style={mStyles.home}>
       <TruliaIcon onPress={this._onHome}
                   name="arrow-left" color={"white"}
-                  mainProps={{paddingLeft: 15, paddingRight: 7}} size={28} />
+                  mainProps={{paddingLeft: 20, paddingRight: 12}} size={28} />
           {/* <RelandIcon onPress={this._onHome}
         name="close" color="white" size={18}
         mainProps={{flexDirection: 'row', paddingLeft: 20, paddingRight: 17}}
@@ -76,7 +76,7 @@ var mStyles = StyleSheet.create({
   text: {
     backgroundColor: 'transparent',
     position: 'absolute',
-    left:40,
+    left:50,
     right:40
   },
   titleText: {

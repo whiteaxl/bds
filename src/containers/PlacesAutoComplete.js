@@ -61,6 +61,7 @@ class PlacesAutoComplete extends React.Component {
     this.props.actions.onSearchFieldChange("viewport", {});
     this.props.actions.onPolygonsChange([]);
     this.props.actions.onSearchFieldChange("polygon", []);
+    this.props.actions.onSearchFieldChange("orderBy", '');
 
     if (data.isRecent || data.isSaveSearch) {
       this.props.actions.loadSavedSearch(data);

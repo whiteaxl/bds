@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import * as globalActions from '../reducers/global/globalActions';
 import * as searchActions from '../reducers/search/searchActions';
 import * as chatActions from '../reducers/chat/chatActions';
-
+import CommonUtils from '../lib/CommonUtils';
 
 import {Map} from 'immutable';
 
@@ -117,13 +117,18 @@ class SearchResultDetail extends Component {
       this.props.actions.getDetail(
           {'adsID' : this.props.adsID}
           , (data) => {
-            this.refreshRowData(data.ads)
+            this._doRefreshRowData(data.ads)
           });
     }
     else {
-      dbService.getAds(this.props.adsID, this.refreshRowData.bind(this));
+      dbService.getAds(this.props.adsID, this._doRefreshRowData.bind(this));
     }
   }
+
+  _doRefreshRowData(ads) {
+    setTimeout(() => {this.refreshRowData(ads)}, 100);
+  }
+
   refreshRowData(ads) {
     navigator.geolocation.getCurrentPosition(
         (position) => {
@@ -249,7 +254,16 @@ class SearchResultDetail extends Component {
     var loaiTin = DanhMuc.getLoaiTinValue(loaiTinVal);
     var loaiNhaDat = loaiTinVal ? DanhMuc.LoaiNhaDatThue[rowData.loaiNhaDat] :  DanhMuc.LoaiNhaDatBan[rowData.loaiNhaDat];
     var diaChi = rowData.place.diaChi;
+    var dacDiemValues = [];
+    dacDiemValues.push(loaiNhaDat);
+
     var dienTich = rowData.dienTichFmt;
+    if (dienTich == 'Không rõ') {
+      dienTich = '';
+    }
+    if (dienTich) {
+      dacDiemValues.push(dienTich);
+    }
 
     var giaVal = rowData.gia;
     var gia = rowData.giaFmt;
@@ -259,18 +273,8 @@ class SearchResultDetail extends Component {
     if (soTang) {
       soTang = soTang + ' tầng';
     }
-    var huongNha = DanhMuc.HuongNha[rowData.huongNha];
-    var huongNhaText = '';
-    if (rowData.huongNha) {
-      huongNhaText = "Hướng " + huongNha;
-    }
     var duAn = rowData.duAn;
     var luotXem = rowData.luotXem;
-    var soPhongNguVal = rowData.soPhongNgu;
-    var soPhongNgu = soPhongNguVal;
-    if (soPhongNgu) {
-      soPhongNgu = soPhongNgu + ' phòng ngủ';
-    }
     var soPhongTamVal = rowData.soPhongTam;
     var soPhongTam = soPhongTamVal;
     if (soPhongTam) {
@@ -279,9 +283,44 @@ class SearchResultDetail extends Component {
 
     var isChungCu = rowData.loaiNhaDat == 1;
     let soTangOrNhaTam = isChungCu ? soPhongTam : soTang;
+    if (soTangOrNhaTam) {
+      dacDiemValues.push(soTangOrNhaTam);
+    }
+
+    var soPhongNguVal = rowData.soPhongNgu;
+    var soPhongNgu = soPhongNguVal;
+    if (soPhongNgu) {
+      soPhongNgu = soPhongNgu + ' phòng ngủ';
+    }
+    if (soPhongNgu) {
+      dacDiemValues.push(soPhongNgu);
+    }
+
+    var huongNha = DanhMuc.HuongNha[rowData.huongNha];
+    var huongNhaText = '';
+    if (rowData.huongNha) {
+      huongNhaText = "Hướng " + huongNha;
+    }
+    if (huongNhaText) {
+      dacDiemValues.push(huongNhaText);
+    }
 
     var ngayDangTin = rowData.ngayDangTinFmt;
     var soNgayDaDangTin = rowData.soNgayDaDangTinFmt;
+    if (soNgayDaDangTin) {
+      dacDiemValues.push(soNgayDaDangTin);
+    }
+
+    var dacDiemItems = [];
+    for (var i = 0; i<dacDiemValues.length; i = i+2) {
+      var one = dacDiemValues[i];
+      var other = '';
+      if (i < dacDiemValues.length-1) {
+        other = dacDiemValues[i+1];
+      }
+      var item = this.renderTwoNormalProps(one, other, {marginTop: 11}, {marginTop: 4, marginBottom: 4}, 'prop_' + i);
+      dacDiemItems.push(item);
+    }
 
     var chiTiet = rowData.chiTiet;
     var dangBoi = '';
@@ -310,7 +349,7 @@ class SearchResultDetail extends Component {
           <View style={detailStyles.slide} key={"img"+(imageIndex++)}>
             <TouchableHighlight onPress={imagePreviewAction} underlayColor="transparent" >
             <Image style={detailStyles.imgItem}
-               source={imageUri} defaultSource={require('../assets/image/no_cover.jpg')}>
+               source={imageUri} defaultSource={CommonUtils.getNoCoverImage()}>
             </Image>
             </TouchableHighlight>
           </View>
@@ -327,7 +366,7 @@ class SearchResultDetail extends Component {
           <View style={detailStyles.slide} key={"img"+(imageIndex)}>
             <TouchableHighlight onPress={imagePreviewAction} underlayColor="transparent" >
             <Image style={detailStyles.imgItem}
-               source={imageUri} defaultSource={require('../assets/image/no_cover.jpg')}>
+               source={imageUri} defaultSource={CommonUtils.getNoCoverImage()}>
             </Image>
             </TouchableHighlight>
           </View>
@@ -400,9 +439,7 @@ class SearchResultDetail extends Component {
                   </Text>
                 </View>
                 <View style={[detailStyles.lineBorder, {marginBottom: 4}]} />
-                {this.renderTwoNormalProps(loaiNhaDat, dienTich, {marginTop: 11}, {marginTop: 4, marginBottom: 4})}
-                {this.renderTwoNormalProps(soTangOrNhaTam, soPhongNgu, {marginTop: 12}, {marginTop: 4, marginBottom: 4})}
-                {this.renderTwoNormalProps(huongNhaText, soNgayDaDangTin, {marginTop: 11}, {marginTop: 4, marginBottom: 4})}
+                {dacDiemItems}
                 <View style={[detailStyles.lineBorder2, {marginTop: 4, marginBottom: 8}]} />
                 <View style={detailStyles.chiTietText}>
                   <Text style={[detailStyles.textTitle, {marginLeft: 0, marginBottom: 2}]}>Chi Tiết</Text>
@@ -876,12 +913,12 @@ class SearchResultDetail extends Component {
 
   }
 
-  renderTwoNormalProps(prop1, prop2, dotStyle, textStyle) {
+  renderTwoNormalProps(prop1, prop2, dotStyle, textStyle, key) {
     if (prop1 || prop2) {
       let dotIcon1Style = prop1 ? {} : {backgroundColor: 'transparent'};
       let dotIcon2Style = prop2 ? {} : {backgroundColor: 'transparent'};
       return (
-          <View style={[detailStyles.searchDetailRowAlign, {width: width - 42.5, marginLeft: 20}]}>
+          <View key={key} style={[detailStyles.searchDetailRowAlign, {width: width - 42.5, marginLeft: 20}]}>
             <View style={{flexDirection: 'row'}}>
               <View style={[detailStyles.dot2, dotIcon1Style, dotStyle]} />
               <Text style={[detailStyles.textHalfWidth, textStyle]}>

@@ -65,6 +65,8 @@ var myDs = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 import cfg from "../cfg";
 
+import CommonUtils from '../lib/CommonUtils';
+
 const noCoverUrl = cfg.noCoverUrl;
 
 var imageHeight = 143;
@@ -467,7 +469,7 @@ class SearchResultMap extends Component {
           <View style={styles.detailAdsModal}>
             <TouchableOpacity onPress={() => {this._onDetailAdsPress(markerId)}}>
               <Image style={styles.detailAdsModalThumb} source={{uri: `${mmarker.cover}`}}
-                     defaultSource={require('../assets/image/no_cover.jpg')}>
+                     defaultSource={CommonUtils.getNoCoverImage()}>
                 <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
                                 style={styles.detailAdsModalLinearGradient}>
                   <View style={styles.detailAdsModalDetail}>
@@ -546,7 +548,7 @@ class SearchResultMap extends Component {
         var loaiTin = mmarker.loaiTin;
         var loaiNhaDat = mmarker.loaiNhaDat;
         var dienTich = '';
-        if (mmarker.dienTichFmt) {
+        if (mmarker.dienTichFmt && mmarker.dienTichFmt != 'Không rõ') {
             dienTich = ' · ' + mmarker.dienTichFmt;
         }
         var soPhongNgu = '';
@@ -847,8 +849,18 @@ class SearchResultMap extends Component {
     let endAdsIndex = this._calcEndAdsIndex();
     let rangeAds = totalCount > gui.MAX_VIEWABLE_ADS ? (endAdsIndex > 0 ? beginAdsIndex + "-" + endAdsIndex : "0") + " / " + totalCount : numberOfAds;
     let textValue = "Đang hiển thị từ " + rangeAds + " kết quả phù hợp";
+    let textNotFound2 = "";
+    let marginTop = 0;
+    let msgFontSize = gui.capitalizeFontSize;
+    let msgFontWeight = 'normal';
+    let msgColor = 'black';
     if (numberOfAds == 0) {
-      textValue = "Không tìm thấy kết quả nào. Hãy thay đổi điều kiện tìm kiếm";
+      textValue = gui.INF_KhongCoKetQua;
+      textNotFound2 = gui.INF_KhongCoKetQua2;
+      marginTop = 5*Dimensions.get('window').height/23;
+      msgFontSize = gui.normalFontSize;
+      msgFontWeight = '600';
+      msgColor = '#6E6F71';
     } else if (totalCount == 0 || (totalCount == numberOfAds && totalCount <= gui.MAX_VIEWABLE_ADS)) {
       textValue = "Đang hiển thị " + rangeAds + " kết quả phù hợp";
     }
@@ -871,8 +883,9 @@ class SearchResultMap extends Component {
     return (<View style={styles.resultContainer}>
       <Animatable.View animation={showMessage ? "fadeIn" : "fadeOut"}
                        duration={showMessage ? 500 : 3000}>
-        <View style={[styles.resultText]}>
-            <Text style={styles.resultIcon}>  {textValue} </Text>
+        <View style={[styles.resultText, {marginTop: marginTop}]}>
+            <Text style={[styles.resultIcon, {fontSize:msgFontSize, fontWeight: msgFontWeight, color: msgColor}]}>  {textValue} </Text>
+            {textNotFound2 ? <Text style={[styles.resultIcon, {fontSize:msgFontSize, color: '#6B6F6E'}]}>  {textNotFound2} </Text> : null}
         </View>
       </Animatable.View>
     </View>)
@@ -1283,7 +1296,7 @@ var styles = StyleSheet.create({
   loadingContent: {
     position: 'absolute',
     top: -22,
-    left: 55,
+    left: 65,
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -1459,7 +1472,7 @@ var styles = StyleSheet.create({
   resultText: {
     width: width,
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     backgroundColor: 'white',
     opacity: 0.85
   },

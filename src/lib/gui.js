@@ -17,7 +17,8 @@ var gui = {
 
 	//Error msg
 	ERR_LoiKetNoiMayChu : "", //"Lỗi kết nối đến máy chủ!", TODO: temporary change for this error
-	INF_KhongCoKetQua : "Không tìm thấy kết quả nào phù hợp. Hãy nhấn vào nút 'Lọc' để thay đổi điều kiện.",
+	INF_KhongCoKetQua : "Không tìm thấy kết quả nào phù hợp.",
+	INF_KhongCoKetQua2 : "Hãy zoom nhỏ lại, di chuyển bản đồ hoặc nhấn vào nút \"Lọc\" để thay đổi điều kiện",
 	INF_KhongCoGoiYNao : "Không có gợi ý nào!",
 	ERR_MaXacMinhSai : 'Mã xác minh sai!',
 	ERR_dataRequired : 'Chưa nhập ',

@@ -57,8 +57,9 @@ var styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center',
-        width: Dimensions.get('window').width,
-        marginTop: 10
+        width: Dimensions.get('window').width-40,
+        marginTop: 10,
+        marginLeft: 40
     },
     input: {
         fontSize: gui.normalFontSize,

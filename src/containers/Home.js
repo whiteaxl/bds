@@ -61,8 +61,11 @@ class Home extends Component {
   componentWillMount() {
     log.info("call home.componentDidMount");
     StatusBar.setBarStyle('light-content');
-
-    this.props.actions.loadHomeData();
+    if (this._isTheFirstLoading()) {
+      this.props.actions.loadHomeData();
+    } else {
+      setTimeout(() => this.props.actions.loadHomeData(), 100);
+    }
   }
 
   renderCollections(collections) {
@@ -150,7 +153,8 @@ class Home extends Component {
     return placeName;
   }
 
-  _isTheFirstLoading(recentSearchList){
+  _isTheFirstLoading(){
+    let recentSearchList = this.props.search.recentSearchList;
     return (recentSearchList && recentSearchList.length <= 0)
   }
 
@@ -158,9 +162,7 @@ class Home extends Component {
     log.info("call home.render", this.props.search.collections, this.props.search.homeDataErrorMsg);
     let placeName = this._getHeaderTitle();
 
-    let recentSearchList = this.props.search.recentSearchList;
-
-    if (this.props.search.loadingHomeData && this._isTheFirstLoading(recentSearchList)) {
+    if (this.props.search.loadingHomeData && this._isTheFirstLoading()) {
       return this._renderLoadingView(placeName);
     }
     return (

@@ -13,7 +13,12 @@ class AdsListView extends React.Component {
     super(props);
   }
   _scrollToTop() {
-    this._listView.scrollTo({y: 0});
+    this._scrollTo(0);
+  }
+  _scrollTo(pos) {
+    if (this._listView) {
+      this._listView.scrollTo({y: pos});
+    }
   }
   render() {
     log.info("Call SearchResultList._getListContent");
@@ -38,8 +43,11 @@ class AdsListView extends React.Component {
 
     if (myProps.allAdsItems.length === 0 ) {
       return (
-        <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
-          <Text style = {[gui.styles.defaultText,{textAlign:'center', fontSize:20}]}> {gui.INF_KhongCoKetQua} </Text>
+        <View style={{flex:1, alignItems:'center', justifyContent:'flex-start', marginTop: (5*Dimensions.get('window').height)/23}}>
+          <Text style = {[gui.styles.defaultText,{textAlign:'center',
+          fontSize:16, fontWeight: '600', color: '#6E6F71', paddingLeft: 15, paddingRight: 15}]}> {gui.INF_KhongCoKetQua} </Text>
+          <Text style = {[gui.styles.defaultText,{textAlign:'center',
+          fontSize:16, color: '#6B6F6E', paddingLeft: 15, paddingRight: 15}]}> {gui.INF_KhongCoKetQua2} </Text>
         </View>
       )
     }
@@ -57,8 +65,8 @@ class AdsListView extends React.Component {
         onEndReached={this._onEndReached.bind(this)}
         // scrollRenderAheadDistance={3}
         // pageSize={5}
-        // onScroll={this.handleScroll.bind(this)}
-        // scrollEventThrottle={200}
+        onScroll={this.handleScroll.bind(this)}
+        scrollEventThrottle={1000}
         //renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
         style={styles.searchListView}
       />
@@ -126,22 +134,24 @@ class AdsListView extends React.Component {
   }
 
   handleScroll(event: Object) {
-    if (event.nativeEvent.contentOffset.y < -100) {
-      let myProps = this.props;
-
-      if (myProps.loading) {
-        return;
-      }
-
-      let pageNo = this.state.pageNo;
-
-      if (pageNo > 1) {
-        this.state.pageNo = pageNo-1;
-        myProps.actions.onSearchFieldChange("pageNo", this.state.pageNo);
-        // myProps.actions.onShowMsgChange(true);
-        this._handleSearchAction(this.state.pageNo);
-      }
-    }
+    // if (event.nativeEvent.contentOffset.y < -100) {
+    //   let myProps = this.props;
+    //
+    //   if (myProps.loading) {
+    //     return;
+    //   }
+    //
+    //   let pageNo = this.state.pageNo;
+    //
+    //   if (pageNo > 1) {
+    //     this.state.pageNo = pageNo-1;
+    //     myProps.actions.onSearchFieldChange("pageNo", this.state.pageNo);
+    //     // myProps.actions.onShowMsgChange(true);
+    //     this._handleSearchAction(this.state.pageNo);
+    //   }
+    // }
+    let pos = event.nativeEvent.contentOffset.y;
+    this.props.actions.onChangeListScrollPos(pos < 0 ? 0 : pos);
   }
 
   renderRow(rowData) {

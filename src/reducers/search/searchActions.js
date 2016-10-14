@@ -16,6 +16,8 @@ const {
   ON_DRAW_MODE_CHANGE,
   ON_RESET_LIST_ADS,
   ON_CHANGE_LIST_ADS,
+  ON_CHANGE_MAP_PAGE_NO,
+  ON_CHANGE_LIST_SCROLL_POS,
   ON_SEARCH_FIELD_CHANGE,
   SET_SEARCH_LOAI_TIN,
   FETCH_SEARCH_RESULT_FAIL,
@@ -88,6 +90,20 @@ export function onChangeAdsList(listAds) {
   return {
     type: ON_CHANGE_LIST_ADS,
     payload: listAds
+  }
+}
+
+export function onChangeMapPageNo(pageNo) {
+  return {
+    type: ON_CHANGE_MAP_PAGE_NO,
+    payload: pageNo
+  }
+}
+
+export function onChangeListScrollPos(pos) {
+  return {
+    type: ON_CHANGE_LIST_SCROLL_POS,
+    payload: pos
   }
 }
 

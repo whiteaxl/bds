@@ -6,6 +6,14 @@ import placeUtil from './PlaceUtil';
 
 var util = {};
 
+util.normalizeNumeric = function (str) {
+  let val = str.replace(/([a-zA-Z ])/g, '');
+  val = val.replace(/,/g, '.');
+  while (val.indexOf('..') != -1) {
+    val = val.replace('..', '.');
+  }
+  return val;
+}
 
 util.locDau = function (str) {
   var a1 = locDauInt(str);

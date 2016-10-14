@@ -19,6 +19,8 @@ const {
   ON_DRAW_MODE_CHANGE,
   ON_RESET_LIST_ADS,
   ON_CHANGE_LIST_ADS,
+  ON_CHANGE_MAP_PAGE_NO,
+  ON_CHANGE_LIST_SCROLL_POS,
   ON_SEARCH_FIELD_CHANGE,
   SET_SEARCH_LOAI_TIN,
   SEARCH_STATE_LOADING,
@@ -83,6 +85,12 @@ export default function searchReducer(state = initialState, action) {
 
     case ON_CHANGE_LIST_ADS:
       return state.setIn(['result', "allAdsItems"], action.payload);
+
+    case ON_CHANGE_MAP_PAGE_NO:
+      return state.set("mapPageNo", action.payload);
+
+    case ON_CHANGE_LIST_SCROLL_POS:
+      return state.set("listScrollPos", action.payload);
 
     case ON_POLYGONS_CHANGE:
       return state.setIn(['map', 'polygons'], action.payload);

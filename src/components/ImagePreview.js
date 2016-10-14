@@ -30,6 +30,8 @@ import SearchResultDetailFooter from './detail/SearchResultDetailFooter';
 
 import cfg from "../cfg";
 
+import CommonUtils from '../lib/CommonUtils';
+
 const noCoverUrl = cfg.noCoverUrl;
 
 var {
@@ -206,7 +208,7 @@ class ImagePreview extends React.Component {
                     <View style={styles.imgView} key={"img"+(imageIndex++)}>
                         <PhotoView style={styles.imgItem}
                                source={imageUri}
-                               loadingIndicatorSource={require('../assets/image/no_cover.jpg')}
+                               loadingIndicatorSource={CommonUtils.getNoCoverImage()}
                                resizeMode={Image.resizeMode.contain}
                                minimumZoomScale={1}
                                maximumZoomScale={3}

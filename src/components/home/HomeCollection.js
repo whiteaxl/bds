@@ -16,6 +16,8 @@ import MHeartIcon from '../MHeartIcon';
 
 import cfg from "../../cfg";
 
+import CommonUtils from '../../lib/CommonUtils';
+
 const noCoverUrl = cfg.noCoverUrl;
 
 var imageHeight = 143;
@@ -116,7 +118,7 @@ class ImageItem extends React.Component{
 
     return (
       <Image style={[styles.imgItem]} resizeMode = {'cover'}
-             source={imageUri} defaultSource={require('../../assets/image/no_cover.jpg')}>
+             source={imageUri} defaultSource={CommonUtils.getNoCoverImage()}>
 
         <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.55)']}
                         style={styles.linearGradient2}>
@@ -141,7 +143,7 @@ class ImageItem extends React.Component{
     var loaiTin = ads.loaiTin;
     var loaiNhaDat = ads.loaiNhaDat;
     var dienTich = '';
-    if (ads.dienTichFmt) {
+    if (ads.dienTichFmt && ads.dienTichFmt != 'Không rõ') {
       dienTich = ads.dienTichFmt;
     }
     var soPhongNgu = '';

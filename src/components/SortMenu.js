@@ -122,7 +122,7 @@ class SortMenu extends Component {
                         <Text style={myStyles.sortText}>Sắp xếp</Text>
                         {/*<RelandIcon name="sort-alt" size={24} text="Sắp xếp" textProps={myStyles.sortText} noAction={true}/>*/}
                     </MenuTrigger>
-                    <MenuOptions optionsContainerStyle={isDiaDiem ? myStyles.dropdownOptions : myStyles.dropdownOptions2}>
+                    <MenuOptions optionsContainerStyle={myStyles.dropdownOptions2}>
                         {optionList}
                     </MenuOptions>
                 </Menu>
@@ -173,8 +173,12 @@ class SortMenu extends Component {
                 dienTich: dienTich, giaPicker: giaPicker, orderBy: newOrderBy, listData: listData,
                 marker: marker, radiusInKmSelectedIdx: radiusInKmSelectedIdx, huongNha: huongNha, ngayDaDang: ngayDaDang,
                 polygon: polygon, region: region, limit: limit, pageNo: 1, isIncludeCountInResponse: isIncludeCountInResponse}
-            , () => {this.props.scrollToTop()}
+            , () => {this._scrollToTop()}
         );
+    }
+
+    _scrollToTop() {
+        setTimeout(() => {this.props.scrollToTop()}, 100);
     }
 
     getValueByKey(key, isDiaDiem) {

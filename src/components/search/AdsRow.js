@@ -9,6 +9,7 @@ import LinearGradient from 'react-native-linear-gradient';
 import log from '../../lib/logUtil';
 import DanhMuc from '../../assets/DanhMuc';
 import MHeartIcon from '../MHeartIcon';
+import CommonUtils from '../../lib/CommonUtils';
 
 var imgHeight = 181;
 
@@ -116,7 +117,7 @@ class AdsRow extends React.Component {
     var diaChi = ads.diaChi;
     var loaiNhaDat = ads.loaiNhaDat;
     var dienTich = '';
-    if (ads.dienTichFmt) {
+    if (ads.dienTichFmt && ads.dienTichFmt != 'Không rõ') {
       dienTich = '· ' + ads.dienTichFmt;
     }
     var soPhongNgu = '';
@@ -192,7 +193,7 @@ class MyImage extends React.Component {
     return(
       <View style={myStyles.slide} key={"img"+(this.props.imageIndex)}>
         <TouchableHighlight onPress={() => Actions.SearchResultDetail({adsID: this.props.ads.adsID, source: 'server'})}>
-          <Image style={myStyles.thumb} source={imageUri} defaultSource={require('../../assets/image/no_cover.jpg')} >
+          <Image style={myStyles.thumb} source={imageUri} defaultSource={CommonUtils.getNoCoverImage()} >
             <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.55)']}
                             style={myStyles.linearGradient2}>
             </LinearGradient>

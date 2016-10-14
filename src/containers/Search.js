@@ -37,6 +37,8 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import dismissKeyboard from 'react-native-dismiss-keyboard';
 
+import utils from '../lib/utils';
+
 const actions = [
   globalActions,
   searchActions
@@ -113,12 +115,12 @@ class Search extends Component {
       let toGia = giaVal[1];
       if (fromGia == -1 || fromGia == DanhMuc.BIG) {
           fromGia = '';
-      } else {
+      } else if ('ban' === loaiTin) {
           fromGia = fromGia / 1000;
       }
       if (toGia == -1 || toGia == DanhMuc.BIG) {
           toGia = '';
-      } else {
+      } else if ('ban' === loaiTin) {
           toGia = toGia / 1000;
       }
       return {initGia: initGia, fromGia: fromGia, toGia: toGia};
@@ -171,7 +173,7 @@ class Search extends Component {
 
   _onScrollNgayDaDang() {
       var {showGia, showDienTich} = this.state;
-      var scrollTo = Dimensions.get('window').height/2-258;
+      var scrollTo = Dimensions.get('window').height/2-238;
       if (showGia) {
           scrollTo = scrollTo + 235;
       }
@@ -201,12 +203,12 @@ class Search extends Component {
     let toGia = giaVal[1];
     if (fromGia == -1 || fromGia == DanhMuc.BIG) {
         fromGia = '';
-    } else {
+    } else if ('ban' === loaiTin) {
         fromGia = fromGia / 1000;
     }
     if (toGia == -1 || toGia == DanhMuc.BIG) {
         toGia = '';
-    } else {
+    } else if ('ban' === loaiTin) {
         toGia = toGia / 1000;
     }
     this.setState({initGia: initGia, fromGia: fromGia, toGia: toGia});
@@ -676,8 +678,17 @@ class Search extends Component {
         Object.assign(newGia, gia);
         if (val === '') {
             val = -1;
+        } else {
+            val = utils.normalizeNumeric(val);
         }
-        newGia[index] = (val != -1) ? 1000 * val : -1;
+        if (val === '.') {
+            val = '0.';
+        }
+        let hasLastDot = val[val.length-1] === '.';
+        if ('ban' === loaiTin && val != -1) {
+            val = 1000 * val;
+        }
+        newGia[index] = hasLastDot && 'ban' === loaiTin ? val + '.' : val;
         let other = String(newGia[1-index]);
         if (DanhMuc.THOA_THUAN == other) {
             other = 0;
@@ -698,16 +709,20 @@ class Search extends Component {
         this._doChangeGia(loaiTin, value);
         let fromGia = newGia[0];
         let toGia = newGia[1];
+        hasLastDot = fromGia[fromGia.length-1] === '.';
         if (fromGia == -1 || fromGia == DanhMuc.BIG) {
             fromGia = '';
-        } else {
+        } else if ('ban' === loaiTin) {
             fromGia = fromGia / 1000;
         }
+        fromGia = hasLastDot && 'ban' === loaiTin ? fromGia + '.' : fromGia;
+        hasLastDot = toGia[toGia.length-1] === '.';
         if (toGia == -1 || toGia == DanhMuc.BIG) {
             toGia = '';
-        } else {
+        } else if ('ban' === loaiTin) {
             toGia = toGia / 1000;
         }
+        toGia = hasLastDot && 'ban' === loaiTin ? toGia + '.' : toGia;
         this.setState({fromGia: fromGia, toGia: toGia});
     }
 

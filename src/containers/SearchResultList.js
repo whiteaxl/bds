@@ -58,7 +58,8 @@ function mapStateToProps(state) {
         userID: currentUser && currentUser.userID,
         fields : state.search.form.fields,
         totalCount: state.search.result.totalCount,
-        polygons: state.search.map.polygons
+        polygons: state.search.map.polygons,
+        listScrollPos: state.search.listScrollPos
     };
 }
 
@@ -87,6 +88,7 @@ class SearchResultList extends Component {
 
     componentDidMount() {
         // this._onShowMessage();
+        this._initScrollPos();
     }
 
     componentWillUnmount() {
@@ -135,7 +137,8 @@ class SearchResultList extends Component {
             <View style={myStyles.fullWidthContainer}>
                 <View style={myStyles.search}>
                     <SearchHeader placeName={placeName} onShowMessage={() => this._onShowMessage()}
-                                  isHeaderLoading={() => this._isHeaderLoading()}/>
+                                  isHeaderLoading={() => this._isHeaderLoading()}
+                                  refreshRegion={() => this.props.actions.onChangeListScrollPos(0)}/>
                 </View>
 
                 <View style={{marginTop: 30, height: Dimensions.get('window').height - 108}}>
@@ -164,6 +167,14 @@ class SearchResultList extends Component {
     _scrollToTop() {
         if (this._adsListView) {
             this._adsListView._scrollToTop();
+            this.setState({firstTimeFromMap: true});
+            this.props.actions.onChangeListScrollPos(0);
+        }
+    }
+
+    _initScrollPos() {
+        if (this._adsListView) {
+            this._adsListView._scrollTo(this.props.listScrollPos);
         }
     }
 
@@ -180,7 +191,8 @@ class SearchResultList extends Component {
         let rangeAds = totalCount > 0 ? totalCount : numberOfAds;
         let textValue = "Tìm thấy " + rangeAds + " kết quả phù hợp";
         if (numberOfAds == 0) {
-            textValue = "Không tìm thấy kết quả nào. Hãy thay đổi điều kiện tìm kiếm";
+            // textValue = "Không tìm thấy kết quả nào. Hãy thay đổi điều kiện tìm kiếm";
+            textValue = "";
         }
         
         if(loading || firstTimeFromMap){
@@ -214,7 +226,7 @@ var myStyles = StyleSheet.create({
     loadingContent: {
         position: 'absolute',
         top: -22,
-        left: 55,
+        left: 65,
         alignItems: 'center',
         justifyContent: 'center'
     },

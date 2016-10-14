@@ -1,6 +1,8 @@
 import keyMirror from 'key-mirror';
 
 export default keyMirror({
+  ON_CHANGE_MAP_PAGE_NO: null,
+  ON_CHANGE_LIST_SCROLL_POS: null,
   ON_RESET_LIST_ADS: null,
   ON_CHANGE_LIST_ADS: null,
   ON_ALERT_US_CHANGE: null,

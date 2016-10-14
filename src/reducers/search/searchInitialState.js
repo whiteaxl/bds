@@ -131,6 +131,8 @@ var InitialState = Record({
     //shared
     searchCalledFrom : "Search",
     drawMode: false,
-    alertUs: ''
+    alertUs: '',
+    listScrollPos: 0,
+    mapPageNo: 1
 });
 export default InitialState;
