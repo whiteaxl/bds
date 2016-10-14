@@ -162,7 +162,9 @@ class SearchResultList extends Component {
     }
 
     _scrollToTop() {
-        this._adsListView._scrollToTop();
+        if (this._adsListView) {
+            this._adsListView._scrollToTop();
+        }
     }
 
     _isHeaderLoading() {

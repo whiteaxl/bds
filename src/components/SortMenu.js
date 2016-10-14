@@ -97,7 +97,7 @@ class SortMenu extends Component {
         var {isDiaDiem} = this.props;
         var orderBy = this.getValueByKey(this.props.search.form.fields.orderBy, isDiaDiem);
         // var orderTypes = isDiaDiem ? orderTypes2 : orderTypes1;
-        var orderTypes = orderKeys1;
+        var orderTypes = orderTypes1;
         if (!orderBy) {
             orderBy = orderTypes[0];
         }
