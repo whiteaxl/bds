@@ -155,6 +155,8 @@ export default function searchReducer(state = initialState, action) {
             .set("loadingFromServer", false)
             .set("recentSearchList", recentSearchList)
             .setIn(['result', "totalCount"], data.totalCount)
+            .set("listScrollPos", 0)
+            .set("mapPageNo", 1)
             ;
       } else {
         return state.setIn(['result', "listAds"], data.list)
