@@ -131,7 +131,7 @@ var Api = {
     //
     // return JSON.stringify(tmp);
 
-    let strQuery = '{';
+    let strQuery = '';
     strQuery = strQuery + loaiNhaDatVal;
     if (giaBETWEEN && (giaBETWEEN[0] != -1 || giaBETWEEN[1] != DanhMuc.BIG)) {
         let giaStepValues = loaiTin == 0 ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
@@ -183,7 +183,6 @@ var Api = {
     // if (isIncludeCountInResponse) {
     //     strQuery = strQuery + ', includeCountInResponse';
     // }
-    strQuery = strQuery + '}';
 
     return strQuery;
   },

@@ -344,12 +344,13 @@ const GooglePlacesAutocomplete = React.createClass({
         />
       );
     }
-    return (
+    /*return (
       <ActivityIndicator
         animating={true}
         size="small"
       />
-    );
+    );*/
+    return null;
   },
 
   _renderLoader(rowData) {

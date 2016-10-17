@@ -460,7 +460,7 @@ class Search extends Component {
 
  _handleSearchAction(newOrderBy, newPageNo, newLimit, newGia, newDienTich, newViewport){
      var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
-         radiusInKmSelectedIdx, dienTich, orderBy, diaChinh, center, huongNha, ngayDaDang,
+         radiusInKmSelectedIdx, dienTich, orderBy, diaChinh, viewport, center, huongNha, ngayDaDang,
          polygon, pageNo, limit, isIncludeCountInResponse} = this.props.search.form.fields;
      if (newGia) {
          if (loaiTin == 'ban') {
@@ -468,6 +468,12 @@ class Search extends Component {
          } else {
              thue.gia = newGia;
          }
+     }
+     let validViewport = undefined;
+     if (newViewport) {
+         validViewport = newViewport;
+     } else if (diaChinh.fullName == gui.VI_TRI_HIEN_TAI) {
+         validViewport = viewport;
      }
      var fields = {
          loaiTin: loaiTin,
@@ -477,7 +483,7 @@ class Search extends Component {
          soNhaTamSelectedIdx : soNhaTamSelectedIdx,
          dienTich: newDienTich || dienTich,
          orderBy: newOrderBy || orderBy,
-         viewport: newViewport || undefined,
+         viewport: validViewport,
          diaChinh: diaChinh,
          center: center,
          radiusInKmSelectedIdx: radiusInKmSelectedIdx,
@@ -493,7 +499,7 @@ class Search extends Component {
 
      this.props.actions.search(
          fields
-         , () => {});
+         , () => {setTimeout(() => this.props.actions.loadHomeData(), 100)});
  }
 
   onMoreOption() {

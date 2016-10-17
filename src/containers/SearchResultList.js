@@ -138,7 +138,9 @@ class SearchResultList extends Component {
                 <View style={myStyles.search}>
                     <SearchHeader placeName={placeName} onShowMessage={() => this._onShowMessage()}
                                   isHeaderLoading={() => this._isHeaderLoading()}
-                                  refreshRegion={() => this.props.actions.onChangeListScrollPos(0)}/>
+                                  refreshRegion={() => this.props.actions.onChangeListScrollPos(0)}
+                                  loadHomeData={this.props.actions.loadHomeData}
+                    />
                 </View>
 
                 <View style={{marginTop: 30, height: Dimensions.get('window').height - 108}}>

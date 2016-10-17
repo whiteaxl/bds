@@ -128,7 +128,8 @@ function getAllUniquePosAds(listAds) {
                 } else {
                     let validAdsId;
                     let oldMarker = markerList[indexOfItem];
-                    if (item.gia && (!markerData[indexOfItem].gia || item.gia < markerData[indexOfItem].gia)) {
+                    if ((item.gia && item.gia != -1) && ((!markerData[indexOfItem].gia || markerData[indexOfItem].gia == -1)
+                        || item.gia < markerData[indexOfItem].gia)) {
                         validAdsId = item.adsID;
                         let oldAdsId = oldMarker.id;
                         dupCount[validAdsId] = dupCount[oldAdsId] + 1;
@@ -332,7 +333,8 @@ class SearchResultMap extends Component {
         <View style={styles.search}>
           <SearchHeader placeName={placeName} containerForm="SearchResultMap"
                         refreshRegion={() => this.refreshRegion()} onShowMessage={() => this._onShowMessage()}
-                        isHeaderLoading={() => this._isHeaderLoading()}/>
+                        isHeaderLoading={() => this._isHeaderLoading()}
+                        loadHomeData={this.props.actions.loadHomeData}/>
         </View>
 
         <View style={styles.map}>
@@ -460,13 +462,7 @@ class SearchResultMap extends Component {
       let bgColor = isLiked ? '#E50064' : '#4A443F';
       let bgStyle = isLiked ? {} : {opacity: 0.55};
       allItems.push(
-          <Swiper style={styles.wrapper} height={imageHeight} key={i++}
-                  onMomentumScrollEnd={(e, state) => {this._onMarkerPress(this.state.mmarker, currentAdsIndex)}}
-                  showsButtons={false} autoplay={false} loop={false} bounces={true}
-                  dot={<View style={[styles.dot, {backgroundColor: 'transparent'}]} />}
-                  activeDot={<View style={[styles.dot, {backgroundColor: 'transparent'}]}/>}
-          >
-          <View style={styles.detailAdsModal}>
+          <View style={styles.detailAdsModal} key={i++}>
             <TouchableOpacity onPress={() => {this._onDetailAdsPress(markerId)}}>
               <Image style={styles.detailAdsModalThumb} source={{uri: `${mmarker.cover}`}}
                      defaultSource={CommonUtils.getNoCoverImage()}>
@@ -485,7 +481,6 @@ class SearchResultMap extends Component {
               </Image>
             </TouchableOpacity>
           </View>
-          </Swiper>
       );
     });
     if (allItems.length <= 1) {
@@ -697,16 +692,16 @@ class SearchResultMap extends Component {
           {!hasNextPage ?
               <View style={styles.pagingView}>
                 <RelandIcon name="next" color={'#C5C2BA'} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
-                            size={16} textProps={{paddingLeft: 0}}
+                            size={20} textProps={{paddingLeft: 0}}
                             noAction={true}></RelandIcon>
-                <Text style={[styles.drawIconText, {fontSize: 6, color: '#C5C2BA'}]}>Sau</Text>
+                <Text style={[styles.drawIconText, {fontSize: 9, color: '#C5C2BA'}]}>Sau</Text>
               </View> :
               <TouchableOpacity onPress={this._doNextPage.bind(this)} >
                 <View style={styles.pagingView}>
                   <RelandIcon name="next" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
-                              size={16} textProps={{paddingLeft: 0}}
+                              size={20} textProps={{paddingLeft: 0}}
                               noAction={true}></RelandIcon>
-                  <Text style={[styles.drawIconText, {fontSize: 6, color: gui.mainColor}]}>Sau</Text>
+                  <Text style={[styles.drawIconText, {fontSize: 9, color: gui.mainColor}]}>Sau</Text>
                 </View>
               </TouchableOpacity>}
         </View>
@@ -721,16 +716,16 @@ class SearchResultMap extends Component {
           {!hasPreviousPage ?
               <View style={styles.pagingView}>
                 <RelandIcon name="previous" color={'#C5C2BA'} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
-                            size={16} textProps={{paddingLeft: 0}}
+                            size={20} textProps={{paddingLeft: 0}}
                             noAction={true}></RelandIcon>
-                <Text style={[styles.drawIconText, {fontSize: 6, color: '#C5C2BA'}]}>Trước</Text>
+                <Text style={[styles.drawIconText, {fontSize: 9, color: '#C5C2BA'}]}>Trước</Text>
               </View> :
               <TouchableOpacity onPress={this._doPreviousPage.bind(this)} >
                 <View style={styles.pagingView}>
                   <RelandIcon name="previous" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
-                              size={16} textProps={{paddingLeft: 0}}
+                              size={20} textProps={{paddingLeft: 0}}
                               noAction={true}></RelandIcon>
-                  <Text style={[styles.drawIconText, {fontSize: 6, color: gui.mainColor}]}>Trước</Text>
+                  <Text style={[styles.drawIconText, {fontSize: 9, color: gui.mainColor}]}>Trước</Text>
                 </View>
               </TouchableOpacity>}
         </View>
@@ -744,9 +739,9 @@ class SearchResultMap extends Component {
               <TouchableOpacity onPress={this._doRefreshListData.bind(this)} >
                 <View style={styles.pagingView}>
                   <RelandIcon name="refresh" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
-                              size={16} textProps={{paddingLeft: 0}}
+                              size={20} textProps={{paddingLeft: 0}}
                               noAction={true}></RelandIcon>
-                  <Text style={[styles.drawIconText, {fontSize: 6, color: gui.mainColor}]}>Refresh</Text>
+                  <Text style={[styles.drawIconText, {fontSize: 9, color: gui.mainColor}]}>Refresh</Text>
                 </View>
               </TouchableOpacity>
             </View>
@@ -843,29 +838,21 @@ class SearchResultMap extends Component {
   _renderTotalResultView(){
       console.log("Call SearchResultMap._renderTotalResultView");
     let {loading, totalCount, allAdsItems} = this.props;
-    let {showMessage, mounting} = this.state;
+    let {showMessage, mounting, openDraw} = this.state;
     let numberOfAds = allAdsItems.length;
     let beginAdsIndex = this._calcBeginAdsIndex();
     let endAdsIndex = this._calcEndAdsIndex();
     let rangeAds = totalCount > gui.MAX_VIEWABLE_ADS ? (endAdsIndex > 0 ? beginAdsIndex + "-" + endAdsIndex : "0") + " / " + totalCount : numberOfAds;
     let textValue = "Đang hiển thị từ " + rangeAds + " kết quả phù hợp";
     let textNotFound2 = "";
-    let marginTop = 0;
-    let msgFontSize = gui.capitalizeFontSize;
-    let msgFontWeight = 'normal';
-    let msgColor = 'black';
     if (numberOfAds == 0) {
       textValue = gui.INF_KhongCoKetQua;
       textNotFound2 = gui.INF_KhongCoKetQua2;
-      marginTop = 5*Dimensions.get('window').height/23;
-      msgFontSize = gui.normalFontSize;
-      msgFontWeight = '600';
-      msgColor = '#6E6F71';
     } else if (totalCount == 0 || (totalCount == numberOfAds && totalCount <= gui.MAX_VIEWABLE_ADS)) {
       textValue = "Đang hiển thị " + rangeAds + " kết quả phù hợp";
     }
 
-    if(loading || mounting){
+    if(loading || mounting || openDraw){
       console.log("SearchResultMap_renderTotalResultView");
       return (<View style={styles.resultContainer}>
         {/*<Animatable.View animation={this.props.search.showMessage ? "fadeIn" : "fadeOut"}
@@ -883,9 +870,9 @@ class SearchResultMap extends Component {
     return (<View style={styles.resultContainer}>
       <Animatable.View animation={showMessage ? "fadeIn" : "fadeOut"}
                        duration={showMessage ? 500 : 3000}>
-        <View style={[styles.resultText, {marginTop: marginTop}]}>
-            <Text style={[styles.resultIcon, {fontSize:msgFontSize, fontWeight: msgFontWeight, color: msgColor}]}>  {textValue} </Text>
-            {textNotFound2 ? <Text style={[styles.resultIcon, {fontSize:msgFontSize, color: '#6B6F6E'}]}>  {textNotFound2} </Text> : null}
+        <View style={[styles.resultText, {marginTop: 0}]}>
+            <Text style={styles.resultIcon}>  {textValue} </Text>
+            {textNotFound2 ? <Text style={styles.resultIcon}>  {textNotFound2} </Text> : null}
         </View>
       </Animatable.View>
     </View>)
@@ -909,14 +896,14 @@ class SearchResultMap extends Component {
   _onRegionChangeComplete(region) {
     console.log("Call SearhResultMap._onRegionChangeComplete");
 
-    if (!this.hasRegionChange(region)) {
-      return;
-    }
-
     // this.state.region = region;
     this.setState({
       region :region
     });
+
+    if (this.props.allAdsItems.length > 0 && !this.hasRegionChange(region)) {
+      return;
+    }
 
     let viewport = apiUtils.getViewport(region);
     this.props.actions.onSearchFieldChange("viewport", viewport);
@@ -931,7 +918,7 @@ class SearchResultMap extends Component {
     let oldRegion = this.state.region;
     return !(oldRegion && Math.abs(oldRegion.latitude - region.latitude) <= PADDING
         && Math.abs(oldRegion.longitude - region.longitude) <= PADDING
-        && Math.abs(oldRegion.latitudeDelta - region.latitudeDelta) <= PADDING
+        // && Math.abs(oldRegion.latitudeDelta - region.latitudeDelta) <= PADDING
         && Math.abs(oldRegion.longitudeDelta - region.longitudeDelta) <= PADDING);
   }
 
@@ -1219,15 +1206,24 @@ class SearchResultMap extends Component {
         var region = apiUtils.getRegion(geoBox);
         var viewport = apiUtils.getViewport(region);
         var polygon = apiUtils.convertPolygon(polygons[0]);
-        this.props.actions.onSearchFieldChange("viewport", viewport);
+        // this.props.actions.onSearchFieldChange("viewport", viewport);
         this.props.actions.onSearchFieldChange("polygon", polygon);
-        this.props.actions.onSearchFieldChange("diaChinh", {});
+        // this.props.actions.onSearchFieldChange("diaChinh", {});
         this.props.actions.onSearchFieldChange("pageNo", 1);
-        this._refreshListData(viewport, polygon, () => {}, {}, false, {});
-        this._updateMapView(polygons, region);
-    } else {
-        this._updateMapView(polygons);
+        this._refreshListData(viewport, polygon, () => {this._closeDrawIfNoResult(viewport, region)}, {}, false, {});
     }
+    this._updateMapView(polygons);
+  }
+
+  _closeDrawIfNoResult(viewport, region) {
+      if (this.props.allAdsItems.length == 0) {
+          this._onCloseDraw();
+          this._refreshListData(null, [], () => {}, null, false, null);
+      } else {
+          this.setState({region: region});
+          this.props.actions.onSearchFieldChange("viewport", viewport);
+          this.props.actions.onSearchFieldChange("diaChinh", {});
+      }
   }
 
   _onAppendAdsList() {
@@ -1261,7 +1257,7 @@ class SearchResultMap extends Component {
     }
     var x0 = this._previousLeft + gestureState.dx;
     var y0 = this._previousTop + gestureState.dy;
-    var lat = region.latitude + region.latitudeDelta*(0.5-(y0-64)/(height-110));
+    var lat = region.latitude + (region.longitudeDelta/ASPECT_RATIO)*(0.5-(y0-64)/(height-110));
     var lon = region.longitude + region.longitudeDelta*(x0/width-0.5);
     var coordinate = {latitude: lat, longitude: lon};
     var { editing } = this.state;
@@ -1376,7 +1372,7 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 5,
     backgroundColor: 'white',
-    opacity: 0.75,
+    opacity: 0.5,
     marginLeft: 15
   },
   mapIcon: {
@@ -1409,53 +1405,53 @@ var styles = StyleSheet.create({
   },
   refreshButton: {
     position: 'absolute',
-    top: height-170,
-    left: width/2-15,
+    top: height-178,
+    left: width/2-21,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#C5C2BA',
-    width: 30,
-    height: 30,
+    width: 43,
+    height: 38,
     backgroundColor: 'white',
-    opacity: 0.75,
+    opacity: 0.5,
   },
   previousButton: {
     position: 'absolute',
-    top: height-170,
-    left: width/2-60,
+    top: height-178,
+    left: width/2-79,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#C5C2BA',
-    width: 30,
-    height: 30,
+    width: 43,
+    height: 38,
     backgroundColor: 'white',
-    opacity: 0.75,
+    opacity: 0.5,
   },
   nextButton: {
     position: 'absolute',
-    top: height-170,
-    left: width/2+30,
+    top: height-178,
+    left: width/2+37,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#C5C2BA',
-    width: 30,
-    height: 30,
+    width: 43,
+    height: 38,
     backgroundColor: 'white',
-    opacity: 0.75,
+    opacity: 0.5,
   },
   pagingView: {
-    paddingTop: 2,
+    paddingTop: 0,
     width: 28,
-    height: 28,
+    height: 32,
     backgroundColor: 'transparent'
   },
 

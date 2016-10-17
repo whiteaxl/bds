@@ -63,8 +63,6 @@ class Home extends Component {
     StatusBar.setBarStyle('light-content');
     if (this._isTheFirstLoading()) {
       this.props.actions.loadHomeData();
-    } else {
-      setTimeout(() => this.props.actions.loadHomeData(), 100);
     }
   }
 

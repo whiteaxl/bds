@@ -117,16 +117,12 @@ class SearchResultDetail extends Component {
       this.props.actions.getDetail(
           {'adsID' : this.props.adsID}
           , (data) => {
-            this._doRefreshRowData(data.ads)
+            this.refreshRowData(data.ads)
           });
     }
     else {
-      dbService.getAds(this.props.adsID, this._doRefreshRowData.bind(this));
+      dbService.getAds(this.props.adsID, this.refreshRowData.bind(this));
     }
-  }
-
-  _doRefreshRowData(ads) {
-    setTimeout(() => {this.refreshRowData(ads)}, 100);
   }
 
   refreshRowData(ads) {

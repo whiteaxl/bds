@@ -28,7 +28,8 @@ var CommonHeader = React.createClass({
       </View>
       <View style={mStyles.text}>
         <SearchInputExt placeName={this.props.placeName} refreshRegion={this.props.refreshRegion}
-                           onShowMessage={this.props.onShowMessage} isHeaderLoading={this.props.isHeaderLoading}/>
+                           onShowMessage={this.props.onShowMessage} isHeaderLoading={this.props.isHeaderLoading}
+                           loadHomeData={this.props.loadHomeData}/>
       </View>
       <View style={mStyles.search}>
       <TouchableOpacity onPress={this._onSearch} underlayColor="transparent"
