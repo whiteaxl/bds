@@ -81,6 +81,7 @@ class PlacesAutoComplete extends React.Component {
       this.props.actions.onSearchFieldChange("center", data.center);
       let diaChinh = {tinhKhongDau: data.tinh, huyenKhongDau: data.huyen,
           xaKhongDau: data.xa, duAnKhongDau: data.duAn, fullName: data.fullName};
+      
       this.props.actions.onSearchFieldChange("diaChinh", diaChinh);
     }
 
@@ -89,7 +90,7 @@ class PlacesAutoComplete extends React.Component {
       setTimeout(() => { //must wait for onSearchFieldChange("place", value) complete
         this.props.actions.search(
           this.props.search.form.fields
-          , () => {this.props.loadHomeData && setTimeout(() => this.props.loadHomeData(), 100)}
+          /*, () => {this.props.loadHomeData && setTimeout(() => this.props.loadHomeData(), 100)}*/
         );
         Actions.pop();
         StatusBar.setBarStyle('light-content');

@@ -63,6 +63,32 @@ class Home extends Component {
     StatusBar.setBarStyle('light-content');
     if (this._isTheFirstLoading()) {
       this.props.actions.loadHomeData();
+    } else {
+      console.log("================ implement the second search");
+      let recentSearchList = this.props.search.recentSearchList;
+
+      recentSearchList.sort((a, b) => b.timeModified - a.timeModified);
+      console.log(JSON.stringify(recentSearchList));
+
+      var newSearch = recentSearchList[0];
+
+      if (!newSearch.query.diaChinh || !newSearch.query.diaChinh.tinhKhongDau || newSearch.query.diaChinh.duAnKhongDau){
+        return;
+      }
+
+      if (recentSearchList.length = 1){
+        this.props.actions.loadHomeData();
+      } else {
+        var oldSearch = recentSearchList[1];
+        if (newSearch.query.diaChinh.fullName != oldSearchquery.diaChinh.fullName
+            || newSearch.query.loaiTin != oldSearchquery.loaiTin
+            || JSON.stringify(newSearch.query.dienTichBETWEEN)!=JSON.stringify(oldSearch.query.dienTichBETWEEN)
+            || JSON.stringify(newSearch.query.giaBETWEEN)!=JSON.stringify(oldSearch.query.giaBETWEEN)
+            || JSON.stringify(newSearch.query.huongNha)!=JSON.stringify(oldSearch.query.huongNha))
+        {
+          this.props.actions.loadHomeData();
+        }
+      }
     }
   }
 

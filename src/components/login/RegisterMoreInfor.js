@@ -137,8 +137,7 @@ class RegisterMoreInfor extends React.Component {
           this.setState({
             loading: false
           });
-          console.log("================== register");
-          console.log(res);
+          
           if (!res.login || res.login==false) {
             Alert.alert(res.err.message);
           } else {

@@ -453,7 +453,7 @@ class SearchResultDetail extends Component {
                 <View style={detailStyles.lineBorder2} />
                 {this._renderShareButtons(mobile, email, loaiNhaDat)}
                 <View style={detailStyles.lineBorder2} />
-                {this._renderLienHe(dangBoi, mobile, email)}
+                {this._renderLienHe(dangBoi, mobile, email, loaiNhaDat)}
                 <View style={detailStyles.lineBorder2} />
                 {/*<CollapsiblePanel title="Môi giới" expanded={true}>
                   <Text style={[detailStyles.textFullWidth,{marginTop: 0}]}>
@@ -600,7 +600,7 @@ class SearchResultDetail extends Component {
     Actions.AdsAlertUs();
   }
 
-  _renderLienHe(dangBoi, mobile, email) {
+  _renderLienHe(dangBoi, mobile, email, loaiNhaDat) {
     return (
       <CollapsiblePanel title="Liên Hệ" mainProps={{marginTop: 8}}
                         collapseProps={{marginTop: 15, marginBottom: 15}}
@@ -610,7 +610,7 @@ class SearchResultDetail extends Component {
         </Text>
         {this.renderTitleProps("Tên liên lạc", dangBoi, {marginTop: 3, marginBottom: 2.2})}
         {this.renderTitleProps("Điện thoại", mobile, {marginTop: 3, marginBottom: 2.2}, () => this._onCall(mobile))}
-        {this.renderTitleProps("Email", email, {marginTop: 3, marginBottom: 2.2}, () => this._onEmail(email))}
+        {this.renderTitleProps("Email", email, {marginTop: 3, marginBottom: 2.2}, () => this._onEmail(email, loaiNhaDat))}
         <Text style={{fontSize: 5}} />
       </CollapsiblePanel>
     );

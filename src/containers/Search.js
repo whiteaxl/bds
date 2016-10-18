@@ -499,7 +499,7 @@ class Search extends Component {
 
      this.props.actions.search(
          fields
-         , () => {setTimeout(() => this.props.actions.loadHomeData(), 100)});
+         /*, () => {setTimeout(() => this.props.actions.loadHomeData(), 100)}*/);
  }
 
   onMoreOption() {
