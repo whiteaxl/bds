@@ -1217,7 +1217,7 @@ class SearchResultMap extends Component {
 
   _closeDrawIfNoResult(viewport, region) {
       if (this.props.allAdsItems.length == 0) {
-          this._onCloseDraw();
+          setTimeout(() => this._onCloseDraw(), 100);
           this._refreshListData(null, [], () => {}, null, false, null);
       } else {
           this.setState({region: region});
@@ -1236,16 +1236,14 @@ class SearchResultMap extends Component {
 
   _updateMapView(polygons, region) {
       console.log("Call SearchResultMap._updateMapView");
-      setTimeout(() => {
-        this.setState({
-          openDetailAdsModal: false,
-          editing: null,
-          openDraw: false,
-          region: region || this.state.region
-        });
-        this.props.actions.onDrawModeChange(false);
-        this.props.actions.onPolygonsChange(polygons)
-      }, 100);
+      this.setState({
+        openDetailAdsModal: false,
+        editing: null,
+        openDraw: false,
+        region: region || this.state.region
+      });
+      this.props.actions.onDrawModeChange(false);
+      this.props.actions.onPolygonsChange(polygons);
       this._onSetupMessageTimeout();
   }
 
