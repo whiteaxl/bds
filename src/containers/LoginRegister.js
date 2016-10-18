@@ -53,7 +53,7 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default class LoginRegister extends React.Component {
+class LoginRegister extends React.Component {
   constructor(props) {
       super(props);
     //this.onLoginSuccess = props.onLoginSuccess;

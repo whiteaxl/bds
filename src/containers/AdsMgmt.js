@@ -51,7 +51,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default class AdsMgmt extends React.Component {
+class AdsMgmt extends React.Component {
   constructor(props) {
     super(props);
   }
