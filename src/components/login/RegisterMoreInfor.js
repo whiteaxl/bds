@@ -114,12 +114,17 @@ class RegisterMoreInfor extends React.Component {
 
   register()  {
     if (this.dataValid()) {
-      //Alert.alert("Coming soon...");
+
+      let username = this.props.register.username;
+
       let userDto = {
-        phone: this.props.register.username,
+        phone: username.indexOf("@") > -1 ? undefined : username,
+        email: username.indexOf("@") > -1 ? username : undefined,
         fullName: this.props.register.fullName,
         matKhau: this.props.register.matKhau,
-        avatar: this.state.avatar
+        avatar: this.state.avatar,
+        deviceID: this.props.global.deviceInfo.deviceID || undefined,
+        deviceModel: this.props.global.deviceInfo.deviceModel || undefined
       };
       log.info(userDto);
 
@@ -127,16 +132,15 @@ class RegisterMoreInfor extends React.Component {
         loading: true
       });
 
-
       this.props.actions.registerUser(userDto)
         .then(res=>{
           this.setState({
             loading: false
           });
-
-
-          if (res.status) {
-            Alert.alert(res.msg);
+          console.log("================== register");
+          console.log(res);
+          if (!res.login || res.login==false) {
+            Alert.alert(res.err.message);
           } else {
             Alert.alert(gui.INFO_userCreatedSuccessfully);
             Actions.pop();

@@ -12,6 +12,8 @@ var registerUser = userApiUrl + "registerUser";
 var likeAdsUrl = cfg.rootUrl + "/likeAds";
 var unlikeAdsUrl = cfg.rootUrl + "/unlikeAds";
 var getAdsLikesUrl = cfg.rootUrl + "/user/getAdsLikes";
+var loginUrl = cfg.rootUrl + "/login";
+var signUrl = cfg.rootUrl + "/signup";
 
 var userApi = {
   requestVerifyCode(phone) {
@@ -35,6 +37,78 @@ var userApi = {
         console.log("Error in requestVerifyCode", e);
         return e
       });
+  },
+
+  login(username, password){
+    var params = {
+      'phone': undefined,
+      'email' : undefined,
+      'matKhau' : password
+    };
+
+    if (username.indexOf("@") > -1) {
+      params.email = username;
+    } else {
+      params.phone = username;
+    };
+
+    log.info("fetch ", params, loginUrl);
+
+    return fetch(`${loginUrl}`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    })
+      .then(ApiUtils.checkStatus)
+      .then(response => {
+        log.info("Response of login", response);
+        return response.json()
+      })
+      .catch(e => {
+        log.info("Error in login", e);
+        return {
+          status : 101,
+          msg: gui.ERR_LoiKetNoiMayChu
+        }
+      });
+  },
+
+  signup(userDto) {
+    var params = {
+      'phone': userDto.phone,
+      'email': userDto.email,
+      'fullName' : userDto.fullName,
+      'matKhau' : userDto.matKhau,
+      'avatar' : userDto.avatar || undefined,
+      'deviceID': userDto.deviceID || undefined,
+      'deviceModel': userDto.deviceModel || undefined,
+    };
+
+    log.info("fetch ", params, registerUser);
+
+    return fetch(`${signUrl}`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    })
+        .then(ApiUtils.checkStatus)
+        .then(response => {
+          log.info("Response of signup", response);
+          return response.json()
+        })
+        .catch(e => {
+          log.info("Error in signup", e);
+          return {
+            status : 101,
+            msg: gui.ERR_LoiKetNoiMayChu
+          }
+        });
   },
 
   registerUser(userDto) {

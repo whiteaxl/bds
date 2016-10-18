@@ -36,7 +36,7 @@ export function requestRegisterByPhone(phone) {
 
 export function registerUser(dto) {
   return dispatch => {
-    return userApi.registerUser(dto)
+    return userApi.signup(dto)
       .then(function (json) {
         if (json.status===0) {
           //dispatch(onRegisterFieldChange('serverVerifyCode', json.verifyCode));

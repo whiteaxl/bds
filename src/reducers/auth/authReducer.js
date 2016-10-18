@@ -65,8 +65,8 @@ export default function authReducer(state = initialState, action) {
       let nextState = state
         .set("sessionCookie", action.payload.sessionCookie)
         .set('isFetching', false)
-        .set('state', LOGIN_STATE_LOGIN);
-
+        .set('state', LOGIN_STATE_LOGIN)
+        .set('token', action.payload.token)  ;
       return nextState;
     }
 
@@ -88,7 +88,9 @@ export default function authReducer(state = initialState, action) {
     case LOGOUT_SUCCESS: {
       let newState = state
         .set("sessionCookie", "")
-        .set("activeRegisterLoginTab", 1);
+        .set("activeRegisterLoginTab", 1)
+        .set('matKhau', undefined)
+        .set('token', undefined);
 
       return newState;
     }

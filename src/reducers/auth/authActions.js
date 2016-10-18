@@ -81,13 +81,7 @@ export function logoutFailure(error) {
 export function logout() {
   return dispatch => {
     log.info("start authenAction.logout");
-    dbService.logout().then((res) => {
-      log.info("Done delete localDB", res);
-      dispatch(logoutSuccess());
-    })
-      .catch((res) => {
-        console.log("Error", res)
-      });
+    dispatch(logoutSuccess());
   };
 }
 
@@ -234,23 +228,19 @@ export function login(username, password, deviceDto) {
   return dispatch => {
     dispatch(loginRequest());
 
-    var dispatchDBChange = (e) => {
-      dispatch(onDBChange(e));
-    };
-
-    return dbService.loginAndStartSync(username, password, dispatchDBChange)
+    return userApi.login(username, password)
       .then(function (json) {
         log.info("authActions.login", json);
 
-        if (json.status === 0) {
+        if (json.login === true) {
           if (username.indexOf("@") > -1) {
-            json.phone = username;
-          } else {
             json.email = username;
+          } else {
+            json.phone = username;
           }
           dispatch(loginSuccess(json));
-          //
-          userApi.updateDevice(deviceDto);
+          //todo: need to check update device function
+          //userApi.updateDevice(deviceDto);
 
         } else {
           dispatch(loginFailure(json.error));

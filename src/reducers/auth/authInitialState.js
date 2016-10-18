@@ -24,13 +24,14 @@ const {
  * The form is set 
  */
 var InitialState = Record({
-    phone: "0982094383",
-    matKhau:"12345678",
+    phone: "0988673558",
+    matKhau:"abc",
     isFetching : false,
     error: "",
     sessionCookie:"",
     state: LOGIN_STATE_LOGOUT,
     activeRegisterLoginTab : 1, //0 or 1
+    token:undefined
 });
 export default InitialState;
 

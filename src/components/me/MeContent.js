@@ -56,8 +56,9 @@ class MeContent extends Component {
     StatusBar.setBarStyle('light-content');
   }
 
-  coming() {
-    Alert.alert("Coming soon...");
+  _onProfile() {
+    Alert.alert("coming soon ...");
+    //Actions.Profile()
   }
 
   _onLogout() {
@@ -74,7 +75,7 @@ class MeContent extends Component {
         require('../../assets/image/register_avatar_icon.png');
     return (
       <ScrollView style={styles.fullWidthContainer}>
-        <TouchableOpacity onPress={this.coming}>
+        <TouchableOpacity onPress={this._onProfile}>
           <View style={styles.settingLine}>
             <Image
               style={styles.avatarIcon}

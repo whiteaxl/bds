@@ -13,7 +13,6 @@ import * as authActions from '../reducers/auth/authActions';
 
 import RegisterTab from '../components/login/RegisterTab';
 import LoginTab from '../components/login/LoginTab';
-import ComingSoonTab from '../components/login/ComingSoonTab';
 
 import {Map} from 'immutable';
 
@@ -94,6 +93,7 @@ export default class LoginRegister extends React.Component {
     return <LoginRegisterTabBar onClose = {this.onClose.bind(this)} />
   }
 
+    /*
   render(){
     //let page = this.props.page;
     let page;
@@ -107,8 +107,9 @@ export default class LoginRegister extends React.Component {
         </View>
       )
   };
+  */
 
-/*
+
     render(){
         //let page = this.props.page;
         let page;
@@ -134,7 +135,7 @@ export default class LoginRegister extends React.Component {
             </ScrollableTabView>
         )
     };
-    */
+
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoginRegister);
