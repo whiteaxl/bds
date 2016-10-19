@@ -64,11 +64,8 @@ class Home extends Component {
     if (this._isTheFirstLoading()) {
       this.props.actions.loadHomeData();
     } else {
-      console.log("================ implement the second search");
       let recentSearchList = this.props.search.recentSearchList;
-
       recentSearchList.sort((a, b) => b.timeModified - a.timeModified);
-      console.log(JSON.stringify(recentSearchList));
 
       var newSearch = recentSearchList[0];
 
@@ -100,6 +97,7 @@ class Home extends Component {
       adsLikes = currentUser && currentUser.adsLikes;
       userID = currentUser && currentUser.userID;
     }
+
     return collections.map(e => {
       return <HomeCollection key={e.title1} collectionData = {e} searchFromHome={this.props.actions.searchFromHome}
                              onResetSearch={() => this.onResetSearch()}
