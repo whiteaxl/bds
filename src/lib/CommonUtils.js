@@ -1,9 +1,9 @@
 //
 
 const imageItems = [
-  require('../assets/image/default_cover/no_cover_01.jpg'),
+  // require('../assets/image/default_cover/no_cover_01.jpg'),
   // require('../assets/image/default_cover/no_cover_02.jpg'),
-  // require('../assets/image/default_cover/no_cover_03.jpg'),
+  require('../assets/image/default_cover/no_cover_03.jpg'),
   // require('../assets/image/default_cover/no_cover_04.jpg'),
   // require('../assets/image/default_cover/no_cover_05.jpg'),
   // require('../assets/image/default_cover/no_cover_06.jpg'),

@@ -55,7 +55,7 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default class PostAds extends Component {
+class PostAds extends Component {
     constructor(props) {
         super(props);
         var {photos, imageIndex, owner} = props;

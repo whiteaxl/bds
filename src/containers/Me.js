@@ -48,7 +48,7 @@ function mapDispatchToProps(dispatch) {
   };
 }
 
-export default class Me extends React.Component {
+class Me extends React.Component {
   constructor(props) {
     super(props);
   }

@@ -1218,7 +1218,6 @@ class SearchResultMap extends Component {
   _closeDrawIfNoResult(viewport, region) {
       if (this.props.allAdsItems.length == 0) {
           setTimeout(() => this._onCloseDraw(), 100);
-          this._refreshListData(null, [], () => {}, null, false, null);
       } else {
           this.setState({region: region});
           this.props.actions.onSearchFieldChange("viewport", viewport);
