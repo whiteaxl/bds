@@ -70,19 +70,19 @@ export default class HomeCollection extends Component {
 
         <View style={styles.rowItem}>
           {this._renderAds(data[0], 0.55)}
-          <View style={{width:0.5}}/>
+          <View style={{width:1}}/>
           {this._renderAds(data[1], 0.45)}
         </View>
 
-        <View style={{height:0.5}}/>
+        <View style={{height:1}}/>
 
         <View style={styles.rowItem}>
           {this._renderAds(data[2], 0.45)}
-          <View style={{width:0.5}}/>
+          <View style={{width:1}}/>
           {this._renderAds(data[3], 0.55)}
         </View>
 
-        <View style={{height:0.5}}/>
+        <View style={{height:1}}/>
         <View style={{flex: 1}}>
           {this._renderAds(data[4], 1)}
         </View>

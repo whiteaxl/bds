@@ -59,7 +59,7 @@ var myStyles = StyleSheet.create({
       backgroundColor: '#F53113',
       width: Dimensions.get('window').width/3-3,
       borderRadius: 5,
-      borderColor: 'white',
+      borderColor: 'transparent',
       height: 38,
       marginLeft: 2,
       justifyContent: 'center'
@@ -68,7 +68,7 @@ var myStyles = StyleSheet.create({
       backgroundColor: '#E99409',
       width: Dimensions.get('window').width/3-3,
       borderRadius: 5,
-      borderColor: 'white',
+      borderColor: 'transparent',
       height: 38,
       marginLeft: 2,
       justifyContent: 'center'
@@ -77,7 +77,7 @@ var myStyles = StyleSheet.create({
       backgroundColor: '#1396E0',
       width: Dimensions.get('window').width/3-3,
       borderRadius: 5,
-      borderColor: 'white',
+      borderColor: 'transparent',
       height: 38,
       marginLeft: 2,
       marginRight: 2,
@@ -114,7 +114,7 @@ var myStyles = StyleSheet.create({
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
-      backgroundColor: 'white',
+      backgroundColor: 'transparent',
       width: Dimensions.get('window').width,
       borderTopColor: '#EBEBEB',
       borderTopWidth: 1,
@@ -122,6 +122,7 @@ var myStyles = StyleSheet.create({
   },
   searchButton: {
       alignItems: 'center',
-      justifyContent: 'flex-start'
+      justifyContent: 'flex-start',
+      backgroundColor: 'transparent'
   },
 });

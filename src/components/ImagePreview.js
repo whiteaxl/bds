@@ -91,7 +91,7 @@ class ImagePreview extends React.Component {
                 borderRadius: 5
             },
             container: {
-                backgroundColor: 'white',
+                backgroundColor: 'black',
                 flex: 1,
                 alignItems: 'flex-start',
                 justifyContent: 'flex-start'
@@ -105,7 +105,8 @@ class ImagePreview extends React.Component {
                 flexDirection: 'row',
                 backgroundColor: 'transparent',
                 paddingLeft: 20,
-                paddingRight: 15
+                paddingRight: 15,
+                paddingBottom: 20
             },
             imgSlide: {
                 marginTop: 0,
@@ -195,7 +196,7 @@ class ImagePreview extends React.Component {
         console.log("Call ImagePreview.render");
         var styles = this.styles;
         var imageWidth = this.imageWidth;
-        var imageHeight = this.imageHeight-44;
+        var imageHeight = this.imageHeight;
         var imageItems = [];
         var imageIndex = 0;
         if (this.props.images) {
@@ -240,10 +241,12 @@ class ImagePreview extends React.Component {
                                     size={14} onPress={this.closeModal.bind(this)}>
                         </RelandIcon>
                     </View>
+                    <View style={{position: 'absolute', top: imageHeight-44, backgroundColor: 'transparent'}} >
                     <SearchResultDetailFooter mobile={this.props.mobile} onChat={this.props.onChat} isLiked={this.props.isLiked}
                                               userID={this.props.userID} ads={this.props.ads} loggedIn={this.props.loggedIn}
                                               likeAds={this.props.likeAds} unlikeAds={this.props.unlikeAds}
-                                              style={{backgroundColor: 'black', borderTopColor: 'black'}}/>
+                                              style={{backgroundColor: 'transparent', borderTopColor: 'transparent'}}/>
+                    </View>
                 </View>
             </Animated.View>
         )

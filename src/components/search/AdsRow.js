@@ -129,7 +129,10 @@ class AdsRow extends React.Component {
     if (ads.soTangFmt) {
       soTang = "   " + ads.soTangFmt;
     }
-    var maxDiaChiLength = 25;
+
+    var moreInfo = this.getMoreInfo(loaiTin, loaiNhaDat, dienTich, soPhongNgu, soTang);
+
+    var maxDiaChiLength = 35 - moreInfo.length;
 
     var index = diaChi.indexOf(',', maxDiaChiLength - 5);
     var length = 0;
@@ -143,7 +146,6 @@ class AdsRow extends React.Component {
     if (diaChi.length < ads.diaChi.length) {
       diaChi = diaChi + '...';
     }
-    var moreInfo = this.getMoreInfo(loaiTin, loaiNhaDat, dienTich, soPhongNgu, soTang);
 
     return (
       <View key={ads.adsID}>

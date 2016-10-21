@@ -11,7 +11,7 @@ import {Map} from 'immutable';
 
 import React, {Component} from 'react';
 
-import { Text, View, Image, Dimensions, ScrollView, StyleSheet, StatusBar, TouchableHighlight, Linking } from 'react-native'
+import { Text, View, Image, Dimensions, ScrollView, StyleSheet, StatusBar, TouchableHighlight, Linking, AlertIOS } from 'react-native'
 
 var ShareManager = require('react-native').NativeModules.ShareManager;
 
@@ -151,7 +151,7 @@ class SearchResultDetail extends Component {
   }
   componentWillMount() {
     //this.props.actions.loadHomeData();
-    setTimeout(() => this.fetchData(), 200);
+    setTimeout(() => this.fetchData(), 300);
   }
   renderLoadingView() {
     return (
@@ -220,7 +220,7 @@ class SearchResultDetail extends Component {
       isLiked = adsLikes && adsLikes.indexOf(rowData.adsID) > -1;
     }
     return (
-        <ImagePreview images={imageDataItems} mobile={mobile} onChat={() => this._onChat(rowData)}
+        <ImagePreview images={imageDataItems} mobile={mobile} onChat={() => this._onSms(mobile)}
                       closeModal={() => this.setState({modal: false}) } isLiked={isLiked} ads={rowData} userID={userID}
                       loggedIn={this.props.global.loggedIn} likeAds={this.props.actions.likeAds}
                       unlikeAds={this.props.actions.unlikeAds}/>
@@ -818,6 +818,12 @@ class SearchResultDetail extends Component {
 
   _onCopy() {
     Communications.copy(text);
+    AlertIOS.alert('Thông báo',
+        'Đường link của tin đã được copy. Hãy paste vào nơi bạn muốn chia sẻ',
+        [{
+          text: 'Đóng',
+          onPress: () => {}
+        }]);
   }
 
   _onChat(ads) {

@@ -845,9 +845,11 @@ class SearchResultMap extends Component {
     let rangeAds = totalCount > gui.MAX_VIEWABLE_ADS ? (endAdsIndex > 0 ? beginAdsIndex + "-" + endAdsIndex : "0") + " / " + totalCount : numberOfAds;
     let textValue = "Đang hiển thị từ " + rangeAds + " kết quả phù hợp";
     let textNotFound2 = "";
+    let fontWeight = 'normal';
     if (numberOfAds == 0) {
       textValue = gui.INF_KhongCoKetQua;
       textNotFound2 = gui.INF_KhongCoKetQua2;
+      fontWeight = '600';
     } else if (totalCount == 0 || (totalCount == numberOfAds && totalCount <= gui.MAX_VIEWABLE_ADS)) {
       textValue = "Đang hiển thị " + rangeAds + " kết quả phù hợp";
     }
@@ -871,7 +873,7 @@ class SearchResultMap extends Component {
       <Animatable.View animation={showMessage ? "fadeIn" : "fadeOut"}
                        duration={showMessage ? 500 : 3000}>
         <View style={[styles.resultText, {marginTop: 0}]}>
-            <Text style={styles.resultIcon}>  {textValue} </Text>
+            <Text style={[styles.resultIcon, {fontWeight: fontWeight}]}>  {textValue} </Text>
             {textNotFound2 ? <Text style={styles.resultIcon}>  {textNotFound2} </Text> : null}
         </View>
       </Animatable.View>
@@ -1217,7 +1219,7 @@ class SearchResultMap extends Component {
 
   _closeDrawIfNoResult(viewport, region) {
       if (this.props.allAdsItems.length == 0) {
-          setTimeout(() => this._onCloseDraw(), 100);
+          setTimeout(() => this._onCloseDraw(), 50);
       } else {
           this.setState({region: region});
           this.props.actions.onSearchFieldChange("viewport", viewport);
@@ -1413,7 +1415,7 @@ var styles = StyleSheet.create({
     width: 43,
     height: 38,
     backgroundColor: 'white',
-    opacity: 0.5,
+    opacity: 0.95,
   },
   previousButton: {
     position: 'absolute',
@@ -1428,7 +1430,7 @@ var styles = StyleSheet.create({
     width: 43,
     height: 38,
     backgroundColor: 'white',
-    opacity: 0.5,
+    opacity: 0.95,
   },
   nextButton: {
     position: 'absolute',
@@ -1443,7 +1445,7 @@ var styles = StyleSheet.create({
     width: 43,
     height: 38,
     backgroundColor: 'white',
-    opacity: 0.5,
+    opacity: 0.95,
   },
   pagingView: {
     paddingTop: 0,

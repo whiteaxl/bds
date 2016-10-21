@@ -72,7 +72,7 @@ const SearchForm = Record({
             }
         },
         orderBy: '',
-        limit: 200,
+        limit: 100,
         pageNo: 1,
         isIncludeCountInResponse: true,
 

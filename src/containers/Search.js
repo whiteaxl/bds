@@ -70,8 +70,7 @@ class Search extends Component {
     let {loaiTin, ngayDaDang, huongNha} = this.props.search.form.fields;
     let {initDienTich, fromDienTich, toDienTich} = this._initDienTich();
     let {initGia, fromGia, toGia} = this._initGia(loaiTin);
-    // let showMore = ngayDaDang != '' || huongNha != 0;
-    let showMore = true;
+    let showMore = ngayDaDang != '' || huongNha != 0;
     this.state = {
       showMore: showMore,
       showNgayDaDang: false,
@@ -499,7 +498,7 @@ class Search extends Component {
 
      this.props.actions.search(
          fields
-         /*, () => {setTimeout(() => this.props.actions.loadHomeData(), 100)}*/);
+         , () => {/*setTimeout(() => this.props.actions.loadHomeData(), 100)*/});
  }
 
   onMoreOption() {
