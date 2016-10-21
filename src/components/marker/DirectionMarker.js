@@ -29,7 +29,7 @@ class DirectionMarker extends React.Component{
     render() {
         var diaChi = this.getDiaChi();
         return (
-            <View>
+            <View pointerEvents="none" >
                 <TouchableHighlight underlayColor='transparent' style={[styles.touchable]} onPress={this.props.onPress}>
                     <View style={styles.container}>
                         <View style={styles.bubble}>

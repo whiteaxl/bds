@@ -65,8 +65,8 @@ class AdsListView extends React.Component {
         onEndReached={this._onEndReached.bind(this)}
         // scrollRenderAheadDistance={3}
         // pageSize={5}
-        onScroll={this.handleScroll.bind(this)}
-        scrollEventThrottle={1000}
+        // onScroll={this.handleScroll.bind(this)}
+        // scrollEventThrottle={1000}
         //renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
         style={styles.searchListView}
       />

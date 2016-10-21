@@ -151,7 +151,7 @@ class SearchResultDetail extends Component {
   }
   componentWillMount() {
     //this.props.actions.loadHomeData();
-    this.fetchData();
+    setTimeout(() => this.fetchData(), 200);
   }
   renderLoadingView() {
     return (
@@ -444,7 +444,7 @@ class SearchResultDetail extends Component {
                   </SummaryText>
                 </View>
                 {this._renderDanDuong()}
-                {this._renderStreetView()}
+                {/*this._renderStreetView()*/}
                 <View style={detailStyles.lineBorder2} />
                 {this._renderDacDiem(loaiNhaDat, gia, giaM2, soPhongNguVal, soPhongTamVal, dienTich,
                     huongNha, duAn, ngayDangTin, luotXem, diaChi, rowData.maSo)}
@@ -524,7 +524,7 @@ class SearchResultDetail extends Component {
           {this.renderTitleProps("Ngày đăng tin", ngayDangTin, {marginTop: 3, marginBottom: 2.2})}
           {/*this.renderTitleProps("Lượt xem", luotXem, {marginTop: 3, marginBottom: 2.2})*/}
           {this.renderTitleProps("Địa chỉ", diaChi, {marginTop: 3, marginBottom: 2.2})}
-          {this.renderTitleProps("Mã số", maSo, {marginTop: 3, marginBottom: 2.2})}
+          {this.renderTitleProps("Mã tin", maSo, {marginTop: 3, marginBottom: 2.2})}
           <Text style={{fontSize: 5}} />
         </CollapsiblePanel>
     );

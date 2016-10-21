@@ -160,6 +160,7 @@ class AdsRow extends React.Component {
           <View style={myStyles.searchListViewRowAlign}
                 onStartShouldSetResponder={(evt) => false}
                 onMoveShouldSetResponder={(evt) => false}
+                pointerEvents="none"
           >
             <View
               onStartShouldSetResponder={(evt) => false}

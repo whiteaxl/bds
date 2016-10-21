@@ -39,7 +39,7 @@ class LocationMarker extends React.Component{
             this.timer = setTimeout(() => this.setState({color: newColor}), 500);
         }
         return (
-            <View style={styles.container}>
+            <View style={styles.container} pointerEvents="none" >
                 <RelandIcon name={iconName||"home-marker"} size={size||40} color={color} mainProps={styles.markerIcon}/>
             </View>
         );

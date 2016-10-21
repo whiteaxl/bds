@@ -88,7 +88,7 @@ class SearchResultList extends Component {
 
     componentDidMount() {
         // this._onShowMessage();
-        this._initScrollPos();
+        // this._initScrollPos();
     }
 
     componentWillUnmount() {

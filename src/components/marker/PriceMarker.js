@@ -13,7 +13,7 @@ class PriceMarker extends React.Component{
   
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.container} pointerEvents="none" >
         <View style={[styles.bubble, {backgroundColor: this.props.color, borderColor: "white"}]}>
           <Text style={[styles.amount, { fontSize: this.props.fontSize }]}>{this.props.amount} </Text>
         </View>

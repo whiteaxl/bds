@@ -15,7 +15,7 @@ class PriceMarker2 extends React.Component{
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={styles.container} pointerEvents="none" >
         <View style={[styles.bubble, {backgroundColor: this.props.color, borderColor: "white",
               flexDirection: 'row', justifyContent: 'space-between'}]}>
           <Text style={[styles.amount, { fontSize: this.props.fontSize }]}>{this.props.amount} </Text>
