@@ -1372,7 +1372,7 @@ var styles = StyleSheet.create({
     alignItems: 'center',
     marginVertical: 5,
     backgroundColor: 'white',
-    opacity: 0.5,
+    opacity: 0.9,
     marginLeft: 15
   },
   mapIcon: {
@@ -1416,7 +1416,7 @@ var styles = StyleSheet.create({
     width: 43,
     height: 38,
     backgroundColor: 'white',
-    opacity: 0.95,
+    opacity: 0.9,
   },
   previousButton: {
     position: 'absolute',
@@ -1431,7 +1431,7 @@ var styles = StyleSheet.create({
     width: 43,
     height: 38,
     backgroundColor: 'white',
-    opacity: 0.95,
+    opacity: 0.9,
   },
   nextButton: {
     position: 'absolute',
@@ -1446,7 +1446,7 @@ var styles = StyleSheet.create({
     width: 43,
     height: 38,
     backgroundColor: 'white',
-    opacity: 0.95,
+    opacity: 0.9,
   },
   pagingView: {
     paddingTop: 0,
