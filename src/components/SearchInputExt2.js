@@ -20,7 +20,8 @@ export default class SearchInputExt2 extends Component {
             <View style={styles.container}>
                 <TouchableOpacity
                     onPress={() => Actions.SearchSuggestion({needReload: true, refreshRegion: this.props.refreshRegion,
-                        onShowMessage: this.props.onShowMessage, loadHomeData: this.props.loadHomeData})}
+                        onShowMessage: this.props.onShowMessage, loadHomeData: this.props.loadHomeData,
+                        owner: this.props.owner})}
                 >
                     <View style={styles.searchContainer}>
                             {this.props.isHeaderLoading && this.props.isHeaderLoading() ?

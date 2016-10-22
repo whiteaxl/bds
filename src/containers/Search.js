@@ -399,7 +399,7 @@ class Search extends Component {
         </View>
 
        <View style={myStyles.pageHeader}>
-        <SearchInput placeName={placeName}/>
+        <SearchInput placeName={placeName} owner={this.props.owner}/>
        </View>
       </View>
     );
@@ -435,7 +435,11 @@ class Search extends Component {
     this.props.actions.onSearchFieldChange("pageNo", 1);
     this.props.actions.onResetAdsList();
 
-    this._handleSearchAction('', 1, gui.MAX_ITEM, newGia, newDienTich);
+    let maxItem = gui.MAX_ITEM;
+    if (this.props.owner == 'home' || this.props.owner == 'list') {
+        maxItem = gui.MAX_LIST_ITEM;
+    }
+    this._handleSearchAction('', 1, maxItem, newGia, newDienTich);
     if (this.props.needBack) {
         Actions.pop();
     } else {
@@ -468,12 +472,7 @@ class Search extends Component {
              thue.gia = newGia;
          }
      }
-     let validViewport = undefined;
-     if (newViewport) {
-         validViewport = newViewport;
-     } else if (diaChinh.fullName == gui.VI_TRI_HIEN_TAI) {
-         validViewport = viewport;
-     }
+     let validViewport = this.props.search.form.fields.diaChinhViewport;
      var fields = {
          loaiTin: loaiTin,
          ban: ban,
@@ -494,7 +493,7 @@ class Search extends Component {
          isIncludeCountInResponse: isIncludeCountInResponse};
 
      //TODO: fix issue keep viewport of Map when researching, need to update with other fields of state
-     this.props.actions.onSearchFieldChange("viewport", this.props.search.form.fields.diaChinhViewport);
+     this.props.actions.onSearchFieldChange("viewport", validViewport);
 
      this.props.actions.search(
          fields

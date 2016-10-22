@@ -334,7 +334,8 @@ class SearchResultMap extends Component {
           <SearchHeader placeName={placeName} containerForm="SearchResultMap"
                         refreshRegion={() => this.refreshRegion()} onShowMessage={() => this._onShowMessage()}
                         isHeaderLoading={() => this._isHeaderLoading()}
-                        loadHomeData={this.props.actions.loadHomeData}/>
+                        loadHomeData={this.props.actions.loadHomeData}
+                        owner={'map'}/>
         </View>
 
         <View style={styles.map}>

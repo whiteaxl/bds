@@ -140,6 +140,7 @@ class SearchResultList extends Component {
                                   isHeaderLoading={() => this._isHeaderLoading()}
                                   refreshRegion={() => this.props.actions.onChangeListScrollPos(0)}
                                   loadHomeData={this.props.actions.loadHomeData}
+                                  owner={'list'}
                     />
                 </View>
 

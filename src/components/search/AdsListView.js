@@ -100,7 +100,7 @@ class AdsListView extends React.Component {
   _handleSearchAction(newPageNo){
     var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
-        polygon, pageNo, limit, isIncludeCountInResponse} = this.props.fields;
+        polygon, pageNo, isIncludeCountInResponse} = this.props.fields;
     var fields = {
       loaiTin: loaiTin,
       ban: ban,
@@ -117,7 +117,7 @@ class AdsListView extends React.Component {
       ngayDaDang: ngayDaDang,
       polygon: polygon,
       pageNo: newPageNo || pageNo,
-      limit: limit,
+      limit: gui.MAX_LIST_ITEM,
       isIncludeCountInResponse: isIncludeCountInResponse};
 
     this.props.actions.search(

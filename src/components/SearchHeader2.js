@@ -29,7 +29,7 @@ var CommonHeader = React.createClass({
       <View style={mStyles.text}>
         <SearchInputExt placeName={this.props.placeName} refreshRegion={this.props.refreshRegion}
                            onShowMessage={this.props.onShowMessage} isHeaderLoading={this.props.isHeaderLoading}
-                           loadHomeData={this.props.loadHomeData}/>
+                           loadHomeData={this.props.loadHomeData} owner={this.props.owner}/>
       </View>
       <View style={mStyles.search}>
       <TouchableOpacity onPress={this._onSearch} underlayColor="transparent"
@@ -46,7 +46,8 @@ var CommonHeader = React.createClass({
   },
 
   _onSearch: function(){
-    Actions.Search2({needBack:true, onShowMessage: this.props.onShowMessage, refreshRegion: this.props.refreshRegion});
+    Actions.Search2({needBack:true, onShowMessage: this.props.onShowMessage, refreshRegion: this.props.refreshRegion,
+        owner: this.props.owner});
   }
 });
 

@@ -88,10 +88,7 @@ class PlacesAutoComplete extends React.Component {
     //if not call from Search page, then need perform action
     if (this.props.needReload) {
       setTimeout(() => { //must wait for onSearchFieldChange("place", value) complete
-        this.props.actions.search(
-          this.props.search.form.fields
-          , () => {/*this.props.loadHomeData && setTimeout(() => this.props.loadHomeData(), 100)*/}
-        );
+        this._handleSearchAction();
         Actions.pop();
         StatusBar.setBarStyle('light-content');
         this.props.refreshRegion && this.props.refreshRegion();
@@ -101,6 +98,47 @@ class PlacesAutoComplete extends React.Component {
       StatusBar.setBarStyle('light-content');
     }
     this.props.onShowMessage && this.props.onShowMessage();
+  }
+
+  _handleSearchAction(){
+    var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
+        radiusInKmSelectedIdx, dienTich, orderBy, diaChinh, viewport, center, huongNha, ngayDaDang,
+        polygon, pageNo, limit, isIncludeCountInResponse} = this.props.search.form.fields;
+    var isOwnByHome = this.props.owner == 'home';
+    var isOwnByList = this.props.owner == 'list';
+
+    let validViewport = this.props.search.form.fields.diaChinhViewport;
+    if (isOwnByHome) {
+      this.props.actions.onSearchFieldChange("viewport", validViewport);
+    } else {
+      validViewport = viewport;
+    }
+    let newLimit = gui.MAX_ITEM;
+    if (isOwnByList || isOwnByHome) {
+      newLimit = gui.MAX_LIST_ITEM;
+    }
+    var fields = {
+      loaiTin: loaiTin,
+      ban: ban,
+      thue: thue,
+      soPhongNguSelectedIdx: soPhongNguSelectedIdx,
+      soNhaTamSelectedIdx : soNhaTamSelectedIdx,
+      dienTich: dienTich,
+      orderBy: orderBy,
+      viewport: validViewport,
+      diaChinh: diaChinh,
+      center: center,
+      radiusInKmSelectedIdx: radiusInKmSelectedIdx,
+      huongNha: huongNha,
+      ngayDaDang: ngayDaDang,
+      polygon: polygon,
+      pageNo: pageNo,
+      limit: newLimit || limit,
+      isIncludeCountInResponse: isIncludeCountInResponse};
+
+    this.props.actions.search(
+        fields
+        , () => {/*setTimeout(() => this.props.actions.loadHomeData(), 100)*/});
   }
 
   _onCancelPress() {

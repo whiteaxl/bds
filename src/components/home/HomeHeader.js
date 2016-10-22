@@ -55,7 +55,7 @@ var HomeHeader = React.createClass({
     },
 
     handleSearchButton: function(){
-        Actions.Search();
+        Actions.Search({owner: 'home'});
     }
 });
 
