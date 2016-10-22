@@ -23,7 +23,7 @@ import RangeUtils from "../lib/RangeUtils"
 
 import DanhMuc from "../assets/DanhMuc"
 
-import SearchInput from '../components/SearchInputExt';
+import SearchInput from '../components/searchList/SearchInputExt';
 
 import SegmentedControl from '../components/SegmentedControl';
 

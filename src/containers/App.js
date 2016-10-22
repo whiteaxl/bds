@@ -21,6 +21,7 @@ import LoginRegister from './LoginRegister';
 import Search from './Search';
 import Search2 from './Search2';
 
+import SearchResultListExt from './SearchResultListExt';
 import SearchResultList from './SearchResultList';
 import SearchResultMap from './SearchResultMap';
 import PropertyTypes from '../components/PropertyTypes';
@@ -144,6 +145,7 @@ class App extends React.Component {
 
           <Scene key='Search' component={Search} title="Tìm kiếm" hideNavBar={true} direction="vertical" panHandlers={_panResponder.panHandlers}/>
           <Scene key='Search2' component={Search2} title="Tìm kiếm" hideNavBar={true} direction="vertical" panHandlers={_panResponder.panHandlers}/>
+          <Scene key='SearchResultListExt' component={SearchResultListExt} title="Danh sách" hideNavBar={true}/>
           <Scene key='SearchResultList' component={SearchResultList} title="Danh sách" hideNavBar={true}/>
           <Scene key='SearchResultMap' component={SearchResultMap} title="Bản đồ" hideNavBar={true}/>
           <Scene key='PropertyTypes' component={PropertyTypes} title="Loại nhà đất" hideNavBar={true}/>

@@ -32,7 +32,7 @@ export default class HomeCollection extends Component {
     query.limit = gui.MAX_LIST_ITEM;
     query.isIncludeCountInResponse = true;
     this.props.onResetSearch();
-    Actions.SearchResultList({type: "reset"});
+    Actions.SearchResultListExt({type: "reset"});
     this.props.searchFromHome(query, () => {});
   }
 

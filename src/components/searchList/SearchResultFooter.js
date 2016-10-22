@@ -4,15 +4,15 @@ import {View, Text, StyleSheet, AlertIOS, Dimensions} from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
 
-import RelandIcon from './RelandIcon';
+import RelandIcon from './../RelandIcon';
 
-import SortMenu from './SortMenu';
+import SortMenu from './../SortMenu';
 
-import PlaceUtil from '../lib/PlaceUtil';
+import PlaceUtil from '../../lib/PlaceUtil';
 
-import gui from '../lib/gui';
+import gui from '../../lib/gui';
 
-import findApi from '../lib/FindApi';
+import findApi from '../../lib/FindApi';
 
 import Button from 'react-native-button';
 

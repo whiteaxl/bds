@@ -738,7 +738,7 @@ class SearchResultDetail extends Component {
             Tính trên cơ sở vay 70% giá trị nhà trong vòng 15 năm với lãi suất cố định 12%/năm theo số tiền vay
           </Text>
             <View style={{flexDirection: "row", alignItems: 'center', justifyContent: 'flex-start', backgroundColor:'white', paddingTop:0}}>
-              <View style={{paddingLeft: 13, paddingTop:2, width: width/2, alignItems: 'center', justifyContent: 'center'}}>
+              <View style={{paddingLeft: 13, paddingTop:2, width: width/2-25, alignItems: 'center', justifyContent: 'center'}}>
                 <MChartView
                     data={data}
                     options={options}

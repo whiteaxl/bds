@@ -444,6 +444,7 @@ const GooglePlacesAutocomplete = React.createClass({
         underlayColor="#c8c7cc"
       >
         <View>
+          <View style={[defaultStyles.separator, this.props.styles.separator]} />
           <View style={[defaultStyles.row, {height: rowHeight}]}>
             <View style={{
               flex:1,
@@ -467,11 +468,14 @@ const GooglePlacesAutocomplete = React.createClass({
   },
 
   _renderSeparator(sectionID, rowID, isLastRow) {
-    var separatorStypeExt = isLastRow ? {marginLeft: 10} : {marginLeft: 25};
-    return (
-      <View key={`${sectionID}-${rowID}`}
-            style={[defaultStyles.separator, this.props.styles.separator, separatorStypeExt]}/>
-    );
+    if (isLastRow) {
+      return (
+          <View key={`${sectionID}-${rowID}`}
+                style={[defaultStyles.separator, this.props.styles.separator]}/>
+      );
+    } else {
+      return null;
+    }
   },
 
   _onBlur() {
@@ -550,7 +554,6 @@ const GooglePlacesAutocomplete = React.createClass({
           </TouchableHighlight>
 
         </View>
-        <View style={[defaultStyles.separator, this.props.styles.separator]}/>
         {this._getListView()}
       </View>
     );

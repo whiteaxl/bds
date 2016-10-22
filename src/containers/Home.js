@@ -217,7 +217,7 @@ var styles = StyleSheet.create({
   loadingContent: {
     position: 'absolute',
     top: -23,
-    left: 136,
+    left: width/2 - 71,
     alignItems: 'center',
     justifyContent: 'center'
   },

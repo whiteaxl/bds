@@ -20,7 +20,7 @@ import {Actions} from 'react-native-router-flux';
 
 import SearchResultFooter from '../components/searchList/SearchResultFooter';
 
-import SearchHeader from '../components/search/SearchHeader2';
+import SearchHeader from '../components/searchList/SearchHeader';
 
 import gui from '../lib/gui';
 
@@ -75,7 +75,7 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-class SearchResultList extends Component {
+class SearchResultListExt extends Component {
     constructor(props) {
         super(props);
         StatusBar.setBarStyle('light-content');
@@ -137,31 +137,18 @@ class SearchResultList extends Component {
             <View style={myStyles.fullWidthContainer}>
                 <View style={myStyles.search}>
                     <SearchHeader placeName={placeName} onShowMessage={() => this._onShowMessage()}
-                                  isHeaderLoading={() => this._isHeaderLoading()}
                                   refreshRegion={() => this.props.actions.onChangeListScrollPos(0)}
-                                  loadHomeData={this.props.actions.loadHomeData}
                                   owner={'list'}
                     />
                 </View>
 
-                <View style={{marginTop: 30, height: Dimensions.get('window').height - 108}}>
+                <View style={{marginTop: 30, height: Dimensions.get('window').height - 64}}>
                     <AdsListView ref={(adsListView) => { this._adsListView = adsListView; }}
                         {...this.props} noCoverUrl={noCoverUrl} />
                 </View>
 
                 {this._renderTotalResultView()}
 
-                <View style={myStyles.searchButton}>
-                    <SearchResultFooter center = {this.props.fields.center}
-                                        viewport = {this.props.fields.viewport}
-                                        loggedIn = {this.props.loggedIn}
-                                        placeName = {placeName}
-                                        saveSearch = {this.props.actions.saveSearch}
-                                        query = {findApi.convertFieldsToQueryParams(this.props.fields)}
-                                        userID = {this.props.userID}
-                                        scrollToTop={this._scrollToTop.bind(this)}
-                    />
-                </View>
             </View>
             </MenuContext>
         )
@@ -277,4 +264,4 @@ var myStyles = StyleSheet.create({
     }
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(SearchResultList);
+export default connect(mapStateToProps, mapDispatchToProps)(SearchResultListExt);

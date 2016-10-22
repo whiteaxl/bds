@@ -28,7 +28,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import RelandIcon from '../components/RelandIcon';
 import MapView from 'react-native-maps';
 
-import SearchHeader from '../components/SearchHeader2';
+import SearchHeader from '../components/search/SearchHeader2';
 import PriceMarker from '../components/marker/PriceMarker';
 import PriceMarker2 from '../components/marker/PriceMarker2';
 

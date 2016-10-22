@@ -9,23 +9,27 @@ import {
     View,
 } from 'react-native';
 
-import gui from "../lib/gui";
+import gui from "../../lib/gui";
 import {Actions} from 'react-native-router-flux';
-import TruliaIcon from './TruliaIcon';
+import TruliaIcon from './../TruliaIcon';
 
 
-export default class SearchInputExt extends Component {
+export default class SearchInputExt2 extends Component {
     render() {
         return(
             <View style={styles.container}>
                 <TouchableOpacity
-                    onPress={() => Actions.SearchSuggestion({owner: this.props.owner})}
+                    onPress={() => Actions.SearchSuggestion({needReload: true, refreshRegion: this.props.refreshRegion,
+                        onShowMessage: this.props.onShowMessage, loadHomeData: this.props.loadHomeData,
+                        owner: this.props.owner})}
                 >
                     <View style={styles.searchContainer}>
-                            <TruliaIcon name="search" size={14} color="white"
+                            {this.props.isHeaderLoading && this.props.isHeaderLoading() ?
+                                <View style={{width: 26}} /> :
+                                <TruliaIcon name="search" size={14} color="white"
                                         mainProps={styles.searchIcon}
                             >
-                            </TruliaIcon>
+                            </TruliaIcon>}
                             <Text style={styles.titleText}> {this.props.placeName}</Text>
                     </View>
                 </TouchableOpacity>
@@ -37,7 +41,7 @@ export default class SearchInputExt extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
         top: 0,
         position: 'absolute',
         left:0,
@@ -54,9 +58,9 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: gui.searchHeaderBg,
+        backgroundColor: '#166CA5',
         borderRadius: 5,
-        marginLeft: 10,
+        marginLeft: 0,
         marginRight: 10,
         height: 30
     },

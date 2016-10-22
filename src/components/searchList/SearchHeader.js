@@ -1,16 +1,16 @@
 // Import some code we need
 import React, {Component} from 'react';
 
-import {View, Text, StyleSheet, TouchableOpacity} from 'react-native';
-import TruliaIcon from './TruliaIcon';
+import {View, Text, StyleSheet} from 'react-native';
+import TruliaIcon from './../TruliaIcon';
 
-import RelandIcon from './RelandIcon';
+import RelandIcon from './../RelandIcon';
 
 import {Actions} from 'react-native-router-flux';
 
-import gui from '../lib/gui';
+import gui from '../../lib/gui';
 
-import SearchInputExt from './SearchInputExt2';
+import HeaderSearchInput from './HeaderSearchInputExt';
 
 // Create our component
 var CommonHeader = React.createClass({
@@ -19,7 +19,7 @@ var CommonHeader = React.createClass({
       <View style={mStyles.home}>
       <TruliaIcon onPress={this._onHome}
                   name="arrow-left" color={"white"}
-                  mainProps={{paddingLeft: 20, paddingRight: 12}} size={28} />
+                  mainProps={{paddingLeft: 20, paddingRight: 17}} size={28} />
           {/* <RelandIcon onPress={this._onHome}
         name="close" color="white" size={18}
         mainProps={{flexDirection: 'row', paddingLeft: 20, paddingRight: 17}}
@@ -27,16 +27,15 @@ var CommonHeader = React.createClass({
       </RelandIcon>*/}
       </View>
       <View style={mStyles.text}>
-        <SearchInputExt placeName={this.props.placeName} refreshRegion={this.props.refreshRegion}
-                           onShowMessage={this.props.onShowMessage} isHeaderLoading={this.props.isHeaderLoading}
-                           loadHomeData={this.props.loadHomeData} owner={this.props.owner}/>
+        <HeaderSearchInput placeName={this.props.placeName} refreshRegion={this.props.refreshRegion}
+                           onShowMessage={this.props.onShowMessage}/>
       </View>
       <View style={mStyles.search}>
-      <TouchableOpacity onPress={this._onSearch} underlayColor="transparent"
-        style={{paddingLeft: 7, paddingRight: 15}}
+      <TruliaIcon onPress={this._onSearch}
+        name="search" color="white" size={20}
+        mainProps={{paddingLeft: 17, paddingRight: 21}}
         >
-          <Text style={mStyles.titleText}>Lọc</Text>
-      </TouchableOpacity>
+      </TruliaIcon>
       </View>
     </View>
   },
@@ -46,8 +45,8 @@ var CommonHeader = React.createClass({
   },
 
   _onSearch: function(){
-    Actions.Search2({needBack:true, onShowMessage: this.props.onShowMessage, refreshRegion: this.props.refreshRegion,
-        owner: this.props.owner});
+    Actions.Search({onShowMessage: this.props.onShowMessage, refreshRegion: this.props.refreshRegion,
+                    owner: this.props.owner});
   }
 });
 
@@ -76,16 +75,9 @@ var mStyles = StyleSheet.create({
       backgroundColor: gui.mainColor
   },
   text: {
-    backgroundColor: 'transparent',
+    backgroundColor: 'white',
     position: 'absolute',
-    left:50,
-    right:40
-  },
-  titleText: {
-      backgroundColor: 'transparent',
-      color: 'white',
-      fontFamily: gui.fontFamily,
-      fontSize: 16,
-      fontWeight: '600'
+    left:55,
+    right:54
   }
 });

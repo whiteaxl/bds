@@ -11,7 +11,7 @@ import {
   View,
 } from 'react-native';
 
-import gui from "../lib/gui";
+import gui from "../../lib/gui";
 import {Actions} from 'react-native-router-flux';
 
 
