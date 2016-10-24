@@ -15,6 +15,8 @@ import PostAdsAddress from '../components/postAds/PostAdsAddress';
 import PostAdsTitle from '../components/postAds/PostAdsTitle';
 import CameraRollView from '../components/CameraRollView';
 import PostAdsPrice from '../components/postAds/PostAdsPrice';
+import PostAdsLienHe from '../components/postAds/PostAdsLienHe';
+import DuAn from '../components/DuAn';
 
 import LoginRegister from './LoginRegister';
 
@@ -29,6 +31,7 @@ import OrderPicker from '../components/OrderPicker';
 import SearchResultDetail from './SearchResultDetail';
 import SearchMapDetail from './SearchMapDetail';
 import HuongNha from '../components/HuongNha';
+import MHuongNha from '../components/MHuongNha';
 import VerifyPhone from '../components/login/VerifyPhone';
 import RegisterMoreInfor from '../components/login/RegisterMoreInfor';
 import Me from './Me';
@@ -152,6 +155,7 @@ class App extends React.Component {
           <Scene key='AdsAlertUs' component={AdsAlertUs} title="Thông báo cho chúng tôi" hideNavBar={true}/>
 
           <Scene key='HuongNha' component={HuongNha} title="Hướng nhà" hideNavBar={true}/>
+          <Scene key='MHuongNha' component={MHuongNha} title="Hướng nhà" hideNavBar={true}/>
           <Scene key='SquareImageCropper' component={SquareImageCropper} title="Image Cropper" hideNavBar={true}/>
           <Scene key='PostAds' component={PostAds} title="Post Ads" hideNavBar={true}/>
           <Scene key='PostAdsDetail' component={PostAdsDetail} title="Post Ads Detail" hideNavBar={true}/>
@@ -160,6 +164,8 @@ class App extends React.Component {
           <Scene key='PostAdsTitle' component={PostAdsTitle} title="Post Ads Title" hideNavBar={true}/>
           <Scene key='CameraRollView' component={CameraRollView} title="Kho ảnh" hideNavBar={true}/>
           <Scene key='PostAdsPrice' component={PostAdsPrice} title="Giá tiền" hideNavBar={true}/>
+          <Scene key='PostAdsLienHe' component={PostAdsLienHe} title="Liên hệ" hideNavBar={true}/>
+          <Scene key='DuAn' component={DuAn} title="Dự Án" hideNavBar={true}/>
 
           <Scene key='OrderPicker' component={OrderPicker} title="Sắp xếp" hideNavBar={true}/>
           <Scene key='SearchResultDetail' component={SearchResultDetail} title="Chi tiết" hideNavBar={true}/>

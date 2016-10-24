@@ -5,9 +5,11 @@ import RangeUtils from "../lib/RangeUtils"
 
 import DanhMuc from "../assets/DanhMuc"
 import cfg from "../cfg";
+import log from "./logUtil";
 
 var rootUrl = `http://${cfg.server}:5000/api`;
 var uploadUrl = rootUrl + "/upload";
+var postAds = rootUrl + "/postAds";
 
 'use strict';
 
@@ -41,6 +43,30 @@ var Api = {
           //console.log('upload: ' + uploadUrl, err, result);
           uploadCallback(err, result);
       });
+  },
+
+  postAds: function(adsDto, token) {
+      return fetch(`${postAds}`, {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+          },
+          body: JSON.stringify(adsDto)
+      })
+          .then(ApiUtils.checkStatus)
+          .then(response => {
+              log.info("Response of postAds", response);
+              return response.json()
+          })
+          .catch(e => {
+              log.info("Error when postAds", e);
+              return {
+                  status : 101,
+                  msg: gui.ERR_LoiKetNoiMayChu
+              }
+          });
   }
 };
 

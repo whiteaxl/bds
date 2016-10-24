@@ -15,11 +15,13 @@ import searchInitialState from './reducers/search/searchInitialState';
 import postAdsInitialState from './reducers/postAds/postAdsInitialState';
 
 import {lauchApp, registerPushTokenSuccess} from './reducers/global/globalActions';
+import {login} from './reducers/auth/authActions';
+
 import DeviceInfo from 'react-native-device-info';
 
 import PushNotification from 'react-native-push-notification';
-import log from "./lib/logUtil";
 import userApi from "./lib/userApi";
+import localStorage from './lib/localStorage';
 
 var VERSION = '0.0.1';
 
@@ -93,6 +95,13 @@ export default class MainBDS extends React.Component {
        * - if not, you must call PushNotificationsHandler.requestPermissions() later
        */
       requestPermissions: true
+    });
+
+    localStorage.getLoginInfo().then( (ret)=> {
+      if (ret){
+        console.log("========== call auto login");
+        store.dispatch(login(ret.username, ret.password))
+      }
     });
   }
 

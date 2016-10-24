@@ -112,7 +112,6 @@ class SearchResultDetail extends Component {
     }
   }
   fetchData() {
-    //console.log("adsID: " + this.props.adsID);
     if (this.props.source != 'local') {
       this.props.actions.getDetail(
           {'adsID' : this.props.adsID}

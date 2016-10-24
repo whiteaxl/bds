@@ -9,7 +9,7 @@ import {Map} from 'immutable';
 
 import  React, {Component} from 'react';
 
-import { Text, StyleSheet, View, ScrollView, Image, Dimensions, TouchableOpacity, StatusBar } from 'react-native'
+import { Text, StyleSheet, View, ScrollView, RefreshControl, Image, Dimensions, TouchableOpacity, StatusBar } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 
@@ -127,7 +127,14 @@ class Home extends Component {
         automaticallyAdjustContentInsets={false}
         showsVerticalScrollIndicator={false}
         vertical={true}
-        style={styles.scrollView}>
+        style={styles.scrollView}
+        refreshControl={
+          <RefreshControl
+            refreshing={this.props.search.homeRefreshing}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }
+      >
 
         {this.renderCollections(collections)}
 
@@ -147,6 +154,11 @@ class Home extends Component {
         </View>
       </View>
     );
+  }
+
+  _onRefresh(){
+    log.info("_onRefresh Home");
+    this.props.actions.loadHomeData();
   }
 
   _getHeaderTitle() {
@@ -177,7 +189,12 @@ class Home extends Component {
 
   _isTheFirstLoading(){
     let recentSearchList = this.props.search.recentSearchList;
-    return (recentSearchList && recentSearchList.length <= 0)
+    let collections = this.props.search.collections;
+    let empty = false;
+    if (collections.length ==1 && collections[0].title1 == '')
+        empty = true;
+
+    return (recentSearchList && recentSearchList.length <= 0 && empty)
   }
 
   render() {

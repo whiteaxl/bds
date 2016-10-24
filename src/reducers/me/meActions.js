@@ -2,7 +2,14 @@
 
 const {
   ON_ME_FIELD_CHANGE,
-  ON_TOPUP_SCRATCH_FIELD_CHANGE
+  ON_TOPUP_SCRATCH_FIELD_CHANGE,
+  ON_PROFILE_FIELD_CHANGE,
+  ON_LOADING_PROFILE_REQUEST,
+  ON_LOADING_PROFILE_SUCCESS,
+  ON_LOADING_PROFILE_FAILURE,
+  ON_UPDATING_PROFILE_REQUEST,
+  ON_UPDATING_PROFILE_SUCCESS,
+  ON_UPDATING_PROFILE_FAILURE
 } = require('../../lib/constants').default;
 
 import log from "../../lib/logUtil";
@@ -16,6 +23,13 @@ export function onMeFieldChange(field, value) {
     type: ON_ME_FIELD_CHANGE,
     payload: {field: field, value: value}
   };
+}
+
+export function onProfileFieldChange(field, value) {
+    return {
+        type: ON_PROFILE_FIELD_CHANGE,
+        payload: {field: field, value: value}
+    };
 }
 
 export function onTopupScratchFieldChange(field, value) {

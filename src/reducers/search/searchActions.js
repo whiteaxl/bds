@@ -7,7 +7,7 @@ import log from "../../lib/logUtil";
 import {Alert} from "react-native";
 
 import userApi from '../../lib/userApi';
-import db from '../../lib/localDB';
+import ls from '../../lib/localStorage';
 import localStorage  from '../../lib/localStorage';
 
 const {
@@ -32,7 +32,8 @@ const {
   SEARCH_LOAD_SAVED_SEARCH,
   CHANGE_LOADING_HOME_DATA,
   LOAD_HOME_DATA_DONE,
-  CHANGE_SEARCH_CALLED_FROM
+  CHANGE_SEARCH_CALLED_FROM,
+  CHANGE_HOME_REFRESHING
 
 } = require('../../lib/constants').default;
 
@@ -69,6 +70,13 @@ export function changeLoadingSearchResult(loading) {
   return {
     type: CHANGE_LOADING_SEARCH_RESULT,
     payload: loading
+  }
+}
+
+export function changeHomeRefreshing(refreshing) {
+  return {
+    type: CHANGE_HOME_REFRESHING,
+    payload: refreshing
   }
 }
 
@@ -151,7 +159,6 @@ export function setLoadingDetail() {
 
 function callApiSearch(params, dispatch, successCallback) {
   dispatch(changeLoadingSearchResult(true));
-
   return Api.getItems(params)
     .then((data) => {
       if (data.list) {
@@ -239,11 +246,12 @@ export function likeAds(userID, adsID) {
       userID: userID,
       adsID: adsID
     };
-
-    db.likeAds(dto).then((res) => {
-      if (res.status === 0) {
-        dispatch(likeSuccess(res.adsLikes));
-        // Alert.alert("Thành công!");
+    
+    userApi.likeAds(dto).then((res) => {
+      if (res.success) {
+        if (res.status ===0) {
+          dispatch(likeSuccess(res.adsLikes));
+        }
       } else {
         Alert.alert("Không thành công!");
       }
@@ -258,10 +266,11 @@ export function unlikeAds(userID, adsID) {
       adsID: adsID
     };
 
-    db.unlikeAds(dto).then((res) => {
-      if (res.status === 0) {
-        dispatch(unlikeSuccess(res.adsLikes));
-        // Alert.alert("Thành công!");
+    userApi.unlikeAds(dto).then((res) => {
+      if (res.success){
+        if (res.status === 0) {
+          dispatch(unlikeSuccess(res.adsLikes));
+        }
       } else {
         Alert.alert("Không thành công!");
       }
@@ -269,14 +278,16 @@ export function unlikeAds(userID, adsID) {
   }
 }
 
-export function saveSearch(userID, searchObj) {
+export function saveSearch(userID, searchObj, token) {
   return dispatch => {
     let dto = {
       userID: userID,
-      searchObj: searchObj
+      saveSearchName: searchObj.name,
+      query: searchObj.query,
+      timeModified: searchObj.timeModified
     };
 
-    db.saveSearch(dto).then((res) => {
+    userApi.saveSearch(dto, token).then((res) => {
       if (res.status === 0) {
         //dispatch(likeSuccess(res.adsLikes));
         Alert.alert("Thành công!");
@@ -316,6 +327,7 @@ export function loadHomeDataDone(res) {
 export function loadHomeData() {
   return dispatch => {
     dispatch(changeLoadingHomeData(true));
+    dispatch(changeHomeRefreshing(true));
 
     return localStorage.getLastSearch().then((ret) => {
       log.info("loadHomeData.getLastSearch", ret);
@@ -336,6 +348,7 @@ export function loadHomeData() {
         }).then((res) => {
           log.info("getAppHomeData", res);
           dispatch(loadHomeDataDone(res));
+          dispatch(changeHomeRefreshing(false));
         });
       };
 

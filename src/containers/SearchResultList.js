@@ -56,6 +56,7 @@ function mapStateToProps(state) {
         adsLikes: currentUser && currentUser.adsLikes,
         loggedIn: state.global.loggedIn,
         userID: currentUser && currentUser.userID,
+        token: currentUser && currentUser.token,
         fields : state.search.form.fields,
         totalCount: state.search.result.totalCount,
         polygons: state.search.map.polygons,
@@ -159,6 +160,7 @@ class SearchResultList extends Component {
                                         saveSearch = {this.props.actions.saveSearch}
                                         query = {findApi.convertFieldsToQueryParams(this.props.fields)}
                                         userID = {this.props.userID}
+                                        token = {this.props.token}
                                         scrollToTop={this._scrollToTop.bind(this)}
                     />
                 </View>

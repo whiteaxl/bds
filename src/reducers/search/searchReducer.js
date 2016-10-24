@@ -35,7 +35,8 @@ const {
   SEARCH_LOAD_SAVED_SEARCH,
   CHANGE_LOADING_HOME_DATA,
   LOAD_HOME_DATA_DONE,
-  CHANGE_SEARCH_CALLED_FROM
+  CHANGE_SEARCH_CALLED_FROM,
+  CHANGE_HOME_REFRESHING
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
@@ -281,6 +282,11 @@ export default function searchReducer(state = initialState, action) {
     case CHANGE_LOADING_HOME_DATA :
     {
       return state.set("loadingHomeData", action.payload)
+    }
+
+    case CHANGE_HOME_REFRESHING :
+    {
+      return state.set("homeRefreshing", action.payload)
     }
 
     case LOAD_HOME_DATA_DONE : {

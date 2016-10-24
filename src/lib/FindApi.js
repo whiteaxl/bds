@@ -12,6 +12,7 @@ import moment from 'moment';
 var rootUrl = `http://${cfg.server}:5000/api`;
 var findUrl = rootUrl + "/v2/find";
 var placeUrl = rootUrl + "/findPlace";
+var mplaceUrl = rootUrl + "/place";
 var detailUrl = rootUrl + "/detail";
 var homeData4AppUrl = rootUrl + "/v2/homeData4App";
 
@@ -283,6 +284,26 @@ var Api = {
             })
             .catch(e => e);
     },
+
+  getDiaChinhFromGoogleData(dto) {
+      return fetch(`${mplaceUrl}/getPlaceByDiaChinhKhongDau`, {
+          method: 'POST',
+          headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json',
+          },
+          timeout: 0,
+          body: JSON.stringify(dto)
+      })
+          .then(ApiUtils.checkStatus)
+          .then(response => response.json())
+          .catch(e => {
+              return {
+                  status: 99,
+                  msg: e.toString()
+              }
+          });
+  },
 
   getAppHomeData(lastSearchObj) {
     return fetch(`${homeData4AppUrl}`, {

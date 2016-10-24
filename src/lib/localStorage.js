@@ -44,6 +44,9 @@ class LocalStorage {
       return JSON.parse(ret);
     });
   }
+  removeLogin(){
+    AsyncStorage.removeItem(storageKeys.LOGIN_INFO);
+  }
 }
 
 

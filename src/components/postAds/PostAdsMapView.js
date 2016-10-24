@@ -161,6 +161,7 @@ class PostAdsMapView extends Component {
           break;
         }
       }
+      
       place.placeId = newPlace.place_id;
       var tinh = placeUtil.getTinh(newPlace);
       var huyen = placeUtil.getHuyen(newPlace);
@@ -185,6 +186,20 @@ class PostAdsMapView extends Component {
     }
 
     this.props.actions.onPostAdsFieldChange("place", place);
+    var placeType = 'T';
+    if (diaChinh.huyenKhongDau)
+        placeType = 'H';
+    if (diaChinh.xaKhongDau)
+        placeType = 'X';
+
+    var diaChinhDto = {
+      tinhKhongDau: diaChinh.tinhKhongDau,
+      huyenKhongDau: diaChinh.huyenKhongDau,
+      xaKhongDau: diaChinh.xaKhongDau,
+      placeType: placeType
+    }
+
+    this.props.actions.getDiaChinhFromGoogleData(diaChinhDto);
     Actions.pop();
   }
 

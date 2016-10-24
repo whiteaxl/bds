@@ -57,8 +57,8 @@ class MeContent extends Component {
   }
 
   _onProfile() {
-    Alert.alert("coming soon ...");
-    //Actions.Profile()
+    //Alert.alert("coming soon ...");
+    Actions.Profile()
   }
 
   _onLogout() {

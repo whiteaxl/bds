@@ -12,6 +12,8 @@ var registerUser = userApiUrl + "registerUser";
 var likeAdsUrl = cfg.rootUrl + "/likeAds";
 var unlikeAdsUrl = cfg.rootUrl + "/unlikeAds";
 var getAdsLikesUrl = cfg.rootUrl + "/user/getAdsLikes";
+var getMyAdsUrl = cfg.rootUrl + "/user/getMyAds";
+var saveSearch = cfg.rootUrl + "/saveSearch";
 var loginUrl = cfg.rootUrl + "/login";
 var signUrl = cfg.rootUrl + "/signup";
 
@@ -51,7 +53,7 @@ var userApi = {
     } else {
       params.phone = username;
     };
-
+    
     log.info("fetch ", params, loginUrl);
 
     return fetch(`${loginUrl}`, {
@@ -245,6 +247,59 @@ var userApi = {
           msg: gui.ERR_LoiKetNoiMayChu
         }
       });
+  },
+
+  getMyAds(userID) {
+    const url  = getMyAdsUrl;
+    const dto = {userID};
+    log.info("Call fetch ", url, userID);
+
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dto)
+    })
+        .then(ApiUtils.checkStatus)
+        .then(response => {
+          return response.json()
+        })
+        .catch(e => {
+          log.info("Error in getAdsLikes", e);
+          return {
+            status : 101,
+            msg: gui.ERR_LoiKetNoiMayChu
+          }
+        });
+  },
+
+  saveSearch(dto, token) {
+    const url  = saveSearch;
+    const {userID} = dto;
+    log.info("Call fetch ", url, userID);
+
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify(dto)
+    })
+        .then(ApiUtils.checkStatus)
+        .then(response => {
+          return response.json()
+        })
+        .catch(e => {
+          log.info("Error in getAdsLikes", e);
+          return {
+            status : 101,
+            msg: gui.ERR_LoiKetNoiMayChu
+          }
+        });
   }
 
 };

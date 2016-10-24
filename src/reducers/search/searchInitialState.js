@@ -118,6 +118,7 @@ var InitialState = Record({
     recentSearchList : [],
     //home screen
     loadingHomeData : false,
+    homeRefreshing : false, // for scroll down
     collections : [{
         title1 : "",
         title2 : "",

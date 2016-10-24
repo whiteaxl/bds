@@ -70,13 +70,19 @@ class AdsListTab extends Component {
     StatusBar.setBarStyle('light-content');
   }
 
+  componentDidMount() {
+    log.info("AdsListTab - componentDidMount");
+    this.props.actions.loadMySellRentList(this.props.global.currentUser.userID);
+    this.props.actions.loadLikedList(this.props.global.currentUser.userID);
+  }
+
   _onRefresh() {
     log.info("_onRefresh", this.props);
 
     if (this.props.name == 'likedTab') {
       this.props.actions.loadLikedList(this.props.global.currentUser.userID);
     } else {
-      this.props.actions.loadMySellRentList();
+      this.props.actions.loadMySellRentList(this.props.global.currentUser.userID);
     }
 
     /*
@@ -331,6 +337,7 @@ class AdsListTab extends Component {
 class MyImage extends Component {
   render() {
     let source = this.props.source ? this.props.source : 'server';
+    
     return (
       <View style={myStyles.slide} key={"img"+(this.props.imageIndex)}>
         <TouchableHighlight

@@ -67,7 +67,7 @@ class AdsMgmt extends React.Component {
   componentDidMount() {
     log.info("AdsMgmt - componentDidMount");
     //todo: temporary disable
-    //this.props.actions.loadMySellRentList();
+    //this.props.actions.loadMySellRentList(this.props.global.currentUser.userID);
     //this.props.actions.loadLikedList(this.props.global.currentUser.userID);
   }
 
@@ -90,10 +90,10 @@ class AdsMgmt extends React.Component {
                         listAds={this.props.adsMgmt.likedList} source={"server"}
             />
             <AdsListTab name="sellTab" tabLabel="BÁN" ref="sellTab"
-                        listAds={this.props.adsMgmt.sellList} source={"local"}
+                        listAds={this.props.adsMgmt.sellList} source={"server"}
             />
             <AdsListTab name="rentTab" tabLabel="CHO THUÊ" ref="rentTab"
-                        listAds={this.props.adsMgmt.rentList} source={"local"}
+                        listAds={this.props.adsMgmt.rentList} source={"server"}
             />
           </ScrollableTabView>
         </View>

@@ -59,17 +59,20 @@ function convertAds(e) {
   return e;
 }
 
-export function loadMySellRentList() {
+export function loadMySellRentList(userID) {
   return dispatch => {
-    localDB.getAllAdsDocs().then((adsList) => {
-      var sellList = adsList.filter((e) => e.loaiTin == 0);
-      sellList = sellList.map(e => convertAds(e));
+    userApi.getMyAds(userID).then((res) => {
+      if (res.status == 0) {
+        var adsList = res.data;
+        var sellList = adsList.filter((e) => e.loaiTin == 0);
+        //sellList = sellList.map(e => convertAds(e));
 
-      var rentList = adsList.filter((e) => e.loaiTin == 1);
-      rentList = rentList.map(e => convertAds(e));
+        var rentList = adsList.filter((e) => e.loaiTin == 1);
+        //rentList = rentList.map(e => convertAds(e));
 
-      dispatch(onAdsMgmtFieldChange('sellList', sellList));
-      dispatch(onAdsMgmtFieldChange('rentList', rentList));
+        dispatch(onAdsMgmtFieldChange('sellList', sellList));
+        dispatch(onAdsMgmtFieldChange('rentList', rentList));
+      }
     });
   };
 }
@@ -92,7 +95,7 @@ export function loadLikedList(userID) {
   }
 }
 
-export function buyCurrentPackage(pack) {
+export function buyCurrentPackage(pack, userID) {
   return dispatch => {
     let p = pack.packageSelected;
     log.info("buyCurrentPackage, adsID", pack);
@@ -106,7 +109,7 @@ export function buyCurrentPackage(pack) {
     return localDB.updateAdsPack(pack.adsID, p, newPack).then((res) => {
       dispatch(changePackageField('current_'+ p, pack[p].levelName));
 
-      dispatch(loadMySellRentList());
+      dispatch(loadMySellRentList(userID));
 
       return {
         status: 0

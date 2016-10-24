@@ -33,7 +33,7 @@ const {
 
 const _ = require('lodash');
 
-import dbService from "../../lib/localDB";
+import ls from "../../lib/localStorage";
 
 import log from "../../lib/logUtil";
 import userApi from "../../lib/userApi";
@@ -81,6 +81,7 @@ export function logoutFailure(error) {
 export function logout() {
   return dispatch => {
     log.info("start authenAction.logout");
+    ls.removeLogin();
     dispatch(logoutSuccess());
   };
 }
@@ -233,11 +234,8 @@ export function login(username, password, deviceDto) {
         log.info("authActions.login", json);
 
         if (json.login === true) {
-          if (username.indexOf("@") > -1) {
-            json.email = username;
-          } else {
-            json.phone = username;
-          }
+          let token = json.token;
+          ls.setLoginInfo({username,password,token});
           dispatch(loginSuccess(json));
           //todo: need to check update device function
           //userApi.updateDevice(deviceDto);

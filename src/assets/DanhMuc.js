@@ -359,6 +359,11 @@ danhMuc.getLoaiNhaDatForDisplay = function(loaiTin, loaiNhaDatKey){
     return value;
 };
 
+danhMuc.getHuongNhaForDisplay = function(huongNhaKey){
+    var value = danhMuc.HuongNha[huongNhaKey];
+    return value ? value : BAT_KY;
+};
+
 danhMuc.getGiaForDisplay = function (gia, donViTien) {
     var value = '';
     if (!gia || donViTien == 5) {

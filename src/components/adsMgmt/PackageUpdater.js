@@ -173,7 +173,7 @@ class PackageUpdater extends Component {
       [
         {text: 'Hủy', onPress: () => console.log('Cancel Pressed!')},
         {text: 'Đồng ý', onPress: () => {
-          this.props.actions.buyCurrentPackage(this.props.adsMgmt.package);
+          this.props.actions.buyCurrentPackage(this.props.adsMgmt.package, this.props.global.currentUser.userID);
           Actions.pop();
         }}
       ]
