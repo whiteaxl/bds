@@ -7,7 +7,7 @@ import * as globalActions from '../reducers/global/globalActions';
 import * as searchActions from '../reducers/search/searchActions';
 
 import {Map} from 'immutable';
-
+import moment from 'moment';
 import React, {Component} from 'react';
 
 import { Text,
@@ -80,6 +80,8 @@ const LATITUDE_DELTA = 0.08616620000177733;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 var id = 0;
 var currentAdsIndex = 0;
+
+const delayDuration = 500;
 
 /**
 * ## Redux boilerplate
@@ -248,7 +250,8 @@ class SearchResultMap extends Component {
       coordinate : null,
       pageNo: 1,
       showMessage: false,
-      mounting: true
+      mounting: true,
+      searchTime: moment().toDate().getTime()
     };
   }
 
@@ -955,13 +958,17 @@ class SearchResultMap extends Component {
       limit: limit,
       isIncludeCountInResponse: isHavingCount};
     console.log('fields', fields);
-
-    this.props.actions.search(
-        fields
-        , refreshCallback);
-    if (!isAppend) {
-        this.setState({mounting: false, pageNo: 1});
-        this._onShowMessage();
+    var ms = moment().toDate().getTime();
+    var previousSearchTime = this.state.searchTime;
+    this.setState({searchTime: ms});
+    if (ms -  previousSearchTime > delayDuration) {
+        this.props.actions.search(
+            fields
+            , refreshCallback);
+        if (!isAppend) {
+            this.setState({mounting: false, pageNo: 1});
+            this._onShowMessage();
+        }
     }
   }
 
