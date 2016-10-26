@@ -59,7 +59,7 @@ function mapDispatchToProps(dispatch) {
 
 class Home extends Component {
   componentWillMount() {
-    log.info("call home.componentDidMount");
+    log.info("call home.componentWillMount");
     StatusBar.setBarStyle('light-content');
     if (this._isTheFirstLoading()) {
       this.props.actions.loadHomeData();
@@ -69,7 +69,9 @@ class Home extends Component {
 
       var newSearch = recentSearchList[0];
 
-      if (!newSearch.query.diaChinh || !newSearch.query.diaChinh.tinhKhongDau || newSearch.query.diaChinh.duAnKhongDau){
+      if (!newSearch || !newSearch.query.diaChinh
+          || !newSearch.query.diaChinh.tinhKhongDau
+          || newSearch.query.diaChinh.duAnKhongDau){
         return;
       }
 
@@ -194,7 +196,7 @@ class Home extends Component {
     if (collections.length ==1 && collections[0].title1 == '')
         empty = true;
 
-    return (recentSearchList && recentSearchList.length <= 0 && empty)
+    return ((!recentSearchList || (recentSearchList && recentSearchList.length <= 0)) && empty)
   }
 
   render() {
