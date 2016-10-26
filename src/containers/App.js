@@ -13,7 +13,7 @@ import PostAdsDetail from '../components/postAds/PostAdsDetail';
 import PostAdsMapView from '../components/postAds/PostAdsMapView';
 import PostAdsAddress from '../components/postAds/PostAdsAddress';
 import PostAdsTitle from '../components/postAds/PostAdsTitle';
-import CameraRollView from '../components/CameraRollView';
+import MCameraRollView from '../components/MCameraRollView';
 import PostAdsPrice from '../components/postAds/PostAdsPrice';
 import PostAdsLienHe from '../components/postAds/PostAdsLienHe';
 import DuAn from '../components/DuAn';
@@ -162,7 +162,7 @@ class App extends React.Component {
           <Scene key='PostAdsMapView' component={PostAdsMapView} title="Post Ads MapView" hideNavBar={true}/>
           <Scene key='PostAdsAddress' component={PostAdsAddress} title="Post Ads Address" hideNavBar={true}/>
           <Scene key='PostAdsTitle' component={PostAdsTitle} title="Post Ads Title" hideNavBar={true}/>
-          <Scene key='CameraRollView' component={CameraRollView} title="Kho ảnh" hideNavBar={true}/>
+          <Scene key='CameraRollView' component={MCameraRollView} title="Kho ảnh" hideNavBar={true}/>
           <Scene key='PostAdsPrice' component={PostAdsPrice} title="Giá tiền" hideNavBar={true}/>
           <Scene key='PostAdsLienHe' component={PostAdsLienHe} title="Liên hệ" hideNavBar={true}/>
           <Scene key='DuAn' component={DuAn} title="Dự Án" hideNavBar={true}/>

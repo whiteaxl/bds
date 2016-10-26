@@ -125,6 +125,7 @@ class PostAdsDetail extends Component {
                     //scrollEventThrottle={1}
                 >
                     {this._renderPhoto()}
+
                     {this._renderLoaiTin()}
 
                     <View style={myStyles.categoryTitle}>
@@ -222,7 +223,7 @@ class PostAdsDetail extends Component {
         var {photos} = this.props.postAds;
         var photo = photos[imageIndex];
 
-        if (photo.uri) {
+        if (photo && photo.uri) {
             return (
                 <TouchableHighlight onPress={() => this.onTakePhoto(`${imageIndex}`)} >
                     <Image style={myStyles.imgItem} source={photo}/>
