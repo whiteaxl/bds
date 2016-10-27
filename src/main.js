@@ -16,6 +16,7 @@ import postAdsInitialState from './reducers/postAds/postAdsInitialState';
 
 import {lauchApp, registerPushTokenSuccess} from './reducers/global/globalActions';
 import {login} from './reducers/auth/authActions';
+import {onSearchFieldChange} from './reducers/search/searchActions';
 
 import DeviceInfo from 'react-native-device-info';
 
@@ -97,9 +98,23 @@ export default class MainBDS extends React.Component {
       requestPermissions: true
     });
 
+    // init diaChinh by getting value from lastsearch
+    // TODO: need to implement if last search only contain GEO location
+    localStorage.getLastSearch().then( (ret) => {
+      if (ret){
+        let lastSearch = JSON.parse(ret);
+        if (lastSearch.query && lastSearch.query.diaChinh){
+          store.dispatch(onSearchFieldChange('diaChinh', lastSearch.query.diaChinh));
+          store.dispatch(onSearchFieldChange('viewport', undefined));
+          store.dispatch(onSearchFieldChange('diaChinhViewport', undefined));
+        }
+      }
+    });
+
+    // auto login if save password
     localStorage.getLoginInfo().then( (ret)=> {
       if (ret){
-        console.log("========== call auto login");
+        console.log("call auto login");
         store.dispatch(login(ret.username, ret.password))
       }
     });
