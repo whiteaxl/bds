@@ -14,13 +14,14 @@ class PriceMarker2 extends React.Component{
   }
 
   render() {
+    let dupStyle = this.props.duplicate && this.props.duplicate >= 100 ? styles.dupText2 : styles.dupText;
     return (
-      <View style={styles.container} pointerEvents="none" >
+      <View style={styles.container} >
         <View style={[styles.bubble, {backgroundColor: this.props.color, borderColor: "white",
               flexDirection: 'row', justifyContent: 'space-between'}]}>
-          <Text style={[styles.amount, { fontSize: this.props.fontSize }]}>{this.props.amount} </Text>
+          <Text style={[styles.amount, { fontSize: this.props.fontSize }]} pointerEvents="none">{this.props.amount} </Text>
           <View style={styles.dupView}>
-            <Text style={styles.dupText}>{this.props.duplicate}</Text>
+            <Text style={dupStyle} pointerEvents="none">{this.props.duplicate}</Text>
           </View>
         </View>
         <View style={[styles.arrowBorder,{borderTopColor: this.props.color}]} />
@@ -45,6 +46,13 @@ var styles = StyleSheet.create({
     fontFamily: gui.fontFamily,
     fontWeight: '600',
     fontSize: 11,
+    color: 'white',
+    backgroundColor: 'transparent'
+  },
+  dupText2: {
+    fontFamily: gui.fontFamily,
+    fontWeight: '600',
+    fontSize: 8,
     color: 'white',
     backgroundColor: 'transparent'
   },

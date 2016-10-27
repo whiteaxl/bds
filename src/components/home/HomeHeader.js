@@ -18,19 +18,12 @@ var HomeHeader = React.createClass({
         let locationIcon = require('../../assets/image/location.png');
         return (
             <View style={mStyles.pageHeader}>
-                <View style={mStyles.home}>
-                    <RelandIcon
-                        name="location-alt" color="white" size={26} onPress={() => this._onMapView()}
-                        mainProps={{marginTop: 17, paddingLeft: 18, paddingRight: 16}}
+                <View style={mStyles.searchButton}>
+                    <TruliaIcon onPress={() => this.handleSearchButton()}
+                                name="search" color="white" size={20}
+                                mainProps={{paddingLeft: 18, paddingRight: 21}}
                     >
-                    </RelandIcon>
-                    {/*<TouchableOpacity onPress={() => this._onMapView()} underlayColor="transparent">
-                        <Image
-                            style={mStyles.locationIcon}
-                            resizeMode={Image.resizeMode.cover}
-                            source={locationIcon}
-                        />
-                    </TouchableOpacity>*/}
+                    </TruliaIcon>
                 </View>
                 <View style={mStyles.home}>
                     <Image
@@ -39,12 +32,19 @@ var HomeHeader = React.createClass({
                         source={logoIcon}
                     />
                 </View>
-                <View style={mStyles.searchButton}>
-                    <TruliaIcon onPress={() => this.handleSearchButton()}
-                                name="search" color="white" size={20}
-                                mainProps={{paddingLeft: 16, paddingRight: 21}}
+                <View style={mStyles.home}>
+                    <RelandIcon
+                        name="location-alt" color="white" size={26} onPress={() => this._onMapView()}
+                        mainProps={{marginTop: 17, paddingLeft: 18, paddingRight: 21}}
                     >
-                    </TruliaIcon>
+                    </RelandIcon>
+                    {/*<TouchableOpacity onPress={() => this._onMapView()} underlayColor="transparent">
+                     <Image
+                     style={mStyles.locationIcon}
+                     resizeMode={Image.resizeMode.cover}
+                     source={locationIcon}
+                     />
+                     </TouchableOpacity>*/}
                 </View>
             </View>
         );

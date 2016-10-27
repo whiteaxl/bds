@@ -132,7 +132,7 @@ class AdsRow extends React.Component {
 
     var moreInfo = this.getMoreInfo(loaiTin, loaiNhaDat, dienTich, soPhongNgu, soTang);
 
-    var maxDiaChiLength = 35 - moreInfo.length;
+    var maxDiaChiLength = Dimensions.get('window').width*7/64 - moreInfo.length;
 
     var index = diaChi.indexOf(',', maxDiaChiLength - 5);
     var length = 0;
@@ -243,7 +243,7 @@ const myStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     marginLeft: 17,
     marginBottom: 15,
-    margin: 5,
+    marginRight: 0,
     marginTop: 2,
     color: 'white'
   },
@@ -269,7 +269,8 @@ const myStyles = StyleSheet.create({
 
   heartButton: {
     marginTop: 6,
-    paddingRight: 25
+    paddingRight: 25,
+    paddingLeft: 0
   },
   image: {
 

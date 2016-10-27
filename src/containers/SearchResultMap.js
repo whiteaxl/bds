@@ -637,7 +637,9 @@ class SearchResultMap extends Component {
       let {totalCount, allAdsItems} = this.props;
       let totalMarkers = this._calcLoadedMarkers();
       if (allAdsItems.length < totalCount) {
-          totalMarkers = (totalCount-allAdsItems.length) + totalMarkers;
+          if (totalCount > allAdsItems.length) {
+              totalMarkers = (totalCount-allAdsItems.length) + totalMarkers;
+          }
       }
       return totalMarkers;
   }
@@ -989,7 +991,7 @@ class SearchResultMap extends Component {
      <Modal style={[styles.modal]} isOpen={this.state.openLocalInfo} position={"center"} ref={"localInfoModal"} isDisabled={false}
             backdrop={false} onClosingState={this._onCloseLocalInfo.bind(this)}>
       <View style={styles.modalHeader}>
-        <TouchableOpacity style={{flexDirection: "row", alignItems: "flex-start",position:'absolute', left:15}}
+        <TouchableOpacity style={{flexDirection: "row", alignItems: "flex-start",position:'absolute', left:15, top: 13}}
                           onPress={this._onCloseLocalInfo.bind(this)}>
           <RelandIcon name="close" color={gui.mainColor} size={15} noAction={true}/>
         </TouchableOpacity>
@@ -1211,7 +1213,7 @@ class SearchResultMap extends Component {
     var { editing } = this.state;
     var polygons = editing ? [editing] : [];
 
-    if (polygons.length > 0) {
+    if (polygons.length > 0 && polygons[0].coordinates.length > 2) {
         var geoBox = apiUtils.getPolygonBox(polygons[0]);
         var region = apiUtils.getRegion(geoBox);
         var viewport = apiUtils.getViewport(region);
@@ -1231,7 +1233,7 @@ class SearchResultMap extends Component {
       } else {
           this.setState({region: region});
           this.props.actions.onSearchFieldChange("viewport", viewport);
-          this.props.actions.onSearchFieldChange("diaChinh", {});
+          // this.props.actions.onSearchFieldChange("diaChinh", {});
       }
   }
 
@@ -1534,8 +1536,8 @@ var styles = StyleSheet.create({
     borderRadius: 5
   },
   modalHeaderText: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 16,
+    fontWeight: '600',
     fontFamily: 'Open Sans',
     color: '#606060',
     justifyContent :'center',

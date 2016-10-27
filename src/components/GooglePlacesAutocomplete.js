@@ -570,13 +570,13 @@ var styles = StyleSheet.create({
     //fontWeight: 'bold',
     fontFamily : gui.fontFamily,
     fontSize: 16,
-
+    color: '#323538'
   },
   textLine2: {
     //fontWeight: 'bold',
     fontFamily : gui.fontFamily,
     fontSize: 12,
-    color: '#b8b8b8',
+    color: '#6E757D',
   },
   textView : {
     marginLeft:10,

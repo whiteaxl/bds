@@ -142,9 +142,9 @@ class Search extends Component {
 
   _onScrollGia() {
       var {showDienTich} = this.state;
-      var scrollTo = Dimensions.get('window').height/2-330;
+      var scrollTo = 38;
       if (showDienTich) {
-          scrollTo = scrollTo + 235;
+          scrollTo = scrollTo + 225;
       }
       this._scrollView.scrollTo({y: scrollTo});
   }
@@ -172,12 +172,12 @@ class Search extends Component {
 
   _onScrollNgayDaDang() {
       var {showGia, showDienTich} = this.state;
-      var scrollTo = Dimensions.get('window').height/2-238;
+      var scrollTo = 225;
       if (showGia) {
-          scrollTo = scrollTo + 235;
+          scrollTo = scrollTo + 225;
       }
       if (showDienTich) {
-          scrollTo = scrollTo + 235;
+          scrollTo = scrollTo + 225;
       }
       this._scrollView.scrollTo({y: scrollTo});
   }
@@ -516,7 +516,7 @@ class Search extends Component {
 
     this.setState({initGia: RangeUtils.BAT_KY_RANGE, initDienTich: RangeUtils.BAT_KY_RANGE, initNgayDaDang: 0,
         fromDienTich: '', toDienTich: '', fromGia: '', toGia: '', inputNgayDaDang: '',
-        showMore: true, showGia: false, showDienTich: false, showNgayDaDang: false});
+        showMore: false, showGia: false, showDienTich: false, showNgayDaDang: false});
   }
 
   _onPropertyTypesPressed() {

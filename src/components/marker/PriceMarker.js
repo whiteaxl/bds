@@ -12,10 +12,12 @@ class PriceMarker extends React.Component{
   }
   
   render() {
+    let priceStyle = this.props.amount.length >= 6 ? {backgroundColor: this.props.color, borderColor: "white"} :
+            {backgroundColor: this.props.color, borderColor: "white", width: 50, justifyContent: 'center'};
     return (
-      <View style={styles.container} pointerEvents="none" >
-        <View style={[styles.bubble, {backgroundColor: this.props.color, borderColor: "white"}]}>
-          <Text style={[styles.amount, { fontSize: this.props.fontSize }]}>{this.props.amount} </Text>
+      <View style={styles.container} >
+        <View style={[styles.bubble, priceStyle]}>
+          <Text style={[styles.amount, { fontSize: this.props.fontSize }]} pointerEvents="none">{this.props.amount} </Text>
         </View>
         <View style={[styles.arrowBorder,{borderTopColor: this.props.color}]} />
         <View style={[styles.arrow, {borderTopColor: this.props.color}]} />

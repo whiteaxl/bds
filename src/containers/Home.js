@@ -58,7 +58,7 @@ function mapDispatchToProps(dispatch) {
 
 
 class Home extends Component {
-  componentWillMount() {
+  componentDidMount() {
     log.info("call home.componentWillMount");
     StatusBar.setBarStyle('light-content');
     if (this._isTheFirstLoading()) {
