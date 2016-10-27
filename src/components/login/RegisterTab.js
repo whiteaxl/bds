@@ -138,7 +138,7 @@ class RegisterTab extends React.Component {
           <Text style={styles.btnText}>Tiếp tục</Text>
         </TouchableOpacity>
 
-        <Text style={styles.quickLoginTitle}>Hoặc đăng ký với</Text>
+        {/*<Text style={styles.quickLoginTitle}>Hoặc đăng ký với</Text>
         <View style={styles.quickBtnContainer}>
           <TouchableOpacity
             style={[styles.quickBtn, {marginLeft:18, marginRight:9, backgroundColor:'#b90000'}]}
@@ -163,6 +163,7 @@ class RegisterTab extends React.Component {
 
           </TouchableOpacity>
         </View>
+        */}
       </View>
     );
   }

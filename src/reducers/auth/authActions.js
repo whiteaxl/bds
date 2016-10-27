@@ -240,10 +240,7 @@ export function login(username, password, deviceDto) {
           let token = json.token;
           ls.setLoginInfo({username,password,token});
           dispatch(loginSuccess(json));
-
-          console.log("============== login successful");
-          console.log(json);
-          console.log("============== login successful end");
+          
           if (json.saveSearch && json.saveSearch.length >0 ){
             dispatch(savedSearchSuccess(json.saveSearch));
           }

@@ -148,7 +148,7 @@ class LoginTab extends React.Component {
           <Text style={styles.forgot}>Quên mật khẩu ?</Text>
         </TouchableOpacity>
 
-        <Text style={styles.quickLoginTitle}>Đăng nhập nhanh với</Text>
+        {/*<Text style={styles.quickLoginTitle}>Đăng nhập nhanh với</Text>
         <View style={styles.quickBtnContainer}>
           <TouchableOpacity
             style={[styles.quickBtn, {marginLeft:18, marginRight:9, backgroundColor:'#b90000'}]}
@@ -173,6 +173,7 @@ class LoginTab extends React.Component {
 
           </TouchableOpacity>
         </View>
+        */}
       </View>
     );
   }

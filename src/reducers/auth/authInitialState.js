@@ -24,8 +24,8 @@ const {
  * The form is set 
  */
 var InitialState = Record({
-    phone: "0988673558",
-    matKhau:"abc",
+    phone: "",
+    matKhau:"",
     isFetching : false,
     error: "",
     sessionCookie:"",

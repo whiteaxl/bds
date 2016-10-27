@@ -3,7 +3,7 @@
 const {Record} = require('immutable');
 
 var InitialState = Record({
-  username: "098001", //phone or email
+  username: "", //phone or email
   error: "",
   matKhau: "",
   fullName: "",
