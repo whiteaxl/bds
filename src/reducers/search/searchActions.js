@@ -33,7 +33,9 @@ const {
   CHANGE_LOADING_HOME_DATA,
   LOAD_HOME_DATA_DONE,
   CHANGE_SEARCH_CALLED_FROM,
-  CHANGE_HOME_REFRESHING
+  CHANGE_HOME_REFRESHING,
+  SAVED_SEARCH_SUCCESS,
+  SAVED_SEARCH_FAIL,
 
 } = require('../../lib/constants').default;
 
@@ -226,6 +228,13 @@ export function getDetail(credential, successCallback) {
   }
 }
 
+export function savedSearchSuccess(payload) {
+  return {
+    type: SAVED_SEARCH_SUCCESS,
+    payload: payload
+  }
+}
+
 export function likeSuccess(payload) {
   return {
     type: SEARCH_LIST_LIKE_SUCCESS,
@@ -290,7 +299,16 @@ export function saveSearch(userID, searchObj, token) {
     userApi.saveSearch(dto, token).then((res) => {
       if (res.status === 0) {
         //dispatch(likeSuccess(res.adsLikes));
-        Alert.alert("Thành công!");
+
+        let savedSearch = res.savedSearch.map( (e) => {
+          e.isSaveSearch = true;
+          e.desc = Api.convertQuery2String(e.query);
+          e.description = e.name
+          e.isPredefinedPlace = true;
+          return e;
+        });
+        dispatch(savedSearchSuccess(savedSearch));
+        Alert.alert("Lưu tìm kiếm thành công!");
       } else {
         Alert.alert(res.msg);
       }

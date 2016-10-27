@@ -36,7 +36,8 @@ const {
   CHANGE_LOADING_HOME_DATA,
   LOAD_HOME_DATA_DONE,
   CHANGE_SEARCH_CALLED_FROM,
-  CHANGE_HOME_REFRESHING
+  CHANGE_HOME_REFRESHING,
+  SAVED_SEARCH_SUCCESS
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
@@ -203,6 +204,11 @@ export default function searchReducer(state = initialState, action) {
       }
 
       return next;
+    }
+
+    case SAVED_SEARCH_SUCCESS:{
+      let saveSearchList = action.payload;
+      return state.set('saveSearchList', saveSearchList);
     }
 
     case SEARCH_LOAD_SAVED_SEARCH:
