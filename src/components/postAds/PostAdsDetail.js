@@ -457,7 +457,9 @@ class PostAdsDetail extends Component {
                             Nhà mới xây
                         </Text>
                         <View style={myStyles.arrowIcon}>
-                            <TruliaIcon name={"check"} color={this.state.nhaXayMoi ? gui.mainColor : gui.arrowColor} size={18} />
+                            <TruliaIcon name={"check"}
+                                        onPress = {() => this._onNhaXayMoiPressed()}
+                                        color={this.state.nhaXayMoi ? gui.mainColor : gui.arrowColor} size={18} />
                         </View>
                     </View>
                 </TouchableHighlight>
@@ -475,7 +477,9 @@ class PostAdsDetail extends Component {
                             Nhà lô góc
                         </Text>
                         <View style={myStyles.arrowIcon}>
-                            <TruliaIcon name={"check"} color={this.state.nhaLoGoc ? gui.mainColor : gui.arrowColor} size={18} />
+                            <TruliaIcon name={"check"}
+                                        onPress = {() => this._onNhaLoGocPressed()}
+                                        color={this.state.nhaLoGoc ? gui.mainColor : gui.arrowColor} size={18} />
                         </View>
                     </View>
                 </TouchableHighlight>
@@ -493,7 +497,9 @@ class PostAdsDetail extends Component {
                             Ôtô đỗ cửa
                         </Text>
                         <View style={myStyles.arrowIcon}>
-                            <TruliaIcon name={"check"} color={this.state.otoDoCua ? gui.mainColor : gui.arrowColor} size={18} />
+                            <TruliaIcon name={"check"}
+                                        onPress = {() => this._onOtoDoCuaPressed()}
+                                        color={this.state.otoDoCua ? gui.mainColor : gui.arrowColor} size={18} />
                         </View>
                     </View>
                 </TouchableHighlight>
@@ -511,7 +517,9 @@ class PostAdsDetail extends Component {
                             Nhà kinh doanh được
                         </Text>
                         <View style={myStyles.arrowIcon}>
-                            <TruliaIcon name={"check"} color={this.state.nhaKinhDoanhDuoc ? gui.mainColor : gui.arrowColor} size={18} />
+                            <TruliaIcon name={"check"}
+                                        onPress = {() => this._onNhaKinhDoanhDuocPressed()}
+                                        color={this.state.nhaKinhDoanhDuoc ? gui.mainColor : gui.arrowColor} size={18} />
                         </View>
                     </View>
                 </TouchableHighlight>
@@ -528,7 +536,9 @@ class PostAdsDetail extends Component {
                             Nội thất đầy đủ
                         </Text>
                         <View style={myStyles.arrowIcon}>
-                            <TruliaIcon name={"check"} color={this.state.noiThatDayDu ? gui.mainColor : gui.arrowColor} size={18} />
+                            <TruliaIcon name={"check"}
+                                        onPress = {() => this._onNoiThatDayDuPressed()}
+                                        color={this.state.noiThatDayDu ? gui.mainColor : gui.arrowColor} size={18} />
                         </View>
                     </View>
                 </TouchableHighlight>
@@ -545,7 +555,9 @@ class PostAdsDetail extends Component {
                             Chính chủ đăng tin
                         </Text>
                         <View style={myStyles.arrowIcon}>
-                            <TruliaIcon name={"check"} color={this.state.chinhChuDangTin ? gui.mainColor : gui.arrowColor} size={18} />
+                            <TruliaIcon name={"check"}
+                                        onPress = {() => this._onChinhChuDangTinPressed()}
+                                        color={this.state.chinhChuDangTin ? gui.mainColor : gui.arrowColor} size={18} />
                         </View>
                     </View>
                 </TouchableHighlight>
