@@ -831,7 +831,8 @@ class SearchResultMap extends Component {
   _appendListData() {
       console.log("Call SearchResultMap._appendListData");
       this._refreshListData(null, null, this._doAppendListData.bind(this), null, null, null, true);
-      this.setState({openDetailAdsModal: false, showMessage: true});
+      this.setState({openDetailAdsModal: false,
+          openLocalInfo: false, showMessage: true});
   }
 
   _doAppendListData() {
@@ -976,7 +977,8 @@ class SearchResultMap extends Component {
 
   _onShowMessage() {
       console.log("Call SearchResultMap._onShowMessage");
-    this.setState({openDetailAdsModal: false, showMessage: true});
+    this.setState({openDetailAdsModal: false,
+        openLocalInfo: false, showMessage: true});
     this._onSetupMessageTimeout();
   }
 
@@ -1073,23 +1075,26 @@ class SearchResultMap extends Component {
 
     var {polygons} = this.props.search.map;
     var openDraw = !polygons || polygons.length === 0;
-    if (openDraw) {
+    if (!this.props.search.drawMode && openDraw) {
       this.props.actions.abortSearch();
       clearTimeout(this.timer);
       this.setState({
         openDetailAdsModal: false,
+        openLocalInfo: false,
         editing: null,
         showMessage: false,
         openDraw: openDraw});
-        this.props.actions.onResetAdsList();
+      this.props.actions.onResetAdsList();
+      this.props.actions.onDrawModeChange(openDraw);
     } else {
       this.setState({
         openDetailAdsModal: false,
+        openLocalInfo: false,
         editing: null,
-        openDraw: openDraw
+        openDraw: false
       });
+      this.props.actions.onDrawModeChange(false);
     }
-    this.props.actions.onDrawModeChange(openDraw);
     this.props.actions.onPolygonsChange([]);
     this.props.actions.onSearchFieldChange("polygon", []);
   }
@@ -1102,12 +1107,14 @@ class SearchResultMap extends Component {
   _onMapTypeChange(event){
     this.setState({
       mapType: DanhMuc.MapType[event.nativeEvent.selectedSegmentIndex],
+      openDetailAdsModal: false,
       openLocalInfo: false
     });
   }
 
   _onCloseLocalInfo(){
     this.setState({
+      openDetailAdsModal: false,
       openLocalInfo: false
     });
   }
@@ -1117,6 +1124,7 @@ class SearchResultMap extends Component {
 
     this.setState({
       openDetailAdsModal: false,
+      openLocalInfo: false,
       editing: null,
       openDraw: false
     });
@@ -1130,12 +1138,20 @@ class SearchResultMap extends Component {
     console.log(marker.id);
     console.log(this.state.markedList);
     var markedList = this.state.markedList;
+    let {loading} = this.props;
+    let {mounting, openDraw, openLocalInfo} = this.state;
+
+    if (openLocalInfo || loading || mounting || openDraw) {
+        return;
+    }
+    this.refs.localInfoModal.close();
 
     markedList.push(marker.id);
     currentAdsIndex = index;
 
     this.setState({
       openDetailAdsModal: true,
+      openLocalInfo: false,
       mmarker: marker,
       markedList: markedList
     });
@@ -1143,12 +1159,14 @@ class SearchResultMap extends Component {
 
   _onMarkerDeselect(){
     console.log("Call SearchResultMap._onMarkerDeselect");
-    this.setState({openDetailAdsModal: false});
+    this.setState({openDetailAdsModal: false,
+        openLocalInfo: false});
   }
 
   _onLocalInfoPressed() {
     console.log("On Local Info pressed!");
     this.setState({
+      openDetailAdsModal: false,
       openLocalInfo: true
     });
   }
@@ -1249,6 +1267,7 @@ class SearchResultMap extends Component {
       console.log("Call SearchResultMap._updateMapView");
       this.setState({
         openDetailAdsModal: false,
+        openLocalInfo: false,
         editing: null,
         openDraw: false,
         region: region || this.state.region
