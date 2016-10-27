@@ -27,7 +27,7 @@ import * as postAdsActions from '../reducers/postAds/postAdsActions';
 import * as chatActions from '../reducers/chat/chatActions';
 import * as registerActions from '../reducers/register/registerActions';
 
-import CameraRollPicker from 'react-native-camera-roll-picker';
+import CameraRollPicker from './cameraRoll/CameraRollPicker';
 
 import ImageResizer from 'react-native-image-resizer';
 
@@ -85,9 +85,9 @@ class MCameraRollView extends Component {
         let photos = this.state.photos;
 
         if (this.state.imageIndex){
-            photos[this.state.imageIndex] = {uri: current.uri};
+            photos[this.state.imageIndex] = {uri: current.image.uri, location: current.image.location};
         } else {
-            photos = images.map((e) => {return {uri: e.uri}})
+            photos = images.map((e) => {return {uri: e.image.uri, location: e.image.location}})
         }
         this.setState({photos: photos});
         console.log(current);
