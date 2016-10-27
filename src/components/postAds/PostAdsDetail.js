@@ -30,6 +30,8 @@ import SegmentedControl from '../SegmentedControl2';
 
 import ImageResizer from 'react-native-image-resizer';
 
+import PickerExt2 from '../picker/PickerExt2';
+
 import moment from 'moment';
 
 import dismissKeyboard from 'react-native-dismiss-keyboard';
@@ -83,7 +85,12 @@ class PostAdsDetail extends Component {
             otoDoCua: false,
             nhaKinhDoanhDuoc: false,
             noiThatDayDu: false,
-            chinhChuDangTin: false
+            chinhChuDangTin: false,
+
+            showNamXayDung: false,
+            initNamXayDung: '',
+            inputNamXayDung: '',
+            namXayDung: null
         }
     }
 
@@ -311,16 +318,23 @@ class PostAdsDetail extends Component {
 
     _renderNamXayDung() {
         return (
-            <View style={[myStyles.imgList, myStyles.headerSeparator, {marginLeft: 17, paddingLeft: 0}]} >
-                <Text style={myStyles.label}>Năm xây dựng</Text>
-                <TextInput
-                    secureTextEntry={false}
-                    keyboardType={'numeric'}
-                    style={myStyles.input}
-                    value={this.props.postAds.namXayDung}
-                    onChangeText={(text) => this.onValueChange("namXayDung", text)}
-                    onFocus={() => this.setState({editGia: false})}
-                />
+            <View>
+                <View style={[myStyles.headerSeparator, {paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0}]} >
+                    <TouchableHighlight onPress={() => this._onNamXayDungPressed()}>
+                        <View style={[myStyles.imgList, {paddingLeft: 0}]} >
+                            <Text style={myStyles.label}>
+                                Năm xây dựng
+                            </Text>
+                            <View style={myStyles.arrowIcon}>
+                                <Text style={myStyles.label}> {this._getNamXayDungValue()} </Text>
+                                <TruliaIcon name={"arrow-down"}
+                                            onPress={() => this._onNamXayDungPressed()}
+                                            color={gui.arrowColor} size={18} />
+                            </View>
+                        </View>
+                    </TouchableHighlight>
+                </View>
+                {this._renderNamXayDungPicker()}
             </View>
         );
     }
@@ -619,6 +633,79 @@ class PostAdsDetail extends Component {
         );
     }
 
+    _renderNamXayDungPicker() {
+        var {showNamXayDung, initNamXayDung, inputNamXayDung} = this.state;
+        if (showNamXayDung) {
+            let pickerRange = this._initDanhMucNam(100);
+            let inputPlaceholder = '';
+            let onTextChange = this._onNamXayDungInputChange.bind(this);
+            let onTextFocus = this._onScrollNamXayDung.bind(this);
+            let pickerSelectedValue = initNamXayDung;
+            let onPickerValueChange = this._onNamXayDungChanged.bind(this);
+            let val2Display = this._namXayDungVal2Display.bind(this);
+            let onPress = this._onPressNamXayDungHandle.bind(this);
+            let inputLabel = '';
+            return <PickerExt2 pickerRange={pickerRange} val2Display={val2Display} inputPlaceholder={inputPlaceholder}
+                               inputValue={String(inputNamXayDung||'')} onTextChange={onTextChange} onTextFocus={onTextFocus}
+                               pickerSelectedValue={pickerSelectedValue} onPickerValueChange={onPickerValueChange}
+                               onPress={onPress} inputLabel={inputLabel} />
+        }
+    }
+
+    _initDanhMucNam(numberOfYear){
+        let latestYear = parseInt(moment().format("YYYY"), 10);
+        let yearRange = []
+
+        for (var i=latestYear; i > latestYear-numberOfYear; i--){
+            yearRange.push(i.toString());
+        }
+        yearRange.unshift('Bất kỳ');
+        return yearRange;
+    }
+
+    _onNamXayDungInputChange(value) {
+        value = (!value || value.length<=0 || value=='Bất kỳ') ? undefined : value;
+        this.onValueChange('namXayDung', value);
+        this.setState({inputNamXayDung: value});
+    }
+
+    _onScrollNamXayDung() {
+        var scrollTo = Dimensions.get('window').height/2-238;
+        this._scrollView.scrollTo({y: scrollTo});
+    }
+
+    _onNamXayDungChanged(pickedValue) {
+        let value = pickedValue;
+        value = (!value || value.length<=0 || value=='Bất kỳ') ? undefined : value;
+        this.onValueChange('namXayDung', value);
+        this.setState({initNamXayDung: value, inputNamXayDung: value});
+    }
+
+    _namXayDungVal2Display(namXayDung) {
+        return namXayDung;
+    }
+
+    _onNamXayDungPressed(){
+        var {showNamXayDung} = this.state;
+        this.setState({showNamXayDung: !showNamXayDung});
+        if (!showNamXayDung) {
+            this._onScrollNamXayDung();
+        }
+    }
+
+    _onPressNamXayDungHandle() {
+        var {showNamXayDung} = this.state;
+        this.setState({showNamXayDung: !showNamXayDung});
+        if (!showNamXayDung) {
+            this._onScrollNamXayDung();
+        }
+    }
+
+    _getNamXayDungValue(){
+        var {namXayDung} = this.props.postAds;
+        return namXayDung||'';
+    }
+
     _onLoaiNhaPressed() {
         Actions.PropertyTypes({func: 'postAds'});
     }
@@ -866,7 +953,7 @@ class PostAdsDetail extends Component {
         if (uploadFiles.length === 0) {
             errors += ' (ảnh)';
         }
-        var {loaiNhaDat, place, gia, dienTich, matTien, namXayDung
+        var {loaiNhaDat, place, gia, dienTich, matTien
             , soTangText, soPhongNguText, soNhaTamText} = this.props.postAds;
         if (loaiNhaDat == '' || loaiNhaDat === 0) {
             errors += ' (loại nhà)';
@@ -892,9 +979,6 @@ class PostAdsDetail extends Component {
         }
         if (matTien && isNaN(matTien)) {
             errors += ' (mặt tiền)';
-        }
-        if (namXayDung && isNaN(namXayDung)) {
-            errors += ' (năm xây dựng)';
         }
         if (soTangText && isNaN(soTangText)) {
             errors += ' (số tầng)';
@@ -1007,7 +1091,7 @@ class PostAdsDetail extends Component {
             "loaiNhaDat"        : loaiNhaDat,
             "dienTich"          : dienTich||-1,
             "matTien"           : matTien||-1,
-            "namXayDung"        : namXayDung||-1,
+            "namXayDung"        : namXayDung||undefined,
             "soPhongNgu"        : phongNgu,
             "soPhongTam"        : phongTam,
             "soTang"            : soTang,
