@@ -112,7 +112,7 @@ class PostAdsDetail extends Component {
     render() {
         var {toggleState} = this.state;
         var scrollHeight = toggleState ? Dimensions.get('window').height-290 :
-            Dimensions.get('window').height-64;
+            Dimensions.get('window').height-74;
         return (
             <View myStyles={myStyles.container}>
                 <View style={{paddingTop: 30, backgroundColor: gui.mainColor}} />

@@ -95,14 +95,10 @@ class MCameraRollView extends Component {
     }
 
     _onChonPressed(){
-        console.log("Chọn");
-
         Actions.PostAdsDetail({photos: this.state.photos, type: "reset"});
-        console.log("End Chọn");
     }
 
     _onBack(){
-        console.log("Quay lại");
         Actions.pop();
     }
 

@@ -127,9 +127,6 @@ class CameraRollPicker extends Component {
             imagesPerRow,
             containerWidth
         } = this.props;
-        console.log("======================== lib render image");
-        console.log(item);
-        console.log("======================== lib render image end");
         var uri = item.node.image.uri;
         var isSelected = (this._arrayObjectIndexOf(selected, 'uri', uri) >= 0) ? true : false;
 
@@ -180,9 +177,7 @@ class CameraRollPicker extends Component {
 
         var selected = this.state.selected,
             index = this._arrayObjectIndexOf(selected, 'uri', image.image.uri);
-        console.log("========================= lib selected image");
-        console.log(image);
-        console.log("========================= lib selected image");
+        
         if (index >= 0) {
             selected.splice(index, 1);
         } else {
