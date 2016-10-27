@@ -129,7 +129,7 @@ class PostAdsPrice extends Component {
     onValueChange(key, value) {
         log.info(key, value);
         var newState = {};
-        newState[key] = value;
+        newState[key] = value.replace(',','.');
         this.setState(newState);
     }
 
