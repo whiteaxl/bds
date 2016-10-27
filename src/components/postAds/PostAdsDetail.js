@@ -664,7 +664,7 @@ class PostAdsDetail extends Component {
     }
 
     _onNamXayDungInputChange(value) {
-        value = (!value || value.length<=0 || value=='Bất kỳ') ? undefined : value;
+        value = (isNaN(parseInt(value))) ? undefined : value;
         this.onValueChange('namXayDung', value);
         this.setState({inputNamXayDung: value});
     }
@@ -676,7 +676,7 @@ class PostAdsDetail extends Component {
 
     _onNamXayDungChanged(pickedValue) {
         let value = pickedValue;
-        value = (!value || value.length<=0 || value=='Bất kỳ') ? undefined : value;
+        value = (isNaN(parseInt(value))) ? undefined : value;
         this.onValueChange('namXayDung', value);
         this.setState({initNamXayDung: value, inputNamXayDung: value});
     }
@@ -848,11 +848,13 @@ class PostAdsDetail extends Component {
     }
 
     _onSegmentTextChanged(key, val) {
+        let maxValue = 7;
+
         this.onValueChange(key, val);
         if (isNaN(val) || val == '') {
-            return;
+            val = (maxValue+1).toString();
         }
-        var value = Number(val) > 7 ? -1 : Number(val)-1;
+        var value = Number(val) > maxValue ? -1 : Number(val)-1;
         if (key == 'soTangText') {
             this.onValueChange('soTangSelectedIdx', value);
         }
