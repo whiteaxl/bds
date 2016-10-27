@@ -208,7 +208,16 @@ export default function searchReducer(state = initialState, action) {
 
     case SAVED_SEARCH_SUCCESS:{
       let saveSearchList = action.payload;
-      return state.set('saveSearchList', saveSearchList);
+
+      let savedSearch = saveSearchList.map( (e) => {
+        e.isSaveSearch = true;
+        e.desc = findApi.convertQuery2String(e.query);
+        e.description = e.name
+        e.isPredefinedPlace = true;
+        return e;
+      });
+
+      return state.set('saveSearchList', savedSearch);
     }
 
     case SEARCH_LOAD_SAVED_SEARCH:

@@ -299,15 +299,8 @@ export function saveSearch(userID, searchObj, token) {
     userApi.saveSearch(dto, token).then((res) => {
       if (res.status === 0) {
         //dispatch(likeSuccess(res.adsLikes));
-
-        let savedSearch = res.savedSearch.map( (e) => {
-          e.isSaveSearch = true;
-          e.desc = Api.convertQuery2String(e.query);
-          e.description = e.name
-          e.isPredefinedPlace = true;
-          return e;
-        });
-        dispatch(savedSearchSuccess(savedSearch));
+        
+        dispatch(savedSearchSuccess(res.savedSearch));
         Alert.alert("Lưu tìm kiếm thành công!");
       } else {
         Alert.alert(res.msg);
