@@ -27,7 +27,7 @@ class AdsRow extends React.Component {
     let bgStyle = isLiked ? {} : {opacity: 0.55};
 
     return (
-      <TouchableHighlight underlayColor='transparent' style={{overflow: 'hidden'}} >
+      <TouchableHighlight underlayColor='transparent' style={{overflow: 'hidden'}} onPress={() => this.onLike(ads)}>
         <View style={myStyles.heartButton} >
           <MHeartIcon color={color} bgColor={bgColor} bgStyle={bgStyle} size={22} noAction={true} />
         </View>
@@ -162,11 +162,11 @@ class AdsRow extends React.Component {
           <View style={myStyles.searchListViewRowAlign}
                 onStartShouldSetResponder={(evt) => false}
                 onMoveShouldSetResponder={(evt) => false}
-                pointerEvents="none"
           >
             <View
               onStartShouldSetResponder={(evt) => false}
               onMoveShouldSetResponder={(evt) => false}
+              pointerEvents="none"
             >
               <Text style={myStyles.price}
                     onStartShouldSetResponder={(evt) => false}
