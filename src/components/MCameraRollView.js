@@ -85,9 +85,9 @@ class MCameraRollView extends Component {
         let photos = this.state.photos;
 
         if (this.state.imageIndex){
-            photos[this.state.imageIndex] = {uri: current.image.uri, location: current.image.location};
+            photos[this.state.imageIndex] = {uri: current.image.uri, location: current.location};
         } else {
-            photos = images.map((e) => {return {uri: e.image.uri, location: e.image.location}})
+            photos = images.map((e) => {return {uri: e.image.uri, location: e.location}})
         }
         this.setState({photos: photos});
         console.log(current);

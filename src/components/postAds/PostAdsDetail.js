@@ -86,7 +86,6 @@ class PostAdsDetail extends Component {
             nhaKinhDoanhDuoc: false,
             noiThatDayDu: false,
             chinhChuDangTin: false,
-
             showNamXayDung: false,
             initNamXayDung: '',
             inputNamXayDung: '',
@@ -96,6 +95,24 @@ class PostAdsDetail extends Component {
 
     componentWillMount() {
         this.onValueChange('photos', this.props.photos);
+        this.getAdsLocation(this.props.photos);
+
+    }
+
+    getAdsLocation(photos){
+        for (let i=0; i< photos.length; i++){
+            if (photos[i].location && photos[i].location.longitude && photos[i].location.latitude){
+                var {place} = this.props.postAds;
+                var geo = {
+                    "lat": photos[i].location.latitude,
+                    "lon": photos[i].location.longitude
+                };
+                place.geo = geo;
+                this.props.actions.onPostAdsFieldChange("place", place);
+                return;
+            }
+        }
+
         this.getCurrentLocation();
     }
 
@@ -294,7 +311,6 @@ class PostAdsDetail extends Component {
                     style={myStyles.input}
                     value={this.props.postAds.dienTich}
                     onChangeText={(text) => this.onValueChange("dienTich", text)}
-                    onFocus={() => this.setState({editGia: false})}
                 />
             </View>
         );
@@ -310,7 +326,6 @@ class PostAdsDetail extends Component {
                     style={myStyles.input}
                     value={this.props.postAds.matTien}
                     onChangeText={(text) => this.onValueChange("matTien", text)}
-                    onFocus={() => this.setState({editGia: false})}
                 />
             </View>
         );
@@ -455,7 +470,7 @@ class PostAdsDetail extends Component {
                     style={myStyles.input}
                     value={this.props.postAds.duongTruocNha}
                     onChangeText={(text) => this.onValueChange("duongTruocNha", text)}
-                    onFocus={() => this.setState({editGia: false})}
+
                 />
             </View>
         );
@@ -1123,8 +1138,12 @@ class PostAdsDetail extends Component {
                 if (res.status==1) {
                     Alert.alert(res.err.message);
                 } else {
-                    Alert.alert("Đăng ký bất động sản thành công");
+                    //Alert.alert("Đăng ký bất động sản thành công");
                     this.onRefreshPostAds();
+                    Actions.Home({type:"reset"});
+                    console.log("=================== post Ads success");
+                    console.log(Actions);
+                    console.log("=================== post Ads success end");
                 }
             });
     }
