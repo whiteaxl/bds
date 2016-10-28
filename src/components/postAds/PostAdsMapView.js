@@ -10,7 +10,7 @@ import {Map} from 'immutable';
 
 import React, {Component} from 'react';
 
-import { Text, View, StyleSheet, Navigator, TouchableOpacity, Dimensions, StatusBar } from 'react-native'
+import { Text, View, StyleSheet, Navigator, TouchableOpacity, TouchableHighlight, Dimensions, StatusBar } from 'react-native'
 import {Actions} from 'react-native-router-flux';
 import MapView from 'react-native-maps';
 import Button from 'react-native-button';
@@ -25,11 +25,15 @@ import findApi from '../../lib/FindApi';
 
 import placeUtil from '../../lib/PlaceUtil';
 
+import PostAdsGoogleAutoComplete from './PostAdsGoogleAutoComplete';
+
+var {GooglePlacesAutocomplete} = require('react-native-google-places-autocomplete');
+
 import utils from '../../lib/utils';
 
 var { width, height } = Dimensions.get('window');
 
-const ASPECT_RATIO = width / (height-110);
+const ASPECT_RATIO = width / (height-110-40);
 const LATITUDE = 20.95389909999999;
 const LONGITUDE = 105.75490945;
 const LATITUDE_DELTA = 0.06102071125314978;
@@ -96,9 +100,11 @@ class PostAdsMapView extends Component {
             <View style={styles.headerSeparator} />
           </View>
 
+          {this._renderGooglePlaceAutoComplete()}
+
           <View style={styles.map}>
             <MapView
-              initialRegion={this.state.region}
+              region={this.state.region}
               style={styles.mapView}
               mapType={this.state.mapType}
               // onPress={this._onDragEnd.bind(this)}
@@ -121,6 +127,36 @@ class PostAdsMapView extends Component {
           </View>
         </View>
     )
+  }
+
+  _renderGooglePlaceAutoComplete(){
+    return (
+        <TouchableHighlight onPress={() => this._onPress()}>
+          <View style={styles.searchTextContainer}>
+            <Text style={styles.searchText}>Chọn địa điểm</Text>
+          </View>
+        </TouchableHighlight>
+    );
+  }
+
+  _onPress(){
+    console.log("PostAdsMapView press place");
+    Actions.PostAdsGoogleAutoComplete({onPress: (data, details)=>this._setRegionFromGoogleAutoComplete(data, details)});
+  }
+
+  _setRegionFromGoogleAutoComplete(data, details){
+
+    if (details.geometry && details.geometry.location){
+      let location = details.geometry.location;
+      let region = {  latitude: location.lat,
+                      longitude: location.lng,
+                      latitudeDelta: this.state.region.latitudeDelta,
+                      longitudeDelta: this.state.region.longitudeDelta
+                    }
+      this.setState({region: region});
+    }
+
+    Actions.pop();
   }
 
   _onRegionChangeComplete(region) {
@@ -282,7 +318,7 @@ var styles = StyleSheet.create({
   },
   mapButtonContainer: {
     position: 'absolute',
-    top: height-105,
+    top: height-130,
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
@@ -292,7 +328,7 @@ var styles = StyleSheet.create({
 
   tabbar: {
     position: 'absolute',
-    top: height-50,
+    top: height-80,
     left: 0,
     right: 0,
     bottom: 0,
@@ -317,9 +353,22 @@ var styles = StyleSheet.create({
   searchListButton: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    width: Dimensions.get('window').width,
+    width: width,
     backgroundColor: gui.mainColor,
     height: 44
+  },
+  searchTextContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    height: 25,
+    width: width
+  },
+  searchText: {
+    fontFamily: gui.fontFamily,
+    fontSize: 14,
+    width: width,
+    textAlign: 'center'
   }
 });
 
