@@ -492,6 +492,10 @@ class Search2 extends Component {
          limit: newLimit || limit,
          isIncludeCountInResponse: isIncludeCountInResponse};
 
+     if (this.props.global.currentUser && this.props.global.currentUser.userID){
+         fields.userID = this.props.global.currentUser.userID;
+         fields.updateLastSearch = true;
+     }
      this.props.actions.search(
          fields
          , () => {/*setTimeout(() => this.props.actions.loadHomeData(), 100)*/});

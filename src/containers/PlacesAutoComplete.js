@@ -135,6 +135,11 @@ class PlacesAutoComplete extends React.Component {
       pageNo: pageNo,
       limit: newLimit || limit,
       isIncludeCountInResponse: isIncludeCountInResponse};
+    
+    if (this.props.global.currentUser && this.props.global.currentUser.userID){
+      fields.userID = this.props.global.currentUser.userID;
+      fields.updateLastSearch = true;
+    }
 
     this.props.actions.search(
         fields

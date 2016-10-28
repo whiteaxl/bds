@@ -495,6 +495,11 @@ class Search extends Component {
      //TODO: fix issue keep viewport of Map when researching, need to update with other fields of state
      this.props.actions.onSearchFieldChange("viewport", validViewport);
 
+     if (this.props.global.currentUser && this.props.global.currentUser.userID){
+         fields.userID = this.props.global.currentUser.userID;
+         fields.updateLastSearch = true;
+     }
+     
      this.props.actions.search(
          fields
          , () => {/*setTimeout(() => this.props.actions.loadHomeData(), 100)*/});
