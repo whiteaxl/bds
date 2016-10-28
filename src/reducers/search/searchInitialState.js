@@ -75,6 +75,8 @@ const SearchForm = Record({
         limit: 200,
         pageNo: 1,
         isIncludeCountInResponse: true,
+        updateLastSearch: false,
+        userID: null,
 
         marker: {}
 

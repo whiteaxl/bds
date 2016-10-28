@@ -38,7 +38,7 @@ import ls from "../../lib/localStorage";
 import log from "../../lib/logUtil";
 import userApi from "../../lib/userApi";
 
-import {savedSearchSuccess} from "../search/searchActions";
+import {savedSearchSuccess, loadLastSearchSuccess} from "../search/searchActions";
 
 
 
@@ -243,6 +243,10 @@ export function login(username, password, deviceDto) {
           
           if (json.saveSearch && json.saveSearch.length >0 ){
             dispatch(savedSearchSuccess(json.saveSearch));
+          }
+
+          if (json.lastSearch && json.lastSearch.length >0){
+            dispatch(loadLastSearchSuccess(json.lastSearch));
           }
 
           //todo: need to check update device function

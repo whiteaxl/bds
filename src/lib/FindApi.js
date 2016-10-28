@@ -26,7 +26,11 @@ var Api = {
 
   convertFieldsToQueryParams : function(fields){
     var {loaiTin, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
-      radiusInKmSelectedIdx, dienTich, orderBy, diaChinh, center, viewport, huongNha, ngayDaDang, polygon, pageNo, limit, isIncludeCountInResponse} = fields;
+        radiusInKmSelectedIdx, dienTich, orderBy, diaChinh, center, viewport, 
+        huongNha, ngayDaDang, polygon, pageNo, limit, isIncludeCountInResponse,
+        userID, updateLastSearch
+    } = fields;
+
     let loaiNhaDat = fields[loaiTin].loaiNhaDat;
     let gia = fields[loaiTin].gia;
 
@@ -84,7 +88,9 @@ var Api = {
       'ngayDangTinGREATER' : DanhMuc.getDateFromNow(ngayDaDang) || undefined,
       'polygon' : polygon ? polygon : undefined,
       'pageNo' : pageNo || 1, //default is page 1
-      'isIncludeCountInResponse' : isIncludeCountInResponse || false //default is false
+      'isIncludeCountInResponse' : isIncludeCountInResponse || false, //default is false
+      'userID' : userID || undefined,
+      'updateLastSearch' : updateLastSearch || undefined
     };
 
     params[giaLabel] = giaVal;

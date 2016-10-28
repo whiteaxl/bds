@@ -109,5 +109,6 @@ export default keyMirror({
   ON_TOPUP_SCRATCH_FIELD_CHANGE: null,
 
   SAVED_SEARCH_SUCCESS: null,
-  SAVED_SEARCH_FAIL: null
+  SAVED_SEARCH_FAIL: null,
+  LOAD_LAST_SEARCH_SUCCESS: null
 });

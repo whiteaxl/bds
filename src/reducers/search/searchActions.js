@@ -36,6 +36,7 @@ const {
   CHANGE_HOME_REFRESHING,
   SAVED_SEARCH_SUCCESS,
   SAVED_SEARCH_FAIL,
+  LOAD_LAST_SEARCH_SUCCESS
 
 } = require('../../lib/constants').default;
 
@@ -231,6 +232,13 @@ export function getDetail(credential, successCallback) {
 export function savedSearchSuccess(payload) {
   return {
     type: SAVED_SEARCH_SUCCESS,
+    payload: payload
+  }
+}
+
+export function loadLastSearchSuccess(payload) {
+  return {
+    type: LOAD_LAST_SEARCH_SUCCESS,
     payload: payload
   }
 }

@@ -37,7 +37,8 @@ const {
   LOAD_HOME_DATA_DONE,
   CHANGE_SEARCH_CALLED_FROM,
   CHANGE_HOME_REFRESHING,
-  SAVED_SEARCH_SUCCESS
+  SAVED_SEARCH_SUCCESS,
+  LOAD_LAST_SEARCH_SUCCESS
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
@@ -210,14 +211,33 @@ export default function searchReducer(state = initialState, action) {
       let saveSearchList = action.payload;
 
       let savedSearch = saveSearchList.map( (e) => {
-        e.isSaveSearch = true;
-        e.desc = findApi.convertQuery2String(e.query);
-        e.description = e.name
-        e.isPredefinedPlace = true;
-        return e;
+        return {
+          name: (e.query && e.query.diaChinh ? e.query.diaChinh.fullName : ''),
+          isSaveSearch : true,
+          desc : findApi.convertQuery2String(e.query),
+          description : e.name,
+          isPredefinedPlace : true,
+          query: e.query
+        };
       });
 
       return state.set('saveSearchList', savedSearch);
+    }
+
+    case LOAD_LAST_SEARCH_SUCCESS: {
+      let lastSearchList = action.payload;
+
+      let lastSearch = lastSearchList.map( (e) => {
+        return {
+          name: (e.query && e.query.diaChinh ? e.query.diaChinh.fullName : ''),
+          timeModified: e.timeModified,
+          query: e.query,
+          isRecent: true,
+          desc: findApi.convertQuery2String(e.query)
+        } ;
+      });
+
+      return state.set('recentSearchList', lastSearch);
     }
 
     case SEARCH_LOAD_SAVED_SEARCH:
