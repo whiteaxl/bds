@@ -61,7 +61,7 @@ class PostAds extends Component {
         var {photos, imageIndex, owner} = props;
         this.state = {
             photos: photos||[],
-            imageIndex: imageIndex,
+            imageIndex: imageIndex||0,
             owner: owner
         }
     }
@@ -95,11 +95,13 @@ class PostAds extends Component {
                 <View style={[styles.container]} >
                     <Camera
                         ref={(cam) => {
-                        this.camera = cam;
-                      }}
+                            this.camera = cam;
+                        }}
                         // captureTarget={Camera.constants.CaptureTarget.disk}
                         style={styles.preview}
-                        aspect={Camera.constants.Aspect.fill}>
+                        aspect={Camera.constants.Aspect.fill}
+                        captureAudio={false}
+                    >
                         {buttonItems}
                     </Camera>
                 </View>
@@ -143,6 +145,7 @@ class PostAds extends Component {
             }
             imageIndex = 0;
         }
+
         photos[imageIndex] = {uri: data.path};
         if (owner == 'chat') {
             this.onSendImage(data.path);
