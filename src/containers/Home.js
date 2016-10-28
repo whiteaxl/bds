@@ -132,7 +132,7 @@ class Home extends Component {
         style={styles.scrollView}
         refreshControl={
           <RefreshControl
-            refreshing={this.props.search.homeRefreshing}
+            refreshing={false}
             onRefresh={this._onRefresh.bind(this)}
           />
         }
@@ -160,6 +160,20 @@ class Home extends Component {
 
   _onRefresh(){
     log.info("_onRefresh Home");
+    if (this._isTheFirstLoading()) {
+      this.props.actions.loadHomeData();
+    } else {
+      let recentSearchList = this.props.search.recentSearchList;
+      recentSearchList.sort((a, b) => b.timeModified - a.timeModified);
+
+      var newSearch = recentSearchList[0];
+
+      if (!newSearch || !newSearch.query.diaChinh
+          || !newSearch.query.diaChinh.tinhKhongDau
+          || newSearch.query.diaChinh.duAnKhongDau) {
+        return;
+      }
+    }
     this.props.actions.loadHomeData();
   }
 
