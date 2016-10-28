@@ -1139,9 +1139,9 @@ class SearchResultMap extends Component {
     console.log(this.state.markedList);
     var markedList = this.state.markedList;
     let {loading} = this.props;
-    let {mounting, openDraw, openLocalInfo} = this.state;
+    let {openDraw, openLocalInfo} = this.state;
 
-    if (openLocalInfo || loading || mounting || openDraw) {
+    if (openLocalInfo || loading || openDraw) {
         return;
     }
     this.refs.localInfoModal.close();
