@@ -42,7 +42,7 @@ var {
 class ImagePreview extends React.Component {
     constructor(props) {
         super(props);
-        StatusBar.setBarStyle('default');
+        StatusBar.setBarStyle('light-content');
         this.state ={
             offset: new Animated.Value(deviceHeight)
         }
@@ -53,13 +53,6 @@ class ImagePreview extends React.Component {
             duration: 300,
             toValue: 0
         }).start();
-    }
-
-    componentWillUnmount() {
-        StatusBar.setBarStyle('light-content');
-        // if (this.props.owner != 'chat') {
-        //     Orientation.lockToPortrait();
-        // }
     }
 
     componentWillMount() {
@@ -76,14 +69,12 @@ class ImagePreview extends React.Component {
                 fontWeight: 'normal',
                 color: 'white',
                 marginRight: 10,
-                marginBottom: 2,
-                marginTop: 2
+                paddingBottom: 20
             },
             pagingIcon: {
                 borderRadius: 0,
                 marginLeft: 10,
-                marginBottom: 2,
-                marginTop: 2
+                paddingBottom: 20
             },
             pagingView: {
                 flexDirection: 'row',
@@ -99,14 +90,19 @@ class ImagePreview extends React.Component {
             closeView: {
                 position: 'absolute',
                 backgroundColor: 'transparent',
-                top: 35
+                top: 28,
+                width: deviceWidth,
+                flexDirection: 'row',
+                justifyContent: 'space-between',
+                alignItems: 'center'
             },
             closeBtn: {
                 flexDirection: 'row',
                 backgroundColor: 'transparent',
                 paddingLeft: 20,
                 paddingRight: 15,
-                paddingBottom: 20
+                paddingBottom: 20,
+                width: 60
             },
             imgSlide: {
                 marginTop: 0,
@@ -236,11 +232,6 @@ class ImagePreview extends React.Component {
                     >
                         {imageItems}
                     </Swiper>
-                    <View style={styles.closeView}>
-                        <RelandIcon name={"close"} color={'white'} mainProps={styles.closeBtn}
-                                    size={14} onPress={this.closeModal.bind(this)}>
-                        </RelandIcon>
-                    </View>
                     <View style={{position: 'absolute', top: imageHeight-44, backgroundColor: 'transparent'}} >
                     <SearchResultDetailFooter mobile={this.props.mobile} onChat={this.props.onChat} isLiked={this.props.isLiked}
                                               userID={this.props.userID} ads={this.props.ads} loggedIn={this.props.loggedIn}
@@ -258,16 +249,27 @@ class ImagePreview extends React.Component {
         return (
             <View style={{
       position: 'absolute',
-      top: 30,
-      left: imageWidth/2-35,
+      top: 0,
+      left: 0,
+      width: deviceWidth
     }}>
-                <RelandIcon name="camera-o" color="white"
-                            iconProps={{style: styles.pagingIcon}} size={16}
-                            textProps={styles.pagingText}
-                            mainProps={styles.pagingView}
-                            text={(index + 1) + '/' + (total)}
-                >
-                </RelandIcon>
+                <LinearGradient colors={['rgba(0, 0, 0, 0.9)', 'transparent']}
+                                style={styles.linearGradient}>
+                <Text style={{height: 64}}></Text>
+                <View style={styles.closeView}>
+                    <RelandIcon name={"close"} color={'white'} mainProps={styles.closeBtn}
+                                size={14} onPress={this.closeModal.bind(this)}>
+                    </RelandIcon>
+                    <RelandIcon name="camera-o" color="white"
+                                iconProps={{style: styles.pagingIcon}} size={16}
+                                textProps={styles.pagingText}
+                                mainProps={styles.pagingView}
+                                text={(index + 1) + '/' + (total)}
+                    >
+                    </RelandIcon>
+                    <View style={{width: 60}}/>
+                </View>
+                </LinearGradient>
             </View>
         )
     }

@@ -251,21 +251,17 @@ danhMuc.DonViTienKey = [
 ];
 
 danhMuc.AdsAlertUs = {
-    1: "Thông tin vị trí không chính xác",
-    2: "Hình ảnh không phù hợp",
-    3: "Tin bài sao chép",
-    4: "Nội dung thông tin không có thật",
-    5: "Nhà đã được bán",
-    6: "Khác"
+    1: "Nhà không có thật",
+    2: "Nhà đã bị bán hoặc cho thuê",
+    3: "Nhà bị trùng lặp",
+    4: "Khác"
 };
 
 danhMuc.AdsAlertUsKey = [
     1,
     2,
     3,
-    4,
-    5,
-    6
+    4
 ];
 
 danhMuc.goiTin = [
