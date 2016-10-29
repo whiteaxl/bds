@@ -57,8 +57,7 @@ class MeContent extends Component {
   }
 
   _onProfile() {
-    //Alert.alert("coming soon ...");
-    Actions.Profile()
+    Actions.Profile();
   }
 
   _onLogout() {
@@ -75,7 +74,7 @@ class MeContent extends Component {
         require('../../assets/image/register_avatar_icon.png');
     return (
       <ScrollView style={styles.fullWidthContainer}>
-        <TouchableOpacity onPress={this._onProfile}>
+        <TouchableOpacity onPress={this._onProfile.bind(this)}>
           <View style={styles.settingLine}>
             <Image
               style={styles.avatarIcon}

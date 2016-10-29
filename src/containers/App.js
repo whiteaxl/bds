@@ -16,6 +16,8 @@ import PostAdsTitle from '../components/postAds/PostAdsTitle';
 import MCameraRollView from '../components/MCameraRollView';
 import PostAdsPrice from '../components/postAds/PostAdsPrice';
 import PostAdsLienHe from '../components/postAds/PostAdsLienHe';
+import PostAdsGoogleAutoComplete from '../components/postAds/PostAdsGoogleAutoComplete';
+
 import DuAn from '../components/DuAn';
 
 import LoginRegister from './LoginRegister';
@@ -47,6 +49,8 @@ import Topup from '../components/me/Topup';
 import Topup_Scratch from '../components/me/Topup_Scratch';
 import Topup_SMS from '../components/me/Topup_SMS';
 import Profile from '../components/me/Profile';
+import GioiTinh from '../components/GioiTinh';
+import MoiGioi from '../components/MoiGioi';
 
 
 import SearchSuggestion from '../containers/PlacesAutoComplete';
@@ -165,6 +169,7 @@ class App extends React.Component {
           <Scene key='CameraRollView' component={MCameraRollView} title="Kho ảnh" hideNavBar={true}/>
           <Scene key='PostAdsPrice' component={PostAdsPrice} title="Giá tiền" hideNavBar={true}/>
           <Scene key='PostAdsLienHe' component={PostAdsLienHe} title="Liên hệ" hideNavBar={true}/>
+          <Scene key='PostAdsGoogleAutoComplete' component={PostAdsGoogleAutoComplete} title="Chọn dịa điểm" hideNavBar={true}/>
           <Scene key='DuAn' component={DuAn} title="Dự Án" hideNavBar={true}/>
 
           <Scene key='OrderPicker' component={OrderPicker} title="Sắp xếp" hideNavBar={true}/>
@@ -198,7 +203,9 @@ class App extends React.Component {
           <Scene key='Topup_Scratch' component={Topup_Scratch} hideNavBar={true}/>
           <Scene key='Topup_SMS' component={Topup_SMS} hideNavBar={true}/>
           <Scene key='Profile' component={Profile} hideNavBar={true}/>
-          
+          <Scene key='GioiTinh' component={GioiTinh} hideNavBar={true}/>
+          <Scene key='MoiGioi' component={MoiGioi} hideNavBar={true}/>
+
         </Scene>
       </RouterWithRedux>
     );

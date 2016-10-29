@@ -4,11 +4,12 @@ import {connect} from 'react-redux';
 
 import * as globalActions from '../../reducers/global/globalActions';
 import * as meActions from '../../reducers/me/meActions';
+import GiftedSpinner from 'react-native-gifted-spinner';
 
 import React, {Component} from 'react';
 
-import {Text, View, StyleSheet, PixelRatio, ScrollView,
-    TextInput, StatusBar, Dimensions, TouchableHighlight} from 'react-native'
+import {Text, View, StyleSheet, PixelRatio, ScrollView, Image, Alert,
+    TextInput, StatusBar, Dimensions, TouchableHighlight, DatePickerIOS } from 'react-native'
 
 import TruliaIcon from '../TruliaIcon';
 
@@ -16,8 +17,10 @@ import {Map} from 'immutable';
 import {Actions} from 'react-native-router-flux';
 import gui from "../../lib/gui";
 import util from "../../lib/utils";
-import CollapsiblePanel from '../CollapsiblePanel';
 import MChartView from '../MChartView';
+import moment from 'moment';
+
+import DanhMuc from '../../assets/DanhMuc';
 
 var {width, height} = Dimensions.get('window');
 
@@ -49,18 +52,26 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     StatusBar.setBarStyle('light-content');
+    let currentUser = this.props.global.currentUser;
+    this.props.actions.profile(currentUser.userID, currentUser.token);
+
+    let date = this.props.me.profile.date ? this.props.me.profile.date : new Date();
+
+    this.state = {
+      date: date,
+      timeZoneOffsetInHours: (+7) * (date).getTimezoneOffset() / 60,
+      showNgaySinhPicker:false
+    }
   }
 
   render() {
-
-    let currentUser = this.props.global.currentUser;
-
     return (
 
         <View style={style.container}>
 
           {this._renderHeader()}
-          <ScrollView>
+          <ScrollView ref={(scrollView) => { this._scrollView = scrollView; }}
+            >
           <View style = {{flexDirection: 'column', flex:1}}>
 
             {this._renderContentGroupTitle('THÔNG TIN LIÊN LẠC')}
@@ -79,6 +90,9 @@ class Profile extends Component {
 
             {this._renderGioiThieu()}
 
+            <View style={[style.line]} />
+            {this._renderPhoto()}
+
             {this._renderContentGroupTitle('')}
 
             {this._renderDoiMatKhau()}
@@ -89,7 +103,9 @@ class Profile extends Component {
             <View style={[style.line]} />
 
             {this._renderNgaySinh()}
+            {this._renderNgaySinhPicker()}
             <View style={[style.line]} />
+
 
             {this._renderDiaChi()}
             <View style={[style.line]} />
@@ -109,6 +125,56 @@ class Profile extends Component {
     Actions.pop();
   }
 
+  validateData(profile){
+    if (!profile.phone && !profile.email){
+      Alert.alert("Số điện thoại và email không được phép rỗng đồng thời");
+      return false;
+    }
+
+    if (profile.email && profile.email.indexOf('@')==-1){
+      Alert.alert("Email không đúng định dạng");
+      return false;
+    }
+
+    return true;
+  }
+
+  _onApply(){
+    let profile = this.props.me.profile;
+
+    if (!this.validateData(profile))
+        return;
+
+    let dto = {
+      userID: profile.userID,
+      fullName : profile.fullName,
+      email : profile.email||undefined,
+      phone : profile.phone||undefined,
+      diaChi : profile.diaChi||undefined,
+      gioiThieu: profile.gioiThieu||undefined,
+      avatar : profile.avatar||undefined,
+      sex: profile.sex||'U', // F, M, U
+      birthDate: profile.birthDate||undefined, // date type
+      website: profile.website||undefined,
+      broker: profile.broker||'U'
+    }
+
+    let token = this.props.global.currentUser.token;
+    this.props.actions.updateProfile(dto, token).then(
+        (res) =>{
+          if (res.success){
+            Alert.alert("Cập nhật thông tin cá nhân thành công");
+            Actions.pop();
+          } else {
+            Alert.alert(res.msg);
+          }
+        }
+    ). catch((res) => {
+      Alert.alert(res.toString());
+    })
+
+  }
+
   _renderHeader(){
     return (
         <View style={style.headerContainer}>
@@ -119,18 +185,30 @@ class Profile extends Component {
           </TruliaIcon>
 
           <View style={style.headerTitle}>
+
             <Text style={style.headerTitleText}>
               Trần Việt Anh
             </Text>
           </View>
-
-          <View style={style.changeButton}>
-            <Text style={[style.headerTitleText,{textAlign:'right'}]}>
-              Thay đổi
-            </Text>
-          </View>
+          <TouchableHighlight onPress={() => this._onApply()}>
+            <View style={style.changeButton}>
+              {this._renderLoadingView()}
+              <Text style={[style.headerTitleText,{marginLeft:5, textAlign:'right'}]}>
+                Thay đổi
+              </Text>
+            </View>
+          </TouchableHighlight>
         </View>
     );
+  }
+
+  _renderLoadingView(){
+      if (!this.props.me.isUpdatingProfile){
+          return <View />
+      }
+      return (
+          <GiftedSpinner size="small" color="white" />
+      );
   }
   _renderContentGroupTitle(title){
     return (
@@ -143,16 +221,19 @@ class Profile extends Component {
   _renderTenDayDu(){
     return (
         <View style={style.rowContainer}>
+
           <Text style={[style.contentLabel]}>
             Tên đầy đủ
           </Text>
 
           <TextInput
               secureTextEntry={false}
+              autoCorrect = {false}
               style={style.contentText}
-              value={'Trần Việt Anh'}
+              value={this._getFullName()}
               onChangeText={(text) => this.onValueChange("fullName", text)}
           />
+
         </View>
     );
   }
@@ -165,9 +246,12 @@ class Profile extends Component {
           </Text>
 
           <TextInput
+              editable={false}
               secureTextEntry={false}
+              autoCorrect = {false}
+              keyboardType="numeric"
               style={style.contentText}
-              value={'0906508555'}
+              value={this._getSoDienThoai()}
               onChangeText={(text) => this.onValueChange("phone", text)}
           />
         </View>
@@ -183,8 +267,10 @@ class Profile extends Component {
 
           <TextInput
               secureTextEntry={false}
+              autoCapitalize = {'none'}
+              autoCorrect = {false}
               style={style.contentText}
-              value={'tranvietanh83@gmail.com'}
+              value={this._getEmail()}
               onChangeText={(text) => this.onValueChange("email", text)}
           />
         </View>
@@ -200,10 +286,33 @@ class Profile extends Component {
 
           <TextInput
               secureTextEntry={false}
+              autoCapitalize = {'none'}
+              autoCorrect = {false}
               style={style.contentText}
-              value={'landber.com'}
+              value={this._getWebsite()}
               onChangeText={(text) => this.onValueChange("website", text)}
           />
+        </View>
+    );
+  }
+
+  _renderPhoto(){
+    let avatarUri = this.props.global.currentUser.avatar ? {uri: this.props.global.currentUser.avatar} :
+        require('../../assets/image/register_avatar_icon.png');
+
+    return (
+        <View style={style.rowContainer}>
+          <Text style={[style.contentLabel]}>
+            Ảnh
+          </Text>
+          <Image
+              style={style.avatarIcon}
+              resizeMode={Image.resizeMode.cover}
+              source={avatarUri}
+          />
+          <Text style={style.contentText}>
+          Chạm để thay đổi ảnh
+          </Text>
         </View>
     );
   }
@@ -220,7 +329,7 @@ class Profile extends Component {
               multiline = {true}
               numberOfLines = {5}
               style={[style.contentText, {borderColor: 'lightgray', borderWidth: 1, height: 100}]}
-              value={''}
+              value={this._getGioiThieu()}
               onChangeText={(text) => this.onValueChange("gioiThieu", text)}
           />
         </View>
@@ -245,13 +354,13 @@ class Profile extends Component {
 
   _renderGioiTinh(){
     return (
-        <TouchableHighlight>
+        <TouchableHighlight onPress={() => this._onGioiTinhPressed()}>
           <View style={style.rowIconContainer}>
             <Text style={[style.contentLabel]}>
               Giới tính
             </Text>
             <View style={style.arrowIcon}>
-              <Text style={style.label}>Nam</Text>
+              <Text style={style.label}>{this._getGioiTinh()}</Text>
               <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
             </View>
           </View>
@@ -261,13 +370,13 @@ class Profile extends Component {
 
   _renderNgaySinh(){
     return (
-        <TouchableHighlight>
+        <TouchableHighlight onPress={() => this._onNgaySinhPressed()}>
           <View style={style.rowIconContainer}>
             <Text style={[style.contentLabel]}>
               Ngày sinh
             </Text>
             <View style={style.arrowIcon}>
-              <Text style={style.label}>11/11/1982</Text>
+              <Text style={style.label}>{this._getNgaySinh()}</Text>
               <TruliaIcon name={"arrow-down"} color={gui.arrowColor} size={18} />
             </View>
           </View>
@@ -275,31 +384,49 @@ class Profile extends Component {
     );
   }
 
+  _renderNgaySinhPicker(){
+    if (!this.state.showNgaySinhPicker)
+      return <View />;
+
+    return (
+        <DatePickerIOS
+            date={this.state.date}
+            mode="date"
+            timeZoneOffsetInMinutes={this.state.timeZoneOffsetInHours}
+            onDateChange={this._onNgaySinhChange.bind(this)}
+        />
+    );
+  }
+
   _renderDiaChi(){
     return (
-        <TouchableHighlight>
-          <View style={style.rowIconContainer}>
-            <Text style={[style.contentLabel]}>
-              Địa chỉ
-            </Text>
-            <View style={style.arrowIcon}>
-              <Text style={style.label}>KĐT Xala, Hà Đông</Text>
-              <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
-            </View>
-          </View>
-        </TouchableHighlight>
+        <View style={style.rowContainer}>
+          <Text style={[style.contentLabel]}>
+            Địa chỉ
+          </Text>
+
+          <TextInput
+              secureTextEntry={false}
+              multiline = {true}
+              autoCorrect = {false}
+              numberOfLines = {3}
+              style={[style.contentText, {borderColor: 'lightgray', borderWidth: 1, height: 60}]}
+              value={this._getDiaChi()}
+              onChangeText={(text) => this.onValueChange("diaChi", text)}
+          />
+        </View>
     );
   }
 
   _renderMoiGioi(){
     return (
-        <TouchableHighlight>
+        <TouchableHighlight onPress={() => this._onMoiGioiPressed()}>
           <View style={style.rowIconContainer}>
             <Text style={[style.contentLabel, {width: 150}]}>
               Vai trò của bạn
             </Text>
             <View style={style.arrowIcon}>
-              <Text style={style.label}>Môi giới</Text>
+              <Text style={style.label}>{this._getMoiGioi()}</Text>
               <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
             </View>
           </View>
@@ -364,8 +491,6 @@ class Profile extends Component {
               </View>
             </View>
             <Text style={{fontSize: 5}} />
-
-          {/*<View style={detailStyles.lineBorder2} />*/}
         </View>
     );
   }
@@ -387,11 +512,78 @@ class Profile extends Component {
     )
   }
 
+  _onGioiTinhPressed(){
+    Actions.GioiTinh();
+  }
+
+  _onMoiGioiPressed(){
+    Actions.MoiGioi();
+  }
+
+  _onNgaySinhPressed(){
+    let showNgaySinhPicker = this.state.showNgaySinhPicker;
+
+    this.setState({showNgaySinhPicker: !showNgaySinhPicker});
+
+    if (!showNgaySinhPicker)
+      this._onScrollNgaySinh();
+  }
+
+  _onNgaySinhChange(date){
+    console.log("on Ngay Sinh change");
+    let birthDate = moment(date).subtract(1, 'days')
+    this.setState( { date: date});
+    this.onValueChange('birthDate', birthDate);
+  }
+
+  _onScrollNgaySinh() {
+    let  scrollTo = 300;
+    this._scrollView.scrollTo({y: scrollTo});
+  }
 
   onValueChange(field, value){
     //todo: need to implement
     this.props.actions.onProfileFieldChange(field, value);
-    console.log("Need to implement method Profile.onValueChange");
+  }
+
+  _getFullName(){
+    return this.props.me.profile.fullName;
+  }
+
+  _getSoDienThoai(){
+    return this.props.me.profile.phone;
+  }
+
+  _getEmail(){
+    return this.props.me.profile.email;
+  }
+
+  _getWebsite(){
+    return this.props.me.profile.website;
+  }
+
+  _getGioiThieu(){
+    return this.props.me.profile.gioiThieu;
+  }
+
+  _getAvatar(){
+    return this.props.me.profile.avatar;
+  }
+
+  _getGioiTinh(){
+    return DanhMuc.GioiTinh[this.props.me.profile.sex]||'';
+  }
+
+  _getNgaySinh(){
+    return this.props.me.profile.birthDate ? moment(this.props.me.profile.birthDate).format('DD/MM/YYYY') : ''
+  }
+
+  _getDiaChi(){
+    return this.props.me.profile.diaChi;
+  }
+
+  _getMoiGioi(){
+    return DanhMuc.MoiGioi[this.props.me.profile.broker]||'';
   }
 }
 
@@ -435,6 +627,8 @@ var style = StyleSheet.create({
     textAlign: 'center'
   },
   changeButton: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
     width: 80,
     right: 15,
     marginTop: 30,
@@ -520,7 +714,9 @@ var style = StyleSheet.create({
     fontFamily: gui.fontFamily,
     color: '#8A8A8A',
     marginLeft: 10,
-    width: width-150
+    width: width-150,
+    paddingLeft: 5,
+    paddingRight: 5
   },
   rowIconContainer: {
     flexDirection: 'row',
@@ -556,6 +752,11 @@ var style = StyleSheet.create({
     marginTop: 18,
     backgroundColor: 'white',
     borderWidth: 3.5
+  },
+  avatarIcon : {
+    height: 60,
+    width: 60,
+    borderRadius: 30
   },
 });
 

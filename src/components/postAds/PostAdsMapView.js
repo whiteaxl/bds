@@ -33,10 +33,10 @@ import utils from '../../lib/utils';
 
 var { width, height } = Dimensions.get('window');
 
-const ASPECT_RATIO = width / (height-110-40);
+const ASPECT_RATIO = width / (height-110);
 const LATITUDE = 20.95389909999999;
 const LONGITUDE = 105.75490945;
-const LATITUDE_DELTA = 0.06102071125314978;
+const LATITUDE_DELTA = 0.00616620000177733;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 
 /**
