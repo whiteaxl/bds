@@ -191,6 +191,30 @@ danhMuc.HuongNhaKey = [
     8
 ];
 
+danhMuc.GioiTinh = {
+    'U': "Không rõ",
+    'F': "Nữ",
+    'M': "Nam"
+};
+
+danhMuc.GioiTinhKey = [
+    'U',
+    'F',
+    'M'
+];
+
+danhMuc.MoiGioi = {
+    'U': "Không xác định",
+    'Y': "Môi Giới",
+    'N': "Chính chủ"
+};
+
+danhMuc.MoiGioiKey = [
+    'U',
+    'Y',
+    'N'
+];
+
 danhMuc.LoaiTin = {
     0: "Bán",
     1: "Cho thuê"
@@ -292,6 +316,25 @@ danhMuc.getDanhMucHuongNhaValues = function () {
     }
     return result;
 }
+
+danhMuc.getGioiTinhValues = function () {
+    var result = [];
+    for (var i=0; i<danhMuc.GioiTinhKey.length; i++) {
+        var k = danhMuc.GioiTinhKey[i];
+        result.push(danhMuc.GioiTinh[k]);
+    }
+    return result;
+}
+
+danhMuc.getMoiGioiValues = function () {
+    var result = [];
+    for (var i=0; i<danhMuc.MoiGioiKey.length; i++) {
+        var k = danhMuc.MoiGioiKey[i];
+        result.push(danhMuc.MoiGioi[k]);
+    }
+    return result;
+}
+
 
 danhMuc.getLoaiNhaDatBanValues = function () {
     return danhMuc.getDanhMucValues(danhMuc.LoaiNhaDatBan);
