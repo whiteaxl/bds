@@ -13,7 +13,11 @@ var InitialState = Record({
     adsLikes : [],
     saveSearch : [],
     mainAccount: 0,
-    bonusAccount: 0
+    bonusAccount: 0,
+    setting: {
+      autoLoadAds : false
+    }
+
   })),
 
   deviceInfo : {
