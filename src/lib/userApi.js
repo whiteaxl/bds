@@ -13,9 +13,11 @@ var likeAdsUrl = cfg.rootUrl + "/likeAds";
 var unlikeAdsUrl = cfg.rootUrl + "/unlikeAds";
 var getAdsLikesUrl = cfg.rootUrl + "/user/getAdsLikes";
 var getMyAdsUrl = cfg.rootUrl + "/user/getMyAds";
-var saveSearch = cfg.rootUrl + "/saveSearch";
+var saveSearchUrl = cfg.rootUrl + "/saveSearch";
 var loginUrl = cfg.rootUrl + "/login";
 var signUrl = cfg.rootUrl + "/signup";
+var profileUrl = cfg.rootUrl + "/profile";
+var updateProfileUrl = cfg.rootUrl + "/updateProfile";
 
 var userApi = {
   requestVerifyCode(phone) {
@@ -275,8 +277,63 @@ var userApi = {
         });
   },
 
+  profile(userID, token){
+    const url  = profileUrl;
+    var dto = {userID};
+
+    log.info("Call fetch ", url, userID);
+
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify(dto)
+    })
+        .then(ApiUtils.checkStatus)
+        .then(response => {
+          return response.json()
+        })
+        .catch(e => {
+          log.info("Error in get user information", e);
+          return {
+            status : 101,
+            msg: gui.ERR_LoiKetNoiMayChu
+          }
+        });
+  },
+
+  updateProfile(userDto, token){
+    const url  = updateProfileUrl;
+
+    log.info("Call fetch ", url, userDto);
+
+    return fetch(url, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify(userDto)
+    })
+        .then(ApiUtils.checkStatus)
+        .then(response => {
+          return response.json()
+        })
+        .catch(e => {
+          log.info("Error in update profile", e);
+          return {
+            status : 101,
+            msg: gui.ERR_LoiKetNoiMayChu
+          }
+        });
+  },
+
   saveSearch(dto, token) {
-    const url  = saveSearch;
+    const url  = saveSearchUrl;
     const {userID} = dto;
     log.info("Call fetch ", url, userID);
 
