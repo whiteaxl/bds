@@ -334,8 +334,8 @@ var userApi = {
 
   saveSearch(dto, token) {
     const url  = saveSearchUrl;
-    const {userID} = dto;
-    log.info("Call fetch ", url, userID);
+    const {query} = dto;
+    log.info("Call fetch ", url, query);
 
     return fetch(url, {
       method: 'POST',

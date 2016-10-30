@@ -298,7 +298,6 @@ export function unlikeAds(userID, adsID) {
 export function saveSearch(userID, searchObj, token) {
   return dispatch => {
     let dto = {
-      userID: userID,
       saveSearchName: searchObj.name,
       query: searchObj.query,
       timeModified: searchObj.timeModified
