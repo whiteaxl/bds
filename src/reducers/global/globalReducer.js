@@ -14,6 +14,7 @@ const {
 
   SEARCH_LIST_LIKE_SUCCESS,
   SEARCH_LIST_UNLIKE_SUCCESS,
+  ON_CURRENT_USER_FIELD_CHANGE
 } = require('../../lib/constants').default;
 
 import InitialState from './globalInitialState';
@@ -49,13 +50,19 @@ export default function globalReducer(state = initialState, action) {
       return newState;
     }
     case LOGOUT_SUCCESS: {
-    let newState = state
-      .setIn(["currentUser", "phone"], '')
-      .set("loggedIn", false)
-      .setIn(['currentUser','userID'], '');
+      let newState = state
+        .setIn(["currentUser", "phone"], '')
+        .set("loggedIn", false)
+        .setIn(['currentUser','userID'], '');
 
-    return newState;
-  }
+      return newState;
+    }
+
+    case ON_CURRENT_USER_FIELD_CHANGE:{
+      const {field, value} = action.payload;
+      let nextState = state.setIn(['currentUser', field], value);
+      return nextState;
+    }
 
     case LAUNCH_APP :
     {

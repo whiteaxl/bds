@@ -57,7 +57,16 @@ class MeContent extends Component {
   }
 
   _onProfile() {
-    Actions.Profile();
+    let currentUser = this.props.global.currentUser;
+    this.props.actions.profile(currentUser.userID, currentUser.token).then(
+        (res) => {
+          if (res.success){
+            Actions.Profile();
+          } else {
+            Alert.alert("Tải thông tin cá nhân không thành công");
+          }
+        }
+    );
   }
 
   _onLogout() {

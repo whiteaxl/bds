@@ -110,5 +110,7 @@ export default keyMirror({
 
   SAVED_SEARCH_SUCCESS: null,
   SAVED_SEARCH_FAIL: null,
-  LOAD_LAST_SEARCH_SUCCESS: null
+  LOAD_LAST_SEARCH_SUCCESS: null,
+
+  ON_CURRENT_USER_FIELD_CHANGE: null
 });

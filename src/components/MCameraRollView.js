@@ -10,11 +10,8 @@ import {
     Alert
 } from 'react-native';
 
-import CommonHeader from './CommonHeader';
-
 import gui from "../lib/gui";
 import log from "../lib/logUtil";
-import danhMuc from '../assets/DanhMuc';
 
 import TruliaIcon from './TruliaIcon';
 
@@ -26,6 +23,7 @@ import * as globalActions from '../reducers/global/globalActions';
 import * as postAdsActions from '../reducers/postAds/postAdsActions';
 import * as chatActions from '../reducers/chat/chatActions';
 import * as registerActions from '../reducers/register/registerActions';
+import * as meActions from '../reducers/me/meActions';
 
 import CameraRollPicker from './cameraRoll/CameraRollPicker';
 
@@ -35,13 +33,12 @@ import {Actions} from 'react-native-router-flux';
 
 import cfg from "../cfg";
 
-var rootUrl = `http://${cfg.server}:5000`;
-
 const actions = [
     globalActions,
     postAdsActions,
     chatActions,
-    registerActions
+    registerActions,
+    meActions
 ];
 
 function mapStateToProps(state) {
@@ -65,13 +62,28 @@ function mapDispatchToProps(dispatch) {
 class MCameraRollView extends Component {
     constructor(props) {
         super(props);
-        let {photos, imageIndex} = props;
+        let {photos, imageIndex, owner} = props;
+
+        switch (owner) {
+            case 'register':
+                imageIndex = 0;
+                break;
+            case 'profile':
+                imageIndex = 0;
+                break;
+            case 'chat':
+                imageIndex = 0;
+                break;
+            default:
+                imageIndex = imageIndex;
+        }
 
         this.state = {
             num: 0,
             selected: [],
             photos : photos,
-            imageIndex: imageIndex
+            imageIndex: imageIndex,
+            owner: owner
         };
     }
 
@@ -95,11 +107,55 @@ class MCameraRollView extends Component {
     }
 
     _onChonPressed(){
-        Actions.PostAdsDetail({photos: this.state.photos, type: "reset"});
+        let owner = this.state.owner;
+
+        if (!this.state.photos ||this.state.photos.length <=0){
+            Alert.alert("Bạn chưa chọn ảnh");
+            return;
+        }
+
+        let photo = this.state.photos[0];
+
+        switch(owner) {
+            case 'register':
+                console.log("take photo for registering user");
+                this._onSelectRegisterAvatar(photo.uri);
+                break;
+            case 'chat':
+                //TODO: need to implement for chatting
+                console.log("take photo for chatting");
+                break;
+            case 'profile':
+                console.log("take photo for updating profile");
+                this._onSelectProfileAvatar(photo.uri);
+                break;
+            default:
+                Actions.PostAdsDetail({photos: this.state.photos, type: "reset"});
+        }
     }
 
     _onBack(){
         Actions.pop();
+    }
+
+    _onSelectRegisterAvatar(uri) {
+        ImageResizer.createResizedImage(uri, cfg.maxWidth, cfg.maxHeight, 'JPEG', 85, 0, null).then((resizedImageUri) => {
+            this.props.actions.onRegisterFieldChange('image', resizedImageUri);
+            Actions.pop();
+            Actions.pop();
+        }).catch((err) => {
+            log.error(err);
+        });
+    }
+
+    _onSelectProfileAvatar(uri) {
+        ImageResizer.createResizedImage(uri, cfg.maxWidth, cfg.maxHeight, 'JPEG', 85, 0, null).then((resizedImageUri) => {
+            this.props.actions.onProfileFieldChange('avatar', resizedImageUri);
+            Actions.pop();
+            Actions.pop();
+        }).catch((err) => {
+            log.error(err);
+        });
     }
 
     render() {
@@ -131,7 +187,7 @@ class MCameraRollView extends Component {
                     removeClippedSubviews={false}
                     groupTypes='SavedPhotos'
                     batchSize={5}
-                    maximum={this.state.imageIndex ? 1 : 4}
+                    maximum={isNaN(this.state.imageIndex) ? 4 : 1}
                     selected={this.state.selected}
                     assetType='Photos'
                     imagesPerRow={3}

@@ -4,12 +4,13 @@ import {connect} from 'react-redux';
 
 import * as globalActions from '../../reducers/global/globalActions';
 import * as meActions from '../../reducers/me/meActions';
+import * as postAdsActions from '../../reducers/postAds/postAdsActions';
 import GiftedSpinner from 'react-native-gifted-spinner';
 
 import React, {Component} from 'react';
 
 import {Text, View, StyleSheet, PixelRatio, ScrollView, Image, Alert,
-    TextInput, StatusBar, Dimensions, TouchableHighlight, DatePickerIOS } from 'react-native'
+    TextInput, StatusBar, Dimensions, TouchableOpacity, TouchableHighlight, DatePickerIOS } from 'react-native'
 
 import TruliaIcon from '../TruliaIcon';
 
@@ -24,9 +25,14 @@ import DanhMuc from '../../assets/DanhMuc';
 
 var {width, height} = Dimensions.get('window');
 
+import cfg from "../../cfg";
+
+var rootUrl = `http://${cfg.server}:5000`;
+
 const actions = [
   globalActions,
-  meActions
+  meActions,
+  postAdsActions
 ];
 
 function mapStateToProps(state) {
@@ -52,8 +58,7 @@ class Profile extends Component {
   constructor(props) {
     super(props);
     StatusBar.setBarStyle('light-content');
-    let currentUser = this.props.global.currentUser;
-    this.props.actions.profile(currentUser.userID, currentUser.token);
+    
 
     let date = this.props.me.profile.date ? this.props.me.profile.date : new Date();
 
@@ -142,37 +147,77 @@ class Profile extends Component {
   _onApply(){
     let profile = this.props.me.profile;
 
-    if (!this.validateData(profile))
+    if (!this.validateData(this.props.me.profile))
         return;
 
-    let dto = {
-      userID: profile.userID,
-      fullName : profile.fullName,
-      email : profile.email||undefined,
-      phone : profile.phone||undefined,
-      diaChi : profile.diaChi||undefined,
-      gioiThieu: profile.gioiThieu||undefined,
-      avatar : profile.avatar||undefined,
-      sex: profile.sex||'U', // F, M, U
-      birthDate: profile.birthDate||undefined, // date type
-      website: profile.website||undefined,
-      broker: profile.broker||'U'
-    }
+    this._applyChange();
+  }
 
-    let token = this.props.global.currentUser.token;
-    this.props.actions.updateProfile(dto, token).then(
-        (res) =>{
-          if (res.success){
-            Alert.alert("Cập nhật thông tin cá nhân thành công");
-            Actions.pop();
-          } else {
-            Alert.alert(res.msg);
-          }
+  _applyChange() {
+     let sourceImageFile = this.props.me.profile.avatar;
+     if (!sourceImageFile) {
+        this._updateProfile();
+        return;
+     }
+     let ms = moment().toDate().getTime();
+     let userID = this.props.global.currentUser.userID;
+     let destFileName = 'Avatar_' + userID + '_' + ms + sourceImageFile.substring(sourceImageFile.lastIndexOf('.'));
+     this.props.actions.onUploadImage(destFileName, sourceImageFile, this._uploadCallBack.bind(this));
+  }
+
+  _uploadCallBack(err, result) {
+        let {data} = result;
+        if (err || data == '') {
+            return;
         }
-    ). catch((res) => {
-      Alert.alert(res.toString());
-    })
+        let {success, file} = JSON.parse(data);
+        if (success) {
+            var {url} = file;
+            let imgUrl = rootUrl + url;
+            this.props.actions.onProfileFieldChange('avatar', imgUrl);
+            this._updateProfile();
+     }
+  }
 
+   _updateProfile(){
+       let profile = this.props.me.profile;
+
+       let dto = {
+           userID: profile.userID,
+           fullName : profile.fullName,
+           email : profile.email||undefined,
+           phone : profile.phone||undefined,
+           diaChi : profile.diaChi||undefined,
+           gioiThieu: profile.gioiThieu||undefined,
+           avatar : profile.avatar||undefined,
+           sex: profile.sex||'U', // F, M, U
+           birthDate: profile.birthDate||undefined, // date type
+           website: profile.website||undefined,
+           broker: profile.broker||'U'
+       }
+
+       let token = this.props.global.currentUser.token;
+       this.props.actions.updateProfile(dto, token).then(
+           (res) =>{
+               if (res.success){
+                   this._updateCurrentUser();
+                   Alert.alert("Cập nhật thông tin cá nhân thành công");
+                   Actions.pop();
+               } else {
+                   Alert.alert(res.msg);
+               }
+           }
+       ). catch((res) => {
+           Alert.alert(res.toString());
+       })
+   }
+
+  _updateCurrentUser(){
+    let {fullName, avatar, email, phone} = this.props.me.profile;
+    this.props.actions.onCurrenUserFieldChange('fullName', fullName);
+    this.props.actions.onCurrenUserFieldChange('phone', phone);
+    this.props.actions.onCurrenUserFieldChange('email', email);
+    this.props.actions.onCurrenUserFieldChange('avatar', avatar);
   }
 
   _renderHeader(){
@@ -297,7 +342,7 @@ class Profile extends Component {
   }
 
   _renderPhoto(){
-    let avatarUri = this.props.global.currentUser.avatar ? {uri: this.props.global.currentUser.avatar} :
+    let avatarUri = this.props.me.profile.avatar ? {uri: this.props.me.profile.avatar} :
         require('../../assets/image/register_avatar_icon.png');
 
     return (
@@ -305,13 +350,17 @@ class Profile extends Component {
           <Text style={[style.contentLabel]}>
             Ảnh
           </Text>
-          <Image
-              style={style.avatarIcon}
-              resizeMode={Image.resizeMode.cover}
-              source={avatarUri}
-          />
+            <TouchableOpacity
+                onPress={this.takePicture.bind(this)}
+            >
+                <Image
+                    style={style.avatarIcon}
+                    resizeMode={Image.resizeMode.cover}
+                    source={avatarUri}
+                />
+          </TouchableOpacity>
           <Text style={style.contentText}>
-          Chạm để thay đổi ảnh
+            Chạm để thay đổi ảnh
           </Text>
         </View>
     );
@@ -544,6 +593,10 @@ class Profile extends Component {
   onValueChange(field, value){
     //todo: need to implement
     this.props.actions.onProfileFieldChange(field, value);
+  }
+
+  takePicture() {
+     Actions.PostAds({owner: 'profile'});
   }
 
   _getFullName(){

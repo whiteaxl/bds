@@ -19,6 +19,7 @@ import * as globalActions from '../reducers/global/globalActions';
 import * as postAdsActions from '../reducers/postAds/postAdsActions';
 import * as chatActions from '../reducers/chat/chatActions';
 import * as registerActions from '../reducers/register/registerActions';
+import * as meActions from '../reducers/me/meActions';
 
 import RelandIcon from '../components/RelandIcon';
 
@@ -34,7 +35,8 @@ const actions = [
     globalActions,
     postAdsActions,
     chatActions,
-    registerActions
+    registerActions,
+    meActions
 ];
 
 function mapStateToProps(state) {
@@ -135,8 +137,6 @@ class PostAds extends Component {
     }
 
     imageCropper(data) {
-        //console.log(data);
-        //Actions.SquareImageCropper({photo: data});
         var {photos, imageIndex, owner} = this.state;
         if (!photos) {
             photos = [];
@@ -151,6 +151,8 @@ class PostAds extends Component {
             this.onSendImage(data.path);
         } else if (owner == 'register') {
             this.onSelectAvatar(data.path);
+        } else if (owner == 'profile'){
+            this.onSelectAvartarProfile(data.path);
         } else {
             Actions.PostAdsDetail({photos: photos, type: "reset"});
         }
@@ -159,6 +161,15 @@ class PostAds extends Component {
     onSelectAvatar(uri) {
         ImageResizer.createResizedImage(uri, cfg.maxWidth, cfg.maxHeight, 'JPEG', 85, 0, null).then((resizedImageUri) => {
             this.props.actions.onRegisterFieldChange('image', resizedImageUri);
+            Actions.pop();
+        }).catch((err) => {
+            log.error(err);
+        });
+    }
+
+    onSelectAvartarProfile(uri) {
+        ImageResizer.createResizedImage(uri, cfg.maxWidth, cfg.maxHeight, 'JPEG', 85, 0, null).then((resizedImageUri) => {
+            this.props.actions.onProfileFieldChange('avatar', resizedImageUri);
             Actions.pop();
         }).catch((err) => {
             log.error(err);
