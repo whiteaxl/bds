@@ -252,7 +252,6 @@ class SearchResultMap extends Component {
       region: region,
       coordinate : null,
       // pageNo: 1,
-      viewportChanging: false,
       showMessage: false,
       mounting: true,
       searchTime: moment().toDate().getTime()
@@ -307,9 +306,9 @@ class SearchResultMap extends Component {
   render() {
     console.log("Call SearchResultMap.render, this.state.region=", this.state.region);
 
-    let {allAdsItems} = this.props;
+    let {listAds} = this.props;
 
-    console.log("SearchResultMap: number of data " + allAdsItems.length);
+    console.log("SearchResultMap: number of data " + listAds.length);
 
     let viewableList = this._getViewableAds();
 
@@ -492,39 +491,30 @@ class SearchResultMap extends Component {
           </View>
       );
     });
+    let modalContent = null;
+    let modalHeight = allItems.length <= 1 ? imageHeight : (allItems.length > 2 ? imageHeight*2.25 : imageHeight*2);
     if (allItems.length <= 1) {
-        return (
-            <Modal animationDuration={100} style={styles.adsModal} isOpen={this.state.openDetailAdsModal} position={"bottom"}
-                   ref={"detailAdsModal"} isDisabled={false} onPress={() => {this._onDetailAdsPress(this.state.mmarker.id)}}>
-                {/*<Swiper style={styles.wrapper} height={181} index={currentAdsIndex}
-                 onMomentumScrollEnd={(e, state) => {this.onrefreshCurrentAds(state.index)}}
-                 showsButtons={false} autoplay={false} loop={false} bounces={true}
-                 dot={<View style={[styles.dot, {backgroundColor: 'transparent'}]} />}
-                 activeDot={<View style={[styles.dot, {backgroundColor: 'transparent'}]}/>}
-                 >
-                 {allItems}
-                 </Swiper>*/}
-                    {allItems}
-            </Modal>
-        );
+        modalContent = allItems;
+    } else {
+        let ds = myDs.cloneWithRows(allItems);
+        modalContent =
+            <ListView
+                ref={(listView) => { this._listView = listView; }}
+                dataSource={ds}
+                renderRow={this.renderRow.bind(this)}
+                stickyHeaderIndices={[]}
+                initialListSize={1}
+                style={styles.searchListView}
+            />;
     }
 
-    let ds = myDs.cloneWithRows(allItems);
-    let modalHeight = allItems.length > 2 ? imageHeight*2.25 : imageHeight*2;
     return (
         <Modal animationDuration={100} style={[styles.adsModal,{height: modalHeight}]} isOpen={this.state.openDetailAdsModal} position={"bottom"}
                ref={"detailAdsModal"} isDisabled={false} onPress={() => {this._onDetailAdsPress(this.state.mmarker.id)}}>
-
-              <ListView
-                  ref={(listView) => { this._listView = listView; }}
-                  dataSource={ds}
-                  renderRow={this.renderRow.bind(this)}
-                  stickyHeaderIndices={[]}
-                  initialListSize={1}
-                  style={styles.searchListView}
-              />
+            {modalContent}
           </Modal>
       );
+
   }
 
     _getDiaChi(param){
@@ -699,7 +689,7 @@ class SearchResultMap extends Component {
     let totalPages = this.props.totalCount/ limit;
     let hasNextPage = pageNo < totalPages;
     return (
-        this.props.global.currentUser.setting.autoLoadAds ? null :
+        this.props.global.setting.autoLoadAds ? null :
         <View style={styles.nextButton}>
           {!hasNextPage ?
               <View style={styles.pagingView}>
@@ -724,7 +714,7 @@ class SearchResultMap extends Component {
     let {pageNo} = this.props.search.form.fields;
     let hasPreviousPage = pageNo > 1;
     return (
-        this.props.global.currentUser.setting.autoLoadAds ? null :
+        this.props.global.setting.autoLoadAds ? null :
         <View style={styles.previousButton}>
           {!hasPreviousPage ?
               <View style={styles.pagingView}>
@@ -747,7 +737,7 @@ class SearchResultMap extends Component {
 
   _renderRefreshButton() {
     return (
-        this.props.global.currentUser.setting.autoLoadAds ? null :
+        this.props.global.setting.autoLoadAds ? null :
             <View style={styles.refreshButton}>
               <TouchableOpacity onPress={this._doRefreshListData.bind(this)} >
                 <View style={styles.pagingView}>
@@ -831,13 +821,7 @@ class SearchResultMap extends Component {
     // } else {
     //     this._onShowMessage();
     // }
-    let {viewportChanging} = this.state;
-    if (viewportChanging) {
-        this.setState({mounting: false});
-        this._refreshListData(null, null, this._onSetupMessageTimeout.bind(this));
-        this._onShowMessage();
-    }
-    else if (pageNo < totalPages) {
+    if (pageNo < totalPages) {
         pageNo = pageNo + 1;
         this.props.actions.onSearchFieldChange("pageNo", pageNo);
         this.setState({mounting: false});
@@ -863,7 +847,7 @@ class SearchResultMap extends Component {
   _renderTotalResultView(){
     console.log("Call SearchResultMap._renderTotalResultView");
     let {loading, totalCount, listAds, search} = this.props;
-    let {showMessage, mounting, openDraw, viewportChanging} = this.state;
+    let {showMessage, mounting, openDraw} = this.state;
     let {pageNo, limit} = search.form.fields;
     let numberOfAds = listAds.length;
     // let numberOfAds = allAdsItems.length;
@@ -884,7 +868,7 @@ class SearchResultMap extends Component {
       textValue = "Đang hiển thị " + rangeAds + " kết quả phù hợp";
     }
 
-    if(loading || mounting || openDraw || viewportChanging){
+    if(loading || mounting || openDraw){
       console.log("SearchResultMap_renderTotalResultView");
       return (<View style={styles.resultContainer}>
         {/*<Animatable.View animation={this.props.search.showMessage ? "fadeIn" : "fadeOut"}
@@ -938,12 +922,13 @@ class SearchResultMap extends Component {
       return;
     }
 
-    let viewport = apiUtils.getViewport(region);
-    this.props.actions.onSearchFieldChange("viewport", viewport);
-    this.props.actions.onSearchFieldChange("pageNo", 1);
-    this.setState({viewportChanging: true, showMessage: false});
+    this.setState({openDetailAdsModal: false,
+        openLocalInfo: false, showMessage: false});
 
-    if (this.props.global.currentUser.setting.autoLoadAds){
+    if (this.props.global.setting.autoLoadAds){
+      let viewport = apiUtils.getViewport(region);
+      this.props.actions.onSearchFieldChange("viewport", viewport);
+      this.props.actions.onSearchFieldChange("pageNo", 1);
       this._refreshListData(viewport, null, this._onSetupMessageTimeout.bind(this));
     }
   }
@@ -958,7 +943,15 @@ class SearchResultMap extends Component {
 
   _doRefreshListData() {
     this.props.actions.onSearchFieldChange("pageNo", 1);
-    this._refreshListData(null, null, this._onSetupMessageTimeout.bind(this));
+    let viewport = {};
+    if (this.props.global.setting.autoLoadAds){
+        viewport = this.props.search.form.fields.viewport;
+    } else {
+        viewport = apiUtils.getViewport(this.state.region);
+    }
+    this.props.actions.onSearchFieldChange("viewport", viewport);
+    this.setState({markedList: []});
+    this._refreshListData(viewport, null, this._onSetupMessageTimeout.bind(this));
   }
 
   _refreshListData(newViewport, newPolygon, refreshCallback, newCenter, excludeCount, newDiaChinh, newPageNo, isAppend) {
@@ -1000,7 +993,7 @@ class SearchResultMap extends Component {
             fields
             , refreshCallback);
         if (!isAppend) {
-            this.setState({mounting: false, viewportChanging: false});
+            this.setState({mounting: false});
             this._onShowMessage();
         }
     }
@@ -1137,10 +1130,12 @@ class SearchResultMap extends Component {
 
   _onMapTypeChange(event){
     this.setState({
-      mapType: DanhMuc.MapType[event.nativeEvent.selectedSegmentIndex],
-      openDetailAdsModal: false,
-      openLocalInfo: false
+      mapType: DanhMuc.MapType[event.nativeEvent.selectedSegmentIndex]
     });
+    setTimeout(() => this.setState({
+        openDetailAdsModal: false,
+        openLocalInfo: false
+    }), 100);
   }
 
   _onCloseLocalInfo(){
@@ -1175,7 +1170,6 @@ class SearchResultMap extends Component {
     if (openLocalInfo || loading || openDraw) {
         return;
     }
-    this.refs.localInfoModal.close();
 
     markedList.push(marker.id);
     currentAdsIndex = index;
