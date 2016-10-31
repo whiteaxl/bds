@@ -184,7 +184,7 @@ class SearchResultDetail extends Component {
                  bgColor={this.state.heartBgColor} size={22} />
                  </View>*/}
                 <RelandIcon onPress={this._onAdsAlertUs.bind(this)}
-                            name="alert" color={this.state.headerButtonColor}
+                            name="alert-f" color={this.state.headerButtonColor}
                             iconProps={{style: [detailStyles.shareButton, {paddingRight: 26, marginTop: 30}]}} size={25} >
                 </RelandIcon>
               </View>
