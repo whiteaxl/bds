@@ -10,16 +10,18 @@ import {Map} from 'immutable';
 
 import React, {Component} from 'react';
 
-import {View, SegmentedControlIOS, Text, StyleSheet} from 'react-native'
+import {View, SegmentedControlIOS, Text, StyleSheet, Dimensions} from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 
 import CommonHeader from '../../components/CommonHeader';
 import DanhMuc from '../../assets/DanhMuc';
 
-import MultipleChoice from '../MultipleChoice';
+import MultipleChoice from '../MultipleChoice2';
 
 import gui from '../../lib/gui';
+
+import Button from 'react-native-button';
 
 /**
  * ## Redux boilerplate
@@ -59,6 +61,7 @@ class AdsAlertUs extends Component {
 
     setAlertUs(option) {
         this.props.actions.onAlertUsChange(option);
+        this.setState({alertUs: option});
     }
 
     getAdsAlertUsVal() {
@@ -83,6 +86,9 @@ class AdsAlertUs extends Component {
                     maxSelectedOptions={1}
                     onSelection={(option)=>this._onApply(option)}
                 />
+                <View style={myStyles.buttonView}>
+                    <Button style={myStyles.buttonText} onPress={this._onSend.bind(this)}>Gửi</Button>
+                </View>
             </View>
         );
     }
@@ -93,6 +99,9 @@ class AdsAlertUs extends Component {
 
     _onApply(option) {
         this.setAlertUs(option);
+    }
+
+    _onSend() {
         Actions.pop();
     }
 
@@ -138,6 +147,26 @@ var myStyles = StyleSheet.create({
         marginTop: 2,
         borderTopWidth: 1,
         borderTopColor: gui.separatorLine
+    },
+    buttonView: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginTop: 10,
+        marginLeft: 20,
+        marginBottom: 10,
+        height: 30,
+        backgroundColor: '#F53113',
+        borderColor: 'transparent',
+        borderWidth: 1,
+        borderRadius: 5,
+        width: Dimensions.get('window').width-40
+    },
+    buttonText: {
+        fontSize: gui.buttonFontSize,
+        fontFamily: gui.fontFamily,
+        fontWeight : 'normal',
+        color: 'white',
+        textAlign: 'center'
     }
 });
 
