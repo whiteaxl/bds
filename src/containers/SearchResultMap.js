@@ -161,7 +161,7 @@ function getAllUniquePosAds(listAds) {
 function mapStateToProps(state) {
   console.log("SearchResultMap.mapStateToProps");
   let currentUser = state.global.currentUser;
-  let allUniquePosAds = getAllUniquePosAds(state.search.result.allAdsItems);
+  let allUniquePosAds = getAllUniquePosAds(state.search.result.listAds);
   return {
     ... state,
     listAds: state.search.result.listAds,
@@ -210,6 +210,9 @@ class SearchResultMap extends Component {
 
   componentDidMount() {
     // this._onShowMessage();
+    if (this.props.listAds.length == 0) {
+        setTimeout(this._doRefreshListData.bind(this), 1000);
+    }
   }
 
   componentWillUnmount() {
@@ -248,7 +251,8 @@ class SearchResultMap extends Component {
       editing: null,
       region: region,
       coordinate : null,
-      pageNo: 1,
+      // pageNo: 1,
+      viewportChanging: false,
       showMessage: false,
       mounting: true,
       searchTime: moment().toDate().getTime()
@@ -297,7 +301,8 @@ class SearchResultMap extends Component {
   }
   refreshRegion() {
     var region = this.getInitialRegion();
-    this.setState({region: region, pageNo: 1});
+    this.props.actions.onSearchFieldChange("pageNo", 1);
+    this.setState({region: region});
   }
   render() {
     console.log("Call SearchResultMap.render, this.state.region=", this.state.region);
@@ -690,10 +695,11 @@ class SearchResultMap extends Component {
   }
 
   _renderNextButton() {
-    let {pageNo} = this.state;
-    let totalPages = this._calcTotalPages();
+    let {pageNo, limit} = this.props.search.form.fields;
+    let totalPages = this.props.totalCount/ limit;
     let hasNextPage = pageNo < totalPages;
     return (
+        this.props.global.currentUser.setting.autoLoadAds ? null :
         <View style={styles.nextButton}>
           {!hasNextPage ?
               <View style={styles.pagingView}>
@@ -715,9 +721,10 @@ class SearchResultMap extends Component {
   }
 
   _renderPreviousButton() {
-    let {pageNo} = this.state;
+    let {pageNo} = this.props.search.form.fields;
     let hasPreviousPage = pageNo > 1;
     return (
+        this.props.global.currentUser.setting.autoLoadAds ? null :
         <View style={styles.previousButton}>
           {!hasPreviousPage ?
               <View style={styles.pagingView}>
@@ -740,7 +747,7 @@ class SearchResultMap extends Component {
 
   _renderRefreshButton() {
     return (
-        this.props.search.map.autoLoadAds ? null :
+        this.props.global.currentUser.setting.autoLoadAds ? null :
             <View style={styles.refreshButton}>
               <TouchableOpacity onPress={this._doRefreshListData.bind(this)} >
                 <View style={styles.pagingView}>
@@ -791,46 +798,57 @@ class SearchResultMap extends Component {
   }
 
   _doPreviousPage() {
-      console.log("Call SearchResultMap._doPreviousPage");
-    let {pageNo} = this.state;
+    console.log("Call SearchResultMap._doPreviousPage");
+    let {pageNo} = this.props.search.form.fields;
     if (pageNo > 1) {
       pageNo = pageNo - 1;
-      this.setState({pageNo: pageNo, mounting: false});
+      this.props.actions.onSearchFieldChange("pageNo", pageNo);
+      this.setState({mounting: false});
+      this._refreshListData(null, null, this._onSetupMessageTimeout.bind(this), null, null, null, pageNo, true);
+      this._onShowMessage();
     }
-    this._onShowMessage();
   }
 
   _doNextPage() {
-      console.log("Call SearchResultMap._doNextPage");
-    let {pageNo} = this.state;
-    let {totalCount} = this.props;
-    let dbPageNo = this.props.search.form.fields.pageNo;
-    let dbLimit = this.props.search.form.fields.limit;
+    console.log("Call SearchResultMap._doNextPage");
+    let {pageNo, limit} = this.props.search.form.fields;
+    let totalPages = this.props.totalCount/ limit;
 
-    let dbTotalPages = totalCount/ dbLimit;
+    // let totalMarkers = this._calcLoadedMarkers();
+    // let totalPages = totalMarkers / gui.MAX_VIEWABLE_ADS;
 
-    let totalMarkers = this._calcLoadedMarkers();
-    let totalPages = totalMarkers / gui.MAX_VIEWABLE_ADS;
-
-    if (pageNo < totalPages &&
-        (totalMarkers >= (pageNo+1)*gui.MAX_VIEWABLE_ADS || totalCount <= dbPageNo*dbLimit)) {
-      pageNo = pageNo + 1;
-      this.setState({pageNo: pageNo, mounting: false});
-      this._onShowMessage();
-    } else if (dbTotalPages && dbPageNo < dbTotalPages) {
+    // if (pageNo < totalPages &&
+    //     (totalMarkers >= (pageNo+1)*gui.MAX_VIEWABLE_ADS || totalCount <= dbPageNo*dbLimit)) {
+    //   pageNo = pageNo + 1;
+    //   this.setState({pageNo: pageNo, mounting: false});
+    //   this._onShowMessage();
+    // } else if (dbTotalPages && dbPageNo < dbTotalPages) {
+    //     pageNo = pageNo + 1;
+    //     this.setState({pageNo: pageNo, mounting: false});
+    //     dbPageNo = dbPageNo+1;
+    //     this.props.actions.onSearchFieldChange("pageNo", dbPageNo);
+    //     setTimeout(this._appendListData.bind(this), 100);
+    // } else {
+    //     this._onShowMessage();
+    // }
+    let {viewportChanging} = this.state;
+    if (viewportChanging) {
+        this.setState({mounting: false});
+        this._refreshListData(null, null, this._onSetupMessageTimeout.bind(this));
+        this._onShowMessage();
+    }
+    else if (pageNo < totalPages) {
         pageNo = pageNo + 1;
-        this.setState({pageNo: pageNo, mounting: false});
-        dbPageNo = dbPageNo+1;
-        this.props.actions.onSearchFieldChange("pageNo", dbPageNo);
-        setTimeout(this._appendListData.bind(this), 100);
-    } else {
+        this.props.actions.onSearchFieldChange("pageNo", pageNo);
+        this.setState({mounting: false});
+        this._refreshListData(null, null, this._onSetupMessageTimeout.bind(this), null, null, null, pageNo, true);
         this._onShowMessage();
     }
   }
 
   _appendListData() {
       console.log("Call SearchResultMap._appendListData");
-      this._refreshListData(null, null, this._doAppendListData.bind(this), null, null, null, true);
+      this._refreshListData(null, null, this._doAppendListData.bind(this), null, null, null, null, true);
       this.setState({openDetailAdsModal: false,
           openLocalInfo: false, showMessage: true});
   }
@@ -843,12 +861,17 @@ class SearchResultMap extends Component {
   }
 
   _renderTotalResultView(){
-      console.log("Call SearchResultMap._renderTotalResultView");
-    let {loading, totalCount, allAdsItems} = this.props;
-    let {showMessage, mounting, openDraw} = this.state;
-    let numberOfAds = allAdsItems.length;
-    let beginAdsIndex = this._calcBeginAdsIndex();
-    let endAdsIndex = this._calcEndAdsIndex();
+    console.log("Call SearchResultMap._renderTotalResultView");
+    let {loading, totalCount, listAds, search} = this.props;
+    let {showMessage, mounting, openDraw, viewportChanging} = this.state;
+    let {pageNo, limit} = search.form.fields;
+    let numberOfAds = listAds.length;
+    // let numberOfAds = allAdsItems.length;
+    // let beginAdsIndex = this._calcBeginAdsIndex();
+    // let endAdsIndex = this._calcEndAdsIndex();
+
+    let beginAdsIndex = (pageNo-1)*limit+1;
+    let endAdsIndex = (pageNo-1)*limit+numberOfAds;
     let rangeAds = totalCount > gui.MAX_VIEWABLE_ADS ? (endAdsIndex > 0 ? beginAdsIndex + "-" + endAdsIndex : "0") + " / " + totalCount : numberOfAds;
     let textValue = "Đang hiển thị từ " + rangeAds + " kết quả phù hợp";
     let textNotFound2 = "";
@@ -861,7 +884,7 @@ class SearchResultMap extends Component {
       textValue = "Đang hiển thị " + rangeAds + " kết quả phù hợp";
     }
 
-    if(loading || mounting || openDraw){
+    if(loading || mounting || openDraw || viewportChanging){
       console.log("SearchResultMap_renderTotalResultView");
       return (<View style={styles.resultContainer}>
         {/*<Animatable.View animation={this.props.search.showMessage ? "fadeIn" : "fadeOut"}
@@ -888,18 +911,19 @@ class SearchResultMap extends Component {
   }
 
   _getViewableAds(){
-      let markerList = [];
-      let {pageNo} = this.state;
       let allMarkerList = this.props.allUniquePosAds.markerList;
-      console.log('markerData length', allMarkerList.length);
-      for (var i=0; i<allMarkerList.length; i++) {
-        if (i < (pageNo-1)*gui.MAX_VIEWABLE_ADS || i >= pageNo*gui.MAX_VIEWABLE_ADS) {
-          continue;
-        }
-        let marker = allMarkerList[i];
-        markerList.push(marker);
-      }
-      return markerList;
+      // let markerList = [];
+      // let {pageNo} = this.state;
+      // console.log('markerData length', allMarkerList.length);
+      // for (var i=0; i<allMarkerList.length; i++) {
+      //   if (i < (pageNo-1)*gui.MAX_VIEWABLE_ADS || i >= pageNo*gui.MAX_VIEWABLE_ADS) {
+      //     continue;
+      //   }
+      //   let marker = allMarkerList[i];
+      //   markerList.push(marker);
+      // }
+      // return markerList;
+      return allMarkerList;
     }
 
   _onRegionChangeComplete(region) {
@@ -916,9 +940,10 @@ class SearchResultMap extends Component {
 
     let viewport = apiUtils.getViewport(region);
     this.props.actions.onSearchFieldChange("viewport", viewport);
+    this.props.actions.onSearchFieldChange("pageNo", 1);
+    this.setState({viewportChanging: true, showMessage: false});
 
-    if (this.props.search.map.autoLoadAds){
-      this.props.actions.onSearchFieldChange("pageNo", 1);
+    if (this.props.global.currentUser.setting.autoLoadAds){
       this._refreshListData(viewport, null, this._onSetupMessageTimeout.bind(this));
     }
   }
@@ -936,7 +961,7 @@ class SearchResultMap extends Component {
     this._refreshListData(null, null, this._onSetupMessageTimeout.bind(this));
   }
 
-  _refreshListData(newViewport, newPolygon, refreshCallback, newCenter, excludeCount, newDiaChinh, isAppend) {
+  _refreshListData(newViewport, newPolygon, refreshCallback, newCenter, excludeCount, newDiaChinh, newPageNo, isAppend) {
     console.log("Call SearhResultMap._refreshListData");
     var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
@@ -957,7 +982,7 @@ class SearchResultMap extends Component {
       huongNha: huongNha,
       ngayDaDang: ngayDaDang,
       polygon: newPolygon || polygon,
-      pageNo: !isAppend ? 1 : pageNo,
+      pageNo: !isAppend ? 1 : newPageNo || pageNo,
       limit: limit,
       isIncludeCountInResponse: isHavingCount};
     console.log('fields', fields);
@@ -975,7 +1000,7 @@ class SearchResultMap extends Component {
             fields
             , refreshCallback);
         if (!isAppend) {
-            this.setState({mounting: false, pageNo: 1});
+            this.setState({mounting: false, viewportChanging: false});
             this._onShowMessage();
         }
     }

@@ -72,7 +72,7 @@ const SearchForm = Record({
             }
         },
         orderBy: '',
-        limit: 200,
+        limit: 25,
         pageNo: 1,
         isIncludeCountInResponse: true,
         updateLastSearch: false,
@@ -95,8 +95,7 @@ var InitialState = Record({
     loadingFromServer : false,
     map : new (Record({
         type: "Standard",
-        polygons: [],
-        autoLoadAds : true
+        polygons: []
     })),
 
     result: new (Record({
