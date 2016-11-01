@@ -19,17 +19,22 @@ const InitialState = Record({
         duAn: '',
         duAnFullName: '',
         placeId: "ChIJKQqAE44ANTERDbkQYkF-mAI",
+        diaChiChiTiet: '',
         diaChi: '',
-        diaChiFullName: "Hà Nội",
         diaChinh: {
-            tinh: 'Hà Nội',
+            tinh: 'Hanoi',
             huyen: '',
             xa: '',
-            tinhKhongDau: 'ha-noi',
+            duAn: '',
+            tinhKhongDau: 'Hanoi',
             huyenKhongDau: '',
-            xaKhongDau: ''
+            xaKhongDau: '',
+            codeTinh: '',
+            codeHuyen: '',
+            codeXa: '',
+            codeDuAn: ''
         },
-        geo: {lat: '', lon: ''}
+        geo: {lat: null, lon: null}
     },
     lienHe: {
         tenLienLac: null,
@@ -38,6 +43,12 @@ const InitialState = Record({
         showPhone: false,
         email: null,
         showEmail: false
+    },
+    dangBoi: {
+        userID: undefined,
+        email: null,
+        phone: null,
+        name: null
     },
     huongNha: null,
     duongTruocNha: null,
@@ -50,6 +61,8 @@ const InitialState = Record({
     gia: null,
     donViTien: 1,
     chiTiet: '',
+    id: null,
+    maSo: null,
     error: '',
     selectedDiaChinh: null,
     selectedDuAn: null,

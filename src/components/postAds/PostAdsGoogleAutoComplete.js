@@ -51,8 +51,6 @@ var {GooglePlacesAutocomplete} = require('react-native-google-places-autocomplet
 class PostAdsGoogleAutoComplete extends React.Component {
   constructor(props) {
     super(props);
-    console.log("=================== PostAdsGoogleAutoComplete constructor");
-    console.log(props);
     StatusBar.setBarStyle('default');
   }
 

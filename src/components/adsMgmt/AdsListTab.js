@@ -4,29 +4,36 @@ import {connect} from 'react-redux';
 
 import * as globalActions from '../../reducers/global/globalActions';
 import * as adsMgmtActions from '../../reducers/adsMgmt/adsMgmtActions';
+import * as postAdsActions from '../../reducers/postAds/postAdsActions';
 
 import {Map} from 'immutable';
 
 import React, {Component} from 'react';
 
 import {
-  Text, View, Image, ListView, Dimensions, StatusBar
-  , RecyclerViewBackedScrollView, TouchableHighlight, StyleSheet
-  , Alert, RefreshControl, ScrollView
+  Text, View, Image, ListView, Dimensions, StatusBar,
+  RecyclerViewBackedScrollView, TouchableOpacity, Alert,
+  TouchableHighlight, StyleSheet, RefreshControl, ScrollView
 } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 import TruliaIcon from '../../components/TruliaIcon';
 
+import MHeartIcon from '../MHeartIcon';
+
 import LinearGradient from 'react-native-linear-gradient';
 
 import Swiper from 'react-native-swiper';
+
+import Swipeout from 'react-native-swipeout';
+
 
 import gui from '../../lib/gui';
 
 import DanhMuc from '../../assets/DanhMuc';
 
 import GiftedSpinner from "../../components/GiftedSpinner";
+import cfg from "../../cfg";
 
 import log from '../../lib/logUtil';
 import danhMuc from '../../assets/DanhMuc';
@@ -36,7 +43,8 @@ import RelandIcon from '../../components/RelandIcon';
 
 const actions = [
   globalActions,
-  adsMgmtActions
+  adsMgmtActions,
+  postAdsActions
 ];
 
 function mapStateToProps(state) {
@@ -61,6 +69,8 @@ function mapDispatchToProps(dispatch) {
 }
 
 var imgHeight = 181;
+
+var {width} = Dimensions.get('window');
 
 var myDs = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -163,26 +173,107 @@ class AdsListTab extends Component {
 
   _renderImageStack(rowData) {
     var imageIndex = 0;
-    if (rowData.image) {
-      if (!rowData.image.images || rowData.image.images.length === 0) {
+    if (rowData.image && rowData.image.cover) {
+      /*if (!rowData.image.images || rowData.image.images.length === 0) {
         return (
-          <MyImage imageIndex={0} rowData={rowData} imageUrl={rowData.image.cover} source={this.props.source}/>
+          [<MyImage imageIndex={0} rowData={rowData} imageUrl={rowData.image.cover} source={this.props.source}/>,
+          this._renderEditMenu(rowData)]
         )
       }
 
       return rowData.image.images.map(imageUrl => {
         return <MyImage key={imageIndex} imageIndex={imageIndex++} rowData={rowData} imageUrl={imageUrl} source={this.props.source}/>
-      });
+      });*/
+      if (this.props.name == 'likedTab'){
+        return (
+            <MyImage imageIndex={0} rowData={rowData} imageUrl={rowData.image.cover} source={this.props.source}/>
+        );
+      }
+
+      /*
+       [<MyImage imageIndex={0} rowData={rowData} imageUrl={rowData.image.cover} source={this.props.source}/>,
+       this._renderEditMenu(rowData)]
+       */
+
+      return (
+
+          <MyImage imageIndex={0} rowData={rowData} imageUrl={rowData.image.cover} source={this.props.source}/>
+      );
 
     } else {
+      if (this.props.name == 'likedTab'){
+        return (
+            <MyImage imageIndex={0} rowData={rowData} imageUrl={''} source={this.props.source}/>
+        );
+      }
+      /*
+       [<MyImage imageIndex={0} rowData={rowData} imageUrl={''} source={this.props.source}/>,
+       this._renderEditMenu(rowData)]
+       */
+
       return (
-        <MyImage imageIndex={0} rowData={rowData} imageUrl={''} source={this.props.source}/>
+          <MyImage imageIndex={0} rowData={rowData} imageUrl={''} source={this.props.source}/>
+
       );
     }
   }
 
+  _renderEditMenu(rowData){
+    let adsID = rowData.id || rowData.adsID;
+
+    return (
+        <View style={myStyles.editContainer} key={adsID}>
+          <TouchableOpacity onPress={() => this.onEditButton(adsID)}>
+            <View style={myStyles.editButton}>
+              <Text style={[myStyles.editButtonText,{backgroundColor: gui.mainColor}]}>Sửa</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => this.onDeleteButton(adsID)}>
+            <View style={myStyles.editButton}>
+              <Text style={[myStyles.editButtonText, {backgroundColor: '#ff2714'}]}>Xóa</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
+    );
+  }
+
+  onEditButton(adsID){
+    this.props.actions.getUpdateAds(adsID, this.props.global.currentUser.token)
+        .then(
+            (res) => {
+              if (res.success){
+                Actions.PostAdsDetail();
+              } else {
+                Alert.alert('Lỗi không tải được tin đã đăng');
+              }
+            }
+        );
+  }
+
+  onDeleteButton(adsID){
+    Alert.alert('', 'Bạn có muốn xóa dữ liệu này không ?',
+        [{text: 'Đồng ý', onPress: () => this._deleteAds(adsID)},
+         {text: 'Thoát' , onPress: () => console.log('Cancel Pressed!')}
+        ]);
+  }
+
   _getLevelName(pack) {
     return pack ? danhMuc.package.level[pack.level] : "Chưa có";
+  }
+
+  _deleteAds(adsID){
+    let token = this.props.global.currentUser.token;
+
+    this.props.actions.deleteAds(adsID, token).then (
+        (res) => {
+          if (res.success){
+            Alert.alert('Bạn đã xóa thành công tin đăng');
+            this.props.actions.loadMySellRentList(this.props.global.currentUser.userID);
+          }else {
+            Alert.alert(res.msg);
+          }
+        }
+    );
   }
 
   upgradeAds(ads) {
@@ -221,9 +312,9 @@ class AdsListTab extends Component {
 
     return (
       <View style={myStyles.rightTextGroup}>
-        <Text numberOfLines={1} style={myStyles.tinChoDuyet}>TIN ĐANG CHỜ DUYỆT</Text>
+        <Text numberOfLines={1} style={myStyles.tinChoDuyet}>TIN ĐÃ ĐĂNG</Text>
 
-        <TouchableHighlight underlayColor='transparent' onPress={() => {this.upgradeAds(rowData)}}>
+        <TouchableHighlight disabled={true} underlayColor='transparent' onPress={() => {this.upgradeAds(rowData)}}>
           <View style={myStyles.nangCap} >
             <RelandIcon.Icon color={'white'} name={"update"} size={12} style={{marginLeft:5, marginRight:5}} />
             <Text style={myStyles.textNangCap}>
@@ -240,7 +331,7 @@ class AdsListTab extends Component {
   }
 
   _renderText(rowData) {
-    var diaChi = rowData.diaChi;
+    var diaChi = rowData.diaChiChiTiet || rowData.diaChiChiTiet || '';
     var loaiTin = rowData.loaiTin;
     var loaiNhaDat = rowData.loaiNhaDat;
     var dienTich = '';
@@ -274,11 +365,24 @@ class AdsListTab extends Component {
     var moreInfo = this.getMoreInfo(loaiTin, loaiNhaDat, dienTich, soPhongNgu, soTang);
     var moreInfoWithoutDot = moreInfo.substring(3);
 
+    let adsID = rowData.adsID || rowData.id;
+    let isLiked = this.isLiked(adsID);
+    let color = isLiked ? '#A2A7AD' : 'white';
+    let bgColor = isLiked ? '#E50064' : '#4A443F';
+    let bgStyle = isLiked ? {} : {opacity: 0.55};
+
     if (this.props.name == 'likedTab') {
       return (
-        <View style={myStyles.searchListViewRowAlign}>
-          <Text style={myStyles.price}>{rowData.giaFmt}</Text>
-          <Text style={myStyles.text}>{diaChi}{moreInfo}</Text>
+        <View style={myStyles.likedItemContainer}>
+          <View style={myStyles.searchListViewRowAlign}>
+            <Text style={myStyles.price}>{rowData.giaFmt}</Text>
+            <Text style={myStyles.text}>{diaChi}{moreInfo}</Text>
+          </View>
+          <View style={myStyles.heartContent}>
+            <MHeartIcon onPress={() => this.onLike(adsID)}
+                        color={color} bgColor={bgColor}
+                        bgStyle={bgStyle} mainProps={myStyles.heartButton} />             
+          </View>
         </View>
       );
     }
@@ -292,25 +396,77 @@ class AdsListTab extends Component {
     )
   }
 
+  isLiked(adsID) {
+    const {adsLikes} = this.props.global.currentUser;
+    return adsLikes && adsLikes.indexOf(adsID) > -1;
+  }
+
+  onLike(adsID) {
+    /*if (!this.props.loggedIn) {
+      Actions.LoginRegister({page:1, onLoginSuccess: () => {Actions.pop()}});
+    } else {
+      if (!this.isLiked()) {
+        this.props.likeAds(this.props.userID, adsID);
+      } else {
+        this.props.unlikeAds(this.props.userID, adsID);
+      }
+    }
+    */
+  }
+
   renderRow(rowData, sectionID, rowID) {
-    return (
-      <View key={rowData.adsID}>
-        <View style={myStyles.detail}>
-          <Swiper style={myStyles.wrapper} height={imgHeight}
-                  showsButtons={false} autoplay={false} loop={false}
-                  onMomentumScrollEnd={function(e, state, context){log.info('index:', state.index)}}
-                  dot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]} />}
-                  activeDot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]}/>}
-          >
-            {this._renderImageStack(rowData)}
-          </Swiper>
+    let adsID = rowData.id || rowData.adsID;
 
-          {this._renderText(rowData)}
 
-          {this._renderGoiTin(rowData)}
-        </View>
-      </View>
-    );
+    if (this.props.name == 'likedTab'){
+      return (
+          <View key={adsID}>
+              <View style={myStyles.detail}>
+                {/*
+                 <Swiper style={myStyles.wrapper} height={imgHeight}
+                 showsButtons={false} autoplay={false} loop={false}
+                 onMomentumScrollEnd={function(e, state, context){log.info('index:', state.index)}}
+                 dot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]} />}
+                 activeDot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]}/>}
+                 >
+                 {this._renderImageStack(rowData)}
+                 </Swiper>
+
+                 */}
+                {this._renderImageStack(rowData)}
+                {this._renderText(rowData)}
+                {this._renderGoiTin(rowData)}
+              </View>
+          </View>
+      );
+    } else {
+      var swipeoutBtns = [
+        {
+          text: 'Xem thêm'
+        },
+        {
+          text: 'Sửa',
+          backgroundColor: '#8181F7',
+          onPress: () => this.onEditButton(adsID)
+        },
+        {
+          text: 'Xóa',
+          backgroundColor:'#ff2714',
+          onPress: () => this.onDeleteButton(adsID)
+        }
+      ];
+      return (
+          <View key={adsID}>
+            <Swipeout right={swipeoutBtns}>
+              <View style={myStyles.detail}>
+                {this._renderImageStack(rowData)}
+                {this._renderText(rowData)}
+                {this._renderGoiTin(rowData)}
+              </View>
+            </Swipeout>
+          </View>
+      );
+    }
   }
 
   getMoreInfo(loaiTin, loaiNhaDat, dienTich, soPhongNgu, soTang) {
@@ -338,11 +494,14 @@ class MyImage extends Component {
   render() {
     let source = this.props.source ? this.props.source : 'server';
     
+    let image =  (this.props.imageUrl && this.props.imageUrl.length>0 ) ? {uri: `${this.props.imageUrl}`}
+                  : {uri: `${cfg.noCoverUrl}`};
+
     return (
       <View style={myStyles.slide} key={"img"+(this.props.imageIndex)}>
         <TouchableHighlight
           onPress={() => Actions.SearchResultDetail({adsID: this.props.rowData.adsID, source: source})}>
-          <Image style={myStyles.thumb} source={{uri: `${this.props.imageUrl}`}}>
+          <Image style={myStyles.thumb} source={image}>
             <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.9)']}
                             style={myStyles.linearGradient2}>
             </LinearGradient>
@@ -413,20 +572,29 @@ var myStyles = StyleSheet.create({
     justifyContent: 'flex-end',
     alignItems: 'stretch',
     height: imgHeight,
-    alignSelf: 'auto'
+    alignSelf: 'auto',
+    right: 0
   },
   searchListView: {
     margin: 0,
     backgroundColor: 'gray'
   },
-  searchListViewRowAlign: {
+
+  likedItemContainer: {
+    flexDirection: 'row',
     position: 'absolute',
     backgroundColor: 'transparent',
-    flexDirection: 'row',
     justifyContent: 'space-between',
     top: imgHeight - 53,
-    width: Dimensions.get('window').width,
-    marginLeft: 17
+    width: Dimensions.get('window').width
+  },
+
+  searchListViewRowAlign: {
+    backgroundColor: 'transparent',
+    flexDirection: 'column',
+    justifyContent: 'space-between',
+    width: 2*width/3,
+    marginLeft: 15
   },
 
   leftTextGroup: {
@@ -437,7 +605,6 @@ var myStyles = StyleSheet.create({
     width: 220,
     marginLeft: 17
   },
-
 
   price: {
     fontSize: 16,
@@ -454,6 +621,15 @@ var myStyles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Open Sans',
   },
+  heartContent: {
+    backgroundColor: 'transparent',
+    marginRight: 10
+  },
+  heartButton: {
+    marginTop: 6,
+    marginRight: 10
+  },
+
 
   smallText1: {
     fontSize: 13,
@@ -462,10 +638,6 @@ var myStyles = StyleSheet.create({
     fontFamily: 'Open Sans',
   },
 
-  heartButton: {
-    marginBottom: 10,
-    paddingRight: 18
-  },
   linkText  : {
     fontFamily: gui.fontFamily,
     fontSize: gui.normalFontSize,
@@ -513,6 +685,29 @@ var myStyles = StyleSheet.create({
     color : '#dcd135',
 
     fontWeight : 'bold'
+  },
+
+  editContainer: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    height: imgHeight
+  },
+  editButton: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 30,
+    marginTop: 10,
+    padding: 5,
+    borderRadius : 3
+  },
+  editButtonText: {
+    color : "white",
+    fontFamily: gui.fontFamily,
+    fontSize: 12,
+    fontWeight : 'bold',
+    width: 80,
+    borderRadius : 3,
+    textAlign: 'center'
   }
 
 });

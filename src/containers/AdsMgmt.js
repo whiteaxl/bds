@@ -81,6 +81,7 @@ class AdsMgmt extends React.Component {
 
           <ScrollableTabView page={page} initialPage={0}
                              renderTabBar={this.renderTabBar.bind(this)}
+                             locked = {true}
                              style={styles.container}
                              tabBarUnderlineColor={gui.mainColor}
                              tabBarActiveTextColor={gui.mainColor}

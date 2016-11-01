@@ -52,16 +52,22 @@ class PostAdsLienHe extends Component {
     constructor(props) {
         super(props);
 
-        var {currentUser} = props.global;
-        var {lienHe} = props.postAds;
+        let {currentUser} = props.global;
+        let {lienHe} = props.postAds;
+        let tenLienLac = lienHe ? lienHe.tenLienLac : null;
+        let showTenLienLac = lienHe ? lienHe.showTenLienLac : false;
+        let phone = lienHe ? lienHe.phone : null;
+        let showPhone = lienHe ? lienHe.showPhone : false;
+        let email = lienHe ? lienHe.email : null;
+        let showEmail = lienHe ? lienHe.showEmail : false;
 
         this.state = {
-            tenLienLac: lienHe.tenLienLac||currentUser.fullName,
-            showTenLienLac: lienHe.showTenLienLac,
-            phone: lienHe.phone||currentUser.phone,
-            showPhone: lienHe.showPhone,
-            email: lienHe.email||currentUser.email,
-            showEmail: lienHe.showEmail
+            tenLienLac: tenLienLac||currentUser.fullName,
+            showTenLienLac: showTenLienLac,
+            phone: phone||currentUser.phone,
+            showPhone: showPhone,
+            email: email||currentUser.email,
+            showEmail: showEmail
         };
     }
 

@@ -154,7 +154,8 @@ class PostAds extends Component {
         } else if (owner == 'profile'){
             this.onSelectAvartarProfile(data.path);
         } else {
-            Actions.PostAdsDetail({photos: photos, type: "reset"});
+            this.props.actions.onPostAdsFieldChange('photos', this.state.photos);
+            Actions.PostAdsDetail();
         }
     }
 

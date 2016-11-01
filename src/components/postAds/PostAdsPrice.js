@@ -54,7 +54,7 @@ class PostAdsPrice extends Component {
         var {gia} = props.postAds;
         var donViTienVal = this.getDonViTienVal();
         this.state = {
-            gia: gia,
+            gia: (gia && gia != -1) ? gia.toString() : '',
             donViTien: donViTienVal
         };
     }

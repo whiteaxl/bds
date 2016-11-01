@@ -75,41 +75,43 @@ class PostAdsDetail extends Component {
         super(props);
         StatusBar.setBarStyle('light-content');
         errorMessage = this.props.postAds.error;
+        let adsID = props.postAds.id;
+
         this.state = {
             uploadUrls: [],
             chiTietExpanded: true,
             toggleState: false,
             editGia: false,
-            nhaXayMoi: false,
-            nhaLoGoc: false,
-            otoDoCua: false,
-            nhaKinhDoanhDuoc: false,
-            noiThatDayDu: false,
-            chinhChuDangTin: false,
             showNamXayDung: false,
             initNamXayDung: '',
             inputNamXayDung: '',
-            namXayDung: null
+            namXayDung: null,
+            adsID: adsID
         }
     }
 
     componentWillMount() {
-        this.onValueChange('photos', this.props.photos);
-        this.getAdsLocation(this.props.photos);
+        let { place, photos} = this.props.postAds
 
+        if (place && place.geo && place.geo.lat && place.geo.lon)
+            return;
+
+        this.getAdsLocation(photos);
     }
 
     getAdsLocation(photos){
-        for (let i=0; i< photos.length; i++){
-            if (photos[i].location && photos[i].location.longitude && photos[i].location.latitude){
-                var {place} = this.props.postAds;
-                var geo = {
-                    "lat": photos[i].location.latitude,
-                    "lon": photos[i].location.longitude
-                };
-                place.geo = geo;
-                this.props.actions.onPostAdsFieldChange("place", place);
-                return;
+        if (photos) {
+            for (let i = 0; i < photos.length; i++) {
+                if (photos[i].location && photos[i].location.longitude && photos[i].location.latitude) {
+                    var {place} = this.props.postAds;
+                    var geo = {
+                        "lat": photos[i].location.latitude,
+                        "lon": photos[i].location.longitude
+                    };
+                    place.geo = geo;
+                    this.props.actions.onPostAdsFieldChange("place", place);
+                    return;
+                }
             }
         }
 
@@ -137,6 +139,7 @@ class PostAdsDetail extends Component {
         var {toggleState} = this.state;
         var scrollHeight = toggleState ? Dimensions.get('window').height-290 :
             Dimensions.get('window').height-74;
+
         return (
             <View myStyles={myStyles.container}>
                 <View style={{paddingTop: 30, backgroundColor: gui.mainColor}} />
@@ -204,7 +207,7 @@ class PostAdsDetail extends Component {
                         <Button onPress={this.onCancel.bind(this)}
                                 style={myStyles.buttonText}>Thoát</Button>
                         <Button onPress={this.onPostAds.bind(this)}
-                                style={myStyles.buttonText}>Đăng tin</Button>
+                                style={myStyles.buttonText}>{ this.state.adsID ? 'Cập nhật' : 'Đăng tin'}</Button>
                     </View>
                 </View>
             </View>
@@ -309,7 +312,7 @@ class PostAdsDetail extends Component {
                     secureTextEntry={false}
                     keyboardType={'numeric'}
                     style={myStyles.input}
-                    value={this.props.postAds.dienTich}
+                    value={this.props.postAds.dienTich ? this.props.postAds.dienTich.toString() : ''}
                     onChangeText={(text) => this.onValueChange("dienTich", text)}
                 />
             </View>
@@ -324,7 +327,7 @@ class PostAdsDetail extends Component {
                     secureTextEntry={false}
                     keyboardType={'numeric'}
                     style={myStyles.input}
-                    value={this.props.postAds.matTien}
+                    value={this.props.postAds.matTien ? this.props.postAds.matTien.toString() : ''}
                     onChangeText={(text) => this.onValueChange("matTien", text)}
                 />
             </View>
@@ -468,7 +471,7 @@ class PostAdsDetail extends Component {
                     secureTextEntry={false}
                     keyboardType={'numeric'}
                     style={myStyles.input}
-                    value={this.props.postAds.duongTruocNha}
+                    value={this.props.postAds.duongTruocNha ? this.props.postAds.duongTruocNha.toString() : ''}
                     onChangeText={(text) => this.onValueChange("duongTruocNha", text)}
 
                 />
@@ -488,7 +491,7 @@ class PostAdsDetail extends Component {
                         <View style={myStyles.arrowIcon}>
                             <TruliaIcon name={"check"}
                                         onPress = {() => this._onNhaXayMoiPressed()}
-                                        color={this.state.nhaXayMoi ? gui.mainColor : gui.arrowColor} size={18} />
+                                        color={this.props.postAds.nhaMoiXay ? gui.mainColor : gui.arrowColor} size={18} />
                         </View>
                     </View>
                 </TouchableHighlight>
@@ -508,7 +511,7 @@ class PostAdsDetail extends Component {
                         <View style={myStyles.arrowIcon}>
                             <TruliaIcon name={"check"}
                                         onPress = {() => this._onNhaLoGocPressed()}
-                                        color={this.state.nhaLoGoc ? gui.mainColor : gui.arrowColor} size={18} />
+                                        color={this.props.postAds.nhaLoGoc ? gui.mainColor : gui.arrowColor} size={18} />
                         </View>
                     </View>
                 </TouchableHighlight>
@@ -528,7 +531,7 @@ class PostAdsDetail extends Component {
                         <View style={myStyles.arrowIcon}>
                             <TruliaIcon name={"check"}
                                         onPress = {() => this._onOtoDoCuaPressed()}
-                                        color={this.state.otoDoCua ? gui.mainColor : gui.arrowColor} size={18} />
+                                        color={this.props.postAds.otoDoCua ? gui.mainColor : gui.arrowColor} size={18} />
                         </View>
                     </View>
                 </TouchableHighlight>
@@ -548,7 +551,7 @@ class PostAdsDetail extends Component {
                         <View style={myStyles.arrowIcon}>
                             <TruliaIcon name={"check"}
                                         onPress = {() => this._onNhaKinhDoanhDuocPressed()}
-                                        color={this.state.nhaKinhDoanhDuoc ? gui.mainColor : gui.arrowColor} size={18} />
+                                        color={this.props.postAds.nhaKinhDoanhDuoc ? gui.mainColor : gui.arrowColor} size={18} />
                         </View>
                     </View>
                 </TouchableHighlight>
@@ -567,7 +570,7 @@ class PostAdsDetail extends Component {
                         <View style={myStyles.arrowIcon}>
                             <TruliaIcon name={"check"}
                                         onPress = {() => this._onNoiThatDayDuPressed()}
-                                        color={this.state.noiThatDayDu ? gui.mainColor : gui.arrowColor} size={18} />
+                                        color={this.props.postAds.noiThatDayDu ? gui.mainColor : gui.arrowColor} size={18} />
                         </View>
                     </View>
                 </TouchableHighlight>
@@ -586,7 +589,7 @@ class PostAdsDetail extends Component {
                         <View style={myStyles.arrowIcon}>
                             <TruliaIcon name={"check"}
                                         onPress = {() => this._onChinhChuDangTinPressed()}
-                                        color={this.state.chinhChuDangTin ? gui.mainColor : gui.arrowColor} size={18} />
+                                        color={this.props.postAds.chinhChuDangTin ? gui.mainColor : gui.arrowColor} size={18} />
                         </View>
                     </View>
                 </TouchableHighlight>
@@ -602,7 +605,7 @@ class PostAdsDetail extends Component {
                     secureTextEntry={false}
                     keyboardType={'numeric'}
                     style={myStyles.input}
-                    value={this.props.postAds.gia}
+                    value={this.props.postAds.gia ? this.props.postAds.gia.toString() : ''}
                     onChangeText={(text) => this.onValueChange("gia", text)}
                     onFocus={() => this.setState({editGia: true})}
                 />
@@ -754,33 +757,33 @@ class PostAdsDetail extends Component {
     }
 
     _onNhaXayMoiPressed(){
-        let nhaXayMoi = this.state.nhaXayMoi;
-        this.setState({nhaXayMoi: !nhaXayMoi});
+        let nhaMoiXay = this.props.postAds.nhaMoiXay;
+        this.props.actions.onPostAdsFieldChange('nhaMoiXay', !nhaMoiXay);
     }
 
     _onNhaLoGocPressed(){
-        let nhaLoGoc = this.state.nhaLoGoc;
-        this.setState({nhaLoGoc: !nhaLoGoc});
+        let nhaLoGoc = this.props.postAds.nhaLoGoc;
+        this.props.actions.onPostAdsFieldChange('nhaLoGoc', !nhaLoGoc);
     }
 
     _onOtoDoCuaPressed(){
-        let otoDoCua = this.state.otoDoCua;
-        this.setState({otoDoCua: !otoDoCua});
+        let otoDoCua = this.props.postAds.otoDoCua;
+        this.props.actions.onPostAdsFieldChange('otoDoCua', !otoDoCua);
     }
 
     _onNhaKinhDoanhDuocPressed(){
-        let nhaKinhDoanhDuoc = this.state.nhaKinhDoanhDuoc;
-        this.setState({nhaKinhDoanhDuoc: !nhaKinhDoanhDuoc});
+        let nhaKinhDoanhDuoc = this.props.postAds.nhaKinhDoanhDuoc;
+        this.props.actions.onPostAdsFieldChange('nhaKinhDoanhDuoc', !nhaKinhDoanhDuoc);
     }
 
     _onNoiThatDayDuPressed(){
-        let noiThatDayDu = this.state.noiThatDayDu;
-        this.setState({noiThatDayDu: !noiThatDayDu});
+        let noiThatDayDu = this.props.postAds.noiThatDayDu;
+        this.props.actions.onPostAdsFieldChange('noiThatDayDu', !noiThatDayDu);
     }
 
     _onChinhChuDangTinPressed(){
-        let chinhChuDangTin = this.state.chinhChuDangTin;
-        this.setState({chinhChuDangTin: !chinhChuDangTin});
+        let chinhChuDangTin = this.props.postAds.chinhChuDangTin;
+        this.props.actions.onPostAdsFieldChange('chinhChuDangTin', !chinhChuDangTin);
     }
 
     _onBanDoPressed() {
@@ -814,15 +817,23 @@ class PostAdsDetail extends Component {
 
     _getDiaChiValue() {
         var {place} = this.props.postAds;
-        var diaChi = place.diaChi;
-        if (diaChi.length > 30) {
-            diaChi = diaChi.substring(0,30) + '...';
+        var diaChiChiTiet = place.diaChiChiTiet;
+
+        if (!diaChiChiTiet || diaChiChiTiet.length <=0)
+            return '';
+
+        if (diaChiChiTiet.length > 30) {
+            diaChiChiTiet = diaChiChiTiet.substring(0,30) + '...';
         }
-        return diaChi;
+        return diaChiChiTiet;
     }
 
     _getLienHeValue(){
         var {lienHe} = this.props.postAds;
+
+        if (!lienHe)
+            return '';
+
         var lienHeTxt = '';
         if (lienHe.tenLienLac && lienHe.tenLienLac.length >0)
             lienHeTxt = lienHeTxt + lienHe.tenLienLac;
@@ -902,7 +913,9 @@ class PostAdsDetail extends Component {
     _renderSegment(label, values, selectedIndexAttribute, onChange, textValue, textField, onTextChange) {
         return (
             <SegmentedControl label={label} values={values} selectedIndexAttribute={selectedIndexAttribute}
-                              onChange={onChange} textValue={textValue} textField={textField}
+                              onChange={onChange}
+                              textValue={textValue ? textValue.toString() : ''}
+                              textField={textField}
                               onTextChange={onTextChange} placeholder={"Khác"}/>
         );
     }
@@ -913,6 +926,10 @@ class PostAdsDetail extends Component {
 
     _getChiTietValue() {
         let {chiTiet} = this.props.postAds;
+        if (!chiTiet){
+            return '';
+        }
+
         let index = chiTiet.indexOf('\n');
         let val = index >= 0 ? chiTiet.substring(0, index) : chiTiet;
         if (val.length > 30) {
@@ -1036,7 +1053,7 @@ class PostAdsDetail extends Component {
 
     onSaveAds() {
         var {uploadUrls} = this.state;
-        var {loaiTin, loaiNhaDat, gia, donViTien, dienTich, matTien, namXayDung,
+        var {id, loaiTin, loaiNhaDat, gia, donViTien, dienTich, matTien, namXayDung,
             soTangText, soPhongNguText, soNhaTamText, chiTiet, huongNha, duongTruocNha,
             place, selectedDiaChinh, selectedDuAn, lienHe} = this.props.postAds;
 
@@ -1049,6 +1066,7 @@ class PostAdsDetail extends Component {
         var image = {cover: '', images: []};
         if (imageUrls.length > 0) {
             image.cover = imageUrls[0];
+            imageUrls.shift();
             image.images = imageUrls;
         }
 
@@ -1064,15 +1082,14 @@ class PostAdsDetail extends Component {
         };
 
         // remove lienHe if no information
-        if ((!lienHe.tenLienLac || lienHe.tenLienLac.length <=0)
+        if (lienHe
+            && (!lienHe.tenLienLac || lienHe.tenLienLac.length <=0)
             && (!lienHe.phone || lienHe.phone.length <=0)
             && (!lienHe.email || lienHe.phone.length <=0))
             lienHe = undefined;
 
         //remove placeId
         place.placeId = undefined;
-
-        place.diaChi = place.diaChiFullName;
         place.diaChiFullName = undefined;
         place.duAn = undefined;
         place.duAnFullName = undefined;
@@ -1103,11 +1120,12 @@ class PostAdsDetail extends Component {
         var ngayDangTin = moment().format('YYYYMMDD');
 
         var adsDto = {
+            "id"                : id || undefined,
             "image"             : image,
             "loaiTin"           : loaiTinVal,
             "loaiNhaDat"        : loaiNhaDat,
             "dienTich"          : dienTich||-1,
-            "matTien"           : matTien||-1,
+            "matTien"           : matTien||undefined,
             "namXayDung"        : namXayDung||undefined,
             "soPhongNgu"        : phongNgu,
             "soPhongTam"        : phongTam,
@@ -1138,12 +1156,17 @@ class PostAdsDetail extends Component {
                 if (res.status==1) {
                     Alert.alert(res.err.message);
                 } else {
-                    //Alert.alert("Đăng ký bất động sản thành công");
+
+                    let adsID = this.state.adsID;
                     this.onRefreshPostAds();
-                    Actions.Home({type:"reset"});
-                    console.log("=================== post Ads success");
-                    console.log(Actions);
-                    console.log("=================== post Ads success end");
+                    if ( adsID && adsID.length >0 ){
+                        Alert.alert("Cập nhật bất động sản thành công");
+                        Actions.pop();
+                    } else {
+                        Alert.alert("Đăng ký bất động sản thành công");
+                        Actions.pop();
+                        Actions.AdsMgmt();
+                    }
                 }
             });
     }
@@ -1176,13 +1199,14 @@ class PostAdsDetail extends Component {
         this.onValueChange("nhaKinhDoanhDuoc", null);
         this.onValueChange("noiThatDayDu", null);
         this.onValueChange("chinhChuDangTin", null);
+        this.onValueChange("id", null);
 
         this.onValueChange("place", {
             duAn: '',
             duAnFullName: '',
             placeId: "ChIJKQqAE44ANTERDbkQYkF-mAI",
+            diaChiChiTiet: '',
             diaChi: '',
-            diaChiFullName: "Hanoi",
             diaChinh: {
                 tinh: 'Hanoi',
                 huyen: '',

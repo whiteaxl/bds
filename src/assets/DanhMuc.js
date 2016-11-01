@@ -404,6 +404,9 @@ danhMuc.getHuongNhaForDisplay = function(huongNhaKey){
 };
 
 danhMuc.getGiaForDisplay = function (gia, donViTien) {
+    if (gia == -1)
+        return 'Thỏa thuận';
+    
     var value = '';
     if (!gia || donViTien == 5) {
         value = danhMuc.DonViTien[5];

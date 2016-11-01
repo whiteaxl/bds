@@ -49,7 +49,7 @@ class PostAdsAddress extends Component {
       var {place} = this.props.postAds;
 
       this.state = {
-          diaChi: place.diaChi,
+          diaChiChiTiet: place.diaChiChiTiet,
           xaPhuong: placeUtil.getDiaChinhFullName(place)
       };
   }
@@ -80,8 +80,8 @@ class PostAdsAddress extends Component {
                         secureTextEntry={false}
                         autoFocus={true}
                         style={myStyles.input}
-                        value={this.state.diaChi}
-                        onChangeText={(text) => this.onValueChange("diaChi", text)}
+                        value={this.state.diaChiChiTiet}
+                        onChangeText={(text) => this.onDiaChiChiTietChange(text)}
                     />
                     <Text style={myStyles.label2}>{ghiChuDuongPho}</Text>
                     <Text style={[myStyles.label, {marginTop: 20}]}>PHƯỜNG, QUẬN, THÀNH PHỐ</Text>
@@ -90,7 +90,6 @@ class PostAdsAddress extends Component {
                         secureTextEntry={false}
                         style={[myStyles.input, {color: '#8A8A8A'}]}
                         value={this.state.xaPhuong}
-                        onChangeText={(text) => this.onValueChange("xaPhuong", text)}
                     />
                     <Text style={myStyles.label2}>{ghiChuXaPhuong}</Text>
                 </View>
@@ -99,28 +98,30 @@ class PostAdsAddress extends Component {
 	}
 
   _onBack() {
+      var {place} = this.props.postAds;
+
+      let diaChiChiTiet= this.state.diaChiChiTiet || '' ;
+      let xaPhuong= this.state.xaPhuong || '' ;
+
+      place.diaChiChiTiet = diaChiChiTiet;
+
+      if (xaPhuong != ''){
+          if (diaChiChiTiet != ''){
+              place.diaChi = diaChiChiTiet + ','  + xaPhuong;
+          } else {
+              place.diaChi = xaPhuong;
+          }
+      } else {
+          place.diaChi = diaChiChiTiet
+      }
+
+      this.props.actions.onPostAdsFieldChange("place", place);
+
       Actions.pop();
   }
 
-  onValueChange(key: string, value: string) {
-      const newState = {};
-      newState[key] = value;
-      this.setState(newState);
-      this._updateDiaChiFull(key, value);
-  }
-
-  _updateDiaChiFull(key: string, value: string) {
-      var {place} = this.props.postAds;
-      var {xaPhuong} = this.state;
-      if (key == 'diaChi') {
-          place.diaChi = value;
-          if (xaPhuong != '') {
-              place.diaChiFullName = value + ', ' + xaPhuong;
-          } else {
-              place.diaChiFullName = value;
-          }
-      }
-      this.props.actions.onPostAdsFieldChange("place", place);
+  onDiaChiChiTietChange(value) {
+      this.setState({diaChiChiTiet : value});
   }
 }
 

@@ -52,6 +52,7 @@ import Profile from '../components/me/Profile';
 import GioiTinh from '../components/GioiTinh';
 import MoiGioi from '../components/MoiGioi';
 
+import ChangePassword from '../components/me/ChangePassword';
 
 import SearchSuggestion from '../containers/PlacesAutoComplete';
 import Chat from './Chat';
@@ -195,6 +196,9 @@ class App extends React.Component {
           <Scene key='UpgradePackgeSelector' component={UpgradePackgeSelector} hideNavBar={true}/>
           <Scene key='PackageUpdater' component={PackageUpdater} hideNavBar={true}/>
 
+          <Scene key='Profile' component={Profile} hideNavBar={true}/>
+          <Scene key='ChangePassword' component={ChangePassword} hideNavBar={true}/>
+
           {/* Multi choice */}
           <Scene key='PackageTypes' component={PackageTypes} hideNavBar={true}/>
           <Scene key='PackageLengths' component={PackageLengths} hideNavBar={true}/>
@@ -202,7 +206,6 @@ class App extends React.Component {
           <Scene key='Topup' component={Topup} hideNavBar={true}/>
           <Scene key='Topup_Scratch' component={Topup_Scratch} hideNavBar={true}/>
           <Scene key='Topup_SMS' component={Topup_SMS} hideNavBar={true}/>
-          <Scene key='Profile' component={Profile} hideNavBar={true}/>
           <Scene key='GioiTinh' component={GioiTinh} hideNavBar={true}/>
           <Scene key='MoiGioi' component={MoiGioi} hideNavBar={true}/>
 

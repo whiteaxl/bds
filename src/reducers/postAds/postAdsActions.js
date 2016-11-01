@@ -2,6 +2,7 @@
 
 import uploadApi from '../../lib/UploadApi';
 import findApi from '../../lib/FindApi';
+import userApi from '../../lib/userApi';
 import log from "../../lib/logUtil";
 
 const {
@@ -10,10 +11,13 @@ const {
     POST_ADS_REQUEST,
     POST_ADS_SUCCESS,
     POST_ADS_FAILURE,
+    GET_UPDATE_ADS_REQUEST,
+    GET_UPDATE_ADS_SUCCESS,
+    GET_UPDATE_ADS_FAILURE,
     POST_ADS_GET_DIACHINH_REQUEST,
     POST_ADS_GET_DIACHINH_SUCCESS,
     POST_ADS_GET_DIACHINH_FAILURE
-    
+
 } = require('../../lib/constants').default;
 
 export function onPostAdsFieldChange(field, value) {
@@ -35,10 +39,10 @@ export function postAdsRequest() {
         type: POST_ADS_REQUEST
     };
 }
-export function postAdsSuccess(json) {
+export function postAdsSuccess(payload) {
     return {
         type: POST_ADS_SUCCESS,
-        payload: json
+        payload: payload
     };
 }
 export function postAdsFailure(error) {
@@ -47,6 +51,25 @@ export function postAdsFailure(error) {
         payload: error
     };
 }
+
+export function getUpdateAdsRequest() {
+    return {
+        type: GET_UPDATE_ADS_REQUEST
+    };
+}
+export function getUpdateAdsSuccess(payload) {
+    return {
+        type: GET_UPDATE_ADS_SUCCESS,
+        payload: payload
+    };
+}
+export function getUpdateAdsFailure(error) {
+    return {
+        type: GET_UPDATE_ADS_FAILURE,
+        payload: error
+    };
+}
+
 
 export function postAdsGetDiaChinhRequest() {
     return {
@@ -89,6 +112,27 @@ export function postAds(adsDto, token) {
             });
     };
 }
+
+// get Update Ads
+export function getUpdateAds(adsID, token) {
+    return dispatch => {
+        //dispatch(getUpdateAdsRequest());
+
+        return userApi.getUpdateAds(adsID, token)
+            .then(res => {
+                if (res.success) {
+                    dispatch(getUpdateAdsSuccess(res.data));
+
+                } else {
+                    log.error("get Update Ads error", res);
+                }
+                //dispatch(getUpdateAdsFailure());
+                return res;
+            })
+    }
+}
+
+
 
 export function getDiaChinhFromGoogleData(dto) {
     return dispatch => {

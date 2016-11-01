@@ -9,7 +9,10 @@ const {
   ON_LOADING_PROFILE_FAILURE,
   ON_UPDATING_PROFILE_REQUEST,
   ON_UPDATING_PROFILE_SUCCESS,
-  ON_UPDATING_PROFILE_FAILURE
+  ON_UPDATING_PROFILE_FAILURE,
+  ON_UPDATING_PASSWORD_REQUEST,
+  ON_UPDATING_PASSWORD_SUCCESS,
+  ON_UPDATING_PASSWORD_FAILURE
 } = require('../../lib/constants').default;
 
 import log from "../../lib/logUtil";
@@ -79,6 +82,25 @@ export function onUpdatingProfileFailure(err) {
     };
 }
 
+export function onUpdatingPasswordRequest() {
+    return {
+        type: ON_UPDATING_PASSWORD_REQUEST
+    };
+}
+
+export function onUpdatingPasswordSuccess() {
+    return {
+        type: ON_UPDATING_PASSWORD_SUCCESS
+    };
+}
+
+export function onUpdatingPasswordFailure(err) {
+    return {
+        type: ON_UPDATING_PASSWORD_FAILURE,
+        payload: err
+    };
+}
+
 export function profile(userID, token) {
     log.info("meAction, get Profile");
 
@@ -112,6 +134,26 @@ export function updateProfile(userDto, token) {
                 } else {
                     log.error("update Profile error", res);
                     dispatch(onUpdatingProfileFailure(res.msg));
+                }
+                return res;
+            });
+    }
+}
+
+export function changePassword(dto, token) {
+    log.info("meAction, change password");
+
+    return dispatch => {
+        dispatch(onUpdatingPasswordRequest());
+
+        return userApi.changePassword(dto, token)
+            .then(function(res) {
+                if (res.success) {
+                    console.log("change password successfully");
+                    dispatch(onUpdatingPasswordSuccess());
+                } else {
+                    log.error("change password error", res);
+                    dispatch(onUpdatingPasswordFailure(res.msg));
                 }
                 return res;
             });

@@ -232,7 +232,7 @@ class Profile extends Component {
           <View style={style.headerTitle}>
 
             <Text style={style.headerTitleText}>
-              Trần Việt Anh
+                this.props.me.profile.fullName;
             </Text>
           </View>
           <TouchableHighlight onPress={() => this._onApply()}>
@@ -387,7 +387,7 @@ class Profile extends Component {
 
   _renderDoiMatKhau(){
     return (
-      <TouchableHighlight>
+      <TouchableHighlight onPress={() => this._onDoiMatKhauPressed()}>
         <View style={style.rowIconContainer}>
             <Text style={[style.contentLabel, {width: 150}]}>
               Thay đổi mật khẩu
@@ -567,6 +567,10 @@ class Profile extends Component {
 
   _onMoiGioiPressed(){
     Actions.MoiGioi();
+  }
+
+  _onDoiMatKhauPressed(){
+      Actions.ChangePassword();
   }
 
   _onNgaySinhPressed(){

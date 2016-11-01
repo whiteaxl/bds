@@ -17,8 +17,6 @@ import util from '../../lib/utils';
 
 import danhMuc from '../../assets/DanhMuc';
 
-
-
 export function onAdsMgmtFieldChange(field, value) {
   return {
     type: ON_ADSMGMT_FIELD_CHANGE,
@@ -94,6 +92,27 @@ export function loadLikedList(userID) {
       })
   }
 }
+
+// delete Ads
+export function deleteAds(adsID, token) {
+  return dispatch => {
+    //dispatch(onDeleteAdsRequest());
+
+    return userApi.deleteAds({adsID: adsID}, token)
+        .then(res => {
+          if (res.success) {
+            //dispatch(onDeleteAdsSuccess());
+
+          } else {
+            log.error("delete Ads error", res);
+          }
+          //dispatch(onDeleteAdsfailure());
+          return res;
+        })
+  }
+}
+
+
 
 export function buyCurrentPackage(pack, userID) {
   return dispatch => {

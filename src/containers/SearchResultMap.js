@@ -264,10 +264,6 @@ class SearchResultMap extends Component {
     if (Object.keys(region).length <= 0 || isNaN(region.latitude)) {
       region = {latitude: LATITUDE, longitude: LONGITUDE, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA};
     }
-    console.log("================= SearchResultMap: Init Region");
-    console.log(viewport);
-    console.log(region);
-    console.log("================= SearchResultMap: End Region");
     return region;
   }
   _getHeaderTitle() {

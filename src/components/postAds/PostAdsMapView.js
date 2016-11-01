@@ -78,7 +78,7 @@ class PostAdsMapView extends Component {
     var region = {latitude: geo.lat, longitude: geo.lon,
       latitudeDelta: LATITUDE_DELTA,
       longitudeDelta: LONGITUDE_DELTA};
-    if (geo.lat == '') {
+    if (!geo || !geo.lat ||geo.lat == '') {
       region.latitude = LATITUDE;
       region.longitude = LONGITUDE;
     }

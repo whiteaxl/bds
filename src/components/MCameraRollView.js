@@ -130,7 +130,8 @@ class MCameraRollView extends Component {
                 this._onSelectProfileAvatar(photo.uri);
                 break;
             default:
-                Actions.PostAdsDetail({photos: this.state.photos, type: "reset"});
+                this.props.actions.onPostAdsFieldChange('photos', this.state.photos);
+                Actions.PostAdsDetail({type: 'replace'});
         }
     }
 
