@@ -85,6 +85,7 @@ class AdsAlertUs extends Component {
                     selectedOptions={[this.state.alertUs]}
                     maxSelectedOptions={1}
                     onSelection={(option)=>this._onApply(option)}
+                    onTextFocus={() => this.setAlertUs("Khác")}
                 />
                 <View style={myStyles.buttonView}>
                     <Button style={myStyles.buttonText} onPress={this._onSend.bind(this)}>Gửi</Button>
@@ -166,7 +167,9 @@ var myStyles = StyleSheet.create({
         fontFamily: gui.fontFamily,
         fontWeight : 'normal',
         color: 'white',
-        textAlign: 'center'
+        textAlign: 'center',
+        width: Dimensions.get('window').width-50,
+        height: 20
     }
 });
 

@@ -146,7 +146,8 @@ class MultipleChoice2 extends BaseComponent {
                 <TextInput
                     secureTextEntry={false}
                     placeholder = {"Lý do thông báo..."}
-                    style={Styles.input} />
+                    style={Styles.input}
+                    onFocus={this.props.onTextFocus} />
             </View>);
         }
     }
