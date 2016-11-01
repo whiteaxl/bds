@@ -232,7 +232,7 @@ class Profile extends Component {
           <View style={style.headerTitle}>
 
             <Text style={style.headerTitleText}>
-                this.props.me.profile.fullName;
+                {this.props.me.profile.fullName}
             </Text>
           </View>
           <TouchableHighlight onPress={() => this._onApply()}>
