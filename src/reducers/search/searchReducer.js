@@ -225,6 +225,10 @@ export default function searchReducer(state = initialState, action) {
     }
 
     case LOAD_LAST_SEARCH_SUCCESS: {
+      console.log("====================== load last search");
+      console.log(action.payload);
+      console.log("====================== load last search end");
+
       let lastSearchList = action.payload;
 
       let lastSearch = lastSearchList.map( (e) => {
@@ -252,6 +256,7 @@ export default function searchReducer(state = initialState, action) {
       if (cred.loaiTin == 'ban') {
 
       }
+
       let next = state
         .setIn(['form', 'fields', "loaiTin"], cred.loaiTin)
         .setIn(['form', 'fields', "ban"], cred.ban)
@@ -393,16 +398,17 @@ function buildSearchCredentialFromSavedSearch(query) {
   let ban = {};
   let thue = {};
   if (loaiTin == 0) {
-    ban.loaiNhaDat = loaiNhaDat || '';
+    ban.loaiNhaDat = (loaiNhaDat && loaiNhaDat.length>0) ? loaiNhaDat[0]. toString() : '';
     ban.gia = RangeUtils.sellPriceRange.rangeVal2Display(giaBETWEEN);
     thue.loaiNhaDat = '';
     thue.gia = RangeUtils.BAT_KY_RANGE;
   } else {
     ban.loaiNhaDat = '';
     ban.gia = RangeUtils.BAT_KY_RANGE;
-    thue.loaiNhaDat = loaiNhaDat || '';
+    thue.loaiNhaDat = (loaiNhaDat && loaiNhaDat.length>0) ? loaiNhaDat[0]. toString() : '';
     thue.gia = RangeUtils.sellPriceRange.rangeVal2Display(giaBETWEEN);
   }
+  
   let ret = {
     loaiTin: loaiTin == 0 ? 'ban' : 'thue',
     ban: ban,
