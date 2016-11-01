@@ -119,5 +119,7 @@ export default keyMirror({
 
   GET_UPDATE_ADS_REQUEST: null,
   GET_UPDATE_ADS_SUCCESS: null,
-  GET_UPDATE_ADS_FAILURE: null
+  GET_UPDATE_ADS_FAILURE: null,
+
+  ON_SETTING_FIELD_CHANGE: null
 });

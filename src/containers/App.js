@@ -51,6 +51,7 @@ import Topup_SMS from '../components/me/Topup_SMS';
 import Profile from '../components/me/Profile';
 import GioiTinh from '../components/GioiTinh';
 import MoiGioi from '../components/MoiGioi';
+import Setting from '../components/me/Setting';
 
 import ChangePassword from '../components/me/ChangePassword';
 
@@ -208,6 +209,7 @@ class App extends React.Component {
           <Scene key='Topup_SMS' component={Topup_SMS} hideNavBar={true}/>
           <Scene key='GioiTinh' component={GioiTinh} hideNavBar={true}/>
           <Scene key='MoiGioi' component={MoiGioi} hideNavBar={true}/>
+          <Scene key='Setting' component={Setting} hideNavBar={true}/>
 
         </Scene>
       </RouterWithRedux>

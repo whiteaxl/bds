@@ -14,7 +14,7 @@ import globalInitialState from './reducers/global/globalInitialState';
 import searchInitialState from './reducers/search/searchInitialState';
 import postAdsInitialState from './reducers/postAds/postAdsInitialState';
 
-import {lauchApp, registerPushTokenSuccess} from './reducers/global/globalActions';
+import {lauchApp, registerPushTokenSuccess, onSettingFieldChange} from './reducers/global/globalActions';
 import {login} from './reducers/auth/authActions';
 import {onSearchFieldChange} from './reducers/search/searchActions';
 
@@ -110,6 +110,18 @@ export default class MainBDS extends React.Component {
         }
       }
     });
+
+
+    localStorage.getSetting().then( (ret) => {
+      if (ret){
+        let setting = JSON.parse(ret);
+        if (setting){
+          store.dispatch(onSettingFieldChange('autoLoadAds',setting.autoLoadAds));
+          store.dispatch(onSettingFieldChange('maxAdsInMapView',setting.maxAdsInMapView));
+        }
+      }
+    });
+
 
     // auto login if save password
     localStorage.getLoginInfo().then( (ret)=> {

@@ -77,6 +77,10 @@ class MeContent extends Component {
     Actions.Topup();
   }
 
+  _onSetting(){
+    Actions.Setting();
+  }
+
   render() {
     log.info("Call MeContent render, currentUser:", this.props.global.currentUser);
     let avatarUri = this.props.global.currentUser.avatar ? {uri: this.props.global.currentUser.avatar} :
@@ -128,6 +132,7 @@ class MeContent extends Component {
                       title = "Trợ giúp" />
         <View style={styles.lineSeparator}><Text/></View>
         <LineWithIcon iconSource = {require('../../assets/image/me/me_setting.png')}
+                      onPress={this._onSetting}
                       title = "Cài đặt" />
         <View style={styles.boxSeparator}><Text/></View>
 

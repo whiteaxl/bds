@@ -16,9 +16,10 @@ var InitialState = Record({
     bonusAccount: 0
   })),
 
-  setting: {
-    autoLoadAds : false
-  },
+  setting: new (Record({
+    autoLoadAds : false,
+    maxAdsInMapView: 25
+  })),
 
   deviceInfo : {
     deviceID : null,

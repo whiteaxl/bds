@@ -14,7 +14,8 @@ const {
 
   SEARCH_LIST_LIKE_SUCCESS,
   SEARCH_LIST_UNLIKE_SUCCESS,
-  ON_CURRENT_USER_FIELD_CHANGE
+  ON_CURRENT_USER_FIELD_CHANGE,
+  ON_SETTING_FIELD_CHANGE
 } = require('../../lib/constants').default;
 
 import InitialState from './globalInitialState';
@@ -134,6 +135,15 @@ export default function globalReducer(state = initialState, action) {
     {
       log.info("globalReducer ", action.payload);
       return state.setIn(['currentUser','adsLikes'], action.payload)
+    }
+
+    case ON_SETTING_FIELD_CHANGE:{
+      const {field, value} = action.payload;
+      console.log("ON_SETTING_FIELD_CHANGE");
+      console.log(action.payload);
+      console.log("ON_SETTING_FIELD_CHANGE")
+      let nextState = state.setIn(['setting', field], value);
+      return nextState;
     }
 
   }

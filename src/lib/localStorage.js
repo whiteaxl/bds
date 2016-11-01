@@ -6,8 +6,8 @@ var {
 var storageKeys = {
   PUSH_TOKEN : '@RELAND:PUSH_TOKEN',
   LAST_SEARCH : '@RELAND:LAST_SEARCH',
-
-  LOGIN_INFO : '@RELAND:LOGIN_INFO'
+  LOGIN_INFO : '@RELAND:LOGIN_INFO',
+  SETTING : '@RELAND:SETTING'
 };
 
 class LocalStorage {
@@ -30,8 +30,23 @@ class LocalStorage {
   setLastSearch(searchObj) {
     return AsyncStorage.setItem(storageKeys.LAST_SEARCH, searchObj);
   }
+
   getLastSearch() {
     return AsyncStorage.getItem(storageKeys.LAST_SEARCH);
+  }
+
+  /*
+   setting: {
+      autoLoadAds : false,
+      maxAdsInMapView: 25
+   }
+  */
+  setSetting(setting) {
+    return AsyncStorage.setItem(storageKeys.SETTING, JSON.stringify(setting));
+  }
+
+  getSetting() {
+    return AsyncStorage.getItem(storageKeys.SETTING);
   }
 
   //{username, password, sessionCookie}
