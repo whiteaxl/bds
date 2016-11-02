@@ -946,7 +946,7 @@ class SearchResultDetail extends Component {
                 {title}
               </Text>
               <TouchableHighlight onPress={onPress} underlayColor="transparent">
-                <Text style={[detailStyles.textHalfWidthBold2, textStyle]}>
+                <Text style={[detailStyles.textHalfWidthBold2, {color: gui.mainColor, textDecorationLine: 'underline'}, textStyle]}>
                   {prop}
                 </Text>
               </TouchableHighlight>

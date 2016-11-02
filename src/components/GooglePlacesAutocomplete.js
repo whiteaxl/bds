@@ -73,6 +73,7 @@ const GooglePlacesAutocomplete = React.createClass({
     });
     return {
       text: this.props.getDefaultValue(),
+      focused: false,
       dataSource: ds.cloneWithRows(this.buildRowsFromResults([])),
       listViewDisplayed: false,
     };
@@ -81,7 +82,8 @@ const GooglePlacesAutocomplete = React.createClass({
   buildRowsFromResults(results) {
     var res = null;
 
-    if (results.length === 0 || this.props.predefinedPlacesAlwaysVisible === true) {
+    if ((!this.state || this.state.text.length < this.props.minLength) &&
+        (results.length === 0 || this.props.predefinedPlacesAlwaysVisible === true)) {
       res = [...this.props.predefinedPlaces];
       if (this.props.currentLocation === true) {
         res.unshift({
@@ -430,11 +432,12 @@ const GooglePlacesAutocomplete = React.createClass({
     );
   },
 
-  _renderRow(rowData = {}) {
+  _renderRow(rowData = {}, sectionID, rowID, isFirstRow) {
     console.log(rowData);
 
     rowData.description = rowData.description || rowData.name;
     let rowHeight = this._getRowHight(rowData);
+    var separatorStypeExt = isFirstRow ? {marginLeft: 0} : (this.state.text.length < this.props.minLength ? {marginLeft: 47} : {marginLeft: 25});
 
     return (
       <TouchableHighlight
@@ -444,7 +447,7 @@ const GooglePlacesAutocomplete = React.createClass({
         underlayColor="#c8c7cc"
       >
         <View>
-          <View style={[defaultStyles.separator, this.props.styles.separator]} />
+          <View style={[defaultStyles.separator, this.props.styles.separator, separatorStypeExt]} />
           <View style={[defaultStyles.row, {height: rowHeight}]}>
             <View style={{
               flex:1,
@@ -484,7 +487,7 @@ const GooglePlacesAutocomplete = React.createClass({
   },
 
   _onFocus() {
-    this.setState({listViewDisplayed: true});
+    this.setState({listViewDisplayed: true, focused: true});
   },
 
   _getListView() {
@@ -495,7 +498,7 @@ const GooglePlacesAutocomplete = React.createClass({
           keyboardDismissMode="on-drag"
           style={[defaultStyles.listView, this.props.styles.listView]}
           dataSource={this.state.dataSource}
-          renderRow={this._renderRow}
+          renderRow={(rowData, sectionID, rowID) => this._renderRow(rowData, sectionID, rowID, (rowID == 0))}
           renderSeparator={(sectionID, rowID) => this._renderSeparator(sectionID, rowID, (rowID == (this.state.dataSource._dataBlob.s1.length-1)))}
           automaticallyAdjustContentInsets={false}
 
@@ -531,7 +534,7 @@ const GooglePlacesAutocomplete = React.createClass({
         >
           <View style={defaultStyles.inputView}>
             <TruliaIcon name="search" size={14} color={'white'}
-                        mainProps={{marginRight: 7}}></TruliaIcon>
+                        mainProps={{paddingRight: 7, paddingTop: 1}}></TruliaIcon>
             <TextInput
               { ...userProps }
               ref="textInput"
@@ -543,8 +546,14 @@ const GooglePlacesAutocomplete = React.createClass({
               placeholderTextColor={"white"}
               selectionColor={'white'}
               onFocus={onFocus ? () => {this._onFocus(); onFocus()} : this._onFocus}
-              clearButtonMode="while-editing"
+              clearButtonMode="never"
             />
+            {this.state.focused && this.state.text != '' ?
+            <RelandIcon name="close-circle-f" size={18} color={'white'}
+                        mainProps={{flexDirection: 'row', paddingTop: 1}}
+                        textProps={{paddingLeft: 0}}
+                        onPress={() => {this._onChangeText(''); onChangeText && onChangeText('')}}></RelandIcon> : null
+            }
           </View>
 
           <TouchableHighlight underlayColor="transparent" onPress={this.props.onCancelPress}>
@@ -554,6 +563,7 @@ const GooglePlacesAutocomplete = React.createClass({
           </TouchableHighlight>
 
         </View>
+        <View style={[defaultStyles.separator, this.props.styles.separator]}/>
         {this._getListView()}
       </View>
     );
