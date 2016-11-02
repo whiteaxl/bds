@@ -550,7 +550,7 @@ const GooglePlacesAutocomplete = React.createClass({
             />
             {this.state.focused && this.state.text != '' ?
             <RelandIcon name="close-circle-f" size={18} color={'white'}
-                        mainProps={{flexDirection: 'row', paddingTop: 1}}
+                        mainProps={{flexDirection: 'row', paddingTop: 1, paddingLeft: 5, paddingRight: 5}}
                         textProps={{paddingLeft: 0}}
                         onPress={() => {this._onChangeText(''); onChangeText && onChangeText('')}}></RelandIcon> : null
             }
