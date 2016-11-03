@@ -16,7 +16,7 @@ import {Map} from 'immutable';
 import {Actions} from 'react-native-router-flux';
 import gui from "../../lib/gui";
 
-var {width, height} = Dimensions.get('window');
+var {width} = Dimensions.get('window');
 
 const actions = [
   globalActions
@@ -70,7 +70,12 @@ class Setting extends Component {
     )
   }
 
-  _onBack() {
+  _onBack(){
+    let maxAdsInMapView = this.props.global.setting.maxAdsInMapView;
+    if (!maxAdsInMapView || maxAdsInMapView< 10 || maxAdsInMapView>50){
+      Alert.alert("Số kết quả hiển thị trên bản đồ không đúng");
+      return;
+    }
     this.props.actions.updateLocalSetting(this.props.global.setting);
     Actions.pop();
   }
@@ -152,7 +157,7 @@ class Setting extends Component {
 
   _getMaxAdsInMapView(){
     let maxAdsInMapView = this.props.global.setting.maxAdsInMapView;
-    return maxAdsInMapView ? maxAdsInMapView.toString() : '25';
+    return maxAdsInMapView ? maxAdsInMapView.toString() : '';
   }
 
   _getAutoLoadAds(){
