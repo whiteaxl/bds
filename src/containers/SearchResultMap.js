@@ -1193,19 +1193,20 @@ class SearchResultMap extends Component {
   }
 
   _onSaveSearchPressed() {
-    // if (!this.props.loggedIn) {
-    //   Actions.LoginRegister({page:1});
-    // } else {
-    //   var name = this.props.diaChinhFullName;
-    //   AlertIOS.prompt('Tên tìm kiếm cần lưu', 'Ví dụ: Gần chỗ làm, gần bệnh viện',
-    //       [{
-    //         text: 'Lưu lại',
-    //         onPress: this._onSaveSearch.bind(this)
-    //       }, {
-    //         text: 'Thoát',
-    //         style: 'cancel'
-    //       }], 'plain-text', name);
-    // }
+
+     if (!this.props.loggedIn) {
+         Actions.LoginRegister({page:1});
+     } else {
+         var name = this.props.diaChinhFullName;
+         AlertIOS.prompt('Tên tìm kiếm cần lưu', 'Ví dụ: Gần chỗ làm, gần bệnh viện',
+          [{
+            text: 'Lưu lại',
+            onPress: this._onSaveSearch.bind(this)
+          }, {
+            text: 'Thoát',
+            style: 'cancel'
+          }], 'plain-text', name);
+    }
   }
 
   _onSaveSearch(name) {
@@ -1217,7 +1218,9 @@ class SearchResultMap extends Component {
       timeModified : new Date().getTime()
     };
 
-    this.props.actions.saveSearch(this.props.userID, saveSearch);
+    let token = this.props.global.currentUser.token;
+
+    this.props.actions.saveSearch(this.props.global.currentUser.userID, saveSearch, token);
   }
 
   _onListPressed() {

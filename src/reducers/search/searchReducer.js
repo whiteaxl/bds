@@ -134,21 +134,18 @@ export default function searchReducer(state = initialState, action) {
       let LIMIT = gui.LIMIT_RECENT_SEARCH;
       recentSearchList = recentSearchList.slice(0, LIMIT);
 
-      //update lastSearch if called from search screen
-      let hasDiaChinhChange = false;
-      if (recentSearchList && recentSearchList.length > 0) {
-        if (recentSearchList.length > 1) {
-          let oldQuery = recentSearchList[1];
-          let oldDiaChinh = oldQuery.query.diaChinh;
-          hasDiaChinhChange = diaChinh != undefined && diaChinh.fullName != gui.VI_TRI_HIEN_TAI &&
-              Object.keys(diaChinh).length > 0 && oldDiaChinh != undefined && oldDiaChinh.fullName &&
-              oldDiaChinh.fullName != diaChinh.fullName;
+      //02_6650964
+      if (state.searchCalledFrom == 'Search') {
+        //exclude save last search if searching by position/building project
+        let diaChinh = searchObj.query.diaChinh;
+        if (diaChinh &&
+            (diaChinh.fullName == "Xung quanh vị trí hiện tại"
+             || (diaChinh.duAnKhongDau && diaChinh.duAnKhongDau.length >0))){
+          console.log("save last search");
         } else {
-          hasDiaChinhChange = true;
+          localStorage.setLastSearch(JSON.stringify(searchObj));
         }
-      }
-      if (state.searchCalledFrom == 'Search' /*&& hasDiaChinhChange*/) {
-        localStorage.setLastSearch(JSON.stringify(searchObj));
+
       }
       if (query.pageNo == 1) {
         return state.setIn(['result', "listAds"], data.list)
