@@ -84,7 +84,8 @@ export default function searchReducer(state = initialState, action) {
       return state.set("drawMode", action.payload);
 
     case ON_RESET_LIST_ADS:
-      return state.setIn(['result', "allAdsItems"], []);
+      return state.setIn(['result', "allAdsItems"], [])
+          .setIn(['result', "listAds"], []);
 
     case ON_CHANGE_LIST_ADS:
       return state.setIn(['result', "allAdsItems"], action.payload);
