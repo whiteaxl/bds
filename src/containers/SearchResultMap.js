@@ -359,7 +359,7 @@ class SearchResultMap extends Component {
                     coordinates={polygon.coordinates}
                     strokeColor={gui.mainColor}
                     fillColor="rgba(0,168,230,0.5)"
-                    strokeWidth={2}
+                    strokeWidth={3}
                 />
             ))}
             {this.state.editing && (
@@ -367,7 +367,7 @@ class SearchResultMap extends Component {
                     coordinates={this.state.editing.coordinates}
                     strokeColor={gui.mainColor}
                     fillColor="rgba(0,168,230,0.5)"
-                    strokeWidth={2}
+                    strokeWidth={3}
                 />
             )}
             {/*
@@ -1289,16 +1289,17 @@ class SearchResultMap extends Component {
 
   _updateMapView(polygons, region) {
       console.log("Call SearchResultMap._updateMapView");
-      this.setState({
-        openDetailAdsModal: false,
-        openLocalInfo: false,
-        editing: null,
-        openDraw: false,
-        region: region || this.state.region
-      });
-      this.props.actions.onDrawModeChange(false);
-      this.props.actions.onPolygonsChange(polygons);
+      this.props.actions.onResetAdsList();
       this._onSetupMessageTimeout();
+      setTimeout(() => {this.setState({
+          openDetailAdsModal: false,
+          openLocalInfo: false,
+          editing: null,
+          openDraw: false,
+          region: region || this.state.region
+      });
+      this.props.actions.onPolygonsChange(polygons);
+      this.props.actions.onDrawModeChange(false)}, 1500);
   }
 
   _refreshPolygons(gestureState) {
