@@ -63,24 +63,20 @@ class PropertyTypes extends Component {
   }
 
   getLoaiTin() {
-      var {func, search, postAds} = this.props;
-      return (func == 'search') ? search.form.fields.loaiTin : postAds.loaiTin;
+      var {func, loaiTin, postAds} = this.props;
+      return (func == 'search') ? loaiTin : postAds.loaiTin;
   }
 
   getLoaiNhaDat(loaiTin) {
-      var {func, search, postAds} = this.props;
-      return (func == 'search') ? search.form.fields[loaiTin].loaiNhaDat : postAds.loaiNhaDat;
+      var {func, loaiNhaDat, postAds} = this.props;
+      return (func == 'search') ? loaiNhaDat : postAds.loaiNhaDat;
   }
 
   setLoaiNhaDat(option) {
       var {func, search} = this.props;
       let loaiNhaDatVal = this.getKeyByValue(loaiNhaDatValues, option);
       if (func == 'search') {
-          var loaiTin = this.getLoaiTin();
-          var loaiNhaDatParent = {};
-          Object.assign(loaiNhaDatParent, search.form.fields[loaiTin]);
-          loaiNhaDatParent.loaiNhaDat = loaiNhaDatVal;
-          this.props.actions.onSearchFieldChange(loaiTin, loaiNhaDatParent);
+          this.props.onLoaiNhaDatChange(loaiNhaDatVal);
       } else {
           this.props.actions.onPostAdsFieldChange("loaiNhaDat", loaiNhaDatVal);
       }

@@ -48,7 +48,7 @@ var huongNhaValues = DanhMuc.getHuongNhaValues();
 class HuongNha extends Component {
     constructor(props) {
         super();
-        var huongNha = this.getValueByKey(huongNhaValues, props.search.form.fields.huongNha);
+        var huongNha = this.getValueByKey(huongNhaValues, props.huongNha);
         if (!huongNha) {
             huongNha = huongNhaValues[0];
         }
@@ -80,7 +80,7 @@ class HuongNha extends Component {
     }
 
     _onApply(option) {
-        this.props.actions.onSearchFieldChange("huongNha", this.getKeyByValue(huongNhaValues, option));
+        this.props.onHuongNhaChange(this.getKeyByValue(huongNhaValues, option));
         Actions.pop();
     }
 

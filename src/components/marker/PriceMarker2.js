@@ -2,6 +2,8 @@ import React, {Component} from 'react';
 
 import gui from '../../lib/gui';
 
+import RelandIcon from '../RelandIcon';
+
 var {
   StyleSheet,
   View,
@@ -20,6 +22,11 @@ class PriceMarker2 extends React.Component{
         <View style={[styles.bubble, {backgroundColor: this.props.color, borderColor: "white",
               flexDirection: 'row', justifyContent: 'space-between'}]}>
           <Text style={[styles.amount, { fontSize: this.props.fontSize }]} pointerEvents="none">{this.props.amount} </Text>
+          <RelandIcon name="arrow-up" size={16} color={'white'}
+                      mainProps={{flexDirection: 'row', paddingRight: 3}}
+                      textProps={{paddingLeft: 0}}
+                      iconProps={{style: {paddingBottom: 1}}}
+                      noAction={true} />
           <View style={styles.dupView}>
             <Text style={dupStyle} pointerEvents="none">{this.props.duplicate}</Text>
           </View>

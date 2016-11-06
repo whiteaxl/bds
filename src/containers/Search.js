@@ -67,7 +67,8 @@ class Search extends Component {
     super(props);
     StatusBar.setBarStyle('default');
 
-    let {loaiTin, ngayDaDang, huongNha} = this.props.search.form.fields;
+    let {loaiTin, ngayDaDang, huongNha, dienTich, ban, thue,
+        soPhongNguSelectedIdx, radiusInKmSelectedIdx} = this.props.search.form.fields;
     let {initDienTich, fromDienTich, toDienTich} = this._initDienTich();
     let {initGia, fromGia, toGia} = this._initGia(loaiTin);
     let showMore = ngayDaDang != '' || huongNha != 0;
@@ -84,7 +85,15 @@ class Search extends Component {
       fromGia: fromGia,
       toGia: toGia,
       inputNgayDaDang: ngayDaDang,
-      toggleState: false
+      toggleState: false,
+      loaiTin: loaiTin,
+      ban: ban,
+      thue: thue,
+      dienTich: dienTich,
+      soPhongNguSelectedIdx: soPhongNguSelectedIdx,
+      radiusInKmSelectedIdx: radiusInKmSelectedIdx,
+      huongNha: huongNha,
+      ngayDaDang: ngayDaDang
     };
   }
 
@@ -126,9 +135,8 @@ class Search extends Component {
   }
 
   _onLoaiTinChange(value) {
-    this.props.actions.setSearchLoaiTin(value);
     let {initGia, fromGia, toGia} = this._initGia(value);
-    this.setState({initGia: initGia, fromGia: fromGia, toGia: toGia});
+    this.setState({loaiTin: value, initGia: initGia, fromGia: fromGia, toGia: toGia});
   }
 
   _onPressGiaHandle(){
@@ -184,14 +192,17 @@ class Search extends Component {
 
   _doChangeGia(loaiTin, giaVal) {
       var parent = {};
-      Object.assign(parent, this.props.search.form.fields[loaiTin]);
+      Object.assign(parent, this.state[loaiTin]);
       parent.gia = giaVal;
-      this.props.actions.onSearchFieldChange(loaiTin, parent);
+      if (loaiTin == 'ban') {
+          this.setState({ban: parent});
+      } else {
+          this.setState({thue: parent});
+      }
   }
 
   _onGiaChanged(pickedValue) {
-    let {loaiTin} = this.props.search.form.fields;
-    let gia = this.props.search.form.fields[loaiTin].gia;
+    let {loaiTin} = this.state;
     let giaStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
     let giaVal = pickedValue.split('_');
     let value = giaStepValues.rangeVal2Display(giaVal);
@@ -215,7 +226,6 @@ class Search extends Component {
   _onDienTichChanged(pickedValue) {
     let dienTichVal = pickedValue.split('_');
     let value = RangeUtils.dienTichRange.rangeVal2Display(dienTichVal);
-    this.props.actions.onSearchFieldChange("dienTich", value);
     var initDienTich = [];
     Object.assign(initDienTich, value);
     let fromDienTich = dienTichVal[0];
@@ -226,19 +236,17 @@ class Search extends Component {
     if (toDienTich == -1 || toDienTich == DanhMuc.BIG) {
         toDienTich = '';
     }
-    this.setState({initDienTich: initDienTich, fromDienTich: fromDienTich, toDienTich: toDienTich});
+    this.setState({initDienTich: initDienTich, fromDienTich: fromDienTich, toDienTich: toDienTich, dienTich: value});
   }
 
   _onNgayDaDangChanged(pickedValue) {
     let value = pickedValue;
-    this.props.actions.onSearchFieldChange("ngayDaDang", value);
-    this.setState({initNgayDaDang: value, inputNgayDaDang: value});
+    this.setState({initNgayDaDang: value, inputNgayDaDang: value, ngayDaDang: value});
   }
 
   _getGiaValue() {
-    //log.info(this.props.search.form.fields.gia)
-    let {loaiTin} = this.props.search.form.fields;
-    let gia = this.props.search.form.fields[loaiTin].gia;
+    let {loaiTin} = this.state;
+    let gia = this.state[loaiTin].gia;
     let giaStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
     let giaVal = giaStepValues.toValRange(gia);
     giaVal.sort((a, b) => this._onArraySort(a, b));
@@ -247,7 +255,7 @@ class Search extends Component {
   }
 
   _getDienTichValue() {
-    let {dienTich} = this.props.search.form.fields;
+    let {dienTich} = this.state;
     let dienTichVal = RangeUtils.dienTichRange.toValRange(dienTich);
     dienTichVal.sort((a,b) => this._onArraySort(a, b));
     let newDienTich = RangeUtils.dienTichRange.rangeVal2Display(dienTichVal);
@@ -255,13 +263,12 @@ class Search extends Component {
   }
 
   _getLoaiNhatDatValue() {
-    let {loaiTin} = this.props.search.form.fields;
-    let loaiNhaDat = this.props.search.form.fields[loaiTin].loaiNhaDat;
-    return DanhMuc.getLoaiNhaDatForDisplay(loaiTin, loaiNhaDat);
+    let {loaiTin} = this.state;
+    return DanhMuc.getLoaiNhaDatForDisplay(loaiTin, this.state[loaiTin].loaiNhaDat);
   }
   
   _getHuongNhaValue() {
-    var huongNha = this.props.search.form.fields.huongNha;
+    var {huongNha} = this.state;
     if (!huongNha) {
       return RangeUtils.BAT_KY;
     }
@@ -269,7 +276,7 @@ class Search extends Component {
   }
 
   _getNgayDaDangValue() {
-    var {ngayDaDang} = this.props.search.form.fields;
+    var {ngayDaDang} = this.state;
     if (!ngayDaDang || ngayDaDang == 0) {
       return RangeUtils.BAT_KY;
     }
@@ -306,7 +313,7 @@ class Search extends Component {
     log.info("CALL Search.render");
     //log.info(this.props);
 
-    let loaiTin = this.props.search.form.fields.loaiTin;
+    let {loaiTin} = this.state;
 
     let placeName = this._getHeaderTitle();
 
@@ -340,7 +347,7 @@ class Search extends Component {
               </View>
 
               <TouchableOpacity
-                onPress={this._onPropertyTypesPressed}>
+                onPress={this._onPropertyTypesPressed.bind(this)}>
                 <View style={myStyles.searchFilterAttributeExt3}>
                   <Text style={myStyles.searchAttributeLabel}>
                   Loại nhà đất
@@ -357,10 +364,6 @@ class Search extends Component {
                 {this._renderGia()}
 
               {this._renderSoPhongNgu()}
-
-              {/*this._renderSoTang()*/}
-
-              {/*this._renderSoNhaTam()*/}
 
               {this._renderBanKinhTimKiem()}
 
@@ -418,12 +421,27 @@ class Search extends Component {
     log.info("Call Search.onApply");
     this.props.actions.changeLoadingSearchResult(true);
 
-    var {loaiTin, dienTich} = this.props.search.form.fields;
-    let gia = this.props.search.form.fields[loaiTin].gia;
+    let {loaiTin, dienTich, soPhongNguSelectedIdx, radiusInKmSelectedIdx, huongNha, ngayDaDang} = this.state;
+
+    this.props.actions.setSearchLoaiTin(loaiTin);
+
+    var loaiNhaDatParent = {};
+    Object.assign(loaiNhaDatParent, this.state[loaiTin]);
+    let ban = null;
+    let thue = null;
+    if (loaiTin == 'ban') {
+        ban = this.state['ban'];
+    } else {
+        thue = this.state['thue'];
+    }
+
+    let gia = this.state[loaiTin].gia;
     let giaStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
     let giaVal = giaStepValues.toValRange(gia);
     giaVal.sort((a, b) => this._onArraySort(a, b));
     let newGia = giaStepValues.rangeVal2Display(giaVal);
+    loaiNhaDatParent.gia = newGia;
+    this.props.actions.onSearchFieldChange(loaiTin, loaiNhaDatParent);
 
     let dienTichVal = RangeUtils.dienTichRange.toValRange(dienTich);
     dienTichVal.sort((a,b) => this._onArraySort(a, b));
@@ -431,6 +449,10 @@ class Search extends Component {
 
     this._doChangeGia(loaiTin, newGia);
     this.props.actions.onSearchFieldChange("dienTich", newDienTich);
+    this.props.actions.onSearchFieldChange("soPhongNguSelectedIdx", soPhongNguSelectedIdx);
+    this.props.actions.onSearchFieldChange("radiusInKmSelectedIdx", radiusInKmSelectedIdx);
+    this.props.actions.onSearchFieldChange("huongNha", huongNha);
+    this.props.actions.onSearchFieldChange("ngayDaDang", ngayDaDang);
     this.props.actions.onSearchFieldChange("orderBy", '');
     this.props.actions.onSearchFieldChange("pageNo", 1);
     this.props.actions.onResetAdsList();
@@ -439,7 +461,8 @@ class Search extends Component {
     if (this.props.owner == 'home' || this.props.owner == 'list') {
         maxItem = gui.MAX_LIST_ITEM;
     }
-    this._handleSearchAction('', 1, maxItem, newGia, newDienTich);
+    this._handleSearchAction(loaiTin, ban, thue, '', 1, maxItem, newGia, newDienTich, soPhongNguSelectedIdx,
+        radiusInKmSelectedIdx, huongNha, ngayDaDang);
     if (this.props.needBack) {
         Actions.pop();
     } else {
@@ -461,7 +484,8 @@ class Search extends Component {
      return a - b;
  }
 
- _handleSearchAction(newOrderBy, newPageNo, newLimit, newGia, newDienTich, newViewport){
+ _handleSearchAction(newLoaiTin, newBan, newThue, newOrderBy, newPageNo, newLimit, newGia, newDienTich, newSoPhongNguSelectedIdx,
+                     newRadiusInKmSelectedIdx, newHuongNha, newNgayDaDang, newViewport){
      var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
          radiusInKmSelectedIdx, dienTich, orderBy, diaChinh, viewport, center, huongNha, ngayDaDang,
          polygon, pageNo, limit, isIncludeCountInResponse} = this.props.search.form.fields;
@@ -474,19 +498,19 @@ class Search extends Component {
      }
      let validViewport = this.props.search.form.fields.diaChinhViewport;
      var fields = {
-         loaiTin: loaiTin,
-         ban: ban,
-         thue: thue,
-         soPhongNguSelectedIdx: soPhongNguSelectedIdx,
+         loaiTin: newLoaiTin || loaiTin,
+         ban: newBan || ban,
+         thue: newThue || thue,
+         soPhongNguSelectedIdx: newSoPhongNguSelectedIdx || soPhongNguSelectedIdx,
          soNhaTamSelectedIdx : soNhaTamSelectedIdx,
          dienTich: newDienTich || dienTich,
          orderBy: newOrderBy || orderBy,
          viewport: validViewport,
          diaChinh: diaChinh,
          center: center,
-         radiusInKmSelectedIdx: radiusInKmSelectedIdx,
-         huongNha: huongNha,
-         ngayDaDang: ngayDaDang,
+         radiusInKmSelectedIdx: newRadiusInKmSelectedIdx || radiusInKmSelectedIdx,
+         huongNha: newHuongNha || huongNha,
+         ngayDaDang: newNgayDaDang || ngayDaDang,
          polygon: polygon,
          pageNo: newPageNo || pageNo,
          limit: newLimit || limit,
@@ -510,8 +534,10 @@ class Search extends Component {
   }
 
   onResetFilters() {
-    this.props.actions.onSearchFieldChange("ban", {loaiNhaDat: '', gia: RangeUtils.BAT_KY_RANGE});
-    this.props.actions.onSearchFieldChange("thue", {loaiNhaDat: '', gia: RangeUtils.BAT_KY_RANGE});
+    let defaultBan = {loaiNhaDat: '', gia: RangeUtils.BAT_KY_RANGE};
+    let defaultThue = {loaiNhaDat: '', gia: RangeUtils.BAT_KY_RANGE};
+    this.props.actions.onSearchFieldChange("ban", defaultBan);
+    this.props.actions.onSearchFieldChange("thue", defaultThue);
     this.props.actions.onSearchFieldChange("soPhongNguSelectedIdx", 0);
     this.props.actions.onSearchFieldChange("soNhaTamSelectedIdx", 0);
     this.props.actions.onSearchFieldChange("dienTich", RangeUtils.BAT_KY_RANGE);
@@ -521,19 +547,39 @@ class Search extends Component {
 
     this.setState({initGia: RangeUtils.BAT_KY_RANGE, initDienTich: RangeUtils.BAT_KY_RANGE, initNgayDaDang: 0,
         fromDienTich: '', toDienTich: '', fromGia: '', toGia: '', inputNgayDaDang: '',
-        showMore: false, showGia: false, showDienTich: false, showNgayDaDang: false});
+        showMore: false, showGia: false, showDienTich: false, showNgayDaDang: false,
+        ban: defaultBan, thue: defaultThue, dienTich: RangeUtils.BAT_KY_RANGE,
+        soPhongNguSelectedIdx: 0, radiusInKmSelectedIdx: 0, huongNha: 0, ngayDaDang: ''});
   }
 
   _onPropertyTypesPressed() {
-    Actions.PropertyTypes({func: 'search'});
+    let {loaiTin} = this.state;
+    Actions.PropertyTypes({func: 'search', loaiTin: loaiTin, loaiNhaDat: this.state[loaiTin].loaiNhaDat,
+        onLoaiNhaDatChange: (loaiNhaDat) => this._onLoaiNhaDatChange(loaiNhaDat)});
+  }
+
+  _onLoaiNhaDatChange(loaiNhaDat) {
+      let {loaiTin} = this.state;
+      var loaiNhaDatParent = {};
+      Object.assign(loaiNhaDatParent, this.state[loaiTin]);
+      loaiNhaDatParent.loaiNhaDat = loaiNhaDat;
+      if (loaiTin == 'ban') {
+          this.setState({ban: loaiNhaDatParent});
+      } else {
+          this.setState({thue: loaiNhaDatParent});
+      }
   }
 
   _onHuongNhaPressed() {
-    Actions.HuongNha();
+    Actions.HuongNha({huongNha: this.state.huongNha, onHuongNhaChange: (huongNha) => this._onHuongNhaChange(huongNha)});
+  }
+
+  _onHuongNhaChange(huongNha) {
+      this.setState({huongNha: huongNha});
   }
 
   _onSoPhongNguChanged(event) {
-    this.props.actions.onSearchFieldChange("soPhongNguSelectedIdx", event.nativeEvent.selectedSegmentIndex);
+    this.setState({soPhongNguSelectedIdx: event.nativeEvent.selectedSegmentIndex});
   }
 
   _onSoTangChanged(event) {
@@ -545,7 +591,7 @@ class Search extends Component {
   }
 
     _onBanKinhTimKiemChanged(event) {
-        this.props.actions.onSearchFieldChange("radiusInKmSelectedIdx", event.nativeEvent.selectedSegmentIndex);
+        this.setState({radiusInKmSelectedIdx: event.nativeEvent.selectedSegmentIndex});
     }
 
     _renderDienTich() {
@@ -602,7 +648,7 @@ class Search extends Component {
     }
 
     _onDienTichInputChange(index, val) {
-        let {dienTich} = this.props.search.form.fields;
+        let {dienTich} = this.state;
         let newDienTich = [];
         Object.assign(newDienTich, dienTich);
         if (val === '') {
@@ -623,7 +669,7 @@ class Search extends Component {
         // newDienTich.sort((a, b) => a - b);
 
         let value = RangeUtils.dienTichRange.rangeVal2Display(newDienTich);
-        this.props.actions.onSearchFieldChange("dienTich", value);
+
         let fromDienTich = newDienTich[0];
         let toDienTich = newDienTich[1];
         if (fromDienTich == -1 || fromDienTich == DanhMuc.BIG) {
@@ -632,7 +678,7 @@ class Search extends Component {
         if (toDienTich == -1 || toDienTich == DanhMuc.BIG) {
             toDienTich = '';
         }
-        this.setState({fromDienTich: fromDienTich, toDienTich: toDienTich});
+        this.setState({fromDienTich: fromDienTich, toDienTich: toDienTich, dienTich: value});
     }
 
     _renderGia() {
@@ -659,9 +705,8 @@ class Search extends Component {
     }
 
     _renderGiaPicker() {
-        var {showGia, initGia, fromGia, toGia} = this.state;
+        var {loaiTin, showGia, initGia, fromGia, toGia} = this.state;
         if (showGia) {
-            var {loaiTin} = this.props.search.form.fields;
             var rangeStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
             let pickerRange = rangeStepValues.getAllRangeVal();
             let fromPlaceholder = 'Từ';
@@ -680,8 +725,8 @@ class Search extends Component {
     }
 
     _onGiaInputChange(index, val) {
-        let {loaiTin} = this.props.search.form.fields;
-        let gia = this.props.search.form.fields[loaiTin].gia;
+        let {loaiTin} = this.state;
+        let gia = this.state[loaiTin].gia;
         let rangeStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
         let newGia = [];
         Object.assign(newGia, gia);
@@ -738,9 +783,9 @@ class Search extends Component {
   _renderSoPhongNgu(){
     if (this.showSoPhongNgu()){
         return this._renderSegment("Số phòng ngủ", DanhMuc.getSoPhongNguValues(),
-            this.props.search.form.fields["soPhongNguSelectedIdx"], this._onSoPhongNguChanged.bind(this));
-    } else if (0 != this.props.search.form.fields.soPhongNguSelectedIdx) {
-      this.props.actions.onSearchFieldChange("soPhongNguSelectedIdx", 0);
+            this.state["soPhongNguSelectedIdx"], this._onSoPhongNguChanged.bind(this));
+    } else if (0 != this.state.soPhongNguSelectedIdx) {
+        this.setState({soPhongNguSelectedIdx: 0});
     }
       return null;
   }
@@ -767,11 +812,11 @@ class Search extends Component {
   _renderBanKinhTimKiem() {
         if (this.showBanKinhTimKiem()){
             return this._renderSegment("Bán kính tìm kiếm (Km)", DanhMuc.getRadiusInKmValues(),
-                this.props.search.form.fields["radiusInKmSelectedIdx"], this._onBanKinhTimKiemChanged.bind(this));
+                this.state["radiusInKmSelectedIdx"], this._onBanKinhTimKiemChanged.bind(this));
         }
         /*
-        else if (0 != this.props.search.form.fields.radiusInKmSelectedIdx) {
-            this.props.actions.onSearchFieldChange("radiusInKmSelectedIdx", 0);
+        else if (0 != this.state.radiusInKmSelectedIdx) {
+            this.setState({radiusInKmSelectedIdx: 0});
         }
         */
     }
@@ -869,8 +914,7 @@ class Search extends Component {
   }
   
   _onNgayDaDangInputChange(value) {
-      this.props.actions.onSearchFieldChange("ngayDaDang", value);
-      this.setState({inputNgayDaDang: value});
+      this.setState({inputNgayDaDang: value, ngayDaDang: value});
   }
     
   _ngayDaDangVal2Display(ngayDaDangKey) {
@@ -878,8 +922,8 @@ class Search extends Component {
   }
 
   showSoPhongNgu(){
-    var {loaiTin} = this.props.search.form.fields;
-    var loaiNhaDat = this.props.search.form.fields[loaiTin].loaiNhaDat;
+    var {loaiTin} = this.state;
+    var loaiNhaDat = this.state[loaiTin].loaiNhaDat;
     var loaiNhaDatKeys = loaiTin ? DanhMuc.LoaiNhaDatThueKey : DanhMuc.LoaiNhaDatBanKey;
       if (loaiNhaDat == loaiNhaDatKeys[0]
       || loaiNhaDat == loaiNhaDatKeys[1]
@@ -897,8 +941,8 @@ class Search extends Component {
   }
 
   showSoNhaTam(){
-      var {loaiTin} = this.props.search.form.fields;
-      var loaiNhaDat = this.props.search.form.fields[loaiTin].loaiNhaDat;
+      var {loaiTin} = this.state;
+      var loaiNhaDat = this.state[loaiTin].loaiNhaDat;
       var loaiNhaDatKeys = loaiTin ? DanhMuc.LoaiNhaDatThueKey : DanhMuc.LoaiNhaDatBanKey;
       if (loaiNhaDat == loaiNhaDatKeys[0]
           || loaiNhaDat == loaiNhaDatKeys[1]
