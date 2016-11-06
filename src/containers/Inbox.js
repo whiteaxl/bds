@@ -49,6 +49,10 @@ function mapDispatchToProps(dispatch) {
 class Inbox extends Component {
 	constructor(props) {
 		super(props);
+		console.log("===================== Inbox constructor");
+		console.log(props);
+		console.log("===================== Inbox constructor end");
+		props.actions.loadInbox(props.global.currentUser.userID);
 	}
 
 	renderTabBar() {
@@ -61,7 +65,7 @@ class Inbox extends Component {
 		let allInboxDS = [];
 		let loaiTin = this.decodeLoaiTin(value);
 		currentInboxList.map(function (data) {
-			if (loaiTin == undefined || data.doc.relatedToAds.loaiTin == loaiTin) {
+			if (loaiTin == undefined || data.relatedToAds.loaiTin == loaiTin) {
 				allInboxDS.push(data);
 			}
 		});

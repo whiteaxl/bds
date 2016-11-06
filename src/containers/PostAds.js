@@ -63,7 +63,7 @@ class PostAds extends Component {
         var {photos, imageIndex, owner} = props;
         this.state = {
             photos: photos||[],
-            imageIndex: imageIndex||0,
+            imageIndex: imageIndex,
             owner: owner
         }
     }

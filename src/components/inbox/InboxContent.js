@@ -68,19 +68,26 @@ class InboxContent extends React.Component {
   }
 
   onRowClick(row) {
-    let {doc, partner} = row;
+    let {relatedToAds, partner} = row;
 
-    this.props.actions.startChat(partner, doc.relatedToAds);
+    this.props.actions.startChat(this.props.global.currentUser.userID,
+                                  partner,
+                                  relatedToAds);
     Actions.Chat();
   }
 
   renderRow(row, sectionID, rowID) {
+
+    console.log("================ render row");
+    console.log(row);
+    console.log("================ render row end");
+
     let avatar = row.partner.avatar ? {uri: row.partner.avatar} : defaultAvatar;
-    let relatedToAds = row.doc.relatedToAds;
+    let relatedToAds = row.relatedToAds;
     const {giaFmt, loaiNhaDatFmt, diaChinhFullName} = relatedToAds;
     let adsInboxTitle = `${giaFmt} - ${loaiNhaDatFmt} - ${diaChinhFullName}`;
 
-    let dt = moment(row.doc.date).format("DD/MM   HH:mm");
+    let dt = moment(row.date).format("DD/MM   HH:mm");
     dt = dt.replace("/", " tháng ");
     let w = rowID == 0 ? 0 : 1;
 
@@ -100,7 +107,7 @@ class InboxContent extends React.Component {
             <View style={styles.rightRow2}>
               <View style={styles.titleAndLastMsg}>
                 <Text numberOfLines={1} style={styles.title}>{relatedToAds?adsInboxTitle:"<Không tựa đề>"}</Text>
-                <Text style={styles.content}>{row.doc.content}</Text>
+                <Text style={styles.content}>{row.content}</Text>
               </View>
               <Image
                 resizeMode = {"cover"}

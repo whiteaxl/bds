@@ -27,7 +27,8 @@ const {
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAILURE,
 
-  ON_DB_CHANGE
+  ON_DB_CHANGE,
+  ON_NEW_MESSAGE
 
 } = require('../../lib/constants').default;
 
@@ -37,6 +38,7 @@ import ls from "../../lib/localStorage";
 
 import log from "../../lib/logUtil";
 import userApi from "../../lib/userApi";
+import chatApi from "../../lib/ChatApi";
 
 import {savedSearchSuccess, loadLastSearchSuccess} from "../search/searchActions";
 
@@ -81,11 +83,13 @@ export function logoutFailure(error) {
   };
 }
 
-export function logout() {
+export function logout(userID) {
   return dispatch => {
     log.info("start authenAction.logout");
     ls.removeLogin();
     dispatch(logoutSuccess());
+    // disconnect to chat
+    chatApi.disconnect(userID);
   };
 }
 
@@ -227,6 +231,16 @@ export function onDBChange(doc) {
 
 }
 
+export function onNewMessage(msg) {
+  log.enter("AuthenAction.onNewMessage");
+
+  return {
+    type: ON_NEW_MESSAGE,
+    payload: {msg}
+  };
+
+}
+
 export function login(username, password, deviceDto) {
 
   return dispatch => {
@@ -248,6 +262,12 @@ export function login(username, password, deviceDto) {
           if (json.lastSearch && json.lastSearch.length >0){
             dispatch(loadLastSearchSuccess(json.lastSearch));
           }
+
+          //connect to socket server
+          chatApi.connectAndStartListener(json,
+              (data) =>{
+                dispatch(onNewMessage(data))
+              });
 
           //todo: need to check update device function
           //userApi.updateDevice(deviceDto);

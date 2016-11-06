@@ -203,7 +203,7 @@ class SearchResultDetail extends Component {
       isLiked = adsLikes && adsLikes.indexOf(rowData.adsID) > -1;
     }
     return (
-        <SearchResultDetailFooter mobile={mobile} onChat={() => this._onSms(mobile)} userID={userID}
+        <SearchResultDetailFooter mobile={mobile} onChat={() => this._onChat(rowData)} userID={userID}
                                   isLiked={isLiked} ads={rowData} loggedIn={this.props.global.loggedIn}
                                   likeAds={this.props.actions.likeAds}
                                   unlikeAds={this.props.actions.unlikeAds}/>
@@ -847,7 +847,7 @@ class SearchResultDetail extends Component {
       };
 
       let relatedToAds = {
-        adsID : ads.adsID,
+        adsID : ads.id||ads.adsID,
         loaiNhaDatFmt : utils.getLoaiNhaDatFmt(ads),
         giaFmt : utils.getPriceDisplay(ads.gia, ads.loaiTin),
         diaChinhFullName : placeUtil.getDiaChinhFullName(ads.place),
@@ -857,7 +857,7 @@ class SearchResultDetail extends Component {
         loaiNhaDat: ads.loaiNhaDat
       };
 
-      this.props.actions.startChat(partner, relatedToAds);
+      this.props.actions.startChat(this.props.global.currentUser.userID, partner, relatedToAds);
       Actions.Chat();
     }
   }

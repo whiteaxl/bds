@@ -613,6 +613,7 @@ class GiftedMessenger extends Component {
     }
     if (this.props.hideTextInput === false) {
       return (
+        <View style={{flexDirection: 'column'}}>
         <View style={this.styles.textInputContainer}>
           {this.props.leftControlBar}
           <TextInput
@@ -641,6 +642,8 @@ class GiftedMessenger extends Component {
           >
             {this.props.sendButtonText}
           </Button>
+        </View>
+
         </View>
       );
     }

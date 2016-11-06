@@ -10,6 +10,7 @@ const _ = require('lodash');
 
 import log from "../../lib/logUtil";
 import dbService from "../../lib/localDB";
+import chatApi from "../../lib/ChatApi";
 
 export function onChatFieldChange(field, value) {
   return {
@@ -26,11 +27,15 @@ export function requestStartChat(data) {
 }
 
 //payload={doc, partner}, doc is latest CHAT msg
-export function startChat(partner, ads) {
+export function startChat(userID, partner, ads) {
   return dispatch => {
-    dbService.getAllChatMsg(partner.userID, ads.adsID)
-      .then((allMsg) => {
-        dispatch(requestStartChat({allMsg, partner, ads}))
+    let dto = {userID: userID, partnerUserID: partner.userID, adsID: ads.adsID};
+    chatApi.getAllChatMsg(dto)
+      .then((res) => {
+        if (res.status==0){
+          dispatch(requestStartChat({allMsg: res.data, partner, ads}))
+        }
+
       });
   };
 }
@@ -43,6 +48,7 @@ export function insertMyChat(msg) {
 }
 
 
+/*
 export function sendChatMsg(msg) {
   return dispatch => {
 
@@ -55,6 +61,15 @@ export function sendChatMsg(msg) {
       });
   };
 }
+*/
+
+export function sendChatMsg(msg) {
+  return dispatch => {
+    dispatch(insertMyChat(msg));
+    chatApi.sendChatMsg(msg);
+  };
+}
+
 
 
 

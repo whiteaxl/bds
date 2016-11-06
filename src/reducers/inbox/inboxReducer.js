@@ -6,7 +6,8 @@ import log from '../../lib/logUtil';
 const {
   ON_DB_CHANGE,
   ON_INBOX_FIELD_CHANGE,
-  LOGOUT_SUCCESS
+  LOGOUT_SUCCESS,
+  LOADING_INBOX_SUCCESS
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
@@ -135,6 +136,29 @@ export default function inboxReducer(state = initialState, action) {
         .set("loaiTin", 'all');
 
       return newState;
+    }
+
+    case LOADING_INBOX_SUCCESS: {
+      var data = action.payload;
+      console.log("=============== load inbo successfully");
+      console.log(data);
+
+      var allRows = [];
+      data.forEach(
+          (row) =>{
+            row.date = new Date();
+            allRows.push(row);
+          }
+      );
+
+      console.log("=============== load inbo successfully end");
+
+      const ds = state.allInboxDS;
+      const newDs = ds.cloneWithRows(allRows);
+
+      return state
+          .set("inboxList", allRows)
+          .set("allInboxDS", newDs);
     }
   }
 

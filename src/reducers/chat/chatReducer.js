@@ -8,7 +8,8 @@ const {
   REQUEST_START_CHAT,
   ON_DB_CHANGE,
   INSERT_MY_CHAT,
-  LOGOUT_SUCCESS
+  LOGOUT_SUCCESS,
+  ON_NEW_MESSAGE
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
@@ -84,6 +85,25 @@ export default function chatReducer(state = initialState, action) {
       let nextState = state.set('messages',messages);
       return nextState;
     }
+
+    case ON_NEW_MESSAGE:{
+      let msg = action.payload;
+      console.log("================ chatReducer ON_NEW_MESSAGE");
+      console.log(msg);
+      let partnerID = msg.fromUserID;
+      let giftMsg = convertOne(msg, partnerID);
+
+      var {messages} = state;
+
+      let found = messages.find(e => e._id === giftMsg._id);
+      if (!found) {
+        messages = [...messages,giftMsg];
+      }
+
+      let nextState = state.set('messages',messages);
+      return nextState;
+    }
+
     case LOGOUT_SUCCESS: {
       let newState = state
         .set("partner", {})
@@ -99,7 +119,7 @@ export default function chatReducer(state = initialState, action) {
 }
 
 function convertOne(e, partnerID) {
-  e.uniqueId = e._id;
+  e.uniqueId = e._id||e.id;
   e.position = e.fromUserID == partnerID ? 'left' : 'right';
   e.text = e.content;
   e.name = e.fromFullName;
@@ -110,8 +130,9 @@ function convertOne(e, partnerID) {
 
 function convertToGiftMsg(allMsg, partnerID) {
   let messages = allMsg.map((e) => {
-    convertOne(e, partnerID);
-    return e;
+    let row = e.default;
+    convertOne(row, partnerID);
+    return row;
   });
 
   return messages;

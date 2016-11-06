@@ -18,6 +18,8 @@ import HomeHeader from '../components/home/HomeHeader';
 
 import ChatContent from "../components/chat/ChatContent";
 
+import chatApi  from "../lib/ChatApi";
+
 
 const actions = [
   globalActions, chatActions
@@ -45,6 +47,7 @@ class Chat extends Component {
   constructor(props) {
     super(props);
     //props.partner, props.ads
+    chatApi.onNewMsg();
   }
 
   render() {
