@@ -9,7 +9,7 @@ var getAllChatMsgUrl = cfg.rootUrl + "/getAllChatMsg";
 
 import log from './logUtil';
 
-const socket = io('http://localhost:5000', {
+const socket = io(`http://${cfg.server}:5000`, {
     transports: ['websocket'] // you need to explicitly tell it to use websockets
 });
 
