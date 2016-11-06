@@ -186,6 +186,7 @@ class AdsListView extends React.Component {
   }
 
   _onRefresh() {
+    this.props.actions.onSearchFieldChange("pageNo", 1);
     this._handleSearchAction(1);
   }
 
