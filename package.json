@@ -50,7 +50,7 @@
     "react-redux": "^4.4.5",
     "redux": "^3.5.2",
     "redux-thunk": "^2.1.0",
-    "underscore": "^1.8.3"
-    "socket.io-client": "^1.5.1",
+    "underscore": "^1.8.3",
+    "socket.io-client": "^1.5.1"
   }
 }
