@@ -18,7 +18,6 @@ const {
   ON_POLYGONS_CHANGE,
   ON_DRAW_MODE_CHANGE,
   ON_RESET_LIST_ADS,
-  ON_CHANGE_LIST_ADS,
   ON_CHANGE_MAP_PAGE_NO,
   ON_CHANGE_LIST_SCROLL_POS,
   ON_SEARCH_FIELD_CHANGE,
@@ -84,11 +83,7 @@ export default function searchReducer(state = initialState, action) {
       return state.set("drawMode", action.payload);
 
     case ON_RESET_LIST_ADS:
-      return state.setIn(['result', "allAdsItems"], [])
-          .setIn(['result', "listAds"], []);
-
-    case ON_CHANGE_LIST_ADS:
-      return state.setIn(['result', "allAdsItems"], action.payload);
+      return state.setIn(['result', "listAds"], []);
 
     case ON_CHANGE_MAP_PAGE_NO:
       return state.set("mapPageNo", action.payload);
@@ -150,7 +145,6 @@ export default function searchReducer(state = initialState, action) {
       }
       if (query.pageNo == 1) {
         return state.setIn(['result', "listAds"], data.list)
-            .setIn(['result', "allAdsItems"], data.list)
             .set("state", SEARCH_STATE_SUCCESS)
             .setIn(['result', "errorMsg"], null)
             .set("loadingFromServer", false)

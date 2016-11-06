@@ -2,7 +2,7 @@
 
 import AdsRow from './AdsRow';
 import React from 'react';
-import { StyleSheet, ListView, View, Text, Dimensions } from 'react-native';
+import { StyleSheet, ListView, View, Text, Dimensions, RefreshControl } from 'react-native';
 import gui from '../../lib/gui';
 var myDs = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 import log from '../../lib/logUtil';
@@ -24,7 +24,7 @@ class AdsListView extends React.Component {
     log.info("Call SearchResultList._getListContent");
 
     let myProps = this.props;
-    if (myProps.loading && myProps.allAdsItems.length === 0) {
+    if (myProps.loading && myProps.listAds.length === 0) {
       return (
         <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
           {/*<Text> Loading ... </Text>*/}
@@ -41,7 +41,7 @@ class AdsListView extends React.Component {
       )
     }
 
-    if (myProps.allAdsItems.length === 0 ) {
+    if (myProps.listAds.length === 0 ) {
       return (
         <View style={{flex:1, alignItems:'center', justifyContent:'flex-start', marginTop: (5*Dimensions.get('window').height)/23}}>
           <Text style = {[gui.styles.defaultText,{textAlign:'center',
@@ -52,17 +52,24 @@ class AdsListView extends React.Component {
       )
     }
 
-    let ds = myDs.cloneWithRows(myProps.allAdsItems);
+    let ds = myDs.cloneWithRows(myProps.listAds);
 
     return (
       <ListView
+        refreshControl={
+          <RefreshControl
+            refreshing={false}
+            onRefresh={this._onRefresh.bind(this)}
+          />
+        }
+
         ref={(listView) => { this._listView = listView; }}
         dataSource={ds}
-        renderRow={this.renderRow.bind(this)}
+        renderRow={(rowData, sectionID, rowID) => this.renderRow(rowData, sectionID, rowID, (rowID == 0), (rowID == (ds._dataBlob.s1.length-1)))}
         stickyHeaderIndices={[]}
         initialListSize={1}
-        onEndReachedThreshold={200}
-        onEndReached={this._onEndReached.bind(this)}
+        // onEndReachedThreshold={200}
+        // onEndReached={this._onEndReached.bind(this)}
         // scrollRenderAheadDistance={3}
         // pageSize={5}
         // onScroll={this.handleScroll.bind(this)}
@@ -122,16 +129,16 @@ class AdsListView extends React.Component {
 
     this.props.actions.search(
         fields
-        , () => {this._appendAdsList()});
+        , () => {this.props.scrollToTop()});
   }
 
-  _appendAdsList() {
-    console.log('_appendAdsList pageNo', this.props.fields.pageNo);
-    let allAdsItems = this.props.allAdsItems;
-    allAdsItems = allAdsItems.concat(this.props.listAds);
-    console.log('allAdsItems length', allAdsItems.length);
-    this.props.actions.onChangeAdsList(allAdsItems);
-  }
+  // _appendAdsList() {
+  //   console.log('_appendAdsList pageNo', this.props.fields.pageNo);
+  //   let allAdsItems = this.props.allAdsItems;
+  //   allAdsItems = allAdsItems.concat(this.props.listAds);
+  //   console.log('allAdsItems length', allAdsItems.length);
+  //   this.props.actions.onChangeAdsList(allAdsItems);
+  // }
 
   handleScroll(event: Object) {
     // if (event.nativeEvent.contentOffset.y < -100) {
@@ -154,15 +161,67 @@ class AdsListView extends React.Component {
     this.props.actions.onChangeListScrollPos(pos < 0 ? 0 : pos);
   }
 
-  renderRow(rowData) {
+  renderRow(rowData = {}, sectionID, rowID, isFirstRow, isLastRow) {
+    let myProps = this.props;
+    let pageNo = myProps.fields.pageNo;
+    let totalPages = myProps.totalCount/ myProps.fields.limit;
+
+    let showFirstControl = pageNo > 1;
+    let showLastControl = !myProps.loading && totalPages && pageNo < totalPages;
+
     return (
       <AdsRow ads={rowData} noCoverUrl={this.props.noCoverUrl}
               userID = {this.props.userID}
               likeAds = {this.props.actions.likeAds}
               unlikeAds = {this.props.actions.unlikeAds}
               loggedIn = {this.props.loggedIn}
-              adsLikes={this.props.adsLikes}/>
+              adsLikes={this.props.adsLikes}
+              isFirstRow={isFirstRow}
+              showFirstControl={showFirstControl}
+              isLastRow={isLastRow}
+              showLastControl={showLastControl}
+              loadPreviousPage={() => this.loadPreviousPage()}
+              loadNextPage={() => this.loadNextPage()}/>
     );
+  }
+
+  _onRefresh() {
+    this._handleSearchAction();
+  }
+
+  loadPreviousPage() {
+    let myProps = this.props;
+    console.log('loadPreviousPage', myProps);
+    if (myProps.loading) {
+      return;
+    }
+
+    let pageNo = myProps.fields.pageNo;
+
+    if (pageNo > 1) {
+      pageNo = pageNo-1;
+      myProps.actions.onSearchFieldChange("pageNo", pageNo);
+      // myProps.actions.onShowMsgChange(true);
+      this._handleSearchAction(pageNo);
+    }
+  }
+
+  loadNextPage() {
+    let myProps = this.props;
+    console.log('loadNextPage', myProps);
+    if (myProps.loading) {
+      return;
+    }
+
+    let pageNo = myProps.fields.pageNo;
+    let totalPages = myProps.totalCount/ myProps.fields.limit;
+
+    if (totalPages && pageNo < totalPages) {
+      pageNo = pageNo+1;
+      myProps.actions.onSearchFieldChange("pageNo", pageNo);
+      // myProps.actions.onShowMsgChange(true);
+      this._handleSearchAction(pageNo);
+    }
   }
 }
 const styles = StyleSheet.create({

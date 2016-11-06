@@ -15,7 +15,6 @@ const {
   ON_POLYGONS_CHANGE,
   ON_DRAW_MODE_CHANGE,
   ON_RESET_LIST_ADS,
-  ON_CHANGE_LIST_ADS,
   ON_CHANGE_MAP_PAGE_NO,
   ON_CHANGE_LIST_SCROLL_POS,
   ON_SEARCH_FIELD_CHANGE,
@@ -94,13 +93,6 @@ export function onResetAdsList() {
   return {
     type: ON_RESET_LIST_ADS,
     payload: null
-  }
-}
-
-export function onChangeAdsList(listAds) {
-  return {
-    type: ON_CHANGE_LIST_ADS,
-    payload: listAds
   }
 }
 
