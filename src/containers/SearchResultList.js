@@ -50,7 +50,6 @@ function mapStateToProps(state) {
 
     return {
         listAds: state.search.result.listAds,
-        allAdsItems: state.search.result.allAdsItems,
         loading: state.search.loadingFromServer,
         errorMsg: state.search.result.errorMsg,
         adsLikes: currentUser && currentUser.adsLikes,
@@ -147,7 +146,7 @@ class SearchResultList extends Component {
 
                 <View style={{marginTop: 30, height: Dimensions.get('window').height - 108}}>
                     <AdsListView ref={(adsListView) => { this._adsListView = adsListView; }}
-                        {...this.props} noCoverUrl={noCoverUrl} />
+                        {...this.props} noCoverUrl={noCoverUrl} scrollToTop={this._scrollToTop.bind(this)}/>
                 </View>
 
                 {this._renderTotalResultView()}
@@ -184,14 +183,14 @@ class SearchResultList extends Component {
     }
 
     _isHeaderLoading() {
-        let {loading, allAdsItems} = this.props;
-        return loading && allAdsItems.length > 0;
+        let {loading, listAds} = this.props;
+        return loading && listAds.length > 0;
     }
 
     _renderTotalResultView(){
-        let {loading, allAdsItems} = this.props;
+        let {loading, listAds} = this.props;
         let {showMessage, firstTimeFromMap} = this.state;
-        let numberOfAds = allAdsItems.length;
+        let numberOfAds = listAds.length;
         let totalCount = this.props.totalCount;
         let rangeAds = totalCount > 0 ? totalCount : numberOfAds;
         let textValue = "Tìm thấy " + rangeAds + " kết quả phù hợp";

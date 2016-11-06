@@ -10,6 +10,7 @@ import log from '../../lib/logUtil';
 import DanhMuc from '../../assets/DanhMuc';
 import MHeartIcon from '../MHeartIcon';
 import CommonUtils from '../../lib/CommonUtils';
+import gui from '../../lib/gui';
 
 var imgHeight = 181;
 
@@ -147,9 +148,30 @@ class AdsRow extends React.Component {
       diaChi = diaChi + '...';
     }
 
+    let firstControl = null;
+    let lastControl = null;
+    let {showFirstControl, isFirstRow, showLastControl, isLastRow} = this.props;
+
+    if (showFirstControl && isFirstRow) {
+      firstControl = <View style={{flex: 0, height: 30, alignItems: 'center', justifyContent: 'center'}}>
+        <TouchableHighlight onPress={this.props.loadPreviousPage} underlayColor="transparent">
+        <Text style={myStyles.rowControl}>Nhấn vào đây để về trang trước</Text>
+      </TouchableHighlight>
+      </View>;
+    }
+    if (showLastControl && isLastRow) {
+      lastControl = <View style={{flex: 0, height: 30, alignItems: 'center', justifyContent: 'center'}}>
+        <TouchableHighlight onPress={this.props.loadNextPage} underlayColor="transparent">
+        <Text style={myStyles.rowControl}>Nhấn vào đây để tải trang tiếp theo</Text>
+      </TouchableHighlight>
+      </View>;
+    }
     return (
-      <View key={ads.adsID}>
-        <View style={myStyles.detail}>
+      <View key={ads.adsID} style={{flexDirection: 'column'}}>
+        {firstControl}
+        <View style={myStyles.detail}
+              onStartShouldSetResponder={(evt) => false}
+              onMoveShouldSetResponder={(evt) => false}>
           {/*<Swiper style={myStyles.wrapper} height={imgHeight}
                   showsButtons={false} autoplay={false} loop={false} bounces={true}
                   dot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]} />}
@@ -178,7 +200,7 @@ class AdsRow extends React.Component {
           </View>
 
         </View>
-
+        {lastControl}
       </View>
     );
   }
@@ -208,6 +230,9 @@ class MyImage extends React.Component {
 }
 
 const myStyles = StyleSheet.create({
+  detail: {
+    flex: 0
+  },
   dot: {
     width: 8,
     height: 8,
@@ -246,6 +271,12 @@ const myStyles = StyleSheet.create({
     marginRight: 0,
     marginTop: 2,
     color: 'white'
+  },
+  rowControl: {
+    fontSize: 13,
+    textAlign: 'center',
+    backgroundColor: 'transparent',
+    color: gui.mainColor
   },
 
   slide: {

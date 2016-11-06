@@ -165,7 +165,6 @@ function mapStateToProps(state) {
   return {
     ... state,
     listAds: state.search.result.listAds,
-    allAdsItems: state.search.result.allAdsItems,
     errorMsg: state.search.result.errorMsg,
     totalCount: state.search.result.totalCount,
     diaChinhFullName: state.search.form.fields.diaChinh.fullName,
@@ -619,67 +618,6 @@ class SearchResultMap extends Component {
     this._onMarkerPress(marker, currentAdsIndex);
   }
 
-  _calcLoadedMarkers() {
-      let {markerList} = this.props.allUniquePosAds;
-      return markerList.length;
-  }
-
-  _calcTotalMarkers() {
-      let {totalCount, allAdsItems} = this.props;
-      let totalMarkers = this._calcLoadedMarkers();
-      if (allAdsItems.length < totalCount) {
-          if (totalCount > allAdsItems.length) {
-              totalMarkers = (totalCount-allAdsItems.length) + totalMarkers;
-          }
-      }
-      return totalMarkers;
-  }
-
-  _calcTotalPages() {
-      let totalMarkers = this._calcTotalMarkers();
-      return totalMarkers / gui.MAX_VIEWABLE_ADS;
-  }
-
-  _calcBeginAdsIndex() {
-      let {markerList} = this.props.allUniquePosAds;
-      let {pageNo} = this.state;
-      let numberOfAds = markerList.length;
-      let beginMarkerIndex = (pageNo-1)*gui.MAX_VIEWABLE_ADS;
-      if (beginMarkerIndex > numberOfAds) {
-          beginMarkerIndex = numberOfAds;
-      }
-      let beginAdsIndex = 0;
-      for (let i=0; i<beginMarkerIndex; i++) {
-          let marker = markerList[i];
-          beginAdsIndex = beginAdsIndex + marker.duplicate;
-      }
-      return beginAdsIndex+1;
-  }
-
-  _calcEndAdsIndex() {
-      let {allAdsItems} = this.props;
-      let totalCount = allAdsItems.length;
-      let {markerList} = this.props.allUniquePosAds;
-      let {pageNo} = this.state;
-      let numberOfAds = markerList.length;
-      let endMarkerIndex = numberOfAds;
-      if (endMarkerIndex > pageNo*gui.MAX_VIEWABLE_ADS) {
-          endMarkerIndex = pageNo*gui.MAX_VIEWABLE_ADS;
-      }
-      let endAdsIndex = 0;
-      for (let i=0; i<endMarkerIndex; i++) {
-          let marker = markerList[i];
-          endAdsIndex = endAdsIndex + marker.duplicate;
-      }
-      if (totalCount > numberOfAds && numberOfAds < pageNo*gui.MAX_VIEWABLE_ADS) {
-          endAdsIndex = endAdsIndex + (totalCount - numberOfAds);
-      }
-      if (endAdsIndex > totalCount) {
-          endAdsIndex = totalCount;
-      }
-      return endAdsIndex;
-  }
-
   _renderNextButton() {
     let {pageNo, limit} = this.props.search.form.fields;
     let totalPages = this.props.totalCount/ limit;
@@ -800,23 +738,6 @@ class SearchResultMap extends Component {
     let {pageNo, limit} = this.props.search.form.fields;
     let totalPages = this.props.totalCount/ limit;
 
-    // let totalMarkers = this._calcLoadedMarkers();
-    // let totalPages = totalMarkers / gui.MAX_VIEWABLE_ADS;
-
-    // if (pageNo < totalPages &&
-    //     (totalMarkers >= (pageNo+1)*gui.MAX_VIEWABLE_ADS || totalCount <= dbPageNo*dbLimit)) {
-    //   pageNo = pageNo + 1;
-    //   this.setState({pageNo: pageNo, mounting: false});
-    //   this._onShowMessage();
-    // } else if (dbTotalPages && dbPageNo < dbTotalPages) {
-    //     pageNo = pageNo + 1;
-    //     this.setState({pageNo: pageNo, mounting: false});
-    //     dbPageNo = dbPageNo+1;
-    //     this.props.actions.onSearchFieldChange("pageNo", dbPageNo);
-    //     setTimeout(this._appendListData.bind(this), 100);
-    // } else {
-    //     this._onShowMessage();
-    // }
     if (pageNo < totalPages) {
         pageNo = pageNo + 1;
         this.props.actions.onSearchFieldChange("pageNo", pageNo);
@@ -826,29 +747,12 @@ class SearchResultMap extends Component {
     }
   }
 
-  _appendListData() {
-      console.log("Call SearchResultMap._appendListData");
-      this._refreshListData(null, null, this._doAppendListData.bind(this), null, null, null, null, true);
-      this.setState({openDetailAdsModal: false,
-          openLocalInfo: false, showMessage: true});
-  }
-
-  _doAppendListData() {
-      console.log("Call SearchResultMap._doAppendListData");
-      clearTimeout(this.timer);
-      this._onAppendAdsList();
-      this.timer = setTimeout(() => this.setState({showMessage: false}), 10000);
-  }
-
   _renderTotalResultView(){
     console.log("Call SearchResultMap._renderTotalResultView");
     let {loading, totalCount, listAds, search} = this.props;
     let {showMessage, mounting, openDraw} = this.state;
     let {pageNo, limit} = search.form.fields;
     let numberOfAds = listAds.length;
-    // let numberOfAds = allAdsItems.length;
-    // let beginAdsIndex = this._calcBeginAdsIndex();
-    // let endAdsIndex = this._calcEndAdsIndex();
 
     let beginAdsIndex = (pageNo-1)*limit+1;
     let endAdsIndex = (pageNo-1)*limit+numberOfAds;
@@ -914,7 +818,7 @@ class SearchResultMap extends Component {
       region :region
     });
 
-    if (this.props.allAdsItems.length > 0 && !this.hasRegionChange(region)) {
+    if (this.props.listAds.length > 0 && !this.hasRegionChange(region)) {
       return;
     }
 
@@ -1254,8 +1158,9 @@ class SearchResultMap extends Component {
 
     var { editing } = this.state;
     var polygons = editing ? [editing] : [];
+    let hasPolygon = polygons.length > 0 && polygons[0].coordinates.length > 2;
 
-    if (polygons.length > 0 && polygons[0].coordinates.length > 2) {
+    if (hasPolygon) {
         var geoBox = apiUtils.getPolygonBox(polygons[0]);
         var region = apiUtils.getRegion(geoBox);
         var viewport = apiUtils.getViewport(region);
@@ -1264,42 +1169,42 @@ class SearchResultMap extends Component {
         this.props.actions.onSearchFieldChange("polygon", polygon);
         // this.props.actions.onSearchFieldChange("diaChinh", {});
         this.props.actions.onSearchFieldChange("pageNo", 1);
-        this._refreshListData(viewport, polygon, () => {this._closeDrawIfNoResult(viewport, region)}, {}, false, {});
+        this._refreshListData(viewport, polygon, () => {this._closeDrawIfNoResult(viewport, polygons, region)}, {}, false, {});
     }
-    this._updateMapView(polygons);
+    this._updateMapView(polygons, hasPolygon);
   }
 
-  _closeDrawIfNoResult(viewport, region) {
-      if (this.props.allAdsItems.length == 0) {
+  _closeDrawIfNoResult(viewport, polygons, region) {
+      clearTimeout(this.drawSearchTimer);
+      if (this.props.listAds.length == 0) {
           setTimeout(() => this._onCloseDraw(), 50);
       } else {
           this.setState({region: region});
           this.props.actions.onSearchFieldChange("viewport", viewport);
           // this.props.actions.onSearchFieldChange("diaChinh", {});
+          this._onDrawMapDone(polygons);
       }
   }
 
-  _onAppendAdsList() {
-      console.log("Call SearchResultMap._onAppendAdsList");
-      let {allAdsItems} = this.props;
-      allAdsItems = allAdsItems.concat(this.props.listAds);
-      console.log('allAdsItems length', allAdsItems.length);
-      this.props.actions.onChangeAdsList(allAdsItems);
+  _updateMapView(polygons, waitForSearchDone) {
+      console.log("Call SearchResultMap._updateMapView");
+      this._onSetupMessageTimeout();
+      if (waitForSearchDone) {
+          this.drawSearchTimer = setTimeout(() => {this._onDrawMapDone(polygons)}, 2000);
+      } else {
+          this._onDrawMapDone(polygons);
+      }
   }
 
-  _updateMapView(polygons, region) {
-      console.log("Call SearchResultMap._updateMapView");
-      this.props.actions.onResetAdsList();
-      this._onSetupMessageTimeout();
-      setTimeout(() => {this.setState({
+  _onDrawMapDone(polygons) {
+      this.setState({
           openDetailAdsModal: false,
           openLocalInfo: false,
           editing: null,
-          openDraw: false,
-          region: region || this.state.region
+          openDraw: false
       });
       this.props.actions.onPolygonsChange(polygons);
-      this.props.actions.onDrawModeChange(false)}, 1500);
+      this.props.actions.onDrawModeChange(false);
   }
 
   _refreshPolygons(gestureState) {
