@@ -9,13 +9,45 @@ import {Actions} from 'react-native-router-flux';
 
 import gui from '../../lib/gui';
 
-export default class ChatHeader extends Component {
-  coming() {
-    Alert.alert("Coming soon...");
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import {Map} from 'immutable';
+
+import * as globalActions from '../../reducers/global/globalActions';
+import * as chatActions from '../../reducers/chat/chatActions';
+
+const actions = [
+    globalActions,
+    chatActions,
+];
+
+function mapStateToProps(state) {
+    return {
+        ...state
+    };
+}
+
+function mapDispatchToProps(dispatch) {
+    const creators = Map()
+        .merge(...actions)
+        .filter(value => typeof value === 'function')
+        .toObject();
+
+    return {
+        actions: bindActionCreators(creators, dispatch),
+        dispatch
+    };
+}
+
+
+class ChatHeader extends Component {
+  constructor(props) {
+     super(props);
   }
 
-  onArchive() {
-    this.coming();
+  coming() {
+    Alert.alert("Coming soon...");
   }
 
   render() {
@@ -29,7 +61,10 @@ export default class ChatHeader extends Component {
 
       <View style={styles.customPageTitle}>
         <Text style={styles.customPageTitleText}>
-          {this.props.partner.fullName}
+          {this.props.chat.partner.fullName}
+        </Text>
+        <Text style={styles.customPageTitleNote}>
+           Trực tuyến 30 phút trước
         </Text>
       </View>
 
@@ -41,10 +76,9 @@ export default class ChatHeader extends Component {
     Actions.pop();
   }
 
-  _onSearch(){
-    Actions.Search({needBack:false});
-  }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatHeader);
 
 var styles = StyleSheet.create({
   container: {
@@ -75,11 +109,19 @@ var styles = StyleSheet.create({
     fontFamily: gui.fontFamily,
     textAlign: 'center'
   },
+  customPageTitleNote: {
+     color: 'white',
+     fontSize: 12,
+     fontFamily: gui.fontFamily,
+     textAlign: 'center'
+  },
+
   customPageTitle: {
     left:70,
     right:70,
-    marginTop: 28,
-    position: 'absolute'
+    marginTop: 18,
+    position: 'absolute',
+    flexDirection: 'column'
   },
   backButton: {
     marginTop: 28,

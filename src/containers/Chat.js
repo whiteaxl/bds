@@ -17,6 +17,7 @@ import * as chatActions from '../reducers/chat/chatActions';
 import HomeHeader from '../components/home/HomeHeader';
 
 import ChatContent from "../components/chat/ChatContent";
+import ChatHeader from "../components/chat/ChatHeader";
 
 import chatApi  from "../lib/ChatApi";
 
@@ -47,13 +48,13 @@ class Chat extends Component {
   constructor(props) {
     super(props);
     //props.partner, props.ads
-    chatApi.onNewMsg();
+    //chatApi.onNewMsg();
   }
 
   render() {
     return (
       <View style={styles.container}>
-        <HomeHeader/>
+        <ChatHeader/>
         <ChatContent/>
       </View>
     );

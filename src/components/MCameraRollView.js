@@ -31,7 +31,13 @@ import ImageResizer from 'react-native-image-resizer';
 
 import {Actions} from 'react-native-router-flux';
 
+import moment from 'moment';
+
+import danhMuc from '../assets/DanhMuc';
+
 import cfg from "../cfg";
+
+var rootUrl = `http://${cfg.server}:5000`;
 
 const actions = [
     globalActions,
@@ -122,8 +128,8 @@ class MCameraRollView extends Component {
                 this._onSelectRegisterAvatar(photo.uri);
                 break;
             case 'chat':
-                //TODO: need to implement for chatting
                 console.log("take photo for chatting");
+                this._onSendImage(photo.uri);
                 break;
             case 'profile':
                 console.log("take photo for updating profile");
@@ -157,6 +163,64 @@ class MCameraRollView extends Component {
         }).catch((err) => {
             log.error(err);
         });
+    }
+
+    _onSendImage(uri) {
+        console.log("================== 1")
+        console.log(uri);
+        const userID = this.props.global.currentUser.userID;
+        ImageResizer.createResizedImage(uri, cfg.maxWidth, cfg.maxHeight, 'JPEG', 85, 0, null).then((resizedImageUri) => {
+            var ms = moment().toDate().getTime();
+            var filename = 'Chat_' + userID + '_' + ms + resizedImageUri.substring(resizedImageUri.lastIndexOf('.'));
+            console.log("================== 2")
+            this.props.actions.onUploadImage(filename, resizedImageUri, this._uploadCallBack.bind(this));
+            console.log("================== 3")
+        }).catch((err) => {
+            log.error(err);
+        });
+    }
+
+    _uploadCallBack(err, result) {
+        var {data} = result;
+        if (err || data == '') {
+            return;
+        }
+        var {success, file} = JSON.parse(data);
+        if (success) {
+            var {url} = file;
+            this._onSaveMsg(rootUrl + url);
+            Actions.pop();
+            Actions.pop();
+        }
+    }
+
+    _onSaveMsg(url) {
+        log.info("Enter onSaveMsg...");
+
+        const userID = this.props.global.currentUser.userID;
+        const chatID = "Chat_" + userID + "_" + new Date().getTime();
+
+        let myMsg = {
+            _id : chatID,
+            chatID : chatID,
+            id : chatID,
+            fromUserID : userID,
+            fromFullName : this.props.global.currentUser.fullName,
+            toUserID : this.props.chat.partner.userID,
+            toFullName : this.props.chat.partner.fullName,
+            relatedToAds : this.props.chat.ads,
+            avatar: this.props.global.currentUser.avatar,
+            content: url,
+            msgType : danhMuc.CHAT_MESSAGE_TYPE.IMAGE,
+            read: false,
+            date : new Date(),
+            type: 'Chat',
+            timeStamp : new Date().getTime()
+        };
+
+        log.info("start send myMsg=", myMsg);
+
+        this.props.actions.sendChatMsg(myMsg);
     }
 
     render() {

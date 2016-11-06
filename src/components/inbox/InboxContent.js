@@ -29,6 +29,7 @@ import { SwipeListView } from 'react-native-swipe-list-view';
 
 
 let defaultAvatar = require('../../assets/image/register_avatar_icon.png');
+let adminAvatar = require('../../assets/image/icon_appstore.jpg');
 
 const actions = [
   globalActions,
@@ -76,12 +77,37 @@ class InboxContent extends React.Component {
     Actions.Chat();
   }
 
+  onChatWithAdmin() {
+    this.coming();
+  }
+
+  renderChatWithAdmin() {
+    let avatar = adminAvatar;
+
+    return (
+        <TouchableOpacity onPress={() => this.onChatWithAdmin()} style={styles.rowFront}>
+          <View style={[styles.rowContainer, {borderTopWidth:1}]}>
+            <Image
+                resizeMode = {"cover"}
+                source={avatar}
+                style={styles.thumbnail}/>
+            <View style={styles.rightContainer}>
+              <View style={styles.nameAndDateTime}>
+                <Text style={styles.name}>Landber</Text>
+              </View>
+
+
+                <View style={styles.titleAndLastMsg}>
+                  <Text numberOfLines={1} style={styles.title}>Chat trực tiếp với quản lý</Text>
+                </View>
+
+            </View>
+          </View>
+        </TouchableOpacity>
+    );
+  }
+
   renderRow(row, sectionID, rowID) {
-
-    console.log("================ render row");
-    console.log(row);
-    console.log("================ render row end");
-
     let avatar = row.partner.avatar ? {uri: row.partner.avatar} : defaultAvatar;
     let relatedToAds = row.relatedToAds;
     const {giaFmt, loaiNhaDatFmt, diaChinhFullName} = relatedToAds;
@@ -89,7 +115,8 @@ class InboxContent extends React.Component {
 
     let dt = moment(row.date).format("DD/MM   HH:mm");
     dt = dt.replace("/", " tháng ");
-    let w = rowID == 0 ? 0 : 1;
+    //let w = rowID == 0 ? 0 : 1;
+    let w = 1
 
     return (
       <TouchableOpacity onPress={() => this.onRowClick(row)} style={styles.rowFront}>
@@ -122,6 +149,8 @@ class InboxContent extends React.Component {
 
   render() {
     return (
+     <View>
+     {/*this.renderChatWithAdmin()*/}
       <ScrollView style={styles.wrapper}>
         <SwipeListView
           enableEmptySections={true}
@@ -147,6 +176,7 @@ class InboxContent extends React.Component {
 
         <Text style={styles.bottomText}>Tất cả đã được hiển thị</Text>
       </ScrollView>
+       </View>
     );
   }
 }

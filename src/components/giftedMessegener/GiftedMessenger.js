@@ -10,6 +10,7 @@ import {
   Animated,
   Platform,
   PixelRatio,
+  Alert
 } from 'react-native';
 
 import Message from './Message';
@@ -82,7 +83,7 @@ class GiftedMessenger extends Component {
       }
     }
 
-    this.listViewMaxHeight = this.props.maxHeight - textInputHeight;
+    this.listViewMaxHeight = this.props.maxHeight - 2*textInputHeight;
 
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => {
@@ -163,7 +164,8 @@ class GiftedMessenger extends Component {
         flexDirection: 'row',
         justifyContent: 'center',
         marginTop: 10,
-        marginLeft: 10
+        marginLeft: 10,
+        marginRight: 20
       }
     };
 
@@ -237,6 +239,10 @@ class GiftedMessenger extends Component {
 
   takePicture() {
     Actions.PostAds({owner: 'chat'});
+  }
+
+  coming(){
+    Alert.alert("coming soon ...");
   }
 
   onSend() {
@@ -497,24 +503,25 @@ class GiftedMessenger extends Component {
   renderDate(rowData = {}) {
     let diffMessage = null;
     diffMessage = this.getPreviousMessage(rowData);
+    let currentDate = new Date(rowData.date);
 
     if (this.props.renderCustomDate) {
       return this.props.renderCustomDate(rowData, diffMessage)
     }
 
-    if (rowData.date instanceof Date) {
+    if (currentDate instanceof Date) {
       if (diffMessage === null) {
         return (
           <Text style={[this.styles.date]}>
-            {moment(rowData.date).calendar()}
+            {moment(currentDate).calendar()}
           </Text>
         );
-      } else if (diffMessage.date instanceof Date) {
-        const diff = moment(rowData.date).diff(moment(diffMessage.date), 'minutes');
+      } else if (new Date(diffMessage.date) instanceof Date) {
+        const diff = moment(currentDate).diff(moment(new Date(diffMessage.date)), 'minutes');
         if (diff > 5) {
           return (
             <Text style={[this.styles.date]}>
-              {moment(rowData.date).calendar()}
+              {moment(currentDate).calendar()}
             </Text>
           );
         }
@@ -630,19 +637,30 @@ class GiftedMessenger extends Component {
 
             blurOnSubmit={this.props.blurOnSubmit}
           />
-          <RelandIcon name="camera" color={gui.mainColor}
-                      mainProps={this.styles.captureIcon}
-                      size={22} textProps={{paddingLeft: 0}}
-                      onPress={this.takePicture} />
           <Button
-            style={this.styles.sendButton}
-            styleDisabled={this.styles.sendButtonDisabled}
-            onPress={this.onSend}
-            disabled={this.state.disabled}
+              style={this.styles.sendButton}
+              styleDisabled={this.styles.sendButtonDisabled}
+              onPress={this.onSend}
+              disabled={this.state.disabled}
           >
             {this.props.sendButtonText}
           </Button>
-        </View>
+          </View>
+          <View style={{flexDirection: 'row', }}>
+            <RelandIcon name="list" color={gui.mainColor}
+                      mainProps={this.styles.captureIcon}
+                      size={22} textProps={{paddingLeft: 0}}
+                      onPress={this.coming} />
+            <RelandIcon name="camera-o" color={gui.mainColor}
+                        mainProps={this.styles.captureIcon}
+                        size={22} textProps={{paddingLeft: 0}}
+                        onPress={this.takePicture} />
+            <RelandIcon name="location-o" color={gui.mainColor}
+                        mainProps={this.styles.captureIcon}
+                        size={22} textProps={{paddingLeft: 0}}
+                        onPress={this.coming} />
+
+          </View>
 
         </View>
       );

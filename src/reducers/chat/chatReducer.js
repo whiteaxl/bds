@@ -87,18 +87,20 @@ export default function chatReducer(state = initialState, action) {
     }
 
     case ON_NEW_MESSAGE:{
-      let msg = action.payload;
-      console.log("================ chatReducer ON_NEW_MESSAGE");
-      console.log(msg);
+      let msg = action.payload.msg;
       let partnerID = msg.fromUserID;
       let giftMsg = convertOne(msg, partnerID);
 
       var {messages} = state;
 
+      console.log(messages);
+
       let found = messages.find(e => e._id === giftMsg._id);
       if (!found) {
         messages = [...messages,giftMsg];
       }
+
+      console.log(messages);
 
       let nextState = state.set('messages',messages);
       return nextState;
