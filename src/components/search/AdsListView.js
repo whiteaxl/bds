@@ -186,7 +186,7 @@ class AdsListView extends React.Component {
   }
 
   _onRefresh() {
-    this._handleSearchAction();
+    this._handleSearchAction(1);
   }
 
   loadPreviousPage() {
