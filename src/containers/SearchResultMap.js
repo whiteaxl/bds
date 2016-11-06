@@ -1190,7 +1190,7 @@ class SearchResultMap extends Component {
       console.log("Call SearchResultMap._updateMapView");
       this._onSetupMessageTimeout();
       if (waitForSearchDone) {
-          this.drawSearchTimer = setTimeout(() => {this._onDrawMapDone(polygons)}, 10000);
+          this.drawSearchTimer = setTimeout(() => {this._onDrawMapDone(polygons)}, 2000);
       } else {
           this._onDrawMapDone(polygons);
       }
