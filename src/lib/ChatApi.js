@@ -8,8 +8,9 @@ var getInboxMsgUrl = cfg.rootUrl + "/getInboxMsg";
 var getAllChatMsgUrl = cfg.rootUrl + "/getAllChatMsg";
 
 import log from './logUtil';
+import gui from './gui';
 
-const socket = io(`http://${cfg.server}:5000`, {
+const socket = io(`https://${cfg.server}:4432`, {
     transports: ['websocket'] // you need to explicitly tell it to use websockets
 });
 
@@ -32,15 +33,15 @@ var ChatApi = {
               }
         );
 
+        socket.on("new message", function(data){
+            onNewMessage(data);
+        });
+
         socket.on("unread-messages", function(data){
             //TODO: implement on Unread Message
             for (var i = 0, len = data.length; i < len; i++) {
                 var msg = data[i].default;
-                console.log("====================== print msg container");
-                console.log(data[i]);
-                console.log("====================== print msg");
                 console.log(msg);
-                console.log("====================== print msg end");
             }
             socket.emit("read-messages",data, function(res){
                 console.log("mark messages as read " + res);
@@ -52,29 +53,17 @@ var ChatApi = {
         socket.emit('user leave'
             ,   {userID:  userID}
             ,   function(data){
-                    console.log("disconect socket user " + userID);
-                    console.log("========== disconect socket return " + JSON.stringify(data));
+                    console.log("disconect socket return " + JSON.stringify(data));
                 }
         );
     },
 
     sendChatMsg: function(msg){
         socket.emit("send-message", msg, function(data){
-            console.log("======================== send msg succesfully");
             console.log(data);
-            console.log("======================== send msg succesfully end");
             return data;
         });
 
-    },
-
-    onNewMsg(){
-        socket.on("new message", function(data){
-            //TODO: implement on New Message
-            console.log("============ get New message");
-            onNewMessage(data);
-            console.log(data);
-        });
     },
 
     getInboxMsg(userID) {
