@@ -162,6 +162,7 @@ function mapStateToProps(state) {
   console.log("SearchResultMap.mapStateToProps");
   let currentUser = state.global.currentUser;
   let allUniquePosAds = getAllUniquePosAds(state.search.result.listAds);
+  let maxAdsInMapView = state.global.setting.maxAdsInMapView;
   return {
     ... state,
     listAds: state.search.result.listAds,
@@ -172,7 +173,8 @@ function mapStateToProps(state) {
     adsLikes: currentUser && currentUser.adsLikes,
     userID: currentUser && currentUser.userID,
     loading: state.search.loadingFromServer,
-    allUniquePosAds: allUniquePosAds
+    allUniquePosAds: allUniquePosAds,
+    maxAdsInMapView: maxAdsInMapView
   };
 }
 
@@ -623,7 +625,6 @@ class SearchResultMap extends Component {
     let totalPages = this.props.totalCount/ limit;
     let hasNextPage = pageNo < totalPages;
     return (
-        this.props.global.setting.autoLoadAds ? null :
         <View style={styles.nextButton}>
           {!hasNextPage ?
               <View style={styles.pagingView}>
@@ -648,7 +649,6 @@ class SearchResultMap extends Component {
     let {pageNo} = this.props.search.form.fields;
     let hasPreviousPage = pageNo > 1;
     return (
-        this.props.global.setting.autoLoadAds ? null :
         <View style={styles.previousButton}>
           {!hasPreviousPage ?
               <View style={styles.pagingView}>
@@ -726,8 +726,7 @@ class SearchResultMap extends Component {
     let {pageNo} = this.props.search.form.fields;
     if (pageNo > 1) {
       pageNo = pageNo - 1;
-      this.props.actions.onSearchFieldChange("pageNo", pageNo);
-      this.setState({mounting: false});
+      this._onUpdateChangePageStatus(pageNo);
       this._refreshListData(null, null, this._onSetupMessageTimeout.bind(this), null, null, null, pageNo, true);
       this._onShowMessage();
     }
@@ -740,11 +739,20 @@ class SearchResultMap extends Component {
 
     if (pageNo < totalPages) {
         pageNo = pageNo + 1;
-        this.props.actions.onSearchFieldChange("pageNo", pageNo);
-        this.setState({mounting: false});
+        this._onUpdateChangePageStatus(pageNo);
         this._refreshListData(null, null, this._onSetupMessageTimeout.bind(this), null, null, null, pageNo, true);
         this._onShowMessage();
     }
+  }
+
+  _onUpdateChangePageStatus(pageNo) {
+      this.props.actions.onSearchFieldChange("pageNo", pageNo);
+      if (!this.props.global.setting.autoLoadAds) {
+          let region = this.getInitialRegion();
+          this.setState({mounting: false, region: region});
+      } else {
+          this.setState({mounting: false});
+      }
   }
 
   _renderTotalResultView(){
@@ -756,7 +764,7 @@ class SearchResultMap extends Component {
 
     let beginAdsIndex = (pageNo-1)*limit+1;
     let endAdsIndex = (pageNo-1)*limit+numberOfAds;
-    let rangeAds = totalCount > gui.MAX_VIEWABLE_ADS ? (endAdsIndex > 0 ? beginAdsIndex + "-" + endAdsIndex : "0") + " / " + totalCount : numberOfAds;
+    let rangeAds = totalCount > this.props.maxAdsInMapView ? (endAdsIndex > 0 ? beginAdsIndex + "-" + endAdsIndex : "0") + " / " + totalCount : numberOfAds;
     let textValue = "Đang hiển thị từ " + rangeAds + " kết quả phù hợp";
     let textNotFound2 = "";
     let fontWeight = 'normal';
@@ -764,7 +772,7 @@ class SearchResultMap extends Component {
       textValue = gui.INF_KhongCoKetQua;
       textNotFound2 = gui.INF_KhongCoKetQua2;
       fontWeight = '600';
-    } else if (totalCount == 0 || (totalCount == numberOfAds && totalCount <= gui.MAX_VIEWABLE_ADS)) {
+    } else if (totalCount == 0 || (totalCount == numberOfAds && totalCount <= this.props.maxAdsInMapView)) {
       textValue = "Đang hiển thị " + rangeAds + " kết quả phù hợp";
     }
 
@@ -800,7 +808,7 @@ class SearchResultMap extends Component {
       // let {pageNo} = this.state;
       // console.log('markerData length', allMarkerList.length);
       // for (var i=0; i<allMarkerList.length; i++) {
-      //   if (i < (pageNo-1)*gui.MAX_VIEWABLE_ADS || i >= pageNo*gui.MAX_VIEWABLE_ADS) {
+      //   if (i < (pageNo-1)*this.props.maxAdsInMapView || i >= pageNo*this.props.maxAdsInMapView) {
       //     continue;
       //   }
       //   let marker = allMarkerList[i];

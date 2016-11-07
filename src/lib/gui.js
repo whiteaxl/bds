@@ -48,10 +48,6 @@ gui.defaultLocation = {
 };
 
 gui.QUOTA_ITEM = 300;
-gui.MAX_ITEM = 25;
-gui.MAX_LIST_ITEM = 25;
-
-gui.MAX_VIEWABLE_ADS = 25;
 
 gui.LATITUDE_DELTA = 0.00579477856972;
 gui.LONGITUDE_DELTA = 0.00409277265874;

@@ -153,16 +153,22 @@ class AdsRow extends React.Component {
     let {showFirstControl, isFirstRow, showLastControl, isLastRow} = this.props;
 
     if (showFirstControl && isFirstRow) {
-      firstControl = <View style={{flex: 0, height: 30, alignItems: 'center', justifyContent: 'center'}}>
+      firstControl = <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>
         <TouchableHighlight onPress={this.props.loadPreviousPage} underlayColor="transparent">
-        <Text style={myStyles.rowControl}>Nhấn vào đây để về trang trước</Text>
+        <View style={{flexDirection: 'column'}}>
+          <Text style={myStyles.rowControl}>Nhấn vào đây để về trang trước</Text>
+          <Text style={myStyles.pagingTitle}>{this.props.getPagingTitle()}</Text>
+        </View>
       </TouchableHighlight>
       </View>;
     }
     if (showLastControl && isLastRow) {
-      lastControl = <View style={{flex: 0, height: 30, alignItems: 'center', justifyContent: 'center'}}>
+      lastControl = <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>
         <TouchableHighlight onPress={this.props.loadNextPage} underlayColor="transparent">
-        <Text style={myStyles.rowControl}>Nhấn vào đây để tải trang tiếp theo</Text>
+        <View style={{flexDirection: 'column'}}>
+          <Text style={myStyles.rowControl}>Nhấn vào đây để tải trang tiếp theo</Text>
+          <Text style={myStyles.pagingTitle}>{this.props.getPagingTitle()}</Text>
+        </View>
       </TouchableHighlight>
       </View>;
     }
@@ -277,6 +283,12 @@ const myStyles = StyleSheet.create({
     textAlign: 'center',
     backgroundColor: 'transparent',
     color: gui.mainColor
+  },
+  pagingTitle: {
+    fontSize: 13,
+    textAlign: 'center',
+    backgroundColor: 'transparent',
+    color: 'gray'
   },
 
   slide: {

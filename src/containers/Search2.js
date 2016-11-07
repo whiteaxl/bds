@@ -458,10 +458,7 @@ class Search2 extends Component {
     this.props.actions.onSearchFieldChange("pageNo", 1);
     this.props.actions.onResetAdsList();
 
-    let maxItem = gui.MAX_ITEM;
-    if (this.props.owner == 'home' || this.props.owner == 'list') {
-        maxItem = gui.MAX_LIST_ITEM;
-    }
+    let maxItem = this.props.global.setting.maxAdsInMapView;
     this._handleSearchAction(loaiTin, ban, thue, '', 1, maxItem, newGia, newDienTich, soPhongNguSelectedIdx,
         radiusInKmSelectedIdx, huongNha, ngayDaDang);
     if (this.props.needBack) {

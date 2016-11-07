@@ -107,7 +107,7 @@ class AdsListView extends React.Component {
   _handleSearchAction(newPageNo){
     var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
-        polygon, pageNo, isIncludeCountInResponse} = this.props.fields;
+        polygon, pageNo, limit, isIncludeCountInResponse} = this.props.fields;
     var fields = {
       loaiTin: loaiTin,
       ban: ban,
@@ -124,7 +124,7 @@ class AdsListView extends React.Component {
       ngayDaDang: ngayDaDang,
       polygon: polygon,
       pageNo: newPageNo || pageNo,
-      limit: gui.MAX_LIST_ITEM,
+      limit: limit,
       isIncludeCountInResponse: isIncludeCountInResponse};
 
     this.props.actions.search(
@@ -181,7 +181,8 @@ class AdsListView extends React.Component {
               isLastRow={isLastRow}
               showLastControl={showLastControl}
               loadPreviousPage={() => this.loadPreviousPage()}
-              loadNextPage={() => this.loadNextPage()}/>
+              loadNextPage={() => this.loadNextPage()}
+              getPagingTitle={this.getPagingTitle.bind(this)}/>
     );
   }
 
@@ -223,6 +224,17 @@ class AdsListView extends React.Component {
       // myProps.actions.onShowMsgChange(true);
       this._handleSearchAction(pageNo);
     }
+  }
+
+  getPagingTitle() {
+    let myProps = this.props;
+    let numberOfAds = myProps.listAds.length;
+    let totalCount = myProps.totalCount;
+    let {pageNo, limit} = myProps.fields;
+    let beginAdsIndex = (pageNo-1)*limit+1;
+    let endAdsIndex = (pageNo-1)*limit+numberOfAds;
+    let title = 'Hiển thị từ ' + beginAdsIndex + "-" + endAdsIndex + ' / ' + totalCount + ' kết quả';
+    return title;
   }
 }
 const styles = StyleSheet.create({

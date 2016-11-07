@@ -79,8 +79,8 @@ class Home extends Component {
         this.props.actions.loadHomeData();
       } else {
         var oldSearch = recentSearchList[1];
-        if (newSearch.query.diaChinh.fullName != oldSearchquery.diaChinh.fullName
-            || newSearch.query.loaiTin != oldSearchquery.loaiTin
+        if (newSearch.query.diaChinh.fullName != oldSearch.query.diaChinh.fullName
+            || newSearch.query.loaiTin != oldSearch.query.loaiTin
             || JSON.stringify(newSearch.query.dienTichBETWEEN)!=JSON.stringify(oldSearch.query.dienTichBETWEEN)
             || JSON.stringify(newSearch.query.giaBETWEEN)!=JSON.stringify(oldSearch.query.giaBETWEEN)
             || JSON.stringify(newSearch.query.huongNha)!=JSON.stringify(oldSearch.query.huongNha))
@@ -106,7 +106,8 @@ class Home extends Component {
                              adsLikes={adsLikes} loggedIn={this.props.global.loggedIn}
                              likeAds={this.props.actions.likeAds}
                              unlikeAds={this.props.actions.unlikeAds} userID={userID}
-                             loadHomeData={this.props.actions.loadHomeData}/>
+                             loadHomeData={this.props.actions.loadHomeData}
+                             maxAdsInMapView={this.props.global.setting.maxAdsInMapView}/>
     });
   }
 

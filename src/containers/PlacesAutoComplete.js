@@ -113,10 +113,7 @@ class PlacesAutoComplete extends React.Component {
     } else {
       validViewport = viewport;
     }
-    let newLimit = gui.MAX_ITEM;
-    if (isOwnByList || isOwnByHome) {
-      newLimit = gui.MAX_LIST_ITEM;
-    }
+    let newLimit = this.props.global.setting.maxAdsInMapView;
     var fields = {
       loaiTin: loaiTin,
       ban: ban,
