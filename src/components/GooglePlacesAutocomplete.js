@@ -82,7 +82,7 @@ const GooglePlacesAutocomplete = React.createClass({
   buildRowsFromResults(results) {
     var res = null;
 
-    if ((!this.state || this.state.text.length < this.props.minLength) &&
+    if ((!this.state || !this.state.text || this.state.text.length < this.props.minLength) &&
         (results.length === 0 || this.props.predefinedPlacesAlwaysVisible === true)) {
       res = [...this.props.predefinedPlaces];
       if (this.props.currentLocation === true) {
@@ -437,7 +437,7 @@ const GooglePlacesAutocomplete = React.createClass({
 
     rowData.description = rowData.description || rowData.name;
     let rowHeight = this._getRowHight(rowData);
-    var separatorStypeExt = isFirstRow ? {marginLeft: 0} : (this.state.text.length < this.props.minLength ? {marginLeft: 47} : {marginLeft: 25});
+    var separatorStypeExt = isFirstRow ? {marginLeft: 0} : (!this.state.text || this.state.text.length < this.props.minLength ? {marginLeft: 47} : {marginLeft: 25});
 
     return (
       <TouchableHighlight
