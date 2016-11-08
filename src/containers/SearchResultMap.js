@@ -1430,7 +1430,7 @@ var styles = StyleSheet.create({
   },
   pagingView: {
     paddingTop: 0,
-    width: 28,
+    width: 35,
     height: 32,
     backgroundColor: 'transparent'
   },
