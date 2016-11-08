@@ -676,10 +676,10 @@ class SearchResultMap extends Component {
             <View style={styles.refreshButton}>
               <TouchableOpacity onPress={this._doRefreshListData.bind(this)} >
                 <View style={styles.pagingView}>
-                  <RelandIcon name="refresh" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
+                  <RelandIcon name="refresh" color={'black'} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
                               size={20} textProps={{paddingLeft: 0}}
                               noAction={true}></RelandIcon>
-                  <Text style={[styles.drawIconText, {fontSize: 9, color: gui.mainColor}]}>Refresh</Text>
+                  <Text style={[styles.drawIconText, {fontSize: 9, color: 'black'}]}>Refresh</Text>
                 </View>
               </TouchableOpacity>
             </View>
