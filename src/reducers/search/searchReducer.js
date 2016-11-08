@@ -37,7 +37,8 @@ const {
   CHANGE_SEARCH_CALLED_FROM,
   CHANGE_HOME_REFRESHING,
   SAVED_SEARCH_SUCCESS,
-  LOAD_LAST_SEARCH_SUCCESS
+  LOAD_LAST_SEARCH_SUCCESS,
+  LOGIN_SUCCESS
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
@@ -217,10 +218,6 @@ export default function searchReducer(state = initialState, action) {
     }
 
     case LOAD_LAST_SEARCH_SUCCESS: {
-      console.log("====================== load last search");
-      console.log(action.payload);
-      console.log("====================== load last search end");
-
       let lastSearchList = action.payload;
 
       let lastSearch = lastSearchList.map( (e) => {
@@ -309,6 +306,43 @@ export default function searchReducer(state = initialState, action) {
       }
 
       // return next;
+    }
+
+    case LOGIN_SUCCESS:
+    {
+      let recentSearch = action.payload.lastSearch;
+
+      let next = state;
+
+      log.info("Load Initial state, credential=");
+      console.log(recentSearch);
+
+      if (recentSearch && recentSearch.length>0){
+        let lastSearch = recentSearch[recentSearch.length-1];
+        log.enter("searchReducer.LOGIN_SUCCESS, load last search", lastSearch);
+
+        let cred = buildSearchCredentialFromSavedSearch(lastSearch.query);
+
+        log.info("Load Initial state, credential=", cred);
+
+        next = state
+            .setIn(['form', 'fields', "loaiTin"], cred.loaiTin)
+            .setIn(['form', 'fields', "ban"], cred.ban)
+            .setIn(['form', 'fields', "thue"], cred.thue)
+            .setIn(['form', 'fields', "soPhongNguSelectedIdx"], cred.soPhongNguSelectedIdx)
+            .setIn(['form', 'fields', "soNhaTamSelectedIdx"], cred.soNhaTamSelectedIdx)
+            .setIn(['form', 'fields', "dienTich"], cred.dienTich)
+            .setIn(['form', 'fields', "orderBy"], cred.orderBy)
+            .setIn(['form', 'fields', "viewport"], cred.viewport)
+            .setIn(['form', 'fields', "diaChinh"], cred.diaChinh)
+            .setIn(['form', 'fields', "radiusInKmSelectedIdx"], cred.radiusInKmSelectedIdx)
+            .setIn(['form', 'fields', "center"], cred.center)
+            .setIn(['form', 'fields', "huongNha"], cred.huongNha)
+            .setIn(['form', 'fields', "ngayDaDang"], cred.ngayDaDang)
+            .setIn(['form', 'fields', "isIncludeCountInResponse"], cred.isIncludeCountInResponse)
+            ;
+      }
+      return next;
     }
 
     case CHANGE_LOADING_HOME_DATA :
