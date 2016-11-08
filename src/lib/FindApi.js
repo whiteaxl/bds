@@ -18,7 +18,7 @@ var homeData4AppUrl = rootUrl + "/v2/homeData4App";
 
 
 
-var maxRows = 250;
+var maxRows = 25;
 
 var Api = {
   _requests : [],

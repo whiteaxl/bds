@@ -47,6 +47,7 @@ const actions = [
 
 function mapStateToProps(state) {
     let currentUser = state.global.currentUser;
+    let maxAdsInMapView = state.global.setting.maxAdsInMapView;
 
     return {
         listAds: state.search.result.listAds,
@@ -59,7 +60,8 @@ function mapStateToProps(state) {
         fields : state.search.form.fields,
         totalCount: state.search.result.totalCount,
         polygons: state.search.map.polygons,
-        listScrollPos: state.search.listScrollPos
+        listScrollPos: state.search.listScrollPos,
+        limit: maxAdsInMapView
     };
 }
 

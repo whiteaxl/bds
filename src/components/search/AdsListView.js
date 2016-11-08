@@ -2,7 +2,7 @@
 
 import AdsRow from './AdsRow';
 import React from 'react';
-import { StyleSheet, ListView, View, Text, Dimensions, RefreshControl } from 'react-native';
+import { StyleSheet, ListView, View, Text, Dimensions, RefreshControl, TouchableOpacity } from 'react-native';
 import gui from '../../lib/gui';
 var myDs = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 import log from '../../lib/logUtil';
@@ -48,6 +48,11 @@ class AdsListView extends React.Component {
           fontSize:16, fontWeight: '600', color: '#6E6F71', paddingLeft: 15, paddingRight: 15}]}> {gui.INF_KhongCoKetQua} </Text>
           <Text style = {[gui.styles.defaultText,{textAlign:'center',
           fontSize:16, color: '#6B6F6E', paddingLeft: 15, paddingRight: 15}]}> {gui.INF_KhongCoKetQua2} </Text>
+          <TouchableOpacity style={{backgroundColor:'transparent'}} onPress={this._onAllRegion.bind(this)} >
+            <View style={styles.allRegion}>
+              <Text style={styles.allRegionButton}>Xem tất cả các khu vực</Text>
+            </View>
+          </TouchableOpacity>
         </View>
       )
     }
@@ -80,6 +85,10 @@ class AdsListView extends React.Component {
     )
   }
 
+  _onAllRegion() {
+
+  }
+
   _onEndReached() {
     let myProps = this.props;
     console.log('onEndReached', myProps);
@@ -94,7 +103,7 @@ class AdsListView extends React.Component {
       return;
     }
 
-    let totalPages = myProps.totalCount/ myProps.fields.limit;
+    let totalPages = myProps.totalCount/ myProps.limit;
 
     if (totalPages && pageNo < totalPages) {
       pageNo = pageNo+1;
@@ -107,7 +116,7 @@ class AdsListView extends React.Component {
   _handleSearchAction(newPageNo){
     var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
-        polygon, pageNo, limit, isIncludeCountInResponse} = this.props.fields;
+        polygon, pageNo, isIncludeCountInResponse} = this.props.fields;
     var fields = {
       loaiTin: loaiTin,
       ban: ban,
@@ -124,7 +133,7 @@ class AdsListView extends React.Component {
       ngayDaDang: ngayDaDang,
       polygon: polygon,
       pageNo: newPageNo || pageNo,
-      limit: limit,
+      limit: this.props.limit,
       isIncludeCountInResponse: isIncludeCountInResponse};
 
     this.props.actions.search(
@@ -164,7 +173,7 @@ class AdsListView extends React.Component {
   renderRow(rowData = {}, sectionID, rowID, isFirstRow, isLastRow) {
     let myProps = this.props;
     let pageNo = myProps.fields.pageNo;
-    let totalPages = myProps.totalCount/ myProps.fields.limit;
+    let totalPages = myProps.totalCount/ myProps.limit;
 
     let showFirstControl = pageNo > 1;
     let showLastControl = !myProps.loading && totalPages && pageNo < totalPages;
@@ -216,7 +225,7 @@ class AdsListView extends React.Component {
     }
 
     let pageNo = myProps.fields.pageNo;
-    let totalPages = myProps.totalCount/ myProps.fields.limit;
+    let totalPages = myProps.totalCount/ myProps.limit;
 
     if (totalPages && pageNo < totalPages) {
       pageNo = pageNo+1;
@@ -230,10 +239,14 @@ class AdsListView extends React.Component {
     let myProps = this.props;
     let numberOfAds = myProps.listAds.length;
     let totalCount = myProps.totalCount;
-    let {pageNo, limit} = myProps.fields;
+    let {pageNo} = myProps.fields;
+    let limit = myProps.limit;
     let beginAdsIndex = (pageNo-1)*limit+1;
     let endAdsIndex = (pageNo-1)*limit+numberOfAds;
-    let title = 'Hiển thị từ ' + beginAdsIndex + "-" + endAdsIndex + ' / ' + totalCount + ' kết quả';
+    if (totalCount < endAdsIndex) {
+      totalCount = endAdsIndex;
+    }
+    let title = 'Đang hiển thị từ ' + beginAdsIndex + "-" + endAdsIndex + ' / ' + totalCount + ' kết quả';
     return title;
   }
 }
@@ -254,6 +267,27 @@ const styles = StyleSheet.create({
     margin: 0,
     backgroundColor: 'white'
   },
+  allRegion: {
+    margin: 9,
+    padding: 4,
+    paddingLeft: 15,
+    paddingRight: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: gui.mainColor,
+    borderRadius: 5,
+    borderColor: 'transparent'
+  },
+  allRegionButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    backgroundColor: 'transparent',
+    color: 'white',
+    fontFamily: gui.fontFamily,
+    fontWeight: 'normal',
+    fontSize: 15
+  }
 });
 
 module.exports = AdsListView;

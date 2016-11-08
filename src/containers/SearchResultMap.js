@@ -621,7 +621,8 @@ class SearchResultMap extends Component {
   }
 
   _renderNextButton() {
-    let {pageNo, limit} = this.props.search.form.fields;
+    let {pageNo} = this.props.search.form.fields;
+    let limit = this.props.maxAdsInMapView;
     let totalPages = this.props.totalCount/ limit;
     let hasNextPage = pageNo < totalPages;
     return (
@@ -635,10 +636,10 @@ class SearchResultMap extends Component {
               </View> :
               <TouchableOpacity onPress={this._doNextPage.bind(this)} >
                 <View style={styles.pagingView}>
-                  <RelandIcon name="next" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
+                  <RelandIcon name="next" color={'black'} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
                               size={20} textProps={{paddingLeft: 0}}
                               noAction={true}></RelandIcon>
-                  <Text style={[styles.drawIconText, {fontSize: 9, color: gui.mainColor}]}>Sau</Text>
+                  <Text style={[styles.drawIconText, {fontSize: 9, color: 'black'}]}>Sau</Text>
                 </View>
               </TouchableOpacity>}
         </View>
@@ -659,10 +660,10 @@ class SearchResultMap extends Component {
               </View> :
               <TouchableOpacity onPress={this._doPreviousPage.bind(this)} >
                 <View style={styles.pagingView}>
-                  <RelandIcon name="previous" color={gui.mainColor} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
+                  <RelandIcon name="previous" color={'black'} mainProps={{flexDirection: 'row', justifyContent: 'center'}}
                               size={20} textProps={{paddingLeft: 0}}
                               noAction={true}></RelandIcon>
-                  <Text style={[styles.drawIconText, {fontSize: 9, color: gui.mainColor}]}>Trước</Text>
+                  <Text style={[styles.drawIconText, {fontSize: 9, color: 'black'}]}>Trước</Text>
                 </View>
               </TouchableOpacity>}
         </View>
@@ -734,7 +735,8 @@ class SearchResultMap extends Component {
 
   _doNextPage() {
     console.log("Call SearchResultMap._doNextPage");
-    let {pageNo, limit} = this.props.search.form.fields;
+    let {pageNo} = this.props.search.form.fields;
+    let limit = this.props.maxAdsInMapView;
     let totalPages = this.props.totalCount/ limit;
 
     if (pageNo < totalPages) {
@@ -747,19 +749,15 @@ class SearchResultMap extends Component {
 
   _onUpdateChangePageStatus(pageNo) {
       this.props.actions.onSearchFieldChange("pageNo", pageNo);
-      if (!this.props.global.setting.autoLoadAds) {
-          let region = this.getInitialRegion();
-          this.setState({mounting: false, region: region});
-      } else {
-          this.setState({mounting: false});
-      }
+      this.setState({mounting: false});
   }
 
   _renderTotalResultView(){
     console.log("Call SearchResultMap._renderTotalResultView");
     let {loading, totalCount, listAds, search} = this.props;
     let {showMessage, mounting, openDraw} = this.state;
-    let {pageNo, limit} = search.form.fields;
+    let {pageNo} = search.form.fields;
+    let limit = this.props.maxAdsInMapView;
     let numberOfAds = listAds.length;
 
     let beginAdsIndex = (pageNo-1)*limit+1;
@@ -792,14 +790,29 @@ class SearchResultMap extends Component {
     }
 
     return (<View style={styles.resultContainer}>
-      <Animatable.View animation={showMessage ? "fadeIn" : "fadeOut"}
-                       duration={showMessage ? 500 : 3000}>
+      <Animatable.View animation={showMessage || textNotFound2 ? "fadeIn" : "fadeOut"}
+                       duration={showMessage || textNotFound2 ? 500 : 5000}>
         <View style={[styles.resultText, {marginTop: 0}]}>
             <Text style={[styles.resultIcon, {fontWeight: fontWeight}]}>  {textValue} </Text>
             {textNotFound2 ? <Text style={styles.resultIcon}>  {textNotFound2} </Text> : null}
+            {textNotFound2 ? this._renderAllRegionButton() : null}
         </View>
       </Animatable.View>
     </View>)
+  }
+
+  _renderAllRegionButton() {
+      return (
+          <TouchableOpacity style={{backgroundColor:'transparent'}} onPress={this._onAllRegion.bind(this)} >
+              <View style={styles.allRegion}>
+                  <Text style={styles.allRegionButton}>Xem tất cả các khu vực</Text>
+              </View>
+          </TouchableOpacity>
+      );
+  }
+
+  _onAllRegion() {
+
   }
 
   _getViewableAds(){
@@ -866,7 +879,8 @@ class SearchResultMap extends Component {
     console.log("Call SearhResultMap._refreshListData");
     var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
-        polygon, pageNo, limit} = this.props.search.form.fields;
+        polygon, pageNo} = this.props.search.form.fields;
+    let limit = this.props.maxAdsInMapView;
     var isHavingCount = excludeCount ? false : true;
     var fields = {
       loaiTin: loaiTin,
@@ -1583,7 +1597,28 @@ var styles = StyleSheet.create({
     justifyContent: 'space-between',
     top: 83,
     width: width
-  }
+  },
+    allRegion: {
+        margin: 9,
+        padding: 4,
+        paddingLeft: 15,
+        paddingRight: 15,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: gui.mainColor,
+        borderRadius: 5,
+        borderColor: 'transparent'
+    },
+    allRegionButton: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        textAlign: 'center',
+        backgroundColor: 'transparent',
+        color: 'white',
+        fontFamily: gui.fontFamily,
+        fontWeight: 'normal',
+        fontSize: 15
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(SearchResultMap);

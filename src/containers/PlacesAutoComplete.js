@@ -103,9 +103,8 @@ class PlacesAutoComplete extends React.Component {
   _handleSearchAction(){
     var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, diaChinh, viewport, center, huongNha, ngayDaDang,
-        polygon, pageNo, limit, isIncludeCountInResponse} = this.props.search.form.fields;
+        polygon} = this.props.search.form.fields;
     var isOwnByHome = this.props.owner == 'home';
-    var isOwnByList = this.props.owner == 'list';
 
     let validViewport = this.props.search.form.fields.diaChinhViewport;
     if (isOwnByHome) {
@@ -113,6 +112,9 @@ class PlacesAutoComplete extends React.Component {
     } else {
       validViewport = viewport;
     }
+
+    this.props.actions.onSearchFieldChange("pageNo", 1);
+
     let newLimit = this.props.global.setting.maxAdsInMapView;
     var fields = {
       loaiTin: loaiTin,
@@ -129,9 +131,9 @@ class PlacesAutoComplete extends React.Component {
       huongNha: huongNha,
       ngayDaDang: ngayDaDang,
       polygon: polygon,
-      pageNo: pageNo,
-      limit: newLimit || limit,
-      isIncludeCountInResponse: isIncludeCountInResponse};
+      pageNo: 1,
+      limit: newLimit,
+      isIncludeCountInResponse: true};
     
     if (this.props.global.currentUser && this.props.global.currentUser.userID){
       fields.userID = this.props.global.currentUser.userID;

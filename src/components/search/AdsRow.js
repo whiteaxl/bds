@@ -156,7 +156,7 @@ class AdsRow extends React.Component {
       firstControl = <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>
         <TouchableHighlight onPress={this.props.loadPreviousPage} underlayColor="transparent">
         <View style={{flexDirection: 'column'}}>
-          <Text style={myStyles.rowControl}>Nhấn vào đây để về trang trước</Text>
+          <Text style={myStyles.rowControl}>Nhấn vào đây để quay lại trang trước</Text>
           <Text style={myStyles.pagingTitle}>{this.props.getPagingTitle()}</Text>
         </View>
       </TouchableHighlight>
@@ -166,7 +166,7 @@ class AdsRow extends React.Component {
       lastControl = <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>
         <TouchableHighlight onPress={this.props.loadNextPage} underlayColor="transparent">
         <View style={{flexDirection: 'column'}}>
-          <Text style={myStyles.rowControl}>Nhấn vào đây để tải trang tiếp theo</Text>
+          <Text style={myStyles.rowControl}>Nhấn vào đây để đi đến trang sau</Text>
           <Text style={myStyles.pagingTitle}>{this.props.getPagingTitle()}</Text>
         </View>
       </TouchableHighlight>

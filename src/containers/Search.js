@@ -485,7 +485,7 @@ class Search extends Component {
                      newRadiusInKmSelectedIdx, newHuongNha, newNgayDaDang, newViewport){
      var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
          radiusInKmSelectedIdx, dienTich, orderBy, diaChinh, viewport, center, huongNha, ngayDaDang,
-         polygon, pageNo, limit, isIncludeCountInResponse} = this.props.search.form.fields;
+         polygon, pageNo, isIncludeCountInResponse} = this.props.search.form.fields;
      if (newGia) {
          if (loaiTin == 'ban') {
              ban.gia = newGia;
@@ -510,7 +510,7 @@ class Search extends Component {
          ngayDaDang: newNgayDaDang || ngayDaDang,
          polygon: polygon,
          pageNo: newPageNo || pageNo,
-         limit: newLimit || limit,
+         limit: newLimit,
          isIncludeCountInResponse: isIncludeCountInResponse};
 
      //TODO: fix issue keep viewport of Map when researching, need to update with other fields of state

@@ -486,7 +486,7 @@ class Search2 extends Component {
                     newRadiusInKmSelectedIdx, newHuongNha, newNgayDaDang){
      var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
          radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
-         polygon, pageNo, limit, isIncludeCountInResponse} = this.props.search.form.fields;
+         polygon, pageNo, isIncludeCountInResponse} = this.props.search.form.fields;
      if (newGia) {
          if (loaiTin == 'ban') {
              ban.gia = newGia;
@@ -510,7 +510,7 @@ class Search2 extends Component {
          ngayDaDang: newNgayDaDang || ngayDaDang,
          polygon: polygon,
          pageNo: newPageNo || pageNo,
-         limit: newLimit || limit,
+         limit: newLimit,
          isIncludeCountInResponse: isIncludeCountInResponse};
 
      if (this.props.global.currentUser && this.props.global.currentUser.userID){
