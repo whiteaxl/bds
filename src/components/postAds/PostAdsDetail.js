@@ -7,9 +7,9 @@ import * as postAdsActions from '../../reducers/postAds/postAdsActions';
 
 import React, {Component} from 'react';
 
-import { Text, View, StyleSheet, StatusBar, TextInput, Image,
-    Dimensions, ScrollView, Picker, TouchableHighlight, Alert } from 'react-native';
-
+import { Text, View, StyleSheet, StatusBar, TextInput, Image, UIManager, Dimensions,
+    ScrollView, Picker, TouchableHighlight, TouchableOpacity, Alert, KeyboardAvoidingView } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import {Map} from 'immutable';
@@ -39,6 +39,9 @@ import dismissKeyboard from 'react-native-dismiss-keyboard';
 import cfg from "../../cfg";
 
 var rootUrl = `http://${cfg.server}:5000`;
+
+var { width, height } = Dimensions.get('window');
+const windowHeight = height;
 
 const Item = Picker.Item;
 
@@ -86,7 +89,8 @@ class PostAdsDetail extends Component {
             initNamXayDung: '',
             inputNamXayDung: '',
             namXayDung: null,
-            adsID: adsID
+            adsID: adsID,
+            showMoreContent: false
         }
     }
 
@@ -142,7 +146,8 @@ class PostAdsDetail extends Component {
 
         return (
             <View myStyles={myStyles.container}>
-                <View style={{paddingTop: 30, backgroundColor: gui.mainColor}} />
+                <View style={{paddingTop: 25, backgroundColor: gui.mainColor}} />
+
                 <ScrollView
                     ref={(scrollView) => { this._scrollView = scrollView; }}
                     automaticallyAdjustContentInsets={false}
@@ -163,39 +168,34 @@ class PostAdsDetail extends Component {
 
                     {this._renderLoaiNha()}
                     {this._renderDienTich()}
-                    {this._renderMatTien()}
-                    {this._renderNamXayDung()}
                     {this._renderPhongNgu()}
                     {this._renderPhongTam()}
                     {this._renderSoTang()}
 
                     {this._renderCategoryTitle('VỊ TRÍ')}
-
                     {this._renderBanDo()}
                     {this._renderDiaChi()}
                     {this._renderDuAn()}
                     {this._renderHuongNha()}
-                    {this._renderDuongTruocNha()}
-
-                    {this._renderCategoryTitle('THÔNG TIN KHÁC')}
-                    {this._renderNhaMoiXay()}
-                    {this._renderNhaLoGoc()}
-                    {this._renderOtoDoCua()}
-                    {this._renderNhaKinhDoanhDuoc()}
-                    {this._renderNoiThatDayDu()}
-                    {this._renderChinhChuDangTin()}
 
                     {this._renderCategoryTitle('GIÁ VÀ LIÊN HỆ')}
-
                     {this._renderGia()}
                     {this._renderLienHe()}
 
                     {this._renderCategoryTitle('THÔNG TIN CHI TIẾT')}
-
                     {this._renderChiTiet()}
+
+
+                    {this._renderMoreButton()}
+
+                    {this._renderCategoryTitle('')}
+                    {this._renderResetButton()}
+                    <View style={{borderTopColor:'lightgray', borderTopWidth: 1}}></View>
                     <Text style={[myStyles.label, {marginTop: 9, marginLeft: 15, color: 'red'}]}>
                         {this.props.postAds.error}</Text>
+
                 </ScrollView>
+
 
                 {this.state.toggleState ? <Button onPress={() => dismissKeyboard()}
                         style={[myStyles.buttonText, {textAlign: 'right', color: gui.mainColor}]}>Xong</Button> : null}
@@ -216,13 +216,6 @@ class PostAdsDetail extends Component {
 
     onKeyboardToggle(toggleState) {
         this.setState({toggleState: toggleState});
-        if (this.state.editGia) {
-            var scrollTo = toggleState ? (Dimensions.get('window').height-64)/2 :
-            (Dimensions.get('window').height-64)/2-226;
-            this._scrollView.scrollTo({y: scrollTo});
-        } else {
-            this._scrollView.scrollTo({y: 0});
-        }
     }
 
     _renderCategoryTitle(title){
@@ -236,12 +229,22 @@ class PostAdsDetail extends Component {
     }
 
     _renderPhoto() {
+        var {photos} = this.props.postAds;
+        let numOfPhoto = photos.length;
+        let indexArr = [];
+        for (var i=0; i<= photos.length; i++ ){
+            if (i< 8){
+                indexArr.push(i)
+            }
+        }
         return (
-            <View style={[myStyles.imgList, {marginTop: 19, marginBottom: 10, paddingLeft: 17, paddingRight: 15}]} >
-                {this._renderPhotoItem(0)}
-                {this._renderPhotoItem(1)}
-                {this._renderPhotoItem(2)}
-                {this._renderPhotoItem(3)}
+            <View>
+                <View style={[myStyles.mimgList, {marginTop: 10, marginBottom: 5, paddingLeft: 17, paddingRight: 15}]} >
+                    {indexArr.map( (e) => { if (e<4) return this._renderPhotoItem(e)})}
+                </View>
+                <View style={[myStyles.mimgList, {marginTop: numOfPhoto>=4 ? 5 : 0, marginBottom: numOfPhoto>=4 ? 10 : 0, paddingLeft: 17, paddingRight: 15}]} >
+                    {indexArr.map( (e) => { if (e>=4) return this._renderPhotoItem(e)})}
+                </View>
             </View>
         );
     }
@@ -295,7 +298,7 @@ class PostAdsDetail extends Component {
                             Loại nhà
                         </Text>
                         <View style={myStyles.arrowIcon}>
-                            <Text style={myStyles.label}> {this._getLoaiNhaValue()} </Text>
+                            <Text style={myStyles.grayLabel}> {this._getLoaiNhaValue()} </Text>
                             <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
                         </View>
                     </View>
@@ -321,17 +324,30 @@ class PostAdsDetail extends Component {
 
     _renderMatTien() {
         return (
+
             <View style={[myStyles.imgList, myStyles.headerSeparator, {marginLeft: 17, paddingLeft: 0}]} >
                 <Text style={myStyles.label}>Mặt tiền (m)</Text>
-                <TextInput
+                <TextInput ref="matTien"
                     secureTextEntry={false}
                     keyboardType={'numeric'}
                     style={myStyles.input}
                     value={this.props.postAds.matTien ? this.props.postAds.matTien.toString() : ''}
                     onChangeText={(text) => this.onValueChange("matTien", text)}
+                    onFocus={this.scrolldown.bind(this,'matTien')}
                 />
             </View>
+
         );
+    }
+
+    scrolldown(ref) {
+        const self = this;
+        this.refs[ref].measure((ox, oy, width, height, px, py) => {
+            if (windowHeight/py < 1.65){
+                this._scrollView.scrollTo({y: py + 40});
+            }
+
+        });
     }
 
     _renderNamXayDung() {
@@ -344,7 +360,7 @@ class PostAdsDetail extends Component {
                                 Năm xây dựng
                             </Text>
                             <View style={myStyles.arrowIcon}>
-                                <Text style={myStyles.label}> {this._getNamXayDungValue()} </Text>
+                                <Text style={myStyles.grayLabel}> {this._getNamXayDungValue()} </Text>
                                 <TruliaIcon name={"arrow-down"}
                                             onPress={() => this._onNamXayDungPressed()}
                                             color={gui.arrowColor} size={18} />
@@ -397,7 +413,7 @@ class PostAdsDetail extends Component {
                             Bản đồ
                         </Text>
                         <View style={myStyles.arrowIcon}>
-                            <Text style={myStyles.label}> {this._getBanDoValue()} </Text>
+                            <Text style={myStyles.grayLabel}> {this._getBanDoValue()} </Text>
                             <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
                         </View>
                     </View>
@@ -416,7 +432,7 @@ class PostAdsDetail extends Component {
                             Địa chỉ
                         </Text>
                         <View style={myStyles.arrowIcon}>
-                            <Text style={myStyles.label}> {this._getDiaChiValue()} </Text>
+                            <Text style={myStyles.grayLabel}> {this._getDiaChiValue()} </Text>
                             <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
                         </View>
                     </View>
@@ -435,7 +451,7 @@ class PostAdsDetail extends Component {
                             Thuộc dự án
                         </Text>
                         <View style={myStyles.arrowIcon}>
-                            <Text style={myStyles.label}> {this._getDuAnValue()} </Text>
+                            <Text style={myStyles.grayLabel}> {this._getDuAnValue()} </Text>
                             <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
                         </View>
                     </View>
@@ -454,7 +470,7 @@ class PostAdsDetail extends Component {
                             Hướng nhà
                         </Text>
                         <View style={myStyles.arrowIcon}>
-                            <Text style={myStyles.label}> {this._getHuongNhaValue()} </Text>
+                            <Text style={myStyles.grayLabel}> {this._getHuongNhaValue()} </Text>
                             <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
                         </View>
                     </View>
@@ -466,15 +482,68 @@ class PostAdsDetail extends Component {
     _renderDuongTruocNha() {
         return (
             <View style={[myStyles.imgList, myStyles.headerSeparator, {marginLeft: 17, paddingLeft: 0}]} >
-                <Text style={myStyles.label}>Đường trước nhà</Text>
+                <Text style={myStyles.label}>Đường trước nhà (m)</Text>
                 <TextInput
+                    ref='duongTruocNha'
                     secureTextEntry={false}
                     keyboardType={'numeric'}
                     style={myStyles.input}
                     value={this.props.postAds.duongTruocNha ? this.props.postAds.duongTruocNha.toString() : ''}
                     onChangeText={(text) => this.onValueChange("duongTruocNha", text)}
-
+                    onFocus={this.scrolldown.bind(this,'duongTruocNha')}
                 />
+            </View>
+        );
+    }
+
+    _renderMoreButton() {
+        if (this.state.showMoreContent){
+            return (
+                <View>
+                    {this._renderCategoryTitle('THÔNG TIN KHÁC')}
+                    {this._renderMatTien()}
+                    {this._renderDuongTruocNha()}
+                    {this._renderNamXayDung()}
+
+                    {this._renderCategoryTitle('')}
+                    {this._renderNhaMoiXay()}
+                    {this._renderNhaLoGoc()}
+                    {this._renderOtoDoCua()}
+                    {this._renderNhaKinhDoanhDuoc()}
+                    {this._renderNoiThatDayDu()}
+                    {this._renderChinhChuDangTin()}
+                </View>
+            )
+        } else {
+            return (
+                <View>
+                    {this._renderCategoryTitle('')}
+                    <View style={[myStyles.headerSeparator, {paddingTop: 9, marginBottom: 7, paddingLeft: 0}]} >
+                        <TouchableOpacity
+                            onPress={() => this._onMoreButtonPressed()}>
+                            <View style={[myStyles.imgList,{justifyContent: 'center'}]} >
+                                <Text style={[myStyles.label, {color: gui.mainColor}]}>
+                                    Mở rộng
+                                </Text>
+                            </View>
+                        </TouchableOpacity>
+                    </View>
+                </View>
+            );
+        }
+    }
+
+    _renderResetButton() {
+        return (
+            <View style={[myStyles.headerSeparator, {paddingTop: 9, marginBottom: 7, paddingLeft: 0}]} >
+                <TouchableOpacity
+                    onPress={() => this._onResetButtonPressed()}>
+                    <View style={[myStyles.imgList,{justifyContent: 'center'}]} >
+                        <Text style={[myStyles.label, {color: 'red'}]}>
+                            Thiết lập lại
+                        </Text>
+                    </View>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -623,7 +692,7 @@ class PostAdsDetail extends Component {
                             Liên hệ
                         </Text>
                         <View style={myStyles.arrowIcon}>
-                            <Text style={myStyles.label}> {this._getLienHeValue()} </Text>
+                            <Text style={myStyles.grayLabel}> {this._getLienHeValue()} </Text>
                             <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
                         </View>
                     </View>
@@ -642,7 +711,7 @@ class PostAdsDetail extends Component {
                             Chi tiết
                         </Text>
                         <View style={myStyles.arrowIcon}>
-                            <Text style={myStyles.label}> {this._getChiTietValue()} </Text>
+                            <Text style={myStyles.grayLabel}> {this._getChiTietValue()} </Text>
                             <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
                         </View>
                     </View>
@@ -706,9 +775,9 @@ class PostAdsDetail extends Component {
     _onNamXayDungPressed(){
         var {showNamXayDung} = this.state;
         this.setState({showNamXayDung: !showNamXayDung});
-        if (!showNamXayDung) {
+        /*if (!showNamXayDung) {
             this._onScrollNamXayDung();
-        }
+        }*/
     }
 
     _onPressNamXayDungHandle() {
@@ -722,6 +791,17 @@ class PostAdsDetail extends Component {
     _getNamXayDungValue(){
         var {namXayDung} = this.props.postAds;
         return namXayDung||'';
+    }
+
+    _onResetButtonPressed(){
+        console.log("Press _onResetButton");
+        this.setState({showMoreContent: false});
+        this.onRefreshPostAds();
+    }
+
+    _onMoreButtonPressed(){
+        console.log("Press _onMoreButton");
+        this.setState({showMoreContent: true});
     }
 
     _onLoaiNhaPressed() {
@@ -853,7 +933,7 @@ class PostAdsDetail extends Component {
                             Giá
                         </Text>
                         <View style={myStyles.arrowIcon}>
-                            <Text style={myStyles.label}> {this._getGiaValue()} </Text>
+                            <Text style={myStyles.grayLabel}> {this._getGiaValue()} </Text>
                             <TruliaIcon name={"arrow-right"} color={gui.arrowColor} size={18} />
                         </View>
                     </View>
@@ -1273,13 +1353,21 @@ var myStyles = StyleSheet.create({
         paddingRight: 10,
         backgroundColor: 'white'
     },
+    mimgList: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+        paddingLeft: 17,
+        paddingRight: 10,
+        backgroundColor: 'white'
+    },
     imgItem: {
-        width: 85,
-        height: 90,
+        width: (width-50)/4,
+        height:(width-50)/4,
         backgroundColor: "white",
         justifyContent: 'center',
         borderWidth: 1,
-        borderColor: gui.separatorLine
+        borderColor: gui.separatorLine,
     },
     captureIcon: {
         flexDirection: 'row',
@@ -1292,7 +1380,7 @@ var myStyles = StyleSheet.create({
         padding: 4,
         paddingRight: 10,
         height: 30,
-        borderColor: 'gray',
+        borderColor: 'lightgray',
         borderWidth: 1,
         borderRadius: 5,
         margin: 5,
@@ -1318,10 +1406,11 @@ var myStyles = StyleSheet.create({
         fontSize: gui.normalFontSize,
         fontFamily: gui.fontFamily
     },
-    label2: {
+    grayLabel: {
         fontSize: gui.normalFontSize,
         fontFamily: gui.fontFamily,
-        paddingLeft: 17
+        color: '#BBBBBB',
+        paddingRight: 3
     },
     button: {
         flexDirection: 'row',

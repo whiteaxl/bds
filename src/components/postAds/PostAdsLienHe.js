@@ -92,7 +92,7 @@ class PostAdsLienHe extends Component {
                 </View>
                 <View style={myStyles.optionSeparator} />
 
-                <View style={[myStyles.headerSeparator, {borderTopColor: 'transparent', paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0}]} >
+                <View style={[myStyles.headerSeparator, {borderTopColor: 'transparent', paddingTop: 2, marginBottom: 2, marginLeft: 17, paddingLeft: 0}]} >
                     <TouchableHighlight>
                         <View style={[myStyles.imgList, {paddingLeft: 0}]} >
                             <Text style={myStyles.label}>
@@ -113,7 +113,7 @@ class PostAdsLienHe extends Component {
                     </TouchableHighlight>
                 </View>
 
-                <View style={[myStyles.headerSeparator, {borderTopColor: 'transparent', paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0}]} >
+                <View style={[myStyles.headerSeparator, {borderTopColor: 'lightgray', borderTopWidth: 1, paddingTop: 2, marginBottom: 2, marginLeft: 17, paddingLeft: 0}]} >
                     <TouchableHighlight>
                         <View style={[myStyles.imgList, {paddingLeft: 0}]} >
                             <Text style={myStyles.label}>
@@ -135,7 +135,7 @@ class PostAdsLienHe extends Component {
                 </View>
 
 
-                <View style={[myStyles.headerSeparator, {borderTopColor: 'transparent', paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0}]} >
+                <View style={[myStyles.headerSeparator, {borderTopColor: 'lightgray', borderTopWidth: 1, paddingTop: 2, marginBottom: 2, marginLeft: 17, paddingLeft: 0}]} >
                     <TouchableHighlight>
                         <View style={[myStyles.imgList, {paddingLeft: 0}]} >
                             <Text style={myStyles.label}>

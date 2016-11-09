@@ -10,7 +10,9 @@ import {Map} from 'immutable';
 
 import React, {Component} from 'react';
 
-import { Text, View, StyleSheet, Navigator, TouchableOpacity, TouchableHighlight, Dimensions, StatusBar } from 'react-native'
+import { Text, View, StyleSheet, Navigator, TouchableOpacity,
+    TouchableHighlight, Dimensions, StatusBar } from 'react-native'
+
 import {Actions} from 'react-native-router-flux';
 import MapView from 'react-native-maps';
 import Button from 'react-native-button';
@@ -25,9 +27,7 @@ import findApi from '../../lib/FindApi';
 
 import placeUtil from '../../lib/PlaceUtil';
 
-import PostAdsGoogleAutoComplete from './PostAdsGoogleAutoComplete';
-
-var {GooglePlacesAutocomplete} = require('react-native-google-places-autocomplete');
+import RelandIcon from '../RelandIcon';
 
 import utils from '../../lib/utils';
 
@@ -82,8 +82,10 @@ class PostAdsMapView extends Component {
       region.latitude = LATITUDE;
       region.longitude = LONGITUDE;
     }
+    let diaChinh ={};
     this.state = {
       region: region,
+      diaChinh: diaChinh,
       mapType: "standard",
       mapName: "Satellite"
     }
@@ -107,15 +109,16 @@ class PostAdsMapView extends Component {
               region={this.state.region}
               style={styles.mapView}
               mapType={this.state.mapType}
-              // onPress={this._onDragEnd.bind(this)}
               onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
             >
-              <MapView.Marker.Animated
-                  // draggable
-                  // onDragEnd={this._onDragEnd.bind(this)}
-                  coordinate={this.state.region}
-              />
             </MapView>
+
+            <View style={styles.positionIcon}>
+              <RelandIcon name="location" color={'red'}
+                          size={30} textProps={{paddingLeft: 0}}
+                          />
+            </View>
+
             <View style={styles.mapButtonContainer}>
               <View style={styles.searchListButton}>
                 <Button onPress={this._onCancel.bind(this)}
@@ -133,7 +136,9 @@ class PostAdsMapView extends Component {
     return (
         <TouchableHighlight onPress={() => this._onPress()}>
           <View style={styles.searchTextContainer}>
-            <Text style={styles.searchText}>Chọn địa điểm</Text>
+            <Text style={styles.searchText}>
+              {this.state.diaChinh.fullName ? this.state.diaChinh.fullName : 'Chọn địa điểm'}
+            </Text>
           </View>
         </TouchableHighlight>
     );
@@ -161,22 +166,45 @@ class PostAdsMapView extends Component {
 
   _onRegionChangeComplete(region) {
     this.setState({region: region});
+    findApi.getGeocoding(region.latitude, region.longitude, this._getDiaChinhContent.bind(this));
   }
-
-  // _onDragEnd(e) {
-  //   var newRegion = {};
-  //   var coordinate = e.nativeEvent.coordinate;
-  //   newRegion.latitude = coordinate.latitude;
-  //   newRegion.longitude = coordinate.longitude;
-  //   newRegion.latitudeDelta = this.state.region.latitudeDelta;
-  //   newRegion.longitudeDelta = this.state.region.longitudeDelta;
-  //   this.setState({region: newRegion});
-  // }
 
   _onApply() {
     var {region} = this.state;
     findApi.getGeocoding(region.latitude, region.longitude, this.geoCallback.bind(this));
   }
+
+  _getDiaChinhContent(data){
+    var places = data.results;
+    if (places.length > 0){
+      var newPlace = places[0];
+      for (var i=0; i<places.length; i++) {
+        var xa = placeUtil.getXa(places[i]);
+        if (xa != '') {
+          newPlace = places[i];
+          break;
+        }
+      }
+
+      var tinh = placeUtil.getTinh(newPlace);
+      var huyen = placeUtil.getHuyen(newPlace);
+      var xa = placeUtil.getXa(newPlace);
+
+      let fullName = tinh;
+      if (huyen && huyen!=''){
+        fullName = huyen + ', ' + fullName;
+      }
+
+      if (xa && xa!=''){
+        fullName = xa + ', ' + fullName;
+      }
+
+      let diaChinh = {fullName: fullName};
+      this.setState({diaChinh: diaChinh});
+
+    }
+  }
+
 
   geoCallback(data) {
     var {place} = this.props.postAds;
@@ -326,20 +354,6 @@ var styles = StyleSheet.create({
     backgroundColor: 'transparent'
   },
 
-  tabbar: {
-    position: 'absolute',
-    top: height-80,
-    left: 0,
-    right: 0,
-    bottom: 0,
-    borderTopWidth: 1,
-    borderColor : 'lightgray'
-  },
-  sumBds: {
-    marginBottom: 10,
-    paddingLeft: 20,
-    color: 'white',
-  },
   buttonText: {
     marginLeft: 17,
     marginRight: 17,
@@ -369,6 +383,14 @@ var styles = StyleSheet.create({
     fontSize: 14,
     width: width,
     textAlign: 'center'
+  },
+  positionIcon: {
+    position: 'absolute',
+    top: (height-60-25-60)/2,
+    left: width/2 - 10,
+    justifyContent: 'center',
+    borderColor: gui.mainColor,
+    backgroundColor: 'transparent'
   }
 });
 

@@ -103,13 +103,18 @@ class MCameraRollView extends Component {
         let photos = this.state.photos;
 
         if (this.state.imageIndex){
-            photos[this.state.imageIndex] = {uri: current.image.uri, location: current.location};
+            if (images.length<=0 )
+                photos.splice(this.state.imageIndex, 1);
+            else
+                photos[this.state.imageIndex] = {uri: current.image.uri, location: current.location};
         } else {
             photos = images.map((e) => {return {uri: e.image.uri, location: e.location}})
         }
         this.setState({photos: photos});
+        console.log("action click");
+        console.log(images);
         console.log(current);
-        console.log(this.state.selected);
+        console.log("action click end");
     }
 
     _onChonPressed(){
@@ -166,15 +171,11 @@ class MCameraRollView extends Component {
     }
 
     _onSendImage(uri) {
-        console.log("================== 1")
-        console.log(uri);
         const userID = this.props.global.currentUser.userID;
         ImageResizer.createResizedImage(uri, cfg.maxWidth, cfg.maxHeight, 'JPEG', 85, 0, null).then((resizedImageUri) => {
             var ms = moment().toDate().getTime();
             var filename = 'Chat_' + userID + '_' + ms + resizedImageUri.substring(resizedImageUri.lastIndexOf('.'));
-            console.log("================== 2")
             this.props.actions.onUploadImage(filename, resizedImageUri, this._uploadCallBack.bind(this));
-            console.log("================== 3")
         }).catch((err) => {
             log.error(err);
         });
@@ -252,7 +253,7 @@ class MCameraRollView extends Component {
                     removeClippedSubviews={false}
                     groupTypes='SavedPhotos'
                     batchSize={5}
-                    maximum={isNaN(this.state.imageIndex) ? 4 : 1}
+                    maximum={isNaN(this.state.imageIndex) ? 8 : 1}
                     selected={this.state.selected}
                     assetType='Photos'
                     imagesPerRow={3}
