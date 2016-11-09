@@ -672,6 +672,19 @@ class SearchResultDetail extends Component {
     });
   }
 
+  getPaymentForMonth(loanAmount, percent, numOfMonth, interestRatePerYear){
+    let totalPrincipal = loanAmount * percent;
+    let payment = totalPrincipal/numOfMonth;
+    let totalInterest = interestRatePerYear * totalPrincipal/12;
+    let interest = totalInterest/numOfMonth;
+
+    return {
+      payment: payment,
+      interest: interest,
+      sumOfPayment: payment + interest
+    }
+  }
+
   _renderPhuongAnTaiChinh(giaVal, loaiTinVal) {
     if (loaiTinVal || !giaVal) {
       return null;
@@ -827,10 +840,13 @@ class SearchResultDetail extends Component {
 
   _onChat(ads) {
     if (!ads.dangBoi.userID) {
+      if ( ads.dangBoi.phone && ads.dangBoi.phone.length >0){
+        this._onSms(ads.dangBoi.phone);
+        return;
+      }
       alert(gui.ERR_NotRelandUser);
       return;
     }
-
 
     if (!this.props.global.loggedIn) {
       Actions.LoginRegister({page:1});
