@@ -114,7 +114,7 @@ class PostAdsMapView extends Component {
             </MapView>
 
             <View style={styles.positionIcon}>
-              <RelandIcon name="location" color={'red'}
+              <RelandIcon name="home-marker" color={gui.mainColor}
                           size={30} textProps={{paddingLeft: 0}}
                           />
             </View>

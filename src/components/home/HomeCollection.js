@@ -104,7 +104,7 @@ class ImageItem extends React.Component{
     let {adsID, cover, giaFmt, khuVuc} = this.props.ads;
     let detail = this.getMoreInfo(this.props.ads);
     let isLiked = this.isLiked();
-    let color = isLiked ? '#A2A7AD' : 'white';
+    let color = isLiked ? '#EC1B77' : 'white';
     let bgColor = isLiked ? '#E50064' : '#4A443F';
     let bgStyle = isLiked ? {} : {opacity: 0.55};
     let imageUri = {uri: cover};

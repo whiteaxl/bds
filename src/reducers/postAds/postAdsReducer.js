@@ -29,13 +29,18 @@ export default function postAdsReducer(state = initialState, action) {
       return nextState;
     }
 
-    case POST_ADS_REQUEST:
+    case POST_ADS_REQUEST:{
+      return state.set('uploading', true);
+    }
+
     case POST_ADS_SUCCESS:{
-      let nextState =  state.set('error', null);
+      let nextState =  state.set('error', null)
+          .set('uploading', false);
       return nextState;
     }
     case POST_ADS_FAILURE:
-      return state.set('error', action.payload);
+      return state.set('error', action.payload)
+          .set('uploading', false);
 
     case POST_ADS_GET_DIACHINH_REQUEST:
     case POST_ADS_GET_DIACHINH_FAILURE:

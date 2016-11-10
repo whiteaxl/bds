@@ -6,6 +6,7 @@ import {
     StyleSheet,
     Text,
     View,
+    StatusBar,
     TouchableOpacity,
     Alert
 } from 'react-native';
@@ -68,6 +69,7 @@ function mapDispatchToProps(dispatch) {
 class MCameraRollView extends Component {
     constructor(props) {
         super(props);
+        StatusBar.setBarStyle('light-content');
         let {photos, imageIndex, owner} = props;
 
         switch (owner) {

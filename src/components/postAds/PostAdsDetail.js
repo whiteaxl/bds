@@ -32,6 +32,8 @@ import ImageResizer from 'react-native-image-resizer';
 
 import PickerExt2 from '../picker/PickerExt2';
 
+import GiftedSpinner from 'react-native-gifted-spinner';
+
 import moment from 'moment';
 
 import dismissKeyboard from 'react-native-dismiss-keyboard';
@@ -96,6 +98,10 @@ class PostAdsDetail extends Component {
 
     componentWillMount() {
         let { place, photos} = this.props.postAds
+
+        console.log("================ mount photos");
+        console.log(photos);
+        console.log("================ mount photos end");
 
         if (place && place.geo && place.geo.lat && place.geo.lon)
             return;
@@ -190,6 +196,8 @@ class PostAdsDetail extends Component {
 
                     {this._renderCategoryTitle('')}
                     {this._renderResetButton()}
+
+
                     <View style={{borderTopColor:'lightgray', borderTopWidth: 1}}></View>
                     <Text style={[myStyles.label, {marginTop: 9, marginLeft: 15, color: 'red'}]}>
                         {this.props.postAds.error}</Text>
@@ -210,6 +218,7 @@ class PostAdsDetail extends Component {
                                 style={myStyles.buttonText}>{ this.state.adsID ? 'Cập nhật' : 'Đăng tin'}</Button>
                     </View>
                 </View>
+                {this._renderLoadingView()}
             </View>
         )
     }
@@ -316,7 +325,7 @@ class PostAdsDetail extends Component {
                     keyboardType={'numeric'}
                     style={myStyles.input}
                     value={this.props.postAds.dienTich ? this.props.postAds.dienTich.toString() : ''}
-                    onChangeText={(text) => this.onValueChange("dienTich", text)}
+                    onChangeText={(text) => this._onNumberValueChange("dienTich", text)}
                 />
             </View>
         );
@@ -332,7 +341,7 @@ class PostAdsDetail extends Component {
                     keyboardType={'numeric'}
                     style={myStyles.input}
                     value={this.props.postAds.matTien ? this.props.postAds.matTien.toString() : ''}
-                    onChangeText={(text) => this.onValueChange("matTien", text)}
+                    onChangeText={(text) => this._onNumberValueChange("matTien", text)}
                     onFocus={this.scrolldown.bind(this,'matTien')}
                 />
             </View>
@@ -489,7 +498,7 @@ class PostAdsDetail extends Component {
                     keyboardType={'numeric'}
                     style={myStyles.input}
                     value={this.props.postAds.duongTruocNha ? this.props.postAds.duongTruocNha.toString() : ''}
-                    onChangeText={(text) => this.onValueChange("duongTruocNha", text)}
+                    onChangeText={(text) => this._onNumberValueChange("duongTruocNha", text)}
                     onFocus={this.scrolldown.bind(this,'duongTruocNha')}
                 />
             </View>
@@ -739,6 +748,16 @@ class PostAdsDetail extends Component {
         }
     }
 
+    _renderLoadingView() {
+        if (this.props.postAds.uploading) {
+            return (<View style={myStyles.resultContainer}>
+                <View style={myStyles.loadingContent}>
+                    <GiftedSpinner color="black" />
+                </View>
+            </View>)
+        }
+    }
+
     _initDanhMucNam(numberOfYear){
         let latestYear = parseInt(moment().format("YYYY"), 10);
         let yearRange = []
@@ -885,6 +904,11 @@ class PostAdsDetail extends Component {
             }
             return diaChinhFullName;
         }
+    }
+
+    _onNumberValueChange(stateName, text){
+        let value = text.replace(',','.');
+        this.onValueChange(stateName, value);
     }
 
     _onDiaChiPressed() {
@@ -1240,10 +1264,10 @@ class PostAdsDetail extends Component {
                     let adsID = this.state.adsID;
                     this.onRefreshPostAds();
                     if ( adsID && adsID.length >0 ){
-                        Alert.alert("Cập nhật bất động sản thành công");
+                        Alert.alert("Thay đổi thành công");
                         Actions.pop();
                     } else {
-                        Alert.alert("Đăng ký bất động sản thành công");
+                        Alert.alert("Đăng tin thành công");
                         Actions.pop();
                         Actions.AdsMgmt();
                     }
@@ -1433,7 +1457,7 @@ var myStyles = StyleSheet.create({
         justifyContent: 'space-between',
         width: Dimensions.get('window').width,
         backgroundColor: gui.mainColor,
-        height: 44
+        height: 50
     },
     searchButton: {
         alignItems: 'center',
@@ -1471,7 +1495,25 @@ var myStyles = StyleSheet.create({
         marginLeft: 20,
         marginRight: 15,
         width: Dimensions.get('window').width-35
-    }
+    },
+
+    loadingContent: {
+        position: 'absolute',
+        top: -23,
+        left: width/2,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    resultContainer: {
+        position: 'absolute',
+        top: height/2,
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        marginVertical: 0,
+        marginBottom: 0,
+        backgroundColor: 'transparent'
+    },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostAdsDetail);

@@ -442,11 +442,8 @@ class AdsListTab extends Component {
     } else {
       var swipeoutBtns = [
         {
-          text: 'Xem thêm'
-        },
-        {
           text: 'Sửa',
-          backgroundColor: '#8181F7',
+          backgroundColor: '#E99409',
           onPress: () => this.onEditButton(adsID)
         },
         {

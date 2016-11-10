@@ -63,7 +63,7 @@ class PostAds extends Component {
         var {photos, imageIndex, owner} = props;
         this.state = {
             photos: photos||[],
-            imageIndex: imageIndex,
+            imageIndex: imageIndex || 0,
             owner: owner
         }
     }
@@ -138,6 +138,7 @@ class PostAds extends Component {
 
     imageCropper(data) {
         var {photos, imageIndex, owner} = this.state;
+
         if (!photos) {
             photos = [];
             for(var i=0; i<4; i++) {
