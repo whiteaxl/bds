@@ -672,16 +672,15 @@ class SearchResultDetail extends Component {
     });
   }
 
-  getPaymentForMonth(loanAmount, percent, numOfMonth, interestRatePerYear){
-    let totalPrincipal = loanAmount * percent;
-    let payment = totalPrincipal/numOfMonth;
-    let totalInterest = interestRatePerYear * totalPrincipal/12;
-    let interest = totalInterest/numOfMonth;
+  getPaymentPerMonth(totalPrincipal, numOfMonth, interestRatePerYear){
+    let pricipalPerMonth = totalPrincipal/numOfMonth;
+    let totalInterest = interestRatePerYear * totalPrincipal;
+    let interestPerMonth = totalInterest/12;
 
     return {
-      payment: payment,
-      interest: interest,
-      sumOfPayment: payment + interest
+      payment: pricipalPerMonth,
+      interest: interestPerMonth,
+      sumOfPayment: pricipalPerMonth + interestPerMonth
     }
   }
 
@@ -689,12 +688,15 @@ class SearchResultDetail extends Component {
     if (loaiTinVal || !giaVal) {
       return null;
     }
-    let mainAccount = 0.7*giaVal;
-    let bonusAccount = 0;
-    let months = 12*15;
-    let principal = mainAccount;
-    let payment = mainAccount / months;
-    let interest = 0.12*principal/12;
+
+    let percentOfPrice = 0.7; /* duoc vay 70% */
+    let numOfMonth = 12*15; /* vay 15 nam */
+    let interestRatePerYear = 0.12; /* lai suat nam */
+
+    let {payment, interest} = this.getPaymentPerMonth(giaVal*percentOfPrice, numOfMonth, interestRatePerYear);
+
+    //let payment = mainAccount / months;
+    //let interest = 0.12*principal/12;
     let paymentFmt = util.getPriceDisplay(payment, loaiTinVal);
     let interestFmt = util.getPriceDisplay(interest, loaiTinVal);
     //
