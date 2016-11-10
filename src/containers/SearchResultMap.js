@@ -289,6 +289,8 @@ class SearchResultMap extends Component {
       //2. Search by Polygon: name is just center
       if (diaChinh.tinhKhongDau) {
         placeName = diaChinh.fullName;
+      } else if (diaChinh.fullName) {
+          placeName = diaChinh.fullName;
       } else { //others: banKinh or currentLocation
           placeName = 'Tìm tất cả theo khung nhìn'
       }
@@ -812,7 +814,10 @@ class SearchResultMap extends Component {
   }
 
   _onAllRegion() {
-
+      let diaChinh = {fullName : gui.TAT_CA_CAC_KHU_VUC};
+      this.props.actions.onSearchFieldChange("diaChinh", diaChinh);
+      this.props.actions.onSearchFieldChange("pageNo", 1);
+      this._refreshListData(null, null, this._onSetupMessageTimeout.bind(this), null, false, diaChinh, 1);
   }
 
   _getViewableAds(){

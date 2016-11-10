@@ -86,7 +86,10 @@ class AdsListView extends React.Component {
   }
 
   _onAllRegion() {
-
+    let diaChinh = {fullName : gui.TAT_CA_CAC_KHU_VUC};
+    this.props.actions.onSearchFieldChange("diaChinh", diaChinh);
+    this.props.actions.onSearchFieldChange("pageNo", 1);
+    this._handleSearchAction(1, diaChinh);
   }
 
   _onEndReached() {
@@ -113,7 +116,7 @@ class AdsListView extends React.Component {
     }
   }
 
-  _handleSearchAction(newPageNo){
+  _handleSearchAction(newPageNo, newDiaChinh){
     var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
         polygon, pageNo, isIncludeCountInResponse} = this.props.fields;
@@ -126,7 +129,7 @@ class AdsListView extends React.Component {
       dienTich: dienTich,
       orderBy: orderBy,
       viewport: viewport,
-      diaChinh: diaChinh,
+      diaChinh: newDiaChinh || diaChinh,
       center: center,
       radiusInKmSelectedIdx: radiusInKmSelectedIdx,
       huongNha: huongNha,

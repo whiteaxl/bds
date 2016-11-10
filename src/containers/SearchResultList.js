@@ -114,6 +114,8 @@ class SearchResultList extends Component {
         //2. Search by Polygon: name is just center
         if (diaChinh.tinhKhongDau) {
             placeName = diaChinh.fullName;
+        } else if (diaChinh.fullName) {
+            placeName = diaChinh.fullName;
         } else { //others: banKinh or currentLocation
             //let geoBox = apiUtils.getBbox(r);
             //placeName = geoBox.toString()
