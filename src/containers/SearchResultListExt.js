@@ -118,7 +118,7 @@ class SearchResultListExt extends Component {
         } else { //others: banKinh or currentLocation
             //let geoBox = apiUtils.getBbox(r);
             //placeName = geoBox.toString()
-            placeName = 'Tìm tất cả theo khung nhìn'
+            placeName = gui.KHUNG_NHIN_HIEN_TAI;
         }
 
         return placeName;

@@ -14,12 +14,12 @@ var gui = {
 	LIMIT_RECENT_SEARCH : 10,
 	LIMIT_SAVE_SEARCH : 5,
 	VI_TRI_HIEN_TAI: "Vị trí hiện tại",
-	TAT_CA_CAC_KHU_VUC: "Tất cả các khu vực",
+	KHUNG_NHIN_HIEN_TAI: "Khung nhìn hiện tại",
 
 	//Error msg
 	ERR_LoiKetNoiMayChu : "", //"Lỗi kết nối đến máy chủ!", TODO: temporary change for this error
 	INF_KhongCoKetQua : "Không tìm thấy kết quả nào phù hợp!",
-	INF_KhongCoKetQua2 : "Hãy Zoom nhỏ lại, thay đổi điều kiện Lọc hoặc nhấn vào nút bên dưới để chuyển sang xem tất cả các khu vực",
+	INF_KhongCoKetQua2 : "Hãy Zoom nhỏ lại, thay đổi điều kiện Lọc hoặc nhấn vào nút bên dưới để xem cả tin nằm ngoài khu vực đã chọn",
 	INF_KhongCoGoiYNao : "Không có gợi ý nào!",
 	ERR_MaXacMinhSai : 'Mã xác minh sai!',
 	ERR_dataRequired : 'Chưa nhập ',

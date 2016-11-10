@@ -13,7 +13,7 @@ class AdsListView extends React.Component {
     super(props);
   }
   _scrollToTop() {
-    this._scrollTo(0);
+    setTimeout(() => this._scrollTo(0), 100);
   }
   _scrollTo(pos) {
     if (this._listView) {
@@ -50,7 +50,7 @@ class AdsListView extends React.Component {
           fontSize:16, color: '#6B6F6E', paddingLeft: 15, paddingRight: 15}]}> {gui.INF_KhongCoKetQua2} </Text>
           <TouchableOpacity style={{backgroundColor:'transparent'}} onPress={this._onAllRegion.bind(this)} >
             <View style={styles.allRegion}>
-              <Text style={styles.allRegionButton}>Xem tất cả các khu vực</Text>
+              <Text style={styles.allRegionButton}>Xem tất cả</Text>
             </View>
           </TouchableOpacity>
         </View>
@@ -64,7 +64,8 @@ class AdsListView extends React.Component {
         refreshControl={
           <RefreshControl
             refreshing={false}
-            onRefresh={this._onRefresh.bind(this)}
+            onRefresh={this.loadPreviousPage.bind(this)}
+            title={this.props.fields.pageNo > 1 ? "Kéo xuống để quay lại trang trước" : "Kéo xuống để tải lại trang"}
           />
         }
 
@@ -73,8 +74,9 @@ class AdsListView extends React.Component {
         renderRow={(rowData, sectionID, rowID) => this.renderRow(rowData, sectionID, rowID, (rowID == 0), (rowID == (ds._dataBlob.s1.length-1)))}
         stickyHeaderIndices={[]}
         initialListSize={1}
-        // onEndReachedThreshold={200}
-        // onEndReached={this._onEndReached.bind(this)}
+        onEndReachedThreshold={200}
+        onEndReached={this.loadNextPage.bind(this)}
+        renderFooter={this.renderFooter.bind(this)}
         // scrollRenderAheadDistance={3}
         // pageSize={5}
         // onScroll={this.handleScroll.bind(this)}
@@ -85,11 +87,19 @@ class AdsListView extends React.Component {
     )
   }
 
+  renderFooter () {
+    return this.props.loading ? <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>
+        <GiftedSpinner size="small" />
+      </View> : null
+  }
+
   _onAllRegion() {
-    let diaChinh = {fullName : gui.TAT_CA_CAC_KHU_VUC};
+    let diaChinh = {fullName : gui.KHUNG_NHIN_HIEN_TAI};
     this.props.actions.onSearchFieldChange("diaChinh", diaChinh);
+    this.props.actions.onPolygonsChange([]);
+    this.props.actions.onSearchFieldChange("polygon", []);
     this.props.actions.onSearchFieldChange("pageNo", 1);
-    this._handleSearchAction(1, diaChinh);
+    this._handleSearchAction(1, diaChinh, []);
   }
 
   _onEndReached() {
@@ -116,7 +126,7 @@ class AdsListView extends React.Component {
     }
   }
 
-  _handleSearchAction(newPageNo, newDiaChinh){
+  _handleSearchAction(newPageNo, newDiaChinh, newPolygon){
     var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
         polygon, pageNo, isIncludeCountInResponse} = this.props.fields;
@@ -134,7 +144,7 @@ class AdsListView extends React.Component {
       radiusInKmSelectedIdx: radiusInKmSelectedIdx,
       huongNha: huongNha,
       ngayDaDang: ngayDaDang,
-      polygon: polygon,
+      polygon: newPolygon || polygon,
       pageNo: newPageNo || pageNo,
       limit: this.props.limit,
       isIncludeCountInResponse: isIncludeCountInResponse};
@@ -194,7 +204,8 @@ class AdsListView extends React.Component {
               showLastControl={showLastControl}
               loadPreviousPage={() => this.loadPreviousPage()}
               loadNextPage={() => this.loadNextPage()}
-              getPagingTitle={this.getPagingTitle.bind(this)}/>
+              getPagingTitle={this.getPagingTitle.bind(this)}
+              loading={this.props.loading}/>
     );
   }
 
@@ -244,8 +255,9 @@ class AdsListView extends React.Component {
     let totalCount = myProps.totalCount;
     let {pageNo} = myProps.fields;
     let limit = myProps.limit;
+    let totalPages = totalCount/ limit;
     let beginAdsIndex = (pageNo-1)*limit+1;
-    let endAdsIndex = (pageNo-1)*limit+numberOfAds;
+    let endAdsIndex = pageNo < totalPages ? pageNo*limit : (pageNo-1)*limit+numberOfAds;
     if (totalCount < endAdsIndex) {
       totalCount = endAdsIndex;
     }
@@ -273,8 +285,8 @@ const styles = StyleSheet.create({
   allRegion: {
     margin: 9,
     padding: 4,
-    paddingLeft: 15,
-    paddingRight: 15,
+    paddingLeft: 58,
+    paddingRight: 58,
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: gui.mainColor,

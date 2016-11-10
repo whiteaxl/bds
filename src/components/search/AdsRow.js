@@ -11,6 +11,8 @@ import DanhMuc from '../../assets/DanhMuc';
 import MHeartIcon from '../MHeartIcon';
 import CommonUtils from '../../lib/CommonUtils';
 import gui from '../../lib/gui';
+import GiftedSpinner from 'react-native-gifted-spinner';
+
 
 var imgHeight = 181;
 
@@ -153,14 +155,20 @@ class AdsRow extends React.Component {
     let {showFirstControl, isFirstRow, showLastControl, isLastRow} = this.props;
 
     if (showFirstControl && isFirstRow) {
-      firstControl = <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>
-        <TouchableHighlight onPress={this.props.loadPreviousPage} underlayColor="transparent">
-        <View style={{flexDirection: 'column'}}>
-          <Text style={myStyles.rowControl}>Nhấn vào đây để quay lại trang trước</Text>
-          <Text style={myStyles.pagingTitle}>{this.props.getPagingTitle()}</Text>
-        </View>
-      </TouchableHighlight>
-      </View>;
+      if (this.props.loading) {
+        firstControl = <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>
+          <GiftedSpinner size="small" />
+        </View>;
+      } else {
+        firstControl = <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>
+          <TouchableHighlight onPress={this.props.loadPreviousPage} underlayColor="transparent">
+            <View style={{flexDirection: 'column'}}>
+              <Text style={myStyles.rowControl}>Nhấn vào đây để quay lại trang trước</Text>
+              <Text style={myStyles.pagingTitle}>{this.props.getPagingTitle()}</Text>
+            </View>
+          </TouchableHighlight>
+        </View>;
+      }
     }
     if (showLastControl && isLastRow) {
       lastControl = <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>

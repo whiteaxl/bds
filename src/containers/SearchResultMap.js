@@ -28,7 +28,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import RelandIcon from '../components/RelandIcon';
 import MapView from 'react-native-maps';
 
-import SearchHeader from '../components/search/SearchHeader2';
+import SearchHeader from '../components/search/SearchMapHeader';
 import PriceMarker from '../components/marker/PriceMarker';
 import PriceMarker2 from '../components/marker/PriceMarker2';
 
@@ -71,7 +71,7 @@ const noCoverUrl = cfg.noCoverUrl;
 
 var imageHeight = 143;
 
-const ASPECT_RATIO = width / (height-110);
+const ASPECT_RATIO = width / (height-44);
 
 const PADDING = 0.00000005;
 const LATITUDE = 20.95389909999999;
@@ -213,6 +213,8 @@ class SearchResultMap extends Component {
     // this._onShowMessage();
     if (this.props.listAds.length == 0) {
         setTimeout(this._doRefreshListData.bind(this), 1000);
+    } else {
+        this._onShowMessage();
     }
   }
 
@@ -292,7 +294,7 @@ class SearchResultMap extends Component {
       } else if (diaChinh.fullName) {
           placeName = diaChinh.fullName;
       } else { //others: banKinh or currentLocation
-          placeName = 'Tìm tất cả theo khung nhìn'
+          placeName = gui.KHUNG_NHIN_HIEN_TAI;
       }
 
       return placeName;
@@ -315,34 +317,29 @@ class SearchResultMap extends Component {
     let placeName = this._getHeaderTitle();
 
     let allMarkers = [];
-    if (!this.props.search.drawMode || (!this.props.loading && this.props.search.map.polygons &&
+    if (!this.props.search.drawMode || (!this.props.loading && !this.state.editing && this.props.search.map.polygons &&
         this.props.search.map.polygons.length > 0)) {
       for (let i=0; i < viewableList.length; i++) {
         let marker = viewableList[i];
+        let isSelectedMarker = this.state.mmarker && this.state.mmarker.id == marker.id;
         allMarkers.push(
-            <MapView.Marker key={i} coordinate={marker.coordinate}
+            <MapView.Marker key={i} coordinate={marker.coordinate} style={{zIndex: isSelectedMarker ? viewableList.length : i}}
                 // onSelect={()=>this._onMarkerPress(marker)}
                 // onDeselect={this._onMarkerDeselect.bind(this)}
                             onPress={()=>this._onMarkerPress(marker, i)}>
               {marker.duplicate == 1 ?
-              <PriceMarker color={this.state.mmarker && this.state.mmarker.id == marker.id ? '#E73E21' :
+              <PriceMarker color={isSelectedMarker ? '#E73E21' :
                     (this.state.markedList.indexOf(marker.id)>=0 ? "grey" : gui.mainColor)} amount={marker.price}/> :
-              <PriceMarker2 duplicate={marker.duplicate} color={this.state.mmarker && this.state.mmarker.id == marker.id ? '#E73E21' :
+              <PriceMarker2 duplicate={marker.duplicate} color={isSelectedMarker ? '#E73E21' :
                     (this.state.markedList.indexOf(marker.id)>=0 ? "grey" : gui.mainColor)} amount={marker.price}/>
               }
             </MapView.Marker>);
       }
     }
+    let {polygons} = this.props.search.map;
+    let showPoline = (!polygons || polygons.length === 0) && this.state.editing;
     return (
       <View style={styles.fullWidthContainer}>
-
-        <View style={styles.search}>
-          <SearchHeader placeName={placeName} containerForm="SearchResultMap"
-                        refreshRegion={() => this.refreshRegion()} onShowMessage={() => this._onShowMessage()}
-                        isHeaderLoading={() => this._isHeaderLoading()}
-                        loadHomeData={this.props.actions.loadHomeData}
-                        owner={'map'}/>
-        </View>
 
         <View style={styles.map}>
           <MapView
@@ -353,7 +350,8 @@ class SearchResultMap extends Component {
               mapType={this.state.mapType.toLowerCase()}
               rotateEnabled={false}
               showsUserLocation={true}
-              followUserLocation={true}
+              // followUserLocation={true}
+
           >
             {allMarkers}
             {this.props.search.map.polygons.map(polygon => (
@@ -365,7 +363,7 @@ class SearchResultMap extends Component {
                     strokeWidth={3}
                 />
             ))}
-            {this.state.editing && (
+            {showPoline && (
                 <MapView.Polyline
                     coordinates={this.state.editing.coordinates}
                     strokeColor={gui.mainColor}
@@ -389,8 +387,27 @@ class SearchResultMap extends Component {
             {/*this.state.coordinate ? <MapView.Marker coordinate={this.state.coordinate}>
               <LocationMarker iconName={'cur-pos'} size={30} animation={true}/>
             </MapView.Marker> : null*/}
+            <View pointerEvents={this.state.openDraw ? "auto" : "none"}
+                  style={{width: width, height: height-44, backgroundColor: 'transparent'}}
+                  {...this._panResponder.panHandlers}>
+            </View>
           </MapView>
-          <View style={styles.mapButtonContainer}>
+
+            <View>
+                <LinearGradient colors={['rgba(0, 0, 0, 0.9)', 'transparent']}
+                                style={styles.linearGradient}>
+                    <Text style={{height: 70}}></Text>
+            <View style={styles.search}>
+                <SearchHeader placeName={placeName} containerForm="SearchResultMap"
+                              refreshRegion={() => this.refreshRegion()} onShowMessage={() => this._onShowMessage()}
+                              isHeaderLoading={() => this._isHeaderLoading()}
+                              loadHomeData={this.props.actions.loadHomeData}
+                              owner={'map'}/>
+            </View>
+                </LinearGradient>
+            </View>
+
+            <View style={styles.mapButtonContainer}>
             {this._renderDrawButton()}
             {this._renderCurrentPosButton()}
           </View>
@@ -441,11 +458,9 @@ class SearchResultMap extends Component {
         </View>
 
         {this._renderAdsModal()}
-        
+
         {this._renderLocalInfoModal()}
 
-        {this._renderDrawModal()}
-        
       </View>
     )
   }
@@ -807,17 +822,19 @@ class SearchResultMap extends Component {
       return (
           <TouchableOpacity style={{backgroundColor:'transparent'}} onPress={this._onAllRegion.bind(this)} >
               <View style={styles.allRegion}>
-                  <Text style={styles.allRegionButton}>Xem tất cả các khu vực</Text>
+                  <Text style={styles.allRegionButton}>Xem tất cả</Text>
               </View>
           </TouchableOpacity>
       );
   }
 
   _onAllRegion() {
-      let diaChinh = {fullName : gui.TAT_CA_CAC_KHU_VUC};
+      let diaChinh = {fullName : gui.KHUNG_NHIN_HIEN_TAI};
       this.props.actions.onSearchFieldChange("diaChinh", diaChinh);
+      this.props.actions.onPolygonsChange([]);
+      this.props.actions.onSearchFieldChange("polygon", []);
       this.props.actions.onSearchFieldChange("pageNo", 1);
-      this._refreshListData(null, null, this._onSetupMessageTimeout.bind(this), null, false, diaChinh, 1);
+      this._refreshListData(null, [], this._onSetupMessageTimeout.bind(this), null, false, diaChinh, 1);
   }
 
   _getViewableAds(){
@@ -929,7 +946,7 @@ class SearchResultMap extends Component {
   _onShowMessage() {
       console.log("Call SearchResultMap._onShowMessage");
     this.setState({openDetailAdsModal: false,
-        openLocalInfo: false, showMessage: true});
+        openLocalInfo: false, showMessage: true, mounting: false});
     this._onSetupMessageTimeout();
   }
 
@@ -963,17 +980,6 @@ class SearchResultMap extends Component {
         </SegmentedControlIOS>
       </View>
     </Modal>
-    )
-  }
-
-  _renderDrawModal(){
-    return (
-        <Modal style={[styles.drawModel]} isOpen={this.state.openDraw} position={"center"} ref={"drawModal"}
-               isDisabled={false} backdrop={false} onClosingState={this._onCloseDraw.bind(this)}>
-          <View style={{width: width, height: height, backgroundColor: 'transparent'}}
-              {...this._panResponder.panHandlers}>
-          </View>
-        </Modal>
     )
   }
 
@@ -1194,14 +1200,15 @@ class SearchResultMap extends Component {
         var polygon = apiUtils.convertPolygon(polygons[0]);
         // this.props.actions.onSearchFieldChange("viewport", viewport);
         this.props.actions.onSearchFieldChange("polygon", polygon);
+        this.props.actions.onPolygonsChange(polygons);
         // this.props.actions.onSearchFieldChange("diaChinh", {});
         this.props.actions.onSearchFieldChange("pageNo", 1);
-        this._refreshListData(viewport, polygon, () => {this._closeDrawIfNoResult(viewport, polygons, region)}, {}, false, {});
+        this._refreshListData(viewport, polygon, () => {this._closeDrawIfNoResult(viewport, region)}, {}, false, {});
     }
     this._updateMapView(polygons, hasPolygon);
   }
 
-  _closeDrawIfNoResult(viewport, polygons, region) {
+  _closeDrawIfNoResult(viewport, region) {
       clearTimeout(this.drawSearchTimer);
       if (this.props.listAds.length == 0) {
           setTimeout(() => this._onCloseDraw(), 50);
@@ -1209,28 +1216,27 @@ class SearchResultMap extends Component {
           this.setState({region: region});
           this.props.actions.onSearchFieldChange("viewport", viewport);
           // this.props.actions.onSearchFieldChange("diaChinh", {});
-          this._onDrawMapDone(polygons);
+          this._onDrawMapDone();
       }
   }
 
-  _updateMapView(polygons, waitForSearchDone) {
+  _updateMapView(waitForSearchDone) {
       console.log("Call SearchResultMap._updateMapView");
       this._onSetupMessageTimeout();
       if (waitForSearchDone) {
-          this.drawSearchTimer = setTimeout(() => {this._onDrawMapDone(polygons)}, 2000);
+          this.drawSearchTimer = setTimeout(() => {this._onDrawMapDone()}, 2000);
       } else {
-          this._onDrawMapDone(polygons);
+          this._onDrawMapDone();
       }
   }
 
-  _onDrawMapDone(polygons) {
+  _onDrawMapDone() {
       this.setState({
           openDetailAdsModal: false,
           openLocalInfo: false,
           editing: null,
           openDraw: false
       });
-      this.props.actions.onPolygonsChange(polygons);
       this.props.actions.onDrawModeChange(false);
   }
 
@@ -1242,7 +1248,7 @@ class SearchResultMap extends Component {
     }
     var x0 = this._previousLeft + gestureState.dx;
     var y0 = this._previousTop + gestureState.dy;
-    var lat = region.latitude + (region.longitudeDelta/ASPECT_RATIO)*(0.5-(y0-64)/(height-110));
+    var lat = region.latitude + (region.longitudeDelta/ASPECT_RATIO)*(0.5-(y0-22)/(height-44));
     var lon = region.longitude + region.longitudeDelta*(x0/width-0.5);
     var coordinate = {latitude: lat, longitude: lon};
     var { editing } = this.state;
@@ -1325,9 +1331,9 @@ var styles = StyleSheet.create({
     marginBottom: 44
   },
   mapView: {
-    flex: 1,
-    marginTop: 0,
-    marginBottom: 0
+      flex: 1,
+      position: 'absolute',
+      height: height-44
   },
   title: {
       top:0,
@@ -1335,8 +1341,21 @@ var styles = StyleSheet.create({
       justifyContent: 'flex-start',
       backgroundColor: 'white'
   },
+    linearGradient: {
+        flex: 1,
+        paddingLeft: 0,
+        paddingRight: 0,
+        backgroundColor : "transparent"
+    },
   search: {
-      top:0,
+      position: 'absolute',
+      top: 0,
+      left: 0,
+      width: width,
+      // backgroundColor: gui.mainColor,
+      // opacity: 0.55,
+      height: 70,
+      // top:0,
       alignItems: 'stretch',
       justifyContent: 'flex-start',
   },
@@ -1380,7 +1399,7 @@ var styles = StyleSheet.create({
   },
   mapButtonContainer: {
     position: 'absolute',
-    top: height-241,
+    top: height-177,
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center',
@@ -1390,7 +1409,7 @@ var styles = StyleSheet.create({
   },
   refreshButton: {
     position: 'absolute',
-    top: height-178,
+    top: height-114,
     left: width/2-21,
     flexDirection: 'column',
     alignItems: 'center',
@@ -1405,7 +1424,7 @@ var styles = StyleSheet.create({
   },
   previousButton: {
     position: 'absolute',
-    top: height-178,
+    top: height-114,
     left: width/2-79,
     flexDirection: 'column',
     alignItems: 'center',
@@ -1420,7 +1439,7 @@ var styles = StyleSheet.create({
   },
   nextButton: {
     position: 'absolute',
-    top: height-178,
+    top: height-114,
     left: width/2+37,
     flexDirection: 'column',
     alignItems: 'center',
@@ -1606,8 +1625,8 @@ var styles = StyleSheet.create({
     allRegion: {
         margin: 9,
         padding: 4,
-        paddingLeft: 15,
-        paddingRight: 15,
+        paddingLeft: 58,
+        paddingRight: 58,
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: gui.mainColor,
