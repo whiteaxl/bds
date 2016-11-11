@@ -85,6 +85,7 @@ class PostAdsMapView extends Component {
     let diaChinh ={};
     this.state = {
       region: region,
+      firstRegion: region,
       diaChinh: diaChinh,
       mapType: "standard",
       mapName: "Satellite"
@@ -119,6 +120,8 @@ class PostAdsMapView extends Component {
                           />
             </View>
 
+            {this._renderCurrentPosButton()}
+
             <View style={styles.mapButtonContainer}>
               <View style={styles.searchListButton}>
                 <Button onPress={this._onCancel.bind(this)}
@@ -147,6 +150,53 @@ class PostAdsMapView extends Component {
   _onPress(){
     console.log("PostAdsMapView press place");
     Actions.PostAdsGoogleAutoComplete({onPress: (data, details)=>this._setRegionFromGoogleAutoComplete(data, details)});
+  }
+
+  _renderCurrentPosButton() {
+    return (
+        <View style={styles.inMapButtonContainer}>
+          <TouchableOpacity onPress={this._onSuggestionLocationPress.bind(this)} >
+            <View style={[styles.bubble, styles.button, {flexDirection: 'column'}]}>
+              <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                <RelandIcon name="hand-o-up" color={'black'}
+                        mainProps={{flexDirection: 'row'}}
+                        size={20} textProps={{paddingLeft: 0}}
+                        noAction={true}></RelandIcon>
+                <Text style={[styles.positionSuggetionIconText, {color: 'black'}]}>Gợi ý</Text>
+              </View>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} >
+            <View style={[styles.bubble, styles.button, {marginTop: 10}]}>
+              <RelandIcon name="direction" color='black' mainProps={{flexDirection: 'row'}}
+                          size={20} textProps={{paddingLeft: 0}}
+                          noAction={true}></RelandIcon>
+            </View>
+          </TouchableOpacity>
+        </View>
+    );
+  }
+
+  _onCurrentLocationPress() {
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+          var region = {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA
+          };
+          this.setState({region: region});
+        },
+        (error) => {
+        },
+        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
+  }
+
+  _onSuggestionLocationPress() {
+    let region = this.state.firstRegion;
+    this.setState({region: region});
   }
 
   _setRegionFromGoogleAutoComplete(data, details){
@@ -322,21 +372,6 @@ var styles = StyleSheet.create({
     alignItems: 'stretch',
     justifyContent: 'flex-start',
   },
-  bubble: {
-    backgroundColor: gui.mainColor,
-    paddingHorizontal: 5,
-    paddingVertical: 5,
-    borderRadius: 3
-  },
-  button: {
-    width: 85,
-    paddingTop: 8,
-    paddingBottom: 8,
-    alignItems: 'center',
-    backgroundColor: gui.mainColor,
-    marginLeft: 15,
-    marginRight: 15
-  },
   mapIcon: {
     color: 'white',
     textAlign: 'center'
@@ -391,7 +426,44 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     borderColor: gui.mainColor,
     backgroundColor: 'transparent'
-  }
+  },
+
+  inMapButtonContainer: {
+    position: 'absolute',
+    top: height-250,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'center',
+    marginVertical: 5,
+    marginBottom: 0,
+    backgroundColor: 'transparent',
+  },
+  bubble: {
+    backgroundColor: gui.mainColor,
+    paddingHorizontal: 5,
+    paddingVertical: 5,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#C5C2BA',
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  button: {
+    width: 43,
+    height: 38,
+    paddingVertical: 5,
+    alignItems: 'center',
+    marginVertical: 5,
+    backgroundColor: 'white',
+    opacity: 0.9,
+    marginLeft: 15
+  },
+  positionSuggetionIconText: {
+    fontSize: 9,
+    fontFamily: gui.fontFamily,
+    fontWeight : 'normal',
+    textAlign: 'center'
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostAdsMapView);
