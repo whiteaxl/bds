@@ -72,18 +72,31 @@ class MCameraRollView extends Component {
         StatusBar.setBarStyle('light-content');
         let {photos, imageIndex, owner} = props;
 
+        let maxImage = 0;
+
         switch (owner) {
             case 'register':
                 imageIndex = 0;
+                maxImage = 1;
                 break;
             case 'profile':
                 imageIndex = 0;
+                maxImage = 1;
                 break;
             case 'chat':
                 imageIndex = 0;
+                maxImage = 1;
                 break;
             default:
                 imageIndex = imageIndex;
+                maxImage = 8;
+                for (let i=0; i< photos.length; i++){
+                    if (photos[i].uri && photos[i].uri.length>0)
+                        maxImage = maxImage -1;
+                }
+                if (maxImage<=0){
+                    maxImage = 1;
+                }
         }
 
         this.state = {
@@ -91,6 +104,7 @@ class MCameraRollView extends Component {
             selected: [],
             photos : photos,
             imageIndex: imageIndex,
+            maxImage: maxImage,
             owner: owner
         };
     }
@@ -102,17 +116,6 @@ class MCameraRollView extends Component {
             selected: images,
         });
 
-        let photos = this.state.photos;
-
-        if (this.state.imageIndex){
-            if (images.length<=0 )
-                photos.splice(this.state.imageIndex, 1);
-            else
-                photos[this.state.imageIndex] = {uri: current.image.uri, location: current.location};
-        } else {
-            photos = images.map((e) => {return {uri: e.image.uri, location: e.location}})
-        }
-        this.setState({photos: photos});
         console.log("action click");
         console.log(images);
         console.log(current);
@@ -121,31 +124,48 @@ class MCameraRollView extends Component {
 
     _onChonPressed(){
         let owner = this.state.owner;
+        let selectedPhotos = this.state.selected || [];
+        let photos = this.state.photos || [];
 
-        if (!this.state.photos ||this.state.photos.length <=0){
-            Alert.alert("Bạn chưa chọn ảnh");
+        if (['register','chat', 'profile'].indexOf(owner) >=0){
+            if (selectedPhotos.length >=0){
+                let firstPhoto = selectedPhotos[0];
+                switch(owner) {
+                    case 'register':
+                        console.log("take photo for registering user");
+                        this._onSelectRegisterAvatar(firstPhoto.image.uri);
+                        break;
+                    case 'chat':
+                        console.log("take photo for chatting");
+                        this._onSendImage(firstPhoto.image.uri);
+                        break;
+                    case 'profile':
+                        console.log("take photo for updating profile");
+                        this._onSelectProfileAvatar(firstPhoto.image.uri);
+                        break;
+                    default:
+                        console.log("do nothing");
+                }
+
+            }
             return;
         }
 
-        let photo = this.state.photos[0];
+        if ( selectedPhotos.length > 0 ){
+            photos[this.state.imageIndex] = {uri: selectedPhotos[0].image.uri, location: selectedPhotos[0].location};
 
-        switch(owner) {
-            case 'register':
-                console.log("take photo for registering user");
-                this._onSelectRegisterAvatar(photo.uri);
-                break;
-            case 'chat':
-                console.log("take photo for chatting");
-                this._onSendImage(photo.uri);
-                break;
-            case 'profile':
-                console.log("take photo for updating profile");
-                this._onSelectProfileAvatar(photo.uri);
-                break;
-            default:
-                this.props.actions.onPostAdsFieldChange('photos', this.state.photos);
-                Actions.PostAdsDetail({type: 'replace'});
+            for (var i=1; i<selectedPhotos.length; i++){
+                for (var j=0; j<8; j++){
+                    if (!photos[j] || !photos[j].uri || photos[j].uri.length<=0){
+                        photos[j] = {uri: selectedPhotos[i].image.uri, location: selectedPhotos[i].location}
+                        break;
+                    }
+                }
+            }
         }
+
+        this.props.actions.onPostAdsFieldChange('photos', this.state.photos);
+        Actions.PostAdsDetail({type: 'replace'});
     }
 
     _onBack(){
@@ -255,7 +275,7 @@ class MCameraRollView extends Component {
                     removeClippedSubviews={false}
                     groupTypes='SavedPhotos'
                     batchSize={5}
-                    maximum={isNaN(this.state.imageIndex) ? 8 : 1}
+                    maximum={this.state.maxImage}
                     selected={this.state.selected}
                     assetType='Photos'
                     imagesPerRow={3}
