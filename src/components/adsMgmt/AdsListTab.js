@@ -78,6 +78,9 @@ class AdsListTab extends Component {
   constructor(props) {
     super(props);
     StatusBar.setBarStyle('light-content');
+    this.state = {
+      scrollEnabled: true
+    }
   }
 
   componentDidMount() {
@@ -143,7 +146,8 @@ class AdsListTab extends Component {
 
     return (
       <ListView
-        refreshControl={
+          scrollEnabled = {this.state.scrollEnabled}
+          refreshControl={
           <RefreshControl
             refreshing={false}
             onRefresh={this._onRefresh.bind(this)}
@@ -454,7 +458,7 @@ class AdsListTab extends Component {
       ];
       return (
           <View key={adsID}>
-            <Swipeout right={swipeoutBtns}>
+            <Swipeout right={swipeoutBtns} scroll={event => this._allowScroll(event)}>
               <View style={myStyles.detail}>
                 {this._renderImageStack(rowData)}
                 {this._renderText(rowData)}
@@ -464,6 +468,10 @@ class AdsListTab extends Component {
           </View>
       );
     }
+  }
+
+ _allowScroll(scrollEnabled) {
+    this.setState({ scrollEnabled: scrollEnabled })
   }
 
   getMoreInfo(loaiTin, loaiNhaDat, dienTich, soPhongNgu, soTang) {
