@@ -14,7 +14,7 @@ import RelandIcon from '../../components/RelandIcon';
 
 import {Actions} from 'react-native-router-flux';
 
-export default class LoginRegisterTabBar extends React.Component {
+export default class AdsMgmtTabBar extends React.Component {
  
   renderTabOption(name, page) {
     const isTabActive = this.props.activeTab === page;

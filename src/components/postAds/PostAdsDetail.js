@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 
 import * as globalActions from '../../reducers/global/globalActions';
 import * as postAdsActions from '../../reducers/postAds/postAdsActions';
+import * as adsMgmtActions from '../../reducers/adsMgmt/adsMgmtActions';
 
 import React, {Component} from 'react';
 
@@ -49,7 +50,8 @@ const Item = Picker.Item;
 
 const actions = [
     globalActions,
-    postAdsActions
+    postAdsActions,
+    adsMgmtActions
 ];
 
 function mapStateToProps(state) {
@@ -1268,6 +1270,7 @@ class PostAdsDetail extends Component {
                         Actions.pop();
                     } else {
                         Alert.alert("Đăng tin thành công");
+                        this.props.actions.onAdsMgmtFieldChange('activeTab', loaiTinVal==0 ? 1 : 2);
                         Actions.pop();
                         Actions.AdsMgmt();
                     }
