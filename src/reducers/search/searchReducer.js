@@ -209,7 +209,7 @@ export default function searchReducer(state = initialState, action) {
 
       let savedSearch = saveSearchList.map( (e) => {
         return {
-          name: (e.query && e.query.diaChinh ? e.query.diaChinh.fullName : ''),
+          name: (e.name),
           isSaveSearch : true,
           desc : findApi.convertQuery2String(e.query),
           description : e.name,
