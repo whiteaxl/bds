@@ -117,6 +117,7 @@ export default function searchReducer(state = initialState, action) {
         query.diaChinh = {fullName: searchName};
       }
       // query.polygon = undefined;
+
       let searchObj = {
         key: searchName + '  ' + moment().format("DD-MM-YYYY HH:mm:ss"),
         name: searchName,
@@ -126,7 +127,10 @@ export default function searchReducer(state = initialState, action) {
         desc: findApi.convertQuery2String(query)
       };
 
-      recentSearchList.push(searchObj);
+      if (query.updateLastSearch) {
+        recentSearchList.push(searchObj);
+      }
+
       recentSearchList.sort((a, b) => b.timeModified - a.timeModified);
       let LIMIT = gui.LIMIT_RECENT_SEARCH;
       recentSearchList = recentSearchList.slice(0, LIMIT);
