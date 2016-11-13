@@ -934,12 +934,8 @@ class SearchResultMap extends Component {
     var previousSearchTime = this.state.searchTime;
     this.setState({searchTime: ms});
     if (ms -  previousSearchTime > delayDuration) {
+        fields.updateLastSearch = false;
 
-        if (this.props.global.currentUser && this.props.global.currentUser.userID){
-            fields.userID = this.props.global.currentUser.userID;
-            fields.updateLastSearch = true;
-        }
-        
         this.props.actions.search(
             fields
             , refreshCallback);
