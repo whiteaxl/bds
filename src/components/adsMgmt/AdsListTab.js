@@ -38,6 +38,7 @@ import cfg from "../../cfg";
 import log from '../../lib/logUtil';
 import danhMuc from '../../assets/DanhMuc';
 
+var { width, height } = Dimensions.get('window');
 
 import RelandIcon from '../../components/RelandIcon';
 
@@ -171,6 +172,7 @@ class AdsListTab extends Component {
     return (
       <View style={myStyles.fullWidthContainer}>
         {this._getListContent()}
+        {this._renderLoadingView()}
       </View>
     )
   }
@@ -416,6 +418,16 @@ class AdsListTab extends Component {
       }
     }
     */
+  }
+
+  _renderLoadingView() {
+    if (this.props.postAds.loadingUpdateAds || this.props.adsMgmt.deletingAds) {
+      return (<View style={myStyles.resultContainer}>
+        <View style={myStyles.loadingContent}>
+          <GiftedSpinner color="red" />
+        </View>
+      </View>)
+    }
   }
 
   renderRow(rowData, sectionID, rowID) {
@@ -722,6 +734,23 @@ var myStyles = StyleSheet.create({
     width: 80,
     borderRadius : 3,
     textAlign: 'center'
+  },
+  loadingContent: {
+    position: 'absolute',
+    top: -23,
+    left: width/2,
+    alignItems: 'center',
+    justifyContent: 'center'
+  },
+  resultContainer: {
+    position: 'absolute',
+    top: height/2,
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    marginVertical: 0,
+    marginBottom: 0,
+    backgroundColor: 'transparent'
   }
 
 });

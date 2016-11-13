@@ -8,7 +8,10 @@ const {
   LOGOUT_SUCCESS,
   ON_SELECTED_PACKAGE_FIELD_CHANGE,
   CHANGE_SELECTED_PACKAGE,
-  CHANGE_PACKAGE_FIELD
+  CHANGE_PACKAGE_FIELD,
+  DELETE_ADS_REQUEST,
+  DELETE_ADS_SUCCESS,
+  DELETE_ADS_FAILURE
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
@@ -22,6 +25,18 @@ export default function adsMgmtReducer(state = initialState, action) {
       const {field, value} = action.payload;
       let nextState = state.set(field, value);
       return nextState;
+    }
+
+    case DELETE_ADS_REQUEST: {
+      return state.set('deletingAds', true);
+    }
+
+    case DELETE_ADS_SUCCESS: {
+      return state.set('deletingAds', false);
+    }
+
+    case DELETE_ADS_FAILURE: {
+      return state.set('deletingAds', false);
     }
 
     case LOGOUT_SUCCESS: {

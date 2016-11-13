@@ -131,5 +131,9 @@ export default keyMirror({
   ON_PRICING_FIELD_CHANGE: null,
   ON_PRICING_REQUEST: null,
   ON_PRICING_SUCCESS: null,
-  ON_PRICING_FAILURE: null
+  ON_PRICING_FAILURE: null,
+
+  DELETE_ADS_REQUEST: null,
+  DELETE_ADS_SUCCESS: null,
+  DELETE_ADS_FAILURE: null
 });

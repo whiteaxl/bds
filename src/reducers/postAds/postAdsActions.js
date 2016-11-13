@@ -116,7 +116,7 @@ export function postAds(adsDto, token) {
 // get Update Ads
 export function getUpdateAds(adsID, token) {
     return dispatch => {
-        //dispatch(getUpdateAdsRequest());
+        dispatch(getUpdateAdsRequest());
 
         return userApi.getUpdateAds(adsID, token)
             .then(res => {
@@ -125,8 +125,9 @@ export function getUpdateAds(adsID, token) {
 
                 } else {
                     log.error("get Update Ads error", res);
+                    dispatch(getUpdateAdsFailure());
                 }
-                //dispatch(getUpdateAdsFailure());
+
                 return res;
             })
     }

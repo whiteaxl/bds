@@ -15,6 +15,7 @@ var InitialState = new Record({
   activeTab : 0,
   errorMsg:'',
   refreshing : false, //refresh when scroll down
+  deletingAds: false,
 
   package : new (Record({
     current_goiViTri : "Chưa có",

@@ -29,6 +29,14 @@ export default function postAdsReducer(state = initialState, action) {
       return nextState;
     }
 
+    case GET_UPDATE_ADS_REQUEST: {
+      return state.set('loadingUpdateAds', true);
+    }
+
+    case GET_UPDATE_ADS_FAILURE: {
+      return state.set('loadingUpdateAds', false);
+    }
+
     case POST_ADS_REQUEST:{
       return state.set('uploading', true);
     }
@@ -90,7 +98,7 @@ export default function postAdsReducer(state = initialState, action) {
           .set('chinhChuDangTin', ads.chinhChuDangTin||false)
           .set('gia', ads.gia||-1)
           .set('chiTiet', ads.chiTiet||undefined)
-          ;
+          .set('loadingUpdateAds', false);
       return nextState;
     }
   }

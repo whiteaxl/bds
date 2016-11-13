@@ -4,7 +4,10 @@ const {
   ON_ADSMGMT_FIELD_CHANGE,
   ON_SELECTED_PACKAGE_FIELD_CHANGE,
   CHANGE_SELECTED_PACKAGE,
-  CHANGE_PACKAGE_FIELD
+  CHANGE_PACKAGE_FIELD,
+  DELETE_ADS_REQUEST,
+  DELETE_ADS_SUCCESS,
+  DELETE_ADS_FAILURE,
 } = require('../../lib/constants').default;
 
 import log from "../../lib/logUtil";
@@ -42,6 +45,25 @@ export function changePackageField(field, value) {
   return {
     type: CHANGE_PACKAGE_FIELD,
     payload: {field, value}
+  };
+}
+
+
+export function onDeleteAdsRequest() {
+  return {
+    type: DELETE_ADS_REQUEST
+  };
+}
+
+export function onDeleteAdsSuccess() {
+  return {
+    type: DELETE_ADS_SUCCESS
+  };
+}
+
+export function onDeleteAdsFailure() {
+  return {
+    type: DELETE_ADS_FAILURE
   };
 }
 
@@ -96,17 +118,18 @@ export function loadLikedList(userID) {
 // delete Ads
 export function deleteAds(adsID, token) {
   return dispatch => {
-    //dispatch(onDeleteAdsRequest());
+    dispatch(onDeleteAdsRequest());
 
     return userApi.deleteAds({adsID: adsID}, token)
         .then(res => {
           if (res.success) {
-            //dispatch(onDeleteAdsSuccess());
+            dispatch(onDeleteAdsSuccess());
 
           } else {
             log.error("delete Ads error", res);
+            dispatch(onDeleteAdsFailure());
           }
-          //dispatch(onDeleteAdsfailure());
+
           return res;
         })
   }
