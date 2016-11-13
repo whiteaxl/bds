@@ -16,7 +16,7 @@ import PostAdsTitle from '../components/postAds/PostAdsTitle';
 import MCameraRollView from '../components/MCameraRollView';
 import PostAdsPrice from '../components/postAds/PostAdsPrice';
 import PostAdsLienHe from '../components/postAds/PostAdsLienHe';
-import PostAdsGoogleAutoComplete from '../components/postAds/PostAdsGoogleAutoComplete';
+import PostAdsGoogleAutoComplete from '../components/map/GoogleAutoComplete';
 
 import DuAn from '../components/DuAn';
 
@@ -52,6 +52,11 @@ import Profile from '../components/me/Profile';
 import GioiTinh from '../components/GioiTinh';
 import MoiGioi from '../components/MoiGioi';
 import Setting from '../components/me/Setting';
+
+import DinhGia from '../components/pricing/DinhGia';
+import KetQuaDinhGia from '../components/pricing/KetQuaDinhGia';
+import LoaiNhaDat from '../components/LoaiNhaDat';
+import MMapView from '../components/map/MMapView';
 
 import ChangePassword from '../components/me/ChangePassword';
 
@@ -199,6 +204,11 @@ class App extends React.Component {
 
           <Scene key='Profile' component={Profile} hideNavBar={true}/>
           <Scene key='ChangePassword' component={ChangePassword} hideNavBar={true}/>
+
+          <Scene key='DinhGia' component={DinhGia} hideNavBar={true}/>
+          <Scene key='KetQuaDinhGia' component={KetQuaDinhGia} hideNavBar={true}/>
+          <Scene key='LoaiNhaDat' component={LoaiNhaDat} hideNavBar={true}/>
+          <Scene key='MMapView' component={MMapView} hideNavBar={true}/>
 
           {/* Multi choice */}
           <Scene key='PackageTypes' component={PackageTypes} hideNavBar={true}/>

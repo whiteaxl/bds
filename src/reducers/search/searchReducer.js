@@ -318,7 +318,9 @@ export default function searchReducer(state = initialState, action) {
       console.log(recentSearch);
 
       if (recentSearch && recentSearch.length>0){
-        let lastSearch = recentSearch[recentSearch.length-1];
+        recentSearch.sort((a, b) => b.timeModified - a.timeModified);
+
+        let lastSearch = recentSearch[0];
         log.enter("searchReducer.LOGIN_SUCCESS, load last search", lastSearch);
 
         let cred = buildSearchCredentialFromSavedSearch(lastSearch.query);

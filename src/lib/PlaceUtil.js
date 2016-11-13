@@ -83,11 +83,60 @@ placeUtil.getXa = function (place) {
   return Xa;
 };
 
+// return Duong/Pho/DiaDiem
+placeUtil.getDiaDiem = function (place) {
+  var diaDiem = "";
+
+  for (var j=0; j < place.types.length; j++){
+    if (place.types[j] == placeUtil.type.PHO){
+      var number = "";
+      var street = ""
+      for (var i = 0; i < place.address_components.length; i++) {
+        var addr = place.address_components[i];
+        for (var k=0; k < addr.types.length; k++){
+          if(addr.types[k] == "street_number")
+              number = addr.long_name;
+          if (addr.types[k] == "route") {
+            street = addr.long_name;
+          }
+        }
+      }
+      diaDiem = street;
+      if (number.length >0)
+        diaDiem = number + " " + street;
+
+      if (diaDiem == "Unnamed Road")
+        return "";
+
+      return diaDiem
+    }
+
+    if (place.types[j] == placeUtil.type.DUONG){
+      for (var i = 0; i < place.address_components.length; i++) {
+        var addr = place.address_components[i];
+        var street = ""
+        for (var k=0; k < addr.types.length; k++){
+          if (addr.types[k] == "route")
+            street = addr.long_name;
+        }
+        diaDiem = street;
+        if (diaDiem == "Unnamed Road")
+            return "";
+        return diaDiem
+      }
+    }
+  }
+
+  return diaDiem;
+};
+
 placeUtil.type = {
   TINH: "administrative_area_level_1",
   HUYEN: "administrative_area_level_2",
   XA: "administrative_area_level_3",
   XA2: "sublocality_level_1",
+  DIADIEM: "neighborhood",
+  PHO: "street_address",
   DUONG: "route"
 };
 

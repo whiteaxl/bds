@@ -101,10 +101,6 @@ class PostAdsDetail extends Component {
     componentWillMount() {
         let { place, photos} = this.props.postAds
 
-        console.log("================ mount photos");
-        console.log(photos);
-        console.log("================ mount photos end");
-
         if (place && place.geo && place.geo.lat && place.geo.lon)
             return;
 
@@ -248,6 +244,12 @@ class PostAdsDetail extends Component {
                 indexArr.push(i)
             }
         }
+        if (indexArr.length <= 3){
+            for (var k = indexArr.length; k<4 ; k++){
+                indexArr.push(k);
+            }
+        }
+
         return (
             <View>
                 <View style={[myStyles.mimgList, {marginTop: 10, marginBottom: 5, paddingLeft: 17, paddingRight: 15}]} >
@@ -1285,7 +1287,7 @@ class PostAdsDetail extends Component {
     }
 
     onRefreshPostAds() {
-        this.onValueChange("photos", [{uri: ''},{uri: ''},{uri: ''},{uri: ''}]);
+        this.onValueChange("photos", [{uri: ''}]);
         this.onValueChange("loaiTin", 'ban');
         this.onValueChange("loaiNhaDat", '');
         this.onValueChange("soPhongNguSelectedIdx", -1);
@@ -1345,7 +1347,7 @@ class PostAdsDetail extends Component {
     }
 
     onCancel() {
-        Actions.Home();
+        Actions.Home({type: 'reset'});
     }
 
     onTakePhoto(imageIndex) {

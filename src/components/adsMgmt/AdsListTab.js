@@ -423,8 +423,16 @@ class AdsListTab extends Component {
 
 
     if (this.props.name == 'likedTab'){
+      var swipeoutBtns = [
+        {
+          text: 'Xóa',
+          backgroundColor:'#ff2714',
+          onPress: () => this.onLike(adsID)
+        }
+      ];
       return (
           <View key={adsID}>
+            <Swipeout right={swipeoutBtns} scroll={event => this._allowScroll(event)}>
               <View style={myStyles.detail}>
                 {/*
                  <Swiper style={myStyles.wrapper} height={imgHeight}
@@ -441,6 +449,7 @@ class AdsListTab extends Component {
                 {this._renderText(rowData)}
                 {this._renderGoiTin(rowData)}
               </View>
+            </Swipeout>
           </View>
       );
     } else {
