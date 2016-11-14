@@ -53,9 +53,7 @@ export function calculatePricing(dto) {
                     log.error("get Profile error", res);
                     dispatch(onPricingFailure(res.msg));
                 }
-                console.log("================ calculatePricing result");
-                console.log(res);
-                console.log("================ calculatePricing result");
+                
                 return res;
             })
     }

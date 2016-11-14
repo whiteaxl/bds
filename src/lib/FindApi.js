@@ -292,6 +292,8 @@ var Api = {
     },
 
   getDiaChinhFromGoogleData(dto) {
+      console.log('fetch' + `${mplaceUrl}/getPlaceByDiaChinhKhongDau` + JSON.stringify(dto));
+      
       return fetch(`${mplaceUrl}/getPlaceByDiaChinhKhongDau`, {
           method: 'POST',
           headers: {

@@ -140,9 +140,6 @@ export default function inboxReducer(state = initialState, action) {
 
     case LOADING_INBOX_SUCCESS: {
       var data = action.payload;
-      console.log("=============== load inbo successfully");
-      console.log(data);
-
       var allRows = [];
       data.forEach(
           (row) =>{
@@ -150,8 +147,6 @@ export default function inboxReducer(state = initialState, action) {
             allRows.push(row);
           }
       );
-
-      console.log("=============== load inbo successfully end");
 
       const ds = state.allInboxDS;
       const newDs = ds.cloneWithRows(allRows);

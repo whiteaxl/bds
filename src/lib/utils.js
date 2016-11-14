@@ -67,6 +67,33 @@ util.getPriceDisplay = function (val, loaiTin) {
   }
 };
 
+util.getPriceM2Display = function(val, loaiTin) {
+  try {
+    if (!val || val == -1) {
+      return "Thỏa thuận";
+    }
+    val = Number(val);
+    if (loaiTin===0) { //ban
+      if (val >= 1000) {
+        return (Math.round(val * 100000) / 100) + " tỷ/m²";
+      }else if(val< 1000 && val >= 1 ){
+        return (Math.round(val * 10) / 10) + " triệu/m²";
+      }else{
+        return (Math.round(val*1000)) + " nghìn/m²";
+      }
+    } else {
+      if(val >=1){
+        return (Math.round(val * 10) / 10) + " triệu/m²";
+      }else{
+        return (Math.round(val*1000)) + " nghìn/m²";
+      }
+    }
+  } catch(ex) {
+    console.log("Error when getPriceDisplay of " + val, ex)
+  }
+
+};
+
 util.getDienTichDisplay = function (val) {
   if (!val) {
     return "Không rõ";

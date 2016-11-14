@@ -48,7 +48,7 @@ function mapDispatchToProps(dispatch) {
 
 class DuAn extends Component {
     constructor(props) {
-        super();
+        super(props);
 
         var {duAnList, selectedDuAn} = props.postAds;
 
@@ -97,8 +97,11 @@ class DuAn extends Component {
             if( duAnList[i].placeName == option)
                 duAn = duAnList[i];
         }
-
-        this.props.actions.onPostAdsFieldChange("selectedDuAn", duAn);
+        if (this.props.func == 'pricing'){
+            this.props.onPress(duAn);
+        } else {
+            this.props.actions.onPostAdsFieldChange("selectedDuAn", duAn);
+        }
 
         Actions.pop();
     }

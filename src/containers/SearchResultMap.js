@@ -264,13 +264,7 @@ class SearchResultMap extends Component {
 
   getInitialRegion() {
     var {viewport} = this.props.search.form.fields;
-    console.log("================== show init viewport");
-    console.log(viewport);
-    console.log("================== show init viewport end");
     var region = viewport && Object.keys(viewport).length == 2 ? apiUtils.getRegionByViewport(viewport) : {};
-      console.log("================== show init region");
-      console.log(region);
-      console.log("================== show init viewport region");
     if (Object.keys(region).length <= 0 || isNaN(region.latitude)) {
       region = {latitude: LATITUDE, longitude: LONGITUDE, latitudeDelta: LATITUDE_DELTA, longitudeDelta: LONGITUDE_DELTA};
     }

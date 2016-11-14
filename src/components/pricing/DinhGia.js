@@ -24,10 +24,12 @@ import {Map} from 'immutable';
 
 import * as globalActions from '../../reducers/global/globalActions';
 import * as pricingActions from '../../reducers/pricing/pricingActions';
+import * as postAdsActions from '../../reducers/postAds/postAdsActions';
 
 const actions = [
   globalActions,
-  pricingActions
+  pricingActions,
+  postAdsActions
 ];
 
 function mapStateToProps(state) {
@@ -57,7 +59,7 @@ class DinhGia extends React.Component {
       loaiNhaDat: {key: null, value: ''},
       diaChi: "",
       diaChinh: {},
-      duAn: '',
+      duAn: {},
       dientich: '',
       location: {},
       showMoRong: false
@@ -86,8 +88,22 @@ class DinhGia extends React.Component {
     }
     this.setState({ loaiNhaDat: loaiNhaDat});
   }
+
   _onLoaiDuAn(selected) {
     this.setState({ duAn: selected});
+  }
+
+  _onDuAnPress(){
+    let diaChinhDto = this.state.diaChinh;
+    diaChinhDto.tinh = undefined;
+    diaChinhDto.huyen = undefined;
+    diaChinhDto.xa = undefined;
+    this.props.actions.getDiaChinhFromGoogleData(diaChinhDto).then(
+        (res) =>{
+          if ( res.status =='OK')
+            Actions.DuAn({func:'pricing', onPress: this._onLoaiDuAn.bind(this) })
+        }
+    )
   }
 
   _onVitri(position) {
@@ -127,11 +143,21 @@ class DinhGia extends React.Component {
 
   _onThucHien(){
     let loaiNhaDat = [this.state.loaiNhaDat.key];
+    let codeDuAn = '';
 
+    if (this.state.duAn && this.state.duAn.duAn && this.state.duAn.duAn.length>0)
+      codeDuAn = this.state.duAn.duAn;
+
+    let dienTich = -1;
+    if (this.state.dientich && this.state.dientich.length >0)
+        dienTich = Number(this.state.dientich);
+    
     let condition = {
       loaiTin:this.state.loaiTin == 'ban' ? 0 : 1,
       loaiNhaDat:loaiNhaDat,
-      position: this.state.location
+      position: this.state.location,
+      codeDuAn: codeDuAn.length>0 ? codeDuAn : undefined,
+      dienTich: dienTich >0 ? dienTich : undefined
     }
     this.props.actions.calculatePricing(condition).then(
         (res) =>{
@@ -189,9 +215,6 @@ class DinhGia extends React.Component {
   }
 
   _getLoaiNhaDatDisplay(){
-    console.log("======== loaiNhaDat dis");
-    console.log(this.state);
-    console.log(this.state.loaiNhaDat);
     if (this.state.loaiNhaDat == {})
         return "";
     return this.state.loaiNhaDat.value.substring(0, 25);
@@ -239,12 +262,12 @@ class DinhGia extends React.Component {
               </View>
               <Icon name="angle-right" size={24} color="#bebec0" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => Actions.DuAn({ onPress: this._onLoaiDuAn.bind(this) })} style={styles.touchViTri}>
+            <TouchableOpacity onPress={this._onDuAnPress.bind(this)} style={styles.touchViTri}>
               <View style={styles.viewWidth}>
                 <Text style={styles.textViTri}>Thuộc dự án</Text>
               </View>
               <View style={styles.viewLoaiNha}>
-                <Text style={styles.textNhaDat}>{this.state.duAn.substring(0, 25)}</Text>
+                <Text style={styles.textNhaDat}>{this._getDuAnText()}</Text>
               </View>
               <Icon name="angle-right" size={24} color="#bebec0" />
             </TouchableOpacity>
@@ -263,6 +286,15 @@ class DinhGia extends React.Component {
       </View>
 
     );
+  }
+
+  _getDuAnText(){
+    console.log(this.state.duAn);
+    if (this.state.duAn && this.state.duAn.fullName && this.state.duAn.fullName.length>0){
+      return this.state.duAn.fullName.substring(0, 25);
+    }
+
+    return '';
   }
 
 }

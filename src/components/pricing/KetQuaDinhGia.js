@@ -25,6 +25,7 @@ class KetQuaDinhGia extends Component {
     console.log(props);
     this.state = {
       loaiTin: props.loaiTin,
+      loaiTinKey: props.loaiTin == 'bán' ? 0 : 1,
       giaTrungBinh: props.data.giaTrungBinh,
       giaTrungBinhKhac: props.data.giaTrungBinhKhac || [],
       bdsNgangGia: props.data.bdsNgangGia,
@@ -39,7 +40,7 @@ class KetQuaDinhGia extends Component {
         <View style={styles.rowLoaiKhac}>
           <Text style={styles.textLoaiKhac}>{loainhaDat}</Text>
           <View style={styles.centerLineLoaiKhac}></View>
-          <Text style={styles.textGiaLoaiKhac}>{util.roundToTwo(gia)} triệu/m²</Text>
+          <Text style={styles.textGiaLoaiKhac}>{util.getPriceM2Display(gia, this.state.loaiTinKey)}</Text>
         </View>
     )
   }
@@ -62,7 +63,7 @@ class KetQuaDinhGia extends Component {
           <View style={styles.viewHopGia}>
             <Text style={styles.textHopGia1}>{this.state.giaTrungBinh.loaiNhaDatVal}</Text>
             <Text style={styles.textHopGia2}>{this.state.diaChi}</Text>
-            <Text style={styles.textHopGia3}>{util.roundToTwo(this.state.giaTrungBinh.giaM2TrungBinh)} triệu/m²</Text>
+            <Text style={styles.textHopGia3}>{util.getPriceM2Display(this.state.giaTrungBinh.giaM2TrungBinh, this.state.loaiTinKey)}</Text>
             <Text style={styles.textHopGia4}>Giá ước tính dựa trên dữ liệu {this.state.giaTrungBinh.count} nhà tương tự
               đã và đang {this.state.loaiTin}</Text>
             <Text style={styles.textHopGia5}>nằm trong vòng {this.state.radius}m xung quanh vị trí đã chọn</Text>
@@ -221,7 +222,7 @@ const styles = StyleSheet.create({
   centerLineLoaiKhac: {
     borderColor:'#e8e8ea',
     borderBottomWidth:1,
-    width:width/3 -20,
+    width:width/4,
     height:40,
     marginLeft: 5
   },
