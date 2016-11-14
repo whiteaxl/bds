@@ -58,6 +58,10 @@ import KetQuaDinhGia from '../components/pricing/KetQuaDinhGia';
 import LoaiNhaDat from '../components/LoaiNhaDat';
 import MMapView from '../components/map/MMapView';
 
+import Login from '../components/login/Login';
+import Register from '../components/login/Register';
+import UserComeback from '../components/login/UserComeback';
+
 import ChangePassword from '../components/me/ChangePassword';
 
 import SearchSuggestion from '../containers/PlacesAutoComplete';
@@ -220,6 +224,11 @@ class App extends React.Component {
           <Scene key='GioiTinh' component={GioiTinh} hideNavBar={true}/>
           <Scene key='MoiGioi' component={MoiGioi} hideNavBar={true}/>
           <Scene key='Setting' component={Setting} hideNavBar={true}/>
+
+
+          <Scene key='Login' component={Login} hideNavBar={true}/>
+          <Scene key='UserComeback' component={UserComeback} hideNavBar={true}/>
+          <Scene key='Register' component={Register} hideNavBar={true}/>
 
         </Scene>
       </RouterWithRedux>

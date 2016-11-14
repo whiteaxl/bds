@@ -24,6 +24,7 @@ import HomeHeader from '../components/home/HomeHeader';
 
 import MeContent from "../components/me/MeContent";
 import LoginRegister from '../containers/LoginRegister';
+import Login from '../components/login/Login';
 
 const actions = [
   globalActions,
@@ -73,7 +74,7 @@ class Me extends React.Component {
       )
     } else {
       return (
-        <LoginRegister />
+        <Login />
       );
     }
   };

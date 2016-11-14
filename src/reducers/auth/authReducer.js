@@ -32,7 +32,10 @@ const {
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAILURE,
   REGISTER_SUCCESS,
-  ON_DB_CHANGE
+  ON_DB_CHANGE,
+  CHECK_USER_EXIST_REQUEST,
+  CHECK_USER_EXIST_SUCCESS,
+  CHECK_USER_EXIST_FAILURE,
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;

@@ -135,5 +135,10 @@ export default keyMirror({
 
   DELETE_ADS_REQUEST: null,
   DELETE_ADS_SUCCESS: null,
-  DELETE_ADS_FAILURE: null
+  DELETE_ADS_FAILURE: null,
+
+  CHECK_USER_EXIST_REQUEST: null,
+  CHECK_USER_EXIST_SUCCESS: null,
+  CHECK_USER_EXIST_FAILURE: null
+
 });

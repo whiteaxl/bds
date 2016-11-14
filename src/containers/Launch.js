@@ -68,7 +68,7 @@ class Launch extends React.Component {
   }
 
     register() {
-        Actions.LoginRegister();
+        Actions.Login();
     }
 
   componentDidMount() {

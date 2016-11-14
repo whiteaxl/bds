@@ -55,7 +55,7 @@ class AdsRow extends React.Component {
     console.log("AdsRow.Onlike", this.props);
     if (!this.props.loggedIn) {
       //this.props.actions.onAuthFieldChange('activeRegisterLoginTab',0);
-      Actions.LoginRegister({page:1});
+      Actions.Login();
     } else {
       if (!this.isLiked(ads)) {
         this.props.likeAds(this.props.userID, ads.adsID)

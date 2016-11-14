@@ -9,18 +9,21 @@ import gui from "./gui";
 var userApiUrl = cfg.rootUrl + "/user/";
 var requestVerifyCodeUrl = userApiUrl + "requestVerifyCode";
 var registerUser = userApiUrl + "registerUser";
-var likeAdsUrl = cfg.rootUrl + "/likeAds";
-var unlikeAdsUrl = cfg.rootUrl + "/unlikeAds";
 var getAdsLikesUrl = cfg.rootUrl + "/user/getAdsLikes";
 var getMyAdsUrl = cfg.rootUrl + "/user/getMyAds";
 var getUpdateAdsUrl = cfg.rootUrl + "/user/getUpdateAds";
 var deleteAdsUrl = cfg.rootUrl + "/user/deleteAds";
+
+var likeAdsUrl = cfg.rootUrl + "/likeAds";
+var unlikeAdsUrl = cfg.rootUrl + "/unlikeAds";
 var saveSearchUrl = cfg.rootUrl + "/saveSearch";
 var loginUrl = cfg.rootUrl + "/login";
 var signUrl = cfg.rootUrl + "/signup";
 var profileUrl = cfg.rootUrl + "/profile";
 var updateProfileUrl = cfg.rootUrl + "/updateProfile";
 var changePasswordUrl = cfg.rootUrl + "/changePassword";
+var checkUserExistUrl = cfg.rootUrl + "/checkUserExist";
+
 
 var userApi = {
   requestVerifyCode(phone) {
@@ -44,6 +47,42 @@ var userApi = {
         console.log("Error in requestVerifyCode", e);
         return e
       });
+  },
+
+  checkUserExist(username){
+    var params = {
+      'phone': undefined,
+      'email' : undefined
+    };
+
+    if (username.indexOf("@") > -1) {
+      params.email = username;
+    } else {
+      params.phone = username;
+    };
+
+    log.info("fetch ", params, checkUserExistUrl);
+
+    return fetch(`${checkUserExistUrl}`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    })
+        .then(ApiUtils.checkStatus)
+        .then(response => {
+          log.info("Response of login", response);
+          return response.json()
+        })
+        .catch(e => {
+          log.info("Error in login", e);
+          return {
+            status : 101,
+            msg: gui.ERR_LoiKetNoiMayChu
+          }
+        });
   },
 
   login(username, password){

@@ -20,6 +20,7 @@ import * as postAdsActions from '../reducers/postAds/postAdsActions';
 import * as chatActions from '../reducers/chat/chatActions';
 import * as registerActions from '../reducers/register/registerActions';
 import * as meActions from '../reducers/me/meActions';
+import Login from '../components/login/Login';
 
 import RelandIcon from '../components/RelandIcon';
 
@@ -111,7 +112,7 @@ class PostAds extends Component {
         } else {
             return (
                 <View style={styles.container} >
-                    <LoginRegister />
+                    <Login />
                 </View>
             )
         }

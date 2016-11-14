@@ -39,7 +39,7 @@ var SearchResultDetailFooter = React.createClass({
   onLike() {
     if (!this.props.loggedIn) {
         //this.props.actions.onAuthFieldChange('activeRegisterLoginTab',0);
-        Actions.LoginRegister({page:1});
+        Actions.Login();
     } else {
         if (!this.props.isLiked) {
             this.props.likeAds(this.props.userID, this.props.ads.adsID)

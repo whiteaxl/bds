@@ -15,6 +15,7 @@ import * as globalActions from '../reducers/global/globalActions';
 import * as inboxActions from '../reducers/inbox/inboxActions';
 
 import LoginRegister from './LoginRegister';
+import Login from '../components/login/Login';
 import InboxContent from "../components/inbox/InboxContent";
 import HomeHeader from '../components/home/HomeHeader';
 
@@ -49,9 +50,6 @@ function mapDispatchToProps(dispatch) {
 class Inbox extends Component {
 	constructor(props) {
 		super(props);
-		console.log("===================== Inbox constructor");
-		console.log(props);
-		console.log("===================== Inbox constructor end");
 		props.actions.loadInbox(props.global.currentUser.userID);
 	}
 
@@ -110,7 +108,7 @@ class Inbox extends Component {
 			);
 		} else {
 			return (
-					<LoginRegister />
+					<Login />
 			);
 		}
 	}

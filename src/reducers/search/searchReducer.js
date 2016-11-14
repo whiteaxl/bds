@@ -135,18 +135,19 @@ export default function searchReducer(state = initialState, action) {
       let LIMIT = gui.LIMIT_RECENT_SEARCH;
       recentSearchList = recentSearchList.slice(0, LIMIT);
 
-      //02_6650964
       if (state.searchCalledFrom == 'Search') {
         //exclude save last search if searching by position/building project
         let diaChinh = searchObj.query.diaChinh;
         if (diaChinh &&
-            (diaChinh.fullName == "Xung quanh vị trí hiện tại"
-             || (diaChinh.duAnKhongDau && diaChinh.duAnKhongDau.length >0))){
-          console.log("save last search");
+            ( diaChinh.fullName == "Xung quanh vị trí hiện tại"
+              || diaChinh.fullName == "Trong khu vực vẽ tay"
+              || diaChinh.fullName == "Khung nhìn hiện tại"
+              || (diaChinh.duAnKhongDau && diaChinh.duAnKhongDau.length >0))
+              || (!diaChinh.tinhKhongDau || diaChinh.tinhKhongDau.length <=0)){
+          console.log("don't save last search");
         } else {
           localStorage.setLastSearch(JSON.stringify(searchObj));
         }
-
       }
       if (query.pageNo == 1) {
         return state.setIn(['result', "listAds"], data.list)
@@ -309,7 +310,7 @@ export default function searchReducer(state = initialState, action) {
             ;
       }
 
-      // return next;
+      return next;
     }
 
     case LOGIN_SUCCESS:

@@ -851,7 +851,7 @@ class SearchResultDetail extends Component {
     }
 
     if (!this.props.global.loggedIn) {
-      Actions.LoginRegister({page:1});
+      Actions.Login();
     } else {
       if (ads.dangBoi.userID == this.props.global.currentUser.userID) {
         alert(gui.ERR_NotAllowChatYourSelf);

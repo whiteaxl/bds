@@ -38,7 +38,7 @@ var SearchResultFooter = React.createClass({
 
   _onAlertSaveSearch() {
      if (!this.props.loggedIn) {
-       Actions.LoginRegister({page:1});
+       Actions.Login();
      } else {
        var name = this.props.placeName;
        AlertIOS.prompt('Tên tìm kiếm cần lưu', 'Ví dụ: Gần chỗ làm, gần bệnh viện',

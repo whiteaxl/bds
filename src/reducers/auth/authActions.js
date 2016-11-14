@@ -21,6 +21,10 @@ const {
   SIGNUP_SUCCESS,
   SIGNUP_FAILURE,
 
+  CHECK_USER_EXIST_REQUEST,
+  CHECK_USER_EXIST_SUCCESS,
+  CHECK_USER_EXIST_FAILURE,
+
   ON_AUTH_FIELD_CHANGE,
 
   RESET_PASSWORD_REQUEST,
@@ -61,6 +65,26 @@ export function forgotPasswordState() {
     type: LOGIN_STATE_FORGOT_PASSWORD
   };
 }
+/**
+ * ## checkUserExist actions
+ */
+export function checkUserExistRequest() {
+  return {
+    type: CHECK_USER_EXIST_REQUEST
+  };
+}
+
+export function checkUserExistSuccess() {
+  return {
+    type: CHECK_USER_EXIST_SUCCESS
+  };
+}
+export function checkUserExistFailure(error) {
+  return {
+    type: CHECK_USER_EXIST_FAILURE
+  };
+}
+
 
 /**
  * ## Logout actions
@@ -278,6 +302,26 @@ export function login(username, password, deviceDto) {
 
         return json;
       });
+  };
+}
+
+export function checkUserExist(username) {
+
+  return dispatch => {
+    dispatch(checkUserExistRequest());
+
+    return userApi.checkUserExist(username)
+        .then(function (json) {
+          log.info("authActions.checkUserExist", json);
+
+          if (json.exist) {
+            dispatch(checkUserExistSuccess(json));
+          } else {
+            console.log("CheckUserExist error");
+            dispatch(checkUserExistFailure());
+          }
+          return json;
+        });
   };
 }
 

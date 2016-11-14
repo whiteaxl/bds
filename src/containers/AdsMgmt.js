@@ -24,6 +24,7 @@ import log from "../lib/logUtil";
 import AdsMgmtTabBar from "../components/adsMgmt/AdsMgmtTabBar";
 import AdsListTab from '../components/adsMgmt/AdsListTab';
 import LoginRegister from '../containers/LoginRegister';
+import Login from '../components/login/Login';
 
 import HomeHeader from '../components/home/HomeHeader';
 
@@ -101,7 +102,7 @@ class AdsMgmt extends React.Component {
       )
     } else {
       return (
-        <LoginRegister />
+        <Login />
       );
     }
   };

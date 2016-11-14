@@ -493,7 +493,7 @@ class Search extends Component {
              thue.gia = newGia;
          }
      }
-     let validViewport = this.props.search.form.fields.diaChinhViewport;
+
      var fields = {
          loaiTin: newLoaiTin || loaiTin,
          ban: newBan || ban,
@@ -502,7 +502,7 @@ class Search extends Component {
          soNhaTamSelectedIdx : soNhaTamSelectedIdx,
          dienTich: newDienTich || dienTich,
          orderBy: newOrderBy || orderBy,
-         viewport: validViewport,
+         viewport: viewport,
          diaChinh: diaChinh,
          center: center,
          radiusInKmSelectedIdx: newRadiusInKmSelectedIdx || radiusInKmSelectedIdx,
@@ -512,10 +512,7 @@ class Search extends Component {
          pageNo: newPageNo || pageNo,
          limit: newLimit,
          isIncludeCountInResponse: isIncludeCountInResponse};
-
-     //TODO: fix issue keep viewport of Map when researching, need to update with other fields of state
-     this.props.actions.onSearchFieldChange("viewport", validViewport);
-
+     
      if (this.props.global.currentUser && this.props.global.currentUser.userID){
          fields.userID = this.props.global.currentUser.userID;
          fields.updateLastSearch = true;

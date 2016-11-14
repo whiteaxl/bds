@@ -609,7 +609,7 @@ class SearchResultMap extends Component {
   onLike(adsID) {
     if (!this.props.loggedIn) {
       //this.props.actions.onAuthFieldChange('activeRegisterLoginTab',0);
-      Actions.LoginRegister({page:1});
+      Actions.Login();
     } else {
       if (!this.isLiked(adsID)) {
         this.props.actions.likeAds(this.props.userID, adsID);
@@ -1136,7 +1136,7 @@ class SearchResultMap extends Component {
   _onSaveSearchPressed() {
 
      if (!this.props.loggedIn) {
-         Actions.LoginRegister({page:1});
+         Actions.Login();
      } else {
          var name = this.props.diaChinhFullName;
          AlertIOS.prompt('Tên tìm kiếm cần lưu', 'Ví dụ: Gần chỗ làm, gần bệnh viện',

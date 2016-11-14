@@ -42,7 +42,7 @@ export default function globalReducer(state = initialState, action) {
         .setIn(['currentUser','token'], action.payload.token)
         .setIn(["currentUser", "phone"], action.payload.phone)
         .setIn(['currentUser','email'], action.payload.email)
-        .setIn(['currentUser','fullName'], action.payload.userName)
+        .setIn(['currentUser','fullName'], action.payload.fullName)
         .setIn(['currentUser','avatar'], action.payload.avatar)
         .setIn(['currentUser','adsLikes'], action.payload.adsLikes)
         .setIn(['currentUser','saveSearch'], action.payload.saveSearch)

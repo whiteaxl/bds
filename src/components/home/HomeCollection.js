@@ -183,7 +183,8 @@ class ImageItem extends React.Component{
   onLike() {
     if (!this.props.loggedIn) {
       //this.props.actions.onAuthFieldChange('activeRegisterLoginTab',0);
-      Actions.LoginRegister({page:1, onLoginSuccess: () => {this.props.loadHomeData(); Actions.pop()}});
+      //Actions.LoginRegister({page:1, onLoginSuccess: () => {this.props.loadHomeData(); Actions.pop()}});
+      Actions.Login();
     } else {
       if (!this.isLiked()) {
         this.props.likeAds(this.props.userID, this.props.ads.adsID)
