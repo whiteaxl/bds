@@ -10,6 +10,7 @@ import {connect} from 'react-redux';
 
 import * as globalActions from '../reducers/global/globalActions';
 import * as adsMgmtActions from '../reducers/adsMgmt/adsMgmtActions';
+import * as searchActions from '../reducers/search/searchActions';
 
 
 import {Map} from 'immutable';
@@ -23,7 +24,6 @@ import log from "../lib/logUtil";
 
 import AdsMgmtTabBar from "../components/adsMgmt/AdsMgmtTabBar";
 import AdsListTab from '../components/adsMgmt/AdsListTab';
-import LoginRegister from '../containers/LoginRegister';
 import Login from '../components/login/Login';
 
 import HomeHeader from '../components/home/HomeHeader';
@@ -31,7 +31,8 @@ import HomeHeader from '../components/home/HomeHeader';
 
 const actions = [
   globalActions,
-  adsMgmtActions
+  adsMgmtActions,
+  searchActions
 ];
 
 function mapStateToProps(state) {
@@ -90,6 +91,8 @@ class AdsMgmt extends React.Component {
           >
             <AdsListTab name="likedTab" tabLabel="ĐÃ LƯU" ref="likedTab"
                         listAds={this.props.adsMgmt.likedList} source={"server"}
+                        likeAds={this.props.actions.likeAds}
+                        unlikeAds={this.props.actions.unlikeAds}
             />
             <AdsListTab name="sellTab" tabLabel="BÁN" ref="sellTab"
                         listAds={this.props.adsMgmt.sellList} source={"server"}

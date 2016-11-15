@@ -20,6 +20,7 @@ var gui = {
 	ERR_LoiKetNoiMayChu : "", //"Lỗi kết nối đến máy chủ!", TODO: temporary change for this error
 	INF_KhongCoKetQua : "Không tìm thấy kết quả nào phù hợp!",
 	INF_KhongCoKetQua2 : "Hãy Zoom nhỏ lại, thay đổi điều kiện Lọc hoặc nhấn vào nút bên dưới để xem cả tin nằm ngoài khu vực đã chọn",
+	INF_KhongCoKetQuaHome: "Không tìm thấy kết quả phù hợp nào! Hãy nhấn vào nút “Tìm kiếm” bên trên để thực hiện lệnh tìm kiếm khác",
 	INF_KhongCoGoiYNao : "Không có gợi ý nào!",
 	ERR_MaXacMinhSai : 'Mã xác minh sai!',
 	ERR_dataRequired : 'Chưa nhập ',

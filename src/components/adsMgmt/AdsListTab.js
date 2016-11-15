@@ -180,67 +180,14 @@ class AdsListTab extends Component {
   _renderImageStack(rowData) {
     var imageIndex = 0;
     if (rowData.image && rowData.image.cover) {
-      /*if (!rowData.image.images || rowData.image.images.length === 0) {
-        return (
-          [<MyImage imageIndex={0} rowData={rowData} imageUrl={rowData.image.cover} source={this.props.source}/>,
-          this._renderEditMenu(rowData)]
-        )
-      }
-
-      return rowData.image.images.map(imageUrl => {
-        return <MyImage key={imageIndex} imageIndex={imageIndex++} rowData={rowData} imageUrl={imageUrl} source={this.props.source}/>
-      });*/
-      if (this.props.name == 'likedTab'){
-        return (
-            <MyImage imageIndex={0} rowData={rowData} imageUrl={rowData.image.cover} source={this.props.source}/>
-        );
-      }
-
-      /*
-       [<MyImage imageIndex={0} rowData={rowData} imageUrl={rowData.image.cover} source={this.props.source}/>,
-       this._renderEditMenu(rowData)]
-       */
-
       return (
-
           <MyImage imageIndex={0} rowData={rowData} imageUrl={rowData.image.cover} source={this.props.source}/>
       );
-
     } else {
-      if (this.props.name == 'likedTab'){
-        return (
-            <MyImage imageIndex={0} rowData={rowData} imageUrl={''} source={this.props.source}/>
-        );
-      }
-      /*
-       [<MyImage imageIndex={0} rowData={rowData} imageUrl={''} source={this.props.source}/>,
-       this._renderEditMenu(rowData)]
-       */
-
       return (
           <MyImage imageIndex={0} rowData={rowData} imageUrl={''} source={this.props.source}/>
-
       );
     }
-  }
-
-  _renderEditMenu(rowData){
-    let adsID = rowData.id || rowData.adsID;
-
-    return (
-        <View style={myStyles.editContainer} key={adsID}>
-          <TouchableOpacity onPress={() => this.onEditButton(adsID)}>
-            <View style={myStyles.editButton}>
-              <Text style={[myStyles.editButtonText,{backgroundColor: gui.mainColor}]}>Sửa</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => this.onDeleteButton(adsID)}>
-            <View style={myStyles.editButton}>
-              <Text style={[myStyles.editButtonText, {backgroundColor: '#ff2714'}]}>Xóa</Text>
-            </View>
-          </TouchableOpacity>
-        </View>
-    );
   }
 
   onEditButton(adsID){
@@ -337,7 +284,7 @@ class AdsListTab extends Component {
   }
 
   _renderText(rowData) {
-    var diaChi = rowData.diaChiChiTiet || rowData.diaChiChiTiet || '';
+    var diaChi = rowData.diaChiChiTiet || rowData.diaChi || '';
     var loaiTin = rowData.loaiTin;
     var loaiNhaDat = rowData.loaiNhaDat;
     var dienTich = '';
@@ -408,16 +355,16 @@ class AdsListTab extends Component {
   }
 
   onLike(adsID) {
-    /*if (!this.props.loggedIn) {
-      Actions.LoginRegister({page:1, onLoginSuccess: () => {Actions.pop()}});
+    if (!this.props.global.loggedIn) {
+      Actions.Login();
     } else {
-      if (!this.isLiked()) {
-        this.props.likeAds(this.props.userID, adsID);
+      if (!this.isLiked(adsID)) {
+        this.props.likeAds(this.props.global.currentUser.userID, adsID);
       } else {
-        this.props.unlikeAds(this.props.userID, adsID);
+        this.props.unlikeAds(this.props.global.currentUser.userID, adsID);
       }
+      this.props.actions.loadLikedList(this.props.global.currentUser.userID);
     }
-    */
   }
 
   _renderLoadingView() {
@@ -446,17 +393,6 @@ class AdsListTab extends Component {
           <View key={adsID}>
             <Swipeout right={swipeoutBtns} scroll={event => this._allowScroll(event)}>
               <View style={myStyles.detail}>
-                {/*
-                 <Swiper style={myStyles.wrapper} height={imgHeight}
-                 showsButtons={false} autoplay={false} loop={false}
-                 onMomentumScrollEnd={function(e, state, context){log.info('index:', state.index)}}
-                 dot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]} />}
-                 activeDot={<View style={[myStyles.dot, {backgroundColor: 'transparent'}]}/>}
-                 >
-                 {this._renderImageStack(rowData)}
-                 </Swiper>
-
-                 */}
                 {this._renderImageStack(rowData)}
                 {this._renderText(rowData)}
                 {this._renderGoiTin(rowData)}
@@ -603,7 +539,7 @@ var myStyles = StyleSheet.create({
   },
   searchListView: {
     margin: 0,
-    backgroundColor: 'gray'
+    backgroundColor: 'white'
   },
 
   likedItemContainer: {

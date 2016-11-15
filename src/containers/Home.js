@@ -69,7 +69,8 @@ class Home extends Component {
 
       var newSearch = recentSearchList[0];
 
-      if (!newSearch || !newSearch.query.diaChinh
+      if (!newSearch 
+          || !newSearch.query.diaChinh
           || !newSearch.query.diaChinh.tinhKhongDau
           || newSearch.query.diaChinh.duAnKhongDau){
         return;
@@ -125,25 +126,40 @@ class Home extends Component {
       )
     }
 
-    return (
-      <ScrollView
-        automaticallyAdjustContentInsets={false}
-        showsVerticalScrollIndicator={false}
-        vertical={true}
-        style={styles.scrollView}
-        refreshControl={
+    let count = 0
+    collections.map((e) => {
+      count = count + e.data.length;
+    })
+
+    if(count<=0){
+      return (
+          <View style={{paddingLeft: 20, paddingRight: 20, justifyContent: 'center'}}>
+            <Text style={{fontFamily: gui.fontFamily,textAlign:'center',fontSize:16, color: '#6B6F6E', paddingLeft: 15, paddingRight: 15}}>
+              {gui.INF_KhongCoKetQuaHome}
+            </Text>
+          </View>
+      )
+    }  else {
+      return (
+          <ScrollView
+              automaticallyAdjustContentInsets={false}
+              showsVerticalScrollIndicator={false}
+              vertical={true}
+              style={styles.scrollView}
+              refreshControl={
           <RefreshControl
             refreshing={false}
             onRefresh={this._onRefresh.bind(this)}
           />
         }
-      >
+          >
 
-        {this.renderCollections(collections)}
+            {this.renderCollections(collections)}
 
-        <View style={{height:40}}></View>
-      </ScrollView>
-    );
+            <View style={{height:40}}></View>
+          </ScrollView>
+      );
+    }
   }
 
   _renderLoadingView(placeName) {

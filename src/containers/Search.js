@@ -512,11 +512,12 @@ class Search extends Component {
          pageNo: newPageNo || pageNo,
          limit: newLimit,
          isIncludeCountInResponse: isIncludeCountInResponse};
-     
+
+     //TODO: need to verify logic of updating last search
      if (this.props.global.currentUser && this.props.global.currentUser.userID){
          fields.userID = this.props.global.currentUser.userID;
-         fields.updateLastSearch = true;
      }
+     fields.updateLastSearch = true;
      
      this.props.actions.search(
          fields

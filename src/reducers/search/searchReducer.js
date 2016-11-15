@@ -208,6 +208,8 @@ export default function searchReducer(state = initialState, action) {
     case SAVED_SEARCH_SUCCESS:{
       let saveSearchList = action.payload;
 
+      saveSearchList.sort((a, b) => b.timeModified - a.timeModified);
+
       let savedSearch = saveSearchList.map( (e) => {
         return {
           name: (e.name),
@@ -224,6 +226,8 @@ export default function searchReducer(state = initialState, action) {
 
     case LOAD_LAST_SEARCH_SUCCESS: {
       let lastSearchList = action.payload;
+
+      lastSearchList.sort((a, b) => b.timeModified - a.timeModified);
 
       let lastSearch = lastSearchList.map( (e) => {
         return {
