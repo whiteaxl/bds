@@ -165,7 +165,8 @@ class DinhGia extends React.Component {
             Actions.KetQuaDinhGia({ loaiTin: this.state.loaiTin == 'ban' ? "bán" : "thuê",
                                     data: res.data,
                                     diaChi: this.state.diaChi,
-                                    loaiNhaDat: this.state.loaiNhaDat.value})
+                                    loaiNhaDat: this.state.loaiNhaDat.value,
+                                    duAn: this._getDuAnText()})
           }else {
             Alert.alert("Không có thông tin định giá khu vực bạn cần tìm");
           }

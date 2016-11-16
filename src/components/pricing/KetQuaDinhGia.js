@@ -1,48 +1,168 @@
 import React, {Component} from 'react';
 import {
-  Text,
-  TextInput,
-  View,
-  Image,
-  TouchableOpacity,
-  StyleSheet,
-  Platform,
-  Alert
+    Text,
+    TextInput,
+    View,
+    Image,
+    TouchableOpacity,
+    StyleSheet,
+    Platform,
+    Alert,
+    ScrollView,
+    ListView
 } from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
-
+import LinearGradient from 'react-native-linear-gradient';
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
-
+import TruliaIcon from '../TruliaIcon';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import util from "../../lib/utils";
+import MHeartIcon from '../MHeartIcon';
+// var resData = [{'img': require('../../assets/image/reland_house_large.jpg'), 'price' : '10,4 tỷ', 'address' :'KĐT Xala - Khoảng cách: 1500 m'},
+//                 {'img': require('../../assets/image/hotay1.png'), 'price' : '22,4 tỷ', 'address' :'68 Quảng An, Tây Hồ - Khoảng cách: 11900 m'},
+//                 {'img': require('../../assets/image/hoankiem.png'), 'price' : '50 tỷ', 'address' :'108 Đinh Tiên Hoàng, Hoàn Kiếm - Khoảng cách: 6600 m'},
+//                 {'img': require('../../assets/image/auco.png'), 'price' : '9,1 tỷ', 'address' :'126 Âu Cơ, Từ Liêm - Khoảng cách: 4200 m'},
+//                 {'img': require('../../assets/image/tuliem.png'), 'price' : '18 tỷ', 'address' :'75 Hùng Vương, Ba Đình - Khoảng cách: 5500 m'}]
+var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
+
+import {bindActionCreators} from 'redux';
+import {connect} from 'react-redux';
+
+import * as globalActions from '../../reducers/global/globalActions';
+import * as searchActions from '../../reducers/search/searchActions';
+
+
+import {Map} from 'immutable';
+
+const actions = [
+  globalActions,
+  searchActions
+];
+
+function mapStateToProps(state) {
+  return {
+    ...state
+  };
+}
+
+function mapDispatchToProps(dispatch) {
+  const creators = Map()
+      .merge(...actions)
+      .filter(value => typeof value === 'function')
+      .toObject();
+
+  return {
+    actions: bindActionCreators(creators, dispatch),
+    dispatch
+  };
+}
 
 class KetQuaDinhGia extends Component {
 
-   constructor(props) {
+  constructor(props) {
     super(props);
     console.log(props);
+    resData = [];
+
+    props.data.bdsNgangGia.map(
+        (e) => {
+          resData.push({
+            'img' : {uri :e.image.cover},
+            'price' : e.giaFmt,
+            'address' :e.diaChi
+          })
+        }
+    )
+
+    console.log("print bdsNgangGia");
+    console.log(resData);
+
     this.state = {
       loaiTin: props.loaiTin,
       loaiTinKey: props.loaiTin == 'bán' ? 0 : 1,
-      giaTrungBinh: props.data.giaTrungBinh,
+      giaTrungBinh: props.data.giaTrungBinh || undefined,
       giaTrungBinhKhac: props.data.giaTrungBinhKhac || [],
       bdsNgangGia: props.data.bdsNgangGia,
       diaChi: props.diaChi,
       radius: props.data.radius,
-      loaiNhaDat: props.loaiNhaDat
+      loaiNhaDat: props.loaiNhaDat,
+      duAN: props.duAn,
+      dataSource: props.data.giaTrungBinh ? ds.cloneWithRows(props.data.bdsNgangGia) : ds.cloneWithRows([]),
+      showListNhaGan: false
     };
   }
 
-  _renderGiaKhacItem(loainhaDat, gia){
-    return (
-        <View style={styles.rowLoaiKhac}>
-          <Text style={styles.textLoaiKhac}>{loainhaDat}</Text>
-          <View style={styles.centerLineLoaiKhac}></View>
-          <Text style={styles.textGiaLoaiKhac}>{util.getPriceM2Display(gia, this.state.loaiTinKey)}</Text>
-        </View>
-    )
+  _renderRow (data, sectionID , rowID){
+    let isLiked = this.isLiked(data.adsID);
+    let color = isLiked ? '#E7E9EB' : 'white';
+    let bgColor = isLiked ? '#EC1B77' : '#4A443F';
+    let bgStyle = isLiked ? {} : {opacity: 0.55};
+
+    return(
+        <TouchableOpacity style={styles.listMoRong}  onPress={() => Actions.SearchResultDetail({adsID: data.adsID, source: 'server'})} >
+          <Image style={{width: width,height:150}} source={data.image.cover ? {uri: data.image.cover} : require('../../assets/image/reland_house_large.jpg')}>
+            <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.55)']}
+                            style={styles.linearGradient2}>
+            </LinearGradient>
+            <View style={styles.heartContent}>
+              <MHeartIcon onPress={() => this.onLike(data.adsID)}
+                          color={color} bgColor={bgColor}
+                          bgStyle={bgStyle} mainProps={styles.heartButton} />
+            </View>
+
+            <View style={{marginTop: -55, marginLeft: 10}}>
+              <Text style={styles.priceText}>{util.getPriceM2Display(data.giaM2, data.loaiTin)}</Text>
+              <Text style={styles.infoText}>{data.diaChi}</Text>
+            </View>
+          </Image>
+        </TouchableOpacity>
+    );
+  }
+
+  isLiked(adsID) {
+    const {adsLikes} = this.props.global.currentUser;
+    return adsLikes && adsLikes.indexOf(adsID) > -1;
+  }
+
+  onLike(adsID) {
+    if (!this.props.global.loggedIn) {
+      Actions.Login();
+    } else {
+      if (!this.isLiked(adsID)) {
+        this.props.actions.likeAds(this.props.global.currentUser.userID, adsID);
+      } else {
+        this.props.actions.unlikeAds(this.props.global.currentUser.userID, adsID);
+      }
+    }
+  }
+
+
+  _renderNhaGan(){
+      return(
+          <View style={{flex:1, backgroundColor:'white'}}>
+            <View style={styles.viewSpace}></View>
+            <View style={styles.viewNhaDat}>
+              <Text style={styles.textNhaDat}>GIÁ ƯỚC TÍNH CỦA CÁC LOẠI NHÀ ĐẤT KHÁC</Text>
+            </View>
+          </View>
+      )
+  }
+  _renderDanhSachNha(){
+      return(
+          <View style={{flex:1, backgroundColor:'white', borderTopWidth:1, borderColor:'#e8e8ea'}}>
+            <View style={{ width:width, justifyContent:'center', alignItems:'center',marginTop:12}}>
+              <Text style={{fontSize:14, color:'black', marginTop: 1, marginBottom: 1, fontFamily: 'Open Sans'}}>NHÀ GẦN VỊ TRÍ ĐỊNH GIÁ</Text>
+              <Text style={{fontSize:12, color:'#7b8b91', marginBottom: 2, fontFamily: 'Open Sans'}}>
+                {this.state.duAn && this.state.duAn.length>0 ? this.state.duAn : this.state.diaChi}
+              </Text>
+            </View>
+            <View style={{flex:1, backgroundColor:'white', marginTop:10}}>
+              <ListView contentContainerStyle={{ flexDirection: 'row', flexWrap: 'wrap'}} dataSource={this.state.dataSource}  renderRow={this._renderRow.bind(this)}/>
+            </View>
+          </View>
+      )
   }
 
   _renderGiaKhac(){
@@ -50,9 +170,19 @@ class KetQuaDinhGia extends Component {
         <View style={styles.viewKhaoSat}>
           {
             this.state.giaTrungBinhKhac.map( (e) => {
-              return this._renderGiaKhacItem(e.loaiNhaDatVal, e.giaM2TrungBinh);
+              return this._renderGiaKhacItem(e.loaiNhaDatVal, e.giaM2TrungBinh, this.state.loaiTinKey);
             })
           }
+        </View>
+    )
+  }
+
+  _renderGiaKhacItem(loainhaDat, gia, loaiTin){
+    return (
+        <View style={styles.rowLoaiKhac}>
+          <Text style={styles.textLoaiKhac}>{loainhaDat}</Text>
+          <View style={styles.centerLineLoaiKhac}></View>
+          <Text style={styles.textGiaLoaiKhac}>{util.getPriceM2Display(gia, loaiTin)}</Text>
         </View>
     )
   }
@@ -61,8 +191,8 @@ class KetQuaDinhGia extends Component {
     if (this.state.giaTrungBinh) {
       return (
           <View style={styles.viewHopGia}>
-            <Text style={styles.textHopGia1}>{this.state.giaTrungBinh.loaiNhaDatVal}</Text>
-            <Text style={styles.textHopGia2}>{this.state.diaChi}</Text>
+            <Text style={styles.textHopGia1}>{this.state.giaTrungBinh.loaiNhaDatVal.toUpperCase()}</Text>
+            <Text style={styles.textHopGia2}>{this.state.duAn && this.state.duAn.length>0 ? this.state.duAn : this.state.diaChi}</Text>
             <Text style={styles.textHopGia3}>{util.getPriceM2Display(this.state.giaTrungBinh.giaM2TrungBinh, this.state.loaiTinKey)}</Text>
             <Text style={styles.textHopGia4}>Giá ước tính dựa trên dữ liệu {this.state.giaTrungBinh.count} nhà tương tự
               đã và đang {this.state.loaiTin}</Text>
@@ -71,50 +201,63 @@ class KetQuaDinhGia extends Component {
       )
     } else {
       return (
-      <View style={[styles.viewHopGia,{height: 150}]}>
-        <Text style={styles.textHopGia1}>{this.state.loaiNhaDat}</Text>
-        <Text style={styles.textHopGia2}>{this.state.diaChi}</Text>
-        <Text style={styles.textHopGia4}>Không có thông tin định giá</Text>
-        <Text style={styles.textHopGia5}>nằm trong vòng {this.state.radius}m xung quanh vị trí đã chọn</Text>
-      </View>
+          <View style={[styles.viewHopGia,{height: 150}]}>
+            <Text style={styles.textHopGia1}>{this.state.loaiNhaDat.toUpperCase()}</Text>
+            <Text style={styles.textHopGia2}>{this.state.duAn & this.state.duAn.length>0 ? this.state.duAn : this.state.diaChi}</Text>
+            <Text style={styles.textHopGia4}>Không có thông tin định giá</Text>
+            <Text style={styles.textHopGia5}>nằm trong vòng {this.state.radius}m xung quanh vị trí đã chọn</Text>
+          </View>
       )
     }
-
+  }
+  _renderBody(){
+    if(this.state.giaTrungBinh && this.state.giaTrungBinh.giaM2TrungBinh > 0){
+      return(
+          this._renderDanhSachNha()
+      )
+    } else {
+      return(
+          <View>
+            {this._renderNhaGan()}
+            {this._renderGiaKhac()}
+          </View>
+      )
+    }
   }
 
   render(){
     return(
-      <View style={styles.container}>
-      <View style={[styles.toolbar, Platform.OS === 'ios' ? {marginTop: 0} : null]}>
-        <TouchableOpacity onPress={()=>Actions.pop()}style={styles.modalBack} >
-            <Icon name="angle-left" size={40} color="white" />
-        </TouchableOpacity>
-        <View style={styles.viewTitle}>
-              <Text style={styles.textTitle}>Giá ước tính</Text>
-        </View>
-        <View style={styles.viewCan}></View>
-      </View>
-        <View style={styles.viewBody}>
-          {this._renderDinhGia()}
-          <View style={styles.viewSpace}></View>
-          <View style={styles.viewNhaDat}>
-            <Text style={styles.textNhaDat}>GIÁ ƯỚC TÍNH CỦA CÁC LOẠI NHÀ ĐẤT KHÁC</Text>
+
+          <View style={styles.container}>
+            <View style={[styles.toolbar, Platform.OS === 'ios' ? {marginTop: 0} : null]}>
+              <TouchableOpacity onPress={()=>Actions.pop()}style={styles.modalBack} >
+                <Icon name="angle-left" size={40} color="white" />
+              </TouchableOpacity>
+              <View style={styles.viewTitle}>
+                <Text style={styles.textTitle}>Giá ước tính</Text>
+              </View>
+              <View style={styles.viewCan}></View>
+            </View>
+            <ScrollView>
+              <View style={styles.viewBody}>
+                {this._renderDinhGia()}
+                {this._renderBody()}
+              </View>
+            </ScrollView>
           </View>
-          {this._renderGiaKhac()}
-        </View>
-      </View>
+
 
     );
   }
 }
 
 const styles = StyleSheet.create({
-   container: {
+  container: {
     backgroundColor:'transparent',
     flex:1,
     alignItems:'center'
   },
-   toolbar :{
+  toolbar :{
     height: 64,
     flexDirection:'row',
     backgroundColor:'#1ea7de',
@@ -195,11 +338,11 @@ const styles = StyleSheet.create({
   },
   viewNhaDat: {
     width:width,
-   height:39,
-   backgroundColor:'white',
-   borderColor:'#e8e8ea',
-   borderBottomWidth:1,
-   justifyContent:'center'
+    height:39,
+    backgroundColor:'white',
+    borderColor:'#e8e8ea',
+    borderBottomWidth:1,
+    justifyContent:'center'
   },
   textNhaDat: {
     fontSize:12.5,
@@ -222,7 +365,7 @@ const styles = StyleSheet.create({
   centerLineLoaiKhac: {
     borderColor:'#e8e8ea',
     borderBottomWidth:1,
-    width:width/4,
+    width:width/3 -20,
     height:40,
     marginLeft: 5
   },
@@ -237,7 +380,46 @@ const styles = StyleSheet.create({
   rowLoaiKhac: {
     backgroundColor:'white',
     flexDirection:'row',
-    justifyContent:'space-between'}
+    justifyContent:'space-between'
+  },
+  listMoRong:{
+    justifyContent:'center',
+    width: width,
+    height: 150,
+  },
+  linearGradient2: {
+    marginTop: 75,
+    height: 75,
+    paddingLeft: 0,
+    paddingRight: 0,
+    backgroundColor: "transparent",
+    flex: 1
+  },
+  heartButton: {
+    marginTop: 6,
+    marginLeft: 30
+  },
+  heartContent: {
+    position: 'absolute',
+    backgroundColor: 'transparent',
+    top: 3,
+    right: 10,
+    alignSelf: 'auto'
+  },
+
+  priceText: {
+    fontSize:15,
+    backgroundColor: 'transparent',
+    color:'white',
+    fontFamily: 'Open Sans',
+    fontWeight:'700'
+  },
+  infoText: {
+    fontSize:12,
+    backgroundColor: 'transparent',
+    color:'white',
+    fontFamily: 'Open Sans'
+  }
 });
 
-export default KetQuaDinhGia;
+export default connect(mapStateToProps, mapDispatchToProps)(KetQuaDinhGia);
