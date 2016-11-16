@@ -177,27 +177,30 @@ class DinhGia extends React.Component {
   _renderMoRong() {
     if (!this.state.showMoRong) {
       return (
-        <View style={styles.viewNenMoRong}>
-          <TouchableOpacity onPress={this.onMoRongPress.bind(this)} style={styles.viewMoRong}>
-            <Text style={styles.textMoRong}>Mở rộng</Text>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.viewNenMoRong}>
+            <TouchableOpacity onPress={this.onMoRongPress.bind(this)} style={styles.viewMoRong}>
+              <Text style={styles.textMoRong}>Mở rộng</Text>
+            </TouchableOpacity>
+          </View>
       );
     }
   }
+
   _renderDienTich() {
     if (this.state.showMoRong) {
       return (
-        <View style={styles.viewDienTich} >
-          <Text style={styles.textViTri}>Diện tích (m²)</Text>
-          <TextInput
-            keyboardType={'numeric'}
-            returnKeyType='done'
-            style={styles.inputDienTich}
-            onChangeText={(text) => this.setState({ dientich: (text) })}
-            value={this.state.dientich}
-            />
-        </View>
+          <View style={styles.viewNenMoRong} >
+            <View style={styles.viewShowDienTich}>
+              <Text style={styles.textViTri}>Diện tích (m²)</Text>
+              <TextInput
+                  keyboardType={'numeric'}
+                  returnKeyType='done'
+                  style={styles.inputDienTich}
+                  onChangeText={(text) => this.setState({ dientich: (text) })}
+                  value={this.state.dientich}
+              />
+            </View>
+          </View>
       )
     }
   }
@@ -446,13 +449,13 @@ const styles = StyleSheet.create({
   viewNenMoRong: {
     backgroundColor: '#f3f3f5',
     width: width,
-    height: 50,
+    height: 80,
     justifyContent: 'flex-end'
   },
   viewMoRong: {
     backgroundColor: 'white',
     width: width,
-    height: 30,
+    height: 42,
     justifyContent: 'center',
     alignItems: 'center',
     borderBottomWidth: 1,
@@ -484,13 +487,16 @@ const styles = StyleSheet.create({
   viewDienTich: {
     height: 42,
     width: width,
-    marginLeft: 28,
-    borderBottomWidth: 1,
-    borderColor: '#f3f3f5',
     flexDirection: 'row',
+    justifyContent: 'flex-end',
+    backgroundColor: '#f3f3f5',
+  },
+  viewShowDienTich:{
+    backgroundColor: 'white',
+    height: 42,
+    flexDirection:'row',
+    paddingLeft:28,
     alignItems: 'center',
-    justifyContent: 'flex-start',
-    backgroundColor: 'white'
   },
   inputDienTich: {
     fontSize: 15,
@@ -501,7 +507,7 @@ const styles = StyleSheet.create({
     borderColor: '#bebec0',
     borderWidth: 1,
     borderRadius: 5,
-    marginLeft: width / 3 + 30,
+    marginLeft: width / 3 + 15,
     width: 80,
     textAlign: 'right',
     alignSelf: 'center'

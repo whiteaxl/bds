@@ -26,6 +26,7 @@ var SegmentedControl2 = React.createClass({
                         keyboardType={'numeric'}
                         style={myStyles.input}
                         placeholder={this.props.placeholder}
+                        placeholderTextColor={gui.mainColor}
                         value={this.props.textValue}
                         onChangeText={(text) => this.props.onTextChange(this.props.textField, text)}
                     />
@@ -46,7 +47,7 @@ var myStyles = StyleSheet.create({
         paddingTop: 5,
         paddingLeft: 0,
         paddingBottom: 8,
-        borderTopWidth: 1,
+        borderTopWidth: 0.5,
         marginLeft: 17,
         borderTopColor: gui.separatorLine
     },
@@ -59,12 +60,12 @@ var myStyles = StyleSheet.create({
         fontSize: gui.normalFontSize,
         fontFamily: gui.fontFamily,
         paddingRight: 10,
-        marginLeft: 5,
+        marginLeft:10,
         height: 28,
-        borderColor: '#BBBBBB',
+        borderColor: gui.mainColor,
         borderWidth: 1,
         borderRadius: 5,
-        width: 80,
+        width: 68,
         textAlign: 'right',
         alignSelf: 'center'
     }

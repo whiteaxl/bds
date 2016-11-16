@@ -109,7 +109,7 @@ class MMapView extends Component {
 
   _renderGooglePlaceAutoComplete(){
     return (
-        <TouchableHighlight onPress={() => this._onPress()} style={styles.touchSearch}>
+        <TouchableHighlight onPress={this._onPress.bind(this)} style={styles.touchSearch}>
           <View style={styles.searchTextContainer}>
             <Text style={styles.searchText}>
               {this.state.diaChi ? this.state.diaChi : 'Chọn địa điểm'}
@@ -147,9 +147,12 @@ class MMapView extends Component {
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA
           };
+          console.log("========== new region");
+          console.log(region);
           this.setState({region: region});
         },
         (error) => {
+          console.log(error);
         },
         {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
@@ -187,7 +190,9 @@ class MMapView extends Component {
   }
 
   _getDiaChinhContent(data){
+    console.log("==================== nana");
     var places = data.results;
+    console.log(places);
     if (places.length > 0){
       var newPlace = places[0];
       for (var i=0; i<places.length; i++) {
@@ -221,6 +226,8 @@ class MMapView extends Component {
       if (diaDiem && diaDiem.length >0){
         fullName = diaDiem + ', ' + fullName;
       }
+
+      console.log(fullName);
 
       this.setState({diaChi: fullName});
 

@@ -2,7 +2,7 @@
 
 import  React from 'react';
 
-import {View, Text, Navigator, Platform, StyleSheet, PanResponder} from 'react-native';
+import {View, Text, Navigator, Platform, StyleSheet, PanResponder, Alert} from 'react-native';
 import {Scene, Router, TabBar, Modal, Schema, Actions, Reducer, Switch} from 'react-native-router-flux';
 
 import Launch from './Launch';

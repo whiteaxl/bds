@@ -146,7 +146,7 @@ class PostAdsDetail extends Component {
     render() {
         var {toggleState} = this.state;
         var scrollHeight = toggleState ? Dimensions.get('window').height-290 :
-            Dimensions.get('window').height-74;
+        Dimensions.get('window').height-74;
 
         return (
             <View myStyles={myStyles.container}>
@@ -204,7 +204,7 @@ class PostAdsDetail extends Component {
 
 
                 {this.state.toggleState ? <Button onPress={() => dismissKeyboard()}
-                        style={[myStyles.buttonText, {textAlign: 'right', color: gui.mainColor}]}>Xong</Button> : null}
+                                                  style={[myStyles.buttonText, {textAlign: 'right', color: gui.mainColor}]}>Xong</Button> : null}
 
                 <KeyboardSpacer onToggle={(toggleState) => this.onKeyboardToggle.bind(this, toggleState)}/>
 
@@ -341,12 +341,12 @@ class PostAdsDetail extends Component {
             <View style={[myStyles.imgList, myStyles.headerSeparator, {marginLeft: 17, paddingLeft: 0}]} >
                 <Text style={myStyles.label}>Mặt tiền (m)</Text>
                 <TextInput ref="matTien"
-                    secureTextEntry={false}
-                    keyboardType={'numeric'}
-                    style={myStyles.input}
-                    value={this.props.postAds.matTien ? this.props.postAds.matTien.toString() : ''}
-                    onChangeText={(text) => this._onNumberValueChange("matTien", text)}
-                    onFocus={this.scrolldown.bind(this,'matTien')}
+                           secureTextEntry={false}
+                           keyboardType={'numeric'}
+                           style={myStyles.input}
+                           value={this.props.postAds.matTien ? this.props.postAds.matTien.toString() : ''}
+                           onChangeText={(text) => this._onNumberValueChange("matTien", text)}
+                           onFocus={this.scrolldown.bind(this,'matTien')}
                 />
             </View>
 
@@ -799,8 +799,8 @@ class PostAdsDetail extends Component {
         var {showNamXayDung} = this.state;
         this.setState({showNamXayDung: !showNamXayDung});
         /*if (!showNamXayDung) {
-            this._onScrollNamXayDung();
-        }*/
+         this._onScrollNamXayDung();
+         }*/
     }
 
     _onPressNamXayDungHandle() {
@@ -890,7 +890,7 @@ class PostAdsDetail extends Component {
     }
 
     _onBanDoPressed() {
-        Actions.PostAdsMapView();
+        Actions.MMapView();
     }
 
     _getBanDoValue() {
@@ -969,7 +969,7 @@ class PostAdsDetail extends Component {
             </View>
         );
     }
-    
+
 
     _onGiaPressed() {
         this.setState({editGia: true});
@@ -1371,7 +1371,7 @@ var myStyles = StyleSheet.create({
     },
     headerSeparator: {
         marginTop: 0,
-        borderTopWidth: 1,
+        borderTopWidth: 0.5,
         borderTopColor: gui.separatorLine
     },
     imgList: {
@@ -1385,8 +1385,8 @@ var myStyles = StyleSheet.create({
     mimgList: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'flex-start',
-        paddingLeft: 17,
+        justifyContent: 'center',
+        paddingLeft: 12,
         paddingRight: 10,
         backgroundColor: 'white'
     },
@@ -1395,7 +1395,8 @@ var myStyles = StyleSheet.create({
         height:(width-50)/4,
         backgroundColor: "white",
         justifyContent: 'center',
-        borderWidth: 1,
+        borderWidth: 0.5,
+        marginLeft:5,
         borderColor: gui.separatorLine,
     },
     captureIcon: {
@@ -1475,7 +1476,7 @@ var myStyles = StyleSheet.create({
         paddingLeft: 17,
         paddingTop: 12,
         paddingBottom: 5,
-        borderTopWidth: 1,
+        borderTopWidth: 0.5,
         borderTopColor: '#f8f8f8',
         backgroundColor: '#f8f8f8'
     },
@@ -1485,7 +1486,7 @@ var myStyles = StyleSheet.create({
         color: '#606060',
         justifyContent :'space-between',
         padding: 0,
-        borderTopWidth: 1,
+        borderTopWidth: 0.5,
         borderTopColor: gui.separatorLine
     },
     scrollView: {

@@ -279,7 +279,8 @@ var Api = {
 
     getGeocoding(lat, lon, callback) {
         var url = "https://maps.googleapis.com/maps/api/geocode/json?" +
-            "key=AIzaSyAnioOM0qiWwUoCz8hNS8B2YuzKiYYaDdU" +
+            //"key=AIzaSyAnioOM0qiWwUoCz8hNS8B2YuzKiYYaDdU" +
+            "key=AIzaSyDhk9mOXjM79P7ceOceYSCxQO-o9YXCR3A" +
             "&latlng=" + lat + ',' + lon;
 
         return fetch(url)
@@ -288,7 +289,10 @@ var Api = {
             .then(function (data) {
                 callback(data);
             })
-            .catch(e => e);
+            .catch(e => {
+                console.log("Error: getGeocoding");
+                console.log(e)
+            });
     },
 
   getDiaChinhFromGoogleData(dto) {
@@ -314,6 +318,8 @@ var Api = {
   },
 
   getAppHomeData(lastSearchObj) {
+    console.log('fetch' + `${homeData4AppUrl}` + JSON.stringify(lastSearchObj));
+
     return fetch(`${homeData4AppUrl}`, {
       method: 'POST',
       headers: {
