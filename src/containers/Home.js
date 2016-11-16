@@ -40,15 +40,15 @@ const actions = [
 
 function mapStateToProps(state) {
   return {
-      ...state
+    ...state
   };
 }
 
 function mapDispatchToProps(dispatch) {
   const creators = Map()
-          .merge(...actions)
-          .filter(value => typeof value === 'function')
-          .toObject();
+      .merge(...actions)
+      .filter(value => typeof value === 'function')
+      .toObject();
 
   return {
     actions: bindActionCreators(creators, dispatch),
@@ -69,7 +69,7 @@ class Home extends Component {
 
       var newSearch = recentSearchList[0];
 
-      if (!newSearch 
+      if (!newSearch
           || !newSearch.query.diaChinh
           || !newSearch.query.diaChinh.tinhKhongDau
           || newSearch.query.diaChinh.duAnKhongDau){
@@ -120,9 +120,9 @@ class Home extends Component {
   renderContent(collections) {
     if (this.props.search.homeDataErrorMsg) {
       return (
-        <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
-          <Text style={styles.welcome}>{this.props.search.homeDataErrorMsg}</Text>
-        </View>
+          <View style={{flex:1, alignItems:'center', justifyContent:'center', marginTop: 30}}>
+            <Text style={styles.welcome}>{this.props.search.homeDataErrorMsg}</Text>
+          </View>
       )
     }
 
@@ -164,14 +164,14 @@ class Home extends Component {
 
   _renderLoadingView(placeName) {
     return (
-      <View style={styles.fullWidthContainer}>
-        <HomeHeader placeName={placeName} />
+        <View style={styles.fullWidthContainer}>
+          <HomeHeader placeName={placeName} />
 
-        <View style={[styles.homeDetailInfo, {marginBottom: 64}]}>
-          {/*<Text> Loading ... </Text>*/}
-          <GiftedSpinner size="large" />
+          <View style={[styles.homeDetailInfo, {marginBottom: 64}]}>
+            {/*<Text> Loading ... </Text>*/}
+            <GiftedSpinner size="large" />
+          </View>
         </View>
-      </View>
     );
   }
 
@@ -225,7 +225,7 @@ class Home extends Component {
     let collections = this.props.search.collections;
     let empty = false;
     if (collections.length ==1 && collections[0].title1 == '')
-        empty = true;
+      empty = true;
 
     return ((!recentSearchList || (recentSearchList && recentSearchList.length <= 0)) && empty)
   }
@@ -238,18 +238,46 @@ class Home extends Component {
       return this._renderLoadingView(placeName);
     }
     return (
-      <View style={styles.fullWidthContainer}>
-        <HomeHeader placeName={placeName} />
+        <View style={styles.fullWidthContainer}>
+          <HomeHeader placeName={placeName} />
 
-        <View style={styles.homeDetailInfo}>
-          {this.renderContent(this.props.search.collections)}
+          {this._renderHeaderButton()}
+
+          <View style={styles.headerSeparate}>
+          </View>
+
+          <View style={styles.homeDetailInfo}>
+            {this.renderContent(this.props.search.collections)}
+          </View>
+
+          {this._renderHeaderLoadingView()}
+
         </View>
+    )
+  }
 
-        {this._renderHeaderLoadingView()}
-
-      </View>
-		)
-	}
+  _renderHeaderButton(){
+    return (
+        <View style={styles.headerButtonContainer}>
+          <TouchableOpacity onPress={() => Actions.DinhGia()} style={styles.headerButtonIcon}>
+            <View style={styles.iconView}>
+              <Icon name="balance-scale" size={16} color="black" />
+            </View>
+            <Text style={styles.headerButton}>Định giá</Text>
+          </TouchableOpacity>
+          <View style={styles.headerColSeparator}>
+          </View>
+          <TouchableOpacity onPress={() => Actions.PostAds()} style={styles.headerButtonIcon}>
+            <View style={styles.iconRelandIcon}>
+              <RelandIcon name="camera-o" color='black'
+                          size={16} textProps={{}}
+              />
+            </View>
+            <Text style={styles.headerButton}>Đăng tin</Text>
+          </TouchableOpacity>
+        </View>
+    )
+  }
 
   _renderHeaderLoadingView() {
     if (this.props.search.loadingHomeData) {
@@ -453,8 +481,8 @@ var styles = StyleSheet.create({
     alignItems:'center',
     justifyContent: 'center',
     /*
-    borderColor: 'red',
-    borderWidth : 1,
+     borderColor: 'red',
+     borderWidth : 1,
      */
   },
   welcome: {
@@ -464,6 +492,56 @@ var styles = StyleSheet.create({
     textAlign: 'center',
     margin: 10,
   },
+  headerButtonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    height: 25,
+    marginTop: 5,
+    marginBottom: 5,
+    marginLeft: 10,
+    marginRight: 10,
+  },
+  headerButton: {
+    textAlign: 'center',
+    color: 'black',
+    fontFamily: gui.fontFamily,
+    fontSize: 14,
+    fontWeight: '300',
+    backgroundColor:'white'
+  },
+  headerSeparate: {
+    borderTopWidth: 0.5,
+    height:1,
+    borderColor: "lightgray"
+  },
+  headerColSeparator: {
+    borderWidth: 0.5,
+    height: 25,
+    width: 1,
+    borderColor: "lightgray"
+  },
+  headerButtonIcon:{
+    flexDirection:'row',
+    justifyContent:'center',
+    alignItems:'center',
+    flex:1
+
+  },
+  iconView:{
+    backgroundColor:'white',
+    height:25,
+    width:25,
+    marginRight:4,
+    justifyContent:'center',
+    alignItems:'center'
+
+  },
+  iconRelandIcon:{
+    marginTop: 4,
+    justifyContent:'center',
+    alignItems:'center',
+    marginRight:6,
+  }
 });
 
 

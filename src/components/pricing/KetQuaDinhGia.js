@@ -91,8 +91,8 @@ class KetQuaDinhGia extends Component {
         </TouchableOpacity>
         <View style={styles.viewTitle}>
               <Text style={styles.textTitle}>Giá ước tính</Text>
-        </View> 
-        <View style={styles.viewCan}></View> 
+        </View>
+        <View style={styles.viewCan}></View>
       </View>
         <View style={styles.viewBody}>
           {this._renderDinhGia()}
@@ -122,7 +122,7 @@ const styles = StyleSheet.create({
     borderColor:'#1ea7de'
   },
   modalBack: {
-    width: 40, 
+    width: 40,
     justifyContent: 'center',
     alignItems: 'center',
     marginTop:15,
@@ -130,7 +130,7 @@ const styles = StyleSheet.create({
   },
 
   viewTitle: {
-    flex: 1, 
+    flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
     marginTop: 17,
     fontFamily:'OpenSans-Bold'
   },
- 
+
   viewCan: {
     width: 40
   },
@@ -150,13 +150,13 @@ const styles = StyleSheet.create({
   },
   viewHopGia: {
     backgroundColor:'white',
-    width:width, 
+    width:width,
     height:232,
     alignItems:'center'
   },
   textHopGia1: {
     fontSize:14,
-    color:'#1ea7de', 
+    color:'#1ea7de',
     marginTop: 14,
     fontFamily:'Open Sans'
   },
@@ -174,8 +174,8 @@ const styles = StyleSheet.create({
     fontWeight:'400'
   },
   textHopGia4: {
-    fontSize:12, 
-    color:'#58585a', 
+    fontSize:12,
+    color:'#58585a',
     marginTop: 24,
     fontFamily:'Open Sans'
   },
@@ -186,9 +186,9 @@ const styles = StyleSheet.create({
     fontFamily:'Open Sans'
   },
   viewSpace: {
-    width:width, 
+    width:width,
     height:26,
-    backgroundColor:'#f3f3f5', 
+    backgroundColor:'#f3f3f5',
     borderColor:'#e8e8ea',
     borderBottomWidth:1,
     borderTopWidth:1
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
     justifyContent:'center'
   },
   textLoaiKhac: {
-    fontSize:14, 
+    fontSize:14,
     color:'gray',
     marginLeft:19,
     marginTop: 25,
@@ -228,7 +228,7 @@ const styles = StyleSheet.create({
   },
   textGiaLoaiKhac:{
     fontSize:14,
-    color:'gray', 
+    color:'gray',
     marginLeft:5,
     marginRight: 10,
     marginTop: 25,

@@ -75,8 +75,6 @@ class MMapView extends Component {
             <View style={styles.headerSeparator} />
           </View>
 
-          {this._renderGooglePlaceAutoComplete()}
-
           <View style={styles.map}>
             <MapView
               region={this.state.region}
@@ -85,6 +83,8 @@ class MMapView extends Component {
               onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
             >
             </MapView>
+
+            {this._renderGooglePlaceAutoComplete()}
 
             <View style={styles.positionIcon}>
               <RelandIcon name="home-marker" color={gui.mainColor}
@@ -109,7 +109,7 @@ class MMapView extends Component {
 
   _renderGooglePlaceAutoComplete(){
     return (
-        <TouchableHighlight onPress={() => this._onPress()}>
+        <TouchableHighlight onPress={() => this._onPress()} style={styles.touchSearch}>
           <View style={styles.searchTextContainer}>
             <Text style={styles.searchText}>
               {this.state.diaChi ? this.state.diaChi : 'Chọn địa điểm'}
@@ -127,17 +127,6 @@ class MMapView extends Component {
   _renderCurrentPosButton() {
     return (
         <View style={styles.inMapButtonContainer}>
-          <TouchableOpacity onPress={this._onSuggestionLocationPress.bind(this)} >
-            <View style={[styles.bubble, styles.button, {flexDirection: 'column'}]}>
-              <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                <RelandIcon name="hand-o-up" color={'black'}
-                        mainProps={{flexDirection: 'row'}}
-                        size={20} textProps={{paddingLeft: 0}}
-                        noAction={true}></RelandIcon>
-                <Text style={[styles.positionSuggetionIconText, {color: 'black'}]}>Gợi ý</Text>
-              </View>
-            </View>
-          </TouchableOpacity>
           <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} >
             <View style={[styles.bubble, styles.button, {marginTop: 10}]}>
               <RelandIcon name="direction" color='black' mainProps={{flexDirection: 'row'}}
@@ -363,7 +352,7 @@ var styles = StyleSheet.create({
   },
   mapButtonContainer: {
     position: 'absolute',
-    top: height-130,
+    bottom: 0,
     flexDirection: 'row',
     alignItems: 'flex-start',
     justifyContent: 'space-between',
@@ -397,8 +386,11 @@ var styles = StyleSheet.create({
   searchText: {
     fontFamily: gui.fontFamily,
     fontSize: 14,
-    width: width,
-    textAlign: 'center'
+    width: width-50,
+    textAlign: 'center',
+    paddingLeft:2,
+    paddingRight: 2,
+    backgroundColor:'transparent'
   },
   positionIcon: {
     position: 'absolute',
@@ -410,7 +402,7 @@ var styles = StyleSheet.create({
   },
   inMapButtonContainer: {
     position: 'absolute',
-    top: height-250,
+    bottom: 80,
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center',
@@ -443,6 +435,23 @@ var styles = StyleSheet.create({
     fontFamily: gui.fontFamily,
     fontWeight : 'normal',
     textAlign: 'center'
+  },
+  touchSearch:{
+    position: 'absolute',
+    top: 15,
+    borderRadius:4,
+    paddingLeft:10,
+    marginLeft:15,
+    marginRight:15,
+    marginTop: 5,
+    height:30,
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'white',
+    borderWidth:1,
+    borderColor:'#c9c9c9',
+    opacity: 0.9,
   }
 });
 

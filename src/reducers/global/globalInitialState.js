@@ -17,7 +17,7 @@ var InitialState = Record({
   })),
 
   setting: new (Record({
-    autoLoadAds : false,
+    autoLoadAds : true,
     maxAdsInMapView: 25
   })),
 
