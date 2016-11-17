@@ -147,12 +147,12 @@ class App extends React.Component {
                      hideNavBar={true} initial={true}/>
 
               <Scene key="Inbox" component={Inbox} title="Chat"
-                     iconName={"chat"} iconSize={26}
+                     iconName={"chat2"} iconSize={26}
                      icon={TabIcon} hideNavBar={true} />
               <Scene key="MicroVoice" component={MicroVoice} title="Trợ lý Landber"
                      iconName={"mic-on"} iconSize={26} icon={TabIcon} hideNavBar={true}/>
               <Scene key="AdsMgmt" component={AdsMgmt} title="Quản lý tin" hideNavBar={true}
-                     iconName={"mgmt"} iconSize={26} icon={TabIcon}/>
+                     iconName={"mgmt2"} iconSize={26} icon={TabIcon}/>
               <Scene key="Me" component={Me} title="Tôi" hideNavBar={true}
                      iconName={"me"} iconSize={26} icon={TabIcon}/>
               {
