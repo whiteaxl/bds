@@ -38,7 +38,10 @@ const {
   CHANGE_HOME_REFRESHING,
   SAVED_SEARCH_SUCCESS,
   LOAD_LAST_SEARCH_SUCCESS,
-  LOGIN_SUCCESS
+  LOGIN_SUCCESS,
+  UPLOADING_LIKED_ADS,
+  SEARCH_LIST_LIKE_FAILURE,
+  SEARCH_LIST_UNLIKE_FAILURE
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
@@ -169,6 +172,41 @@ export default function searchReducer(state = initialState, action) {
             ;
       }
     }
+
+    case UPLOADING_LIKED_ADS: {
+      let uploadingLikedAds = { adsID: action.payload,
+                                uploading: true
+                               };
+      return state.set("uploadingLikedAds", uploadingLikedAds)
+    }
+
+    case SEARCH_LIST_LIKE_SUCCESS: {
+      let uploadingLikedAds = { adsID: null,
+                                uploading: false
+                              };
+      return state.set("uploadingLikedAds", uploadingLikedAds)
+    }
+      
+    case SEARCH_LIST_LIKE_FAILURE: {
+      let uploadingLikedAds = { adsID: null,
+                                uploading: false
+                              };
+      return state.set("uploadingLikedAds", uploadingLikedAds)
+    }      
+    
+    case SEARCH_LIST_UNLIKE_SUCCESS: {
+      let uploadingLikedAds = { adsID: null,
+                                uploading: false
+                              };
+      return state.set("uploadingLikedAds", uploadingLikedAds)
+    }
+
+    case SEARCH_LIST_UNLIKE_FAILURE: {
+      let uploadingLikedAds = { adsID: null,
+                                uploading: false
+                              };
+      return state.set("uploadingLikedAds", uploadingLikedAds)
+    }      
 
     case CHANGE_LOADING_SEARCH_RESULT :
     {

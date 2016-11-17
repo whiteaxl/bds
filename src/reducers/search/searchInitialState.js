@@ -118,6 +118,10 @@ var InitialState = Record({
     recentSearchList : [],
     //home screen
     loadingHomeData : false,
+    uploadingLikedAds: {
+        adsID: null,
+        uploading: false
+    },
     homeRefreshing : false, // for scroll down
     collections : [{
         title1 : "",

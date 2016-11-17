@@ -14,6 +14,8 @@ import {Actions} from 'react-native-router-flux';
 
 import MHeartIcon from '../MHeartIcon';
 
+import GiftedSpinner from 'react-native-gifted-spinner';
+
 import cfg from "../../cfg";
 
 import CommonUtils from '../../lib/CommonUtils';
@@ -43,7 +45,9 @@ export default class HomeCollection extends Component {
           <ImageItem ads={ads} adsLikes={this.props.adsLikes} loggedIn={this.props.loggedIn}
                      likeAds={this.props.likeAds}
                      unlikeAds={this.props.unlikeAds} userID={this.props.userID}
-                     loadHomeData={this.props.loadHomeData}/>
+                     loadHomeData={this.props.loadHomeData}
+                     uploadingLikedAds = {this.props.uploadingLikedAds}
+          />
         </TouchableOpacity>
       );
     } else {
@@ -100,13 +104,21 @@ export default class HomeCollection extends Component {
 
 
 class ImageItem extends React.Component{
+  constructor(props){
+    super(props);
+    console.log("============= render HomeCollection ImageItem.constructor" + props.ads.adsID);
+    let {adsLikes, ads} = props;
+    let initLikedState = (adsLikes && adsLikes.indexOf(ads.adsID) > -1);
+
+    this.state = {
+      uploadingLikedAds: props.uploadingLikedAds,
+      initLikedState: initLikedState
+    }
+  }
   render() {
     let {adsID, cover, giaFmt, khuVuc} = this.props.ads;
     let detail = this.getMoreInfo(this.props.ads);
-    let isLiked = this.isLiked();
-    let color = isLiked ? '#E7E9EB' : 'white';
-    let bgColor = isLiked ? '#EC1B77' : '#4A443F';
-    let bgStyle = isLiked ? {} : {opacity: 0.55};
+
     let imageUri = {uri: cover};
     
     if (noCoverUrl == cover) {
@@ -125,9 +137,7 @@ class ImageItem extends React.Component{
                         style={styles.linearGradient2}>
         </LinearGradient>
 
-        <View style={styles.heartContent}>
-          <MHeartIcon onPress={() => this.onLike()} color={color} bgColor={bgColor} bgStyle={bgStyle} mainProps={styles.heartButton} />
-        </View>
+        {this._renderHeartButton()}
 
         <View style={styles.itemContent}>
           <View style={{flex: 1, paddingRight: 7}}>
@@ -138,6 +148,29 @@ class ImageItem extends React.Component{
         </View>
       </Image>
     );
+  }
+
+  _renderHeartButton(){
+    let isLiked = this.isLiked();
+    let color = isLiked ? '#E7E9EB' : 'white';
+    let bgColor = isLiked ? '#EC1B77' : '#4A443F';
+    let bgStyle = isLiked ? {} : {opacity: 0.55};
+
+    if (this.props.uploadingLikedAds.uploading && this.props.uploadingLikedAds.adsID == this.props.ads.adsID){
+      return (
+          <View style={styles.heartContent}>
+            <View style={styles.heartButton}>
+              <GiftedSpinner size="small" color="white"/>
+            </View>
+          </View>);
+    } else {
+      return (
+          <View style={styles.heartContent}>
+            <MHeartIcon onPress={() => this.onLike()} color={color} bgColor={bgColor} bgStyle={bgStyle}
+                        mainProps={styles.heartButton}/>
+          </View>
+      )
+    }
   }
 
   getMoreInfo(ads) {
@@ -182,14 +215,12 @@ class ImageItem extends React.Component{
 
   onLike() {
     if (!this.props.loggedIn) {
-      //this.props.actions.onAuthFieldChange('activeRegisterLoginTab',0);
-      //Actions.LoginRegister({page:1, onLoginSuccess: () => {this.props.loadHomeData(); Actions.pop()}});
       Actions.Login();
     } else {
       if (!this.isLiked()) {
-        this.props.likeAds(this.props.userID, this.props.ads.adsID)
+        this.props.likeAds(this.props.userID, this.props.ads.adsID);
       } else {
-        this.props.unlikeAds(this.props.userID, this.props.ads.adsID)
+        this.props.unlikeAds(this.props.userID, this.props.ads.adsID);
       }
     }
   }

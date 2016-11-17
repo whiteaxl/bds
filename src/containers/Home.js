@@ -108,6 +108,7 @@ class Home extends Component {
                              likeAds={this.props.actions.likeAds}
                              unlikeAds={this.props.actions.unlikeAds} userID={userID}
                              loadHomeData={this.props.actions.loadHomeData}
+                             uploadingLikedAds={this.props.search.uploadingLikedAds}
                              maxAdsInMapView={this.props.global.setting.maxAdsInMapView}/>
     });
   }
@@ -495,7 +496,7 @@ var styles = StyleSheet.create({
   headerButtonContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    height: 25,
+    height: 26,
     marginTop: 5,
     marginBottom: 5,
     marginLeft: 10,
@@ -503,11 +504,10 @@ var styles = StyleSheet.create({
   },
   headerButton: {
     textAlign: 'center',
-    color: 'black',
     fontFamily: gui.fontFamily,
     fontSize: 14,
-    fontWeight: '300',
-    backgroundColor:'white'
+    fontWeight: '500',
+    backgroundColor: 'transparent'
   },
   headerSeparate: {
     borderTopWidth: 0.5,

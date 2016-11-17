@@ -35,8 +35,10 @@ const {
   CHANGE_HOME_REFRESHING,
   SAVED_SEARCH_SUCCESS,
   SAVED_SEARCH_FAIL,
-  LOAD_LAST_SEARCH_SUCCESS
-
+  LOAD_LAST_SEARCH_SUCCESS,
+  UPLOADING_LIKED_ADS,
+  SEARCH_LIST_LIKE_FAILURE,
+  SEARCH_LIST_UNLIKE_FAILURE
 } = require('../../lib/constants').default;
 
 export function onSearchFieldChange(field, value) {
@@ -235,10 +237,23 @@ export function loadLastSearchSuccess(payload) {
   }
 }
 
+export function onUploadingLikedAds(adsID) {
+  return {
+    type: UPLOADING_LIKED_ADS,
+    payload: adsID
+  }
+}
+
 export function likeSuccess(payload) {
   return {
     type: SEARCH_LIST_LIKE_SUCCESS,
     payload: payload
+  }
+}
+
+export function likeFailure() {
+  return {
+    type: SEARCH_LIST_LIKE_FAILURE
   }
 }
 
@@ -249,8 +264,16 @@ export function unlikeSuccess(payload) {
   }
 }
 
+export function unlikeFailure() {
+  return {
+    type: SEARCH_LIST_UNLIKE_FAILURE
+  }
+}
+
 export function likeAds(userID, adsID) {
   return dispatch => {
+    dispatch(onUploadingLikedAds(adsID));
+
     let dto = {
       userID: userID,
       adsID: adsID
@@ -262,14 +285,18 @@ export function likeAds(userID, adsID) {
           dispatch(likeSuccess(res.adsLikes));
         }
       } else {
+        dispatch(likeFailure());
         Alert.alert("Không thành công!");
       }
+      return res;
     });
   }
 }
 
 export function unlikeAds(userID, adsID) {
   return dispatch => {
+    dispatch(onUploadingLikedAds(adsID));
+
     let dto = {
       userID: userID,
       adsID: adsID
@@ -281,8 +308,10 @@ export function unlikeAds(userID, adsID) {
           dispatch(unlikeSuccess(res.adsLikes));
         }
       } else {
+        dispatch(unlikeFailure());
         Alert.alert("Không thành công!");
       }
+      return res;
     });
   }
 }
