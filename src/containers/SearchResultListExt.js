@@ -20,7 +20,7 @@ import {Actions} from 'react-native-router-flux';
 
 import SearchResultFooter from '../components/searchList/SearchResultFooter';
 
-import SearchHeader from '../components/searchList/SearchHeader';
+import MoreInfoHeader from '../components/searchList/MoreInfoHeader';
 
 import gui from '../lib/gui';
 
@@ -134,14 +134,16 @@ class SearchResultListExt extends Component {
     render() {
         log.info("Call SearchResultList render", this.props.fields);
         //log.info(this.props);
-        let placeName = this._getHeaderTitle();
+        let title1 = this.props.collection.title1;
+        let title2 = this.props.collection.title2;
         return (
             <MenuContext style={{ flex : 1 }}>
             <View style={myStyles.fullWidthContainer}>
                 <View style={myStyles.search}>
-                    <SearchHeader placeName={placeName} onShowMessage={() => this._onShowMessage()}
-                                  refreshRegion={() => this.props.actions.onChangeListScrollPos(0)}
-                                  owner={'list'}
+                    <MoreInfoHeader title1={title1} title2={title2}
+                                    onShowMessage={() => this._onShowMessage()}
+                                    refreshRegion={() => this.props.actions.onChangeListScrollPos(0)}
+                                    owner={'list'}
                     />
                 </View>
 
