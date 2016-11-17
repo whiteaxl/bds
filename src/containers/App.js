@@ -61,6 +61,8 @@ import KetQuaDinhGia from '../components/pricing/KetQuaDinhGia';
 import LoaiNhaDat from '../components/LoaiNhaDat';
 import MMapView from '../components/map/MMapView';
 
+import FullLine from '../components/line/FullLine';
+
 import Login from '../components/login/Login';
 import Register from '../components/login/Register';
 import UserComeback from '../components/login/UserComeback';
@@ -227,7 +229,6 @@ class App extends React.Component {
             <Scene key='GioiTinh' component={GioiTinh} hideNavBar={true}/>
             <Scene key='MoiGioi' component={MoiGioi} hideNavBar={true}/>
             <Scene key='Setting' component={Setting} hideNavBar={true}/>
-
 
             <Scene key='Login' component={Login} hideNavBar={true}/>
             <Scene key='UserComeback' component={UserComeback} hideNavBar={true}/>

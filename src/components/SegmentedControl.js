@@ -14,6 +14,7 @@ var SegmentedControl = React.createClass({
                     </Text>
                 </View>
                 <View style={{paddingLeft: 0, paddingRight: 6, paddingBottom: 9}}>
+
                     <SegmentedControlIOS
                         values={this.props.values}
                         selectedIndex={this.props.selectedIndexAttribute}
@@ -38,7 +39,7 @@ var myStyles = StyleSheet.create({
         paddingTop: 5,
         paddingLeft: 0,
         paddingBottom: 8,
-        borderTopWidth: 1,
+        borderTopWidth: 0,
         marginLeft: 17,
         borderTopColor: gui.separatorLine
     },

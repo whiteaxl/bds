@@ -13,6 +13,7 @@ import {
 import BaseComponent from './BaseComponent';
 
 import TruliaIcon from './TruliaIcon';
+import FullLine from '../components/line/FullLine';
 
 import gui from '../lib/gui';
 
@@ -127,7 +128,7 @@ class MultipleChoice extends BaseComponent {
             return this.props.renderSeparator(option);
         }
 
-        return (<View style={Styles.separator}></View>);
+        return (<FullLine style={{marginTop: 5,marginBottom: 5}} />);
     }
 
     _renderText(option) {
@@ -209,7 +210,7 @@ var Styles = StyleSheet.create({
     },
 
     separator: {
-        height: 1,
+        height: 0,
         marginTop: 5,
         marginBottom: 5,
         backgroundColor: gui.separatorLine

@@ -12,10 +12,12 @@ import {Map} from 'immutable';
 import React, {Component} from 'react';
 import TruliaIcon from '../../components/TruliaIcon'
 
+import FullLine from '../../components/line/FullLine'
+
 import {
-  Text, View, Image, ListView, Dimensions, StatusBar
-  , RecyclerViewBackedScrollView, TouchableHighlight, StyleSheet
-  , Alert, RefreshControl, ScrollView, TouchableOpacity
+    Text, View, Image, ListView, Dimensions, StatusBar
+    , RecyclerViewBackedScrollView, TouchableHighlight, StyleSheet
+    , Alert, RefreshControl, ScrollView, TouchableOpacity
 } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
@@ -40,9 +42,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   const creators = Map()
-    .merge(...actions)
-    .filter(value => typeof value === 'function')
-    .toObject();
+      .merge(...actions)
+      .filter(value => typeof value === 'function')
+      .toObject();
 
   return {
     actions: bindActionCreators(creators, dispatch),
@@ -90,66 +92,72 @@ class MeContent extends Component {
     let avatarUri = this.props.global.currentUser.avatar ? {uri: this.props.global.currentUser.avatar} :
         require('../../assets/image/register_avatar_icon.png');
     return (
-      <ScrollView style={styles.fullWidthContainer}>
-        <TouchableOpacity onPress={this._onProfile.bind(this)}>
-          <View style={styles.settingLine}>
-            <Image
-              style={styles.avatarIcon}
-              resizeMode={Image.resizeMode.cover}
-              source={avatarUri}
-            />
+        <ScrollView style={styles.fullWidthContainer}>
+          <TouchableOpacity onPress={this._onProfile.bind(this)}>
+            <View style={styles.settingLine}>
+              <Image
+                  style={styles.avatarIcon}
+                  resizeMode={Image.resizeMode.cover}
+                  source={avatarUri}
+              />
 
-            <View style={styles.profileLabel}>
-              <Text style={styles.lineLabel}>
-                {this.props.global.currentUser.fullName}
-              </Text>
-              <Text style={styles.lineSmall}>
-                {this.props.global.currentUser.phone}
-              </Text>
-              <Text style={styles.lineSmall}>
-                {this.props.global.currentUser.email}
-              </Text>
+              <View style={styles.profileLabel}>
+                <Text style={styles.lineLabel}>
+                  {this.props.global.currentUser.fullName}
+                </Text>
+                <Text style={styles.lineSmall}>
+                  {this.props.global.currentUser.phone}
+                </Text>
+                <Text style={styles.lineSmall}>
+                  {this.props.global.currentUser.email}
+                </Text>
+              </View>
+
+              <View style={styles.rightIcon}>
+                <TruliaIcon name="arrow-right" color={gui.arrowColor} size={18} />
+              </View>
             </View>
+          </TouchableOpacity>
+          <FullLine />
+          <View style={styles.boxSeparator}><Text/></View>
+          <FullLine />
 
-            <View style={styles.rightIcon}>
-              <TruliaIcon name="arrow-right" color={gui.arrowColor} size={18} />
+          <LineWithIcon iconSource = {require('../../assets/image/me/me_napTien.png')}
+                        title = "Nạp tiền" />
+          <FullLine  style={{marginLeft:63}}/>
+          <LineWithIcon iconSource = {require('../../assets/image/me/me_lichSu.png')}
+                        title = "Lịch sử giao dịch" />
+          <FullLine />
+          <View style={styles.boxSeparator}><Text/></View>
+          <FullLine />
+
+          {/*<LineWithIcon iconSource = {require('../../assets/image/me/me_goiDv.png')}
+           title = "Thông tin các gói dịch vụ" />*/}
+
+          <LineWithIcon iconSource = {require('../../assets/image/me/me_goiDv.png')}
+                        onPress={this._onDinhGia}
+                        title = "Định giá" />
+          <FullLine />
+          <View style={styles.boxSeparator}><Text/></View>
+          <FullLine />
+
+          <LineWithIcon iconSource = {require('../../assets/image/me/me_help.png')}
+                        title = "Trợ giúp" />
+          <FullLine  style={{marginLeft:63}}/>
+          <LineWithIcon iconSource = {require('../../assets/image/me/me_setting.png')}
+                        onPress={this._onSetting}
+                        title = "Cài đặt" />
+          <FullLine />
+          <View style={styles.boxSeparator}><Text/></View>
+          <FullLine />
+
+          <TouchableOpacity onPress={this._onLogout.bind(this)}>
+            <View style={styles.logoutLine}>
+              <Text style={styles.logoutText}>Đăng xuất</Text>
             </View>
-          </View>
-        </TouchableOpacity>
-
-        <View style={styles.boxSeparator}><Text/></View>
-
-        <LineWithIcon iconSource = {require('../../assets/image/me/me_napTien.png')}
-                      title = "Nạp tiền" />
-        <View style={styles.lineSeparator}><Text/></View>
-        <LineWithIcon iconSource = {require('../../assets/image/me/me_lichSu.png')}
-                      title = "Lịch sử giao dịch" />
-
-        <View style={styles.boxSeparator}><Text/></View>
-
-        {/*<LineWithIcon iconSource = {require('../../assets/image/me/me_goiDv.png')}
-                      title = "Thông tin các gói dịch vụ" />*/}
-
-        <LineWithIcon iconSource = {require('../../assets/image/me/me_goiDv.png')}
-                      onPress={this._onDinhGia}
-                      title = "Định giá" />
-
-        <View style={styles.boxSeparator}><Text/></View>
-
-        <LineWithIcon iconSource = {require('../../assets/image/me/me_help.png')}
-                      title = "Trợ giúp" />
-        <View style={styles.lineSeparator}><Text/></View>
-        <LineWithIcon iconSource = {require('../../assets/image/me/me_setting.png')}
-                      onPress={this._onSetting}
-                      title = "Cài đặt" />
-        <View style={styles.boxSeparator}><Text/></View>
-
-        <TouchableOpacity onPress={this._onLogout.bind(this)}>
-          <View style={styles.logoutLine}>
-            <Text style={styles.logoutText}>Đăng xuất</Text>
-          </View>
-        </TouchableOpacity>
-      </ScrollView>
+          </TouchableOpacity>
+          <FullLine />
+        </ScrollView>
     )
   }
 
@@ -186,7 +194,7 @@ var styles = StyleSheet.create({
     backgroundColor : 'white',
     alignItems: 'center',
     height: 45,
-    borderBottomWidth: 1,
+    borderBottomWidth: 0,
     borderColor: gui.separatorLine,
   },
 
@@ -232,14 +240,14 @@ var styles = StyleSheet.create({
   },
   boxSeparator : {
     height: 36,
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
+    borderTopWidth: 0,
+    borderBottomWidth: 0,
     borderColor: gui.separatorLine
   },
 
   lineSeparator : {
-    height: 1,
-    borderTopWidth: 1,
+    height: 0,
+    borderTopWidth: 0,
     borderColor: gui.separatorLine,
     marginLeft: 63
   },
