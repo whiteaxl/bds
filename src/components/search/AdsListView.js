@@ -65,7 +65,7 @@ class AdsListView extends React.Component {
           <RefreshControl
             refreshing={false}
             onRefresh={this._onRefresh.bind(this)}
-            title={this.props.fields.pageNo === 1 ? "Kéo xuống để làm mới kết quả": ""}
+            title={this.props.fields.pageNo > 1 ? " " : "Kéo xuống để làm mới kết quả"}
           />
         }
 
