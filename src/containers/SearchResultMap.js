@@ -396,7 +396,7 @@ class SearchResultMap extends Component {
           </MapView>
 
             <View>
-                <LinearGradient colors={['rgba(0, 0, 0, 0.9)', 'transparent']}
+                <LinearGradient colors={['rgba(0, 0, 0, 0.75)', 'transparent']}
                                 style={styles.linearGradient}>
                     <Text style={{height: 70}}></Text>
             <View style={styles.search}>

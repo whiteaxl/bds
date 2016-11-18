@@ -64,8 +64,8 @@ class AdsListView extends React.Component {
         refreshControl={
           <RefreshControl
             refreshing={false}
-            onRefresh={this.loadPreviousPage.bind(this)}
-            title={this.props.fields.pageNo > 1 ? "Kéo xuống để quay lại trang trước" : "Kéo xuống để tải lại trang"}
+            onRefresh={this._onRefresh.bind(this)}
+            title={this.props.fields.pageNo === 1 ? "Kéo xuống để làm mới kết quả": ""}
           />
         }
 
@@ -74,8 +74,8 @@ class AdsListView extends React.Component {
         renderRow={(rowData, sectionID, rowID) => this.renderRow(rowData, sectionID, rowID, (rowID == 0), (rowID == (ds._dataBlob.s1.length-1)))}
         stickyHeaderIndices={[]}
         initialListSize={1}
-        onEndReachedThreshold={200}
-        onEndReached={this.loadNextPage.bind(this)}
+        // onEndReachedThreshold={200}
+        // onEndReached={this.loadNextPage.bind(this)}
         renderFooter={this.renderFooter.bind(this)}
         // scrollRenderAheadDistance={3}
         // pageSize={5}
@@ -210,8 +210,8 @@ class AdsListView extends React.Component {
   }
 
   _onRefresh() {
-    this.props.actions.onSearchFieldChange("pageNo", 1);
-    this._handleSearchAction(1);
+    // this.props.actions.onSearchFieldChange("pageNo", 1);
+    // this._handleSearchAction(1);
   }
 
   loadPreviousPage() {
