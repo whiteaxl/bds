@@ -115,8 +115,7 @@ class LoaiNhaDat extends Component {
     Actions.pop();
   }
 
-    _onApply(option) {   
-        console.log("=========== on Apply");
+    _onApply(option) {
         let key = this.getKeyByValue(loaiNhaDatValues, option);
         this.props.onPress(
           {key: key,

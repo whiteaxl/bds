@@ -50,13 +50,20 @@ export default function postAdsReducer(state = initialState, action) {
       return state.set('error', action.payload)
           .set('uploading', false);
 
-    case POST_ADS_GET_DIACHINH_REQUEST:
-    case POST_ADS_GET_DIACHINH_FAILURE:
+    case POST_ADS_GET_DIACHINH_REQUEST: {
+      return state.set('loadingDiaChinh', true);
+    }
+          
+    case POST_ADS_GET_DIACHINH_FAILURE: {
+      return state.set('loadingDiaChinh', false);
+    }
+
     case POST_ADS_GET_DIACHINH_SUCCESS: {
       let selectedDiaChinh = action.payload.diaChinh;
       let duAnList = action.payload.duAn;
       let nextState = state.set('selectedDiaChinh', selectedDiaChinh)
-          .set('duAnList', duAnList);
+          .set('duAnList', duAnList)
+          .set('loadingDiaChinh', false);
       return nextState;
     }
 

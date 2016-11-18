@@ -18,6 +18,7 @@ import LoginRegister from './LoginRegister';
 import Login from '../components/login/Login';
 import InboxContent from "../components/inbox/InboxContent";
 import HomeHeader from '../components/home/HomeHeader';
+import FullLine from '../components/line/FullLine';
 
 import LikeTabButton from '../components/LikeTabButton';
 
@@ -82,7 +83,7 @@ class Inbox extends Component {
 		}
 	}
 
-  render() {
+	render() {
 		log.info("Calling Inbox.render ..., loggedIn = ", this.props.global.loggedIn);
 		let loaiTin = this.props.inbox.loaiTin;
 
@@ -92,23 +93,25 @@ class Inbox extends Component {
 					<HomeHeader />
 					<View style = {styles.tabbar}>
 						<LikeTabButton name={'all'}
-													 onPress={this._onLoaiTinChange.bind(this)}
-													 selected={loaiTin === 'all'}>TẤT CẢ</LikeTabButton>
+									   onPress={this._onLoaiTinChange.bind(this)}
+									   selected={loaiTin === 'all'}>TẤT CẢ</LikeTabButton>
 						<LikeTabButton name={'sell'}
-													 onPress={this._onLoaiTinChange.bind(this)}
-													 selected={loaiTin === 'sell'}>BÁN</LikeTabButton>
+									   onPress={this._onLoaiTinChange.bind(this)}
+									   selected={loaiTin === 'sell'}>BÁN</LikeTabButton>
 						<LikeTabButton name={'hire'}
-													 onPress={this._onLoaiTinChange.bind(this)}
-													 selected={loaiTin === 'hire'}>CHO THUÊ</LikeTabButton>
+									   onPress={this._onLoaiTinChange.bind(this)}
+									   selected={loaiTin === 'hire'}>CHO THUÊ</LikeTabButton>
 					</View>
+					<FullLine />
 					<InboxContent/>
-					
+
+
 				</View>
 
 			);
 		} else {
 			return (
-					<Login />
+				<Login />
 			);
 		}
 	}
@@ -136,7 +139,7 @@ var styles = StyleSheet.create({
 		fontSize: 15,
 		width: 200,
 		height: 30,
-		borderWidth: 1,
+		borderWidth: 0,
 		alignSelf: 'center',
 		padding: 5
 
@@ -145,9 +148,9 @@ var styles = StyleSheet.create({
 		flexDirection: 'row',
 		paddingLeft: 5,
 		paddingRight: 5,
-		borderColor: '#e6e6e6',
-		borderBottomWidth: 1,
-		paddingTop: 2
+		borderColor: '#dfdfdf',
+		borderBottomWidth: 0,
+		paddingTop: 0
 	},
 
 });

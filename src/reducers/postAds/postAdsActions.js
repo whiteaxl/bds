@@ -84,8 +84,7 @@ export function postAdsGetDiaChinhSuccess(json) {
 }
 export function postAdsGetDiaChinhFailure() {
     return {
-        type: POST_ADS_GET_DIACHINH_FAILURE,
-        payload: null
+        type: POST_ADS_GET_DIACHINH_FAILURE
     };
 }
 
@@ -137,11 +136,14 @@ export function getUpdateAds(adsID, token) {
 
 export function getDiaChinhFromGoogleData(dto) {
     return dispatch => {
+        dispatch(postAdsGetDiaChinhRequest());
         return findApi.getDiaChinhFromGoogleData(dto)
             .then(function (json) {
                 log.info("postAdsActions.getDiaChinhFromGoogleData", json);
                 if (json.status === 'OK') {
                     dispatch(postAdsGetDiaChinhSuccess(json));
+                } else {
+                    dispatch(postAdsGetDiaChinhFailure());
                 }
                 return json;
             });
