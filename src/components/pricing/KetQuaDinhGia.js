@@ -16,15 +16,10 @@ import {Actions} from 'react-native-router-flux';
 import LinearGradient from 'react-native-linear-gradient';
 var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
-import TruliaIcon from '../TruliaIcon';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import util from "../../lib/utils";
 import MHeartIcon from '../MHeartIcon';
-// var resData = [{'img': require('../../assets/image/reland_house_large.jpg'), 'price' : '10,4 tỷ', 'address' :'KĐT Xala - Khoảng cách: 1500 m'},
-//                 {'img': require('../../assets/image/hotay1.png'), 'price' : '22,4 tỷ', 'address' :'68 Quảng An, Tây Hồ - Khoảng cách: 11900 m'},
-//                 {'img': require('../../assets/image/hoankiem.png'), 'price' : '50 tỷ', 'address' :'108 Đinh Tiên Hoàng, Hoàn Kiếm - Khoảng cách: 6600 m'},
-//                 {'img': require('../../assets/image/auco.png'), 'price' : '9,1 tỷ', 'address' :'126 Âu Cơ, Từ Liêm - Khoảng cách: 4200 m'},
-//                 {'img': require('../../assets/image/tuliem.png'), 'price' : '18 tỷ', 'address' :'75 Hùng Vương, Ba Đình - Khoảng cách: 5500 m'}]
+
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
 import {bindActionCreators} from 'redux';
@@ -63,7 +58,8 @@ class KetQuaDinhGia extends Component {
 
   constructor(props) {
     super(props);
-
+    console.log("KetQuaDinhGia.constructor");
+    console.log(props);
     this.state = {
       loaiTin: props.loaiTin,
       loaiTinKey: props.loaiTin == 'bán' ? 0 : 1,
@@ -220,18 +216,24 @@ class KetQuaDinhGia extends Component {
     }
 
   }
+
   _renderBody(){
     if(this.state.giaTrungBinh && this.state.giaTrungBinh.giaM2TrungBinh > 0){
       return(
           this._renderDanhSachNha()
       )
     } else {
-      return(
-          <View>
-            {this._renderNhaGan()}
-            {this._renderGiaKhac()}
-          </View>
-      )
+      if(this.state.giaTrungBinhKhac && this.state.giaTrungBinhKhac.length >0){
+        return(
+            <View>
+              {this._renderNhaGan()}
+              {this._renderGiaKhac()}
+            </View>
+        )
+      } else {
+        return;
+      }
+
     }
   }
 
@@ -255,7 +257,6 @@ class KetQuaDinhGia extends Component {
               </View>
             </ScrollView>
           </View>
-
 
     );
   }

@@ -3,17 +3,18 @@ import React, {Component} from 'react';
 import moment from 'moment';
 
 import {
-  StyleSheet,
-  Text,
-  View,
-  Image, ListView,
-  TouchableOpacity,
-  TextInput, Alert,ScrollView
+    StyleSheet,
+    Text,
+    View,
+    Image, ListView,
+    TouchableOpacity,
+    TextInput, Alert,ScrollView
 
 } from 'react-native';
 
 import gui from '../../lib/gui';
 import utils from '../../lib/utils';
+import FullLine from '../line/FullLine';
 import {Actions} from 'react-native-router-flux';
 
 import { bindActionCreators } from 'redux';
@@ -45,9 +46,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   const creators = Map()
-    .merge(...actions)
-    .filter(value => typeof value === 'function')
-    .toObject();
+      .merge(...actions)
+      .filter(value => typeof value === 'function')
+      .toObject();
 
   return {
     actions: bindActionCreators(creators, dispatch),
@@ -72,8 +73,8 @@ class InboxContent extends React.Component {
     let {relatedToAds, partner} = row;
 
     this.props.actions.startChat(this.props.global.currentUser.userID,
-                                  partner,
-                                  relatedToAds);
+        partner,
+        relatedToAds);
     Actions.Chat();
   }
 
@@ -86,7 +87,7 @@ class InboxContent extends React.Component {
 
     return (
         <TouchableOpacity onPress={() => this.onChatWithAdmin()} style={styles.rowFront}>
-          <View style={[styles.rowContainer, {borderTopWidth:1}]}>
+          <View style={[styles.rowContainer, {borderTopWidth:0}]}>
             <Image
                 resizeMode = {"cover"}
                 source={avatar}
@@ -97,9 +98,9 @@ class InboxContent extends React.Component {
               </View>
 
 
-                <View style={styles.titleAndLastMsg}>
-                  <Text numberOfLines={1} style={styles.title}>Chat trực tiếp với quản lý</Text>
-                </View>
+              <View style={styles.titleAndLastMsg}>
+                <Text numberOfLines={1} style={styles.title}>Chat trực tiếp với quản lý</Text>
+              </View>
 
             </View>
           </View>
@@ -119,64 +120,66 @@ class InboxContent extends React.Component {
     let w = 1
 
     return (
-      <TouchableOpacity onPress={() => this.onRowClick(row)} style={styles.rowFront}>
-        <View style={[styles.rowContainer, {borderTopWidth:w}]}>
-          <Image
-            resizeMode = {"cover"}
-            source={avatar}
-            style={styles.thumbnail}/>
-          <View style={styles.rightContainer}>
-            <View style={styles.nameAndDateTime}>
-              <Text style={styles.name}>{row.partner.fullName}</Text>
-              <Text style={styles.dateTime}>{dt}</Text>
-            </View>
-
-            <View style={styles.rightRow2}>
-              <View style={styles.titleAndLastMsg}>
-                <Text numberOfLines={1} style={styles.title}>{relatedToAds?adsInboxTitle:"<Không tựa đề>"}</Text>
-                <Text style={styles.content}>{row.content}</Text>
-              </View>
+        <TouchableOpacity onPress={() => this.onRowClick(row)} style={styles.rowFront}>
+          <View style={[styles.rowContainer, {marginLeft: 0, paddingLeft:5}]}>
+            <View style={{justifyContent:'center', alignItems:'center'}}>
               <Image
-                resizeMode = {"cover"}
-                source={{uri: relatedToAds.cover}}
-                style={styles.adsCover}/>
+                  resizeMode = {"cover"}
+                  source={avatar}
+                  style={styles.thumbnail}/>
+            </View>
+            <View style={styles.rightContainer}>
+              <View style={styles.nameAndDateTime}>
+                <Text style={styles.name}>{row.partner.fullName}</Text>
+                <Text style={styles.dateTime}>{dt}</Text>
+              </View>
+
+              <View style={styles.rightRow2}>
+                <View style={styles.titleAndLastMsg}>
+                  <Text numberOfLines={1} style={styles.title}>{relatedToAds?adsInboxTitle:"<Không tựa đề>"}</Text>
+                  <Text style={styles.content}>{row.content}</Text>
+                </View>
+                <Image
+                    resizeMode = {"cover"}
+                    source={{uri: relatedToAds.cover}}
+                    style={styles.adsCover}/>
+              </View>
             </View>
           </View>
-        </View>
-      </TouchableOpacity>
+          <FullLine />
+        </TouchableOpacity>
     );
   }
 
   render() {
     return (
-     <View>
-     {/*this.renderChatWithAdmin()*/}
-      <ScrollView style={styles.wrapper}>
-        <SwipeListView
-          enableEmptySections={true}
-          dataSource={this.props.inbox.allInboxDS}
-          renderRow={this.renderRow.bind(this)}
-          style={styles.listView}
+        <View>
+          {/*this.renderChatWithAdmin()*/}
+          <ScrollView style={styles.wrapper}>
+            <SwipeListView
+                enableEmptySections={true}
+                dataSource={this.props.inbox.allInboxDS}
+                renderRow={this.renderRow.bind(this)}
+                style={styles.listView}
 
-          renderHiddenRow={ data => (
+                renderHiddenRow={ data => (
                 <View style={styles.rowBack}>
                   <TouchableOpacity onPress = { () => this.onDelete(data)}>
-                    <Text style={styles.deleteText}>  Lưu trữ</Text>
+                    <Text style={styles.deleteText}>Lưu trữ</Text>
                   </TouchableOpacity>
                   <TouchableOpacity onPress = { () => this.onDelete(data)}>
-                    <Text style={styles.deleteText}>Xóa     </Text>
+                    <Text style={styles.deleteText}>Xóa</Text>
                   </TouchableOpacity>
 
                 </View>
             )}
 
-          rightOpenValue={-75}
-          leftOpenValue={75}
-        />
-
-        <Text style={styles.bottomText}>Tất cả đã được hiển thị</Text>
-      </ScrollView>
-       </View>
+                rightOpenValue={-75}
+                leftOpenValue={75}
+            />
+            <Text style={styles.bottomText}>Tất cả đã được hiển thị</Text>
+          </ScrollView>
+        </View>
     );
   }
 }
@@ -216,10 +219,10 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'white',
-    borderTopWidth: 1,
+    backgroundColor: '#eceef0',
+    borderTopWidth: 0,
     borderColor: '#e6e6e6',
-    paddingTop: 10,
+    paddingTop: 0,
     paddingBottom: 10,
   },
   rightContainer: {
@@ -251,6 +254,7 @@ var styles = StyleSheet.create({
     fontWeight: 'normal'
   },
   thumbnail: {
+    paddingLeft:10,
     width: 40,
     height: 40,
     marginRight: 10,
@@ -260,7 +264,7 @@ var styles = StyleSheet.create({
     paddingTop: 0,
     backgroundColor: 'white',
     borderColor: '#e6e6e6',
-    borderBottomWidth: 1
+    borderBottomWidth: 0
   },
   nameAndDateTime : {
     flex: 1,
@@ -287,7 +291,7 @@ var styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Open Sans',
     fontWeight: '600',
-    color: '#e4e4e4',
+    color: 'gray',
     paddingTop: 10
   },
   rowBack: {

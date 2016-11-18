@@ -9,6 +9,7 @@ import chat from './chat/chatReducer';
 import postAds from './postAds/postAdsReducer';
 import adsMgmt from './adsMgmt/adsMgmtReducer';
 import me from './me/meReducer';
+import pricing from './pricing/pricingReducer';
 
 import { combineReducers } from 'redux';
 
@@ -21,7 +22,8 @@ const rootReducer = combineReducers({
   chat,
   postAds,
   adsMgmt,
-  me
+  me,
+  pricing
 });
 
 export default rootReducer;

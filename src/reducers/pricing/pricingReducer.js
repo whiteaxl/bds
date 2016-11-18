@@ -1,7 +1,5 @@
 'use strict';
-const InitialState = require('./meInitialState').default;
-
-import log from '../../lib/logUtil';
+const InitialState = require('./pricingInitialState').default;
 
 const {
     ON_PRICING_FIELD_CHANGE,

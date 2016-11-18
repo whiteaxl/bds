@@ -16,6 +16,8 @@ var { width, height } = Dimensions.get('window');
 import Icon from 'react-native-vector-icons/FontAwesome';
 import LikeTabButton from '../LikeTabButton';
 
+import GiftedSpinner from 'react-native-gifted-spinner';
+
 import {Actions} from 'react-native-router-flux';
 
 import { bindActionCreators } from 'redux';
@@ -104,6 +106,7 @@ class DinhGia extends React.Component {
             Actions.DuAn({func:'pricing', onPress: this._onLoaiDuAn.bind(this) })
         }
     )
+
   }
 
   _onVitri(position) {
@@ -225,6 +228,7 @@ class DinhGia extends React.Component {
         return "";
     return this.state.loaiNhaDat.value.substring(0, 25);
   }
+
   render() {
     return (
       <View style={styles.container}>
@@ -262,6 +266,7 @@ class DinhGia extends React.Component {
             <TouchableOpacity onPress={this._onLoaiNhaDat.bind(this)} style={styles.touchViTri}>
               <View style={styles.viewWidth}>
                 <Text style={styles.textViTri}>Loại nhà đất</Text>
+
               </View>
               <View style={styles.viewLoaiNha}>
                 <Text style={styles.textNhaDat}>{this.state.loaiNhaDat.value.substring(0, 25)}</Text>
@@ -272,6 +277,7 @@ class DinhGia extends React.Component {
               <View style={styles.viewWidth}>
                 <Text style={styles.textViTri}>Thuộc dự án</Text>
               </View>
+              {this._renderLoadingDuAn()}
               <View style={styles.viewLoaiNha}>
                 <Text style={styles.textNhaDat}>{this._getDuAnText()}</Text>
               </View>
@@ -285,20 +291,44 @@ class DinhGia extends React.Component {
           {this._renderThietLap()}
         </View>
 
-        <TouchableOpacity onPress={this._onThucHien.bind(this)} style={styles.viewActions}>
-          <Text style={styles.textActions}>Thực hiện</Text>
-        </TouchableOpacity>
+        {this._renderThucHienButton()}
 
       </View>
 
     );
   }
 
+  _renderLoadingDuAn(){
+    if (this.props.postAds.loadingDiaChinh){
+      return (
+          <View style={{marginLeft: 2}}>
+            <GiftedSpinner size="small" color="black"/>
+          </View>
+      )
+    } else {
+      return;
+    }
+  }
+
+  _renderThucHienButton(){
+    if (this.props.pricing.isLoading){
+      return (
+          <View style={styles.viewActions}>
+            <GiftedSpinner size="small" color="white"/>
+          </View>
+      )
+    } else {
+      return (
+          <TouchableOpacity onPress={this._onThucHien.bind(this)} style={styles.viewActions}>
+            <Text style={styles.textActions}>Thực hiện</Text>
+          </TouchableOpacity>
+      )
+    }
+  }
+
   _getDuAnText(){
-    console.log("========== _getDuAnText");
     if (this.state.duAn && this.state.duAn.fullName && this.state.duAn.fullName.length>0){
       let duAn = this.state.duAn.fullName.substring(0, 25);
-      console.log(duAn);
       return duAn;
     }
 

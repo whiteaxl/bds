@@ -66,6 +66,7 @@ const InitialState = Record({
     error: '',
     uploading: false,
     loadingUpdateAds: false,
+    loadingDiaChinh: false,
     selectedDiaChinh: null,
     selectedDuAn: null,
     duAnList: null
