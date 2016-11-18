@@ -120,9 +120,9 @@ class ImageItem extends React.Component{
 
     let imageUri = {uri: cover};
     
-    if (noCoverUrl == cover) {
+    /*if (noCoverUrl == cover) {
       imageUri = require('../../assets/image/reland_house_large.jpg');
-    }
+    }*/
 
     if (!adsID || adsID.length ==0 || adsID == 'EMPTY'){
       imageUri = require('../../assets/image/no_cover_home.jpg');
