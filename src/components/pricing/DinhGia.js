@@ -277,9 +277,9 @@ class DinhGia extends React.Component {
               <View style={styles.viewWidth}>
                 <Text style={styles.textViTri}>Thuộc dự án</Text>
               </View>
-              {this._renderLoadingDuAn()}
+
               <View style={styles.viewLoaiNha}>
-                <Text style={styles.textNhaDat}>{this._getDuAnText()}</Text>
+                {this._renderLoadingDuAn()}
               </View>
               <Icon name="angle-right" size={24} color="#bebec0" />
             </TouchableOpacity>
@@ -301,12 +301,16 @@ class DinhGia extends React.Component {
   _renderLoadingDuAn(){
     if (this.props.postAds.loadingDiaChinh){
       return (
-          <View style={{marginLeft: 2}}>
+          <View style={{marginRight: 2}}>
             <GiftedSpinner size="small" color="black"/>
           </View>
       )
     } else {
-      return;
+      return (
+          <View>
+            <Text style={styles.textNhaDat}>{this._getDuAnText()}</Text>
+          </View>
+      );
     }
   }
 
