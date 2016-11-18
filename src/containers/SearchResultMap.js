@@ -396,7 +396,7 @@ class SearchResultMap extends Component {
           </MapView>
 
             <View>
-                <LinearGradient colors={['rgba(0, 0, 0, 0.75)', 'transparent']}
+                <LinearGradient colors={['rgba(184, 184, 184, 0.5)', 'transparent']}
                                 style={styles.linearGradient}>
                     <Text style={{height: 70}}></Text>
             <View style={styles.search}>
@@ -809,7 +809,7 @@ class SearchResultMap extends Component {
     }
 
     return (<View style={styles.resultContainer}>
-      <Animatable.View animation={showMessage || textNotFound2 ? "fadeIn" : "fadeOut"}
+      <Animatable.View animation={showMessage || textNotFound2 ? "fadeIn" : ""}
                        duration={showMessage || textNotFound2 ? 500 : 5000}>
         <View style={[styles.resultText, {marginTop: 0}]}>
             <Text style={[styles.resultIcon, {fontWeight: fontWeight}]}>  {textValue} </Text>
@@ -933,7 +933,14 @@ class SearchResultMap extends Component {
 
         this.props.actions.search(
             fields
-            , refreshCallback);
+            , refreshCallback
+            , (error) =>
+                AlertIOS.alert('Thông báo',
+                    error,
+                    [{
+                        text: 'Đóng',
+                        onPress: () => {}
+                    }]));
         if (!isAppend) {
             this.setState({mounting: false});
             this._onShowMessage();
@@ -959,10 +966,10 @@ class SearchResultMap extends Component {
      <Modal style={[styles.modal]} isOpen={this.state.openLocalInfo} position={"center"} ref={"localInfoModal"} isDisabled={false}
             backdrop={false} onClosingState={this._onCloseLocalInfo.bind(this)}>
       <View style={styles.modalHeader}>
-        <TouchableOpacity style={{flexDirection: "row", alignItems: "flex-start",position:'absolute', left:15, top: 13}}
-                          onPress={this._onCloseLocalInfo.bind(this)}>
-          <RelandIcon name="close" color={gui.mainColor} size={15} noAction={true}/>
-        </TouchableOpacity>
+        <View style={{flexDirection: "row", alignItems: "flex-start",position:'absolute', left:15, top: 13}}>
+          <RelandIcon mainProps={{paddingRight: 30, paddingBottom: 20}}
+                      name="close" color={gui.mainColor} size={15} onPress={this._onCloseLocalInfo.bind(this)}/>
+        </View>
         <Text style={styles.modalHeaderText}>Tiện ích</Text>
       </View>
       <View style={styles.modalTitle}>
@@ -1280,8 +1287,8 @@ var styles = StyleSheet.create({
     },
   loadingContent: {
     position: 'absolute',
-    top: -22,
-    left: 65,
+    top: -33,
+    left: 56,
     alignItems: 'center',
     justifyContent: 'center'
   },
@@ -1380,7 +1387,7 @@ var styles = StyleSheet.create({
   mapIcon: {
   },
   resultIcon: {
-    color: 'black',
+    color: '#F53113',
     fontSize: gui.capitalizeFontSize,
     fontFamily: gui.fontFamily,
     fontWeight : 'normal',
@@ -1460,6 +1467,7 @@ var styles = StyleSheet.create({
   resultContainer: {
     position: 'absolute',
     top: 64,
+    width: width,
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
@@ -1471,7 +1479,7 @@ var styles = StyleSheet.create({
     width: width,
     alignItems: 'center',
     justifyContent: 'flex-start',
-    backgroundColor: 'white',
+    backgroundColor: 'transparent',
     opacity: 0.85
   },
 

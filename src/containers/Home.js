@@ -9,7 +9,7 @@ import {Map} from 'immutable';
 
 import  React, {Component} from 'react';
 
-import { Text, StyleSheet, View, ScrollView, RefreshControl, Image, Dimensions, TouchableOpacity, StatusBar } from 'react-native'
+import { Text, StyleSheet, View, ScrollView, RefreshControl, Image, Dimensions, TouchableOpacity, StatusBar, AlertIOS } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 
@@ -62,7 +62,13 @@ class Home extends Component {
     log.info("call home.componentWillMount");
     StatusBar.setBarStyle('light-content');
     if (this._isTheFirstLoading()) {
-      this.props.actions.loadHomeData();
+      this.props.actions.loadHomeData((error) =>
+          AlertIOS.alert('Thông báo',
+              error,
+              [{
+                text: 'Đóng',
+                onPress: () => {}
+              }]));
     } else {
       let recentSearchList = this.props.search.recentSearchList;
       recentSearchList.sort((a, b) => b.timeModified - a.timeModified);
@@ -77,7 +83,13 @@ class Home extends Component {
       }
 
       if (recentSearchList.length = 1){
-        this.props.actions.loadHomeData();
+        this.props.actions.loadHomeData((error) =>
+            AlertIOS.alert('Thông báo',
+                error,
+                [{
+                  text: 'Đóng',
+                  onPress: () => {}
+                }]));
       } else {
         var oldSearch = recentSearchList[1];
         if (newSearch.query.diaChinh.fullName != oldSearch.query.diaChinh.fullName
@@ -86,7 +98,13 @@ class Home extends Component {
             || JSON.stringify(newSearch.query.giaBETWEEN)!=JSON.stringify(oldSearch.query.giaBETWEEN)
             || JSON.stringify(newSearch.query.huongNha)!=JSON.stringify(oldSearch.query.huongNha))
         {
-          this.props.actions.loadHomeData();
+          this.props.actions.loadHomeData((error) =>
+              AlertIOS.alert('Thông báo',
+                  error,
+                  [{
+                    text: 'Đóng',
+                    onPress: () => {}
+                  }]));
         }
       }
     }
@@ -179,7 +197,13 @@ class Home extends Component {
   _onRefresh(){
     log.info("_onRefresh Home");
     if (this._isTheFirstLoading()) {
-      this.props.actions.loadHomeData();
+      this.props.actions.loadHomeData((error) =>
+          AlertIOS.alert('Thông báo',
+              error,
+              [{
+                text: 'Đóng',
+                onPress: () => {}
+              }]));
     } else {
       let recentSearchList = this.props.search.recentSearchList;
       recentSearchList.sort((a, b) => b.timeModified - a.timeModified);
@@ -192,7 +216,13 @@ class Home extends Component {
         return;
       }
     }
-    this.props.actions.loadHomeData();
+    this.props.actions.loadHomeData((error) =>
+        AlertIOS.alert('Thông báo',
+            error,
+            [{
+              text: 'Đóng',
+              onPress: () => {}
+            }]));
   }
 
   _getHeaderTitle() {
@@ -295,7 +325,7 @@ class Home extends Component {
 var styles = StyleSheet.create({
   loadingContent: {
     position: 'absolute',
-    top: -23,
+    top: -33,
     left: width/2 - 71,
     alignItems: 'center',
     justifyContent: 'center'
@@ -303,6 +333,7 @@ var styles = StyleSheet.create({
   resultContainer: {
     position: 'absolute',
     top: 64,
+    width: Dimensions.get('window').width,
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'flex-start',

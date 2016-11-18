@@ -2,7 +2,7 @@
 
 import AdsRow from './AdsRow';
 import React from 'react';
-import { StyleSheet, ListView, View, Text, Dimensions, RefreshControl, TouchableOpacity } from 'react-native';
+import { StyleSheet, ListView, View, Text, Dimensions, RefreshControl, TouchableOpacity, AlertIOS } from 'react-native';
 import gui from '../../lib/gui';
 var myDs = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 import log from '../../lib/logUtil';
@@ -151,7 +151,14 @@ class AdsListView extends React.Component {
 
     this.props.actions.search(
         fields
-        , () => {this.props.scrollToTop()});
+        , () => {this.props.scrollToTop()}
+        , (error) =>
+            AlertIOS.alert('Thông báo',
+                error,
+                [{
+                  text: 'Đóng',
+                  onPress: () => {}
+                }]));
   }
 
   // _appendAdsList() {

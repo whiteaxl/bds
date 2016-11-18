@@ -11,6 +11,7 @@ const _ = require('lodash');
 
 import log from "../../lib/logUtil";
 import chatApi from "../../lib/ChatApi";
+import gui from '../../lib/gui';
 
 export function onInboxFieldChange(field, value) {
   return {

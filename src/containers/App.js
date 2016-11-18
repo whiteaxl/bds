@@ -105,9 +105,10 @@ const RouterWithRedux = connect()(Router);
 class TabIcon extends React.Component {
   render() {
     var color = this.props.selected ? gui.mainColor : '#8f8f8f';
+    var iconName = this.props.selected ? this.props.selectedIconName : this.props.iconName;
     return (
         <View style={styles.tabIcon}>
-          <RelandIcon.Icon style={{color: color}} name={this.props.iconName} size={this.props.iconSize}/>
+          <RelandIcon.Icon style={{color: color}} name={iconName} size={this.props.iconSize}/>
           <Text style={[styles.tabIconText, {color: color}]}>{this.props.title}</Text>
         </View>
     );
@@ -142,19 +143,19 @@ class App extends React.Component {
             <Scene key='Launch' component={Launch} initial={false} title="Welcome" />
 
             <Scene key="Home" tabs={true} default="Main" type="replace" initial={true} tabBarStyle={styles.tabBarStyle}>
-              <Scene key="Main" title="Trang chủ" iconName={"home-f"} iconSize={26} icon={TabIcon}
+              <Scene key="Main" title="Trang chủ" iconName={"home-o"} selectedIconName={"home-f"} iconSize={26} icon={TabIcon}
                      component={Home}
                      hideNavBar={true} initial={true}/>
 
               <Scene key="Inbox" component={Inbox} title="Chat"
-                     iconName={"chat2"} iconSize={26}
+                     iconName={"chat-o"} selectedIconName={"chat-f"} iconSize={26}
                      icon={TabIcon} hideNavBar={true} />
               <Scene key="MicroVoice" component={MicroVoice} title="Trợ lý Landber"
-                     iconName={"mic-on"} iconSize={26} icon={TabIcon} hideNavBar={true}/>
+                     iconName={"mic-o"} selectedIconName={"mic-on"} iconSize={26} icon={TabIcon} hideNavBar={true}/>
               <Scene key="AdsMgmt" component={AdsMgmt} title="Quản lý tin" hideNavBar={true}
-                     iconName={"mgmt2"} iconSize={26} icon={TabIcon}/>
+                     iconName={"mgmt2"} selectedIconName={"mgmt2f"} iconSize={26} icon={TabIcon}/>
               <Scene key="Me" component={Me} title="Tôi" hideNavBar={true}
-                     iconName={"me"} iconSize={26} icon={TabIcon}/>
+                     iconName={"me"} selectedIconName={"me-f"} iconSize={26} icon={TabIcon}/>
               {
                 /*
                  <Scene key="UpgradeAds11" component={UpgradePackgeSelector} hideNavBar={true} title="Upgrade"

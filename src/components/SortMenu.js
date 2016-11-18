@@ -8,7 +8,7 @@ import * as searchActions from '../reducers/search/searchActions';
 import {Map} from 'immutable';
 
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, StatusBar, ScrollView, Dimensions } from 'react-native';
+import {View, Text, StyleSheet, StatusBar, ScrollView, Dimensions, AlertIOS } from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
 
@@ -174,7 +174,14 @@ class SortMenu extends Component {
                 dienTich: dienTich, giaPicker: giaPicker, orderBy: newOrderBy, listData: listData,
                 marker: marker, radiusInKmSelectedIdx: radiusInKmSelectedIdx, huongNha: huongNha, ngayDaDang: ngayDaDang,
                 polygon: polygon, limit: newLimit, pageNo: 1, isIncludeCountInResponse: isIncludeCountInResponse}
-            , () => {this._scrollToTop()}
+            , () => {this._scrollToTop()
+            , (error) =>
+                AlertIOS.alert('Thông báo',
+                    error,
+                    [{
+                        text: 'Đóng',
+                        onPress: () => {}
+                    }])}
         );
     }
 

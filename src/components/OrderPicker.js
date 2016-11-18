@@ -8,7 +8,7 @@ import * as searchActions from '../reducers/search/searchActions';
 import {Map} from 'immutable';
 
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, StatusBar } from 'react-native'
+import {View, Text, StyleSheet, StatusBar, AlertIOS } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 
@@ -137,6 +137,13 @@ class OrderPicker extends Component {
             , () => {
                 Actions.pop();
             }
+            , (error) =>
+                AlertIOS.alert('Thông báo',
+                    error,
+                    [{
+                        text: 'Đóng',
+                        onPress: () => {}
+                    }])
         );
     }
 

@@ -752,7 +752,7 @@ class SearchResultDetail extends Component {
             Tính trên cơ sở vay 70% giá trị nhà trong vòng 15 năm với lãi suất cố định 12%/năm theo số tiền vay
           </Text>
             <View style={{flexDirection: "row", alignItems: 'center', justifyContent: 'flex-start', backgroundColor:'white', paddingTop:0}}>
-              <View style={{paddingLeft: 13, paddingTop:2, width: width/2-25, alignItems: 'center', justifyContent: 'center'}}>
+              <View style={{paddingLeft: 2, paddingTop:2, width: width/2-15, alignItems: 'center', justifyContent: 'center'}}>
                 <MChartView
                     data={data}
                     options={options}
@@ -782,7 +782,7 @@ class SearchResultDetail extends Component {
             <Text style={{fontSize: 13, fontFamily: gui.fontFamily, fontWeight: 'bold'}}>
               {value}
             </Text>
-            <Text style={{fontSize: 12, fontFamily: gui.fontFamily, color: '#9C9C9C'}}>
+            <Text style={{fontSize: 12, fontFamily: gui.fontFamily, color: '#9C9C9C', width: width/2-40}}>
               {label}
             </Text>
           </View>
@@ -937,14 +937,14 @@ class SearchResultDetail extends Component {
       let dotIcon1Style = prop1 ? {} : {backgroundColor: 'transparent'};
       let dotIcon2Style = prop2 ? {} : {backgroundColor: 'transparent'};
       return (
-          <View key={key} style={[detailStyles.searchDetailRowAlign, {width: width - 42.5, marginLeft: 20}]}>
+          <View key={key} style={[detailStyles.searchDetailRowAlign, {width: width - 22.5, marginLeft: 20}]}>
             <View style={{flexDirection: 'row'}}>
               <View style={[detailStyles.dot2, dotIcon1Style, dotStyle]} />
               <Text style={[detailStyles.textHalfWidth, textStyle]}>
                 {prop1}
               </Text>
             </View>
-            <View style={{flexDirection: 'row'}}>
+            <View style={{flexDirection: 'row', marginLeft: 10}}>
               <View style={[detailStyles.dot2, dotIcon2Style, dotStyle]} />
               <Text style={[detailStyles.textHalfWidth, textStyle]}>
                 {prop2}

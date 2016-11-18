@@ -1,7 +1,7 @@
 'use strict';
 
 import  React, {Component} from 'react';
-import { Text, StyleSheet, View, ScrollView, Image, Dimensions, TouchableOpacity } from 'react-native'
+import { Text, StyleSheet, View, ScrollView, Image, Dimensions, TouchableOpacity, AlertIOS } from 'react-native'
 
 import gui from '../../lib/gui';
 import log from '../../lib/logUtil';
@@ -35,7 +35,13 @@ export default class HomeCollection extends Component {
     query.isIncludeCountInResponse = false;
     this.props.onResetSearch();
     Actions.SearchResultListExt({collection: this.props.collectionData});
-    this.props.searchFromHome(query, () => {});
+    this.props.searchFromHome(query, () => {}, (error) =>
+        AlertIOS.alert('Thông báo',
+            error,
+            [{
+              text: 'Đóng',
+              onPress: () => {}
+            }]));
   }
 
   _renderAds(ads, flex) {

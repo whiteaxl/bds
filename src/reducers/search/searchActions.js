@@ -154,7 +154,7 @@ export function setLoadingDetail() {
   }
 }
 
-function callApiSearch(params, dispatch, successCallback) {
+function callApiSearch(params, dispatch, successCallback, failCallback) {
   dispatch(changeLoadingSearchResult(true));
   return Api.getItems(params)
     .then((data) => {
@@ -168,20 +168,22 @@ function callApiSearch(params, dispatch, successCallback) {
         successCallback();
       } else if (data.error) {
         dispatch(fetchSearchResultFail(data.error));
+        failCallback && failCallback(data.error);
       }
       else {
-        dispatch(fetchSearchResultFail(gui.ERR_LoiKetNoiMayChu));
+        dispatch(fetchSearchResultFail(gui.ERR_NoInternetConnection));
         //Alert.alert(gui.ERR_LoiKetNoiMayChu)
+        failCallback && failCallback(gui.ERR_NoInternetConnection);
       }
     });
 }
 
-export function search(credential, successCallback) {
+export function search(credential, successCallback, failCallback) {
   return dispatch => {
     let params = Api.convertFieldsToQueryParams(credential);
     dispatch(changeSearchCalledFrom("Search"));
 
-    return callApiSearch(params, dispatch, successCallback)
+    return callApiSearch(params, dispatch, successCallback, failCallback)
   }
 }
 
@@ -191,11 +193,11 @@ export function abortSearch() {
   }
 }
 
-export function searchFromHome(query, successCallback) {
+export function searchFromHome(query, successCallback, failCallback) {
   return dispatch => {
     dispatch(changeSearchCalledFrom("Home"));
 
-    return callApiSearch(query, dispatch, successCallback)
+    return callApiSearch(query, dispatch, successCallback, failCallback)
   }
 }
 
@@ -363,7 +365,7 @@ export function loadHomeDataDone(res) {
 }
 
 
-export function loadHomeData() {
+export function loadHomeData(failCallback) {
   return dispatch => {
     dispatch(changeLoadingHomeData(true));
     dispatch(changeHomeRefreshing(true));
@@ -388,6 +390,9 @@ export function loadHomeData() {
           log.info("getAppHomeData", res);
           dispatch(loadHomeDataDone(res));
           dispatch(changeHomeRefreshing(false));
+          if (res.msg) {
+            failCallback && failCallback(gui.ERR_NoInternetConnection);
+          }
         });
       };
 

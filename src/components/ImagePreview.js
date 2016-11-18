@@ -100,7 +100,7 @@ class ImagePreview extends React.Component {
                 flexDirection: 'row',
                 backgroundColor: 'transparent',
                 paddingLeft: 20,
-                paddingRight: 15,
+                paddingRight: 30,
                 paddingBottom: 20,
                 width: 60
             },

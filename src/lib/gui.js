@@ -17,6 +17,7 @@ var gui = {
 	KHUNG_NHIN_HIEN_TAI: "Khung nhìn hiện tại",
 
 	//Error msg
+	ERR_NoInternetConnection: "Không có kết nối internet!",
 	ERR_LoiKetNoiMayChu : "", //"Lỗi kết nối đến máy chủ!", TODO: temporary change for this error
 	INF_KhongCoKetQua : "Không tìm thấy kết quả nào phù hợp!",
 	INF_KhongCoKetQua2 : "Hãy Zoom nhỏ lại, thay đổi điều kiện Lọc hoặc nhấn vào nút bên dưới để xem cả tin nằm ngoài khu vực đã chọn",

@@ -12,7 +12,7 @@ import gui from '../lib/gui';
 import React, {Component} from 'react';
 
 import { Text, View, Navigator, TouchableOpacity, Dimensions
-    , SegmentedControlIOS, ScrollView, StyleSheet, StatusBar, PickerIOS } from 'react-native'
+    , SegmentedControlIOS, ScrollView, StyleSheet, StatusBar, PickerIOS, AlertIOS } from 'react-native'
 
 import Button from 'react-native-button';
 import {Actions} from 'react-native-router-flux';
@@ -526,7 +526,14 @@ class Search extends Component {
 
         this.props.actions.search(
             fields
-            , () => {/*setTimeout(() => this.props.actions.loadHomeData(), 100)*/});
+            , () => {/*setTimeout(() => this.props.actions.loadHomeData(), 100)*/}
+            , (error) =>
+                AlertIOS.alert('Thông báo',
+                    error,
+                    [{
+                        text: 'Đóng',
+                        onPress: () => {}
+                    }]));
     }
 
     onMoreOption() {

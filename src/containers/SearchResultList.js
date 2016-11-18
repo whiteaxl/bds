@@ -130,7 +130,7 @@ class SearchResultList extends Component {
     }
     _onSetupMessageTimeout() {
         clearTimeout(this.timer);
-        this.timer = setTimeout(() => {this.setState({showMessage: false})}, 10000);
+        this.timer = setTimeout(() => {this.setState({showMessage: false})}, 5000);
     }
     render() {
         log.info("Call SearchResultList render", this.props.fields);
@@ -233,8 +233,8 @@ class SearchResultList extends Component {
 var myStyles = StyleSheet.create({
     loadingContent: {
         position: 'absolute',
-        top: -22,
-        left: 65,
+        top: -33,
+        left: 56,
         alignItems: 'center',
         justifyContent: 'center'
     },
@@ -259,6 +259,7 @@ var myStyles = StyleSheet.create({
     resultContainer: {
         position: 'absolute',
         top: 64,
+        width: Dimensions.get('window').width,
         flexDirection: 'column',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',

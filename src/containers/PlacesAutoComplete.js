@@ -12,7 +12,7 @@ import  React, {Component} from 'react';
 import {
   Text, View, ListView
   , TextInput, StyleSheet, RecyclerViewBackedScrollView
-  , TouchableHighlight, StatusBar
+  , TouchableHighlight, StatusBar, AlertIOS
 } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
@@ -143,7 +143,14 @@ class PlacesAutoComplete extends React.Component {
 
     this.props.actions.search(
         fields
-        , () => {/*setTimeout(() => this.props.actions.loadHomeData(), 100)*/});
+        , () => {/*setTimeout(() => this.props.actions.loadHomeData(), 100)*/}
+        , (error) =>
+            AlertIOS.alert('Thông báo',
+                error,
+                [{
+                  text: 'Đóng',
+                  onPress: () => {}
+                }]));
   }
 
   _onCancelPress() {

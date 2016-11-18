@@ -6,6 +6,7 @@ import RangeUtils from "../lib/RangeUtils"
 import DanhMuc from "../assets/DanhMuc"
 import cfg from "../cfg";
 import log from "./logUtil";
+import gui from './gui';
 
 var rootUrl = `http://${cfg.server}:5000/api`;
 var uploadUrl = rootUrl + "/upload";
