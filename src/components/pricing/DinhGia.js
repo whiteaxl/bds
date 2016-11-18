@@ -145,6 +145,9 @@ class DinhGia extends React.Component {
   }
 
   _onThucHien(){
+    if (!this.isValidData())
+        return;
+
     let loaiNhaDat = [this.state.loaiNhaDat.key];
     let codeDuAn = '';
 
@@ -180,6 +183,26 @@ class DinhGia extends React.Component {
 
   }
 
+  isValidData(){
+    
+    if (this.state.location == {}){
+      Alert.alert("Bạn chưa trọn vị trí");
+      return false;
+    }
+
+    if (!this.state.loaiNhaDat.key){
+      Alert.alert("Bạn nhập thiếu loại nhà đất");
+      return false;
+    }
+
+    if (this.state.dienTich && isNaN(this.state.dienTich)) {
+      Alert.alert("Diện tích sai định dạng. Bạn hãy nhập kiểu số.");
+      return false;
+    }
+
+    return true;
+  }
+
   _renderMoRong() {
     if (!this.state.showMoRong) {
       return (
@@ -202,13 +225,18 @@ class DinhGia extends React.Component {
                   keyboardType={'numeric'}
                   returnKeyType='done'
                   style={styles.inputDienTich}
-                  onChangeText={(text) => this.setState({ dientich: (text) })}
-                  value={this.state.dientich}
+                  onChangeText={(text) => this._onDienTichChange(text)}
+                  value={this.state.dienTich && this.state.dienTich.length>0 ? this.state.dienTich : ''}
               />
             </View>
           </View>
       )
     }
+  }
+
+  _onDienTichChange(text){
+    let value = text.replace(',','.');
+    this.setState({dienTich: value});
   }
 
   _onLoaiNhaDat() {
@@ -329,6 +357,8 @@ class DinhGia extends React.Component {
       )
     }
   }
+
+
 
   _getDuAnText(){
     if (this.state.duAn && this.state.duAn.fullName && this.state.duAn.fullName.length>0){
