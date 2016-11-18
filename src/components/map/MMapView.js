@@ -147,8 +147,6 @@ class MMapView extends Component {
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA
           };
-          console.log("========== new region");
-          console.log(region);
           this.setState({region: region});
         },
         (error) => {
@@ -190,7 +188,6 @@ class MMapView extends Component {
   }
 
   _getDiaChinhContent(data){
-    console.log("==================== nana");
     var places = data.results;
     console.log(places);
     if (places.length > 0){

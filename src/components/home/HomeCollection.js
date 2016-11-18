@@ -106,7 +106,6 @@ export default class HomeCollection extends Component {
 class ImageItem extends React.Component{
   constructor(props){
     super(props);
-    console.log("============= render HomeCollection ImageItem.constructor" + props.ads.adsID);
     let {adsLikes, ads} = props;
     let initLikedState = (adsLikes && adsLikes.indexOf(ads.adsID) > -1);
 

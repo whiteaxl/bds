@@ -63,21 +63,6 @@ class KetQuaDinhGia extends Component {
 
   constructor(props) {
     super(props);
-    console.log(props);
-    resData = [];
-
-    props.data.bdsNgangGia.map(
-        (e) => {
-          resData.push({
-            'img' : {uri :e.image.cover},
-            'price' : e.giaFmt,
-            'address' :e.diaChi
-          })
-        }
-    )
-
-    console.log("print bdsNgangGia");
-    console.log(resData);
 
     this.state = {
       loaiTin: props.loaiTin,
@@ -88,7 +73,7 @@ class KetQuaDinhGia extends Component {
       diaChi: props.diaChi,
       radius: props.data.radius,
       loaiNhaDat: props.loaiNhaDat,
-      duAN: props.duAn,
+      duAn: props.duAn,
       dataSource: props.data.giaTrungBinh ? ds.cloneWithRows(props.data.bdsNgangGia) : ds.cloneWithRows([]),
       showListNhaGan: false
     };
@@ -188,27 +173,52 @@ class KetQuaDinhGia extends Component {
   }
 
   _renderDinhGia(){
-    if (this.state.giaTrungBinh) {
-      return (
-          <View style={styles.viewHopGia}>
-            <Text style={styles.textHopGia1}>{this.state.giaTrungBinh.loaiNhaDatVal.toUpperCase()}</Text>
-            <Text style={styles.textHopGia2}>{this.state.duAn && this.state.duAn.length>0 ? this.state.duAn : this.state.diaChi}</Text>
-            <Text style={styles.textHopGia3}>{util.getPriceM2Display(this.state.giaTrungBinh.giaM2TrungBinh, this.state.loaiTinKey)}</Text>
-            <Text style={styles.textHopGia4}>Giá ước tính dựa trên dữ liệu {this.state.giaTrungBinh.count} nhà tương tự
-              đã và đang {this.state.loaiTin}</Text>
-            <Text style={styles.textHopGia5}>nằm trong vòng {this.state.radius}m xung quanh vị trí đã chọn</Text>
-          </View>
-      )
+    if (this.state.duAn && this.state.duAn.length>0){
+      if (this.state.giaTrungBinh) {
+        return (
+            <View style={styles.viewHopGia}>
+              <Text style={styles.textHopGia1}>{this.state.giaTrungBinh.loaiNhaDatVal.toUpperCase()}</Text>
+              <Text style={styles.textHopGia2}>{this.state.duAn}</Text>
+              <Text style={styles.textHopGia3}>{util.getPriceM2Display(this.state.giaTrungBinh.giaM2TrungBinh, this.state.loaiTinKey)}</Text>
+              <Text style={styles.textHopGia4}>Giá ước tính dựa trên dữ liệu {this.state.giaTrungBinh.count} nhà tương tự
+                đã và đang {this.state.loaiTin}</Text>
+              <Text style={styles.textHopGia5}>thuộc dự án {this.state.duAn}</Text>
+            </View>
+        )
+      } else {
+        return (
+            <View style={[styles.viewHopGia,{height: 150}]}>
+              <Text style={styles.textHopGia1}>{this.state.loaiNhaDat.toUpperCase()}</Text>
+              <Text style={styles.textHopGia2}>{this.state.duAn}</Text>
+              <Text style={styles.textHopGia4}>Không có thông tin định giá</Text>
+              <Text style={styles.textHopGia5}>thuộc dự án {this.state.duAn}</Text>
+            </View>
+        )
+      }
     } else {
-      return (
-          <View style={[styles.viewHopGia,{height: 150}]}>
-            <Text style={styles.textHopGia1}>{this.state.loaiNhaDat.toUpperCase()}</Text>
-            <Text style={styles.textHopGia2}>{this.state.duAn & this.state.duAn.length>0 ? this.state.duAn : this.state.diaChi}</Text>
-            <Text style={styles.textHopGia4}>Không có thông tin định giá</Text>
-            <Text style={styles.textHopGia5}>nằm trong vòng {this.state.radius}m xung quanh vị trí đã chọn</Text>
-          </View>
-      )
+      if (this.state.giaTrungBinh) {
+        return (
+            <View style={styles.viewHopGia}>
+              <Text style={styles.textHopGia1}>{this.state.giaTrungBinh.loaiNhaDatVal.toUpperCase()}</Text>
+              <Text style={styles.textHopGia2}>{this.state.diaChi}</Text>
+              <Text style={styles.textHopGia3}>{util.getPriceM2Display(this.state.giaTrungBinh.giaM2TrungBinh, this.state.loaiTinKey)}</Text>
+              <Text style={styles.textHopGia4}>Giá ước tính dựa trên dữ liệu {this.state.giaTrungBinh.count} nhà tương tự
+                đã và đang {this.state.loaiTin}</Text>
+              <Text style={styles.textHopGia5}>nằm trong vòng {this.state.radius}m xung quanh vị trí đã chọn</Text>
+            </View>
+        )
+      } else {
+        return (
+            <View style={[styles.viewHopGia,{height: 150}]}>
+              <Text style={styles.textHopGia1}>{this.state.loaiNhaDat.toUpperCase()}</Text>
+              <Text style={styles.textHopGia2}>{this.state.diaChi}</Text>
+              <Text style={styles.textHopGia4}>Không có thông tin định giá</Text>
+              <Text style={styles.textHopGia5}>nằm trong vòng {this.state.radius}m xung quanh vị trí đã chọn</Text>
+            </View>
+        )
+      }
     }
+
   }
   _renderBody(){
     if(this.state.giaTrungBinh && this.state.giaTrungBinh.giaM2TrungBinh > 0){

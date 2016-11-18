@@ -159,6 +159,8 @@ class DinhGia extends React.Component {
       codeDuAn: codeDuAn.length>0 ? codeDuAn : undefined,
       dienTich: dienTich >0 ? dienTich : undefined
     }
+
+    let duAn = (this.state.duAn && this.state.duAn.fullName && this.state.duAn.fullName.length>0) ? this.state.duAn.fullName : undefined;
     this.props.actions.calculatePricing(condition).then(
         (res) =>{
           if (res.success){
@@ -166,7 +168,7 @@ class DinhGia extends React.Component {
                                     data: res.data,
                                     diaChi: this.state.diaChi,
                                     loaiNhaDat: this.state.loaiNhaDat.value,
-                                    duAn: this._getDuAnText()})
+                                    duAn: duAn})
           }else {
             Alert.alert("Không có thông tin định giá khu vực bạn cần tìm");
           }
@@ -293,9 +295,11 @@ class DinhGia extends React.Component {
   }
 
   _getDuAnText(){
-    console.log(this.state.duAn);
+    console.log("========== _getDuAnText");
     if (this.state.duAn && this.state.duAn.fullName && this.state.duAn.fullName.length>0){
-      return this.state.duAn.fullName.substring(0, 25);
+      let duAn = this.state.duAn.fullName.substring(0, 25);
+      console.log(duAn);
+      return duAn;
     }
 
     return '';
