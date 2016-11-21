@@ -59,32 +59,53 @@ class AdsListView extends React.Component {
 
     let ds = myDs.cloneWithRows(myProps.listAds);
 
-    return (
-      <ListView
-        refreshControl={
-          <RefreshControl
-            refreshing={false}
-            onRefresh={this._onRefresh.bind(this)}
-            title={this.props.fields.pageNo > 1 ? " " : "Kéo xuống để làm mới kết quả"}
+    if (this.props.fields.pageNo > 1) {
+      return (
+          <ListView
+              ref={(listView) => { this._listView = listView; }}
+              dataSource={ds}
+              renderRow={(rowData, sectionID, rowID) => this.renderRow(rowData, sectionID, rowID, (rowID == 0), (rowID == (ds._dataBlob.s1.length-1)))}
+              stickyHeaderIndices={[]}
+              initialListSize={1}
+              // onEndReachedThreshold={200}
+              // onEndReached={this.loadNextPage.bind(this)}
+              renderFooter={this.renderFooter.bind(this)}
+              // scrollRenderAheadDistance={3}
+              // pageSize={5}
+              // onScroll={this.handleScroll.bind(this)}
+              // scrollEventThrottle={1000}
+              //renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
+              style={styles.searchListView}
           />
-        }
+      )
+    } else {
+      return (
+          <ListView
+              refreshControl={
+                <RefreshControl
+                  refreshing={false}
+                  onRefresh={this._onRefresh.bind(this)}
+                  title={"Kéo xuống để làm mới kết quả"}
+                />
+              }
 
-        ref={(listView) => { this._listView = listView; }}
-        dataSource={ds}
-        renderRow={(rowData, sectionID, rowID) => this.renderRow(rowData, sectionID, rowID, (rowID == 0), (rowID == (ds._dataBlob.s1.length-1)))}
-        stickyHeaderIndices={[]}
-        initialListSize={1}
-        // onEndReachedThreshold={200}
-        // onEndReached={this.loadNextPage.bind(this)}
-        renderFooter={this.renderFooter.bind(this)}
-        // scrollRenderAheadDistance={3}
-        // pageSize={5}
-        // onScroll={this.handleScroll.bind(this)}
-        // scrollEventThrottle={1000}
-        //renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
-        style={styles.searchListView}
-      />
-    )
+              ref={(listView) => { this._listView = listView; }}
+              dataSource={ds}
+              renderRow={(rowData, sectionID, rowID) => this.renderRow(rowData, sectionID, rowID, (rowID == 0), (rowID == (ds._dataBlob.s1.length-1)))}
+              stickyHeaderIndices={[]}
+              initialListSize={1}
+              // onEndReachedThreshold={200}
+              // onEndReached={this.loadNextPage.bind(this)}
+              renderFooter={this.renderFooter.bind(this)}
+              // scrollRenderAheadDistance={3}
+              // pageSize={5}
+              // onScroll={this.handleScroll.bind(this)}
+              // scrollEventThrottle={1000}
+              //renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
+              style={styles.searchListView}
+          />
+      )
+    }
   }
 
   renderFooter () {
@@ -99,7 +120,8 @@ class AdsListView extends React.Component {
     this.props.actions.onPolygonsChange([]);
     this.props.actions.onSearchFieldChange("polygon", []);
     this.props.actions.onSearchFieldChange("pageNo", 1);
-    this._handleSearchAction(1, diaChinh, []);
+    this.props.actions.onSearchFieldChange("center", null);
+    this._handleSearchAction(1, diaChinh, [], {});
   }
 
   _onEndReached() {
@@ -126,7 +148,7 @@ class AdsListView extends React.Component {
     }
   }
 
-  _handleSearchAction(newPageNo, newDiaChinh, newPolygon){
+  _handleSearchAction(newPageNo, newDiaChinh, newPolygon, newCenter){
     var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
         polygon, pageNo, isIncludeCountInResponse} = this.props.fields;
@@ -140,7 +162,7 @@ class AdsListView extends React.Component {
       orderBy: orderBy,
       viewport: viewport,
       diaChinh: newDiaChinh || diaChinh,
-      center: center,
+      center: newCenter || center,
       radiusInKmSelectedIdx: radiusInKmSelectedIdx,
       huongNha: huongNha,
       ngayDaDang: ngayDaDang,
@@ -212,7 +234,8 @@ class AdsListView extends React.Component {
               loadPreviousPage={() => this.loadPreviousPage()}
               loadNextPage={() => this.loadNextPage()}
               getPagingTitle={this.getPagingTitle.bind(this)}
-              loading={this.props.loading}/>
+              loading={this.props.loading}
+              uploadingLikedAds={this.props.uploadingLikedAds}/>
     );
   }
 

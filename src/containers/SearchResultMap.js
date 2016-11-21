@@ -396,7 +396,7 @@ class SearchResultMap extends Component {
           </MapView>
 
             <View>
-                <LinearGradient colors={['rgba(184, 184, 184, 0.5)', 'transparent']}
+                <LinearGradient colors={['rgba(184, 184, 184, 0.75)', 'transparent']}
                                 style={styles.linearGradient}>
                     <Text style={{height: 70}}></Text>
             <View style={styles.search}>
@@ -813,7 +813,7 @@ class SearchResultMap extends Component {
     }
 
     return (<View style={styles.resultContainer}>
-      <Animatable.View animation={showMessage || textNotFound2 ? "fadeIn" : ""}
+      <Animatable.View animation={showMessage || textNotFound2 ? "fadeIn" : "fadeOut"}
                        duration={showMessage || textNotFound2 ? 500 : 5000}>
         <View style={[styles.resultText, {marginTop: 0, backgroundColor: backgroundColor}]}>
             <Text style={[styles.resultIcon, {fontWeight: fontWeight, color: textColor}]}>  {textValue} </Text>
@@ -840,7 +840,8 @@ class SearchResultMap extends Component {
       this.props.actions.onPolygonsChange([]);
       this.props.actions.onSearchFieldChange("polygon", []);
       this.props.actions.onSearchFieldChange("pageNo", 1);
-      this._refreshListData(null, [], this._onSetupMessageTimeout.bind(this), null, false, diaChinh, 1);
+      this.props.actions.onSearchFieldChange("center", null);
+      this._refreshListData(null, [], this._onSetupMessageTimeout.bind(this), {}, false, diaChinh, 1);
   }
 
   _getViewableAds(){
@@ -962,7 +963,7 @@ class SearchResultMap extends Component {
   _onSetupMessageTimeout() {
       console.log("Call SearchResultMap._onSetupMessageTimeout");
       clearTimeout(this.timer);
-      this.timer = setTimeout(() => this.setState({showMessage: false}), 10000);
+      this.timer = setTimeout(() => this.setState({showMessage: false}), 5000);
   }
 
   _renderLocalInfoModal(){

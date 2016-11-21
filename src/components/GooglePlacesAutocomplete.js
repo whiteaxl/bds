@@ -380,22 +380,29 @@ const GooglePlacesAutocomplete = React.createClass({
     let source ;
     if (rowData.isSaveSearch) {
       source = require('../assets/image/search/savedSearch.png');
+      return (
+          <Image
+              style={styles.avatarIcon}
+              resizeMode={Image.resizeMode.contain}
+              source={source}
+          />
+      );
     } else if (rowData.isRecent) {
-      source = require('../assets/image/search/recent.png');
+      return (
+          <RelandIcon name="recent" color='#4B5157' mainProps={{flexDirection: 'row'}}
+                      size={26} textProps={{paddingLeft: 0}}
+                      noAction={true}></RelandIcon>
+      );
     } else if (rowData.isCurrentLocation) {
-      source = require('../assets/image/search/currentLocation.png');
+      return (
+          <RelandIcon name="direction" color={gui.mainColor} mainProps={{flexDirection: 'row'}}
+                  size={22} textProps={{paddingLeft: 0}}
+                  noAction={true}></RelandIcon>
+      );
     } else {
     //   source = require('../assets/image/search/notPoint.png');
       return null;
     }
-
-    return (
-      <Image
-        style={styles.avatarIcon}
-        resizeMode={Image.resizeMode.contain}
-        source={source}
-      />
-    )
   },
 
   _renderRowText(rowData) {
@@ -496,6 +503,7 @@ const GooglePlacesAutocomplete = React.createClass({
         <ListView
           keyboardShouldPersistTaps={true}
           keyboardDismissMode="on-drag"
+          enableEmptySections={true}
           style={[defaultStyles.listView, this.props.styles.listView]}
           dataSource={this.state.dataSource}
           renderRow={(rowData, sectionID, rowID) => this._renderRow(rowData, sectionID, rowID, (rowID == 0))}

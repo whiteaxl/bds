@@ -60,7 +60,8 @@ function mapStateToProps(state) {
         totalCount: state.search.result.totalCount,
         polygons: state.search.map.polygons,
         listScrollPos: state.search.listScrollPos,
-        limit: maxAdsInMapView
+        limit: maxAdsInMapView,
+        uploadingLikedAds: state.search.uploadingLikedAds
     };
 }
 

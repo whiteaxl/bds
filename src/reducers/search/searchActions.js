@@ -158,7 +158,11 @@ function callApiSearch(params, dispatch, successCallback, failCallback) {
   dispatch(changeLoadingSearchResult(true));
   return Api.getItems(params)
     .then((data) => {
-      if (data.list) {
+      if (data.errMsg) {
+        dispatch(fetchSearchResultFail(data.errMsg));
+        failCallback && failCallback(data.errMsg);
+      }
+      else if (data.list) {
         //let listAds = data.list;
         log.info("searchActions.search, Number of result: " + data.length);
         //log.info("searchActions.search", data);
