@@ -90,12 +90,12 @@ class PlacesAutoComplete extends React.Component {
       setTimeout(() => { //must wait for onSearchFieldChange("place", value) complete
         this._handleSearchAction();
         Actions.pop();
-        StatusBar.setBarStyle('light-content');
+        // StatusBar.setBarStyle('light-content');
         this.props.refreshRegion && this.props.refreshRegion();
       }, 1000);
     } else {
       Actions.pop();
-      StatusBar.setBarStyle('light-content');
+      // StatusBar.setBarStyle('light-content');
     }
     this.props.onShowMessage && this.props.onShowMessage();
   }
@@ -155,7 +155,7 @@ class PlacesAutoComplete extends React.Component {
 
   _onCancelPress() {
     Actions.pop();
-    StatusBar.setBarStyle('light-content');
+    // StatusBar.setBarStyle('light-content');
   }
 
   render() {

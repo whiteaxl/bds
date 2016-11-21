@@ -785,10 +785,14 @@ class SearchResultMap extends Component {
     let textValue = "Đang hiển thị từ " + rangeAds + " kết quả phù hợp";
     let textNotFound2 = "";
     let fontWeight = 'normal';
+    let backgroundColor = 'transparent';
+    let textColor = '#F53113';
     if (numberOfAds == 0) {
       textValue = gui.INF_KhongCoKetQua;
       textNotFound2 = gui.INF_KhongCoKetQua2;
       fontWeight = '600';
+      backgroundColor = 'white';
+      textColor = 'black';
     } else if (totalCount == 0 || (totalCount == numberOfAds && totalCount <= this.props.maxAdsInMapView)) {
       textValue = "Đang hiển thị " + rangeAds + " kết quả phù hợp";
     }
@@ -811,9 +815,9 @@ class SearchResultMap extends Component {
     return (<View style={styles.resultContainer}>
       <Animatable.View animation={showMessage || textNotFound2 ? "fadeIn" : ""}
                        duration={showMessage || textNotFound2 ? 500 : 5000}>
-        <View style={[styles.resultText, {marginTop: 0}]}>
-            <Text style={[styles.resultIcon, {fontWeight: fontWeight}]}>  {textValue} </Text>
-            {textNotFound2 ? <Text style={styles.resultIcon}>  {textNotFound2} </Text> : null}
+        <View style={[styles.resultText, {marginTop: 0, backgroundColor: backgroundColor}]}>
+            <Text style={[styles.resultIcon, {fontWeight: fontWeight, color: textColor}]}>  {textValue} </Text>
+            {textNotFound2 ? <Text style={[styles.resultIcon, {color: textColor}]}>  {textNotFound2} </Text> : null}
             {textNotFound2 ? this._renderAllRegionButton() : null}
         </View>
       </Animatable.View>
