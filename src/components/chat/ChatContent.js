@@ -3,12 +3,12 @@ import React, {Component} from 'react';
 import moment from 'moment';
 
 import {
-  StyleSheet,
-  Text, Navigator,
-  View, Dimensions,
-  Image, ListView,
-  TouchableOpacity,
-  TextInput, Alert,ScrollView,
+    StyleSheet,
+    Text, Navigator,
+    View, Dimensions,
+    Image, ListView,
+    TouchableOpacity,
+    TextInput, Alert,ScrollView,
 
 } from 'react-native';
 
@@ -26,6 +26,7 @@ import GiftedMessenger from '../giftedMessegener/GiftedMessenger';
 
 import log from '../../lib/logUtil';
 import danhMuc from '../../assets/DanhMuc';
+import FullLine from '../line/FullLine';
 
 import ImagePreview from '../ImagePreview';
 
@@ -45,9 +46,9 @@ function mapStateToProps(state) {
 
 function mapDispatchToProps(dispatch) {
   const creators = Map()
-    .merge(...actions)
-    .filter(value => typeof value === 'function')
-    .toObject();
+      .merge(...actions)
+      .filter(value => typeof value === 'function')
+      .toObject();
 
   return {
     actions: bindActionCreators(creators, dispatch),
@@ -134,13 +135,13 @@ class  ChatContent extends React.Component {
   renderCustomText(rowData) {
     if(rowData.msgType==2){
       return (
-        <TouchableOpacity
-            onPress={this.doImagePress.bind(this, rowData.text)}>
-        <Image resizeMode = {"cover"}
-        source={{uri:rowData.text}}
-        style={styles.image}/>
-        </TouchableOpacity>
-        )
+          <TouchableOpacity
+              onPress={this.doImagePress.bind(this, rowData.text)}>
+            <Image resizeMode = {"cover"}
+                   source={{uri:rowData.text}}
+                   style={styles.image}/>
+          </TouchableOpacity>
+      )
     } else {
       let d  = new Date(rowData.date);
       let msg = rowData.text;
@@ -148,16 +149,16 @@ class  ChatContent extends React.Component {
       if (rowData.position === 'left') {
         return <Text style={{color:'black'}}>{msg}</Text>;
       } else {
-        return <Text style={{color:'white'}}>{msg}</Text>;
+        return <Text style={{color:'black'}}>{msg}</Text>;
       }
     }
   }
 
   render() {
     let maxHeight = Dimensions.get('window').height
-    - Navigator.NavigationBar.Styles.General.NavBarHeight
-    - STATUS_BAR_HEIGHT
-    - ADS_BAR_HEIGHT;
+        - Navigator.NavigationBar.Styles.General.NavBarHeight
+        - STATUS_BAR_HEIGHT
+        - ADS_BAR_HEIGHT;
 
     let relatedToAds = this.props.chat.ads;
     log.info("Chat content.render - relatedToAds", relatedToAds);
@@ -168,53 +169,54 @@ class  ChatContent extends React.Component {
     imageDataItems.push(this.state.imageUri);
 
     return (
-      <View style={styles.wrapper}>
-        <View style = {styles.adsHeader}>
-          <Image
-            resizeMode = {"cover"}
-            source={{uri: relatedToAds.cover}}
-            style={styles.adsCover}/>
+        <View style={styles.wrapper}>
+          <View style = {styles.adsHeader}>
+            <Image
+                resizeMode = {"cover"}
+                source={{uri: relatedToAds.cover}}
+                style={styles.adsCover}/>
 
-          <View style={styles.adsTitle}>
-            <Text numberOfLines={1} style={styles.adsLine1}>{adsTextLine1}</Text>
-            <Text style={styles.adsLine2}>{adsTextLine2}</Text>
+            <View style={styles.adsTitle}>
+              <Text numberOfLines={1} style={styles.adsLine1}>{adsTextLine1}</Text>
+              <Text style={styles.adsLine2}>{adsTextLine2}</Text>
+            </View>
           </View>
+          <FullLine />
+
+          <GiftedMessenger
+              ref={(c) => this._GiftedMessenger = c}
+
+              //renderTextInput = {this.renderTextInput.bind(this)}
+
+              autoFocus={false}
+              messages={this.props.chat.messages}
+              handleSend={this.handleSend.bind(this)}
+              onErrorButtonPress={this.onErrorButtonPress.bind(this)}
+              maxHeight={maxHeight}
+
+              loadEarlierMessagesButton={!this.props.chat.allLoaded}
+              onLoadEarlierMessages={this.onLoadEarlierMessages.bind(this)}
+
+              senderName='Awesome Developer'
+              senderImage={null}
+              onImagePress={this.onImagePress.bind(this)}
+              displayNames={true}
+
+              forceRenderImage = {true}
+
+              parseText={true} // enable handlePhonePress, handleUrlPress and handleEmailPress
+              handlePhonePress={this.handlePhonePress}
+              handleUrlPress={this.handleUrlPress.bind(this)}
+              handleEmailPress={this.handleEmailPress}
+
+              isLoadingEarlierMessages={this.props.chat.isLoadingEarlierMessages}
+
+              typingMessage={this.props.chat.typingMessage}
+
+              renderCustomText = {this.renderCustomText.bind(this)}
+          />
+          {this.state.modal ? <ImagePreview images={imageDataItems} owner={'chat'} closeModal={() => this.setState({modal: false}) }/> : null }
         </View>
-
-        <GiftedMessenger
-          ref={(c) => this._GiftedMessenger = c}
-
-          //renderTextInput = {this.renderTextInput.bind(this)}
-
-          autoFocus={false}
-          messages={this.props.chat.messages}
-          handleSend={this.handleSend.bind(this)}
-          onErrorButtonPress={this.onErrorButtonPress.bind(this)}
-          maxHeight={maxHeight}
-
-          loadEarlierMessagesButton={!this.props.chat.allLoaded}
-          onLoadEarlierMessages={this.onLoadEarlierMessages.bind(this)}
-
-          senderName='Awesome Developer'
-          senderImage={null}
-          onImagePress={this.onImagePress.bind(this)}
-          displayNames={true}
-
-          forceRenderImage = {true}
-
-          parseText={true} // enable handlePhonePress, handleUrlPress and handleEmailPress
-          handlePhonePress={this.handlePhonePress}
-          handleUrlPress={this.handleUrlPress.bind(this)}
-          handleEmailPress={this.handleEmailPress}
-
-          isLoadingEarlierMessages={this.props.chat.isLoadingEarlierMessages}
-
-          typingMessage={this.props.chat.typingMessage}
-
-          renderCustomText = {this.renderCustomText.bind(this)}
-        />
-        {this.state.modal ? <ImagePreview images={imageDataItems} owner={'chat'} closeModal={() => this.setState({modal: false}) }/> : null }
-      </View>
     );
   }
 }
@@ -285,12 +287,6 @@ var styles = StyleSheet.create({
   image: {
     height: 100,
   },
-  listView: {
-    paddingTop: 0,
-    backgroundColor: 'white',
-    borderColor: '#e6e6e6',
-    borderBottomWidth: 1
-  },
   nameAndDateTime : {
     flex: 1,
     flexDirection: 'row',
@@ -358,21 +354,22 @@ var styles = StyleSheet.create({
     fontSize: 15,
     textAlign: 'left',
     fontFamily: 'Open Sans',
-    fontWeight: '600',
+    fontWeight: '500',
+    color:'#000'
   },
 
   adsLine2: {
     fontSize: 15,
     textAlign: 'left',
     fontFamily: 'Open Sans',
-    color : '#d10d16',
+    color : '#e50e27',
     paddingTop:5
   },
   adsHeader: {
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    borderBottomWidth: 1,
+    borderBottomWidth: 0,
     borderColor: '#e6e6e6',
   },
 

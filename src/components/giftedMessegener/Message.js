@@ -1,5 +1,5 @@
 import React, {
-  Component,
+    Component,
 } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight, Image } from 'react-native';
 import Bubble from './Bubble';
@@ -58,14 +58,14 @@ export default class Message extends Component {
     if (displayNames === true) {
       if (diffMessage === null || name !== diffMessage.name) {
         return (
-          <Text
-            style={[
+            <Text
+                style={[
               styles.name,
               this.props.displayNamesInsideBubble ? styles.nameInsideBubble : null,
             ]}
-          >
-            {name}
-          </Text>
+            >
+              {name}
+            </Text>
         );
       }
     }
@@ -82,41 +82,41 @@ export default class Message extends Component {
       if (diffMessage === null || (diffMessage !== null && (rowData.name !== diffMessage.name || rowData.uniqueId !== diffMessage.uniqueId))) {
         if (typeof onImagePress === 'function') {
           return (
-            <TouchableHighlight
-              underlayColor='transparent'
-              onPress={() => onImagePress(rowData)}
-            >
-              <ImageView {...rowData} position={'relative'}
-                source={rowData.image}
-                style={[styles.imagePosition, styles.image, (rowData.position === 'left' ? styles.imageLeft : styles.imageRight)]}
-              />
-            </TouchableHighlight>
+              <TouchableHighlight
+                  underlayColor='transparent'
+                  onPress={() => onImagePress(rowData)}
+              >
+                <ImageView {...rowData} position={'relative'}
+                                        source={rowData.image}
+                                        style={[styles.imagePosition, styles.image, (rowData.position === 'left' ? styles.imageLeft : styles.imageRight)]}
+                />
+              </TouchableHighlight>
           );
         }
         return (
-          <ImageView {...rowData} position={'relative'}
-            source={rowData.image}
-            style={[styles.imagePosition, styles.image, (rowData.position === 'left' ? styles.imageLeft : styles.imageRight)]}
-          />
+            <ImageView {...rowData} position={'relative'}
+                                    source={rowData.image}
+                                    style={[styles.imagePosition, styles.image, (rowData.position === 'left' ? styles.imageLeft : styles.imageRight)]}
+            />
         );
       }
       return (
-        <View style={styles.imagePosition} />
+          <View style={styles.imagePosition} />
       );
     }
     return (
-      <View style={styles.spacer} />
+        <View style={styles.spacer} />
     );
   }
 
   renderErrorButton(rowData, onErrorButtonPress) {
     if (rowData.status === 'ErrorButton') {
       return (
-        <ErrorButton
-          onErrorButtonPress={onErrorButtonPress}
-          rowData={rowData}
-          styles={styles}
-        />
+          <ErrorButton
+              onErrorButtonPress={onErrorButtonPress}
+              rowData={rowData}
+              styles={styles}
+          />
       );
     }
     return null;
@@ -126,9 +126,9 @@ export default class Message extends Component {
     if (status !== 'ErrorButton' && typeof status === 'string') {
       if (status.length > 0) {
         return (
-          <View>
-            <Text style={styles.status}>{status}</Text>
-          </View>
+            <View>
+              <Text style={styles.status}>{status}</Text>
+            </View>
         );
       }
     }
@@ -137,14 +137,14 @@ export default class Message extends Component {
 
   render() {
     var {
-      rowData,
-      onErrorButtonPress,
-      position,
-      displayNames,
-      diffMessage,
-      forceRenderImage,
-      onImagePress,
-      onMessageLongPress,
+        rowData,
+        onErrorButtonPress,
+        position,
+        displayNames,
+        diffMessage,
+        forceRenderImage,
+        onImagePress,
+        onMessageLongPress,
     } = this.props;
 
     const flexStyle = {};
@@ -160,42 +160,42 @@ export default class Message extends Component {
     }
 
     let customText = rowData.text ? (<RowView
-          {...rowData}
-          renderCustomText={this.props.renderCustomText}
-          styles={styles}
-          name={position === 'left' && this.props.displayNamesInsideBubble ? this.renderName(rowData.name, displayNames, diffMessage) : null}
+        {...rowData}
+        renderCustomText={this.props.renderCustomText}
+        styles={styles}
+        name={position === 'left' && this.props.displayNamesInsideBubble ? this.renderName(rowData.name, displayNames, diffMessage) : null}
 
-          parseText={this.props.parseText}
-          handlePhonePress={this.props.handlePhonePress}
-          handleUrlPress={this.props.handleUrlPress}
-          handleEmailPress={this.props.handleEmailPress}
-      />) : null;
+        parseText={this.props.parseText}
+        handlePhonePress={this.props.handlePhonePress}
+        handleUrlPress={this.props.handleUrlPress}
+        handleEmailPress={this.props.handleEmailPress}
+    />) : null;
     
     let messageView = (
-      <View>
-        {position === 'left' && !this.props.displayNamesInsideBubble ? this.renderName(rowData.name, displayNames, diffMessage) : null}
-        <View
-          style={[styles.rowContainer, {
+        <View>
+          {position === 'left' && !this.props.displayNamesInsideBubble ? this.renderName(rowData.name, displayNames, diffMessage) : null}
+          <View
+              style={[styles.rowContainer, {
             justifyContent: position === 'left' ? 'flex-start' : position === 'right' ? 'flex-end' : 'center',
           }]}
-        >
-          {position === 'left' ? this.renderImage(rowData, diffMessage, forceRenderImage, onImagePress) : null}
-          {position === 'right' ? this.renderErrorButton(rowData, onErrorButtonPress) : null}
-          {customText}
-          {rowData.position === 'right' ? this.renderImage(rowData, diffMessage, forceRenderImage, onImagePress) : null}
+          >
+            {position === 'left' ? this.renderImage(rowData, diffMessage, forceRenderImage, onImagePress) : null}
+            {position === 'right' ? this.renderErrorButton(rowData, onErrorButtonPress) : null}
+            {customText}
+            {rowData.position === 'right' ? this.renderImage(rowData, diffMessage, forceRenderImage, onImagePress) : null}
+          </View>
+          {rowData.position === 'right' ? this.renderStatus(rowData.status) : null}
         </View>
-        {rowData.position === 'right' ? this.renderStatus(rowData.status) : null}
-      </View>
     );
 
     if (typeof onMessageLongPress === 'function') {
       return (
-        <TouchableHighlight
-          underlayColor="transparent"
-          onLongPress={() => onMessageLongPress(rowData)}
-        >
-          {messageView}
-        </TouchableHighlight>
+          <TouchableHighlight
+              underlayColor="transparent"
+              onLongPress={() => onMessageLongPress(rowData)}
+          >
+            {messageView}
+          </TouchableHighlight>
       );
     }
     return messageView;

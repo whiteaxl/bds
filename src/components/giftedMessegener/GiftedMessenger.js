@@ -1,16 +1,17 @@
 import React, {
-  Component,
+    Component,
 } from 'react';
 import {
-  Text,
-  View,
-  ListView,
-  TextInput,
-  Dimensions,
-  Animated,
-  Platform,
-  PixelRatio,
-  Alert
+    Text,
+    View,
+    ListView,
+    TextInput,
+    Dimensions,
+    Animated,
+    Platform,
+    PixelRatio,
+    Alert,
+    ScrollView
 } from 'react-native';
 
 import Message from './Message';
@@ -21,12 +22,15 @@ import deepEqual from 'deep-equal';
 import Button from 'react-native-button';
 import RelandIcon from '../RelandIcon';
 import gui from '../../lib/gui';
+import FullLine from '../line/FullLine';
+
 
 import {Actions} from 'react-native-router-flux';
 import {Map} from 'immutable';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-
+var Modal  = require('react-native-modalbox');
+var {width, height} = Dimensions.get('window');
 import * as globalActions from '../../reducers/global/globalActions';
 
 const actions = [
@@ -114,43 +118,48 @@ class GiftedMessenger extends Component {
       },
       textInputContainer: {
         height: 44,
-        borderTopWidth: 1 / PixelRatio.get(),
-        borderColor: '#b2b2b2',
+        //borderTopWidth: 1 / PixelRatio.get(),
+        //borderColor: '#b2b2b2',
         flexDirection: 'row',
-        paddingLeft: 10,
+        paddingLeft: 12,
         paddingRight: 10,
+        backgroundColor:'#f3f5f7'
       },
       textInput: {
         alignSelf: 'center',
-        height: 30,
+        height: 33,
         width: 100,
-        backgroundColor: '#FFF',
+        backgroundColor: 'white',
         flex: 1,
         padding: 0,
         margin: 0,
-        fontSize: 15,
-        fontFamily: 'Open Sans',
+        fontSize: 14,
+        paddingLeft: 8,
+        borderRadius:4
       },
       sendButton: {
         marginTop: 11,
         marginLeft: 10,
+        fontSize: 16,
+        fontWeight: '400'
       },
       date: {
         color: '#aaaaaa',
-        fontSize: 12,
+        fontSize: 11,
         textAlign: 'center',
-        fontWeight: 'bold',
+        fontWeight: '400',
         marginBottom: 8,
+        fontFamily: 'Open Sans',
       },
       link: {
-        color: '#007aff',
+        color: '#e0f4fc',
         textDecorationLine: 'underline',
       },
       linkLeft: {
         color: '#000',
       },
       linkRight: {
-        color: '#fff',
+        color: '#000',
       },
       loadEarlierMessages: {
         height: 44,
@@ -241,10 +250,21 @@ class GiftedMessenger extends Component {
     Actions.PostAds({owner: 'chat'});
   }
 
-  coming(){
-    Alert.alert("coming soon ...");
+  _coming(){
+    this.refs.modalChatModal.open();
   }
+  _renderChatModal(){
+    return(
+        <Modal style={{height:height/2,width:width-100, borderRadius:7, top:50, borderColor:'lightgray'}} ref={"modalChatModal"}  swipeToClose={false}>
+          <ScrollView>
+            <View style={{flex : 1,height:20, backgroundColor: 'transparent', paddingLeft:10, justifyContent:'flex-end', alignItems:'center',borderColor:'#dfdfdf', borderBottomWidth:1}}>
+              <Text style={{fontSize:14, fontFamily: 'Open Sans'}}>Hello there, my name is react native!</Text>
+            </View>
+          </ScrollView>
+        </Modal>
+    );
 
+  }
   onSend() {
     this.myTextInput.clear();
 
@@ -445,46 +465,46 @@ class GiftedMessenger extends Component {
     if (this.props.loadEarlierMessagesButton) {
       if (this.props.isLoadingEarlierMessages) {
         return (
-          <View style={this.styles.loadEarlierMessages}>
-            <GiftedSpinner size="large" />
-          </View>
+            <View style={this.styles.loadEarlierMessages}>
+              <GiftedSpinner size="large" />
+            </View>
         );
       }
       return (
-        <View style={this.styles.loadEarlierMessages}>
-          <Button
-            style={this.styles.loadEarlierMessagesButton}
-            onPress={() => {this.preLoadEarlierMessages();}}
-          >
-            {this.props.loadEarlierMessagesButtonText}
-          </Button>
-        </View>
+          <View style={this.styles.loadEarlierMessages}>
+            <Button
+                style={this.styles.loadEarlierMessagesButton}
+                onPress={() => {this.preLoadEarlierMessages();}}
+            >
+              {this.props.loadEarlierMessagesButtonText}
+            </Button>
+          </View>
       );
     }
     return (
-      <View style={ { height: 10 } } />
+        <View style={ { height: 10 } } />
     );
   }
 
   renderTypingMessage() {
     if (this.props.typingMessage) {
       return (
-        <View
-          style={{
+          <View
+              style={{
             height: 44,
             justifyContent: 'center',
           }}
-        >
-          <Text
-            style={{
+          >
+            <Text
+                style={{
               marginLeft: 10,
               marginRight: 10,
               color: '#aaaaaa',
             }}
-          >
-            {this.props.typingMessage}
-          </Text>
-        </View>
+            >
+              {this.props.typingMessage}
+            </Text>
+          </View>
       );
     }
     return null;
@@ -492,11 +512,11 @@ class GiftedMessenger extends Component {
 
   renderFooter() {
     return (
-      <View
-        onLayout={this.onFooterLayout}
-      >
-        {this.renderTypingMessage()}
-      </View>
+        <View
+            onLayout={this.onFooterLayout}
+        >
+          {this.renderTypingMessage()}
+        </View>
     );
   }
 
@@ -512,17 +532,17 @@ class GiftedMessenger extends Component {
     if (currentDate instanceof Date) {
       if (diffMessage === null) {
         return (
-          <Text style={[this.styles.date]}>
-            {moment(currentDate).calendar()}
-          </Text>
+            <Text style={[this.styles.date]}>
+              {moment(currentDate).calendar()}
+            </Text>
         );
       } else if (new Date(diffMessage.date) instanceof Date) {
         const diff = moment(currentDate).diff(moment(new Date(diffMessage.date)), 'minutes');
         if (diff > 5) {
           return (
-            <Text style={[this.styles.date]}>
-              {moment(currentDate).calendar()}
-            </Text>
+              <Text style={[this.styles.date]}>
+                {moment(currentDate).calendar()}
+              </Text>
           );
         }
       }
@@ -535,69 +555,69 @@ class GiftedMessenger extends Component {
     diffMessage = this.getPreviousMessage(rowData);
 
     return (
-      <View>
-        {this.renderDate(rowData)}
-        <Message
-          rowData={rowData}
-          onErrorButtonPress={this.props.onErrorButtonPress}
-          displayNames={this.props.displayNames}
-          displayNamesInsideBubble={this.props.displayNamesInsideBubble}
-          diffMessage={diffMessage}
-          position={rowData.position}
-          forceRenderImage={this.props.forceRenderImage}
-          onImagePress={this.props.onImagePress}
-          onMessageLongPress={this.props.onMessageLongPress}
-          renderCustomText={this.props.renderCustomText}
+        <View>
+          {this.renderDate(rowData)}
+          <Message
+              rowData={rowData}
+              onErrorButtonPress={this.props.onErrorButtonPress}
+              displayNames={this.props.displayNames}
+              displayNamesInsideBubble={this.props.displayNamesInsideBubble}
+              diffMessage={diffMessage}
+              position={rowData.position}
+              forceRenderImage={this.props.forceRenderImage}
+              onImagePress={this.props.onImagePress}
+              onMessageLongPress={this.props.onMessageLongPress}
+              renderCustomText={this.props.renderCustomText}
 
-          parseText={this.props.parseText}
-          handlePhonePress={this.props.handlePhonePress}
-          handleUrlPress={this.props.handleUrlPress}
-          handleEmailPress={this.props.handleEmailPress}
+              parseText={this.props.parseText}
+              handlePhonePress={this.props.handlePhonePress}
+              handleUrlPress={this.props.handleUrlPress}
+              handleEmailPress={this.props.handleEmailPress}
 
-          styles={this.styles}
-        />
-      </View>
+              styles={this.styles}
+          />
+        </View>
     );
   }
 
   renderAnimatedView() {
     return (
-      <Animated.View
-        style={{
+        <Animated.View
+            style={{
           height: this.state.height,
           justifyContent: 'flex-end',
         }}
 
-      >
-        <ListView
-          ref="listView"
-          dataSource={this.state.dataSource}
-          renderRow={this.renderRow}
-          //renderHeader={this.renderLoadEarlierMessages}
-          enableEmptySections={true}
-          onLayout={this.onLayout}
-          renderFooter={this.renderFooter}
-          onChangeVisibleRows={this.onChangeVisibleRows}
+        >
+          <ListView
+              ref="listView"
+              dataSource={this.state.dataSource}
+              renderRow={this.renderRow}
+              //renderHeader={this.renderLoadEarlierMessages}
+              enableEmptySections={true}
+              onLayout={this.onLayout}
+              renderFooter={this.renderFooter}
+              onChangeVisibleRows={this.onChangeVisibleRows}
 
-          style={this.styles.listView}
+              style={this.styles.listView}
 
-          // not supported in Android - to fix this issue in Android, onKeyboardWillShow is called inside onKeyboardDidShow
-          onKeyboardWillShow={this.onKeyboardWillShow}
-          onKeyboardDidShow={this.onKeyboardDidShow}
-          // not supported in Android - to fix this issue in Android, onKeyboardWillHide is called inside onKeyboardDidHide
-          onKeyboardWillHide={this.onKeyboardWillHide}
-          onKeyboardDidHide={this.onKeyboardDidHide}
-          // @issue keyboardShouldPersistTaps={false} + textInput focused = 2 taps are needed to trigger the ParsedText links
-          keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
-          keyboardDismissMode={this.props.keyboardDismissMode}
+              // not supported in Android - to fix this issue in Android, onKeyboardWillShow is called inside onKeyboardDidShow
+              onKeyboardWillShow={this.onKeyboardWillShow}
+              onKeyboardDidShow={this.onKeyboardDidShow}
+              // not supported in Android - to fix this issue in Android, onKeyboardWillHide is called inside onKeyboardDidHide
+              onKeyboardWillHide={this.onKeyboardWillHide}
+              onKeyboardDidHide={this.onKeyboardDidHide}
+              // @issue keyboardShouldPersistTaps={false} + textInput focused = 2 taps are needed to trigger the ParsedText links
+              keyboardShouldPersistTaps={this.props.keyboardShouldPersistTaps}
+              keyboardDismissMode={this.props.keyboardDismissMode}
 
-          initialListSize={this.props.messages.length}
-          pageSize={this.props.messages.length}
+              initialListSize={this.props.messages.length}
+              pageSize={this.props.messages.length}
 
-          {...this.props}
-        />
+              {...this.props}
+          />
 
-      </Animated.View>
+        </Animated.View>
     );
   }
 
@@ -620,49 +640,53 @@ class GiftedMessenger extends Component {
     }
     if (this.props.hideTextInput === false) {
       return (
-        <View style={{flexDirection: 'column'}}>
-        <View style={this.styles.textInputContainer}>
-          {this.props.leftControlBar}
-          <TextInput
-            ref = {(e) => this.myTextInput = e}
-            style={this.styles.textInput}
-            placeholder={this.props.placeholder}
-            placeholderTextColor={this.props.placeholderTextColor}
-            onChangeText={this.onChangeText}
-            //value={this.state.text}
-            autoFocus={this.props.autoFocus}
-            returnKeyType={this.props.submitOnReturn ? 'send' : 'default'}
-            onSubmitEditing={this.props.submitOnReturn ? this.onSend : () => {}}
-            enablesReturnKeyAutomatically={true}
+          <View style={{flexDirection: 'column'}}>
+            <View style={this.styles.textInputContainer}>
+              {this.props.leftControlBar}
+              <TextInput
+                  ref = {(e) => this.myTextInput = e}
+                  style={this.styles.textInput}
+                  placeholder={this.props.placeholder}
+                  placeholderTextColor={this.props.placeholderTextColor}
+                  onChangeText={this.onChangeText}
+                  //value={this.state.text}
+                  autoFocus={this.props.autoFocus}
+                  returnKeyType={this.props.submitOnReturn ? 'send' : 'default'}
+                  onSubmitEditing={this.props.submitOnReturn ? this.onSend : () => {}}
+                  enablesReturnKeyAutomatically={true}
 
-            blurOnSubmit={this.props.blurOnSubmit}
-          />
-          <Button
-              style={this.styles.sendButton}
-              styleDisabled={this.styles.sendButtonDisabled}
-              onPress={this.onSend}
-              disabled={this.state.disabled}
-          >
-            {this.props.sendButtonText}
-          </Button>
+                  blurOnSubmit={this.props.blurOnSubmit}
+              />
+              <Button
+                  style={this.styles.sendButton}
+                  styleDisabled={this.styles.sendButtonDisabled}
+                  onPress={this.onSend}
+                  disabled={this.state.disabled}
+              >
+                {this.props.sendButtonText}
+              </Button>
+            </View>
+            <View style={{flexDirection: 'row', }}>
+              <RelandIcon name="list" color={gui.mainColor}
+                          mainProps={this.styles.captureIcon}
+                          size={22} textProps={{paddingLeft: 0}}
+                          onPress={this._coming.bind(this)} />
+              <RelandIcon name="camera-o" color={gui.mainColor}
+                          mainProps={this.styles.captureIcon}
+                          size={22} textProps={{paddingLeft: 0}}
+                          onPress={this.takePicture} />
+              <RelandIcon name="photos" color={gui.mainColor}
+                          mainProps={this.styles.captureIcon}
+                          size={22} textProps={{paddingLeft: 0}}
+                          onPress={this.takePicture} />
+              <RelandIcon name="location-o" color={gui.mainColor}
+                          mainProps={this.styles.captureIcon}
+                          size={22} textProps={{paddingLeft: 0}}
+                          onPress={this.coming} />
+
+            </View>
+
           </View>
-          <View style={{flexDirection: 'row', }}>
-            <RelandIcon name="list" color={gui.mainColor}
-                      mainProps={this.styles.captureIcon}
-                      size={22} textProps={{paddingLeft: 0}}
-                      onPress={this.coming} />
-            <RelandIcon name="camera-o" color={gui.mainColor}
-                        mainProps={this.styles.captureIcon}
-                        size={22} textProps={{paddingLeft: 0}}
-                        onPress={this.takePicture} />
-            <RelandIcon name="location-o" color={gui.mainColor}
-                        mainProps={this.styles.captureIcon}
-                        size={22} textProps={{paddingLeft: 0}}
-                        onPress={this.coming} />
-
-          </View>
-
-        </View>
       );
     }
     return null;
@@ -670,10 +694,12 @@ class GiftedMessenger extends Component {
 
   render() {
     return (
-      <View style={this.styles.container}>
-        {this.renderAnimatedView()}
-        {this.renderTextInput()}
-      </View>
+        <View style={this.styles.container}>
+          {this.renderAnimatedView()}
+          <FullLine />
+          {this.renderTextInput()}
+          {this._renderChatModal()}
+        </View>
     );
   }
 }

@@ -5,31 +5,32 @@ import ParsedText from 'react-native-parsed-text';
 
 const styles = StyleSheet.create({
   bubble: {
-    borderRadius: 15,
+    borderRadius: 6,
     paddingLeft: 14,
     paddingRight: 14,
     paddingBottom: 10,
     paddingTop: 8,
   },
-  text: {
+  textChat: {
     color: '#000',
   },
   textLeft: {
+    color: '#000',
   },
   textRight: {
-    color: '#fff',
+    color: '#000',
   },
   textCenter: {
     textAlign: 'center',
   },
   bubbleLeft: {
     marginRight: 70,
-    backgroundColor: '#e6e6eb',
+    backgroundColor: '#f1f0f0',
     alignSelf: 'flex-start',
   },
   bubbleRight: {
     marginLeft: 70,
-    backgroundColor: '#007aff',
+    backgroundColor: '#caeffc',
     alignSelf: 'flex-end',
   },
   bubbleCenter: {
@@ -54,9 +55,9 @@ export default class Bubble extends React.Component {
 
     if (this.props.parseText === true) {
       return (
-        <ParsedText
-          style={[styles.text, (position === 'left' ? styles.textLeft : position === 'right' ? styles.textRight : styles.textCenter)]}
-          parse={
+          <ParsedText
+              style={[styles.textChat, (position === 'left' ? styles.textLeft : position === 'right' ? styles.textRight : styles.textCenter)]}
+              parse={
             [
               {
                 type: 'url',
@@ -81,16 +82,16 @@ export default class Bubble extends React.Component {
               },
             ]
           }
-        >
-          {text}
-        </ParsedText>
+          >
+            {text}
+          </ParsedText>
       );
     }
 
     return (
-      <Text style={[styles.text, (position === 'left' ? styles.textLeft : position === 'right' ? styles.textRight : styles.textCenter)]}>
-        {text}
-      </Text>
+        <Text style={[styles.textChat, (position === 'left' ? styles.textLeft : position === 'right' ? styles.textRight : styles.textCenter)]}>
+          {text}
+        </Text>
     );
   }
 
@@ -106,15 +107,15 @@ export default class Bubble extends React.Component {
     }
 
     return (
-      <View style={[styles.bubble,
+        <View style={[styles.bubble,
         (this.props.position === 'left' ? styles.bubbleLeft : this.props.position === 'right' ? styles.bubbleRight : styles.bubbleCenter),
         (this.props.status === 'ErrorButton' ? styles.bubbleError : null),
         flexStyle]}
-      >
-        {this.props.name}
-        {this.renderText(this.props.text, this.props.position)}
-      </View>
-  );
+        >
+          {this.props.name}
+          {this.renderText(this.props.text, this.props.position)}
+        </View>
+    );
   }
 }
 
