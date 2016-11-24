@@ -29,7 +29,8 @@ var InitialState = Record({
     fullName: null,
     userID : null,
     phone: null,
-    avatar  : null
+    avatar  : null,
+    isOnline: false
   },
   ads: {
     adsID : "",

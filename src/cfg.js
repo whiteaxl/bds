@@ -5,6 +5,7 @@ var cfg = {
 };
 
 cfg.rootUrl = `http://${cfg.server}:5000/api`;
+cfg.serverUrl = `http://${cfg.server}:5000`;
 
 cfg.maxWidth = 745;
 cfg.maxHeight = 510;

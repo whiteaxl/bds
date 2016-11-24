@@ -25,12 +25,12 @@ const styles = StyleSheet.create({
   },
   bubbleLeft: {
     marginRight: 70,
-    backgroundColor: '#f1f0f0',
+    backgroundColor: '#f0f3f8',
     alignSelf: 'flex-start',
   },
   bubbleRight: {
     marginLeft: 70,
-    backgroundColor: '#caeffc',
+    backgroundColor: '#dff2ff',
     alignSelf: 'flex-end',
   },
   bubbleCenter: {

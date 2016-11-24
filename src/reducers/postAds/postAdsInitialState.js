@@ -38,11 +38,11 @@ const InitialState = Record({
     },
     lienHe: {
         tenLienLac: null,
-        showTenLienLac: false,
+        showTenLienLac: true,
         phone: null,
-        showPhone: false,
+        showPhone: true,
         email: null,
-        showEmail: false
+        showEmail: true
     },
     dangBoi: {
         userID: undefined,

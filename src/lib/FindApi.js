@@ -9,7 +9,7 @@ import cancelablFetch from 'react-native-cancelable-fetch'
 
 import moment from 'moment';
 
-var rootUrl = `http://${cfg.server}:5000/api`;
+var rootUrl = `${cfg.rootUrl}`;
 var findUrl = rootUrl + "/v2/find";
 var placeUrl = rootUrl + "/findPlace";
 var mplaceUrl = rootUrl + "/place";
@@ -279,8 +279,8 @@ var Api = {
 
     getGeocoding(lat, lon, callback) {
         var url = "https://maps.googleapis.com/maps/api/geocode/json?" +
-            //"key=AIzaSyAnioOM0qiWwUoCz8hNS8B2YuzKiYYaDdU" +
-            "key=AIzaSyDhk9mOXjM79P7ceOceYSCxQO-o9YXCR3A" +
+            "key=AIzaSyAnioOM0qiWwUoCz8hNS8B2YuzKiYYaDdU" +
+            //"key=AIzaSyDhk9mOXjM79P7ceOceYSCxQO-o9YXCR3A" +
             "&latlng=" + lat + ',' + lon;
 
         return fetch(url)

@@ -38,7 +38,7 @@ import danhMuc from '../assets/DanhMuc';
 
 import cfg from "../cfg";
 
-var rootUrl = `http://${cfg.server}:5000`;
+var rootUrl = `${cfg.serverUrl}`;
 
 const actions = [
     globalActions,

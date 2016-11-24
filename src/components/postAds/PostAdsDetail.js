@@ -33,6 +33,8 @@ import ImageResizer from 'react-native-image-resizer';
 
 import PickerExt2 from '../picker/PickerExt2';
 
+import placeUtil from '../../lib/PlaceUtil';
+
 import GiftedSpinner from 'react-native-gifted-spinner';
 
 import moment from 'moment';
@@ -41,7 +43,7 @@ import dismissKeyboard from 'react-native-dismiss-keyboard';
 
 import cfg from "../../cfg";
 
-var rootUrl = `http://${cfg.server}:5000`;
+var rootUrl = `${cfg.serverUrl}`;
 
 var { width, height } = Dimensions.get('window');
 const windowHeight = height;
@@ -93,18 +95,34 @@ class PostAdsDetail extends Component {
             initNamXayDung: '',
             inputNamXayDung: '',
             namXayDung: null,
+            diaChinhFullName: '',
             adsID: adsID,
             showMoreContent: false
         }
     }
 
     componentWillMount() {
-        let { place, photos} = this.props.postAds
+        let { place, photos, lienHe} = this.props.postAds;
+        let adsID = this.props.postAds.id;
+        let {currentUser} = this.props.global;
+
+        if (!adsID || adsID.length<=0){
+            let  lienHe = {
+                tenLienLac: currentUser.fullName,
+                showTenLienLac: true,
+                phone: currentUser.phone,
+                showPhone: true,
+                email: currentUser.email,
+                showEmail: true
+            };
+            this.props.actions.onPostAdsFieldChange("lienHe", lienHe);
+        }
 
         if (place && place.geo && place.geo.lat && place.geo.lon)
             return;
 
         this.getAdsLocation(photos);
+
     }
 
     getAdsLocation(photos){
@@ -189,12 +207,10 @@ class PostAdsDetail extends Component {
                     {this._renderCategoryTitle('THÔNG TIN CHI TIẾT')}
                     {this._renderChiTiet()}
 
-
                     {this._renderMoreButton()}
 
                     {this._renderCategoryTitle('')}
                     {this._renderResetButton()}
-
 
                     <View style={{borderTopColor:'lightgray', borderTopWidth: 1}}></View>
                     <Text style={[myStyles.label, {marginTop: 9, marginLeft: 15, color: 'red'}]}>
@@ -244,11 +260,6 @@ class PostAdsDetail extends Component {
                 indexArr.push(i)
             }
         }
-        if (indexArr.length <= 3){
-            for (var k = indexArr.length; k<4 ; k++){
-                indexArr.push(k);
-            }
-        }
 
         return (
             <View>
@@ -262,7 +273,41 @@ class PostAdsDetail extends Component {
         );
     }
 
+    /*_renderPhotoItem(imageIndex){
+        var {photos} = this.props.postAds;
+        var photo = photos[imageIndex];
+
+        return (
+            <ImageItem imageIndex={imageIndex} photo={photo}  onTakePhoto={this.onTakePhoto.bind(this)} />
+        )
+    }*/
+
     _renderPhotoItem(imageIndex) {
+        var {photos} = this.props.postAds;
+        var photo = photos[imageIndex];
+
+        if (photo && photo.uri) {
+            return (
+                <TouchableHighlight key={imageIndex} onPress={() => this.onTakePhoto(`${imageIndex}`)} >
+                    <Image style={myStyles.imgItem} source={photo}/>
+                </TouchableHighlight>
+            );
+        } else {
+            return (
+                <TouchableHighlight key={imageIndex} onPress={() => this.onTakePhoto(`${imageIndex}`)} >
+                    <View style={[myStyles.imgItem, {borderStyle: 'dashed', borderColor: gui.mainColor}]}>
+                        <RelandIcon name="plus" color={gui.mainColor}
+                                    mainProps={myStyles.captureIcon}
+                                    size={22} textProps={{paddingLeft: 0}}
+                                    onPress={() => this.onTakePhoto(`${imageIndex}`)} />
+                    </View>
+                </TouchableHighlight>
+            );
+        }
+    }
+
+    _renderCoverPhoto() {
+        let imageIndex = 0;
         var {photos} = this.props.postAds;
         var photo = photos[imageIndex];
 
@@ -359,7 +404,6 @@ class PostAdsDetail extends Component {
             if (windowHeight/py < 1.65){
                 this._scrollView.scrollTo({y: py + 40});
             }
-
         });
     }
 
@@ -890,20 +934,37 @@ class PostAdsDetail extends Component {
     }
 
     _onBanDoPressed() {
-        Actions.MMapView();
+        let {geo} = this.props.postAds.place;
+        Actions.MMapView({showSuggestionPosition: true, onPress: this._onDiaChinhSelected.bind(this), location: geo});
+    }
+
+    _onDiaChinhSelected(position){
+        console.log("================ selected position");
+        console.log(position.diaChinh);
+
+        let diaChinhDto = JSON.parse(JSON.stringify(position.diaChinh));
+
+        // remove diaChinh co dau
+        diaChinhDto.tinh = undefined;
+        diaChinhDto.huyen = undefined;
+        diaChinhDto.xa = undefined;
+
+        this.props.actions.getDiaChinhFromGoogleData(diaChinhDto);
+
+        var {place} = this.props.postAds;
+
+        let diaChinhFullName = placeUtil.getDiaChinhFullName(position);
+
+        this.setState({diaChinhFullName: diaChinhFullName});
+
     }
 
     _getBanDoValue() {
-        var {place} = this.props.postAds;
-
-        var tinh = place.diaChinh.tinh;
-        var huyen = place.diaChinh.huyen;
-        var xa = place.diaChinh.xa;
-        if (!xa) {
+        if (!this.state.diaChinhFullName || this.state.diaChinhFullName.length <= 0) {
             return "Chọn vị trí";
         } else {
-            var diaChinhFullName = xa + ', ' + huyen + ', ' + tinh;
-            if (diaChinhFullName.length > 30) {
+            var diaChinhFullName = this.state.diaChinhFullName;
+            if (this.state.diaChinhFullName.length > 30) {
                 diaChinhFullName = diaChinhFullName.substring(0,30) + '...';
             }
             return diaChinhFullName;
@@ -916,7 +977,7 @@ class PostAdsDetail extends Component {
     }
 
     _onDiaChiPressed() {
-        Actions.PostAdsAddress();
+        Actions.PostAdsAddress({diaChinhFullName: this.state.diaChinhFullName});
     }
 
     _onLienHePressed() {
@@ -1054,6 +1115,8 @@ class PostAdsDetail extends Component {
     }
 
     onPostAds() {
+        this.props.actions.onPostAdsFieldChange("uploading", true);
+
         var {photos} = this.props.postAds;
         errorMessage = '';
         uploadFiles = [];
@@ -1085,6 +1148,7 @@ class PostAdsDetail extends Component {
                 var filename = 'Ads_' + userID + '_' + ms + resizedImageUri.substring(resizedImageUri.lastIndexOf('.'));
                 this.props.actions.onUploadImage(filename, resizedImageUri, this.uploadCallBack.bind(this));
             }).catch((err) => {
+                this.props.actions.onPostAdsFieldChange("uploading", false);
                 log.error(err);
             });
         }
@@ -1264,7 +1328,6 @@ class PostAdsDetail extends Component {
                 if (res.status==1) {
                     Alert.alert(res.err.message);
                 } else {
-
                     let adsID = this.state.adsID;
                     this.onRefreshPostAds();
                     if ( adsID && adsID.length >0 ){
@@ -1344,14 +1407,67 @@ class PostAdsDetail extends Component {
         this.onValueChange("duAnList", null);
         this.onValueChange("chiTiet", '');
         this.onValueChange("error", '');
+
+        this.state = {
+            uploadUrls: [],
+            chiTietExpanded: true,
+            toggleState: false,
+            editGia: false,
+            showNamXayDung: false,
+            initNamXayDung: '',
+            inputNamXayDung: '',
+            namXayDung: null,
+            diaChinhFullName: '',
+            adsID: null,
+            showMoreContent: false
+        }
     }
 
     onCancel() {
-        Actions.Home({type: 'reset'});
+
+        Alert.alert('', 'Bạn muốn ngừng đăng tin ?',
+            [{text: 'Đồng ý', onPress: () => {  this.onRefreshPostAds();
+                                                Actions.Home({type: 'reset'});
+                                             }
+             },
+             {text: 'Thoát' , onPress: () => console.log('Cancel Pressed!')}
+            ]);
     }
 
     onTakePhoto(imageIndex) {
         Actions.PostAds({photos: this.props.postAds.photos, imageIndex: imageIndex});
+    }
+}
+
+class ImageItem extends React.Component {
+    constructor(props) {
+        super(props);
+        console.log("================= print ImageItem");
+        console.log(props);
+    }
+
+    render() {
+        var photo = this.props.photo;
+
+        if (photo && photo.uri) {
+            return (
+                <TouchableHighlight onPress={this.props.onTakePhoto(`${this.props.imageIndex}`)} >
+                    <Image style={myStyles.imgItem} source={photo}/>
+                </TouchableHighlight>
+            );
+        } else {
+            return (
+                <TouchableHighlight onPress={() => {this.onTakePhoto(`${this.props.imageIndex}`)}} >
+                    <View style={[myStyles.imgItem, {borderStyle: 'dashed', borderColor: gui.mainColor}]}>
+                        <RelandIcon name="plus" color={gui.mainColor}
+                                    mainProps={myStyles.captureIcon}
+                                    size={22} textProps={{paddingLeft: 0}}
+                                    onPress={() => {this.props.onTakePhoto(`${this.props.imageIndex}`)}} />
+                    </View>
+                </TouchableHighlight>
+            );
+        }
+
     }
 }
 
@@ -1384,8 +1500,8 @@ var myStyles = StyleSheet.create({
     },
     mimgList: {
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'center',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
         paddingLeft: 12,
         paddingRight: 10,
         backgroundColor: 'white'

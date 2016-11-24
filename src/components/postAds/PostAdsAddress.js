@@ -49,8 +49,7 @@ class PostAdsAddress extends Component {
       var {place} = this.props.postAds;
 
       this.state = {
-          diaChiChiTiet: place.diaChiChiTiet,
-          xaPhuong: placeUtil.getDiaChinhFullName(place)
+          diaChiChiTiet: place.diaChiChiTiet
       };
   }
 
@@ -89,7 +88,7 @@ class PostAdsAddress extends Component {
                         editable={false}
                         secureTextEntry={false}
                         style={[myStyles.input, {color: '#8A8A8A'}]}
-                        value={this.state.xaPhuong}
+                        value={this.props.diaChinhFullName}
                     />
                     <Text style={myStyles.label2}>{ghiChuXaPhuong}</Text>
                 </View>

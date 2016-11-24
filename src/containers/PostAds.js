@@ -13,7 +13,7 @@ import { connect } from 'react-redux';
 import Camera from 'react-native-camera';
 import danhMuc from '../assets/DanhMuc';
 
-import LoginRegister from './LoginRegister'
+import GiftedSpinner from 'react-native-gifted-spinner';
 
 import * as globalActions from '../reducers/global/globalActions';
 import * as postAdsActions from '../reducers/postAds/postAdsActions';
@@ -30,7 +30,9 @@ import moment from 'moment';
 
 import cfg from "../cfg";
 
-var rootUrl = `http://${cfg.server}:5000`;
+var rootUrl = `${cfg.serverUrl}`;
+
+var { width, height } = Dimensions.get('window');
 
 const actions = [
     globalActions,
@@ -65,7 +67,8 @@ class PostAds extends Component {
         this.state = {
             photos: photos||[],
             imageIndex: imageIndex || 0,
-            owner: owner
+            owner: owner,
+            isCapturing: false
         }
     }
 
@@ -107,6 +110,7 @@ class PostAds extends Component {
                     >
                         {buttonItems}
                     </Camera>
+                    {this._renderLoadingView()}
                 </View>
             )
         } else {
@@ -128,9 +132,17 @@ class PostAds extends Component {
     }
 
     takePicture() {
+        this.setState({isCapturing: true});
+
         this.camera.capture()
-            .then((data) => this.imageCropper(data))
-            .catch(err => console.error(err));
+            .then((data) => {
+                this.imageCropper(data);
+                this.setState({isCapturing: false});
+            })
+            .catch(err => {
+                console.error(err);
+                this.setState({isCapturing: false});
+            });
     }
 
     pickPhoto() {
@@ -234,6 +246,16 @@ class PostAds extends Component {
 
         this.props.actions.sendChatMsg(myMsg);
     }
+
+    _renderLoadingView() {
+        if (this.state.isCapturing) {
+            return (<View style={styles.resultContainer}>
+                <View style={styles.loadingContent}>
+                    <GiftedSpinner color="white" />
+                </View>
+            </View>)
+        }
+    }
 }
 
 
@@ -273,6 +295,23 @@ var styles = StyleSheet.create({
         justifyContent: 'space-around',
         marginBottom: 80,
         width: Dimensions.get('window').width
+    },
+    loadingContent: {
+        position: 'absolute',
+        top: -23,
+        left: width/2,
+        alignItems: 'center',
+        justifyContent: 'center'
+    },
+    resultContainer: {
+        position: 'absolute',
+        top: height/2,
+        flexDirection: 'column',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        marginVertical: 0,
+        marginBottom: 0,
+        backgroundColor: 'transparent'
     }
 });
 

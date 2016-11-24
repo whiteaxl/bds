@@ -204,7 +204,7 @@ class AdsListTab extends Component {
   }
 
   onDeleteButton(adsID){
-    Alert.alert('', 'Bạn có muốn xóa dữ liệu này không ?',
+    Alert.alert('', 'Bạn có muốn xóa tin này không ?',
         [{text: 'Đồng ý', onPress: () => this._deleteAds(adsID)},
          {text: 'Thoát' , onPress: () => console.log('Cancel Pressed!')}
         ]);
@@ -267,7 +267,7 @@ class AdsListTab extends Component {
       <View style={myStyles.rightTextGroup}>
         <Text numberOfLines={1} style={myStyles.tinChoDuyet}>TIN ĐÃ ĐĂNG</Text>
 
-        <TouchableHighlight disabled={true} underlayColor='transparent' onPress={() => {this.upgradeAds(rowData)}}>
+        {/*<TouchableHighlight disabled={true} underlayColor='transparent' onPress={() => {this.upgradeAds(rowData)}}>
           <View style={myStyles.nangCap} >
             <RelandIcon.Icon color={'white'} name={"update"} size={12} style={{marginLeft:5, marginRight:5}} />
             <Text style={myStyles.textNangCap}>
@@ -278,7 +278,7 @@ class AdsListTab extends Component {
         <Text numberOfLines={1} style={myStyles.textGoiTin}>{viTriLabel}</Text>
         <Text numberOfLines={1} style={myStyles.textGoiTin}>{trangChuLabel}</Text>
         <Text numberOfLines={1} style={myStyles.textGoiTin}>{logoLabel}</Text>
-
+        */}
       </View>
     )
   }
@@ -371,7 +371,7 @@ class AdsListTab extends Component {
     if (this.props.postAds.loadingUpdateAds || this.props.adsMgmt.deletingAds) {
       return (<View style={myStyles.resultContainer}>
         <View style={myStyles.loadingContent}>
-          <GiftedSpinner color="red" />
+          <GiftedSpinner color="white" />
         </View>
       </View>)
     }
@@ -415,7 +415,7 @@ class AdsListTab extends Component {
       ];
       return (
           <View key={adsID}>
-            <Swipeout right={swipeoutBtns} scroll={event => this._allowScroll(event)}>
+            <Swipeout right={swipeoutBtns} scroll={event => this._allowScroll(event)} autoClose={true}>
               <View style={myStyles.detail}>
                 {this._renderImageStack(rowData)}
                 {this._renderText(rowData)}

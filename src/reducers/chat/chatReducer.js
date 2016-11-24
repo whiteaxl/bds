@@ -93,14 +93,18 @@ export default function chatReducer(state = initialState, action) {
 
       var {messages} = state;
 
-      console.log(messages);
-
+      /*
+      // TODO: server need save message before sending
       let found = messages.find(e => e._id === giftMsg._id);
+      console.log("=============== print found value");
+      console.log(found);
+      console.log("=============== print found value end");
       if (!found) {
+        console.log("============= print not found");
         messages = [...messages,giftMsg];
-      }
+      }*/
 
-      console.log(messages);
+      messages = [...messages,giftMsg];
 
       let nextState = state.set('messages',messages);
       return nextState;
@@ -121,7 +125,7 @@ export default function chatReducer(state = initialState, action) {
 }
 
 function convertOne(e, partnerID) {
-  e.uniqueId = e._id||e.id;
+  e.uniqueId = e._id||e.id|| (new Date()).getTime().toString();
   e.position = e.fromUserID == partnerID ? 'left' : 'right';
   e.text = e.content;
   e.name = e.fromFullName;

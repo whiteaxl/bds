@@ -147,9 +147,9 @@ class  ChatContent extends React.Component {
       let msg = rowData.text;
 
       if (rowData.position === 'left') {
-        return <Text style={{color:'black'}}>{msg}</Text>;
+        return <Text style={{color:'#17242c'}}>{msg}</Text>;
       } else {
-        return <Text style={{color:'black'}}>{msg}</Text>;
+        return <Text style={{color:'#17242c'}}>{msg}</Text>;
       }
     }
   }

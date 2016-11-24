@@ -10,12 +10,14 @@ var getAllChatMsgUrl = cfg.rootUrl + "/getAllChatMsg";
 import log from './logUtil';
 import gui from './gui';
 
-const socket = io(`http://${cfg.server}:5000`, {
+const socket = io(`https://${cfg.server}:4432`, {
     transports: ['websocket'] // you need to explicitly tell it to use websockets
 });
 
 var ChatApi = {
     connectAndStartListener: function(userDto, onNewMessage, onUnreadMessage) {
+        console.log("chatApi.connectAndStartListener");
+        
         socket.on('connect', () => {
             console.log('socket.io connected!');
         });
@@ -50,6 +52,7 @@ var ChatApi = {
     },
 
     disconnect: function (userID) {
+        console.log("chatApi.disconnect");
         socket.emit('user leave'
             ,   {userID:  userID}
             ,   function(data){
@@ -60,6 +63,7 @@ var ChatApi = {
 
     sendChatMsg: function(msg){
         socket.emit("send-message", msg, function(data){
+            console.log("chatApi.sendChatMsg");
             console.log(data);
             return data;
         });

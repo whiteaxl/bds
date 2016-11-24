@@ -7,7 +7,8 @@ const {
   ON_DB_CHANGE,
   ON_INBOX_FIELD_CHANGE,
   LOGOUT_SUCCESS,
-  LOADING_INBOX_SUCCESS
+  LOADING_INBOX_SUCCESS,
+  ON_NEW_MESSAGE
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
@@ -148,6 +149,27 @@ export default function inboxReducer(state = initialState, action) {
           }
       );
 
+      const ds = state.allInboxDS;
+      const newDs = ds.cloneWithRows(allRows);
+
+      return state
+          .set("inboxList", allRows)
+          .set("allInboxDS", newDs);
+    }
+
+    case ON_NEW_MESSAGE:
+    {
+      let msg = action.payload.msg;
+
+      const allRows = state.inboxList;
+
+      for(let i=0; i<allRows.length; i++){
+        if (allRows[i].partner.userID == msg.fromUserID && allRows[i].relatedToAds.adsID == msg.relatedToAds.adsID){
+          allRows[i].date = msg.date ? new Date(msg.date) : new Date();
+          allRows[i].content = msg.content;
+          allRows.push(allRows[i]);
+        }
+      }
       const ds = state.allInboxDS;
       const newDs = ds.cloneWithRows(allRows);
 

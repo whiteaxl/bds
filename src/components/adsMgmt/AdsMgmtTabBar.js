@@ -9,9 +9,6 @@ const {
 } = ReactNative;
 const Button = require('../button/Button');
 
-import gui from "../../lib/gui";
-import RelandIcon from '../../components/RelandIcon';
-
 import {Actions} from 'react-native-router-flux';
 
 export default class AdsMgmtTabBar extends React.Component {

@@ -11,27 +11,27 @@ import {
     Platform,
     PixelRatio,
     Alert,
-    ScrollView
+    ScrollView,
+    TouchableOpacity
 } from 'react-native';
 
 import Message from './Message';
 import GiftedSpinner from 'react-native-gifted-spinner';
 import moment from 'moment';
-import {setLocale} from './Locale';
+import { setLocale } from './Locale';
 import deepEqual from 'deep-equal';
 import Button from 'react-native-button';
 import RelandIcon from '../RelandIcon';
 import gui from '../../lib/gui';
 import FullLine from '../line/FullLine';
 
-
-import {Actions} from 'react-native-router-flux';
-import {Map} from 'immutable';
+import { Actions } from 'react-native-router-flux';
+import { Map } from 'immutable';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-var Modal  = require('react-native-modalbox');
-var {width, height} = Dimensions.get('window');
+
 import * as globalActions from '../../reducers/global/globalActions';
+
 
 const actions = [
   globalActions
@@ -78,7 +78,7 @@ class GiftedMessenger extends Component {
     this._footerY = 0;
     this._scrollToBottomOnNextRender = false;
     this._scrollToPreviousPosition = false;
-    this._visibleRows = { s1: { } };
+    this._visibleRows = { s1: {} };
 
     let textInputHeight = 44;
     if (!this.props.hideTextInput) {
@@ -87,7 +87,7 @@ class GiftedMessenger extends Component {
       }
     }
 
-    this.listViewMaxHeight = this.props.maxHeight - 2*textInputHeight;
+    this.listViewMaxHeight = this.props.maxHeight - 2 * textInputHeight;
 
     const ds = new ListView.DataSource({
       rowHasChanged: (r1, r2) => {
@@ -104,6 +104,7 @@ class GiftedMessenger extends Component {
       disabled: true,
       height: new Animated.Value(this.listViewMaxHeight),
       appearAnim: new Animated.Value(0),
+      dropdownSelection: ''
     };
   }
 
@@ -114,7 +115,7 @@ class GiftedMessenger extends Component {
         backgroundColor: '#FFF',
       },
       listView: {
-        flex: 1,
+        flex: 1
       },
       textInputContainer: {
         height: 44,
@@ -123,7 +124,7 @@ class GiftedMessenger extends Component {
         flexDirection: 'row',
         paddingLeft: 12,
         paddingRight: 10,
-        backgroundColor:'#f3f5f7'
+        backgroundColor: '#ffffff'
       },
       textInput: {
         alignSelf: 'center',
@@ -135,7 +136,7 @@ class GiftedMessenger extends Component {
         margin: 0,
         fontSize: 14,
         paddingLeft: 8,
-        borderRadius:4
+        borderRadius: 0
       },
       sendButton: {
         marginTop: 11,
@@ -149,25 +150,25 @@ class GiftedMessenger extends Component {
         textAlign: 'center',
         fontWeight: '400',
         marginBottom: 8,
-        fontFamily: 'Open Sans',
+        fontFamily: 'Open Sans'
       },
       link: {
         color: '#e0f4fc',
-        textDecorationLine: 'underline',
+        textDecorationLine: 'underline'
       },
       linkLeft: {
-        color: '#000',
+        color: '#000'
       },
       linkRight: {
-        color: '#000',
+        color: '#000'
       },
       loadEarlierMessages: {
         height: 44,
         justifyContent: 'center',
-        alignItems: 'center',
+        alignItems: 'center'
       },
       loadEarlierMessagesButton: {
-        fontSize: 14,
+        fontSize: 14
       },
       captureIcon: {
         flexDirection: 'row',
@@ -175,7 +176,43 @@ class GiftedMessenger extends Component {
         marginTop: 10,
         marginLeft: 10,
         marginRight: 20
-      }
+      },
+      menuTrigger: {
+        flexDirection: 'row',
+        paddingHorizontal: 0
+      },
+      contentChat: {
+        backgroundColor: 'white',
+        paddingHorizontal: 0,
+        paddingTop: 0,
+        paddingBottom: 0,
+        height: 50,
+        width: 50
+      },
+      contentText: {
+        fontSize: 18
+      },
+      dropdown: {
+        width: 300,
+        borderColor: '#999',
+        borderWidth: 1,
+        padding: 0
+      },
+      dropdownOptions: {
+        marginTop: 30,
+        borderColor: '#ccc',
+        borderWidth: 2,
+        width: 300,
+        height: 250,
+        justifyContent: 'center',
+        alignItems: 'center'
+      },
+      divider: {
+        marginVertical: 4,
+        marginHorizontal: 2,
+        borderBottomWidth: 1,
+        borderColor: 'lightgray'
+      },
     };
 
     Object.assign(this.styles, this.props.styles);
@@ -247,24 +284,13 @@ class GiftedMessenger extends Component {
   }
 
   takePicture() {
-    Actions.PostAds({owner: 'chat'});
+    Actions.PostAds({ owner: 'chat' });
   }
 
-  _coming(){
-    this.refs.modalChatModal.open();
+  coming() {
+    console.log("=============coming soon....")
   }
-  _renderChatModal(){
-    return(
-        <Modal style={{height:height/2,width:width-100, borderRadius:7, top:50, borderColor:'lightgray'}} ref={"modalChatModal"}  swipeToClose={false}>
-          <ScrollView>
-            <View style={{flex : 1,height:20, backgroundColor: 'transparent', paddingLeft:10, justifyContent:'flex-end', alignItems:'center',borderColor:'#dfdfdf', borderBottomWidth:1}}>
-              <Text style={{fontSize:14, fontFamily: 'Open Sans'}}>Hello there, my name is react native!</Text>
-            </View>
-          </ScrollView>
-        </Modal>
-    );
 
-  }
   onSend() {
     this.myTextInput.clear();
 
@@ -402,7 +428,7 @@ class GiftedMessenger extends Component {
     const identities = [];
     for (let i = 0; i < messages.length; i++) {
       if (typeof messages[i].uniqueId === 'undefined') {
-        console.warn('messages['+i+'].uniqueId is missing');
+        console.warn('messages[' + i + '].uniqueId is missing');
       }
       rows[messages[i].uniqueId] = Object.assign({}, messages[i]);
       identities.push(messages[i].uniqueId);
@@ -474,7 +500,7 @@ class GiftedMessenger extends Component {
           <View style={this.styles.loadEarlierMessages}>
             <Button
                 style={this.styles.loadEarlierMessagesButton}
-                onPress={() => {this.preLoadEarlierMessages();}}
+                onPress={() => { this.preLoadEarlierMessages(); } }
             >
               {this.props.loadEarlierMessagesButtonText}
             </Button>
@@ -482,7 +508,7 @@ class GiftedMessenger extends Component {
       );
     }
     return (
-        <View style={ { height: 10 } } />
+        <View style={{ height: 10 }} />
     );
   }
 
@@ -598,7 +624,6 @@ class GiftedMessenger extends Component {
               onLayout={this.onLayout}
               renderFooter={this.renderFooter}
               onChangeVisibleRows={this.onChangeVisibleRows}
-
               style={this.styles.listView}
 
               // not supported in Android - to fix this issue in Android, onKeyboardWillShow is called inside onKeyboardDidShow
@@ -628,9 +653,12 @@ class GiftedMessenger extends Component {
       disabled: text.trim().length <= 0,
     });
   }
+  _renderListChat() {
+    console.log("============render ListChat");
+  }
 
   renderTextInput() {
-    if (this.props.renderTextInput){
+    if (this.props.renderTextInput) {
       return this.props.renderTextInput({
         ...this.props,
         ...this.state,
@@ -638,13 +666,13 @@ class GiftedMessenger extends Component {
         onChangeText:this.onChangeText
       });
     }
-    if (this.props.hideTextInput === false) {
+    if(this.props.hideTextInput === false) {
       return (
-          <View style={{flexDirection: 'column'}}>
+          <View style={{ flexDirection: 'column' }}>
             <View style={this.styles.textInputContainer}>
               {this.props.leftControlBar}
               <TextInput
-                  ref = {(e) => this.myTextInput = e}
+                  ref={(e) => this.myTextInput = e}
                   style={this.styles.textInput}
                   placeholder={this.props.placeholder}
                   placeholderTextColor={this.props.placeholderTextColor}
@@ -652,7 +680,7 @@ class GiftedMessenger extends Component {
                   //value={this.state.text}
                   autoFocus={this.props.autoFocus}
                   returnKeyType={this.props.submitOnReturn ? 'send' : 'default'}
-                  onSubmitEditing={this.props.submitOnReturn ? this.onSend : () => {}}
+                  onSubmitEditing={this.props.submitOnReturn ? this.onSend : () => { } }
                   enablesReturnKeyAutomatically={true}
 
                   blurOnSubmit={this.props.blurOnSubmit}
@@ -666,22 +694,22 @@ class GiftedMessenger extends Component {
                 {this.props.sendButtonText}
               </Button>
             </View>
-            <View style={{flexDirection: 'row', }}>
+            <View style={{ flexDirection: 'row', }}>
               <RelandIcon name="list" color={gui.mainColor}
                           mainProps={this.styles.captureIcon}
-                          size={22} textProps={{paddingLeft: 0}}
-                          onPress={this._coming.bind(this)} />
+                          size={22} textProps={{ paddingLeft: 0 }}
+                          onPress={this.coming} />
               <RelandIcon name="camera-o" color={gui.mainColor}
                           mainProps={this.styles.captureIcon}
-                          size={22} textProps={{paddingLeft: 0}}
+                          size={22} textProps={{ paddingLeft: 0 }}
                           onPress={this.takePicture} />
               <RelandIcon name="photos" color={gui.mainColor}
                           mainProps={this.styles.captureIcon}
-                          size={22} textProps={{paddingLeft: 0}}
-                          onPress={this.takePicture} />
+                          size={22} textProps={{ paddingLeft: 0 }}
+                          onPress={this.coming} />
               <RelandIcon name="location-o" color={gui.mainColor}
                           mainProps={this.styles.captureIcon}
-                          size={22} textProps={{paddingLeft: 0}}
+                          size={22} textProps={{ paddingLeft: 0 }}
                           onPress={this.coming} />
 
             </View>
@@ -698,7 +726,6 @@ class GiftedMessenger extends Component {
           {this.renderAnimatedView()}
           <FullLine />
           {this.renderTextInput()}
-          {this._renderChatModal()}
         </View>
     );
   }
@@ -711,10 +738,10 @@ GiftedMessenger.defaultProps = {
   displayNames: true,
   displayNamesInsideBubble: false,
   forceRenderImage: false,
-  handleEmailPress: () => {},
-  handlePhonePress: () => {},
-  handleSend: () => {},
-  handleUrlPress: () => {},
+  handleEmailPress: () => { },
+  handlePhonePress: () => { },
+  handleSend: () => { },
+  handleUrlPress: () => { },
   hideTextInput: false,
   isLoadingEarlierMessages: false,
   keyboardDismissMode: 'interactive',
@@ -724,14 +751,14 @@ GiftedMessenger.defaultProps = {
   loadEarlierMessagesButtonText: 'Load earlier messages',
   maxHeight: Dimensions.get('window').height,
   messages: [],
-  onChangeText: () => {},
-  onErrorButtonPress: () => {},
+  onChangeText: () => { },
+  onErrorButtonPress: () => { },
   onImagePress: null,
-  onLoadEarlierMessages: () => {},
-  onMessageLongPress: () => {},
+  onLoadEarlierMessages: () => { },
+  onMessageLongPress: () => { },
   parseText: false,
   placeholder: 'Nhập tin nhắn...',
-  placeholderTextColor: '#ccc',
+  placeholderTextColor: '#5e6872',
   scrollAnimated: true,
   sendButtonText: 'Gửi',
   senderImage: null,

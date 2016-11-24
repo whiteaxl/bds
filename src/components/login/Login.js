@@ -81,6 +81,8 @@ class Login extends React.Component {
           <View style ={styles.viewInput}>
             <TextInput
               style = {styles.textInput}
+              autoCapitalize='none'
+              autoCorrect={false}
               underlineColorAndroid='rgba(0,0,0,0)'
               style={styles.viewTextInput}
               placeholder="Nhập email hoặc số điện thoại" placeholderTextColor={gui.arrowColor}

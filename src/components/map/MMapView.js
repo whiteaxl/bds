@@ -56,6 +56,7 @@ class MMapView extends Component {
     
 
     this.state = {
+      showSuggestionPosition: props.showSuggestionPosition || false,
       region: region,
       firstRegion: region,
       diaChi: null,
@@ -92,7 +93,7 @@ class MMapView extends Component {
                           />
             </View>
 
-            {this._renderCurrentPosButton()}
+            {this._renderButtonOnMap()}
 
             <View style={styles.mapButtonContainer}>
               <View style={styles.searchListButton}>
@@ -124,14 +125,43 @@ class MMapView extends Component {
     Actions.PostAdsGoogleAutoComplete({onPress: (data, details)=>this._setRegionFromGoogleAutoComplete(data, details)});
   }
 
-  _renderCurrentPosButton() {
+  _renderButtonOnMap(){
     return (
         <View style={styles.inMapButtonContainer}>
+          {this._renderSuggestionPositionButton()}
+          {this._renderCurrentPositionButton()}
+        </View>
+    );
+  }
+  _renderCurrentPositionButton() {
+    return (
+        <View >
           <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} >
             <View style={[styles.bubble, styles.button, {marginTop: 10}]}>
               <RelandIcon name="direction" color='black' mainProps={{flexDirection: 'row'}}
                           size={20} textProps={{paddingLeft: 0}}
                           noAction={true}></RelandIcon>
+            </View>
+          </TouchableOpacity>
+        </View>
+    );
+  }
+
+  _renderSuggestionPositionButton() {
+    if (!this.props.showSuggestionPosition)
+        return;
+
+    return (
+        <View >
+          <TouchableOpacity onPress={this._onSuggestionLocationPress.bind(this)} >
+            <View style={[styles.bubble, styles.button, {flexDirection: 'column', width: 60}]}>
+              <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start'}}>
+                <RelandIcon name="hand-o-up" color={'black'}
+                            mainProps={{flexDirection: 'row'}}
+                            size={20} textProps={{paddingLeft: 0}}
+                            noAction={true}></RelandIcon>
+                <Text style={[styles.positionSuggetionIconText, {color: 'black'}]}>Vị trí gợi ý</Text>
+              </View>
             </View>
           </TouchableOpacity>
         </View>
@@ -159,6 +189,7 @@ class MMapView extends Component {
   _onSuggestionLocationPress() {
     let region = this.state.firstRegion;
     this.setState({region: region});
+    findApi.getGeocoding(region.latitude, region.longitude, this._getDiaChinhContent.bind(this));
   }
 
   _setRegionFromGoogleAutoComplete(data, details){
@@ -177,6 +208,7 @@ class MMapView extends Component {
   }
 
   _onRegionChangeComplete(region) {
+    console.log("========== on region change complete");
     this.setState({region: region});
     findApi.getGeocoding(region.latitude, region.longitude, this._getDiaChinhContent.bind(this));
   }
@@ -238,6 +270,11 @@ class MMapView extends Component {
     location.lat = region.latitude;
     location.lon = region.longitude;
     var places = data.results;
+
+    console.log("===================== print result");
+    console.log(places);
+    console.log("===================== print result end");
+
     if (places.length > 0) {
       var newPlace = places[0];
       for (var i=0; i<places.length; i++) {
@@ -275,11 +312,11 @@ class MMapView extends Component {
 
     var diaChinhDto = {
       tinhKhongDau: diaChinh.tinhKhongDau || undefined,
-      tinh: tinh || undefined,
+      tinh: diaChinh.tinh,
       huyenKhongDau: diaChinh.huyenKhongDau || undefined,
-      huyen: huyen || undefined,
+      huyen: diaChinh.huyen,
       xaKhongDau: diaChinh.xaKhongDau || undefined,
-      xa: xa || undefined,
+      xa: diaChinh.xa,
       placeType: placeType
     }
     

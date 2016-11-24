@@ -82,11 +82,7 @@ class MeContent extends Component {
   _onSetting(){
     Actions.Setting();
   }
-
-  _onDinhGia(){
-    Actions.DinhGia();
-  }
-
+  
   render() {
     log.info("Call MeContent render, currentUser:", this.props.global.currentUser);
     let avatarUri = this.props.global.currentUser.avatar ? {uri: this.props.global.currentUser.avatar} :
@@ -135,8 +131,7 @@ class MeContent extends Component {
            title = "Thông tin các gói dịch vụ" />*/}
 
           <LineWithIcon iconSource = {require('../../assets/image/me/me_goiDv.png')}
-                        onPress={this._onDinhGia}
-                        title = "Định giá" />
+                        title = "Thông tin các gói dịch vụ" />
           <FullLine />
           <View style={styles.boxSeparator}><Text/></View>
           <FullLine />

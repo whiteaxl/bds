@@ -17,6 +17,8 @@ import utils from '../../lib/utils';
 import FullLine from '../line/FullLine';
 import {Actions} from 'react-native-router-flux';
 
+import GiftedSpinner from 'react-native-gifted-spinner';
+
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {Map} from 'immutable';
@@ -119,15 +121,21 @@ class InboxContent extends React.Component {
     //let w = rowID == 0 ? 0 : 1;
     let w = 1
 
+    console.log("============== print Inbox row");
+    console.log(row);
+    console.log("============== print Inbox row end");
+
     return (
         <TouchableOpacity onPress={() => this.onRowClick(row)} style={styles.rowFront}>
           <View style={[styles.rowContainer, {marginLeft: 0, paddingLeft:5}]}>
-            <View style={{justifyContent:'center', alignItems:'center'}}>
+            <AvatarItem avatar={row.partner.avatar}/>
+            {/*<View style={{justifyContent:'center', alignItems:'center'}}>
               <Image
                   resizeMode = {"cover"}
                   source={avatar}
                   style={styles.thumbnail}/>
             </View>
+            */}
             <View style={styles.rightContainer}>
               <View style={styles.nameAndDateTime}>
                 <Text style={styles.name}>{row.partner.fullName}</Text>
@@ -136,8 +144,8 @@ class InboxContent extends React.Component {
 
               <View style={styles.rightRow2}>
                 <View style={styles.titleAndLastMsg}>
-                  <Text numberOfLines={1} style={styles.title}>{relatedToAds?adsInboxTitle:"<Không tựa đề>"}</Text>
-                  <Text style={styles.content}>{row.content}</Text>
+                  <Text numberOfLines={1} style={styles.title}>{relatedToAds ? adsInboxTitle:"<Không tựa đề>"}</Text>
+                  <Text style={styles.content}>{row.content||"Nội dung tin nhắn cuối cùng"}</Text>
                 </View>
                 <Image
                     resizeMode = {"cover"}
@@ -181,6 +189,34 @@ class InboxContent extends React.Component {
           </ScrollView>
         </View>
     );
+  }
+}
+
+class AvatarItem extends React.Component{
+  constructor(props){
+    super(props);
+
+    this.state = {
+      avatar: props.avatar ? {uri: props.avatar} : defaultAvatar,
+      numberOfNotification: props.numberOfNotification || 45
+    }
+  }
+
+  render() {
+    return (
+        <View style={{justifyContent:'center', alignItems:'center', borderRadius: 20}}>
+          <Image
+              resizeMode = {"cover"}
+              source={this.state.avatar}
+              style={styles.thumbnail}>
+          </Image>
+          <View style={styles.notification}>
+            <Text style={styles.notificationText}>
+              {this.state.numberOfNotification}
+            </Text>
+          </View>
+        </View>
+    )
   }
 }
 
@@ -258,7 +294,27 @@ var styles = StyleSheet.create({
     width: 40,
     height: 40,
     marginRight: 10,
-    borderRadius: 20,
+    borderRadius: 20
+  },
+  notification: {
+    position: 'absolute',
+    backgroundColor: '#ffc600',
+    top: 1,
+    right: 1,
+    alignSelf: 'auto',
+    width: 18,
+    height: 18,
+    borderRadius: 12,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  notificationText: {
+    fontSize: 10,
+    fontFamily: gui.fontFamily,
+    fontWeight: "400",
+    color: 'white',
+    textAlign: 'center',
+    backgroundColor: 'transparent'
   },
   listView: {
     paddingTop: 0,
@@ -268,8 +324,7 @@ var styles = StyleSheet.create({
   },
   nameAndDateTime : {
     flex: 1,
-    flexDirection: 'row',
-
+    flexDirection: 'row'
   },
 
   rightRow2 : {
