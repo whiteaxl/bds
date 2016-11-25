@@ -14,7 +14,7 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import {Map} from 'immutable';
-import {Actions} from 'react-native-router-flux';
+import {Actions, ActionConst} from 'react-native-router-flux';
 import Button from 'react-native-button';
 import log from "../../lib/logUtil";
 import gui from "../../lib/gui";
@@ -84,6 +84,9 @@ class PostAdsDetail extends Component {
         super(props);
         StatusBar.setBarStyle('light-content');
         errorMessage = this.props.postAds.error;
+        console.log("================== print init state");
+        console.log(this.props.postAds);
+        console.log("================== print init state end");
         let adsID = props.postAds.id;
 
         this.state = {
@@ -1337,7 +1340,8 @@ class PostAdsDetail extends Component {
                         Alert.alert("Đăng tin thành công");
                         this.props.actions.onAdsMgmtFieldChange('activeTab', loaiTinVal==0 ? 1 : 2);
                         Actions.pop();
-                        Actions.AdsMgmt();
+                        Actions.pop();
+                        Actions.AdsMgmt({type:"popTo"});
                     }
                 }
             });
@@ -1426,8 +1430,17 @@ class PostAdsDetail extends Component {
     onCancel() {
 
         Alert.alert('', 'Bạn muốn ngừng đăng tin ?',
-            [{text: 'Đồng ý', onPress: () => {  this.onRefreshPostAds();
-                                                Actions.Home({type: 'reset'});
+            [{text: 'Đồng ý', onPress: () => {
+                                                if (this.state.adsID && this.state.adsID.length>0){
+                                                    // back to AdsMgmt if update Ads
+                                                    console.log("========= back to AdsMgmt");
+                                                    this.onRefreshPostAds();
+                                                    Actions.pop();
+                                                } else {
+                                                    console.log("========= back to Home");
+                                                    this.onRefreshPostAds();
+                                                    Actions.Home({type: 'reset'});
+                                                }
                                              }
              },
              {text: 'Thoát' , onPress: () => console.log('Cancel Pressed!')}

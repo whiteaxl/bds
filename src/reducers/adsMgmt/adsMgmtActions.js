@@ -86,9 +86,11 @@ export function loadMySellRentList(userID) {
         var adsList = res.data;
         var sellList = adsList.filter((e) => e.loaiTin == 0);
         //sellList = sellList.map(e => convertAds(e));
+        sellList.sort((a, b) => b.timeModified - a.timeModified);
 
         var rentList = adsList.filter((e) => e.loaiTin == 1);
         //rentList = rentList.map(e => convertAds(e));
+        rentList.sort((a, b) => b.timeModified - a.timeModified);
 
         dispatch(onAdsMgmtFieldChange('sellList', sellList));
         dispatch(onAdsMgmtFieldChange('rentList', rentList));
