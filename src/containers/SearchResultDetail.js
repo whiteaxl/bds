@@ -369,7 +369,7 @@ class SearchResultDetail extends Component {
       }
       url = rowData.image.cover;
     }
-    this._createTextMessage(loaiNhaDat, diaChi, gia, dienTich, soPhongNgu, soPhongTam);
+    this._createTextMessage(rowData.adsID);
 
     var moiGioiTuongTu = [];
     if (rowData.moiGioiTuongTu) {
@@ -481,28 +481,10 @@ class SearchResultDetail extends Component {
 		)
 	}
 
-  _createTextMessage(loaiNhaDat, diaChi, gia, dienTich, soPhongNgu, soPhongTam) {
-    text = 'Tôi đang rất quan tâm tới bất động sản bạn đang rao:\n';
-    if (loaiNhaDat) {
-      text = text + '\n' + loaiNhaDat;
-    }
-    if (diaChi) {
-      text = text + '\n' + diaChi;
-    }
-    if (gia) {
-      text = text + '\n' + gia;
-    }
-    if (dienTich) {
-      text = text + ', ' + dienTich;
-    }
-    if (soPhongNgu) {
-      text = text + '\n' + soPhongNgu;
-    }
-    if (soPhongTam) {
-      text = text + '\n' + soPhongTam;
-    }
-    text = text + '\n\n'
-        + 'xin vui lòng liên hệ lại sớm.';
+  _createTextMessage(adsID) {
+    text = 'Tôi muốn tìm hiểu thêm thông tin về bất động sản tại\n';
+    text += cfg.serverUrl + '/web/detail/' + adsID;
+    text += ', xin vui lòng liên hệ lại sớm.';
   }
   _renderDacDiem(loaiNhaDat, gia, giaM2, soPhongNguVal, soPhongTamVal, dienTich, huongNha, duAn, ngayDangTin, luotXem, diaChi, maSo) {
     return (
