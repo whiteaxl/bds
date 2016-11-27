@@ -182,7 +182,7 @@ class SearchResultListExt extends Component {
     }
 
     _renderTotalResultView(){
-        let {loading, listAds} = this.props;
+        let {loading, listAds, errorMsg} = this.props;
         let {showMessage, firstTimeFromMap} = this.state;
         let numberOfAds = listAds.length;
         let totalCount = this.props.totalCount;
@@ -192,8 +192,11 @@ class SearchResultListExt extends Component {
             // textValue = "Không tìm thấy kết quả nào. Hãy thay đổi điều kiện tìm kiếm";
             textValue = "";
         }
-        
-        if(loading || firstTimeFromMap){
+
+        if (errorMsg || numberOfAds == 0) {
+            return null;
+        }
+        else if(loading || firstTimeFromMap){
             return (<View style={myStyles.resultContainer}>
                 {/*<Animatable.View animation={showMessage ? "fadeIn" : "fadeOut"}
                                  duration={showMessage ? 500 : 1000}>

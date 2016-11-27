@@ -95,6 +95,8 @@ var url = '';
 
 var text = '';
 
+var linkAds = '';
+
 class SearchResultDetail extends Component {
   constructor(props) {
     super(props);
@@ -483,7 +485,8 @@ class SearchResultDetail extends Component {
 
   _createTextMessage(adsID) {
     text = 'Tôi muốn tìm hiểu thêm thông tin về bất động sản tại\n';
-    text += cfg.serverUrl + '/web/detail/' + adsID;
+    linkAds = cfg.serverUrl + '/web/detail/' + adsID;
+    text += linkAds;
     text += ', xin vui lòng liên hệ lại sớm.';
   }
   _renderDacDiem(loaiNhaDat, gia, giaM2, soPhongNguVal, soPhongTamVal, dienTich, huongNha, duAn, ngayDangTin, luotXem, diaChi, maSo) {
@@ -813,7 +816,7 @@ class SearchResultDetail extends Component {
   }
 
   _onCopy() {
-    Communications.copy(text);
+    Communications.copy(linkAds);
     AlertIOS.alert('Thông báo',
         'Đường link của tin đã được copy. Hãy paste vào nơi bạn muốn chia sẻ',
         [{
