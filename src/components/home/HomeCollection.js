@@ -31,7 +31,8 @@ export default class HomeCollection extends Component {
 
   _onSeeMore() {
     let {query} = this.props.collectionData;
-    query.limit = 2*this.props.maxAdsInMapView;
+    query.limit = this.props.maxAdsInMapView;
+    query.pageNo = 1;
     query.isIncludeCountInResponse = false;
     this.props.onResetSearch();
     Actions.SearchResultListExt({collection: this.props.collectionData});
@@ -157,7 +158,8 @@ class ImageItem extends React.Component{
 
   _renderHeartButton(){
     let isLiked = this.isLiked();
-    let color = isLiked ? '#E7E9EB' : 'white';
+    // let color = isLiked ? '#E7E9EB' : 'white';
+    let color = 'white';
     let bgColor = isLiked ? '#EC1B77' : '#4A443F';
     let bgStyle = isLiked ? {} : {opacity: 0.55};
 

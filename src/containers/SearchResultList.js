@@ -37,6 +37,8 @@ import GiftedSpinner from "../components/GiftedSpinner";
 
 import cfg from "../cfg";
 
+import LinearGradient from 'react-native-linear-gradient';
+
 const noCoverUrl = cfg.noCoverUrl;
 
 const actions = [
@@ -198,7 +200,7 @@ class SearchResultList extends Component {
         let numberOfAds = listAds.length;
         let totalCount = this.props.totalCount;
         let rangeAds = totalCount > 0 ? totalCount : numberOfAds;
-        let textValue = "Tìm thấy " + rangeAds + " kết quả phù hợp";
+        let textValue = "Tìm thấy " + rangeAds + " kết quả";
         if (numberOfAds == 0) {
             // textValue = "Không tìm thấy kết quả nào. Hãy thay đổi điều kiện tìm kiếm";
             textValue = "";
@@ -221,9 +223,12 @@ class SearchResultList extends Component {
         return (<View style={myStyles.resultContainer}>
             <Animatable.View animation={showMessage ? "fadeIn" : "fadeOut"}
                              duration={showMessage ? 500 : 3000}>
+                <LinearGradient colors={['rgba(184, 184, 184, 0.75)', 'transparent']}
+                                style={myStyles.linearGradient}>
                 <View style={[myStyles.resultText]}>
                     <Text style={myStyles.resultIcon}>  {textValue} </Text>
                 </View>
+                </LinearGradient>
             </Animatable.View>
         </View>)
     }
@@ -232,6 +237,12 @@ class SearchResultList extends Component {
 
 // Later on in your styles..
 var myStyles = StyleSheet.create({
+    linearGradient: {
+        flex: 1,
+        paddingLeft: 0,
+        paddingRight: 0,
+        backgroundColor : "transparent"
+    },
     loadingContent: {
         position: 'absolute',
         top: -33,
@@ -272,11 +283,12 @@ var myStyles = StyleSheet.create({
         width: Dimensions.get('window').width,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'white',
-        opacity: 0.85
+        backgroundColor: 'transparent',
+        // opacity: 0.85,
+        paddingBottom: 10
     },
     resultIcon: {
-        color: 'black',
+        color: 'white',
         fontSize: gui.capitalizeFontSize,
         fontFamily: gui.fontFamily,
         fontWeight : 'normal',

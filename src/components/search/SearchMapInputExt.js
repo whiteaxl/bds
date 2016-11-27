@@ -4,7 +4,7 @@ import React, {Component} from 'react';
 
 import {
     StyleSheet,
-    Text,
+    TextInput,
     TouchableOpacity,
     View,
 } from 'react-native';
@@ -30,7 +30,7 @@ export default class SearchMapInputExt extends Component {
                                         mainProps={styles.searchIcon}
                             >
                             </TruliaIcon>}
-                            <Text style={styles.titleText}> {this.props.placeName}</Text>
+                            <TextInput style={styles.titleText} editable={false} value={this.props.placeName} />
                     </View>
                 </TouchableOpacity>
             </View>
@@ -98,9 +98,11 @@ const styles = StyleSheet.create({
         fontSize: 16,
         fontFamily: 'Open Sans',
         fontWeight: 'normal',
-        textAlign: 'center',
+        textAlign: 'left',
+        paddingLeft: 5,
         color: 'white',
-        backgroundColor: 'transparent'
+        backgroundColor: 'transparent',
+        flex: 1
     },
     directorText: {
         color: 'grey',

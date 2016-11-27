@@ -35,6 +35,8 @@ import * as Animatable from 'react-native-animatable';
 
 import GiftedSpinner from "../components/GiftedSpinner";
 
+import LinearGradient from 'react-native-linear-gradient';
+
 import cfg from "../cfg";
 
 const noCoverUrl = cfg.noCoverUrl;
@@ -185,7 +187,7 @@ class SearchResultListExt extends Component {
         let numberOfAds = listAds.length;
         let totalCount = this.props.totalCount;
         let rangeAds = totalCount > 0 ? totalCount : numberOfAds;
-        let textValue = "Tìm thấy " + rangeAds + " kết quả phù hợp";
+        let textValue = "Tìm thấy " + rangeAds + " kết quả";
         if (numberOfAds == 0) {
             // textValue = "Không tìm thấy kết quả nào. Hãy thay đổi điều kiện tìm kiếm";
             textValue = "";
@@ -208,9 +210,12 @@ class SearchResultListExt extends Component {
         return (<View style={myStyles.resultContainer}>
             <Animatable.View animation={showMessage ? "fadeIn" : "fadeOut"}
                              duration={showMessage ? 500 : 3000}>
+                <LinearGradient colors={['rgba(184, 184, 184, 0.75)', 'transparent']}
+                                style={myStyles.linearGradient}>
                 <View style={[myStyles.resultText]}>
                     <Text style={myStyles.resultIcon}>  {textValue} </Text>
                 </View>
+                </LinearGradient>
             </Animatable.View>
         </View>)
     }
@@ -219,6 +224,12 @@ class SearchResultListExt extends Component {
 
 // Later on in your styles..
 var myStyles = StyleSheet.create({
+    linearGradient: {
+        flex: 1,
+        paddingLeft: 0,
+        paddingRight: 0,
+        backgroundColor : "transparent"
+    },
     loadingContent: {
         position: 'absolute',
         top: -22,
@@ -258,11 +269,12 @@ var myStyles = StyleSheet.create({
         width: Dimensions.get('window').width,
         alignItems: 'center',
         justifyContent: 'center',
-        backgroundColor: 'white',
-        opacity: 0.85
+        backgroundColor: 'transparent',
+        // opacity: 0.85,
+        paddingBottom: 10
     },
     resultIcon: {
-        color: 'black',
+        color: 'white',
         fontSize: gui.capitalizeFontSize,
         fontFamily: gui.fontFamily,
         fontWeight : 'normal',

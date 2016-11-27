@@ -25,7 +25,8 @@ class AdsRow extends React.Component {
   renderLikeIcon(ads) {
     //log.info("renderLikeIcon, ", ads.isLiked);
     let isLiked = this.isLiked(ads);
-    let color = isLiked ? '#A2A7AD' : 'white';
+    // let color = isLiked ? '#A2A7AD' : 'white';
+    let color = 'white';
     let bgColor = isLiked ? '#E50064' : '#4A443F';
     let bgStyle = isLiked ? {} : {opacity: 0.55};
 

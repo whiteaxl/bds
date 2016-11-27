@@ -119,6 +119,7 @@ class PlacesAutoComplete extends React.Component {
       validViewport = viewport;
     }
 
+    this.props.actions.onResetAdsList();
     this.props.actions.onSearchFieldChange("pageNo", 1);
 
     let newLimit = this.props.global.setting.maxAdsInMapView;
@@ -150,13 +151,7 @@ class PlacesAutoComplete extends React.Component {
     this.props.actions.search(
         fields
         , () => {/*setTimeout(() => this.props.actions.loadHomeData(), 100)*/}
-        , (error) =>
-            AlertIOS.alert('Thông báo',
-                error,
-                [{
-                  text: 'Đóng',
-                  onPress: () => {}
-                }]));
+        , (error) => {});
   }
 
   _onCancelPress() {

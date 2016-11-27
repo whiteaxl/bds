@@ -174,14 +174,8 @@ class SortMenu extends Component {
                 dienTich: dienTich, giaPicker: giaPicker, orderBy: newOrderBy, listData: listData,
                 marker: marker, radiusInKmSelectedIdx: radiusInKmSelectedIdx, huongNha: huongNha, ngayDaDang: ngayDaDang,
                 polygon: polygon, limit: newLimit, pageNo: 1, isIncludeCountInResponse: isIncludeCountInResponse}
-            , () => {this._scrollToTop()
-            , (error) =>
-                AlertIOS.alert('Thông báo',
-                    error,
-                    [{
-                        text: 'Đóng',
-                        onPress: () => {}
-                    }])}
+            , () => {this._scrollToTop()}
+            , (error) => {}
         );
     }
 

@@ -77,7 +77,8 @@ class KetQuaDinhGia extends Component {
 
   _renderRow (data, sectionID , rowID){
     let isLiked = this.isLiked(data.adsID);
-    let color = isLiked ? '#E7E9EB' : 'white';
+    // let color = isLiked ? '#E7E9EB' : 'white';
+    let color = 'white';
     let bgColor = isLiked ? '#EC1B77' : '#4A443F';
     let bgStyle = isLiked ? {} : {opacity: 0.55};
 

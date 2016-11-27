@@ -257,6 +257,7 @@ class SearchResultMap extends Component {
       coordinate : null,
       // pageNo: 1,
       showMessage: false,
+      endMsgAnimation: true,
       mounting: true,
       searchTime: moment().toDate().getTime()
     };
@@ -309,7 +310,7 @@ class SearchResultMap extends Component {
   render() {
     console.log("Call SearchResultMap.render, this.state.region=", this.state.region);
 
-    let {listAds} = this.props;
+    let {loading, listAds, errorMsg} = this.props;
 
     console.log("SearchResultMap: number of data " + listAds.length);
 
@@ -340,6 +341,16 @@ class SearchResultMap extends Component {
     }
     let {polygons} = this.props.search.map;
     let showPoline = (!polygons || polygons.length === 0) && this.state.editing;
+
+    let {mounting, openDraw, showMessage, endMsgAnimation} = this.state;
+    let numberOfAds = listAds.length;
+
+    let showTotalAds = !loading && !mounting && !openDraw && (errorMsg || numberOfAds > 0 && (showMessage || !endMsgAnimation));
+    let headerHeight = 70;
+    if(showTotalAds){
+      headerHeight = 95;
+    }
+
     return (
       <View style={styles.fullWidthContainer}>
 
@@ -361,7 +372,7 @@ class SearchResultMap extends Component {
                     key={polygon.id}
                     coordinates={polygon.coordinates}
                     strokeColor={gui.mainColor}
-                    fillColor="rgba(0,168,230,0.5)"
+                    fillColor="rgba(0,168,230,0.3)"
                     strokeWidth={3}
                 />
             ))}
@@ -369,7 +380,7 @@ class SearchResultMap extends Component {
                 <MapView.Polyline
                     coordinates={this.state.editing.coordinates}
                     strokeColor={gui.mainColor}
-                    fillColor="rgba(0,168,230,0.5)"
+                    fillColor="rgba(0,168,230,0.3)"
                     strokeWidth={3}
                 />
             )}
@@ -396,16 +407,19 @@ class SearchResultMap extends Component {
           </MapView>
 
             <View>
-                <LinearGradient colors={['rgba(184, 184, 184, 0.75)', 'transparent']}
+                <LinearGradient colors={['rgba(184, 184, 184, 0.85)', 'transparent']}
                                 style={styles.linearGradient}>
-                    <Text style={{height: 70}}></Text>
-            <View style={styles.search}>
-                <SearchHeader placeName={placeName} containerForm="SearchResultMap"
-                              refreshRegion={() => this.refreshRegion()} onShowMessage={() => this._onShowMessage()}
-                              isHeaderLoading={() => this._isHeaderLoading()}
-                              loadHomeData={this.props.actions.loadHomeData}
-                              owner={'map'}/>
-            </View>
+                    <Text style={{height: headerHeight}}></Text>
+                    <View style={styles.search}>
+                        <SearchHeader placeName={placeName} containerForm="SearchResultMap"
+                                      refreshRegion={() => this.refreshRegion()} onShowMessage={() => this._onShowMessage()}
+                                      isHeaderLoading={() => this._isHeaderLoading()}
+                                      loadHomeData={this.props.actions.loadHomeData}
+                                      owner={'map'}/>
+                    </View>
+
+                    {this._renderTotalResultView()}
+
                 </LinearGradient>
             </View>
 
@@ -428,7 +442,7 @@ class SearchResultMap extends Component {
         />
         */}
 
-        {this._renderTotalResultView()}
+        {this._renderLoadingOrNotFoundView()}
 
         <View style={styles.tabbar}>
           <View style={styles.searchListButton}>
@@ -482,7 +496,8 @@ class SearchResultMap extends Component {
       selectedDupMarkers.map((mmarker) => {
       let markerId = mmarker.id;
       let isLiked = this.isLiked(markerId);
-      let color = isLiked ? '#A2A7AD' : 'white';
+      // let color = isLiked ? '#A2A7AD' : 'white';
+      let color = 'white';
       let bgColor = isLiked ? '#E50064' : '#4A443F';
       let bgStyle = isLiked ? {} : {opacity: 0.55};
       allItems.push(
@@ -771,54 +786,84 @@ class SearchResultMap extends Component {
       this.setState({mounting: false});
   }
 
+    _renderLoadingOrNotFoundView(){
+        console.log("Call SearchResultMap._renderLoadingOrNotFoundView");
+        let {loading, listAds, errorMsg} = this.props;
+        let {mounting, openDraw} = this.state;
+        let numberOfAds = listAds.length;
+
+        if(loading || mounting || openDraw){
+            return (<View style={styles.resultContainer}>
+                {/*<Animatable.View animation={this.props.search.showMessage ? "fadeIn" : "fadeOut"}
+                 duration={this.props.search.showMessage ? 500 : 3000}>
+                 <View style={[styles.resultText]}>
+                 <Text style={styles.resultIcon}>  Đang tải dữ liệu ... </Text>
+                 </View>
+                 </Animatable.View>*/}
+                <View style={styles.loadingContent}>
+                    {loading ? <GiftedSpinner color="white" /> : null}
+                </View>
+            </View>)
+        }
+
+        if (errorMsg || numberOfAds > 0) {
+            return null;
+        }
+
+        let textValue = gui.INF_KhongCoKetQua;
+        let textNotFound2 = gui.INF_KhongCoKetQua2;
+        let fontWeight = '600';
+        let backgroundColor = 'white';
+        let textColor = 'black';
+
+        return (<View style={styles.resultContainer}>
+            <Animatable.View animation={"fadeIn"}
+                             duration={500}>
+                <View style={[styles.resultText, {marginTop: 0, backgroundColor: backgroundColor}]}>
+                    <Text style={[styles.resultIcon, {fontWeight: fontWeight, color: textColor}]}>  {textValue} </Text>
+                    <Text style={[styles.resultIcon, {color: textColor}]}>  {textNotFound2} </Text>
+                    {this._renderAllRegionButton()}
+                </View>
+            </Animatable.View>
+        </View>)
+    }
+
   _renderTotalResultView(){
     console.log("Call SearchResultMap._renderTotalResultView");
-    let {loading, totalCount, listAds, search} = this.props;
+    let {loading, totalCount, listAds, search, errorMsg} = this.props;
     let {showMessage, mounting, openDraw} = this.state;
     let {pageNo} = search.form.fields;
     let limit = this.props.maxAdsInMapView;
     let numberOfAds = listAds.length;
 
+    if(loading || mounting || openDraw){
+      return null;
+    }
+
     let beginAdsIndex = (pageNo-1)*limit+1;
     let endAdsIndex = (pageNo-1)*limit+numberOfAds;
     let rangeAds = totalCount > this.props.maxAdsInMapView ? (endAdsIndex > 0 ? beginAdsIndex + "-" + endAdsIndex : "0") + " / " + totalCount : numberOfAds;
-    let textValue = "Đang hiển thị từ " + rangeAds + " kết quả phù hợp";
-    let textNotFound2 = "";
+    let textValue = "Đang hiển thị từ " + rangeAds + " kết quả";
     let fontWeight = 'normal';
     let backgroundColor = 'transparent';
-    let textColor = '#F53113';
-    if (numberOfAds == 0) {
-      textValue = gui.INF_KhongCoKetQua;
-      textNotFound2 = gui.INF_KhongCoKetQua2;
-      fontWeight = '600';
-      backgroundColor = 'white';
-      textColor = 'black';
-    } else if (totalCount == 0 || (totalCount == numberOfAds && totalCount <= this.props.maxAdsInMapView)) {
-      textValue = "Đang hiển thị " + rangeAds + " kết quả phù hợp";
+    let textColor = 'white';
+    if (errorMsg) {
+        textValue = errorMsg;
     }
-
-    if(loading || mounting || openDraw){
-      console.log("SearchResultMap_renderTotalResultView");
-      return (<View style={styles.resultContainer}>
-        {/*<Animatable.View animation={this.props.search.showMessage ? "fadeIn" : "fadeOut"}
-                         duration={this.props.search.showMessage ? 500 : 3000}>
-          <View style={[styles.resultText]}>
-            <Text style={styles.resultIcon}>  Đang tải dữ liệu ... </Text>
-          </View>
-        </Animatable.View>*/}
-        <View style={styles.loadingContent}>
-            {loading ? <GiftedSpinner color="white" /> : null}
-        </View>
-      </View>)
+    else if (numberOfAds == 0) {
+        return null;
+    }
+    else if (totalCount == 0 || (totalCount == numberOfAds && totalCount <= this.props.maxAdsInMapView)) {
+      textValue = "Đang hiển thị " + rangeAds + " kết quả";
     }
 
     return (<View style={styles.resultContainer}>
-      <Animatable.View animation={showMessage || textNotFound2 ? "fadeIn" : "fadeOut"}
-                       duration={showMessage || textNotFound2 ? 500 : 5000}>
-        <View style={[styles.resultText, {marginTop: 0, backgroundColor: backgroundColor}]}>
+      <Animatable.View animation={showMessage || errorMsg ? "fadeIn" : "fadeOut"}
+                       duration={showMessage || errorMsg ? 500 : 3000}
+                       onAnimationEnd={() => this.setState({endMsgAnimation: true})}
+                       onAnimationBegin={() => this.setState({endMsgAnimation: false})} >
+        <View style={[styles.resultText, {marginTop: 0, opacity: 1, backgroundColor: backgroundColor}]}>
             <Text style={[styles.resultIcon, {fontWeight: fontWeight, color: textColor}]}>  {textValue} </Text>
-            {textNotFound2 ? <Text style={[styles.resultIcon, {color: textColor}]}>  {textNotFound2} </Text> : null}
-            {textNotFound2 ? this._renderAllRegionButton() : null}
         </View>
       </Animatable.View>
     </View>)
@@ -939,13 +984,7 @@ class SearchResultMap extends Component {
         this.props.actions.search(
             fields
             , refreshCallback
-            , (error) =>
-                AlertIOS.alert('Thông báo',
-                    error,
-                    [{
-                        text: 'Đóng',
-                        onPress: () => {}
-                    }]));
+            , (error) => {});
         if (!isAppend) {
             this.setState({mounting: false});
             this._onShowMessage();

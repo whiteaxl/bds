@@ -522,13 +522,7 @@ class Search2 extends Component {
      this.props.actions.search(
          fields
          , () => {/*setTimeout(() => this.props.actions.loadHomeData(), 100)*/}
-         , (error) =>
-             AlertIOS.alert('Thông báo',
-                 error,
-                 [{
-                     text: 'Đóng',
-                     onPress: () => {}
-                 }]));
+         , (error) => {});
  }
 
   onMoreOption() {
