@@ -106,7 +106,7 @@ class SortMenu extends Component {
             var orderType = orderTypes[i];
             var isSelected = (orderType == orderBy);
             var isLastRow = (i == orderTypes.length-1);
-            var optionProps = (i == 0) ? {marginTop: 10} : (isLastRow ? {marginBottom: 10} : {});
+            var optionProps = (i == 0) ? {marginTop: 10} : (isLastRow ? {marginBottom: 0} : {});
             optionList.push(
                 <MMenuOption text={orderType} isSelected={isSelected} isLastRow={isLastRow}
                              onPress={(orderType) => this._onApply(orderType)}
@@ -265,7 +265,7 @@ var myStyles = StyleSheet.create({
     dropdownOptions: {
         borderColor: '#ccc',
         borderWidth: 1,
-        marginTop: -350,
+        marginTop: -340,
         left: 10,
         overflow: 'hidden',
         width: 226
@@ -273,7 +273,7 @@ var myStyles = StyleSheet.create({
     dropdownOptions2: {
         borderColor: '#ccc',
         borderWidth: 1,
-        marginTop: -310,
+        marginTop: -300,
         left: 10,
         overflow: 'hidden',
         width: 226

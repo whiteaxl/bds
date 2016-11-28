@@ -789,7 +789,7 @@ class SearchResultMap extends Component {
     _renderLoadingOrNotFoundView(){
         console.log("Call SearchResultMap._renderLoadingOrNotFoundView");
         let {loading, listAds, errorMsg} = this.props;
-        let {mounting, openDraw} = this.state;
+        let {mounting, openDraw, showMessage} = this.state;
         let numberOfAds = listAds.length;
 
         if(loading || mounting || openDraw){
@@ -806,7 +806,7 @@ class SearchResultMap extends Component {
             </View>)
         }
 
-        if (errorMsg || numberOfAds > 0) {
+        if (errorMsg || !showMessage || numberOfAds > 0) {
             return null;
         }
 
@@ -949,7 +949,7 @@ class SearchResultMap extends Component {
     this._refreshListData(viewport, null, this._onSetupMessageTimeout.bind(this));
   }
 
-  _refreshListData(newViewport, newPolygon, refreshCallback, newCenter, excludeCount, newDiaChinh, newPageNo, isAppend) {
+  _refreshListData(newViewport, newPolygon, refreshCallback, newCenter, excludeCount, newDiaChinh, newPageNo, isAppend, hideMessage) {
     console.log("Call SearhResultMap._refreshListData");
     var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
@@ -987,15 +987,15 @@ class SearchResultMap extends Component {
             , (error) => {});
         if (!isAppend) {
             this.setState({mounting: false});
-            this._onShowMessage();
+            this._onShowMessage(hideMessage);
         }
     }
   }
 
-  _onShowMessage() {
+  _onShowMessage(hideMessage) {
       console.log("Call SearchResultMap._onShowMessage");
     this.setState({openDetailAdsModal: false,
-        openLocalInfo: false, showMessage: true, mounting: false});
+        openLocalInfo: false, showMessage: !hideMessage, mounting: false});
     this._onSetupMessageTimeout();
   }
 
@@ -1021,7 +1021,7 @@ class SearchResultMap extends Component {
       </View>
       <View style={{marginTop: 10}}>
         <SegmentedControlIOS
-            values={DanhMuc.MapType}
+            values={DanhMuc.getDanhMucValues(DanhMuc.MapText)}
             selectedIndex={DanhMuc.MapType.indexOf(this.state.mapType)}
             onChange={this._onMapTypeChange.bind(this)}
             tintColor={gui.mainColor} height={30} width={width-70}
@@ -1252,7 +1252,7 @@ class SearchResultMap extends Component {
         this.props.actions.onPolygonsChange(polygons);
         // this.props.actions.onSearchFieldChange("diaChinh", {});
         this.props.actions.onSearchFieldChange("pageNo", 1);
-        this._refreshListData(viewport, polygon, () => {this._closeDrawIfNoResult(viewport, region)}, {}, false, {});
+        this._refreshListData(viewport, polygon, () => {this._closeDrawIfNoResult(viewport, region)}, {}, false, {}, null, false, true);
     }
     this._updateMapView(polygons, hasPolygon);
   }

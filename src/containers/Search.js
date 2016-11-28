@@ -138,7 +138,7 @@ class Search extends Component {
 
     _onLoaiTinChange(value) {
         let {initGia, fromGia, toGia} = this._initGia(value);
-        this.setState({loaiTin: value, initGia: initGia, fromGia: fromGia, toGia: toGia});
+        this.setState({loaiTin: value, initGia: initGia, fromGia: fromGia, toGia: toGia, showGia: false, showDienTich: false});
     }
 
     _onPressGiaHandle(){

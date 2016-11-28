@@ -24,7 +24,7 @@ import gui from '../lib/gui';
 
 import LinearGradient from 'react-native-linear-gradient';
 
-import PhotoView from 'react-native-photo-view';
+import PhotoView from './MPhotoView';
 
 import SearchResultDetailFooter from './detail/SearchResultDetailFooter';
 

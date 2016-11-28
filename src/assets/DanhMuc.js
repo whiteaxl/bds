@@ -220,6 +220,12 @@ danhMuc.LoaiTin = {
     1: "Cho thuê"
 };
 
+danhMuc.MapText = {
+    "Standard": "T.thường",
+    "Satellite": "Vệ tinh",
+    "Hybrid": "Hỗn hợp"
+};
+
 danhMuc.MapType = [
     "Standard",
     "Satellite",
