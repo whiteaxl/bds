@@ -415,7 +415,8 @@ class SearchResultMap extends Component {
                                       refreshRegion={() => this.refreshRegion()} onShowMessage={() => this._onShowMessage()}
                                       isHeaderLoading={() => this._isHeaderLoading()}
                                       loadHomeData={this.props.actions.loadHomeData}
-                                      owner={'map'}/>
+                                      owner={'map'}
+                                      isNotFoundAds={() => this._isNotFoundAds()}/>
                     </View>
 
                     {this._renderTotalResultView()}
@@ -786,10 +787,18 @@ class SearchResultMap extends Component {
       this.setState({mounting: false});
   }
 
+    _isNotFoundAds() {
+        let {loading, listAds, errorMsg} = this.props;
+        let {mounting, openDraw} = this.state;
+        let numberOfAds = listAds.length;
+        return !loading && !mounting && !openDraw &&
+            !errorMsg && numberOfAds == 0;
+    }
+
     _renderLoadingOrNotFoundView(){
         console.log("Call SearchResultMap._renderLoadingOrNotFoundView");
         let {loading, listAds, errorMsg} = this.props;
-        let {mounting, openDraw, showMessage} = this.state;
+        let {mounting, openDraw} = this.state;
         let numberOfAds = listAds.length;
 
         if(loading || mounting || openDraw){
@@ -806,7 +815,7 @@ class SearchResultMap extends Component {
             </View>)
         }
 
-        if (errorMsg || !showMessage || numberOfAds > 0) {
+        if (errorMsg || numberOfAds > 0) {
             return null;
         }
 
@@ -949,7 +958,7 @@ class SearchResultMap extends Component {
     this._refreshListData(viewport, null, this._onSetupMessageTimeout.bind(this));
   }
 
-  _refreshListData(newViewport, newPolygon, refreshCallback, newCenter, excludeCount, newDiaChinh, newPageNo, isAppend, hideMessage) {
+  _refreshListData(newViewport, newPolygon, refreshCallback, newCenter, excludeCount, newDiaChinh, newPageNo, isAppend) {
     console.log("Call SearhResultMap._refreshListData");
     var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
@@ -987,15 +996,15 @@ class SearchResultMap extends Component {
             , (error) => {});
         if (!isAppend) {
             this.setState({mounting: false});
-            this._onShowMessage(hideMessage);
+            this._onShowMessage();
         }
     }
   }
 
-  _onShowMessage(hideMessage) {
+  _onShowMessage() {
       console.log("Call SearchResultMap._onShowMessage");
     this.setState({openDetailAdsModal: false,
-        openLocalInfo: false, showMessage: !hideMessage, mounting: false});
+        openLocalInfo: false, showMessage: true, mounting: false});
     this._onSetupMessageTimeout();
   }
 
@@ -1240,19 +1249,20 @@ class SearchResultMap extends Component {
 
     var { editing } = this.state;
     var polygons = editing ? [editing] : [];
-    let hasPolygon = polygons.length > 0 && polygons[0].coordinates.length > 2;
-
+    let hasPolygon = polygons.length > 0;
     if (hasPolygon) {
         var geoBox = apiUtils.getPolygonBox(polygons[0]);
-        var region = apiUtils.getRegion(geoBox);
-        var viewport = apiUtils.getViewport(region);
-        var polygon = apiUtils.convertPolygon(polygons[0]);
-        // this.props.actions.onSearchFieldChange("viewport", viewport);
-        this.props.actions.onSearchFieldChange("polygon", polygon);
-        this.props.actions.onPolygonsChange(polygons);
-        // this.props.actions.onSearchFieldChange("diaChinh", {});
-        this.props.actions.onSearchFieldChange("pageNo", 1);
-        this._refreshListData(viewport, polygon, () => {this._closeDrawIfNoResult(viewport, region)}, {}, false, {}, null, false, true);
+        if (geoBox[2]-geoBox[0] > PADDING && geoBox[3]-geoBox[1] > PADDING) {
+            var region = apiUtils.getRegion(geoBox);
+            var viewport = apiUtils.getViewport(region);
+            var polygon = apiUtils.convertPolygon(polygons[0]);
+            // this.props.actions.onSearchFieldChange("viewport", viewport);
+            this.props.actions.onSearchFieldChange("polygon", polygon);
+            this.props.actions.onPolygonsChange(polygons);
+            // this.props.actions.onSearchFieldChange("diaChinh", {});
+            this.props.actions.onSearchFieldChange("pageNo", 1);
+            this._refreshListData(viewport, polygon, () => {this._closeDrawIfNoResult(viewport, region)}, {}, false, {});
+        }
     }
     this._updateMapView(polygons, hasPolygon);
   }

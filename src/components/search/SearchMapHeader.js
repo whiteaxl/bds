@@ -15,6 +15,8 @@ import SearchInputExt from './SearchMapInputExt';
 // Create our component
 var CommonHeader = React.createClass({
   render: function() {
+    let isNotFoundAds = this.props.isNotFoundAds && this.props.isNotFoundAds();
+    let textColor = this.props.owner == 'map' && isNotFoundAds ? gui.mainColor : 'white';
     return <View style={mStyles.container}>
       <View style={mStyles.home}>
       <TruliaIcon onPress={this._onHome}
@@ -35,7 +37,7 @@ var CommonHeader = React.createClass({
       <TouchableOpacity onPress={this._onSearch} underlayColor="transparent"
         style={{paddingLeft: 7, paddingRight: 15}}
         >
-          <Text style={mStyles.titleText}>Lọc</Text>
+          <Text style={[mStyles.titleText, {color: textColor}]}>Lọc</Text>
       </TouchableOpacity>
       </View>
     </View>
