@@ -33,8 +33,9 @@ export default class HomeCollection extends Component {
 
   _onSeeMore() {
     let {query} = this.props.collectionData;
-    query.limit = 2 * this.props.maxAdsInMapView;
-    query.isIncludeCountInResponse = false;
+    query.limit = this.props.maxAdsInMapView;
+    query.pageNo = 1;
+    query.isIncludeCountInResponse = true;
     this.props.onResetSearch();
     Actions.SearchResultListExt({ collection: this.props.collectionData });
     this.props.searchFromHome(query, () => { }, (error) =>

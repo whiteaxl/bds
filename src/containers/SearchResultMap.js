@@ -1249,20 +1249,18 @@ class SearchResultMap extends Component {
 
     var { editing } = this.state;
     var polygons = editing ? [editing] : [];
-    let hasPolygon = polygons.length > 0;
+    let hasPolygon = polygons.length > 0 && polygons[0].coordinates.length > 2;
     if (hasPolygon) {
         var geoBox = apiUtils.getPolygonBox(polygons[0]);
-        if (geoBox[2]-geoBox[0] > PADDING && geoBox[3]-geoBox[1] > PADDING) {
-            var region = apiUtils.getRegion(geoBox);
-            var viewport = apiUtils.getViewport(region);
-            var polygon = apiUtils.convertPolygon(polygons[0]);
-            // this.props.actions.onSearchFieldChange("viewport", viewport);
-            this.props.actions.onSearchFieldChange("polygon", polygon);
-            this.props.actions.onPolygonsChange(polygons);
-            // this.props.actions.onSearchFieldChange("diaChinh", {});
-            this.props.actions.onSearchFieldChange("pageNo", 1);
-            this._refreshListData(viewport, polygon, () => {this._closeDrawIfNoResult(viewport, region)}, {}, false, {});
-        }
+        var region = apiUtils.getRegion(geoBox);
+        var viewport = apiUtils.getViewport(region);
+        var polygon = apiUtils.convertPolygon(polygons[0]);
+        // this.props.actions.onSearchFieldChange("viewport", viewport);
+        this.props.actions.onSearchFieldChange("polygon", polygon);
+        this.props.actions.onPolygonsChange(polygons);
+        // this.props.actions.onSearchFieldChange("diaChinh", {});
+        this.props.actions.onSearchFieldChange("pageNo", 1);
+        this._refreshListData(viewport, polygon, () => {this._closeDrawIfNoResult(viewport, region)}, {}, false, {});
     }
     this._updateMapView(polygons, hasPolygon);
   }
