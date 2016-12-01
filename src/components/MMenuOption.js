@@ -47,7 +47,7 @@ class MMenuOption extends Component {
             return this.props.renderText(option);
         }
 
-        return (<Text style={{fontFamily: gui.fontFamily, fontSize: gui.normalFontSize}}>{option}</Text>);
+        return (<Text style={{fontFamily: gui.fontFamily, fontSize: 12}}>{option}</Text>);
     }
 
     _renderRow(option, onPress, optionProps) {

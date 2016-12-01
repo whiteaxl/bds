@@ -169,7 +169,7 @@ class PostAds extends Component {
             this.onSelectAvartarProfile(data.path);
         } else {
             this.props.actions.onPostAdsFieldChange('photos', this.state.photos);
-            Actions.PostAdsDetail();
+            Actions.PostAdsDetail({type: 'replace'});
         }
     }
 

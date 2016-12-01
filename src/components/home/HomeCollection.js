@@ -1,6 +1,6 @@
 'use strict';
 
-import  React, {Component} from 'react';
+import React, { Component } from 'react';
 import { Text, StyleSheet, View, ScrollView, Image, Dimensions, TouchableOpacity, AlertIOS } from 'react-native'
 
 import gui from '../../lib/gui';
@@ -10,7 +10,7 @@ import LinearGradient from 'react-native-linear-gradient';
 
 import DanhMuc from '../../assets/DanhMuc';
 
-import {Actions} from 'react-native-router-flux';
+import { Actions } from 'react-native-router-flux';
 
 import MHeartIcon from '../MHeartIcon';
 
@@ -21,41 +21,42 @@ import cfg from "../../cfg";
 import CommonUtils from '../../lib/CommonUtils';
 
 const noCoverUrl = cfg.noCoverUrl;
+var {width, height} = Dimensions.get('window');
 
 var imageHeight = 143;
 
+
 export default class HomeCollection extends Component {
   _onAdsPressed(ads) {
-    Actions.SearchResultDetail({adsID: ads.adsID, source: 'server'})
+    Actions.SearchResultDetail({ adsID: ads.adsID, source: 'server' })
   }
 
   _onSeeMore() {
     let {query} = this.props.collectionData;
-    query.limit = this.props.maxAdsInMapView;
-    query.pageNo = 1;
+    query.limit = 2 * this.props.maxAdsInMapView;
     query.isIncludeCountInResponse = false;
     this.props.onResetSearch();
-    Actions.SearchResultListExt({collection: this.props.collectionData});
-    this.props.searchFromHome(query, () => {}, (error) =>
+    Actions.SearchResultListExt({ collection: this.props.collectionData });
+    this.props.searchFromHome(query, () => { }, (error) =>
         AlertIOS.alert('Thông báo',
             error,
             [{
               text: 'Đóng',
-              onPress: () => {}
+              onPress: () => { }
             }]));
   }
 
   _renderAds(ads, flex) {
     if (ads) {
       return (
-        <TouchableOpacity onPress={() => this._onAdsPressed(ads)} style={{flex: flex}}>
-          <ImageItem ads={ads} adsLikes={this.props.adsLikes} loggedIn={this.props.loggedIn}
-                     likeAds={this.props.likeAds}
-                     unlikeAds={this.props.unlikeAds} userID={this.props.userID}
-                     loadHomeData={this.props.loadHomeData}
-                     uploadingLikedAds = {this.props.uploadingLikedAds}
-          />
-        </TouchableOpacity>
+          <TouchableOpacity onPress={() => this._onAdsPressed(ads)} style={{ flex: flex }}>
+            <ImageItem ads={ads} adsLikes={this.props.adsLikes} loggedIn={this.props.loggedIn}
+                       likeAds={this.props.likeAds}
+                       unlikeAds={this.props.unlikeAds} userID={this.props.userID}
+                       loadHomeData={this.props.loadHomeData}
+                       uploadingLikedAds={this.props.uploadingLikedAds}
+            />
+          </TouchableOpacity>
       );
     } else {
       log.info("_renderAds null");
@@ -72,46 +73,46 @@ export default class HomeCollection extends Component {
           <View>{null}</View>
       );
     }
-    return(
-      <View style={{flexDirection: "column"}}>
-        <View style={styles.titleContainer}>
-          <Text style={styles.boldTitle}>BỘ SƯU TẬP</Text>
-          <Text style={styles.categoryLabel}>{title1}</Text>
-          <Text style={styles.arrowLabel}>{title2}</Text>
-        </View>
-
-        <View style={styles.rowItem}>
-          {this._renderAds(data[0], 0.55)}
-          <View style={{width:1}}/>
-          {this._renderAds(data[1], 0.45)}
-        </View>
-
-        <View style={{height:1}}/>
-
-        <View style={styles.rowItem}>
-          {this._renderAds(data[2], 0.45)}
-          <View style={{width:1}}/>
-          {this._renderAds(data[3], 0.55)}
-        </View>
-
-        <View style={{height:1}}/>
-        <View style={{flex: 1}}>
-          {this._renderAds(data[4], 1)}
-        </View>
-
-        <TouchableOpacity style={{backgroundColor:'transparent'}} onPress={this._onSeeMore.bind(this)} >
-          <View style={styles.moreDetail}>
-            <Text style={styles.moreDetailButton}>Xem thêm</Text>
+    return (
+        <View style={{ flexDirection: "column" }}>
+          <View style={styles.titleContainer}>
+            <Text style={styles.boldTitle}>BỘ SƯU TẬP</Text>
+            <Text style={styles.categoryLabel}>{title1}</Text>
+            <Text style={styles.arrowLabel}>{title2}</Text>
           </View>
-        </TouchableOpacity>
-      </View>
+
+          <View style={styles.rowItem}>
+            {this._renderAds(data[0], 0.55)}
+            <View style={styles.columnLine} />
+            {this._renderAds(data[1], 0.45)}
+          </View>
+
+          <View style={styles.rowLine} />
+
+          <View style={styles.rowItem}>
+            {this._renderAds(data[2], 0.45)}
+            <View style={styles.columnLine} />
+            {this._renderAds(data[3], 0.55)}
+          </View>
+
+          <View style={styles.rowLine} />
+          <View style={{ flex: 1 }}>
+            {this._renderAds(data[4], 1)}
+          </View>
+
+          <TouchableOpacity style={{ backgroundColor: 'transparent' }} onPress={this._onSeeMore.bind(this)} >
+            <View style={styles.moreDetail}>
+              <Text style={styles.moreDetailButton}>Xem thêm</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
     )
   }
 }
 
 
-class ImageItem extends React.Component{
-  constructor(props){
+class ImageItem extends React.Component {
+  constructor(props) {
     super(props);
     let {adsLikes, ads} = props;
     let initLikedState = (adsLikes && adsLikes.indexOf(ads.adsID) > -1);
@@ -125,56 +126,55 @@ class ImageItem extends React.Component{
     let {adsID, cover, giaFmt, khuVuc} = this.props.ads;
     let detail = this.getMoreInfo(this.props.ads);
 
-    let imageUri = {uri: cover};
-    
-    /*if (noCoverUrl == cover) {
-      imageUri = require('../../assets/image/reland_house_large.jpg');
-    }*/
+    let imageUri = { uri: cover };
 
-    if (!adsID || adsID.length ==0 || adsID == 'EMPTY'){
+    /*if (noCoverUrl == cover) {
+     imageUri = require('../../assets/image/reland_house_large.jpg');
+     }*/
+
+    if (!adsID || adsID.length == 0 || adsID == 'EMPTY') {
       imageUri = require('../../assets/image/no_cover_home.jpg');
     }
 
     return (
-      <Image style={[styles.imgItem]} resizeMode = {'cover'}
-             source={imageUri} defaultSource={CommonUtils.getNoCoverImage()}>
+        <Image style={[styles.imgItem]} resizeMode={'cover'}
+               source={imageUri} defaultSource={CommonUtils.getNoCoverImage()}>
 
-        <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.55)']}
-                        style={styles.linearGradient2}>
-        </LinearGradient>
+          <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.55)']}
+                          style={styles.linearGradient2}>
+          </LinearGradient>
 
-        {this._renderHeartButton()}
+          {this._renderHeartButton()}
 
-        <View style={styles.itemContent}>
-          <View style={{flex: 1, paddingRight: 7}}>
-            <Text style={styles.price}>{giaFmt}</Text>
-            <Text style={styles.text} numberOfLines={1}>{khuVuc}</Text>
-            <Text style={styles.text}>{detail}</Text>
+          <View style={styles.itemContent}>
+            <View style={{ flex: 1, paddingRight: 7 }}>
+              <Text style={styles.price}>{giaFmt}</Text>
+              <Text style={styles.text} numberOfLines={1}>{khuVuc}</Text>
+              <Text style={styles.text}>{detail}</Text>
+            </View>
           </View>
-        </View>
-      </Image>
+        </Image>
     );
   }
 
-  _renderHeartButton(){
+  _renderHeartButton() {
     let isLiked = this.isLiked();
-    // let color = isLiked ? '#E7E9EB' : 'white';
-    let color = 'white';
+    let color = isLiked ? '#E7E9EB' : 'white';
     let bgColor = isLiked ? '#EC1B77' : '#4A443F';
-    let bgStyle = isLiked ? {} : {opacity: 0.55};
+    let bgStyle = isLiked ? {} : { opacity: 0.55 };
 
-    if (this.props.uploadingLikedAds.uploading && this.props.uploadingLikedAds.adsID == this.props.ads.adsID){
+    if (this.props.uploadingLikedAds.uploading && this.props.uploadingLikedAds.adsID == this.props.ads.adsID) {
       return (
           <View style={styles.heartContent}>
             <View style={styles.heartButton}>
-              <GiftedSpinner size="small" color="white"/>
+              <GiftedSpinner size="small" color="white" />
             </View>
           </View>);
     } else {
       return (
           <View style={styles.heartContent}>
             <MHeartIcon onPress={() => this.onLike()} color={color} bgColor={bgColor} bgStyle={bgStyle}
-                        mainProps={styles.heartButton}/>
+                        mainProps={styles.heartButton} />
           </View>
       )
     }
@@ -201,7 +201,7 @@ class ImageItem extends React.Component{
     if (loaiNhaDat == loaiNhaDatKeys[1]) {
       moreInfo = dienTich + soPhongNgu;
     }
-    else if ( !loaiTin && ((loaiNhaDat == loaiNhaDatKeys[2])
+    else if (!loaiTin && ((loaiNhaDat == loaiNhaDatKeys[2])
         || (loaiNhaDat == loaiNhaDatKeys[3])
         || (loaiNhaDat == loaiNhaDatKeys[4])) ||
         loaiTin && ((loaiNhaDat == loaiNhaDatKeys[2])
@@ -260,11 +260,11 @@ var styles = StyleSheet.create({
     height: 61
   },
   imgItem: {
-    flex:1,
-    height:imageHeight
+    flex: 1,
+    height: imageHeight
   },
   column: {
-    flex:1,
+    flex: 1,
     alignItems: "center"
   },
   boldTitle: {
@@ -292,8 +292,8 @@ var styles = StyleSheet.create({
   },
   moreDetail: {
     margin: 9,
-    marginLeft:25,
-    marginRight:25,
+    marginLeft: 25,
+    marginRight: 25,
     marginBottom: 11,
     padding: 4,
     paddingBottom: 5,
@@ -314,7 +314,7 @@ var styles = StyleSheet.create({
     fontSize: 15
   },
   linearGradient: {
-    backgroundColor : "transparent"
+    backgroundColor: "transparent"
   },
   itemContent: {
     position: 'absolute',
@@ -350,9 +350,9 @@ var styles = StyleSheet.create({
     marginLeft: 30
   },
 
-  titleContainer : {
+  titleContainer: {
     height: 72,
-    alignItems:'center',
+    alignItems: 'center',
     justifyContent: 'center',
     padding: 0,
     marginBottom: 2
@@ -369,4 +369,19 @@ var styles = StyleSheet.create({
     backgroundColor: "transparent",
     flex: 1
   },
+  rowLine: {
+    height: 1,
+    width: width,
+    backgroundColor: 'white',
+    borderColor: '#85817f',
+    borderTopWidth: 0.5
+  },
+  columnLine: {
+    height: 143,
+    width: 1,
+    backgroundColor: 'white',
+    borderColor: '#85817f',
+    borderLeftWidth: 0.5
+  }
+
 });

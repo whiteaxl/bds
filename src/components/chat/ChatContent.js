@@ -1,7 +1,5 @@
 import React, {Component} from 'react';
 
-import moment from 'moment';
-
 import {
     StyleSheet,
     Text, Navigator,
@@ -27,6 +25,7 @@ import GiftedMessenger from '../giftedMessegener/GiftedMessenger';
 import log from '../../lib/logUtil';
 import danhMuc from '../../assets/DanhMuc';
 import FullLine from '../line/FullLine';
+import {MenuContext} from '../../components/menu';
 
 import ImagePreview from '../ImagePreview';
 
@@ -169,6 +168,7 @@ class  ChatContent extends React.Component {
     imageDataItems.push(this.state.imageUri);
 
     return (
+        <MenuContext style={{ flex : 1 }}>
         <View style={styles.wrapper}>
           <View style = {styles.adsHeader}>
             <Image
@@ -217,6 +217,7 @@ class  ChatContent extends React.Component {
           />
           {this.state.modal ? <ImagePreview images={imageDataItems} owner={'chat'} closeModal={() => this.setState({modal: false}) }/> : null }
         </View>
+        </MenuContext>
     );
   }
 }

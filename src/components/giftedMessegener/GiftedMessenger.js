@@ -24,6 +24,7 @@ import Button from 'react-native-button';
 import RelandIcon from '../RelandIcon';
 import gui from '../../lib/gui';
 import FullLine from '../line/FullLine';
+import ChatMenu from '../chat/ChatMenu'
 
 import { Actions } from 'react-native-router-flux';
 import { Map } from 'immutable';
@@ -695,6 +696,7 @@ class GiftedMessenger extends Component {
               </Button>
             </View>
             <View style={{ flexDirection: 'row', }}>
+              <ChatMenu isDiaDiem={null} scrollToTop={this.props.scrollToTop}/>
               <RelandIcon name="list" color={gui.mainColor}
                           mainProps={this.styles.captureIcon}
                           size={22} textProps={{ paddingLeft: 0 }}
@@ -718,6 +720,10 @@ class GiftedMessenger extends Component {
       );
     }
     return null;
+  }
+
+  _scrollToTop(){
+    console.log("=========== print scroll to top");
   }
 
   render() {

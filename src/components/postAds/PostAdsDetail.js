@@ -6,15 +6,15 @@ import * as globalActions from '../../reducers/global/globalActions';
 import * as postAdsActions from '../../reducers/postAds/postAdsActions';
 import * as adsMgmtActions from '../../reducers/adsMgmt/adsMgmtActions';
 
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 
-import { Text, View, StyleSheet, StatusBar, TextInput, Image, UIManager, Dimensions,
-    ScrollView, Picker, TouchableHighlight, TouchableOpacity, Alert, KeyboardAvoidingView } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import KeyboardSpacer from 'react-native-keyboard-spacer';
+import {
+    Text, View, StyleSheet, StatusBar, TextInput, Image, UIManager, Dimensions,
+    ScrollView, Picker, TouchableHighlight, TouchableOpacity, Alert, KeyboardAvoidingView
+} from 'react-native';
 
-import {Map} from 'immutable';
-import {Actions, ActionConst} from 'react-native-router-flux';
+import { Map } from 'immutable';
+import { Actions, ActionConst } from 'react-native-router-flux';
 import Button from 'react-native-button';
 import log from "../../lib/logUtil";
 import gui from "../../lib/gui";
@@ -41,7 +41,11 @@ import moment from 'moment';
 
 import dismissKeyboard from 'react-native-dismiss-keyboard';
 
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+
 import cfg from "../../cfg";
+
+import FullLine from '../line/FullLine'
 
 var rootUrl = `${cfg.serverUrl}`;
 
@@ -78,15 +82,13 @@ var count = 0;
 var uploadFiles = [];
 var errorMessage = '';
 
-class PostAdsDetail extends Component {
+class NPostAdsDetail extends Component {
 
     constructor(props) {
         super(props);
         StatusBar.setBarStyle('light-content');
         errorMessage = this.props.postAds.error;
-        console.log("================== print init state");
-        console.log(this.props.postAds);
-        console.log("================== print init state end");
+
         let adsID = props.postAds.id;
 
         this.state = {
@@ -109,8 +111,8 @@ class PostAdsDetail extends Component {
         let adsID = this.props.postAds.id;
         let {currentUser} = this.props.global;
 
-        if (!adsID || adsID.length<=0){
-            let  lienHe = {
+        if (!adsID || adsID.length <= 0) {
+            let lienHe = {
                 tenLienLac: currentUser.fullName,
                 showTenLienLac: true,
                 phone: currentUser.phone,
@@ -128,7 +130,7 @@ class PostAdsDetail extends Component {
 
     }
 
-    getAdsLocation(photos){
+    getAdsLocation(photos) {
         if (photos) {
             for (let i = 0; i < photos.length; i++) {
                 if (photos[i].location && photos[i].location.longitude && photos[i].location.latitude) {
@@ -160,91 +162,107 @@ class PostAdsDetail extends Component {
             },
             (error) => {
             },
-            {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+            { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
         );
+    }
+    _scrollToInput(reactNode: any) {
+        this.refs.scroll.scrollToFocusedInput(reactNode)
+        this.refs.scroll.scrollToPosition(0, 0, true)
     }
 
     render() {
         var {toggleState} = this.state;
-        var scrollHeight = toggleState ? Dimensions.get('window').height-290 :
-        Dimensions.get('window').height-74;
+        var scrollHeight = toggleState ? Dimensions.get('window').height - 290 :
+        Dimensions.get('window').height - 74;
 
         return (
-            <View myStyles={myStyles.container}>
-                <View style={{paddingTop: 25, backgroundColor: gui.mainColor}} />
+            <View style={{ flex: 1, backgroundColor: 'white' }}>
+                <View style={{ paddingTop: 25, backgroundColor: gui.mainColor }} />
+                <KeyboardAwareScrollView ref='scroll'>
+                    <View myStyles={myStyles.container}>
 
-                <ScrollView
-                    ref={(scrollView) => { this._scrollView = scrollView; }}
-                    automaticallyAdjustContentInsets={false}
-                    vertical={true}
-                    style={[myStyles.scrollView, {height: scrollHeight}]}
-                    //onScroll={this.handleScroll.bind(this)}
-                    //scrollEventThrottle={1}
-                >
-                    {this._renderPhoto()}
+                        <ScrollView
+                            ref={(scrollView) => { this._scrollView = scrollView; } }
+                            automaticallyAdjustContentInsets={false}
+                            vertical={true}
+                            //onScroll={this.handleScroll.bind(this)}
+                            //scrollEventThrottle={1}
+                        >
+                            <View>
+                                {this._renderPhoto()}
 
-                    {this._renderLoaiTin()}
+                                {this._renderLoaiTin()}
 
-                    <View style={myStyles.categoryTitle}>
-                        <Text style={myStyles.categoryText}>
-                            ĐẶC ĐIỂM
-                        </Text>
+                                <View style={myStyles.categoryTitle}>
+                                    <Text style={myStyles.categoryText}>
+                                        ĐẶC ĐIỂM
+                                    </Text>
+                                </View>
+                                <FullLine />
+
+                                {this._renderLoaiNha()}
+                                <FullLine style={{marginLeft:17}} />
+                                {this._renderDienTich()}
+
+                                {this._renderPhongNgu()}
+
+                                {this._renderPhongTam()}
+
+                                {this._renderSoTang()}
+
+                                <FullLine />
+                                {this._renderCategoryTitle('VỊ TRÍ')}
+                                <FullLine />
+                                {this._renderBanDo()}
+                                <FullLine style={{marginLeft:17}} />
+                                {this._renderDiaChi()}
+                                <FullLine style={{marginLeft:17}} />
+                                {this._renderDuAn()}
+                                <FullLine style={{marginLeft:17}} />
+                                {this._renderHuongNha()}
+
+                                <FullLine />
+                                {this._renderCategoryTitle('GIÁ VÀ LIÊN HỆ')}
+                                <FullLine />
+                                {this._renderGia()}
+                                <FullLine style={{marginLeft:17}} />
+                                {this._renderLienHe()}
+
+                                <FullLine />
+                                {this._renderCategoryTitle('THÔNG TIN CHI TIẾT')}
+                                <FullLine />
+                                {this._renderChiTiet()}
+
+                                <FullLine />
+                                {this._renderMoreButton()}
+
+                                {this._renderCategoryTitle('')}
+                                <FullLine />
+                                {this._renderResetButton()}
+                                <FullLine />
+
+
+                                <Text style={[myStyles.label, { marginTop: 9, marginLeft: 15, color: 'red' }]}>
+                                    {this.props.postAds.error}</Text>
+                            </View>
+
+
+                            {this.state.toggleState ? <Button onPress={() => dismissKeyboard()}
+                                                              style={[myStyles.buttonText, { textAlign: 'right', color: gui.mainColor }]}>Xong</Button> : null}
+                        </ScrollView>
+                        {/*this._renderLoadingView()*/}
                     </View>
-
-                    {this._renderLoaiNha()}
-                    {this._renderDienTich()}
-                    {this._renderPhongNgu()}
-                    {this._renderPhongTam()}
-                    {this._renderSoTang()}
-
-                    {this._renderCategoryTitle('VỊ TRÍ')}
-                    {this._renderBanDo()}
-                    {this._renderDiaChi()}
-                    {this._renderDuAn()}
-                    {this._renderHuongNha()}
-
-                    {this._renderCategoryTitle('GIÁ VÀ LIÊN HỆ')}
-                    {this._renderGia()}
-                    {this._renderLienHe()}
-
-                    {this._renderCategoryTitle('THÔNG TIN CHI TIẾT')}
-                    {this._renderChiTiet()}
-
-                    {this._renderMoreButton()}
-
-                    {this._renderCategoryTitle('')}
-                    {this._renderResetButton()}
-
-                    <View style={{borderTopColor:'lightgray', borderTopWidth: 1}}></View>
-                    <Text style={[myStyles.label, {marginTop: 9, marginLeft: 15, color: 'red'}]}>
-                        {this.props.postAds.error}</Text>
-
-                </ScrollView>
-
-
-                {this.state.toggleState ? <Button onPress={() => dismissKeyboard()}
-                                                  style={[myStyles.buttonText, {textAlign: 'right', color: gui.mainColor}]}>Xong</Button> : null}
-
-                <KeyboardSpacer onToggle={(toggleState) => this.onKeyboardToggle.bind(this, toggleState)}/>
-
-                <View style={myStyles.searchButton}>
-                    <View style={myStyles.searchListButton}>
-                        <Button onPress={this.onCancel.bind(this)}
-                                style={myStyles.buttonText}>Thoát</Button>
-                        <Button onPress={this.onPostAds.bind(this)}
-                                style={myStyles.buttonText}>{ this.state.adsID ? 'Cập nhật' : 'Đăng tin'}</Button>
-                    </View>
-                </View>
-                {this._renderLoadingView()}
+                </KeyboardAwareScrollView>
+                {this._renderButtonNav()}
             </View>
         )
     }
 
     onKeyboardToggle(toggleState) {
-        this.setState({toggleState: toggleState});
+        this.setState({ toggleState: toggleState });
     }
 
-    _renderCategoryTitle(title){
+    _renderCategoryTitle(title) {
         return (
             <View style={[myStyles.categoryTitle, myStyles.headerSeparator]}>
                 <Text style={myStyles.categoryText}>
@@ -258,32 +276,32 @@ class PostAdsDetail extends Component {
         var {photos} = this.props.postAds;
         let numOfPhoto = photos.length;
         let indexArr = [];
-        for (var i=0; i<= photos.length; i++ ){
-            if (i< 8){
+        for (var i = 0; i <= photos.length; i++) {
+            if (i < 8) {
                 indexArr.push(i)
             }
         }
 
         return (
             <View>
-                <View style={[myStyles.mimgList, {marginTop: 10, marginBottom: 5, paddingLeft: 17, paddingRight: 15}]} >
-                    {indexArr.map( (e) => { if (e<4) return this._renderPhotoItem(e)})}
+                <View style={[myStyles.mimgList, { marginTop: 10, marginBottom: 5, paddingLeft: 17, paddingRight: 15 }]} >
+                    {indexArr.map((e) => { if (e < 4) return this._renderPhotoItem(e) })}
                 </View>
-                <View style={[myStyles.mimgList, {marginTop: numOfPhoto>=4 ? 5 : 0, marginBottom: numOfPhoto>=4 ? 10 : 0, paddingLeft: 17, paddingRight: 15}]} >
-                    {indexArr.map( (e) => { if (e>=4) return this._renderPhotoItem(e)})}
+                <View style={[myStyles.mimgList, { marginTop: numOfPhoto >= 4 ? 5 : 0, marginBottom: numOfPhoto >= 4 ? 10 : 0, paddingLeft: 17, paddingRight: 15 }]} >
+                    {indexArr.map((e) => { if (e >= 4) return this._renderPhotoItem(e) })}
                 </View>
             </View>
         );
     }
 
     /*_renderPhotoItem(imageIndex){
-        var {photos} = this.props.postAds;
-        var photo = photos[imageIndex];
+     var {photos} = this.props.postAds;
+     var photo = photos[imageIndex];
 
-        return (
-            <ImageItem imageIndex={imageIndex} photo={photo}  onTakePhoto={this.onTakePhoto.bind(this)} />
-        )
-    }*/
+     return (
+     <ImageItem imageIndex={imageIndex} photo={photo}  onTakePhoto={this.onTakePhoto.bind(this)} />
+     )
+     }*/
 
     _renderPhotoItem(imageIndex) {
         var {photos} = this.props.postAds;
@@ -291,17 +309,21 @@ class PostAdsDetail extends Component {
 
         if (photo && photo.uri) {
             return (
-                <TouchableHighlight key={imageIndex} onPress={() => this.onTakePhoto(`${imageIndex}`)} >
-                    <Image style={myStyles.imgItem} source={photo}/>
+                <TouchableHighlight key={imageIndex}
+                                    disabled = {!this.isUploading.bind(this)}
+                                    onPress={() => this.onTakePhoto(`${imageIndex}`)} >
+                    <Image style={myStyles.imgItem} source={photo} />
                 </TouchableHighlight>
             );
         } else {
             return (
-                <TouchableHighlight key={imageIndex} onPress={() => this.onTakePhoto(`${imageIndex}`)} >
-                    <View style={[myStyles.imgItem, {borderStyle: 'dashed', borderColor: gui.mainColor}]}>
+                <TouchableHighlight key={imageIndex}
+                                    disabled = {!this.isUploading.bind(this)}
+                                    onPress={() => this.onTakePhoto(`${imageIndex}`)} >
+                    <View style={[myStyles.imgItem, { borderStyle: 'dashed', borderColor: gui.mainColor }]}>
                         <RelandIcon name="plus" color={gui.mainColor}
                                     mainProps={myStyles.captureIcon}
-                                    size={22} textProps={{paddingLeft: 0}}
+                                    size={22} textProps={{ paddingLeft: 0 }}
                                     onPress={() => this.onTakePhoto(`${imageIndex}`)} />
                     </View>
                 </TouchableHighlight>
@@ -317,16 +339,16 @@ class PostAdsDetail extends Component {
         if (photo && photo.uri) {
             return (
                 <TouchableHighlight onPress={() => this.onTakePhoto(`${imageIndex}`)} >
-                    <Image style={myStyles.imgItem} source={photo}/>
+                    <Image style={myStyles.imgItem} source={photo} />
                 </TouchableHighlight>
             );
         } else {
             return (
                 <TouchableHighlight onPress={() => this.onTakePhoto(`${imageIndex}`)} >
-                    <View style={[myStyles.imgItem, {borderStyle: 'dashed', borderColor: gui.mainColor}]}>
+                    <View style={[myStyles.imgItem, { borderStyle: 'dashed', borderColor: gui.mainColor }]}>
                         <RelandIcon name="plus" color={gui.mainColor}
                                     mainProps={myStyles.captureIcon}
-                                    size={22} textProps={{paddingLeft: 0}}
+                                    size={22} textProps={{ paddingLeft: 0 }}
                                     onPress={() => this.onTakePhoto(`${imageIndex}`)} />
                     </View>
                 </TouchableHighlight>
@@ -336,8 +358,8 @@ class PostAdsDetail extends Component {
 
     _renderLoaiTin() {
         return (
-            <View style={{flexDirection: 'row'}}>
-                <View style = {{flex:1, flexDirection: 'row', paddingLeft: 5, paddingRight: 5}}>
+            <View style={{ flexDirection: 'row' }}>
+                <View style={{ flex: 1, flexDirection: 'row', paddingLeft: 5, paddingRight: 5 }}>
                     <LikeTabButton name={'ban'}
                                    onPress={this.onValueChange.bind(this, 'loaiTin')}
                                    selected={this.props.postAds.loaiTin === 'ban'}>BÁN</LikeTabButton>
@@ -351,8 +373,9 @@ class PostAdsDetail extends Component {
 
     _renderLoaiNha() {
         return (
-            <View style={[{paddingTop: 9, marginBottom: 5}, myStyles.headerSeparator]}>
+            <View style={[{ paddingTop: 9, marginBottom: 5 }, myStyles.headerSeparator]}>
                 <TouchableHighlight
+                    disabled = {!this.isUploading.bind(this)}
                     onPress={() => this._onLoaiNhaPressed()}>
                     <View style={myStyles.imgList}>
                         <Text style={myStyles.label}>
@@ -370,7 +393,7 @@ class PostAdsDetail extends Component {
 
     _renderDienTich() {
         return (
-            <View style={[myStyles.imgList, myStyles.headerSeparator, {marginLeft: 17, paddingLeft: 0}]} >
+            <View style={[myStyles.imgList, myStyles.headerSeparator, { marginLeft: 17, paddingLeft: 0 }]} >
                 <Text style={myStyles.label}>Diện tích (m²)</Text>
                 <TextInput
                     secureTextEntry={false}
@@ -384,38 +407,35 @@ class PostAdsDetail extends Component {
     }
 
     _renderMatTien() {
-        return (
+        let {loaiNhaDat} = this.props.postAds;
 
-            <View style={[myStyles.imgList, myStyles.headerSeparator, {marginLeft: 17, paddingLeft: 0}]} >
-                <Text style={myStyles.label}>Mặt tiền (m)</Text>
-                <TextInput ref="matTien"
-                           secureTextEntry={false}
-                           keyboardType={'numeric'}
-                           style={myStyles.input}
-                           value={this.props.postAds.matTien ? this.props.postAds.matTien.toString() : ''}
-                           onChangeText={(text) => this._onNumberValueChange("matTien", text)}
-                           onFocus={this.scrolldown.bind(this,'matTien')}
-                />
-            </View>
+        if (loaiNhaDat && [2,3,4,5,6,7,8,99].indexOf(loaiNhaDat)>=0) {
+            return (
+                <View style={[myStyles.imgList, myStyles.headerSeparator, { marginLeft: 17, paddingLeft: 0 }]}>
+                    <Text style={myStyles.label}>Mặt tiền (m)</Text>
+                    <TextInput ref="matTien"
+                               secureTextEntry={false}
+                               keyboardType={'numeric'}
+                               style={myStyles.input}
+                               value={this.props.postAds.matTien ? this.props.postAds.matTien.toString() : ''}
+                               onChangeText={(text) => this._onNumberValueChange("matTien", text)}
+                    />
+                </View>
+            );
+        } else
+            return;
 
-        );
-    }
-
-    scrolldown(ref) {
-        const self = this;
-        this.refs[ref].measure((ox, oy, width, height, px, py) => {
-            if (windowHeight/py < 1.65){
-                this._scrollView.scrollTo({y: py + 40});
-            }
-        });
     }
 
     _renderNamXayDung() {
         return (
             <View>
-                <View style={[myStyles.headerSeparator, {paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0}]} >
-                    <TouchableHighlight onPress={() => this._onNamXayDungPressed()}>
-                        <View style={[myStyles.imgList, {paddingLeft: 0}]} >
+                <FullLine style={{marginLeft:17}} />
+
+                <View style={[myStyles.headerSeparator, { paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0 }]} >
+                    <TouchableHighlight onPress={() => this._onNamXayDungPressed()}
+                                        disabled={!this.isUploading.bind(this)}>
+                        <View style={[myStyles.imgList, { paddingLeft: 0 }]} >
                             <Text style={myStyles.label}>
                                 Năm xây dựng
                             </Text>
@@ -434,39 +454,59 @@ class PostAdsDetail extends Component {
     }
 
     _renderPhongNgu() {
-        return this._renderSegment(
-            "Số phòng ngủ",
-            DanhMuc.getAdsSoPhongNguValues(),
-            this.props.postAds.soPhongNguSelectedIdx,
-            this._onSegmentChanged.bind(this, 'soPhongNguSelectedIdx'),
-            this.props.postAds.soPhongNguText, "soPhongNguText",
-            (key, value) => this._onSegmentTextChanged(key, value));
+        let {loaiNhaDat} = this.props.postAds;
+
+        if (loaiNhaDat && [1,2,3,4].indexOf(loaiNhaDat)>=0){
+            return this._renderSegment(
+                "Số phòng ngủ",
+                DanhMuc.getAdsSoPhongNguValues(),
+                this.props.postAds.soPhongNguSelectedIdx,
+                this._onSegmentChanged.bind(this, 'soPhongNguSelectedIdx'),
+                this.props.postAds.soPhongNguText, "soPhongNguText",
+                (key, value) => this._onSegmentTextChanged(key, value));
+        } else
+            return;
+
+
     }
 
     _renderPhongTam() {
-        return this._renderSegment(
-            "Số phòng tắm",
-            DanhMuc.getAdsSoPhongTamValues(),
-            this.props.postAds.soNhaTamSelectedIdx,
-            this._onSegmentChanged.bind(this, 'soNhaTamSelectedIdx'),
-            this.props.postAds.soNhaTamText, "soNhaTamText",
-            (key, value) => this._onSegmentTextChanged(key, value));
+        let {loaiNhaDat} = this.props.postAds;
+
+        if (loaiNhaDat && [1,2,3,4].indexOf(loaiNhaDat)>=0) {
+            return this._renderSegment(
+                "Số phòng tắm",
+                DanhMuc.getAdsSoPhongTamValues(),
+                this.props.postAds.soNhaTamSelectedIdx,
+                this._onSegmentChanged.bind(this, 'soNhaTamSelectedIdx'),
+                this.props.postAds.soNhaTamText, "soNhaTamText",
+                (key, value) => this._onSegmentTextChanged(key, value));
+        } else
+            return;
     }
 
     _renderSoTang() {
-        return this._renderSegment(
-            "Số tầng",
-            DanhMuc.getAdsSoTangValues(),
-            this.props.postAds.soTangSelectedIdx,
-            this._onSegmentChanged.bind(this, 'soTangSelectedIdx'),
-            this.props.postAds.soTangText, "soTangText",
-            (key, value) => this._onSegmentTextChanged(key, value));
+        let {loaiTin, loaiNhaDat} = this.props.postAds;
+
+        if ((loaiNhaDat && [2,3,4].indexOf(loaiNhaDat)>=0 && loaiTin=='ban')
+             || (loaiNhaDat && [2,3,4,5,6].indexOf(loaiNhaDat)>=0 && loaiTin=='thue')
+            ) {
+            return this._renderSegment(
+                "Số tầng",
+                DanhMuc.getAdsSoTangValues(),
+                this.props.postAds.soTangSelectedIdx,
+                this._onSegmentChanged.bind(this, 'soTangSelectedIdx'),
+                this.props.postAds.soTangText, "soTangText",
+                (key, value) => this._onSegmentTextChanged(key, value));
+        } else
+            return;
     }
 
     _renderBanDo() {
         return (
-            <View style={[{paddingTop: 9, marginBottom: 7}, myStyles.headerSeparator]}>
+            <View style={[{ paddingTop: 9, marginBottom: 7 }, myStyles.headerSeparator]}>
                 <TouchableHighlight
+                    disabled = {!this.isUploading.bind(this)}
                     onPress={() => this._onBanDoPressed()}>
                     <View style={myStyles.imgList} >
                         <Text style={myStyles.label}>
@@ -484,10 +524,11 @@ class PostAdsDetail extends Component {
 
     _renderDiaChi() {
         return (
-            <View style={[myStyles.headerSeparator, {paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0}]} >
+            <View style={[myStyles.headerSeparator, { paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0 }]} >
                 <TouchableHighlight
+                    disabled = {!this.isUploading.bind(this)}
                     onPress={() => this._onDiaChiPressed()}>
-                    <View style={[myStyles.imgList, {paddingLeft: 0}]} >
+                    <View style={[myStyles.imgList, { paddingLeft: 0 }]} >
                         <Text style={myStyles.label}>
                             Địa chỉ
                         </Text>
@@ -503,10 +544,11 @@ class PostAdsDetail extends Component {
 
     _renderDuAn() {
         return (
-            <View style={[myStyles.headerSeparator, {paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0}]} >
+            <View style={[myStyles.headerSeparator, { paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0 }]} >
                 <TouchableHighlight
+                    disabled = {!this.isUploading.bind(this)}
                     onPress={() => this._onDuAnPressed()}>
-                    <View style={[myStyles.imgList, {paddingLeft: 0}]} >
+                    <View style={[myStyles.imgList, { paddingLeft: 0 }]} >
                         <Text style={myStyles.label}>
                             Thuộc dự án
                         </Text>
@@ -522,10 +564,11 @@ class PostAdsDetail extends Component {
 
     _renderHuongNha() {
         return (
-            <View style={[myStyles.headerSeparator, {paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0}]} >
+            <View style={[myStyles.headerSeparator, { paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0 }]} >
                 <TouchableHighlight
+                    disabled = {!this.isUploading.bind(this)}
                     onPress={() => this._onHuongNhaPressed()}>
-                    <View style={[myStyles.imgList, {paddingLeft: 0}]} >
+                    <View style={[myStyles.imgList, { paddingLeft: 0 }]} >
                         <Text style={myStyles.label}>
                             Hướng nhà
                         </Text>
@@ -540,49 +583,67 @@ class PostAdsDetail extends Component {
     }
 
     _renderDuongTruocNha() {
-        return (
-            <View style={[myStyles.imgList, myStyles.headerSeparator, {marginLeft: 17, paddingLeft: 0}]} >
-                <Text style={myStyles.label}>Đường trước nhà (m)</Text>
-                <TextInput
-                    ref='duongTruocNha'
-                    secureTextEntry={false}
-                    keyboardType={'numeric'}
-                    style={myStyles.input}
-                    value={this.props.postAds.duongTruocNha ? this.props.postAds.duongTruocNha.toString() : ''}
-                    onChangeText={(text) => this._onNumberValueChange("duongTruocNha", text)}
-                    onFocus={this.scrolldown.bind(this,'duongTruocNha')}
-                />
-            </View>
-        );
+        let {loaiNhaDat} = this.props.postAds;
+
+        if (loaiNhaDat && [2,3,4,5,6,7,8,99].indexOf(loaiNhaDat)>=0) {
+            return (
+                <View>
+                    <FullLine style={{marginLeft:17}} />
+                    <View style={[myStyles.imgList, myStyles.headerSeparator, { marginLeft: 17, paddingLeft: 0 }]}>
+                        <Text style={myStyles.label}>Đường trước nhà (m)</Text>
+                        <TextInput
+                        ref='duongTruocNha'
+                        secureTextEntry={false}
+                        keyboardType={'numeric'}
+                        style={myStyles.input}
+                        value={this.props.postAds.duongTruocNha ? this.props.postAds.duongTruocNha.toString() : ''}
+                        onChangeText={(text) => this._onNumberValueChange("duongTruocNha", text)}
+                        />
+                    </View>
+                </View>
+            );
+        } else
+            return;
     }
 
     _renderMoreButton() {
-        if (this.state.showMoreContent){
+        if (this.state.showMoreContent) {
             return (
                 <View>
                     {this._renderCategoryTitle('THÔNG TIN KHÁC')}
+                    <FullLine />
                     {this._renderMatTien()}
-                    {this._renderDuongTruocNha()}
-                    {this._renderNamXayDung()}
 
+                    {this._renderDuongTruocNha()}
+
+                    {this._renderNamXayDung()}
+                    <FullLine />
                     {this._renderCategoryTitle('')}
+                    <FullLine />
                     {this._renderNhaMoiXay()}
+
                     {this._renderNhaLoGoc()}
+
                     {this._renderOtoDoCua()}
+
                     {this._renderNhaKinhDoanhDuoc()}
+
                     {this._renderNoiThatDayDu()}
+
                     {this._renderChinhChuDangTin()}
+                    <FullLine />
                 </View>
             )
         } else {
             return (
                 <View>
                     {this._renderCategoryTitle('')}
-                    <View style={[myStyles.headerSeparator, {paddingTop: 9, marginBottom: 7, paddingLeft: 0}]} >
+                    <View style={[myStyles.headerSeparator, { paddingTop: 9, marginBottom: 7, paddingLeft: 0 }]} >
                         <TouchableOpacity
+                            disabled = {!this.isUploading.bind(this)}
                             onPress={() => this._onMoreButtonPressed()}>
-                            <View style={[myStyles.imgList,{justifyContent: 'center'}]} >
-                                <Text style={[myStyles.label, {color: gui.mainColor}]}>
+                            <View style={[myStyles.imgList, { justifyContent: 'center' }]} >
+                                <Text style={[myStyles.label, { color: gui.mainColor }]}>
                                     Mở rộng
                                 </Text>
                             </View>
@@ -592,14 +653,14 @@ class PostAdsDetail extends Component {
             );
         }
     }
-
     _renderResetButton() {
         return (
-            <View style={[myStyles.headerSeparator, {paddingTop: 9, marginBottom: 7, paddingLeft: 0}]} >
+            <View style={[myStyles.headerSeparator, { paddingTop: 9, marginBottom: 7, paddingLeft: 0 }]} >
                 <TouchableOpacity
+                    disabled = {!this.isUploading.bind(this)}
                     onPress={() => this._onResetButtonPressed()}>
-                    <View style={[myStyles.imgList,{justifyContent: 'center'}]} >
-                        <Text style={[myStyles.label, {color: 'red'}]}>
+                    <View style={[myStyles.imgList, { justifyContent: 'center' }]} >
+                        <Text style={[myStyles.label, { color: 'red' }]}>
                             Thiết lập lại
                         </Text>
                     </View>
@@ -609,119 +670,175 @@ class PostAdsDetail extends Component {
     }
 
     _renderNhaMoiXay() {
-        return (
-            <View style={[myStyles.headerSeparator, {paddingTop: 9, marginBottom: 7, paddingLeft: 0}]} >
-                <TouchableHighlight
-                    onPress={() => this._onNhaXayMoiPressed()}>
-                    <View style={[myStyles.imgList]} >
-                        <Text style={myStyles.label}>
-                            Nhà mới xây
-                        </Text>
-                        <View style={myStyles.arrowIcon}>
-                            <TruliaIcon name={"check"}
-                                        onPress = {() => this._onNhaXayMoiPressed()}
-                                        color={this.props.postAds.nhaMoiXay ? gui.mainColor : gui.arrowColor} size={18} />
+        let {loaiTin, loaiNhaDat} = this.props.postAds;
+
+        if  ( (loaiTin=='ban' && loaiNhaDat && [1,2,3,4,7,8].indexOf(loaiNhaDat)>=0)
+              || loaiTin=='thue'
+            ){
+            return (
+                <View style={[myStyles.headerSeparator, { paddingTop: 9, marginBottom: 7, paddingLeft: 0 }]}>
+                    <TouchableHighlight
+                        disabled={!this.isUploading.bind(this)}
+                        onPress={() => this._onNhaXayMoiPressed()}>
+                        <View style={[myStyles.imgList]}>
+                            <Text style={myStyles.label}>
+                                Nhà mới xây
+                            </Text>
+                            <View style={myStyles.arrowIcon}>
+                                <TruliaIcon name={"check"}
+                                            onPress={() => this._onNhaXayMoiPressed()}
+                                            color={this.props.postAds.nhaMoiXay ? gui.mainColor : gui.arrowColor}
+                                            size={18}/>
+                            </View>
                         </View>
-                    </View>
-                </TouchableHighlight>
-            </View>
-        );
+                    </TouchableHighlight>
+                </View>
+            );
+        } else
+            return;
     }
 
     _renderNhaLoGoc() {
-        return (
-            <View style={[myStyles.headerSeparator, {paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0}]} >
-                <TouchableHighlight
-                    onPress={() => this._onNhaLoGocPressed()}>
-                    <View style={[myStyles.imgList, {paddingLeft: 0}]} >
-                        <Text style={myStyles.label}>
-                            Nhà lô góc
-                        </Text>
-                        <View style={myStyles.arrowIcon}>
-                            <TruliaIcon name={"check"}
-                                        onPress = {() => this._onNhaLoGocPressed()}
-                                        color={this.props.postAds.nhaLoGoc ? gui.mainColor : gui.arrowColor} size={18} />
+        let {loaiTin, loaiNhaDat} = this.props.postAds;
+
+        if  ((loaiTin=='ban' && loaiNhaDat && [1,2,3,4].indexOf(loaiNhaDat)>=0)
+              || (loaiTin=='thue' && loaiNhaDat && [1,2,3,4,5,6].indexOf(loaiNhaDat)>=0)
+            ){
+            return (
+                <View>
+                    <FullLine style={{marginLeft:17}} />
+                    <View
+                        style={[myStyles.headerSeparator, { paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0 }]}>
+                        <TouchableHighlight
+                        disabled={!this.isUploading.bind(this)}
+                        onPress={() => this._onNhaLoGocPressed()}>
+                        <View style={[myStyles.imgList, { paddingLeft: 0 }]}>
+                            <Text style={myStyles.label}>
+                                Nhà lô góc
+                            </Text>
+                            <View style={myStyles.arrowIcon}>
+                                <TruliaIcon name={"check"}
+                                            onPress={() => this._onNhaLoGocPressed()}
+                                            color={this.props.postAds.nhaLoGoc ? gui.mainColor : gui.arrowColor}
+                                            size={18}/>
+                            </View>
                         </View>
+                    </TouchableHighlight>
                     </View>
-                </TouchableHighlight>
-            </View>
-        );
+                </View>
+            );
+        } else
+            return;
     }
 
     _renderOtoDoCua() {
-        return (
-            <View style={[myStyles.headerSeparator, {paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0}]} >
-                <TouchableHighlight
-                    onPress={() => this._onOtoDoCuaPressed()}>
-                    <View style={[myStyles.imgList, {paddingLeft: 0}]} >
-                        <Text style={myStyles.label}>
-                            Ôtô đỗ cửa
-                        </Text>
-                        <View style={myStyles.arrowIcon}>
-                            <TruliaIcon name={"check"}
-                                        onPress = {() => this._onOtoDoCuaPressed()}
-                                        color={this.props.postAds.otoDoCua ? gui.mainColor : gui.arrowColor} size={18} />
+        let {loaiTin, loaiNhaDat} = this.props.postAds;
+
+        if  ((loaiTin=='ban' && loaiNhaDat && [2,3,4,5,6,7,8,99].indexOf(loaiNhaDat)>=0)
+             || (loaiTin=='thue' && loaiNhaDat && [2,3,4,5,6,7,99].indexOf(loaiNhaDat)>=0)
+            ) {
+            return (
+                <View>
+                    <FullLine style={{marginLeft:17}} />
+                    <View
+                        style={[myStyles.headerSeparator, { paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0 }]}>
+                        <TouchableHighlight
+                        disabled={!this.isUploading.bind(this)}
+                        onPress={() => this._onOtoDoCuaPressed()}>
+                        <View style={[myStyles.imgList, { paddingLeft: 0 }]}>
+                            <Text style={myStyles.label}>
+                                Ôtô đỗ cửa
+                            </Text>
+                            <View style={myStyles.arrowIcon}>
+                                <TruliaIcon name={"check"}
+                                            onPress={() => this._onOtoDoCuaPressed()}
+                                            color={this.props.postAds.otoDoCua ? gui.mainColor : gui.arrowColor}
+                                            size={18}/>
+                            </View>
                         </View>
+                        </TouchableHighlight>
                     </View>
-                </TouchableHighlight>
-            </View>
-        );
+                </View>
+            );
+        } else
+            return;
     }
 
     _renderNhaKinhDoanhDuoc() {
         return (
-            <View style={[myStyles.headerSeparator, {paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0}]} >
-                <TouchableHighlight
+            <View>
+                <FullLine style={{marginLeft:17}} />
+                <View style={[myStyles.headerSeparator, { paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0 }]} >
+                    <TouchableHighlight
+                    disabled = {!this.isUploading.bind(this)}
                     onPress={() => this._onNhaKinhDoanhDuocPressed()}>
-                    <View style={[myStyles.imgList, {paddingLeft: 0}]} >
+                    <View style={[myStyles.imgList, { paddingLeft: 0 }]} >
                         <Text style={myStyles.label}>
                             Nhà kinh doanh được
                         </Text>
                         <View style={myStyles.arrowIcon}>
                             <TruliaIcon name={"check"}
-                                        onPress = {() => this._onNhaKinhDoanhDuocPressed()}
+                                        onPress={() => this._onNhaKinhDoanhDuocPressed()}
                                         color={this.props.postAds.nhaKinhDoanhDuoc ? gui.mainColor : gui.arrowColor} size={18} />
                         </View>
                     </View>
-                </TouchableHighlight>
+                    </TouchableHighlight>
+                </View>
             </View>
         );
     }
     _renderNoiThatDayDu() {
-        return (
-            <View style={[myStyles.headerSeparator, {paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0}]} >
-                <TouchableHighlight
-                    onPress={() => this._onNoiThatDayDuPressed()}>
-                    <View style={[myStyles.imgList, {paddingLeft: 0}]} >
-                        <Text style={myStyles.label}>
-                            Nội thất đầy đủ
-                        </Text>
-                        <View style={myStyles.arrowIcon}>
-                            <TruliaIcon name={"check"}
-                                        onPress = {() => this._onNoiThatDayDuPressed()}
-                                        color={this.props.postAds.noiThatDayDu ? gui.mainColor : gui.arrowColor} size={18} />
+        let {loaiTin, loaiNhaDat} = this.props.postAds;
+
+        if  ((loaiTin=='ban' && loaiNhaDat && [1,2,3,4].indexOf(loaiNhaDat)>=0)
+            || (loaiTin=='thue' && loaiNhaDat && [1,2,3,4].indexOf(loaiNhaDat)>=0)
+        ) {
+            return (
+                <View>
+                    <FullLine style={{marginLeft:17}} />
+                    <View
+                        style={[myStyles.headerSeparator, { paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0 }]}>
+                        <TouchableHighlight
+                        disabled={!this.isUploading.bind(this)}
+                        onPress={() => this._onNoiThatDayDuPressed()}>
+                        <View style={[myStyles.imgList, { paddingLeft: 0 }]}>
+                            <Text style={myStyles.label}>
+                                Nội thất đầy đủ
+                            </Text>
+                            <View style={myStyles.arrowIcon}>
+                                <TruliaIcon name={"check"}
+                                            onPress={() => this._onNoiThatDayDuPressed()}
+                                            color={this.props.postAds.noiThatDayDu ? gui.mainColor : gui.arrowColor}
+                                            size={18}/>
+                            </View>
                         </View>
+                        </TouchableHighlight>
                     </View>
-                </TouchableHighlight>
-            </View>
-        );
+                </View>
+            );
+        } else
+            return;
     }
     _renderChinhChuDangTin() {
         return (
-            <View style={[myStyles.headerSeparator, {paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0}]} >
-                <TouchableHighlight
+            <View>
+                <FullLine style={{marginLeft:17}} />
+                <View style={[myStyles.headerSeparator, { paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0 }]} >
+                    <TouchableHighlight
+                    disabled = {!this.isUploading.bind(this)}
                     onPress={() => this._onChinhChuDangTinPressed()}>
-                    <View style={[myStyles.imgList, {paddingLeft: 0}]} >
+                    <View style={[myStyles.imgList, { paddingLeft: 0 }]} >
                         <Text style={myStyles.label}>
                             Chính chủ đăng tin
                         </Text>
                         <View style={myStyles.arrowIcon}>
                             <TruliaIcon name={"check"}
-                                        onPress = {() => this._onChinhChuDangTinPressed()}
+                                        onPress={() => this._onChinhChuDangTinPressed()}
                                         color={this.props.postAds.chinhChuDangTin ? gui.mainColor : gui.arrowColor} size={18} />
                         </View>
                     </View>
-                </TouchableHighlight>
+                    </TouchableHighlight>
+                </View>
             </View>
         );
     }
@@ -736,7 +853,7 @@ class PostAdsDetail extends Component {
                     style={myStyles.input}
                     value={this.props.postAds.gia ? this.props.postAds.gia.toString() : ''}
                     onChangeText={(text) => this.onValueChange("gia", text)}
-                    onFocus={() => this.setState({editGia: true})}
+                    onFocus={() => this.setState({ editGia: true })}
                 />
             </View>
         );
@@ -744,10 +861,11 @@ class PostAdsDetail extends Component {
 
     _renderLienHe() {
         return (
-            <View style={[myStyles.headerSeparator, {paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0}]} >
+            <View style={[myStyles.headerSeparator, { paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0 }]} >
                 <TouchableHighlight
+                    disabled = {!this.isUploading.bind(this)}
                     onPress={() => this._onLienHePressed()}>
-                    <View style={[myStyles.imgList, {paddingLeft: 0}]} >
+                    <View style={[myStyles.imgList, { paddingLeft: 0 }]} >
                         <Text style={myStyles.label}>
                             Liên hệ
                         </Text>
@@ -763,8 +881,9 @@ class PostAdsDetail extends Component {
 
     _renderChiTiet() {
         return (
-            <View style={[{paddingTop: 9, marginBottom: 7}, myStyles.headerSeparator]} >
+            <View style={[{ paddingTop: 9, marginBottom: 7 }, myStyles.headerSeparator]} >
                 <TouchableHighlight
+                    disabled = {!this.isUploading.bind(this)}
                     onPress={() => this._onChiTietPressed()}>
                     <View style={myStyles.imgList} >
                         <Text style={myStyles.label}>
@@ -778,6 +897,35 @@ class PostAdsDetail extends Component {
                 </TouchableHighlight>
             </View>
         );
+    }
+    _renderButtonNav() {
+        return (
+            <View style={myStyles.searchButton}>
+                <View style={myStyles.searchListButton}>
+                    <Button onPress={this.onCancel.bind(this)}
+                            style={myStyles.buttonText}>Thoát</Button>
+                    {this._renderPostAdsButton()}
+                </View>
+            </View>
+        );
+    }
+
+    _renderPostAdsButton(){
+        if (this.props.postAds.uploading) {
+            return (
+                <View style={{marginLeft: 17, marginRight: 17, marginTop: 10, marginBottom: 10,}}>
+                    <GiftedSpinner color="white" />
+                </View>
+            )
+        } else {
+            return (
+                <View>
+                    <Button onPress={this.onPostAds.bind(this)}
+                            disabled={!this.isUploading.bind(this)}
+                            style={myStyles.buttonText}>{this.state.adsID ? 'Cập nhật' : 'Đăng tin'}</Button>
+                </View>
+            )
+        }
     }
 
     _renderNamXayDungPicker() {
@@ -793,12 +941,11 @@ class PostAdsDetail extends Component {
             let onPress = this._onPressNamXayDungHandle.bind(this);
             let inputLabel = '';
             return <PickerExt2 pickerRange={pickerRange} val2Display={val2Display} inputPlaceholder={inputPlaceholder}
-                               inputValue={String(inputNamXayDung||'')} onTextChange={onTextChange} onTextFocus={onTextFocus}
+                               inputValue={String(inputNamXayDung || '')} onTextChange={onTextChange} onTextFocus={onTextFocus}
                                pickerSelectedValue={pickerSelectedValue} onPickerValueChange={onPickerValueChange}
                                onPress={onPress} inputLabel={inputLabel} />
         }
     }
-
     _renderLoadingView() {
         if (this.props.postAds.uploading) {
             return (<View style={myStyles.resultContainer}>
@@ -809,11 +956,11 @@ class PostAdsDetail extends Component {
         }
     }
 
-    _initDanhMucNam(numberOfYear){
+    _initDanhMucNam(numberOfYear) {
         let latestYear = parseInt(moment().format("YYYY"), 10);
         let yearRange = []
 
-        for (var i=latestYear; i > latestYear-numberOfYear; i--){
+        for (var i = latestYear; i > latestYear - numberOfYear; i--) {
             yearRange.push(i.toString());
         }
         yearRange.unshift('Bất kỳ');
@@ -823,28 +970,28 @@ class PostAdsDetail extends Component {
     _onNamXayDungInputChange(value) {
         value = (isNaN(parseInt(value))) ? undefined : value;
         this.onValueChange('namXayDung', value);
-        this.setState({inputNamXayDung: value});
+        this.setState({ inputNamXayDung: value });
     }
 
     _onScrollNamXayDung() {
-        var scrollTo = Dimensions.get('window').height/2-238;
-        this._scrollView.scrollTo({y: scrollTo});
+        var scrollTo = Dimensions.get('window').height / 2 - 238;
+        this._scrollView.scrollTo({ y: scrollTo });
     }
 
     _onNamXayDungChanged(pickedValue) {
         let value = pickedValue;
         value = (isNaN(parseInt(value))) ? undefined : value;
         this.onValueChange('namXayDung', value);
-        this.setState({initNamXayDung: value, inputNamXayDung: value});
+        this.setState({ initNamXayDung: value, inputNamXayDung: value });
     }
 
     _namXayDungVal2Display(namXayDung) {
         return namXayDung;
     }
 
-    _onNamXayDungPressed(){
+    _onNamXayDungPressed() {
         var {showNamXayDung} = this.state;
-        this.setState({showNamXayDung: !showNamXayDung});
+        this.setState({ showNamXayDung: !showNamXayDung });
         /*if (!showNamXayDung) {
          this._onScrollNamXayDung();
          }*/
@@ -852,34 +999,34 @@ class PostAdsDetail extends Component {
 
     _onPressNamXayDungHandle() {
         var {showNamXayDung} = this.state;
-        this.setState({showNamXayDung: !showNamXayDung});
+        this.setState({ showNamXayDung: !showNamXayDung });
         if (!showNamXayDung) {
             this._onScrollNamXayDung();
         }
     }
 
-    _getNamXayDungValue(){
+    _getNamXayDungValue() {
         var {namXayDung} = this.props.postAds;
-        return namXayDung||'';
+        return namXayDung || '';
     }
 
-    _onResetButtonPressed(){
+    _onResetButtonPressed() {
         console.log("Press _onResetButton");
-        this.setState({showMoreContent: false});
+        this.setState({ showMoreContent: false });
         this.onRefreshPostAds();
     }
 
-    _onMoreButtonPressed(){
+    _onMoreButtonPressed() {
         console.log("Press _onMoreButton");
-        this.setState({showMoreContent: true});
+        this.setState({ showMoreContent: true });
     }
 
     _onLoaiNhaPressed() {
-        Actions.PropertyTypes({func: 'postAds'});
+        Actions.PropertyTypes({ func: 'postAds' });
     }
 
     _onHuongNhaPressed() {
-        Actions.MHuongNha({func: 'postAds'});
+        Actions.MHuongNha({ func: 'postAds' });
     }
 
     _onDuAnPressed() {
@@ -906,42 +1053,42 @@ class PostAdsDetail extends Component {
         return selectedDuAn ? selectedDuAn.placeName : '';
     }
 
-    _onNhaXayMoiPressed(){
+    _onNhaXayMoiPressed() {
         let nhaMoiXay = this.props.postAds.nhaMoiXay;
         this.props.actions.onPostAdsFieldChange('nhaMoiXay', !nhaMoiXay);
     }
 
-    _onNhaLoGocPressed(){
+    _onNhaLoGocPressed() {
         let nhaLoGoc = this.props.postAds.nhaLoGoc;
         this.props.actions.onPostAdsFieldChange('nhaLoGoc', !nhaLoGoc);
     }
 
-    _onOtoDoCuaPressed(){
+    _onOtoDoCuaPressed() {
         let otoDoCua = this.props.postAds.otoDoCua;
         this.props.actions.onPostAdsFieldChange('otoDoCua', !otoDoCua);
     }
 
-    _onNhaKinhDoanhDuocPressed(){
+    _onNhaKinhDoanhDuocPressed() {
         let nhaKinhDoanhDuoc = this.props.postAds.nhaKinhDoanhDuoc;
         this.props.actions.onPostAdsFieldChange('nhaKinhDoanhDuoc', !nhaKinhDoanhDuoc);
     }
 
-    _onNoiThatDayDuPressed(){
+    _onNoiThatDayDuPressed() {
         let noiThatDayDu = this.props.postAds.noiThatDayDu;
         this.props.actions.onPostAdsFieldChange('noiThatDayDu', !noiThatDayDu);
     }
 
-    _onChinhChuDangTinPressed(){
+    _onChinhChuDangTinPressed() {
         let chinhChuDangTin = this.props.postAds.chinhChuDangTin;
         this.props.actions.onPostAdsFieldChange('chinhChuDangTin', !chinhChuDangTin);
     }
 
     _onBanDoPressed() {
         let {geo} = this.props.postAds.place;
-        Actions.MMapView({showSuggestionPosition: true, onPress: this._onDiaChinhSelected.bind(this), location: geo});
+        Actions.MMapView({ showSuggestionPosition: true, onPress: this._onDiaChinhSelected.bind(this), location: geo });
     }
 
-    _onDiaChinhSelected(position){
+    _onDiaChinhSelected(position) {
         console.log("================ selected position");
         console.log(position.diaChinh);
 
@@ -958,7 +1105,7 @@ class PostAdsDetail extends Component {
 
         let diaChinhFullName = placeUtil.getDiaChinhFullName(position);
 
-        this.setState({diaChinhFullName: diaChinhFullName});
+        this.setState({ diaChinhFullName: diaChinhFullName });
 
     }
 
@@ -968,19 +1115,19 @@ class PostAdsDetail extends Component {
         } else {
             var diaChinhFullName = this.state.diaChinhFullName;
             if (this.state.diaChinhFullName.length > 30) {
-                diaChinhFullName = diaChinhFullName.substring(0,30) + '...';
+                diaChinhFullName = diaChinhFullName.substring(0, 30) + '...';
             }
             return diaChinhFullName;
         }
     }
 
-    _onNumberValueChange(stateName, text){
-        let value = text.replace(',','.');
+    _onNumberValueChange(stateName, text) {
+        let value = text.replace(',', '.');
         this.onValueChange(stateName, value);
     }
 
     _onDiaChiPressed() {
-        Actions.PostAdsAddress({diaChinhFullName: this.state.diaChinhFullName});
+        Actions.PostAdsAddress({ diaChinhFullName: this.state.diaChinhFullName });
     }
 
     _onLienHePressed() {
@@ -991,25 +1138,25 @@ class PostAdsDetail extends Component {
         var {place} = this.props.postAds;
         var diaChiChiTiet = place.diaChiChiTiet;
 
-        if (!diaChiChiTiet || diaChiChiTiet.length <=0)
+        if (!diaChiChiTiet || diaChiChiTiet.length <= 0)
             return '';
 
         if (diaChiChiTiet.length > 30) {
-            diaChiChiTiet = diaChiChiTiet.substring(0,30) + '...';
+            diaChiChiTiet = diaChiChiTiet.substring(0, 30) + '...';
         }
         return diaChiChiTiet;
     }
 
-    _getLienHeValue(){
+    _getLienHeValue() {
         var {lienHe} = this.props.postAds;
 
         if (!lienHe)
             return '';
 
         var lienHeTxt = '';
-        if (lienHe.tenLienLac && lienHe.tenLienLac.length >0)
+        if (lienHe.tenLienLac && lienHe.tenLienLac.length > 0)
             lienHeTxt = lienHeTxt + lienHe.tenLienLac;
-        if (lienHe.phone && lienHe.phone.length >0)
+        if (lienHe.phone && lienHe.phone.length > 0)
             lienHeTxt = lienHeTxt + "-" + lienHe.phone;
         return lienHeTxt;
     }
@@ -1017,8 +1164,9 @@ class PostAdsDetail extends Component {
 
     _renderGia() {
         return (
-            <View style={[{paddingTop: 9, marginBottom: 5}, myStyles.headerSeparator]}>
+            <View style={[{ paddingTop: 9, marginBottom: 5 }, myStyles.headerSeparator]}>
                 <TouchableHighlight
+                    disabled = {!this.isUploading.bind(this)}
                     onPress={() => this._onGiaPressed()}>
                     <View style={myStyles.imgList}>
                         <Text style={myStyles.label}>
@@ -1036,7 +1184,7 @@ class PostAdsDetail extends Component {
 
 
     _onGiaPressed() {
-        this.setState({editGia: true});
+        this.setState({ editGia: true });
         Actions.PostAdsPrice();
     }
 
@@ -1050,9 +1198,9 @@ class PostAdsDetail extends Component {
 
         this.onValueChange(key, val);
         if (isNaN(val) || val == '') {
-            val = (maxValue+1).toString();
+            val = (maxValue + 1).toString();
         }
-        var value = Number(val) > maxValue ? -1 : Number(val)-1;
+        var value = Number(val) > maxValue ? -1 : Number(val) - 1;
         if (key == 'soTangText') {
             this.onValueChange('soTangSelectedIdx', value);
         }
@@ -1088,7 +1236,7 @@ class PostAdsDetail extends Component {
                               onChange={onChange}
                               textValue={textValue ? textValue.toString() : ''}
                               textField={textField}
-                              onTextChange={onTextChange} placeholder={"Khác"}/>
+                              onTextChange={onTextChange} placeholder={"Khác"} />
         );
     }
 
@@ -1098,14 +1246,14 @@ class PostAdsDetail extends Component {
 
     _getChiTietValue() {
         let {chiTiet} = this.props.postAds;
-        if (!chiTiet){
+        if (!chiTiet) {
             return '';
         }
 
         let index = chiTiet.indexOf('\n');
         let val = index >= 0 ? chiTiet.substring(0, index) : chiTiet;
         if (val.length > 30) {
-            return val.substring(0,30) + '...';
+            return val.substring(0, 30) + '...';
         } else if (val.length != chiTiet.length) {
             return val + '...';
         }
@@ -1118,18 +1266,16 @@ class PostAdsDetail extends Component {
     }
 
     onPostAds() {
-        this.props.actions.onPostAdsFieldChange("uploading", true);
-
         var {photos} = this.props.postAds;
         errorMessage = '';
         uploadFiles = [];
-        for(var i=0; i<photos.length; i++) {
+        for (var i = 0; i < photos.length; i++) {
             var filepath = photos[i].uri;
             if (filepath == '') {
                 continue;
             }
 
-            uploadFiles.push({filepath: filepath});
+            uploadFiles.push({ filepath: filepath });
         }
         if (!this.isValidInputData()) {
             log.info(errorMessage);
@@ -1137,9 +1283,12 @@ class PostAdsDetail extends Component {
             this.props.actions.onPostAdsFieldChange('error', errorMessage);
             return;
         }
+
+        this.props.actions.onPostAdsFieldChange("uploading", true);
+
         count = 0;
         const userID = this.props.global.currentUser.userID;
-        for(var i=0; i<uploadFiles.length; i++) {
+        for (var i = 0; i < uploadFiles.length; i++) {
             if (errorMessage != '') {
                 Alert.alert('Thông báo', errorMessage);
                 this.props.actions.onPostAdsFieldChange('error', errorMessage);
@@ -1210,6 +1359,7 @@ class PostAdsDetail extends Component {
         if (err || data == '') {
             errorMessage = 'Upload ảnh không thành công!';
             this.props.actions.onPostAdsFieldChange('error', errorMessage);
+            this.props.actions.onPostAdsFieldChange("uploading", false);
             return;
         }
         var {success, file} = JSON.parse(data);
@@ -1223,6 +1373,7 @@ class PostAdsDetail extends Component {
         } else {
             errorMessage = 'Upload ảnh không thành công!';
             this.props.actions.onPostAdsFieldChange('error', errorMessage);
+            this.props.actions.onPostAdsFieldChange("uploading", false);
         }
     }
 
@@ -1238,7 +1389,7 @@ class PostAdsDetail extends Component {
         uploadUrls.map(function (uploadUrl) {
             imageUrls.push(rootUrl + uploadUrl);
         });
-        var image = {cover: '', images: []};
+        var image = { cover: '', images: [] };
         if (imageUrls.length > 0) {
             image.cover = imageUrls[0];
             imageUrls.shift();
@@ -1258,9 +1409,9 @@ class PostAdsDetail extends Component {
 
         // remove lienHe if no information
         if (lienHe
-            && (!lienHe.tenLienLac || lienHe.tenLienLac.length <=0)
-            && (!lienHe.phone || lienHe.phone.length <=0)
-            && (!lienHe.email || lienHe.phone.length <=0))
+            && (!lienHe.tenLienLac || lienHe.tenLienLac.length <= 0)
+            && (!lienHe.phone || lienHe.phone.length <= 0)
+            && (!lienHe.email || lienHe.phone.length <= 0))
             lienHe = undefined;
 
         //remove placeId
@@ -1269,7 +1420,7 @@ class PostAdsDetail extends Component {
         place.duAn = undefined;
         place.duAnFullName = undefined;
 
-        if(selectedDiaChinh){
+        if (selectedDiaChinh) {
             place.diaChinh.codeTinh = selectedDiaChinh.tinh || undefined;
             place.diaChinh.codeHuyen = selectedDiaChinh.huyen || undefined;
             place.diaChinh.codeXa = selectedDiaChinh.xa || undefined;
@@ -1278,7 +1429,7 @@ class PostAdsDetail extends Component {
             place.diaChinh.xaKhongDau = undefined;
         }
 
-        if(selectedDuAn){
+        if (selectedDuAn) {
             place.diaChinh.codeDuAn = selectedDiaChinh.duAn || undefined;
             place.diaChinh.duAn = selectedDiaChinh.placeName || undefined;
         }
@@ -1289,59 +1440,58 @@ class PostAdsDetail extends Component {
         var giaBan = Number(DanhMuc.calculateGia(gia, donViTien, dienTich));
         var giaM2 = 0;
         if (giaBan && dienTich) {
-            giaM2 = Number((giaBan/dienTich).toFixed(3));
+            giaM2 = Number((giaBan / dienTich).toFixed(3));
         }
 
         var ngayDangTin = moment().format('YYYYMMDD');
 
         var adsDto = {
-            "id"                : id || undefined,
-            "image"             : image,
-            "loaiTin"           : loaiTinVal,
-            "loaiNhaDat"        : loaiNhaDat,
-            "dienTich"          : dienTich||-1,
-            "matTien"           : matTien||undefined,
-            "namXayDung"        : namXayDung||undefined,
-            "soPhongNgu"        : phongNgu,
-            "soPhongTam"        : phongTam,
-            "soTang"            : soTang,
-            "place"             : place,
-            "huongNha"          : huongNha||-1,
-            "duongTruocNha"     : duongTruocNha,
-            "nhaMoiXay"         : nhaMoiXay,
-            "nhaLoGoc"          : nhaLoGoc,
-            "otoDoCua"          : otoDoCua,
-            "nhaKinhDoanhDuoc"  : nhaKinhDoanhDuoc,
-            "noiThatDayDu"      : noiThatDayDu,
-            "chinhChu"          : chinhChuDangTin,
-            "chiTiet"           : chiTiet || undefined,
-            "gia"               : giaBan||-1,
-            "giaM2"             : giaM2||-1,
-            "ngayDangTin"       : ngayDangTin||undefined,
-            "lienHe"            : lienHe,
-            "dangBoi"           : dangBoi
+            "id": id || undefined,
+            "image": image,
+            "loaiTin": loaiTinVal,
+            "loaiNhaDat": loaiNhaDat,
+            "dienTich": dienTich || -1,
+            "matTien": matTien || undefined,
+            "namXayDung": namXayDung || undefined,
+            "soPhongNgu": phongNgu,
+            "soPhongTam": phongTam,
+            "soTang": soTang,
+            "place": place,
+            "huongNha": huongNha || -1,
+            "duongTruocNha": duongTruocNha,
+            "nhaMoiXay": nhaMoiXay,
+            "nhaLoGoc": nhaLoGoc,
+            "otoDoCua": otoDoCua,
+            "nhaKinhDoanhDuoc": nhaKinhDoanhDuoc,
+            "noiThatDayDu": noiThatDayDu,
+            "chinhChu": chinhChuDangTin,
+            "chiTiet": chiTiet || undefined,
+            "gia": giaBan || -1,
+            "giaM2": giaM2 || -1,
+            "ngayDangTin": ngayDangTin || undefined,
+            "lienHe": lienHe,
+            "dangBoi": dangBoi
         };
 
         this.props.actions.postAds(adsDto, token)
-            .then(res=>{
+            .then(res => {
                 this.setState({
                     loading: false
                 });
 
-                if (res.status==1) {
+                if (res.status == 1) {
                     Alert.alert(res.err.message);
                 } else {
                     let adsID = this.state.adsID;
                     this.onRefreshPostAds();
-                    if ( adsID && adsID.length >0 ){
+                    if (adsID && adsID.length > 0) {
                         Alert.alert("Thay đổi thành công");
                         Actions.pop();
                     } else {
                         Alert.alert("Đăng tin thành công");
-                        this.props.actions.onAdsMgmtFieldChange('activeTab', loaiTinVal==0 ? 1 : 2);
-                        Actions.pop();
-                        Actions.pop();
-                        Actions.AdsMgmt({type:"popTo"});
+                        this.props.actions.onAdsMgmtFieldChange('activeTab', loaiTinVal == 0 ? 1 : 2);
+                        Actions.popTo('root');
+                        Actions.AdsMgmt();
                     }
                 }
             });
@@ -1353,8 +1503,12 @@ class PostAdsDetail extends Component {
         Actions.Home();
     }
 
+    isUploading(){
+        return this.props.postAds.uploading;
+    }
+
     onRefreshPostAds() {
-        this.onValueChange("photos", [{uri: ''}]);
+        this.onValueChange("photos", [{ uri: '' }]);
         this.onValueChange("loaiTin", 'ban');
         this.onValueChange("loaiNhaDat", '');
         this.onValueChange("soPhongNguSelectedIdx", -1);
@@ -1396,7 +1550,7 @@ class PostAdsDetail extends Component {
                 codeXa: '',
                 codeDuAn: ''
             },
-            geo: {lat: '', lon: ''}
+            geo: { lat: '', lon: '' }
         });
         this.onValueChange("lienHe", {
             tenLienLac: null,
@@ -1430,25 +1584,26 @@ class PostAdsDetail extends Component {
     onCancel() {
 
         Alert.alert('', 'Bạn muốn ngừng đăng tin ?',
-            [{text: 'Đồng ý', onPress: () => {
-                                                if (this.state.adsID && this.state.adsID.length>0){
-                                                    // back to AdsMgmt if update Ads
-                                                    console.log("========= back to AdsMgmt");
-                                                    this.onRefreshPostAds();
-                                                    Actions.pop();
-                                                } else {
-                                                    console.log("========= back to Home");
-                                                    this.onRefreshPostAds();
-                                                    Actions.Home({type: 'reset'});
-                                                }
-                                             }
-             },
-             {text: 'Thoát' , onPress: () => console.log('Cancel Pressed!')}
+            [{
+                text: 'Đồng ý', onPress: () => {
+                    if (this.state.adsID && this.state.adsID.length > 0) {
+                        // back to AdsMgmt if update Ads
+                        console.log("========= back to AdsMgmt");
+                        this.onRefreshPostAds();
+                        Actions.popTo('root');
+                    } else {
+                        console.log("========= back to Home");
+                        this.onRefreshPostAds();
+                        Actions.Home({ type: 'reset' });
+                    }
+                }
+            },
+                { text: 'Thoát', onPress: () => console.log('Cancel Pressed!') }
             ]);
     }
 
     onTakePhoto(imageIndex) {
-        Actions.PostAds({photos: this.props.postAds.photos, imageIndex: imageIndex});
+        Actions.PostAds({ photos: this.props.postAds.photos, imageIndex: imageIndex });
     }
 }
 
@@ -1465,17 +1620,17 @@ class ImageItem extends React.Component {
         if (photo && photo.uri) {
             return (
                 <TouchableHighlight onPress={this.props.onTakePhoto(`${this.props.imageIndex}`)} >
-                    <Image style={myStyles.imgItem} source={photo}/>
+                    <Image style={myStyles.imgItem} source={photo} />
                 </TouchableHighlight>
             );
         } else {
             return (
-                <TouchableHighlight onPress={() => {this.onTakePhoto(`${this.props.imageIndex}`)}} >
-                    <View style={[myStyles.imgItem, {borderStyle: 'dashed', borderColor: gui.mainColor}]}>
+                <TouchableHighlight onPress={() => { this.onTakePhoto(`${this.props.imageIndex}`) } } >
+                    <View style={[myStyles.imgItem, { borderStyle: 'dashed', borderColor: gui.mainColor }]}>
                         <RelandIcon name="plus" color={gui.mainColor}
                                     mainProps={myStyles.captureIcon}
-                                    size={22} textProps={{paddingLeft: 0}}
-                                    onPress={() => {this.props.onTakePhoto(`${this.props.imageIndex}`)}} />
+                                    size={22} textProps={{ paddingLeft: 0 }}
+                                    onPress={() => { this.props.onTakePhoto(`${this.props.imageIndex}`) } } />
                     </View>
                 </TouchableHighlight>
             );
@@ -1500,7 +1655,7 @@ var myStyles = StyleSheet.create({
     },
     headerSeparator: {
         marginTop: 0,
-        borderTopWidth: 0.5,
+        borderTopWidth: 0,
         borderTopColor: gui.separatorLine
     },
     imgList: {
@@ -1520,12 +1675,12 @@ var myStyles = StyleSheet.create({
         backgroundColor: 'white'
     },
     imgItem: {
-        width: (width-50)/4,
-        height:(width-50)/4,
+        width: (width - 50) / 4,
+        height: (width - 50) / 4,
         backgroundColor: "white",
         justifyContent: 'center',
-        borderWidth: 0.5,
-        marginLeft:5,
+        borderWidth: 0,
+        marginLeft: 5,
         borderColor: gui.separatorLine,
     },
     captureIcon: {
@@ -1545,20 +1700,6 @@ var myStyles = StyleSheet.create({
         margin: 5,
         width: 80,
         textAlign: 'right',
-        alignSelf: 'center'
-    },
-    textArea: {
-        fontSize: gui.normalFontSize,
-        fontFamily: gui.fontFamily,
-        padding: 4,
-        height: 80,
-        borderColor: 'gray',
-        borderWidth: 1,
-        borderRadius: 5,
-        margin: 5,
-        marginLeft: 20,
-        marginRight: 15,
-        width: Dimensions.get('window').width-35,
         alignSelf: 'center'
     },
     label: {
@@ -1585,7 +1726,7 @@ var myStyles = StyleSheet.create({
         color: 'white',
         fontSize: gui.buttonFontSize,
         fontFamily: gui.fontFamily,
-        fontWeight : 'normal'
+        fontWeight: 'normal'
     },
     searchListButton: {
         flexDirection: 'row',
@@ -1596,16 +1737,19 @@ var myStyles = StyleSheet.create({
     },
     searchButton: {
         alignItems: 'center',
-        justifyContent: 'flex-end'
+        justifyContent: 'flex-end',
+        position: 'absolute',
+        bottom: 0
+
     },
     categoryTitle: {
-        flexDirection : "row",
-        justifyContent :'space-between',
+        flexDirection: "row",
+        justifyContent: 'space-between',
         paddingRight: 8,
         paddingLeft: 17,
         paddingTop: 12,
         paddingBottom: 5,
-        borderTopWidth: 0.5,
+        borderTopWidth: 0,
         borderTopColor: '#f8f8f8',
         backgroundColor: '#f8f8f8'
     },
@@ -1613,9 +1757,9 @@ var myStyles = StyleSheet.create({
         fontSize: 12,
         fontFamily: gui.fontFamily,
         color: '#606060',
-        justifyContent :'space-between',
+        justifyContent: 'space-between',
         padding: 0,
-        borderTopWidth: 0.5,
+        borderTopWidth: 0,
         borderTopColor: gui.separatorLine
     },
     scrollView: {
@@ -1629,19 +1773,18 @@ var myStyles = StyleSheet.create({
         margin: 5,
         marginLeft: 20,
         marginRight: 15,
-        width: Dimensions.get('window').width-35
+        width: Dimensions.get('window').width - 35
     },
-
     loadingContent: {
         position: 'absolute',
         top: -23,
-        left: width/2,
+        left: width / 2,
         alignItems: 'center',
         justifyContent: 'center'
     },
     resultContainer: {
         position: 'absolute',
-        top: height/2,
+        top: height / 2,
         flexDirection: 'column',
         alignItems: 'flex-start',
         justifyContent: 'flex-start',
@@ -1651,5 +1794,5 @@ var myStyles = StyleSheet.create({
     },
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(PostAdsDetail);
+export default connect(mapStateToProps, mapDispatchToProps)(NPostAdsDetail);
 

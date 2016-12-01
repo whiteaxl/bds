@@ -28,7 +28,7 @@
     "react-native-gifted-spinner": "0.1.0",
     "react-native-google-places-autocomplete": "^1.2.6",
     "react-native-image-resizer": "0.0.9",
-    "react-native-keyboard-aware-scroll-view": "^0.2.2",
+    "react-native-keyboard-aware-scroll-view": "^0.2.4",
     "react-native-keyboard-spacer": "^0.3.0",
     "react-native-linear-gradient": "^1.5.12",
     "react-native-mail": "^2.0.0",

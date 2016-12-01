@@ -192,7 +192,7 @@ class App extends React.Component {
             <Scene key='OrderPicker' component={OrderPicker} title="Sắp xếp" hideNavBar={true}/>
             <Scene key='SearchResultDetail' component={SearchResultDetail} title="Chi tiết" hideNavBar={true}/>
             <Scene key='SearchSuggestion' duration={20} direction="vertical" component={SearchSuggestion}
-                   title="Serch Text" hideNavBar={true} panHandlers={_panResponder.panHandlers}/>
+                   title="Search Text" hideNavBar={true} panHandlers={_panResponder.panHandlers}/>
             <Scene key='SearchMapDetail' component={SearchMapDetail}
                    title="Bản đồ" hideNavBar={true}/>
 

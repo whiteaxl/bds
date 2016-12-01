@@ -161,17 +161,16 @@ export default function inboxReducer(state = initialState, action) {
     {
       let msg = action.payload.msg;
 
-      const allRows = state.inboxList;
+      var allRows = state.inboxList;
 
       for(let i=0; i<allRows.length; i++){
         if (allRows[i].partner.userID == msg.fromUserID && allRows[i].relatedToAds.adsID == msg.relatedToAds.adsID){
           allRows[i].date = msg.date ? new Date(msg.date) : new Date();
           allRows[i].content = msg.content;
-          allRows.push(allRows[i]);
         }
       }
-      const ds = state.allInboxDS;
-      const newDs = ds.cloneWithRows(allRows);
+      var ds = state.allInboxDS;
+      var newDs = ds.cloneWithRows(allRows);
 
       return state
           .set("inboxList", allRows)
