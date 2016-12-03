@@ -163,20 +163,28 @@ class AdsRow extends React.Component {
     let lastControl = null;
     let {showFirstControl, isFirstRow, showLastControl, isLastRow} = this.props;
 
-    if (showFirstControl && isFirstRow) {
+    if (isFirstRow) {
       if (this.props.loading) {
         firstControl = <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>
           <GiftedSpinner size="small" />
         </View>;
       } else {
-        firstControl = <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>
-          <TouchableHighlight onPress={this.props.loadPreviousPage} underlayColor="transparent">
-            <View style={{flexDirection: 'column'}}>
-              <Text style={myStyles.rowControl}>Nhấn vào đây để quay lại trang trước</Text>
+        if (showFirstControl) {
+          firstControl = <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>
+            <TouchableHighlight onPress={this.props.loadPreviousPage} underlayColor="transparent">
+              <View style={{flexDirection: 'column'}}>
+                <Text style={myStyles.rowControl}>Nhấn vào đây để quay lại trang trước</Text>
+                <Text style={myStyles.pagingTitle}>{this.props.getPagingTitle()}</Text>
+              </View>
+            </TouchableHighlight>
+          </View>;
+        } else {
+          firstControl = <View style={{flex: 0, height: 25, alignItems: 'center', justifyContent: 'center'}}>
+            <View>
               <Text style={myStyles.pagingTitle}>{this.props.getPagingTitle()}</Text>
             </View>
-          </TouchableHighlight>
-        </View>;
+          </View>;
+        }
       }
     }
     if (showLastControl && isLastRow) {

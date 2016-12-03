@@ -166,14 +166,14 @@ class SortMenu extends Component {
         this.props.actions.onSearchFieldChange("pageNo", 1);
         var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
             dienTich, giaPicker, listData, marker, viewport, diaChinh, center, radiusInKmSelectedIdx,
-            huongNha, ngayDaDang, polygon, isIncludeCountInResponse} = this.props.search.form.fields;
+            huongNha, ngayDaDang, polygon} = this.props.search.form.fields;
         let newLimit = this.props.global.setting.maxAdsInMapView;
         this.props.actions.search(
             {loaiTin: loaiTin, ban: ban, thue: thue, soPhongNguSelectedIdx: soPhongNguSelectedIdx,
                 soNhaTamSelectedIdx: soNhaTamSelectedIdx, viewport: viewport, diaChinh: diaChinh, center: center,
                 dienTich: dienTich, giaPicker: giaPicker, orderBy: newOrderBy, listData: listData,
                 marker: marker, radiusInKmSelectedIdx: radiusInKmSelectedIdx, huongNha: huongNha, ngayDaDang: ngayDaDang,
-                polygon: polygon, limit: newLimit, pageNo: 1, isIncludeCountInResponse: isIncludeCountInResponse}
+                polygon: polygon, limit: newLimit, pageNo: 1, isIncludeCountInResponse: true}
             , () => {this._scrollToTop()}
             , (error) => {}
         );

@@ -486,7 +486,7 @@ class Search2 extends Component {
                     newRadiusInKmSelectedIdx, newHuongNha, newNgayDaDang){
      var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
          radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
-         polygon, pageNo, isIncludeCountInResponse} = this.props.search.form.fields;
+         polygon, pageNo} = this.props.search.form.fields;
      if (newGia) {
          if (loaiTin == 'ban') {
              ban.gia = newGia;
@@ -511,7 +511,7 @@ class Search2 extends Component {
          polygon: polygon,
          pageNo: newPageNo || pageNo,
          limit: newLimit,
-         isIncludeCountInResponse: isIncludeCountInResponse};
+         isIncludeCountInResponse: true};
 
      //TODO: need to verify logic of updating last search
      if (this.props.global.currentUser && this.props.global.currentUser.userID){

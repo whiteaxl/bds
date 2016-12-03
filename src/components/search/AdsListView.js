@@ -59,53 +59,24 @@ class AdsListView extends React.Component {
 
     let ds = myDs.cloneWithRows(myProps.listAds);
 
-    if (this.props.fields.pageNo > 1) {
-      return (
-          <ListView
-              ref={(listView) => { this._listView = listView; }}
-              dataSource={ds}
-              renderRow={(rowData, sectionID, rowID) => this.renderRow(rowData, sectionID, rowID, (rowID == 0), (rowID == (ds._dataBlob.s1.length-1)))}
-              stickyHeaderIndices={[]}
-              initialListSize={1}
-              // onEndReachedThreshold={200}
-              // onEndReached={this.loadNextPage.bind(this)}
-              renderFooter={this.renderFooter.bind(this)}
-              // scrollRenderAheadDistance={3}
-              // pageSize={5}
-              // onScroll={this.handleScroll.bind(this)}
-              // scrollEventThrottle={1000}
-              //renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
-              style={styles.searchListView}
-          />
-      )
-    } else {
-      return (
-          <ListView
-              refreshControl={
-                <RefreshControl
-                  refreshing={false}
-                  onRefresh={this._onRefresh.bind(this)}
-                  title={"Kéo xuống để làm mới kết quả"}
-                />
-              }
-
-              ref={(listView) => { this._listView = listView; }}
-              dataSource={ds}
-              renderRow={(rowData, sectionID, rowID) => this.renderRow(rowData, sectionID, rowID, (rowID == 0), (rowID == (ds._dataBlob.s1.length-1)))}
-              stickyHeaderIndices={[]}
-              initialListSize={1}
-              // onEndReachedThreshold={200}
-              // onEndReached={this.loadNextPage.bind(this)}
-              renderFooter={this.renderFooter.bind(this)}
-              // scrollRenderAheadDistance={3}
-              // pageSize={5}
-              // onScroll={this.handleScroll.bind(this)}
-              // scrollEventThrottle={1000}
-              //renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
-              style={styles.searchListView}
-          />
-      )
-    }
+    return (
+        <ListView
+            ref={(listView) => { this._listView = listView; }}
+            dataSource={ds}
+            renderRow={(rowData, sectionID, rowID) => this.renderRow(rowData, sectionID, rowID, (rowID == 0), (rowID == (ds._dataBlob.s1.length-1)))}
+            stickyHeaderIndices={[]}
+            initialListSize={1}
+            // onEndReachedThreshold={200}
+            // onEndReached={this.loadNextPage.bind(this)}
+            renderFooter={this.renderFooter.bind(this)}
+            // scrollRenderAheadDistance={3}
+            // pageSize={5}
+            // onScroll={this.handleScroll.bind(this)}
+            // scrollEventThrottle={1000}
+            //renderSeparator={(sectionID, rowID) => <View key={`${sectionID}-${rowID}`} style={styles.separator} />}
+            style={styles.searchListView}
+        />
+    );
   }
 
   renderFooter () {
@@ -151,7 +122,7 @@ class AdsListView extends React.Component {
   _handleSearchAction(newPageNo, newDiaChinh, newPolygon, newCenter){
     var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
-        polygon, pageNo, isIncludeCountInResponse} = this.props.fields;
+        polygon, pageNo} = this.props.fields;
     var fields = {
       loaiTin: loaiTin,
       ban: ban,
@@ -169,7 +140,7 @@ class AdsListView extends React.Component {
       polygon: newPolygon || polygon,
       pageNo: newPageNo || pageNo,
       limit: this.props.limit,
-      isIncludeCountInResponse: isIncludeCountInResponse};
+      isIncludeCountInResponse: true};
 
     this.props.actions.search(
         fields
@@ -214,7 +185,11 @@ class AdsListView extends React.Component {
 
   renderRow(rowData = {}, sectionID, rowID, isFirstRow, isLastRow) {
     let myProps = this.props;
-    let pageNo = myProps.fields.pageNo;
+
+    let collection = myProps.collection;
+    let query = collection ? collection.query : null;
+
+    let pageNo = !query ? myProps.fields.pageNo : query.pageNo;
     let totalPages = myProps.totalCount/ myProps.limit;
 
     let showFirstControl = pageNo > 1;
@@ -251,13 +226,28 @@ class AdsListView extends React.Component {
       return;
     }
 
-    let pageNo = myProps.fields.pageNo;
+    let collection = myProps.collection;
+    let query = collection ? collection.query : null;
+
+    let pageNo = !query ? myProps.fields.pageNo : query.pageNo;
 
     if (pageNo > 1) {
       pageNo = pageNo-1;
-      myProps.actions.onSearchFieldChange("pageNo", pageNo);
-      // myProps.actions.onShowMsgChange(true);
-      this._handleSearchAction(pageNo);
+      if (!collection) {
+        myProps.actions.onSearchFieldChange("pageNo", pageNo);
+        // myProps.actions.onShowMsgChange(true);
+        this._handleSearchAction(pageNo);
+      } else {
+        query.pageNo = pageNo;
+        this.props.actions.searchFromHome(query, () => {this.props.scrollToTop()}
+            , (error) =>
+            AlertIOS.alert('Thông báo',
+                error,
+                [{
+                  text: 'Đóng',
+                  onPress: () => {}
+                }]));
+      }
     }
   }
 
@@ -268,14 +258,29 @@ class AdsListView extends React.Component {
       return;
     }
 
-    let pageNo = myProps.fields.pageNo;
+    let collection = myProps.collection;
+    let query = collection ? collection.query : null;
+
+    let pageNo = !query ? myProps.fields.pageNo : query.pageNo;
     let totalPages = myProps.totalCount/ myProps.limit;
 
     if (totalPages && pageNo < totalPages) {
       pageNo = pageNo+1;
-      myProps.actions.onSearchFieldChange("pageNo", pageNo);
-      // myProps.actions.onShowMsgChange(true);
-      this._handleSearchAction(pageNo);
+      if (!query) {
+        myProps.actions.onSearchFieldChange("pageNo", pageNo);
+        // myProps.actions.onShowMsgChange(true);
+        this._handleSearchAction(pageNo);
+      } else {
+        query.pageNo = pageNo;
+        this.props.actions.searchFromHome(query, () => {this.props.scrollToTop()}
+            , (error) =>
+                AlertIOS.alert('Thông báo',
+                    error,
+                    [{
+                      text: 'Đóng',
+                      onPress: () => {}
+                    }]));
+      }
     }
   }
 
@@ -283,7 +288,11 @@ class AdsListView extends React.Component {
     let myProps = this.props;
     let numberOfAds = myProps.listAds.length;
     let totalCount = myProps.totalCount;
-    let {pageNo} = myProps.fields;
+
+    let collection = myProps.collection;
+    let query = collection ? collection.query : null;
+
+    let pageNo = !query ? myProps.fields.pageNo : query.pageNo;
     let limit = myProps.limit;
     let totalPages = totalCount/ limit;
     let beginAdsIndex = (pageNo-1)*limit+1;

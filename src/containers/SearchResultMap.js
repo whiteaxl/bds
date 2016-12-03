@@ -250,6 +250,7 @@ class SearchResultMap extends Component {
       mmarker:{},
       openLocalInfo: false,
       openDraw: false,
+      drawPressed: false,
       openDetailAdsModal: false,
       markedList:[],
       editing: null,
@@ -789,16 +790,16 @@ class SearchResultMap extends Component {
 
     _isNotFoundAds() {
         let {loading, listAds, errorMsg} = this.props;
-        let {mounting, openDraw} = this.state;
+        let {mounting, openDraw, drawPressed} = this.state;
         let numberOfAds = listAds.length;
         return !loading && !mounting && !openDraw &&
-            !errorMsg && numberOfAds == 0;
+            !errorMsg && !drawPressed && numberOfAds == 0;
     }
 
     _renderLoadingOrNotFoundView(){
         console.log("Call SearchResultMap._renderLoadingOrNotFoundView");
         let {loading, listAds, errorMsg} = this.props;
-        let {mounting, openDraw} = this.state;
+        let {mounting, openDraw, drawPressed} = this.state;
         let numberOfAds = listAds.length;
 
         if(loading || mounting || openDraw){
@@ -815,7 +816,7 @@ class SearchResultMap extends Component {
             </View>)
         }
 
-        if (errorMsg || numberOfAds > 0) {
+        if (errorMsg || drawPressed || numberOfAds > 0) {
             return null;
         }
 
@@ -869,7 +870,7 @@ class SearchResultMap extends Component {
     return (<View style={styles.resultContainer}>
       <Animatable.View animation={showMessage || errorMsg ? "fadeIn" : "fadeOut"}
                        duration={showMessage || errorMsg ? 500 : 3000}
-                       onAnimationEnd={() => this.setState({endMsgAnimation: true})}
+                       onAnimationEnd={() => this.setState({endMsgAnimation: !showMessage && !errorMsg})}
                        onAnimationBegin={() => this.setState({endMsgAnimation: false})} >
         <View style={[styles.resultText, {marginTop: 0, opacity: 1, backgroundColor: backgroundColor}]}>
             <Text style={[styles.resultIcon, {fontWeight: fontWeight, color: textColor}]}>  {textValue} </Text>
@@ -931,7 +932,6 @@ class SearchResultMap extends Component {
 
     if (this.props.global.setting.autoLoadAds){
       let viewport = apiUtils.getViewport(region);
-      this.props.actions.onSearchFieldChange("viewport", viewport);
       this.props.actions.onSearchFieldChange("pageNo", 1);
       this._refreshListData(viewport, null, this._onSetupMessageTimeout.bind(this));
     }
@@ -953,7 +953,6 @@ class SearchResultMap extends Component {
     } else {
         viewport = apiUtils.getViewport(this.state.region);
     }
-    this.props.actions.onSearchFieldChange("viewport", viewport);
     this.setState({markedList: []});
     this._refreshListData(viewport, null, this._onSetupMessageTimeout.bind(this));
   }
@@ -990,12 +989,15 @@ class SearchResultMap extends Component {
     if (ms -  previousSearchTime > delayDuration) {
         fields.updateLastSearch = false;
 
+        if (newViewport) {
+            this.props.actions.onSearchFieldChange("viewport", newViewport);
+        }
         this.props.actions.search(
             fields
             , refreshCallback
             , (error) => {});
         if (!isAppend) {
-            this.setState({mounting: false});
+            this.setState({mounting: false, drawPressed: false});
             this._onShowMessage();
         }
     }
@@ -1067,7 +1069,6 @@ class SearchResultMap extends Component {
 
           let viewport = apiUtils.getViewport(region);
 
-          this.props.actions.onSearchFieldChange("viewport", viewport);
           this.props.actions.onPolygonsChange([]);
           this.props.actions.onSearchFieldChange("polygon", []);
           this.props.actions.onSearchFieldChange("diaChinh", {fullName: gui.VI_TRI_HIEN_TAI});
@@ -1090,6 +1091,7 @@ class SearchResultMap extends Component {
 
     var {polygons} = this.props.search.map;
     var openDraw = !polygons || polygons.length === 0;
+    var drawPressed = !polygons || polygons.length <= 2;
     if (!this.props.search.drawMode && openDraw) {
       this.props.actions.abortSearch();
       clearTimeout(this.timer);
@@ -1106,7 +1108,8 @@ class SearchResultMap extends Component {
         openDetailAdsModal: false,
         openLocalInfo: false,
         editing: null,
-        openDraw: false
+        openDraw: false,
+        drawPressed: drawPressed
       });
       this.props.actions.onDrawModeChange(false);
     }
@@ -1260,18 +1263,17 @@ class SearchResultMap extends Component {
         this.props.actions.onPolygonsChange(polygons);
         // this.props.actions.onSearchFieldChange("diaChinh", {});
         this.props.actions.onSearchFieldChange("pageNo", 1);
-        this._refreshListData(viewport, polygon, () => {this._closeDrawIfNoResult(viewport, region)}, {}, false, {});
+        this._refreshListData(viewport, polygon, () => {this._closeDrawIfNoResult(region)}, {}, false, {});
     }
     this._updateMapView(polygons, hasPolygon);
   }
 
-  _closeDrawIfNoResult(viewport, region) {
+  _closeDrawIfNoResult(region) {
       clearTimeout(this.drawSearchTimer);
       if (this.props.listAds.length == 0) {
           setTimeout(() => this._onCloseDraw(), 50);
       } else {
           this.setState({region: region});
-          this.props.actions.onSearchFieldChange("viewport", viewport);
           // this.props.actions.onSearchFieldChange("diaChinh", {});
           this._onDrawMapDone();
       }

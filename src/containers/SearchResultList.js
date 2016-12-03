@@ -156,7 +156,7 @@ class SearchResultList extends Component {
                         {...this.props} noCoverUrl={noCoverUrl} scrollToTop={this._scrollToTop.bind(this)}/>
                 </View>
 
-                {this._renderTotalResultView()}
+                {/*this._renderTotalResultView()*/}
 
                 <View style={myStyles.searchButton}>
                     <SearchResultFooter center = {this.props.fields.center}
