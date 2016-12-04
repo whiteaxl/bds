@@ -9,7 +9,8 @@ const {
   ON_DB_CHANGE,
   INSERT_MY_CHAT,
   LOGOUT_SUCCESS,
-  ON_NEW_MESSAGE
+  ON_NEW_MESSAGE,
+  ON_TYPING_MESSAGE
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
@@ -84,6 +85,16 @@ export default function chatReducer(state = initialState, action) {
 
       let nextState = state.set('messages',messages);
       return nextState;
+    }
+
+    case ON_TYPING_MESSAGE: {
+      const {msg} = action.payload;
+      const {partner} = state;
+      if (partner.userID && msg.data && partner.userID == msg.data.fromUserID ){
+        let typing = msg.isTyping ? " is typing ..." : "  ";
+        return state.set("typingMessage", typing);
+      }
+      return state;
     }
 
     case ON_NEW_MESSAGE:{

@@ -121,21 +121,11 @@ class InboxContent extends React.Component {
     //let w = rowID == 0 ? 0 : 1;
     let w = 1
 
-    console.log("============== print Inbox row");
-    console.log(row);
-    console.log("============== print Inbox row end");
-
     return (
         <TouchableOpacity onPress={() => this.onRowClick(row)} style={styles.rowFront}>
           <View style={[styles.rowContainer, {marginLeft: 0, paddingLeft:5}]}>
-            <AvatarItem avatar={row.partner.avatar}/>
-            {/*<View style={{justifyContent:'center', alignItems:'center'}}>
-              <Image
-                  resizeMode = {"cover"}
-                  source={avatar}
-                  style={styles.thumbnail}/>
-            </View>
-            */}
+            <AvatarItem avatar={row.partner.avatar} numOfUnreadMessage={row.numOfUnreadMessage}/>
+
             <View style={styles.rightContainer}>
               <View style={styles.nameAndDateTime}>
                 <Text style={styles.name}>{row.partner.fullName}</Text>
@@ -198,7 +188,7 @@ class AvatarItem extends React.Component{
 
     this.state = {
       avatar: props.avatar ? {uri: props.avatar} : defaultAvatar,
-      numberOfNotification: props.numberOfNotification || 45
+      numOfUnreadMessage: props.numOfUnreadMessage || undefined
     }
   }
 
@@ -210,13 +200,21 @@ class AvatarItem extends React.Component{
               source={this.state.avatar}
               style={styles.thumbnail}>
           </Image>
-          <View style={styles.notification}>
-            <Text style={styles.notificationText}>
-              {this.state.numberOfNotification}
-            </Text>
-          </View>
+          {this._renderNumOfUnreadMessage()}
         </View>
     )
+  }
+
+  _renderNumOfUnreadMessage(){
+    if (this.state.numOfUnreadMessage && this.state.numOfUnreadMessage >0 ){
+      return (
+          <View style={styles.notification}>
+            <Text style={styles.notificationText}>
+              {this.state.numOfUnreadMessage}
+            </Text>
+          </View>
+      )
+    }
   }
 }
 

@@ -32,7 +32,8 @@ const {
   RESET_PASSWORD_FAILURE,
 
   ON_DB_CHANGE,
-  ON_NEW_MESSAGE
+  ON_NEW_MESSAGE,
+  ON_TYPING_MESSAGE
 
 } = require('../../lib/constants').default;
 
@@ -265,6 +266,18 @@ export function onNewMessage(msg) {
 
 }
 
+export function onTypingMessage(msg) {
+  log.enter("AuthenAction.onTypingMessage");
+
+  return {
+    type: ON_TYPING_MESSAGE,
+    payload: {msg}
+  };
+
+}
+
+
+
 export function login(username, password, deviceDto) {
 
   return dispatch => {
@@ -290,11 +303,11 @@ export function login(username, password, deviceDto) {
           //connect to socket server
           chatApi.connectAndStartListener(json,
               (data) =>{
-                dispatch(onNewMessage(data))
+                dispatch(onNewMessage(data));
+              },
+              (data) =>{
+                dispatch(onTypingMessage(data));
               });
-
-          //todo: need to check update device function
-          //userApi.updateDevice(deviceDto);
 
         } else {
           dispatch(loginFailure(json.error));

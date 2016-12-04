@@ -102,7 +102,8 @@ class NPostAdsDetail extends Component {
             namXayDung: null,
             diaChinhFullName: '',
             adsID: adsID,
-            showMoreContent: false
+            showMoreContent: false,
+            deletedPhoto: null
         }
     }
 
@@ -244,6 +245,8 @@ class NPostAdsDetail extends Component {
 
                                 <Text style={[myStyles.label, { marginTop: 9, marginLeft: 15, color: 'red' }]}>
                                     {this.props.postAds.error}</Text>
+                                <Text style={{color:'white'}}>
+                                    {this.state.deletedPhoto}</Text>
                             </View>
 
 
@@ -277,7 +280,7 @@ class NPostAdsDetail extends Component {
         let numOfPhoto = photos.length;
         let indexArr = [];
         for (var i = 0; i <= photos.length; i++) {
-            if (i < 8) {
+            if (i < 20) {
                 indexArr.push(i)
             }
         }
@@ -288,22 +291,34 @@ class NPostAdsDetail extends Component {
                     {indexArr.map((e) => { if (e < 4) return this._renderPhotoItem(e) })}
                 </View>
                 <View style={[myStyles.mimgList, { marginTop: numOfPhoto >= 4 ? 5 : 0, marginBottom: numOfPhoto >= 4 ? 10 : 0, paddingLeft: 17, paddingRight: 15 }]} >
-                    {indexArr.map((e) => { if (e >= 4) return this._renderPhotoItem(e) })}
+                    {indexArr.map((e) => { if (e >= 4 && e<8) return this._renderPhotoItem(e) })}
+                </View>
+                <View style={[myStyles.mimgList, { marginTop: numOfPhoto >= 8 ? 5 : 0, marginBottom: numOfPhoto >= 8 ? 10 : 0, paddingLeft: 17, paddingRight: 15 }]} >
+                    {indexArr.map((e) => { if (e >= 8 && e< 12)  return this._renderPhotoItem(e) })}
+                </View>
+                <View style={[myStyles.mimgList, { marginTop: numOfPhoto >= 12 ? 5 : 0, marginBottom: numOfPhoto >= 12 ? 10 : 0, paddingLeft: 17, paddingRight: 15 }]} >
+                    {indexArr.map((e) => { if (e >= 12 && e< 16)  return this._renderPhotoItem(e) })}
+                </View>
+                <View style={[myStyles.mimgList, { marginTop: numOfPhoto >= 16 ? 5 : 0, marginBottom: numOfPhoto >= 16 ? 10 : 0, paddingLeft: 17, paddingRight: 15 }]} >
+                    {indexArr.map((e) => { if (e >= 16 && e< 20)  return this._renderPhotoItem(e) })}
                 </View>
             </View>
         );
     }
 
-    /*_renderPhotoItem(imageIndex){
-     var {photos} = this.props.postAds;
-     var photo = photos[imageIndex];
+    _renderPhotoItem(imageIndex){
+        var {photos} = this.props.postAds;
+        var photo = photos[imageIndex];
 
-     return (
-     <ImageItem imageIndex={imageIndex} photo={photo}  onTakePhoto={this.onTakePhoto.bind(this)} />
-     )
-     }*/
+        return (
+            <ImageItem  imageIndex={imageIndex}
+                        photo={photo}
+                        onTakePhoto={this.onTakePhoto.bind(this)}
+                        onDeletePhoto={this.onDeletePhoto.bind(this)}/>
+        )
+     }
 
-    _renderPhotoItem(imageIndex) {
+    /*_renderPhotoItem(imageIndex) {
         var {photos} = this.props.postAds;
         var photo = photos[imageIndex];
 
@@ -330,6 +345,7 @@ class NPostAdsDetail extends Component {
             );
         }
     }
+    */
 
     _renderCoverPhoto() {
         let imageIndex = 0;
@@ -1089,9 +1105,6 @@ class NPostAdsDetail extends Component {
     }
 
     _onDiaChinhSelected(position) {
-        console.log("================ selected position");
-        console.log(position.diaChinh);
-
         let diaChinhDto = JSON.parse(JSON.stringify(position.diaChinh));
 
         // remove diaChinh co dau
@@ -1102,6 +1115,9 @@ class NPostAdsDetail extends Component {
         this.props.actions.getDiaChinhFromGoogleData(diaChinhDto);
 
         var {place} = this.props.postAds;
+        place.geo = position.location;
+
+        this.props.actions.onPostAdsFieldChange('place', place);
 
         let diaChinhFullName = placeUtil.getDiaChinhFullName(position);
 
@@ -1420,6 +1436,7 @@ class NPostAdsDetail extends Component {
         place.duAn = undefined;
         place.duAnFullName = undefined;
 
+        place.diaChi = place.diaChiChiTiet + ", " + this.state.diaChinhFullName
         if (selectedDiaChinh) {
             place.diaChinh.codeTinh = selectedDiaChinh.tinh || undefined;
             place.diaChinh.codeHuyen = selectedDiaChinh.huyen || undefined;
@@ -1588,11 +1605,9 @@ class NPostAdsDetail extends Component {
                 text: 'Đồng ý', onPress: () => {
                     if (this.state.adsID && this.state.adsID.length > 0) {
                         // back to AdsMgmt if update Ads
-                        console.log("========= back to AdsMgmt");
                         this.onRefreshPostAds();
                         Actions.popTo('root');
                     } else {
-                        console.log("========= back to Home");
                         this.onRefreshPostAds();
                         Actions.Home({ type: 'reset' });
                     }
@@ -1605,13 +1620,55 @@ class NPostAdsDetail extends Component {
     onTakePhoto(imageIndex) {
         Actions.PostAds({ photos: this.props.postAds.photos, imageIndex: imageIndex });
     }
+
+    onDeletePhoto(imageIndex){
+        var {photos} = this.props.postAds;
+        photos.splice(imageIndex, 1);
+        this.setState({deletedPhoto: imageIndex});
+        this.props.actions.onPostAdsFieldChange('photos', photos);
+    }
 }
 
 class ImageItem extends React.Component {
     constructor(props) {
         super(props);
-        console.log("================= print ImageItem");
-        console.log(props);
+    }
+
+    _onPhotoPressed(){
+        this.props.onTakePhoto(`${this.props.imageIndex}`);
+    }
+
+    _onDeletePhoto(){
+        this.props.onDeletePhoto(`${this.props.imageIndex}`);
+    }
+
+    _renderCoverTitle(){
+        if (this.props.imageIndex ==0)
+        return (
+            <View style={myStyles.coverContent}>
+                <Text style={myStyles.coverText}>
+                Ảnh bìa
+                </Text>
+            </View>
+        )
+    }
+
+    _renderDeleteButton(){
+        if (this.props.imageIndex !=0)
+            return (
+                <TouchableOpacity
+                    style={myStyles.deleteContent}
+                    onPress={this._onDeletePhoto.bind(this)} >
+
+                    <View style={myStyles.deleteButton}>
+                        <RelandIcon name="close" color={'black'}
+                                    mainProps={myStyles.captureIcon}
+                                    size={10} textProps={{ paddingLeft: 0 }}
+                                    noAction={true}
+                        />
+                    </View>
+                </TouchableOpacity>
+            )
     }
 
     render() {
@@ -1619,20 +1676,25 @@ class ImageItem extends React.Component {
 
         if (photo && photo.uri) {
             return (
-                <TouchableHighlight onPress={this.props.onTakePhoto(`${this.props.imageIndex}`)} >
-                    <Image style={myStyles.imgItem} source={photo} />
-                </TouchableHighlight>
+                <TouchableOpacity onPress={this._onPhotoPressed.bind(this)} >
+                    <Image style={myStyles.imgItem} source={photo} >
+                        {this._renderDeleteButton()}
+                        {this._renderCoverTitle()}
+                    </Image>
+                </TouchableOpacity>
             );
         } else {
             return (
-                <TouchableHighlight onPress={() => { this.onTakePhoto(`${this.props.imageIndex}`) } } >
+                <TouchableOpacity onPress={this._onPhotoPressed.bind(this)} >
                     <View style={[myStyles.imgItem, { borderStyle: 'dashed', borderColor: gui.mainColor }]}>
                         <RelandIcon name="plus" color={gui.mainColor}
                                     mainProps={myStyles.captureIcon}
                                     size={22} textProps={{ paddingLeft: 0 }}
-                                    onPress={() => { this.props.onTakePhoto(`${this.props.imageIndex}`) } } />
+                                    noAction={true}
+                                    />
+                        {this._renderCoverTitle()}
                     </View>
-                </TouchableHighlight>
+                </TouchableOpacity>
             );
         }
 
@@ -1792,6 +1854,31 @@ var myStyles = StyleSheet.create({
         marginBottom: 0,
         backgroundColor: 'transparent'
     },
+    deleteContent: {
+        position: 'absolute',
+        backgroundColor: 'white',
+        opacity: 0.5,
+        top: 2,
+        right: 2,
+        alignSelf: 'auto'
+    },
+    deleteButton: {
+        alignItems: 'center'
+    },
+    coverContent: {
+        position: 'absolute',
+        backgroundColor: 'white',
+        opacity: 0.8,
+        bottom: 2,
+        left: 2,
+        alignSelf: 'auto'
+    },
+    coverText: {
+        alignItems: 'center',
+        fontFamily: gui.fontFamily,
+        fontSize: 12
+    }
+
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(NPostAdsDetail);

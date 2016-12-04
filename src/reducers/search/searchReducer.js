@@ -247,14 +247,15 @@ export default function searchReducer(state = initialState, action) {
       let saveSearchList = action.payload;
 
       saveSearchList.sort((a, b) => b.timeModified - a.timeModified);
-
+      let i=0;
       let savedSearch = saveSearchList.map( (e) => {
+        i++;
+
         return {
           name: (e.name),
           isSaveSearch : true,
           desc : findApi.convertQuery2String(e.query),
-          description : e.name,
-          isPredefinedPlace : true,
+          description : e.name + " - " + i,
           query: e.query
         };
       });
@@ -266,14 +267,16 @@ export default function searchReducer(state = initialState, action) {
       let lastSearchList = action.payload;
 
       lastSearchList.sort((a, b) => b.timeModified - a.timeModified);
-
+      let i=0;
       let lastSearch = lastSearchList.map( (e) => {
+        i++;
         return {
           name: (e.query && e.query.diaChinh ? e.query.diaChinh.fullName : ''),
           timeModified: e.timeModified,
           query: e.query,
           isRecent: true,
-          desc: findApi.convertQuery2String(e.query)
+          desc: findApi.convertQuery2String(e.query),
+          description : (e.query && e.query.diaChinh ? e.query.diaChinh.fullName : '') + " - " + i,
         } ;
       });
 

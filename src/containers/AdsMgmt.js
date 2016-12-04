@@ -1,7 +1,7 @@
 'use strict';
 import  React, {Component} from 'react';
 
-import {View, Text, StyleSheet, TextInput} from 'react-native';
+import {View, Text, StyleSheet, TextInput, Dimensions} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
 
@@ -12,6 +12,7 @@ import * as globalActions from '../reducers/global/globalActions';
 import * as adsMgmtActions from '../reducers/adsMgmt/adsMgmtActions';
 import * as searchActions from '../reducers/search/searchActions';
 
+var { width, height } = Dimensions.get('window');
 
 import {Map} from 'immutable';
 
@@ -115,8 +116,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(AdsMgmt);
 
 var styles = StyleSheet.create({
   container: {
-    backgroundColor: "#f2f2f2",
-    flex: 1
+    backgroundColor: "#fff",
+    width: width - 16,
+    left: 8
+
   },
 
   label: {

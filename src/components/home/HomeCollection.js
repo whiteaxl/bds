@@ -28,7 +28,8 @@ var imageHeight = 143;
 
 export default class HomeCollection extends Component {
   _onAdsPressed(ads) {
-    Actions.SearchResultDetail({ adsID: ads.adsID, source: 'server' })
+    if (ads.adsID && ads.adsID.length>0 && ads.adsID != "EMPTY")
+      Actions.SearchResultDetail({ adsID: ads.adsID, source: 'server' });
   }
 
   _onSeeMore() {

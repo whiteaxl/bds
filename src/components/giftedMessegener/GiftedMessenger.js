@@ -678,7 +678,7 @@ class GiftedMessenger extends Component {
                   placeholder={this.props.placeholder}
                   placeholderTextColor={this.props.placeholderTextColor}
                   onChangeText={this.onChangeText}
-                  //value={this.state.text}
+                  value={this.state.text}
                   autoFocus={this.props.autoFocus}
                   returnKeyType={this.props.submitOnReturn ? 'send' : 'default'}
                   onSubmitEditing={this.props.submitOnReturn ? this.onSend : () => { } }
@@ -696,19 +696,17 @@ class GiftedMessenger extends Component {
               </Button>
             </View>
             <View style={{ flexDirection: 'row', }}>
-              <ChatMenu isDiaDiem={null} scrollToTop={this.props.scrollToTop}/>
-              <RelandIcon name="list" color={gui.mainColor}
-                          mainProps={this.styles.captureIcon}
-                          size={22} textProps={{ paddingLeft: 0 }}
-                          onPress={this.coming} />
+              <ChatMenu onPress={this._onPressTempMsg.bind(this)}/>
+
               <RelandIcon name="camera-o" color={gui.mainColor}
                           mainProps={this.styles.captureIcon}
                           size={22} textProps={{ paddingLeft: 0 }}
                           onPress={this.takePicture} />
-              <RelandIcon name="photos" color={gui.mainColor}
+              {/*<RelandIcon name="photos" color={gui.mainColor}
                           mainProps={this.styles.captureIcon}
                           size={22} textProps={{ paddingLeft: 0 }}
                           onPress={this.coming} />
+               */}
               <RelandIcon name="location-o" color={gui.mainColor}
                           mainProps={this.styles.captureIcon}
                           size={22} textProps={{ paddingLeft: 0 }}
@@ -722,10 +720,19 @@ class GiftedMessenger extends Component {
     return null;
   }
 
-  _scrollToTop(){
-    console.log("=========== print scroll to top");
+  _onLocationPress(){
+    var mapWidth = 100;
+    var mapHeight = 33;
+    var lat = 15.91246021276861;
+    var lon = 105.7527299557314;
+
+    var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=16&size='+mapWidth+'x'+mapHeight+'&markers=color:red|'+lat+','+lon+'&sensor=false';
   }
 
+  _onPressTempMsg(msg){
+    this.onChangeText(msg);
+  }
+  
   render() {
     return (
         <View style={this.styles.container}>

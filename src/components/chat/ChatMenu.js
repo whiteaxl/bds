@@ -86,6 +86,7 @@ class ChatMenu extends Component {
                     <MenuTrigger>
                         <RelandIcon name="list" color={gui.mainColor}
                                     mainProps={myStyles.captureIcon}
+                                    noAction={true}
                                     size={22} textProps={{ paddingLeft: 0 }}
                                     />
 
@@ -99,12 +100,8 @@ class ChatMenu extends Component {
     }
 
     _onApply(option) {
-        console.log("================ print ChatMenu._onApply");
-        console.log(option);
-        console.log("================ print ChatMenu._onApply end");
+        this.props.onPress(option);
     }
-
-
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatMenu);

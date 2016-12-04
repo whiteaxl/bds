@@ -89,7 +89,7 @@ class MCameraRollView extends Component {
                 break;
             default:
                 imageIndex = imageIndex;
-                maxImage = 8;
+                maxImage = 20;
                 for (let i=0; i< photos.length; i++){
                     if (photos[i].uri && photos[i].uri.length>0)
                         maxImage = maxImage -1;
@@ -155,7 +155,7 @@ class MCameraRollView extends Component {
             photos[this.state.imageIndex] = {uri: selectedPhotos[0].image.uri, location: selectedPhotos[0].location};
 
             for (var i=1; i<selectedPhotos.length; i++){
-                for (var j=0; j<8; j++){
+                for (var j=0; j<20; j++){
                     if (!photos[j] || !photos[j].uri || photos[j].uri.length<=0){
                         photos[j] = {uri: selectedPhotos[i].image.uri, location: selectedPhotos[i].location}
                         break;

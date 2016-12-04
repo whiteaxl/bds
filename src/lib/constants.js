@@ -127,6 +127,7 @@ export default keyMirror({
   LOADING_INBOX_FAILURE: null,
 
   ON_NEW_MESSAGE: null,
+  ON_TYPING_MESSAGE: null,
 
   ON_PRICING_FIELD_CHANGE: null,
   ON_PRICING_REQUEST: null,

@@ -2,6 +2,7 @@
 const InitialState = require('./inboxInitialState').default;
 
 import log from '../../lib/logUtil';
+import util from '../../lib/utils';
 
 const {
   ON_DB_CHANGE,
@@ -144,7 +145,7 @@ export default function inboxReducer(state = initialState, action) {
       var allRows = [];
       data.forEach(
           (row) =>{
-            row.date = new Date();
+            row.relatedToAds.loaiNhaDatFmt = row.relatedToAds.loaiNhaDatFmt ? row.relatedToAds.loaiNhatDatFmt : util.getLoaiNhaDatFmt(row.relatedToAds);
             allRows.push(row);
           }
       );

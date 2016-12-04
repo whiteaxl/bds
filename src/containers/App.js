@@ -78,6 +78,7 @@ import gui from '../lib/gui';
 import log from '../lib/logUtil';
 
 import RelandIcon from '../components/RelandIcon';
+import ScalableText from 'react-native-text';
 
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
@@ -109,7 +110,7 @@ class TabIcon extends React.Component {
     return (
         <View style={styles.tabIcon}>
           <RelandIcon.Icon style={{color: color}} name={iconName} size={this.props.iconSize}/>
-          <Text style={[styles.tabIconText, {color: color}]}>{this.props.title}</Text>
+          <ScalableText style={[styles.tabIconText, {color: color}]}>{this.props.title}</ScalableText>
         </View>
     );
   }

@@ -166,7 +166,7 @@ class PlacesAutoComplete extends React.Component {
       ...this.props.search.saveSearchList,
       ...this.props.search.recentSearchList
     ];
-
+    
     return (
 
       <GooglePlacesAutocomplete

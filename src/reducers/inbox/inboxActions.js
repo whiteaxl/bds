@@ -49,8 +49,24 @@ export function loadInbox(userID) {
         .then((res) => {
           log.info("getInboxMsg", res);
           if (res.status==0) {
-            dispatch(fetchInboxSuccess(res.data));
+              res.data.map(
+                  (e) => {
+                      let dto = {userID: userID, partnerUserID: e.partner.userID, adsID: e.relatedToAds.adsID};
+                      chatApi.getAllChatMsg(dto)
+                          .then((chatRes) => {
+                              if (chatRes.status==0){
+                                  console.log("========= inboxAction print res");
+                                  console.log(res);
+                                  console.log("========= inboxAction print chatRes");
+                                  console.log(chatRes);
+                                  
+                                  
+                              }
+                          });
+                  }
+              );
 
+            dispatch(fetchInboxSuccess(res.data));
             return res.data;
           } else if (res.error) {
             dispatch(fetchInboxFailure(res.error));

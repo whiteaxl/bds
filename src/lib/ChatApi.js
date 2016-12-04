@@ -15,7 +15,7 @@ const socket = io(`https://${cfg.server}:4432`, {
 });
 
 var ChatApi = {
-    connectAndStartListener: function(userDto, onNewMessage, onUnreadMessage) {
+    connectAndStartListener: function(userDto, onNewMessage, onTypingMessage) {
         console.log("chatApi.connectAndStartListener");
         
         socket.on('connect', () => {
@@ -48,6 +48,18 @@ var ChatApi = {
             socket.emit("read-messages",data, function(res){
                 console.log("mark messages as read " + res);
             });
+        });
+
+        socket.on("user-start-typing", function(data){
+            console.log("=================== CHAT print typing status");
+            console.log(data);
+            onTypingMessage({data: data, isTyping: true});
+        });
+
+        socket.on("user-stop-typing", function(data){
+            console.log("=================== CHAT print stop typing status");
+            console.log(data);
+            onTypingMessage({data: data, isTyping: false});
         });
     },
 
