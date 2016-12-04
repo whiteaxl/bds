@@ -265,7 +265,7 @@ var myStyles = StyleSheet.create({
     dropdownOptions: {
         borderColor: '#ccc',
         borderWidth: 1,
-        marginTop: -340,
+        marginTop: -320,
         left: 10,
         overflow: 'hidden',
         width: 226
@@ -273,7 +273,7 @@ var myStyles = StyleSheet.create({
     dropdownOptions2: {
         borderColor: '#ccc',
         borderWidth: 1,
-        marginTop: -300,
+        marginTop: -280,
         left: 10,
         overflow: 'hidden',
         width: 226

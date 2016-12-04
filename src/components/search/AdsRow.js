@@ -227,7 +227,9 @@ class AdsRow extends React.Component {
               >{ads.giaFmt}</Text>
               <Text style={myStyles.text}>{diaChi}{moreInfo}</Text>
             </View>
-            {this.renderLikeIcon(ads)}
+            <View style={{position: "absolute", left: Dimensions.get('window').width-67}}>
+              {this.renderLikeIcon(ads)}
+            </View>
           </View>
 
         </View>

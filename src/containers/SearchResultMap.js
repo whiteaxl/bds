@@ -514,8 +514,10 @@ class SearchResultMap extends Component {
                       <Text style={styles.detailAdsModalPrice}>{mmarker.price}</Text>
                       <Text style={styles.detailAdsModalText}>{this._getDiaChi(mmarker.diaChi)}{this._getMoreInfo(mmarker)}</Text>
                     </View>
-                    <View style={[styles.detailAdsModalTextHeartButton, {paddingRight: 18, paddingTop: 9}]}>
-                      <MHeartIcon onPress={() => this.onLike(markerId)} color={color} bgColor={bgColor} bgStyle={bgStyle} size={19} />
+                    <View style={{position: "absolute", left: Dimensions.get('window').width-57}}>
+                      <View style={[styles.detailAdsModalTextHeartButton, {paddingRight: 18, paddingTop: 9}]}>
+                        <MHeartIcon onPress={() => this.onLike(markerId)} color={color} bgColor={bgColor} bgStyle={bgStyle} size={19} />
+                      </View>
                     </View>
                   </View>
                 </LinearGradient>
@@ -932,6 +934,7 @@ class SearchResultMap extends Component {
 
     if (this.props.global.setting.autoLoadAds){
       let viewport = apiUtils.getViewport(region);
+      this.props.actions.onSearchFieldChange("viewport", viewport);
       this.props.actions.onSearchFieldChange("pageNo", 1);
       this._refreshListData(viewport, null, this._onSetupMessageTimeout.bind(this));
     }
@@ -953,6 +956,7 @@ class SearchResultMap extends Component {
     } else {
         viewport = apiUtils.getViewport(this.state.region);
     }
+    this.props.actions.onSearchFieldChange("viewport", viewport);
     this.setState({markedList: []});
     this._refreshListData(viewport, null, this._onSetupMessageTimeout.bind(this));
   }
@@ -989,9 +993,6 @@ class SearchResultMap extends Component {
     if (ms -  previousSearchTime > delayDuration) {
         fields.updateLastSearch = false;
 
-        if (newViewport) {
-            this.props.actions.onSearchFieldChange("viewport", newViewport);
-        }
         this.props.actions.search(
             fields
             , refreshCallback
@@ -1069,6 +1070,7 @@ class SearchResultMap extends Component {
 
           let viewport = apiUtils.getViewport(region);
 
+          this.props.actions.onSearchFieldChange("viewport", viewport);
           this.props.actions.onPolygonsChange([]);
           this.props.actions.onSearchFieldChange("polygon", []);
           this.props.actions.onSearchFieldChange("diaChinh", {fullName: gui.VI_TRI_HIEN_TAI});
@@ -1263,17 +1265,18 @@ class SearchResultMap extends Component {
         this.props.actions.onPolygonsChange(polygons);
         // this.props.actions.onSearchFieldChange("diaChinh", {});
         this.props.actions.onSearchFieldChange("pageNo", 1);
-        this._refreshListData(viewport, polygon, () => {this._closeDrawIfNoResult(region)}, {}, false, {});
+        this._refreshListData(viewport, polygon, () => {this._closeDrawIfNoResult(viewport, region)}, {}, false, {});
     }
     this._updateMapView(polygons, hasPolygon);
   }
 
-  _closeDrawIfNoResult(region) {
+  _closeDrawIfNoResult(viewport, region) {
       clearTimeout(this.drawSearchTimer);
       if (this.props.listAds.length == 0) {
           setTimeout(() => this._onCloseDraw(), 50);
       } else {
           this.setState({region: region});
+          this.props.actions.onSearchFieldChange("viewport", viewport);
           // this.props.actions.onSearchFieldChange("diaChinh", {});
           this._onDrawMapDone();
       }
