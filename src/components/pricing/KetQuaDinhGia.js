@@ -95,8 +95,9 @@ class KetQuaDinhGia extends Component {
             </View>
 
             <View style={{marginTop: -55, marginLeft: 10}}>
-              <Text style={styles.priceText}>{util.getPriceM2Display(data.giaM2, data.loaiTin)}</Text>
-              <Text style={styles.infoText}>{data.diaChi}</Text>
+              <Text style={styles.priceText}>{data.giaFmt}</Text>
+              <Text style={styles.infoText}>{util.getPriceM2Display(data.giaM2, data.loaiTin)} - Cách {data.distance}m </Text>
+              <Text style={styles.infoText}>{data.diaChi && data.diaChi.length>30 ? data.diaChi.substring(0,30) + "..." : data.diaChi}</Text>
             </View>
           </Image>
         </TouchableOpacity>
