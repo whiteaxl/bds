@@ -34,7 +34,7 @@ const LATITUDE = 20.95389909999999;
 const LONGITUDE = 105.75490945;
 const LATITUDE_DELTA = 0.00616620000177733;
 const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
-const SPACE = 0.01;
+
 /**
  * ## Redux boilerplate
  */
@@ -73,7 +73,7 @@ class MMapSearch extends Component {
                     longitude: LONGITUDE,
                 },
                 radius: 100,
-            },
+            }
         }
     }
 
@@ -84,7 +84,7 @@ class MMapSearch extends Component {
             <View style={styles.fullWidthContainer}>
 
                 <View style={styles.search}>
-                    <CommonHeader backTitle={"Trở lại"} />
+                    <CommonHeader backTitle={"Trở lại"} headerRightTitle={"Thực hiện"} />
                     <View style={styles.headerSeparator} />
                 </View>
 
@@ -97,8 +97,8 @@ class MMapSearch extends Component {
                     >
                         <MapView.Circle
                             center={circle.center}
-                            radius={circle.radius}
-                            fillColor="#e0f4fc"
+                            radius={this.state.value * 0.5 * 1000}
+                            fillColor="rgba(165,207,255,0.5)"
                             strokeColor="#00a8e6"
                             position="absolute"
                             zIndex={1}
@@ -108,13 +108,11 @@ class MMapSearch extends Component {
                     </MapView>
 
                     {this._renderGooglePlaceAutoComplete()}
-
                     <View style={styles.positionIcon}>
                         <RelandIcon name="home-marker" color={gui.mainColor}
-                                    size={30} textProps={{paddingLeft: 0}}
+                                    size={30} textProps={{ paddingLeft: 0 }}
                         />
                     </View>
-
                     {this._renderButtonOnMap()}
 
                     <View style={styles.mapButtonContainer}>
@@ -417,7 +415,7 @@ var styles = StyleSheet.create({
     fullWidthContainer: {
         flex: 1,
         alignItems: 'stretch',
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
     },
     container: {
         position: 'absolute',
@@ -695,11 +693,11 @@ var styles = StyleSheet.create({
         width: 5,
         marginLeft: (width - 30) / 10 - 6
     },
-    // mapViewCircle:{
-    //   position:'absolute',
-    //   backgroundColor:'#c2ebfb',
-    //   opacity:0.1
-    // }
+    mapViewCircle:{
+        position:'absolute',
+        backgroundColor:'#c2ebfb',
+        opacity:0.1
+    }
 });
 
 export default MMapSearch;

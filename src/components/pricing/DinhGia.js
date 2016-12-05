@@ -16,9 +16,17 @@ var { width, height } = Dimensions.get('window');
 import Icon from 'react-native-vector-icons/FontAwesome';
 import LikeTabButton from '../LikeTabButton';
 
+import KeyboardSpacer from 'react-native-keyboard-spacer';
+
 import GiftedSpinner from 'react-native-gifted-spinner';
 
 import {Actions} from 'react-native-router-flux';
+
+import Button from 'react-native-button';
+
+import dismissKeyboard from 'react-native-dismiss-keyboard';
+
+import gui from '../../lib/gui';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -64,7 +72,8 @@ class DinhGia extends React.Component {
       duAn: {},
       dientich: '',
       location: {},
-      showMoRong: false
+      showMoRong: false,
+      toggleState: false
     };
   }
 
@@ -220,18 +229,27 @@ class DinhGia extends React.Component {
       return (
           <View style={styles.viewNenMoRong} >
             <View style={styles.viewShowDienTich}>
-              <Text style={styles.textViTri}>Diện tích (m²)</Text>
-              <TextInput
+              <View style={{flex:1}}>
+                <Text style={styles.textViTri}>Diện tích (m²)</Text>
+              </View>
+              <View style={{flex:1, right: 15}}>
+                <TextInput
                   keyboardType={'numeric'}
                   returnKeyType='done'
                   style={styles.inputDienTich}
                   onChangeText={(text) => this._onDienTichChange(text)}
                   value={this.state.dienTich && this.state.dienTich.length>0 ? this.state.dienTich : ''}
-              />
+                />
+              </View>
+              <KeyboardSpacer topSpacing={-40} onToggle={(toggleState) => this.onKeyboardToggle.bind(this, toggleState)} />
             </View>
           </View>
       )
     }
+  }
+
+  onKeyboardToggle(toggleState) {
+    this.setState({ toggleState: toggleState });
   }
 
   _onDienTichChange(text){
@@ -317,6 +335,10 @@ class DinhGia extends React.Component {
 
           {this._renderMoRong()}
           {this._renderThietLap()}
+          {this.state.toggleState ? <Button onPress={() => dismissKeyboard()}
+                                            style={[styles.searchButtonText2,
+                                            {textAlign: 'right', color: gui.mainColor,
+                                            backgroundColor: gui.separatorLine}]}>Xong</Button> : null}
         </View>
 
         {this._renderThucHienButton()}
@@ -576,17 +598,25 @@ const styles = StyleSheet.create({
     borderColor: '#bebec0',
     borderWidth: 1,
     borderRadius: 5,
-    marginLeft: width / 3 + 15,
+    marginLeft: 0,
     width: 80,
     textAlign: 'right',
-    alignSelf: 'center'
+    alignSelf: 'flex-end'
   },
   textThietLap: {
     color: 'red',
     fontSize: 15,
     fontFamily: 'Open Sans'
   },
-
+  searchButtonText2: {
+    margin: 0,
+    padding: 10,
+    paddingRight: 17,
+    color: 'white',
+    fontSize: gui.buttonFontSize,
+    fontFamily: 'Open Sans',
+    fontWeight : 'normal'
+  }
 
 });
 

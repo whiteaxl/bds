@@ -5,11 +5,8 @@ import ParsedText from 'react-native-parsed-text';
 
 const styles = StyleSheet.create({
   bubble: {
-    borderRadius: 6,
-    paddingLeft: 14,
-    paddingRight: 14,
-    paddingBottom: 10,
-    paddingTop: 8,
+    borderRadius: 8,
+    padding: 0
   },
   textChat: {
     color: '#000',

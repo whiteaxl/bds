@@ -146,9 +146,9 @@ class  ChatContent extends React.Component {
       let msg = rowData.text;
 
       if (rowData.position === 'left') {
-        return <Text style={{color:'#17242c'}}>{msg}</Text>;
+        return <Text style={{color:'#17242c', padding: 5, borderRadius: 8}}>{msg}</Text>;
       } else {
-        return <Text style={{color:'#17242c'}}>{msg}</Text>;
+        return <Text style={{color:'#17242c', padding: 5, borderRadius: 8}}>{msg}</Text>;
       }
     }
   }
@@ -286,7 +286,8 @@ var styles = StyleSheet.create({
     fontWeight: 'normal'
   },
   image: {
-    height: 100,
+    borderRadius: 8,
+    height: 200
   },
   nameAndDateTime : {
     flex: 1,

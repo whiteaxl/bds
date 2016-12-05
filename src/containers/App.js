@@ -60,6 +60,7 @@ import DinhGia from '../components/pricing/DinhGia';
 import KetQuaDinhGia from '../components/pricing/KetQuaDinhGia';
 import LoaiNhaDat from '../components/LoaiNhaDat';
 import MMapView from '../components/map/MMapView';
+import MMapSearch from '../components/map/MMapSearch';
 
 import FullLine from '../components/line/FullLine';
 

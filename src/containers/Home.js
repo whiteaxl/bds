@@ -292,7 +292,7 @@ class Home extends Component {
         <View style={styles.headerButtonContainer}>
           <TouchableOpacity onPress={() => Actions.DinhGia()} style={styles.headerButtonIcon}>
             <View style={styles.iconView}>
-              <Icon name="balance-scale" size={16} color="#8f8f8f" />
+              <Icon name="balance-scale" size={16} color="#02b801" />
             </View>
             <Text style={styles.headerButton}>Định giá</Text>
           </TouchableOpacity>
@@ -300,7 +300,7 @@ class Home extends Component {
           </View>
           <TouchableOpacity onPress={() => Actions.PostAds()} style={styles.headerButtonIcon}>
             <View style={styles.iconRelandIcon}>
-              <RelandIcon name="camera-o" color='#8f8f8f'
+              <RelandIcon name="camera-o" color='#ff0000'
                           size={16} textProps={{}}
               />
             </View>
@@ -537,9 +537,9 @@ var styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: gui.fontFamily,
     fontSize: 14,
-    fontWeight: '500',
+    fontWeight: '400',
     backgroundColor: 'transparent',
-    color: '#8f8f8f'
+    color: '#484c4f'
 
   },
   headerSeparate: {
