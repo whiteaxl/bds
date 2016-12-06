@@ -32,17 +32,18 @@ class AdsRow extends React.Component {
 
     if (this.props.uploadingLikedAds.uploading && this.props.uploadingLikedAds.adsID == ads.adsID){
       return (
+          <View style={{position: "absolute", left: Dimensions.get('window').width-45}}>
             <View style={myStyles.heartButton}>
               <GiftedSpinner size="small" color="white"/>
             </View>
+          </View>
       );
     } else {
       return (
-          <TouchableHighlight underlayColor='transparent' style={{overflow: 'hidden'}} onPress={() => this.onLike(ads)}>
-            <View style={myStyles.heartButton} >
-              <MHeartIcon color={color} bgColor={bgColor} bgStyle={bgStyle} size={22} noAction={true} />
-            </View>
-          </TouchableHighlight>
+        <View style={{position: "absolute", left: Dimensions.get('window').width-67}}>
+          <MHeartIcon onPress={() => this.onLike(ads)} color={color} bgColor={bgColor} bgStyle={bgStyle} size={22}
+                      mainProps={myStyles.heartButton} />
+        </View>
       )
     }
   }
@@ -227,9 +228,7 @@ class AdsRow extends React.Component {
               >{ads.giaFmt}</Text>
               <Text style={myStyles.text}>{diaChi}{moreInfo}</Text>
             </View>
-            <View style={{position: "absolute", left: Dimensions.get('window').width-67}}>
-              {this.renderLikeIcon(ads)}
-            </View>
+            {this.renderLikeIcon(ads)}
           </View>
 
         </View>

@@ -175,7 +175,8 @@ function mapStateToProps(state) {
     userID: currentUser && currentUser.userID,
     loading: state.search.loadingFromServer,
     allUniquePosAds: allUniquePosAds,
-    maxAdsInMapView: maxAdsInMapView
+    maxAdsInMapView: maxAdsInMapView,
+    uploadingLikedAds: state.search.uploadingLikedAds
   };
 }
 
@@ -497,11 +498,6 @@ class SearchResultMap extends Component {
     let i = 0;
       selectedDupMarkers.map((mmarker) => {
       let markerId = mmarker.id;
-      let isLiked = this.isLiked(markerId);
-      // let color = isLiked ? '#A2A7AD' : 'white';
-      let color = 'white';
-      let bgColor = isLiked ? '#E50064' : '#4A443F';
-      let bgStyle = isLiked ? {} : {opacity: 0.55};
       allItems.push(
           <View style={styles.detailAdsModal} key={i++}>
             <TouchableOpacity onPress={() => {this._onDetailAdsPress(markerId)}}>
@@ -514,11 +510,7 @@ class SearchResultMap extends Component {
                       <Text style={styles.detailAdsModalPrice}>{mmarker.price}</Text>
                       <Text style={styles.detailAdsModalText}>{this._getDiaChi(mmarker.diaChi)}{this._getMoreInfo(mmarker)}</Text>
                     </View>
-                    <View style={{position: "absolute", left: Dimensions.get('window').width-57}}>
-                      <View style={[styles.detailAdsModalTextHeartButton, {paddingRight: 18, paddingTop: 9}]}>
-                        <MHeartIcon onPress={() => this.onLike(markerId)} color={color} bgColor={bgColor} bgStyle={bgStyle} size={19} />
-                      </View>
-                    </View>
+                    {this.renderLikeIcon(markerId)}
                   </View>
                 </LinearGradient>
               </Image>
@@ -551,6 +543,30 @@ class SearchResultMap extends Component {
       );
 
   }
+
+    renderLikeIcon(adsID) {
+        let isLiked = this.isLiked(adsID);
+        // let color = isLiked ? '#A2A7AD' : 'white';
+        let color = 'white';
+        let bgColor = isLiked ? '#E50064' : '#4A443F';
+        let bgStyle = isLiked ? {} : {opacity: 0.55};
+        if (this.props.uploadingLikedAds.uploading && this.props.uploadingLikedAds.adsID == adsID){
+            return (
+                <View style={{position: "absolute", left: Dimensions.get('window').width-37}}>
+                    <View style={[styles.detailAdsModalTextHeartButton, {paddingRight: 18, paddingTop: 9}]}>
+                        <GiftedSpinner size="small" color="white"/>
+                    </View>
+                </View>
+            );
+        } else {
+            return (
+                <View style={{position: "absolute", left: Dimensions.get('window').width-57}}>
+                    <View style={[styles.detailAdsModalTextHeartButton, {paddingRight: 18, paddingTop: 9}]}>
+                        <MHeartIcon onPress={() => this.onLike(adsID)} color={color} bgColor={bgColor} bgStyle={bgStyle} size={19} />
+                    </View>
+                </View>);
+        }
+    }
 
     _getDiaChi(param){
         var diaChi = param;
