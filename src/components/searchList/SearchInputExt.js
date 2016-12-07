@@ -19,7 +19,7 @@ export default class SearchInputExt extends Component {
         return(
             <View style={styles.container}>
                 <TouchableOpacity
-                    onPress={() => Actions.SearchSuggestion({owner: this.props.owner})}
+                    onPress={() => Actions.SearchSuggestion({owner: this.props.owner, loadSearchFilter: this.props.loadSearchFilter})}
                 >
                     <View style={styles.searchContainer}>
                             <TruliaIcon name="search" size={14} color="white"

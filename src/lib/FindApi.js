@@ -112,7 +112,55 @@ var Api = {
 
     return params
   },
+    convertQueryToFieldsParams(query) {
+        let {diaChinh, loaiTin, loaiNhaDat, soPhongNguGREATER, soPhongTamGREATER
+            , dienTichBETWEEN, giaBETWEEN, orderBy, viewport, huongNha, ngayDangTinGREATER, polygon
+            , circle, isIncludeCountInResponse} = query;
 
+        let ngayDaDang = 0;
+        if (ngayDangTinGREATER) {
+            let now = moment();
+            let ngayDangTin = moment(ngayDangTinGREATER, 'YYYYMMDD');
+            ngayDaDang = now.diff(ngayDangTin, 'days');
+        }
+        let center = null;
+        if (circle && circle.center) {
+            center = circle.center;
+        }
+        let ban = {};
+        let thue = {};
+        if (loaiTin == 0) {
+            ban.loaiNhaDat = (loaiNhaDat && loaiNhaDat.length>0) ? loaiNhaDat[0]. toString() : '';
+            ban.gia = RangeUtils.sellPriceRange.rangeVal2Display(giaBETWEEN);
+            thue.loaiNhaDat = '';
+            thue.gia = RangeUtils.BAT_KY_RANGE;
+        } else {
+            ban.loaiNhaDat = '';
+            ban.gia = RangeUtils.BAT_KY_RANGE;
+            thue.loaiNhaDat = (loaiNhaDat && loaiNhaDat.length>0) ? loaiNhaDat[0]. toString() : '';
+            thue.gia = RangeUtils.sellPriceRange.rangeVal2Display(giaBETWEEN);
+        }
+
+        let ret = {
+            loaiTin: loaiTin == 0 ? 'ban' : 'thue',
+            ban: ban,
+            soPhongNguSelectedIdx: DanhMuc.getIdx(DanhMuc.SoPhongNgu, soPhongNguGREATER),
+            soNhaTamSelectedIdx : DanhMuc.getIdx(DanhMuc.SoPhongTam, soPhongTamGREATER),
+            dienTich: RangeUtils.dienTichRange.rangeVal2Display(dienTichBETWEEN),
+            thue: thue,
+            orderBy: orderBy && Object.keys(orderBy).length == 2 ? orderBy.name + orderBy.type : '',
+            viewport: viewport,
+            diaChinh : diaChinh,
+            center: center,
+            radiusInKmSelectedIdx: circle ? DanhMuc.getIdx(DanhMuc.RadiusInKm, circle.radius) : 0,
+            huongNha: huongNha && huongNha.length > 0 ? huongNha[0] : 0,
+            ngayDaDang: ngayDaDang, //batky
+            polygon: polygon,
+            isIncludeCountInResponse: isIncludeCountInResponse
+        };
+
+        return ret;
+    },
   //query json that sent to server
   convertQuery2String(query) {
     let toStrRange = (range) => {

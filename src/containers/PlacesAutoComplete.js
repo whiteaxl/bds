@@ -16,6 +16,7 @@ import {
 } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
+import findApi from "../lib/FindApi";
 
 var gui = require("../lib/gui");
 var log = require("../lib/logUtil");
@@ -65,6 +66,10 @@ class PlacesAutoComplete extends React.Component {
 
     if (data.isRecent || data.isSaveSearch) {
       this.props.actions.loadSavedSearch(data);
+      if (this.props.loadSearchFilter) {
+        let cred = findApi.convertQueryToFieldsParams(data.query);
+        this.props.loadSearchFilter(cred);
+      }
     } else {
       /*
       let value = {

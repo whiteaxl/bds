@@ -71,8 +71,8 @@ class Search extends Component {
 
         let {loaiTin, ngayDaDang, huongNha, dienTich, ban, thue,
             soPhongNguSelectedIdx, radiusInKmSelectedIdx} = this.props.search.form.fields;
-        let {initDienTich, fromDienTich, toDienTich} = this._initDienTich();
-        let {initGia, fromGia, toGia} = this._initGia(loaiTin);
+        let {initDienTich, fromDienTich, toDienTich} = this._initDienTich(dienTich);
+        let {initGia, fromGia, toGia} = this._initGia(loaiTin, this.props.search.form.fields[loaiTin].gia);
         let showMore = ngayDaDang != '' || huongNha != 0;
         this.state = {
             showMore: showMore,
@@ -99,8 +99,38 @@ class Search extends Component {
         };
     }
 
-    _initDienTich() {
-        let {dienTich} = this.props.search.form.fields;
+    _loadSearchFilter(fields) {
+        let {loaiTin, ngayDaDang, huongNha, dienTich, ban, thue,
+            soPhongNguSelectedIdx, radiusInKmSelectedIdx} = fields;
+        let {initDienTich, fromDienTich, toDienTich} = this._initDienTich(dienTich);
+        let {initGia, fromGia, toGia} = this._initGia(loaiTin, fields[loaiTin].gia);
+        let showMore = ngayDaDang != '' || huongNha != 0;
+        this.setState({
+            showMore: showMore,
+            showNgayDaDang: false,
+            showGia: false,
+            showDienTich: false,
+            initGia: initGia,
+            initDienTich: initDienTich,
+            initNgayDaDang: ngayDaDang,
+            fromDienTich: fromDienTich,
+            toDienTich: toDienTich,
+            fromGia: fromGia,
+            toGia: toGia,
+            inputNgayDaDang: ngayDaDang,
+            toggleState: false,
+            loaiTin: loaiTin,
+            ban: ban,
+            thue: thue,
+            dienTich: dienTich,
+            soPhongNguSelectedIdx: soPhongNguSelectedIdx,
+            radiusInKmSelectedIdx: radiusInKmSelectedIdx,
+            huongNha: huongNha,
+            ngayDaDang: ngayDaDang
+        });
+    }
+
+    _initDienTich(dienTich) {
         let initDienTich = [];
         Object.assign(initDienTich, dienTich);
         let dienTichVal = RangeUtils.dienTichRange.toValRange(initDienTich);
@@ -115,8 +145,7 @@ class Search extends Component {
         return {initDienTich: initDienTich, fromDienTich: fromDienTich, toDienTich: toDienTich};
     }
 
-    _initGia(loaiTin) {
-        let gia = this.props.search.form.fields[loaiTin].gia;
+    _initGia(loaiTin, gia) {
         let initGia = [];
         Object.assign(initGia, gia);
         let giaStepValues = 'ban' === loaiTin ? RangeUtils.sellPriceRange :RangeUtils.rentPriceRange;
@@ -407,7 +436,8 @@ class Search extends Component {
                 </View>
 
                 <View style={myStyles.pageHeader}>
-                    <SearchInput placeName={placeName} owner={this.props.owner}/>
+                    <SearchInput placeName={placeName} owner={this.props.owner}
+                                 loadSearchFilter={(fields) => this._loadSearchFilter(fields)}/>
                 </View>
             </View>
         );
