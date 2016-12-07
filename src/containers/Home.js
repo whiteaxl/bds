@@ -82,7 +82,7 @@ class Home extends Component {
         return;
       }
 
-      if (recentSearchList.length = 1){
+      if (recentSearchList.length == 1){
         this.props.actions.loadHomeData((error) =>
             AlertIOS.alert('Thông báo',
                 error,

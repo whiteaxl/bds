@@ -763,10 +763,15 @@ class SearchResultMap extends Component {
   }
 
   _renderCurrentPosButton() {
+    let {region} = this.state;
+    let {center} = this.props.search.form.fields;
+    let isCurrentPos = center && Math.abs(center.lat - region.latitude) <= PADDING
+        && Math.abs(center.lon - region.longitude) <= PADDING;
+    let color = isCurrentPos ? gui.mainColor : 'black';
     return (
         <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} >
           <View style={[styles.bubble, styles.button, {marginTop: 10}]}>
-            <RelandIcon name="direction" color='black' mainProps={{flexDirection: 'row'}}
+            <RelandIcon name="direction" color={color} mainProps={{flexDirection: 'row'}}
                         size={20} textProps={{paddingLeft: 0}}
                         noAction={true}></RelandIcon>
           </View>

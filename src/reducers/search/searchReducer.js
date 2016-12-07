@@ -276,7 +276,7 @@ export default function searchReducer(state = initialState, action) {
           query: e.query,
           isRecent: true,
           desc: findApi.convertQuery2String(e.query),
-          description : (e.query && e.query.diaChinh ? e.query.diaChinh.fullName : '') + " - " + i,
+          description : (e.query && e.query.diaChinh ? e.query.diaChinh.fullName : '') + " - rs" + i,
         } ;
       });
 

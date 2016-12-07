@@ -300,7 +300,8 @@ class AdsListView extends React.Component {
     if (totalCount < endAdsIndex) {
       totalCount = endAdsIndex;
     }
-    let title = 'Đang hiển thị từ ' + beginAdsIndex + "-" + endAdsIndex + ' / ' + totalCount + ' kết quả';
+    let title = totalCount > limit ? 'Đang hiển thị từ ' + beginAdsIndex + "-" + endAdsIndex + ' / ' + totalCount + ' kết quả' :
+    'Đang hiển thị ' + totalCount + ' kết quả';
     return title;
   }
 }
