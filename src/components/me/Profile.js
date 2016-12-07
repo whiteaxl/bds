@@ -9,17 +9,22 @@ import GiftedSpinner from 'react-native-gifted-spinner';
 
 import React, {Component} from 'react';
 
-import {Text, View, StyleSheet, PixelRatio, ScrollView, Image, Alert,
-    TextInput, StatusBar, Dimensions, TouchableOpacity, TouchableHighlight, DatePickerIOS } from 'react-native'
+import {
+    Text, View, StyleSheet, PixelRatio, ScrollView, Image, Alert,
+    TextInput, StatusBar, Dimensions, TouchableOpacity, TouchableHighlight, DatePickerIOS
+} from 'react-native'
 
 import TruliaIcon from '../TruliaIcon';
 
 import {Map} from 'immutable';
 import {Actions} from 'react-native-router-flux';
+
 import gui from "../../lib/gui";
 import util from "../../lib/utils";
 import MChartView from '../MChartView';
 import moment from 'moment';
+import FullLine from '../line/FullLine'
+
 
 import DanhMuc from '../../assets/DanhMuc';
 
@@ -82,20 +87,20 @@ class Profile extends Component {
                         {this._renderContentGroupTitle('THÔNG TIN LIÊN LẠC')}
 
                         {this._renderTenDayDu()}
-                        <View style={[style.line]} />
+                        <FullLine style={{ marginLeft: 15 }} />
 
                         {this._renderSoDienThoai()}
-                        <View style={[style.line]} />
+                        <FullLine style={{ marginLeft: 15 }} />
 
                         {this._renderEmail()}
-                        <View style={[style.line]} />
+                        <FullLine style={{ marginLeft: 15 }} />
 
                         {this._renderWebsite()}
-                        <View style={[style.line]} />
+                        <FullLine style={{ marginLeft: 15 }} />
 
                         {this._renderGioiThieu()}
 
-                        <View style={[style.line]} />
+                        <FullLine style={{ marginLeft: 15 }} />
                         {this._renderPhoto()}
 
                         {this._renderContentGroupTitle('')}
@@ -105,15 +110,15 @@ class Profile extends Component {
                         {this._renderContentGroupTitle('THÔNG TIN CÁ NHÂN')}
 
                         {this._renderGioiTinh()}
-                        <View style={[style.line]} />
+                        <FullLine style={{ marginLeft: 15 }} />
 
                         {this._renderNgaySinh()}
                         {this._renderNgaySinhPicker()}
-                        <View style={[style.line]} />
+                        <FullLine style={{ marginLeft: 15 }} />
 
 
                         {this._renderDiaChi()}
-                        <View style={[style.line]} />
+                        <FullLine style={{ marginLeft: 15 }} />
 
                         {this._renderMoiGioi()}
 

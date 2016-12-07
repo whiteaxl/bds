@@ -33,6 +33,8 @@ import PickerExt from '../components/picker/PickerExt';
 
 import PickerExt2 from '../components/picker/PickerExt2';
 
+import FullLine from '../components/line/FullLine';
+
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import dismissKeyboard from 'react-native-dismiss-keyboard';
@@ -347,7 +349,7 @@ class Search2 extends Component {
                   CÁC ĐIỀU KIỆN
                 </Text>
               </View>
-
+              <FullLine />
               <TouchableOpacity
                 onPress={this._onPropertyTypesPressed.bind(this)}>
                 <View style={myStyles.searchFilterAttributeExt3}>
@@ -360,12 +362,13 @@ class Search2 extends Component {
                   </View>
                 </View>
               </TouchableOpacity>
-
-                {this._renderDienTich()}
-
-                {this._renderGia()}
-
+              <FullLine style={{ marginLeft: 17 }} />
+              {this._renderDienTich()}
+              <FullLine style={{ marginLeft: 17 }} />
+              {this._renderGia()}
+              <FullLine style={{ marginLeft: 17 }} />
               {this._renderSoPhongNgu()}
+              <FullLine />
 
               {this._renderBanKinhTimKiem()}
 
@@ -375,16 +378,18 @@ class Search2 extends Component {
                 <View style={[myStyles.searchMoreFilterAttribute, myStyles.searchMoreSeparator]}>
                   <Text />
                 </View>
+                <FullLine />
                 {this._renderMoreComponent()}
                 <View style={[myStyles.searchMoreFilterAttribute, myStyles.searchMoreSeparator]}>
                   <Text />
                 </View>
+                <FullLine />
                 <View style={myStyles.searchMoreFilterAttribute}>
                   <Button onPress={this.onResetFilters.bind(this)} style={myStyles.searchResetText}>Thiết lập lại</Button>
                 </View>
+                <FullLine />
                 <View style={myStyles.searchMoreFilterAttribute} />
               </View>
-
             </ScrollView>
         </View>
 
@@ -836,6 +841,7 @@ class Search2 extends Component {
       return (
           <View>
             {this._renderHuongNha()}
+            <FullLine style={{marginLeft:17}}/>
             {this._renderNgayDaDang()}
           </View>
       );
@@ -1078,7 +1084,7 @@ var myStyles = StyleSheet.create({
     color: '#606060',
     justifyContent :'space-between',
     padding: 0,
-    borderTopWidth: 1,
+    borderTopWidth: 0,
     borderTopColor: gui.separatorLine
   },
   searchFilterAttribute: {
@@ -1090,7 +1096,7 @@ var myStyles = StyleSheet.create({
     paddingLeft: 0,
     paddingRight: 13,
     paddingBottom: 10,
-    borderTopWidth: 1,
+    borderTopWidth: 0,
     marginLeft: 17,
     borderTopColor: gui.separatorLine
   },
@@ -1103,7 +1109,7 @@ var myStyles = StyleSheet.create({
     paddingTop: 5,
     paddingLeft: 17,
     paddingBottom: 7,
-    borderTopWidth: 1,
+    borderTopWidth: 0,
     borderTopColor: gui.separatorLine
   },
   searchFilterAttribute3: {
@@ -1115,7 +1121,7 @@ var myStyles = StyleSheet.create({
     paddingLeft: 17,
     paddingRight: 13,
     paddingBottom: 10,
-    borderTopWidth: 1,
+    borderTopWidth: 0,
     borderTopColor: gui.separatorLine
   },
   searchFilterAttributeExt: {
@@ -1127,7 +1133,7 @@ var myStyles = StyleSheet.create({
     paddingLeft: 0,
     paddingRight: 19,
     paddingBottom: 10,
-    borderTopWidth: 1,
+    borderTopWidth: 0,
     marginLeft: 17,
     borderTopColor: gui.separatorLine
   },
@@ -1140,7 +1146,7 @@ var myStyles = StyleSheet.create({
     paddingTop: 5,
     paddingLeft: 0,
     paddingBottom: 8,
-    borderTopWidth: 1,
+    borderTopWidth: 0,
     marginLeft: 17,
     borderTopColor: gui.separatorLine
   },
@@ -1153,13 +1159,13 @@ var myStyles = StyleSheet.create({
     paddingLeft: 17,
     paddingRight: 19,
     paddingBottom: 10,
-    borderTopWidth: 1,
+    borderTopWidth: 0,
     borderTopColor: gui.separatorLine
   },
   searchMoreFilterAttribute: {
     padding: 10,
     paddingBottom: 11,
-    borderTopWidth: 1,
+    borderTopWidth: 0,
     borderTopColor: gui.separatorLine
   },
   ngayDaDangItem: {

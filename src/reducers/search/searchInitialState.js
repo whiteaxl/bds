@@ -51,7 +51,7 @@ const SearchForm = Record({
             }
         },
         polygon: [], //[{lat, lon}]
-
+        circle: {},
         radiusInKmSelectedIdx: 0,
         center : null , //{lat, lon}
         diaChinh : {

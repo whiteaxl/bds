@@ -9,7 +9,7 @@ import {Actions} from 'react-native-router-flux';
 import MapView from 'react-native-maps';
 import Button from 'react-native-button';
 
-import CommonHeader from '../CommonHeader';
+import TruliaIcon from '../TruliaIcon';
 
 import gui from '../../lib/gui';
 
@@ -42,22 +42,21 @@ const LONGITUDE_DELTA = LATITUDE_DELTA * ASPECT_RATIO;
 class MMapSearch extends Component {
 
     constructor(props) {
-        log.info("Call PostAdsMapView.constructor");
+        log.info("Call MMapSearch.constructor");
         super(props);
         StatusBar.setBarStyle('default');
 
         var location = props.location;
+
         var region ={}
-        if (!location || !location.lat ||location.lat == '') {
+        if (!location || !location.latitude ||location.latitude == '') {
             region.latitude = LATITUDE;
             region.longitude = LONGITUDE;
+            region.latitudeDelta = LATITUDE_DELTA;
+            region.longitudeDelta = LONGITUDE_DELTA;
         } else{
-            region.latitude = location.lat;
-            region.longitude = location.lon;
+            region = location;
         }
-        region.latitudeDelta = LATITUDE_DELTA;
-        region.longitudeDelta = LONGITUDE_DELTA;
-
 
         this.state = {
             showSuggestionPosition: props.showSuggestionPosition || false,
@@ -66,7 +65,6 @@ class MMapSearch extends Component {
             diaChi: null,
             mapType: "standard",
             mapName: "Satellite",
-            value: 0.2,
             circle: {
                 center: {
                     latitude: LATITUDE,
@@ -77,17 +75,22 @@ class MMapSearch extends Component {
         }
     }
 
+    _onThucHien(){
+        this.props.onPress(this.state.circle);
+        Actions.pop();
+    }
+
     render() {
-        log.info("Call PostAdsMapView.render");
-        const { region, circle} = this.state;
+        log.info("Call MMapSearch.render");
+        const { circle} = this.state;
+
         return (
             <View style={styles.fullWidthContainer}>
 
                 <View style={styles.search}>
-                    <CommonHeader backTitle={"Trở lại"} headerRightTitle={"Thực hiện"} />
+                    <HeaderMMapSearch backTitle={"Trở lại"} headerRightTitle={"Thực hiện" } onPress={this._onThucHien.bind(this)} />
                     <View style={styles.headerSeparator} />
                 </View>
-
                 <View style={styles.map}>
                     <MapView
                         region={this.state.region}
@@ -96,14 +99,14 @@ class MMapSearch extends Component {
                         onRegionChangeComplete={this._onRegionChangeComplete.bind(this)}
                     >
                         <MapView.Circle
+                            key = {(circle.center.latitude + circle.center.longitude + circle.radius)}
                             center={circle.center}
-                            radius={this.state.value * 0.5 * 1000}
+                            radius={circle.radius}
                             fillColor="rgba(165,207,255,0.5)"
                             strokeColor="#00a8e6"
                             position="absolute"
                             zIndex={1}
                             strokeWidth={1}
-                            style={styles.mapViewCircle}
                         />
                     </MapView>
 
@@ -114,7 +117,6 @@ class MMapSearch extends Component {
                         />
                     </View>
                     {this._renderButtonOnMap()}
-
                     <View style={styles.mapButtonContainer}>
                         <View style={styles.searchListButton}>
                             <View style={styles.viewTopNav}>
@@ -123,7 +125,7 @@ class MMapSearch extends Component {
                             <View style={styles.viewCenterNav}>
                                 <Slider
                                     value={this.state.value}
-                                    onValueChange={(value) => this.setState({ value })}
+                                    onValueChange={this._setRadiusCenter.bind(this)}
                                     trackStyle={styles.track}
                                     thumbStyle={styles.thumb}
                                     minimumValue={0}
@@ -136,7 +138,7 @@ class MMapSearch extends Component {
                             {this._renderSliderView()}
                             <View style={styles.viewBottomNav}>
                                 <View style={{flex:1, justifyContent:'center', alignItems:'flex-start', flexDirection:'row'}}>
-                                    <Text style={styles.textBottomLeft}>{this.state.value * 0.5}</Text>
+                                    <Text style={styles.textBottomLeft}>{0.5*this.state.circle.radius/1000}</Text>
                                     <Text style={styles.textBottomCenter}>KM</Text>
                                 </View>
                                 <View style={{flex:1}}>
@@ -148,6 +150,13 @@ class MMapSearch extends Component {
                 </View>
             </View>
         )
+    }
+
+    _setRadiusCenter(radius){
+        var circle = JSON.parse(JSON.stringify(this.state.circle));
+        circle.radius = radius*1000;
+        this.setState({
+            circle: circle});
     }
 
     _renderSliderView(){
@@ -279,7 +288,10 @@ class MMapSearch extends Component {
 
     _onRegionChangeComplete(region) {
         console.log("========== on region change complete");
-        this.setState({region: region});
+        var circle = JSON.parse(JSON.stringify(this.state.circle));
+        circle.center.latitude = region.latitude;
+        circle.center.longitude = region.longitude
+        this.setState({region: region, circle: circle});
         findApi.getGeocoding(region.latitude, region.longitude, this._getDiaChinhContent.bind(this));
     }
 
@@ -403,7 +415,49 @@ class MMapSearch extends Component {
     _onCancel() {
         Actions.pop();
     }
+
+
+
 }
+
+class HeaderMMapSearch extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return <View style={styles.customPageHeader}>
+            <View style={styles.customPageTitle}>
+                <Text style={styles.customPageTitleText}>
+                    {this.props.headerTitle}
+                </Text>
+            </View>
+            <TruliaIcon onPress={this._onBack}
+                        name="arrow-left" color={gui.mainColor} size={25}
+                        mainProps={styles.backButton} text={this.props.backTitle}
+                        textProps={styles.backButtonText} >
+            </TruliaIcon>
+            <TouchableOpacity onPress={this.props.onPress} style={styles.customPageRightTitle}>
+                <Text style={styles.customPageRightTitleText}>
+                    {this.props.headerRightTitle}
+                </Text>
+            </TouchableOpacity>
+        </View>
+    }
+
+    _onBack() {
+        Actions.pop();
+    }
+    _returnLatLonPress() {
+        console.log('=============== print lat lon position map circle ')
+        // var {region} = this.state;
+
+        this.props.onPress(this.state.circle);
+        Actions.pop();
+    }
+
+}
+
 
 // Later on in your styles..
 var styles = StyleSheet.create({
@@ -516,8 +570,8 @@ var styles = StyleSheet.create({
     },
     positionIcon: {
         position: 'absolute',
-        top: (height-60-25-60)/2,
-        left: width/2 - 10,
+        top: (height-60-25-60)/2 + 15,
+        left: width/2 - 8,
         justifyContent: 'center',
         borderColor: gui.mainColor,
         backgroundColor: 'transparent'
@@ -693,10 +747,60 @@ var styles = StyleSheet.create({
         width: 5,
         marginLeft: (width - 30) / 10 - 6
     },
-    mapViewCircle:{
-        position:'absolute',
-        backgroundColor:'#c2ebfb',
-        opacity:0.1
+    customPageHeader: {
+        flexDirection: 'row',
+        alignItems: 'flex-start',
+        justifyContent: 'flex-start',
+        backgroundColor: 'transparent',
+        height: 60
+    },
+    customPageTitle: {
+        left:36,
+        right:36,
+        marginTop: 31,
+        marginBottom: 10,
+        position: 'absolute'
+    },
+    customPageRightTitle:{
+        marginTop: 28,
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+        height:30,
+        width: 80,
+        right:18,
+        marginBottom: 10,
+        position: 'absolute',
+        backgroundColor:'transparent'
+    },
+    customPageTitleText: {
+        color: 'black',
+        fontSize: gui.normalFontSize,
+        fontWeight: 'bold',
+        fontFamily: gui.fontFamily,
+        textAlign: 'center'
+    },
+    customPageRightTitleText: {
+        color: gui.mainColor,
+        fontSize: gui.normalFontSize,
+        fontFamily: gui.fontFamily,
+        textAlign: 'right',
+        fontWeight:'500'
+    },
+    backButton: {
+        marginTop: 28,
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: 'transparent',
+        paddingLeft: 18,
+        paddingRight: 18
+    },
+    backButtonText: {
+        color: gui.mainColor,
+        fontSize: gui.normalFontSize,
+        fontFamily: gui.fontFamily,
+        textAlign: 'left',
+        marginLeft: 7
     }
 });
 

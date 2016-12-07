@@ -257,10 +257,12 @@ class SearchResultMap extends Component {
       editing: null,
       region: region,
       coordinate : null,
+      circle:{},
       // pageNo: 1,
       showMessage: false,
       endMsgAnimation: true,
       mounting: true,
+      positionSearchPress: false,
       searchTime: moment().toDate().getTime()
     };
   }
@@ -386,6 +388,7 @@ class SearchResultMap extends Component {
                     strokeWidth={3}
                 />
             )}
+            {this._renderMapCircle()}
             {/*
             {
               !this.state.editing && radius && (<MapView.Circle
@@ -427,6 +430,7 @@ class SearchResultMap extends Component {
             </View>
 
             <View style={styles.mapButtonContainer}>
+            {this._renderNSearchMap()}    
             {this._renderDrawButton()}
             {this._renderCurrentPosButton()}
           </View>
@@ -484,9 +488,27 @@ class SearchResultMap extends Component {
     )
   }
 
-    _isHeaderLoading() {
+  _renderMapCircle(){
+        var circle = this.state.circle;
+        if (JSON.stringify(circle) != JSON.stringify({})){
+            return (
+                <MapView.Circle
+                    key={circle.center.latitude + circle.center.longitude + circle.radius}
+                    center={circle.center}
+                    radius={circle.radius}
+                    fillColor="rgba(165,207,255,0.5)"
+                    strokeColor="#00a8e6"
+                    position="absolute"
+                    zIndex={1}
+                    strokeWidth={1}
+                />
+            )
+        }
+  }
+
+  _isHeaderLoading() {
         return this.props.loading;
-    }
+  }
 
   _renderAdsModal() {
     let {dupMarker} = this.props.allUniquePosAds;
@@ -751,6 +773,56 @@ class SearchResultMap extends Component {
         </TouchableOpacity>
     );
   }
+
+  _renderNSearchMap() {
+        return (
+            <TouchableOpacity onPress={this._onMMapSearch.bind(this)} >
+                <View style={[styles.bubble, styles.button, {marginTop: 5}]}>
+                    <RelandIcon name="share" color='black' mainProps={{flexDirection: 'row'}}
+                                size={20} textProps={{paddingLeft: 0}}
+                                noAction={true}></RelandIcon>
+                </View>
+            </TouchableOpacity>
+        );
+  }
+
+  _onMMapSearch(){
+      if (!this.state.positionSearchPress){
+          this.setState({positionSearchPress: true});
+          let location = {lat: this.state.region.latitude, lon: this.state.region.longitude};
+          Actions.MMapSearch({ onPress: this._onVitri.bind(this), location: this.state.region });
+      } else {
+          this.setState({positionSearchPress: false});
+
+          this.props.actions.onSearchFieldChange("circle", {});
+
+          this.setState({circle: {}});
+      }
+  }
+
+  _onVitri(circle) {
+        var region = JSON.parse(JSON.stringify(this.state.region));
+        region.latitude = circle.center.latitude;
+        region.longitude = circle.center.longitude;
+
+
+        let sCircle = {
+            center: {
+                lat: circle.center.latitude,
+                lon: circle.center.longitude
+            },
+            radius: circle.radius/1000
+        }
+
+        this._refreshListData(null, null, this._onSetupMessageTimeout.bind(this), null, null, null, 1, false, sCircle);
+
+        this.props.actions.onSearchFieldChange("circle", sCircle);
+
+        this.setState({
+            region: region,
+            circle: circle});
+  }
+    
   _renderDrawButton() {
     let drawIconColor = this.props.search.map.polygons && this.props.search.map.polygons.length == 0 && this.props.search.drawMode ? gui.mainColor : 'black';
     return (
@@ -977,13 +1049,20 @@ class SearchResultMap extends Component {
     this._refreshListData(viewport, null, this._onSetupMessageTimeout.bind(this));
   }
 
-  _refreshListData(newViewport, newPolygon, refreshCallback, newCenter, excludeCount, newDiaChinh, newPageNo, isAppend) {
+  _refreshListData(newViewport, newPolygon, refreshCallback, newCenter, excludeCount, newDiaChinh, newPageNo, isAppend, newCircle) {
     console.log("Call SearhResultMap._refreshListData");
     var {loaiTin, ban, thue, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, viewport, diaChinh, center, huongNha, ngayDaDang,
-        polygon, pageNo} = this.props.search.form.fields;
+        polygon, pageNo, circle} = this.props.search.form.fields;
     let limit = this.props.maxAdsInMapView;
     var isHavingCount = excludeCount ? false : true;
+
+    let mcircle = null;
+
+    console.log("================= print new circle");
+    console.log(newCircle);
+    console.log("================= print new circle end");
+
     var fields = {
       loaiTin: loaiTin,
       ban: ban,
@@ -999,6 +1078,7 @@ class SearchResultMap extends Component {
       huongNha: huongNha,
       ngayDaDang: ngayDaDang,
       polygon: newPolygon || polygon,
+      circle: newCircle || circle,
       pageNo: !isAppend ? 1 : newPageNo || pageNo,
       limit: limit,
       isIncludeCountInResponse: isHavingCount};
@@ -1477,7 +1557,7 @@ var styles = StyleSheet.create({
   },
   mapButtonContainer: {
     position: 'absolute',
-    top: height-177,
+    top: height-197,
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center',

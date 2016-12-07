@@ -25,23 +25,37 @@ var Api = {
   _requestCnt : 0,
 
   convertFieldsToQueryParams : function(fields){
+    console.log("============== print search fields");
+    console.log(fields);
+    console.log("============== print search fields end");
+
     var {loaiTin, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, diaChinh, center, viewport, 
         huongNha, ngayDaDang, polygon, pageNo, limit, isIncludeCountInResponse,
-        userID, updateLastSearch
+        userID, updateLastSearch, circle
     } = fields;
 
     let loaiNhaDat = fields[loaiTin].loaiNhaDat;
     let gia = fields[loaiTin].gia;
 
-    let circle = {};
+    let mcircle = {};
     if (center && center.length > 0) {
-      circle.radius = DanhMuc.getRadiusInKmByIndex(radiusInKmSelectedIdx) || undefined;
-      circle.center = center;
+        mcircle.radius = DanhMuc.getRadiusInKmByIndex(radiusInKmSelectedIdx) || undefined;
+        mcircle.center = center;
     }
-    if (!circle.radius || !circle.center) {
-      circle = undefined;
+
+    if (circle)
+        mcircle = circle;
+    console.log("======================= print 1111111111111");
+    console.log(mcircle);
+    console.log("======================= print 1111111111111");
+    if (!mcircle.radius || !mcircle.center) {
+        mcircle = undefined;
     }
+
+      console.log("======================= print 22222222222222");
+      console.log(mcircle);
+      console.log("======================= print 22222222222222");
 
     if (viewport && viewport.length == 0 ) {
       viewport = undefined;
@@ -81,7 +95,7 @@ var Api = {
       'soPhongTamGREATER' : Number(DanhMuc.getSoPhongTamByIndex(soNhaTamSelectedIdx)) || undefined,
       'orderBy' : orderBy ? {name: DanhMuc.getOrderKey(orderBy), type: DanhMuc.getOrderType(orderBy)} : undefined,
       'diaChinh': diaChinh && Object.keys(diaChinh).length > 0 ? diaChinh : undefined,
-      'circle' : circle,
+      'circle' : mcircle,
       'viewport' : viewport ,
       'limit' : limit || maxRows, //default is 250 limit
       'huongNha' : [huongNha] || undefined,

@@ -221,6 +221,7 @@ class App extends React.Component {
             <Scene key='KetQuaDinhGia' component={KetQuaDinhGia} hideNavBar={true}/>
             <Scene key='LoaiNhaDat' component={LoaiNhaDat} hideNavBar={true}/>
             <Scene key='MMapView' component={MMapView} hideNavBar={true}/>
+            <Scene key='MMapSearch' component={MMapSearch} hideNavBar={true} direction="vertical" panHandlers={_panResponder.panHandlers} />
 
             {/* Multi choice */}
             <Scene key='PackageTypes' component={PackageTypes} hideNavBar={true}/>
