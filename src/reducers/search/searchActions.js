@@ -383,6 +383,11 @@ export function loadHomeData(failCallback) {
           timeModified : today.getTime(),
           query : {}
         }
+      }else{
+        if (lastSearchObj.query && lastSearchObj.query.loaiNhaDat && lastSearchObj.query.loaiNhaDat.length>0){
+          lastSearchObj.query.loaiNhaDat = lastSearchObj.query.loaiNhaDat.filter((n) => n)
+                                                                          .map((e) => {return Number(e)});
+        }
       }
 
       var getHomeData = (currentLocation) => {
