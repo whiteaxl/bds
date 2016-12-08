@@ -263,7 +263,8 @@ class SearchResultMap extends Component {
       endMsgAnimation: true,
       mounting: true,
       positionSearchPress: false,
-      searchTime: moment().toDate().getTime()
+      searchTime: moment().toDate().getTime(),
+      noAdsCount: 0
     };
   }
 
@@ -911,7 +912,11 @@ class SearchResultMap extends Component {
             </View>)
         }
 
+        let {noAdsCount} = this.state;
         if (errorMsg || drawPressed || numberOfAds > 0) {
+            if (noAdsCount) {
+                this.setState({noAdsCount: 0});
+            }
             return null;
         }
 
@@ -920,6 +925,10 @@ class SearchResultMap extends Component {
         let fontWeight = '600';
         let backgroundColor = 'white';
         let textColor = 'black';
+
+        if (noAdsCount === 1) {
+            textNotFound2 = gui.INF_KhongCoKetQua3;
+        }
 
         return (<View style={styles.resultContainer}>
             <Animatable.View animation={"fadeIn"}
@@ -975,10 +984,22 @@ class SearchResultMap extends Component {
   }
 
   _renderAllRegionButton() {
+      let buttonText = '';
+      let buttonEvent = null;
+      let {noAdsCount} = this.state;
+      if (noAdsCount === 1) {
+          buttonText = 'Thay đổi điều kiện lọc';
+          buttonEvent = () => {Actions.Search2({needBack:true, onShowMessage: this._onShowMessage.bind(this),
+              refreshRegion: this.refreshRegion.bind(this), owner: 'map'})};
+      } else {
+          buttonText = 'Xem tất cả';
+          buttonEvent = this._onAllRegion.bind(this);
+      }
+
       return (
-          <TouchableOpacity style={{backgroundColor:'transparent'}} onPress={this._onAllRegion.bind(this)} >
+          <TouchableOpacity style={{backgroundColor:'transparent'}} onPress={buttonEvent} >
               <View style={styles.allRegion}>
-                  <Text style={styles.allRegionButton}>Xem tất cả</Text>
+                  <Text style={styles.allRegionButton}>{buttonText}</Text>
               </View>
           </TouchableOpacity>
       );
@@ -991,7 +1012,17 @@ class SearchResultMap extends Component {
       this.props.actions.onSearchFieldChange("polygon", []);
       this.props.actions.onSearchFieldChange("pageNo", 1);
       this.props.actions.onSearchFieldChange("center", null);
-      this._refreshListData(null, [], this._onSetupMessageTimeout.bind(this), {}, false, diaChinh, 1);
+      this._refreshListData(null, [], () => {this._refreshAfterAllRegionPressed();this._onSetupMessageTimeout()}, {}, false, diaChinh, 1);
+      setTimeout(this._refreshAfterAllRegionPressed.bind(this), 2000);
+  }
+
+  _refreshAfterAllRegionPressed() {
+      let {listAds} = this.props;
+      let {noAdsCount} = this.state;
+      let numberOfAds = listAds.length;
+      if (numberOfAds === 0 && !noAdsCount) {
+          this.setState({noAdsCount: 1});
+      }
   }
 
   _getViewableAds(){
