@@ -64,7 +64,7 @@ var styles = StyleSheet.create({
   buttonTextSelected: {
     flex: 1, 
     alignSelf:'center',
-    fontSize: gui.capitalizeFontSize,
+    fontSize: 14,
     fontFamily: 'Open Sans',
     padding: 10,
     color: gui.mainColor,

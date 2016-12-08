@@ -73,7 +73,8 @@ class DinhGia extends React.Component {
       dientich: '',
       location: {},
       showMoRong: false,
-      toggleState: false
+      toggleState: false,
+      onThucHienPressed: false
     };
   }
 
@@ -127,7 +128,8 @@ class DinhGia extends React.Component {
   _renderThietLap() {
     return (
       <View style={styles.viewNenMoRong}>
-        <TouchableOpacity onPress={this.onResetFilters.bind(this)} style={styles.viewMoRong}>
+        <TouchableOpacity disabled={this.state.onThucHienPressed}
+            onPress={this.onResetFilters.bind(this)} style={styles.viewMoRong}>
           <Text style={styles.textThietLap}>Thiết lập lại</Text>
         </TouchableOpacity>
       </View>
@@ -153,9 +155,13 @@ class DinhGia extends React.Component {
     this.setState({ showMoRong: true });
   }
 
-  _onThucHien(){
-    if (!this.isValidData())
-        return;
+  _onThucHien() {
+    this.setState({onThucHienPressed: true});
+
+    if (!this.isValidData()){
+      this.setState({onThucHienPressed: false});
+      return;
+    }
 
     let loaiNhaDat = [this.state.loaiNhaDat.key];
     let codeDuAn = '';
@@ -179,12 +185,15 @@ class DinhGia extends React.Component {
     this.props.actions.calculatePricing(condition).then(
         (res) =>{
           if (res.success){
+            this.setState({onThucHienPressed: false});
+
             Actions.KetQuaDinhGia({ loaiTin: this.state.loaiTin == 'ban' ? "bán" : "thuê",
                                     data: res.data,
                                     diaChi: this.state.diaChi,
                                     loaiNhaDat: this.state.loaiNhaDat.value,
                                     duAn: duAn})
           }else {
+            this.setState({onThucHienPressed: false});
             Alert.alert("Không có thông tin định giá khu vực bạn cần tìm");
           }
         }
@@ -216,7 +225,8 @@ class DinhGia extends React.Component {
     if (!this.state.showMoRong) {
       return (
           <View style={styles.viewNenMoRong}>
-            <TouchableOpacity onPress={this.onMoRongPress.bind(this)} style={styles.viewMoRong}>
+            <TouchableOpacity disabled={this.state.onThucHienPressed}
+                              onPress={this.onMoRongPress.bind(this)} style={styles.viewMoRong}>
               <Text style={styles.textMoRong}>Mở rộng</Text>
             </TouchableOpacity>
           </View>
@@ -258,7 +268,16 @@ class DinhGia extends React.Component {
   }
 
   _onLoaiNhaDat() {
-    Actions.LoaiNhaDat({ loaiTin: this.state.loaiTin, onPress: this._onLoaiNhaDatSelected.bind(this) })
+    let loaiNhaDatKeys = [];
+    // TODO: need to verify this hard code block
+    if (this.state.loaiTin =='ban'){
+      loaiNhaDatKeys = [1,2,3,4];
+    } else {
+      loaiNhaDatKeys = [1,2,3,4,5,6];
+    }
+    Actions.LoaiNhaDat({  loaiTin: this.state.loaiTin,
+                          loaiNhaDatKeys: loaiNhaDatKeys,
+                          onPress: this._onLoaiNhaDatSelected.bind(this) })
   }
 
   _onViTriPress() {
@@ -300,7 +319,8 @@ class DinhGia extends React.Component {
             <View style={styles.viewDacDiem}>
               <Text style={styles.textDacDiem}>ĐẶC ĐIỂM CỦA NHÀ ĐẤT CẦN ĐỊNH GIÁ</Text>
             </View>
-            <TouchableOpacity onPress={this._onViTriPress.bind(this)} style={styles.touchViTri}>
+            <TouchableOpacity disabled={this.state.onThucHienPressed}
+                              onPress={this._onViTriPress.bind(this)} style={styles.touchViTri}>
               <View style={styles.viewWidth}>
                 <Text style={styles.textViTri}>Vị trí</Text>
               </View>
@@ -309,7 +329,8 @@ class DinhGia extends React.Component {
               </View>
               <Icon name="angle-right" size={24} color="#bebec0" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={this._onLoaiNhaDat.bind(this)} style={styles.touchViTri}>
+            <TouchableOpacity disabled={this.state.onThucHienPressed}
+                              onPress={this._onLoaiNhaDat.bind(this)} style={styles.touchViTri}>
               <View style={styles.viewWidth}>
                 <Text style={styles.textViTri}>Loại nhà đất</Text>
 
@@ -319,7 +340,8 @@ class DinhGia extends React.Component {
               </View>
               <Icon name="angle-right" size={24} color="#bebec0" />
             </TouchableOpacity>
-            <TouchableOpacity onPress={this._onDuAnPress.bind(this)} style={styles.touchViTri}>
+            <TouchableOpacity disabled={this.state.onThucHienPressed}
+                              onPress={this._onDuAnPress.bind(this)} style={styles.touchViTri}>
               <View style={styles.viewWidth}>
                 <Text style={styles.textViTri}>Thuộc dự án</Text>
               </View>

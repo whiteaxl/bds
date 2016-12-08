@@ -17,16 +17,13 @@ import {
 } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
-import TruliaIcon from '../../components/TruliaIcon';
 
 import MHeartIcon from '../MHeartIcon';
 
 import LinearGradient from 'react-native-linear-gradient';
 
-import Swiper from 'react-native-swiper';
 
 import Swipeout from 'react-native-swipeout';
-
 
 import gui from '../../lib/gui';
 
@@ -39,8 +36,6 @@ import log from '../../lib/logUtil';
 import danhMuc from '../../assets/DanhMuc';
 
 var { width, height } = Dimensions.get('window');
-
-import RelandIcon from '../../components/RelandIcon';
 
 const actions = [
   globalActions,

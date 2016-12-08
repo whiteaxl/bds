@@ -4,12 +4,15 @@ const {
   StyleSheet,
   Text,
   View,
+  Dimensions,
   Animated,
   TouchableOpacity
 } = ReactNative;
 const Button = require('../button/Button');
 
 import {Actions} from 'react-native-router-flux';
+
+var { width, height } = Dimensions.get('window');
 
 export default class AdsMgmtTabBar extends React.Component {
  
@@ -41,6 +44,8 @@ export default class AdsMgmtTabBar extends React.Component {
       position: 'absolute',
       width: containerWidth / numberOfTabs,
       height: 4,
+      width: (width-30)/3,
+      margin: 5,
       backgroundColor: this.props.underlineColor || 'navy',
       bottom: 0,
     };

@@ -117,8 +117,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(AdsMgmt);
 var styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
-    width: width - 16,
-    left: 8
+    width: width
 
   },
 

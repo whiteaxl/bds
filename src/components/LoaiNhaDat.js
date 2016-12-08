@@ -49,31 +49,29 @@ function mapDispatchToProps(dispatch) {
 }
 
 var loaiNhaDatValues = [];
-var loaiNhaDatKeys = [];
+var dmLoaiNhatDatKeys = [];
 
 class LoaiNhaDat extends Component {
+
   constructor(props) {
     super(props);
     var loaiTin = props.loaiTin;
-    loaiNhaDatKeys = loaiTin=='ban' ? DanhMuc.LoaiNhaDatBanKey : DanhMuc.LoaiNhaDatThueKey;
-    loaiNhaDatValues = loaiTin=='ban' ? DanhMuc.getLoaiNhaDatBanValues() : DanhMuc.getLoaiNhaDatThueValues() ;
+
+    dmLoaiNhatDatKeys = loaiTin=='ban' ? DanhMuc.LoaiNhaDatBanKey : DanhMuc.LoaiNhaDatThueKey;
+
+    loaiNhaDatValues = this._initLoaiNhatDat(loaiTin, props.loaiNhaDatKeys);
+
     var loaiNhaDatVal = this.getLoaiNhaDatVal();
     this.state = {
         loaiNhaDat: loaiNhaDatVal
     };
-  
   }
 
   getLoaiTin() {
       var {loaiTin} = this.props;
       return loaiTin;
   }
-
-  getLoaiNhaDat(loaiTin) {
-      var {loaiNhaDat} = this.props;
-      return loaiNhaDat;
-  }
-
+    
   onNhaDatSelected(option) {
       var {func, search} = this.props;
       let loaiNhaDatVal = this.getKeyByValue(loaiNhaDatValues, option);
@@ -86,7 +84,7 @@ class LoaiNhaDat extends Component {
 
   getLoaiNhaDatVal() {
       var loaiTin = this.props.loaiTin;
-      var loaiNhaDat = this.getLoaiNhaDat(loaiTin);
+      var loaiNhaDat = this.props.loaiNhaDat;
       var loaiNhaDatVal = this.getValueByKey(loaiNhaDatValues, loaiNhaDat);
       if (!loaiNhaDatVal) {
           loaiNhaDatVal = loaiNhaDatValues[0];
@@ -115,19 +113,31 @@ class LoaiNhaDat extends Component {
     Actions.pop();
   }
 
-    _onApply(option) {
-        let key = this.getKeyByValue(loaiNhaDatValues, option);
-        this.props.onPress(
-          {key: key,
-           value: option
-          });
-        Actions.pop();
-    }
+  _onApply(option) {
+    let key = this.getKeyByValue(loaiNhaDatValues, option);
+    this.props.onPress({key: key, value: option});
+    Actions.pop();
+  }
+
+  _initLoaiNhatDat(loaiTin, loaiNhaDatKeys){
+      let result = [];
+
+      let dmLoaiNhaDat = loaiTin == 'ban' ? DanhMuc.getLoaiNhaDatBanValues() : DanhMuc.getLoaiNhaDatThueValues() ;
+
+      if (!loaiNhaDatKeys || loaiNhaDatKeys.length<=0)
+          return dmLoaiNhaDat;
+
+      loaiNhaDatKeys.map( (e) => {
+          result.push(dmLoaiNhaDat[e]);
+      });
+
+      return result;
+  }
 
   getValueByKey(values, key) {
     var value = '';
-    for (var i = 0; i < loaiNhaDatKeys.length; i++) {
-      var loaiKey = loaiNhaDatKeys[i];
+    for (var i = 0; i < dmLoaiNhatDatKeys.length; i++) {
+      var loaiKey = dmLoaiNhatDatKeys[i];
       if (key === loaiKey) {
         value = values[i];
         break;
@@ -142,7 +152,7 @@ class LoaiNhaDat extends Component {
     for (var i = 0; i < values.length; i++) {
       var oneValue = values[i];
       if (value === oneValue) {
-        key = loaiNhaDatKeys[i];
+        key = dmLoaiNhatDatKeys[i];
         break;
       }
     }
@@ -154,8 +164,6 @@ class LoaiNhaDat extends Component {
 
 export default connect(mapStateToProps, mapDispatchToProps)(LoaiNhaDat);
 
-
-
 // Later on in your styles..
 var myStyles = StyleSheet.create({
   fullWidthContainer: {
@@ -163,35 +171,35 @@ var myStyles = StyleSheet.create({
       alignItems: 'stretch',
       backgroundColor: 'white'
   },
-    choiceList: {
-        paddingTop: 10,
-        paddingLeft: 26,
-        paddingRight: 0
-    },
-    searchButton: {
-        alignItems: 'stretch',
-        justifyContent: 'flex-end'
-    },
-    searchButtonWrapper: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        backgroundColor: gui.mainColor,
-        height: 44
-    },
-    searchButtonText: {
-        marginLeft: 17,
-        marginRight: 17,
-        marginTop: 10,
-        marginBottom: 10,
-        color: 'white',
-        fontSize: gui.buttonFontSize,
-        fontFamily: gui.fontFamily,
-        fontWeight : 'normal'
-    },
-    headerSeparator: {
-        marginTop: 2,
-        borderTopWidth: 1,
-        borderTopColor: gui.separatorLine
-    }
+  choiceList: {
+      paddingTop: 10,
+      paddingLeft: 26,
+      paddingRight: 0
+  },
+  searchButton: {
+      alignItems: 'stretch',
+      justifyContent: 'flex-end'
+  },
+  searchButtonWrapper: {
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      backgroundColor: gui.mainColor,
+      height: 44
+  },
+  searchButtonText: {
+      marginLeft: 17,
+      marginRight: 17,
+      marginTop: 10,
+      marginBottom: 10,
+      color: 'white',
+      fontSize: gui.buttonFontSize,
+      fontFamily: gui.fontFamily,
+      fontWeight : 'normal'
+  },
+  headerSeparator: {
+      marginTop: 2,
+      borderTopWidth: 1,
+      borderTopColor: gui.separatorLine
+  }
 });
 

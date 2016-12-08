@@ -15,6 +15,8 @@ import TruliaIcon from './TruliaIcon';
 
 import RelandIcon from './RelandIcon';
 
+import GiftedSpinner from 'react-native-gifted-spinner';
+
 import apiUtils from '../lib/ApiUtils';
 
 import cfg from '../cfg';
@@ -74,6 +76,7 @@ const GooglePlacesAutocomplete = React.createClass({
     return {
       text: this.props.getDefaultValue(),
       focused: false,
+      loading: false,
       dataSource: ds.cloneWithRows(this.buildRowsFromResults([])),
       listViewDisplayed: false,
     };
@@ -289,6 +292,7 @@ const GooglePlacesAutocomplete = React.createClass({
           return;
         }
         if (request.status === 200) {
+          this.setState({loading: false});
           const responseJSON = JSON.parse(request.responseText);
           if (typeof responseJSON.predictions !== 'undefined') {
             if (this.isMounted()) {
@@ -311,7 +315,7 @@ const GooglePlacesAutocomplete = React.createClass({
         + encodeURI(text) + '&' + Qs.stringify(this.props.query));
       request.send();
       */
-
+      this.setState({loading: true});
       request.open('GET', cfg.rootUrl + "/place/autocomplete?input=" + encodeURI(text));
       request.send();
     } else {
@@ -531,6 +535,23 @@ const GooglePlacesAutocomplete = React.createClass({
 
     return null;
   },
+  _renderSearchButton() {
+    if (this.state.loading){
+      return (
+          <View style={{paddingRight: 7, paddingTop: 1}}>
+            <GiftedSpinner size="small" color="white" />
+          </View>
+      )
+    } else {
+      return (
+          <View>
+            <TruliaIcon name="search" size={14} color={'white'}
+                        mainProps={{paddingRight: 7, paddingTop: 1}}></TruliaIcon>
+          </View>
+      )
+    }
+
+  },
   render() {
     let {onChangeText, onFocus, ...userProps} = this.props.textInputProps;
     return (
@@ -541,8 +562,7 @@ const GooglePlacesAutocomplete = React.createClass({
           style={[defaultStyles.textInputContainer, this.props.styles.textInputContainer]}
         >
           <View style={defaultStyles.inputView}>
-            <TruliaIcon name="search" size={14} color={'white'}
-                        mainProps={{paddingRight: 7, paddingTop: 1}}></TruliaIcon>
+            {this._renderSearchButton()}
             <TextInput
               { ...userProps }
               ref="textInput"
