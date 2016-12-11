@@ -75,11 +75,20 @@ var ChatApi = {
 
     sendChatMsg: function(msg){
         socket.emit("send-message", msg, function(data){
-            console.log("chatApi.sendChatMsg");
-            console.log(data);
             return data;
         });
+    },
 
+    sendStartTyping: function(fromUserID, toUserID){
+        socket.emit("user-start-typing", {fromUserID: fromUserID, toUserID: toUserID}, function(data){
+            console.log("emit start typing to " + toUserID);
+        });
+    },
+
+    sendStopTyping: function(fromUserID, toUserID){
+        socket.emit("user-stop-typing", {fromUserID: fromUserID, toUserID: toUserID}, function(data){
+            console.log("emit stop typing to " + toUserID);
+        });
     },
 
     getInboxMsg(userID) {

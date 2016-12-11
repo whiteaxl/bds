@@ -50,6 +50,7 @@ function mapDispatchToProps(dispatch) {
 
 var loaiNhaDatValues = [];
 var dmLoaiNhatDatKeys = [];
+var dmloaiNhaDatValues = [];
 
 class LoaiNhaDat extends Component {
 
@@ -59,27 +60,14 @@ class LoaiNhaDat extends Component {
 
     dmLoaiNhatDatKeys = loaiTin=='ban' ? DanhMuc.LoaiNhaDatBanKey : DanhMuc.LoaiNhaDatThueKey;
 
+    dmloaiNhaDatValues = loaiTin == 'ban' ? DanhMuc.getLoaiNhaDatBanValues() : DanhMuc.getLoaiNhaDatThueValues() ;
+
     loaiNhaDatValues = this._initLoaiNhatDat(loaiTin, props.loaiNhaDatKeys);
 
     var loaiNhaDatVal = this.getLoaiNhaDatVal();
     this.state = {
         loaiNhaDat: loaiNhaDatVal
     };
-  }
-
-  getLoaiTin() {
-      var {loaiTin} = this.props;
-      return loaiTin;
-  }
-    
-  onNhaDatSelected(option) {
-      var {func, search} = this.props;
-      let loaiNhaDatVal = this.getKeyByValue(loaiNhaDatValues, option);
-      if (func == 'search') {
-          Actions.onLoaiNhaDatChange(loaiNhaDatVal)
-      } else {
-          null;// this.props.actions.onPostAdsFieldChange("loaiNhaDat", loaiNhaDatVal);
-      }
   }
 
   getLoaiNhaDatVal() {
@@ -114,7 +102,7 @@ class LoaiNhaDat extends Component {
   }
 
   _onApply(option) {
-    let key = this.getKeyByValue(loaiNhaDatValues, option);
+    let key = this.getKeyByValue(dmloaiNhaDatValues, option);
     this.props.onPress({key: key, value: option});
     Actions.pop();
   }

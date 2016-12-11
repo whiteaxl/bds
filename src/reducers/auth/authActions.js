@@ -47,8 +47,6 @@ import chatApi from "../../lib/ChatApi";
 
 import {savedSearchSuccess, loadLastSearchSuccess} from "../search/searchActions";
 
-
-
 export function registerState() {
   return {
     type: LOGIN_STATE_REGISTER
@@ -275,8 +273,6 @@ export function onTypingMessage(msg) {
   };
 
 }
-
-
 
 export function login(username, password, deviceDto) {
 
