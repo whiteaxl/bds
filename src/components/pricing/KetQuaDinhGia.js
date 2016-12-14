@@ -86,7 +86,7 @@ class KetQuaDinhGia extends Component {
         <View style={styles.eachViewKetQua}>
           <TouchableOpacity style={styles.listMoRong}  onPress={() => Actions.SearchResultDetail({adsID: data.adsID, source: 'server'})} >
             <Image style={{width: width, height:200}} source={data.image.cover ? {uri: data.image.cover} : require('../../assets/image/reland_house_large.jpg')}>
-              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.55)']}
+              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
                             style={styles.linearGradient2}>
               </LinearGradient>
               <View style={styles.heartContent}>

@@ -9,10 +9,10 @@ const {
   TouchableOpacity
 } = ReactNative;
 const Button = require('../button/Button');
+var { width, height } = Dimensions.get('window');
 
 import {Actions} from 'react-native-router-flux';
-
-var { width, height } = Dimensions.get('window');
+import FullLine from '../line/FullLine';
 
 export default class AdsMgmtTabBar extends React.Component {
  
@@ -42,7 +42,6 @@ export default class AdsMgmtTabBar extends React.Component {
     const numberOfTabs = this.props.tabs.length;
     const tabUnderlineStyle = {
       position: 'absolute',
-      width: containerWidth / numberOfTabs,
       height: 4,
       width: (width-30)/3,
       margin: 5,
@@ -60,6 +59,7 @@ export default class AdsMgmtTabBar extends React.Component {
           {this.props.tabs.map((tab, i) => this.renderTabOption(tab, i))}
           <Animated.View style={[tabUnderlineStyle, { left, }, ]} />
         </View>
+        <FullLine />
       </View>
     );
   }

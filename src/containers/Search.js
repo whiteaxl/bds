@@ -41,6 +41,8 @@ import dismissKeyboard from 'react-native-dismiss-keyboard';
 
 import utils from '../lib/utils';
 
+var {width, height} = Dimensions.get('window');
+
 const actions = [
     globalActions,
     searchActions
@@ -416,7 +418,7 @@ class Search extends Component {
                             </View>
                             <FullLine />
                         </View>
-
+                        <View style={myStyles.addViewBottom}></View>
                     </ScrollView>
                 </View>
 
@@ -1221,7 +1223,11 @@ var myStyles = StyleSheet.create({
         fontSize: gui.normalFontSize,
         fontFamily: gui.fontFamily
     },
-
+    addViewBottom:{
+        height:20,
+        width:width,
+        backgroundColor:'#fff'
+    }
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Search);

@@ -1,7 +1,6 @@
 'use strict';
 import  React, {Component} from 'react';
-
-import {View, Text, StyleSheet, TextInput, Dimensions} from 'react-native';
+import {View, Text, StyleSheet, TextInput, Dimensions, Image, TouchableOpacity} from 'react-native';
 import {Actions} from 'react-native-router-flux';
 
 
@@ -26,6 +25,8 @@ import log from "../lib/logUtil";
 import AdsMgmtTabBar from "../components/adsMgmt/AdsMgmtTabBar";
 import AdsListTab from '../components/adsMgmt/AdsListTab';
 import Login from '../components/login/Login';
+import TruliaIcon from '../components/TruliaIcon';
+import FullLine from '../components/line/FullLine';
 
 import HomeHeader from '../components/home/HomeHeader';
 
@@ -74,13 +75,38 @@ class AdsMgmt extends React.Component {
     //this.props.actions.loadLikedList(this.props.global.currentUser.userID);
   }
 
+  _renderHeaderAds(){
+    return (
+        <View style={styles.pageHeader}>
+          <View style={styles.searchButton}>
+            <TruliaIcon onPress={() => this.handleSearchButton()}
+                        name="search" color="white" size={20}
+                        mainProps={{paddingLeft: 18, paddingRight: 21}}
+            >
+            </TruliaIcon>
+          </View>
+          <View style={styles.home}>
+            <Image
+                style={styles.logoIcon}
+                resizeMode={Image.resizeMode.cover}
+                source={require('../assets/image/logo.png')}
+            />
+          </View>
+          <TouchableOpacity style={styles.viewEdit}>
+            <Text style={styles.textEdit}>Sửa</Text>
+          </TouchableOpacity>
+        </View>
+    );
+  }
+
   render() {
     if (this.props.global.loggedIn) {
       let page = this.props.adsMgmt.activeTab;
 
       return (
         <View style={{flex: 1, marginBottom: 45}}>
-          <HomeHeader/>
+          <HomeHeader />
+          {/*this._renderHeaderAds()*/}
 
           <ScrollableTabView page={page} initialPage={0}
                              renderTabBar={this.renderTabBar.bind(this)}
@@ -118,7 +144,6 @@ var styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
     width: width
-
   },
 
   label: {
@@ -139,5 +164,45 @@ var styles = StyleSheet.create({
     alignSelf: 'center',
     padding: 5
 
+  },
+  pageHeader: {
+    top: 0,
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    justifyContent: 'space-between',
+    backgroundColor: gui.mainColor,
+    height: 64
+  },
+  searchButton: {
+    paddingTop: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: gui.mainColor
+  },
+  logoIcon: {
+    height: 21,
+    width: 87,
+    marginTop: 0,
+    marginLeft: 19,
+    marginRight: 16
+  },
+  home: {
+    paddingTop: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: gui.mainColor
+  },
+  viewEdit: {
+    paddingTop: 18,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: gui.mainColor
+  },
+  textEdit:{
+    fontSize:gui.buttonFontSize,
+    fontFamily:gui.fontFamily,
+    color:'#fff',
+    paddingRight: 18,
+    paddingLeft: 18
   }
 });

@@ -20,6 +20,8 @@ import cfg from "../../cfg";
 
 import CommonUtils from '../../lib/CommonUtils';
 
+import ScalableText from 'react-native-text';
+
 const noCoverUrl = cfg.noCoverUrl;
 var {width, height} = Dimensions.get('window');
 
@@ -142,7 +144,7 @@ class ImageItem extends React.Component {
         <Image style={[styles.imgItem]} resizeMode={'cover'}
                source={imageUri} defaultSource={CommonUtils.getNoCoverImage()}>
 
-          <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.55)']}
+          <LinearGradient colors={['transparent', 'rgba(61, 62, 65, 0.4)']}
                           style={styles.linearGradient2}>
           </LinearGradient>
 
@@ -150,9 +152,9 @@ class ImageItem extends React.Component {
 
           <View style={styles.itemContent}>
             <View style={{ flex: 1, paddingRight: 7 }}>
-              <Text style={styles.price}>{giaFmt}</Text>
-              <Text style={styles.text} numberOfLines={1}>{khuVuc}</Text>
-              <Text style={styles.text}>{detail}</Text>
+              <ScalableText style={styles.price}>{giaFmt}</ScalableText>
+              <ScalableText style={styles.text} numberOfLines={1}>{khuVuc}</ScalableText>
+              <ScalableText style={styles.text}>{detail}</ScalableText>
             </View>
           </View>
         </Image>
@@ -344,12 +346,15 @@ var styles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: 'transparent',
     top: 3,
-    right: 10,
+    right: 5,
+    width:35,
+    height:35,
+    justifyContent:'center',
     alignSelf: 'auto'
   },
   heartButton: {
-    marginTop: 6,
-    marginLeft: 30
+    marginTop: 10,
+    marginLeft: -10
   },
 
   titleContainer: {

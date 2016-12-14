@@ -12,7 +12,8 @@ import MHeartIcon from '../MHeartIcon';
 import CommonUtils from '../../lib/CommonUtils';
 import gui from '../../lib/gui';
 import GiftedSpinner from 'react-native-gifted-spinner';
-
+var {width, height} = Dimensions.get('window');
+import ScalableText from 'react-native-text';
 
 var imgHeight = 181;
 
@@ -25,14 +26,13 @@ class AdsRow extends React.Component {
   renderLikeIcon(ads) {
     //log.info("renderLikeIcon, ", ads.isLiked);
     let isLiked = this.isLiked(ads);
-    // let color = isLiked ? '#A2A7AD' : 'white';
-    let color = 'white';
+    let color = isLiked ? 'white' : 'white';
     let bgColor = isLiked ? '#E50064' : '#4A443F';
     let bgStyle = isLiked ? {} : {opacity: 0.55};
 
     if (this.props.uploadingLikedAds.uploading && this.props.uploadingLikedAds.adsID == ads.adsID){
       return (
-          <View style={{position: "absolute", left: Dimensions.get('window').width-45}}>
+          <View style={{position: "absolute", left: width-45, backgroundColor:'transparent', top: -120}}>
             <View style={myStyles.heartButton}>
               <GiftedSpinner size="small" color="white"/>
             </View>
@@ -40,14 +40,13 @@ class AdsRow extends React.Component {
       );
     } else {
       return (
-        <View style={{position: "absolute", left: Dimensions.get('window').width-67}}>
+        <View style={{position: "absolute", left: width-65, backgroundColor:'transparent', top: -120}}>
           <MHeartIcon onPress={() => this.onLike(ads)} color={color} bgColor={bgColor} bgStyle={bgStyle} size={22}
                       mainProps={myStyles.heartButton} />
         </View>
       )
     }
   }
-
   /*
    <TouchableHighlight underlayColor='transparent' style={{overflow: 'hidden'}} onPress={() => this.onLike(ads)}>
    <View style={myStyles.heartButton} >
@@ -222,11 +221,11 @@ class AdsRow extends React.Component {
               onMoveShouldSetResponder={(evt) => false}
               pointerEvents="none"
             >
-              <Text style={myStyles.price}
+              <ScalableText style={myStyles.price}
                     onStartShouldSetResponder={(evt) => false}
                     onMoveShouldSetResponder={(evt) => false}
-              >{ads.giaFmt}</Text>
-              <Text style={myStyles.text}>{diaChi}{moreInfo}</Text>
+              >{ads.giaFmt}</ScalableText>
+              <ScalableText style={myStyles.text}>{diaChi}{moreInfo}</ScalableText>
             </View>
             {this.renderLikeIcon(ads)}
           </View>
@@ -284,7 +283,7 @@ const myStyles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     top: imgHeight - 55,
-    width: Dimensions.get('window').width
+    width: width
   },
   price: {
     fontSize: 16,
@@ -342,7 +341,6 @@ const myStyles = StyleSheet.create({
     paddingLeft: 0
   },
   image: {
-
     height: 200,
     alignSelf: 'stretch',
   }

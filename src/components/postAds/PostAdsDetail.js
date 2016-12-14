@@ -194,6 +194,7 @@ class NPostAdsDetail extends Component {
 
                                 {this._renderLoaiTin()}
 
+                                <FullLine />
                                 <View style={myStyles.categoryTitle}>
                                     <Text style={myStyles.categoryText}>
                                         ĐẶC ĐIỂM
@@ -1599,21 +1600,20 @@ class NPostAdsDetail extends Component {
     }
 
     onCancel() {
-
         Alert.alert('', 'Bạn muốn ngừng đăng tin ?',
-            [{
-                text: 'Đồng ý', onPress: () => {
-                    if (this.state.adsID && this.state.adsID.length > 0) {
-                        // back to AdsMgmt if update Ads
-                        this.onRefreshPostAds();
-                        Actions.popTo('root');
-                    } else {
-                        this.onRefreshPostAds();
-                        Actions.Home({ type: 'reset' });
+            [   { text: 'Thoát', onPress: () => console.log('Cancel Pressed!') },
+                {
+                    text: 'Đồng ý', onPress: () => {
+                        if (this.state.adsID && this.state.adsID.length > 0) {
+                            // back to AdsMgmt if update Ads
+                            this.onRefreshPostAds();
+                            Actions.popTo('root');
+                        } else {
+                            this.onRefreshPostAds();
+                            Actions.Home({ type: 'reset' });
+                        }
                     }
                 }
-            },
-                { text: 'Thoát', onPress: () => console.log('Cancel Pressed!') }
             ]);
     }
 
@@ -1686,7 +1686,7 @@ class ImageItem extends React.Component {
         } else {
             return (
                 <TouchableOpacity onPress={this._onPhotoPressed.bind(this)} >
-                    <View style={[myStyles.imgItem, { borderStyle: 'dashed', borderColor: gui.mainColor }]}>
+                    <View style={[myStyles.imgItem, { borderStyle: 'dashed', borderColor: gui.mainColor, borderWidth:1 }]}>
                         <RelandIcon name="plus" color={gui.mainColor}
                                     mainProps={myStyles.captureIcon}
                                     size={22} textProps={{ paddingLeft: 0 }}

@@ -21,6 +21,8 @@ import apiUtils from '../lib/ApiUtils';
 
 import cfg from '../cfg';
 
+import FullLine from './line/FullLine';
+
 
 
 const GooglePlacesAutocomplete = React.createClass({
@@ -476,6 +478,7 @@ const GooglePlacesAutocomplete = React.createClass({
 
             {this._renderLoader(rowData)}
           </View>
+          <FullLine style={{ marginLeft: 15 }} />
         </View>
       </TouchableHighlight>
     );
@@ -592,6 +595,7 @@ const GooglePlacesAutocomplete = React.createClass({
 
         </View>
         <View style={[defaultStyles.separator, this.props.styles.separator]}/>
+        <FullLine />
         {this._getListView()}
       </View>
     );
@@ -607,14 +611,15 @@ var styles = StyleSheet.create({
   textLine1: {
     //fontWeight: 'bold',
     fontFamily : gui.fontFamily,
-    fontSize: 16,
+    fontSize: 15,
     color: '#323538'
   },
   textLine2: {
     //fontWeight: 'bold',
     fontFamily : gui.fontFamily,
     fontSize: 12,
-    color: '#6E757D',
+    color: '#79858a',
+    marginTop: 3
   },
   textView : {
     marginLeft:10,
@@ -682,7 +687,7 @@ const defaultStyles = {
     alignItems: 'center',
   },
   separator: {
-    height: 1,
+    height: 0,
     backgroundColor: '#E9E9E9',
   },
   description: {},

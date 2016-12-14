@@ -1561,7 +1561,8 @@ var styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#C5C2BA',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    marginBottom:8
   },
   button: {
     width: 43,
@@ -1593,7 +1594,7 @@ var styles = StyleSheet.create({
   },
   mapButtonContainer: {
     position: 'absolute',
-    top: height-197,
+    top: height-224,
     flexDirection: 'column',
     alignItems: 'flex-start',
     justifyContent: 'center',

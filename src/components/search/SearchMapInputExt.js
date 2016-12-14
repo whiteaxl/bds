@@ -26,7 +26,7 @@ export default class SearchMapInputExt extends Component {
                     <View style={styles.searchContainer}>
                             {this.props.isHeaderLoading && this.props.isHeaderLoading() ?
                                 <View style={{width: 26}} /> :
-                                <TruliaIcon name="search" size={14} color="white"
+                                <TruliaIcon name="search" size={14} color="#0c0b0b"
                                         mainProps={styles.searchIcon}
                             >
                             </TruliaIcon>}
@@ -50,7 +50,8 @@ const styles = StyleSheet.create({
     },
     searchIcon: {
         marginLeft: 10,
-        marginRight: 2
+        marginRight: 2,
+        marginTop:3
     },
     searchContainer: {
         marginTop: 26,
@@ -58,13 +59,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: 'transparent',
-        borderRadius: 5,
-        borderColor: 'white',
-        borderWidth: 1.5,
+        backgroundColor: 'white',
+        borderRadius: 4,
+        borderColor: '#0c0b0b',
+        borderWidth: 1,
         marginLeft: 0,
         marginRight: 10,
-        height: 30
+        height: 30,
+        opacity: 0.5
     },
     textInput : {
         fontSize: 15,
@@ -100,7 +102,7 @@ const styles = StyleSheet.create({
         fontWeight: 'normal',
         textAlign: 'left',
         paddingLeft: 5,
-        color: 'white',
+        color: '#000',
         backgroundColor: 'transparent',
         flex: 1
     },

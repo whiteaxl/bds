@@ -120,7 +120,7 @@ class MMapSearch extends Component {
                     <View style={styles.mapButtonContainer}>
                         <View style={styles.searchListButton}>
                             <View style={styles.viewTopNav}>
-                                <ScalableText style={styles.textSpaceTop}>5 km xung quanh {this.state.diaChi  ? this.state.diaChi : 'Chọn địa điểm'}</ScalableText>
+                                <ScalableText style={styles.textSpaceTop}>{0.5*this.state.circle.radius/1000} km xung quanh vị trí đã chọn.</ScalableText>
                             </View>
                             <View style={styles.viewCenterNav}>
                                 <Slider
@@ -181,15 +181,12 @@ class MMapSearch extends Component {
         return (
             <TouchableHighlight onPress={this._onPress.bind(this)} style={styles.touchSearch}>
                 <View style={styles.searchTextContainer}>
-                    <View style={{height:68, width:40, backgroundColor:'transparent', left:20, justifyContent:'center', alignItems:'flex-start'}}>
-                        <RelandIcon name="search" color='#8a8a8a' mainProps={{marginTop:10, marginLeft:5}}
-                                    size={25} textProps={{}}
+                    <View style={{height:28, width:32, backgroundColor:'transparent', left:20, justifyContent:'center', alignItems:'flex-start'}}>
+                        <RelandIcon name="search" color='#8a8a8a' mainProps={{marginTop:8, marginLeft:5}}
+                                    size={22} textProps={{}}
                         />
                     </View>
                     <View style={styles.viewSearch}>
-                        <Text style={styles.searchTextTop}>
-                            Tìm kiếm từ :
-                        </Text>
                         <ScalableText style={styles.searchTextBottom}>
                             {this.state.diaChi ? this.state.diaChi  : 'Chọn địa điểm'}
                         </ScalableText>
@@ -287,7 +284,6 @@ class MMapSearch extends Component {
     }
 
     _onRegionChangeComplete(region) {
-        console.log("========== on region change complete");
         var circle = JSON.parse(JSON.stringify(this.state.circle));
         circle.center.latitude = region.latitude;
         circle.center.longitude = region.longitude
@@ -353,10 +349,6 @@ class MMapSearch extends Component {
         location.lon = region.longitude;
         var places = data.results;
 
-        console.log("===================== print result");
-        console.log(places);
-        console.log("===================== print result end");
-
         if (places.length > 0) {
             var newPlace = places[0];
             for (var i=0; i<places.length; i++) {
@@ -415,9 +407,6 @@ class MMapSearch extends Component {
     _onCancel() {
         Actions.pop();
     }
-
-
-
 }
 
 class HeaderMMapSearch extends React.Component {
@@ -449,9 +438,6 @@ class HeaderMMapSearch extends React.Component {
         Actions.pop();
     }
     _returnLatLonPress() {
-        console.log('=============== print lat lon position map circle ')
-        // var {region} = this.state;
-
         this.props.onPress(this.state.circle);
         Actions.pop();
     }
@@ -540,33 +526,32 @@ var styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        height: 25,
+        height: 28,
         width: width
     },
     searchTextTop: {
         fontFamily: gui.fontFamily,
-        fontSize: 13,
+        fontSize: 12,
         textAlign: 'left',
         paddingLeft:0,
-        paddingTop:8,
+        paddingTop:5,
         backgroundColor:'transparent',
         fontWeight:'300',
         width:width-80,
-        height:30,
+        height:22,
         color:'#676769'
     },
     searchTextBottom: {
         fontFamily: gui.fontFamily,
-        fontSize: 15,
+        fontSize: 14,
         textAlign: 'left',
         paddingLeft:0,
         paddingTop:3,
         backgroundColor:'transparent',
         fontWeight:'400',
         width:width-80,
-        height:38,
+        height:28,
         color:'#1d1d1d'
-
     },
     positionIcon: {
         position: 'absolute',
@@ -621,7 +606,7 @@ var styles = StyleSheet.create({
         marginLeft:15,
         marginRight:15,
         marginTop: 5,
-        height:70,
+        height:30,
         width:width - 30,
         flexDirection: 'row',
         alignItems: 'center',
@@ -633,7 +618,7 @@ var styles = StyleSheet.create({
     },
     viewSearch:{
         width:width-80,
-        height:68,
+        height:28,
         right:20,
         flexDirection: 'column',
         alignItems: 'center',

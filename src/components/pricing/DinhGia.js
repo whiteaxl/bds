@@ -132,6 +132,7 @@ class DinhGia extends React.Component {
   _renderThietLap() {
     return (
       <View style={styles.viewNenMoRong}>
+        <FullLine />
         <TouchableOpacity disabled={this.state.onThucHienPressed}
             onPress={this.onResetFilters.bind(this)} style={styles.viewMoRong}>
           <Text style={styles.textThietLap}>Thiết lập lại</Text>
@@ -190,7 +191,6 @@ class DinhGia extends React.Component {
         (res) =>{
           if (res.success){
             this.setState({onThucHienPressed: false});
-
             Actions.KetQuaDinhGia({ loaiTin: this.state.loaiTin == 'ban' ? "bán" : "thuê",
                                     data: res.data,
                                     diaChi: this.state.diaChi,
@@ -229,6 +229,7 @@ class DinhGia extends React.Component {
     if (!this.state.showMoRong) {
       return (
           <View style={styles.viewNenMoRong}>
+            <FullLine />
             <TouchableOpacity disabled={this.state.onThucHienPressed}
                               onPress={this.onMoRongPress.bind(this)} style={styles.viewMoRong}>
               <Text style={styles.textMoRong}>Mở rộng</Text>
@@ -242,6 +243,7 @@ class DinhGia extends React.Component {
     if (this.state.showMoRong) {
       return (
           <View style={styles.viewNenMoRong} >
+            <FullLine />
             <View style={styles.viewShowDienTich}>
               <View style={{flex:1}}>
                 <Text style={styles.textViTri}>Diện tích (m²)</Text>
@@ -257,6 +259,7 @@ class DinhGia extends React.Component {
               </View>
               <KeyboardSpacer topSpacing={-40} onToggle={(toggleState) => this.onKeyboardToggle.bind(this, toggleState)} />
             </View>
+            <FullLine />
           </View>
       )
     }
@@ -319,10 +322,12 @@ class DinhGia extends React.Component {
               onPress={this._onLoaiTinChange.bind(this)}
               selected={this.state.loaiTin == 'thue'}>Cho Thuê</LikeTabButton>
           </View>
+          <FullLine />
           <View style={styles.viewNhaDat}>
             <View style={styles.viewDacDiem}>
               <Text style={styles.textDacDiem}>ĐẶC ĐIỂM CỦA NHÀ ĐẤT CẦN ĐỊNH GIÁ</Text>
             </View>
+            <FullLine />
             <TouchableOpacity disabled={this.state.onThucHienPressed}
                               onPress={this._onViTriPress.bind(this)} style={styles.touchViTri}>
               <View style={styles.viewWidth}>
@@ -333,32 +338,31 @@ class DinhGia extends React.Component {
               </View>
               <Icon name="angle-right" size={24} color="#bebec0" />
             </TouchableOpacity>
+            <FullLine style={{marginLeft: 28}} />
             <TouchableOpacity disabled={this.state.onThucHienPressed}
                               onPress={this._onLoaiNhaDat.bind(this)} style={styles.touchViTri}>
               <View style={styles.viewWidth}>
                 <Text style={styles.textViTri}>Loại nhà đất</Text>
-
               </View>
               <View style={styles.viewLoaiNha}>
                 <ScalableText style={styles.textNhaDat}>{this.state.loaiNhaDat.value.substring(0, 25)}</ScalableText>
               </View>
               <Icon name="angle-right" size={24} color="#bebec0" />
             </TouchableOpacity>
+            <FullLine style={{marginLeft: 28}} />
             <TouchableOpacity disabled={this.state.onThucHienPressed}
                               onPress={this._onDuAnPress.bind(this)} style={styles.touchViTri}>
               <View style={styles.viewWidth}>
                 <Text style={styles.textViTri}>Thuộc dự án</Text>
               </View>
-
               <View style={styles.viewLoaiNha}>
                 {this._renderLoadingDuAn()}
               </View>
               <Icon name="angle-right" size={24} color="#bebec0" />
             </TouchableOpacity>
           </View>
-
+          <FullLine />
           {this._renderDienTich()}
-
           {this._renderMoRong()}
           {this._renderThietLap()}
           {this.state.toggleState ? <Button onPress={() => dismissKeyboard()}
@@ -410,11 +414,11 @@ class DinhGia extends React.Component {
 
   _getDuAnText(){
     if (this.state.duAn && this.state.duAn.fullName && this.state.duAn.fullName.length>0){
-      let duAn = this.state.duAn.fullName.substring(0, 25);
+      let duAn = this.state.duAn.fullName.substring(0, 20);
       return duAn;
     }
 
-    return '';
+    return 'chọn dự án';
   }
 
 }
@@ -544,8 +548,6 @@ const styles = StyleSheet.create({
   touchViTri: {
     flex: 1,
     marginLeft: 28,
-    borderBottomWidth: 1,
-    borderColor: '#f3f3f5',
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'flex-start',
@@ -574,9 +576,7 @@ const styles = StyleSheet.create({
     width: width,
     height: 42,
     justifyContent: 'center',
-    alignItems: 'center',
-    borderBottomWidth: 1,
-    borderColor: '#f3f3f5',
+    alignItems: 'center'
   },
   textMoRong: {
     color: '#1ea7de',
@@ -595,7 +595,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   viewLoaiNha: {
-    width: width - 144,
+    width: width - 134,
     backgroundColor: 'white',
     alignItems: 'flex-end',
     height: 21
@@ -643,7 +643,6 @@ const styles = StyleSheet.create({
     fontFamily: 'Open Sans',
     fontWeight : 'normal'
   }
-
 });
 
 

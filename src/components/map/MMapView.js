@@ -114,9 +114,16 @@ class MMapView extends Component {
     return (
         <TouchableHighlight onPress={this._onPress.bind(this)} style={styles.touchSearch}>
           <View style={styles.searchTextContainer}>
-            <ScalableText style={styles.searchText}>
-              {this.state.diaChi ? this.state.diaChi : 'Chọn địa điểm'}
-            </ScalableText>
+            <View style={{ height: 28, width: 32, backgroundColor: 'transparent', left: 20, justifyContent: 'center', alignItems: 'flex-start' }}>
+              <RelandIcon name="search" color='#8a8a8a' mainProps={{ top: 8, marginLeft: 5 }}
+                          size={22} textProps={{}}
+              />
+            </View>
+            <View style={styles.viewSearch}>
+              <ScalableText style={styles.searchTextBottom}>
+                {this.state.diaChi ? this.state.diaChi : 'Chọn địa điểm'}
+              </ScalableText>
+            </View>
           </View>
         </TouchableHighlight>
     );
@@ -423,13 +430,12 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    height: 25,
+    height: 28,
     width: width
   },
   searchText: {
     fontFamily: gui.fontFamily,
     fontSize: 14,
-    width: width-50,
     textAlign: 'center',
     paddingLeft:2,
     paddingRight: 2,
@@ -483,19 +489,42 @@ var styles = StyleSheet.create({
     position: 'absolute',
     top: 15,
     borderRadius:4,
-    paddingLeft:10,
+    paddingLeft:0,
     marginLeft:15,
     marginRight:15,
     marginTop: 5,
     height:30,
+    width:width - 30,
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: 'white',
     borderWidth:1,
-    borderColor:'#c9c9c9',
+    borderColor:'lightgray',
     opacity: 0.9,
-  }
+  },
+  viewSearch:{
+    width:width-80,
+    height:28,
+    right:20,
+    flexDirection: 'column',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    backgroundColor:'white',
+    marginLeft:-10
+  },
+  searchTextBottom: {
+    fontFamily: gui.fontFamily,
+    fontSize: 14,
+    textAlign: 'left',
+    paddingLeft:0,
+    paddingTop:3,
+    backgroundColor:'transparent',
+    fontWeight:'400',
+    width:width-80,
+    height:28,
+    color:'#1d1d1d'
+  },
 });
 
 export default MMapView;
