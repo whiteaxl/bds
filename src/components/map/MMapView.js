@@ -23,6 +23,8 @@ import RelandIcon from '../RelandIcon';
 
 import utils from '../../lib/utils';
 
+import ScalableText from 'react-native-text';
+
 var { width, height } = Dimensions.get('window');
 
 const ASPECT_RATIO = width / (height-110);
@@ -112,9 +114,9 @@ class MMapView extends Component {
     return (
         <TouchableHighlight onPress={this._onPress.bind(this)} style={styles.touchSearch}>
           <View style={styles.searchTextContainer}>
-            <Text style={styles.searchText}>
+            <ScalableText style={styles.searchText}>
               {this.state.diaChi ? this.state.diaChi : 'Chọn địa điểm'}
-            </Text>
+            </ScalableText>
           </View>
         </TouchableHighlight>
     );

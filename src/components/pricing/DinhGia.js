@@ -28,6 +28,10 @@ import dismissKeyboard from 'react-native-dismiss-keyboard';
 
 import gui from '../../lib/gui';
 
+import FullLine from '../line/FullLine';
+
+import ScalableText from 'react-native-text';
+
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {Map} from 'immutable';
@@ -66,8 +70,8 @@ class DinhGia extends React.Component {
     super(props);
     this.state = {
       loaiTin: 'ban',
-      loaiNhaDat: {key: null, value: ''},
-      diaChi: "",
+      loaiNhaDat: {key: null, value: 'chọn nhà đất'},
+      diaChi: "chọn vị trí",
       diaChinh: {},
       duAn: {},
       dientich: '',
@@ -325,7 +329,7 @@ class DinhGia extends React.Component {
                 <Text style={styles.textViTri}>Vị trí</Text>
               </View>
               <View style={styles.viewLoaiNha}>
-                <Text style={styles.textNhaDat}>{this.state.diaChi.substring(0, 25)}</Text>
+                <ScalableText style={styles.textNhaDat}>{this.state.diaChi.substring(0, 25)}</ScalableText>
               </View>
               <Icon name="angle-right" size={24} color="#bebec0" />
             </TouchableOpacity>
@@ -336,7 +340,7 @@ class DinhGia extends React.Component {
 
               </View>
               <View style={styles.viewLoaiNha}>
-                <Text style={styles.textNhaDat}>{this.state.loaiNhaDat.value.substring(0, 25)}</Text>
+                <ScalableText style={styles.textNhaDat}>{this.state.loaiNhaDat.value.substring(0, 25)}</ScalableText>
               </View>
               <Icon name="angle-right" size={24} color="#bebec0" />
             </TouchableOpacity>

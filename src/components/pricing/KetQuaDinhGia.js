@@ -19,6 +19,7 @@ var {width, height} = Dimensions.get('window');
 import Icon from 'react-native-vector-icons/FontAwesome';
 import util from "../../lib/utils";
 import MHeartIcon from '../MHeartIcon';
+import ScalableText from 'react-native-text';
 
 var ds = new ListView.DataSource({rowHasChanged: (r1, r2) => r1 !== r2});
 
@@ -77,30 +78,30 @@ class KetQuaDinhGia extends Component {
 
   _renderRow (data, sectionID , rowID){
     let isLiked = this.isLiked(data.adsID);
-    // let color = isLiked ? '#E7E9EB' : 'white';
     let color = 'white';
     let bgColor = isLiked ? '#EC1B77' : '#4A443F';
     let bgStyle = isLiked ? {} : {opacity: 0.55};
 
     return(
-        <TouchableOpacity style={styles.listMoRong}  onPress={() => Actions.SearchResultDetail({adsID: data.adsID, source: 'server'})} >
-          <Image style={{width: width,height:150}} source={data.image.cover ? {uri: data.image.cover} : require('../../assets/image/reland_house_large.jpg')}>
-            <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.55)']}
+        <View style={styles.eachViewKetQua}>
+          <TouchableOpacity style={styles.listMoRong}  onPress={() => Actions.SearchResultDetail({adsID: data.adsID, source: 'server'})} >
+            <Image style={{width: width, height:200}} source={data.image.cover ? {uri: data.image.cover} : require('../../assets/image/reland_house_large.jpg')}>
+              <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.55)']}
                             style={styles.linearGradient2}>
-            </LinearGradient>
-            <View style={styles.heartContent}>
-              <MHeartIcon onPress={() => this.onLike(data.adsID)}
+              </LinearGradient>
+              <View style={styles.heartContent}>
+                <MHeartIcon onPress={() => this.onLike(data.adsID)}
                           color={color} bgColor={bgColor}
                           bgStyle={bgStyle} mainProps={styles.heartButton} />
-            </View>
-
-            <View style={{marginTop: -55, marginLeft: 10}}>
-              <Text style={styles.priceText}>{data.giaFmt}</Text>
-              <Text style={styles.infoText}>{util.getPriceM2Display(data.giaM2, data.loaiTin)} - Cách {data.distance}m </Text>
-              <Text style={styles.infoText}>{data.diaChi && data.diaChi.length>30 ? data.diaChi.substring(0,30) + "..." : data.diaChi}</Text>
-            </View>
-          </Image>
-        </TouchableOpacity>
+              </View>
+              <View style={{marginTop: -70, marginLeft: 10, paddingBottom: 10}}>
+                <Text style={styles.priceText}>{data.giaFmt}</Text>
+                <ScalableText style={styles.infoText}>{util.getPriceM2Display(data.giaM2, data.loaiTin)} - Cách {data.distance}m </ScalableText>
+                <ScalableText style={styles.infoText}>{data.diaChi && data.diaChi.length>30 ? data.diaChi.substring(0,30) + "..." : data.diaChi}</ScalableText>
+              </View>
+            </Image>
+          </TouchableOpacity>
+        </View>
     );
   }
 
@@ -177,19 +178,19 @@ class KetQuaDinhGia extends Component {
             <View style={styles.viewHopGia}>
               <Text style={styles.textHopGia1}>{this.state.giaTrungBinh.loaiNhaDatVal.toUpperCase()}</Text>
               <Text style={styles.textHopGia2}>{this.state.duAn}</Text>
-              <Text style={styles.textHopGia3}>{util.getPriceM2Display(this.state.giaTrungBinh.giaM2TrungBinh, this.state.loaiTinKey)}</Text>
-              <Text style={styles.textHopGia4}>Giá ước tính dựa trên dữ liệu {this.state.giaTrungBinh.count} nhà tương tự
-                đã và đang {this.state.loaiTin}</Text>
+              <ScalableText style={styles.textHopGia3}>{util.getPriceM2Display(this.state.giaTrungBinh.giaM2TrungBinh, this.state.loaiTinKey)}</ScalableText>
+              <ScalableText style={styles.textHopGia4}>Giá ước tính dựa trên dữ liệu {this.state.giaTrungBinh.count} nhà tương tự
+                đã và đang {this.state.loaiTin}</ScalableText>
               <Text style={styles.textHopGia5}>thuộc dự án {this.state.duAn}</Text>
             </View>
         )
       } else {
         return (
             <View style={[styles.viewHopGia,{height: 150}]}>
-              <Text style={styles.textHopGia1}>{this.state.loaiNhaDat.toUpperCase()}</Text>
+              <ScalableText style={styles.textHopGia1}>{this.state.loaiNhaDat.toUpperCase()}</ScalableText>
               <Text style={styles.textHopGia2}>{this.state.duAn}</Text>
               <Text style={styles.textHopGia4}>Không có thông tin định giá</Text>
-              <Text style={styles.textHopGia5}>thuộc dự án {this.state.duAn}</Text>
+              <ScalableText style={styles.textHopGia5}>thuộc dự án {this.state.duAn}</ScalableText>
             </View>
         )
       }
@@ -197,21 +198,21 @@ class KetQuaDinhGia extends Component {
       if (this.state.giaTrungBinh) {
         return (
             <View style={styles.viewHopGia}>
-              <Text style={styles.textHopGia1}>{this.state.giaTrungBinh.loaiNhaDatVal.toUpperCase()}</Text>
-              <Text style={styles.textHopGia2}>{this.state.diaChi}</Text>
+              <ScalableText style={styles.textHopGia1}>{this.state.giaTrungBinh.loaiNhaDatVal.toUpperCase()}</ScalableText>
+              <ScalableText style={styles.textHopGia2}>{this.state.diaChi}</ScalableText>
               <Text style={styles.textHopGia3}>{util.getPriceM2Display(this.state.giaTrungBinh.giaM2TrungBinh, this.state.loaiTinKey)}</Text>
-              <Text style={styles.textHopGia4}>Giá ước tính dựa trên dữ liệu {this.state.giaTrungBinh.count} nhà tương tự
-                đã và đang {this.state.loaiTin}</Text>
-              <Text style={styles.textHopGia5}>nằm trong vòng {this.state.radius}m xung quanh vị trí đã chọn</Text>
+              <ScalableText style={styles.textHopGia4}>Giá ước tính dựa trên dữ liệu {this.state.giaTrungBinh.count} nhà tương tự
+                đã và đang {this.state.loaiTin}</ScalableText>
+              <ScalableText style={styles.textHopGia5}>nằm trong vòng {this.state.radius}m xung quanh vị trí đã chọn</ScalableText>
             </View>
         )
       } else {
         return (
             <View style={[styles.viewHopGia,{height: 150}]}>
-              <Text style={styles.textHopGia1}>{this.state.loaiNhaDat.toUpperCase()}</Text>
-              <Text style={styles.textHopGia2}>{this.state.diaChi}</Text>
+              <ScalableText style={styles.textHopGia1}>{this.state.loaiNhaDat.toUpperCase()}</ScalableText>
+              <ScalableText style={styles.textHopGia2}>{this.state.diaChi}</ScalableText>
               <Text style={styles.textHopGia4}>Không có thông tin định giá</Text>
-              <Text style={styles.textHopGia5}>nằm trong vòng {this.state.radius}m xung quanh vị trí đã chọn</Text>
+              <ScalableText style={styles.textHopGia5}>nằm trong vòng {this.state.radius}m xung quanh vị trí đã chọn</ScalableText>
             </View>
         )
       }
@@ -398,11 +399,16 @@ const styles = StyleSheet.create({
   listMoRong:{
     justifyContent:'center',
     width: width,
-    height: 150,
+    height: 200,
+  },
+  eachViewKetQua:{
+    justifyContent:'center',
+    width: width,
+    height: 200,
   },
   linearGradient2: {
-    marginTop: 75,
-    height: 75,
+    marginTop: 100,
+    height: 100,
     paddingLeft: 0,
     paddingRight: 0,
     backgroundColor: "transparent",
@@ -421,15 +427,17 @@ const styles = StyleSheet.create({
   },
 
   priceText: {
-    fontSize:15,
+    fontSize:16,
     backgroundColor: 'transparent',
     color:'white',
     fontFamily: 'Open Sans',
     fontWeight:'700'
   },
   infoText: {
-    fontSize:12,
+    fontSize:14,
+    textAlign: 'left',
     backgroundColor: 'transparent',
+    marginTop: 2,
     color:'white',
     fontFamily: 'Open Sans'
   }
