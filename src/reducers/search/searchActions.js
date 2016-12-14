@@ -9,6 +9,7 @@ import {Alert} from "react-native";
 import userApi from '../../lib/userApi';
 import ls from '../../lib/localStorage';
 import localStorage  from '../../lib/localStorage';
+import {NetInfo} from 'react-native';
 
 const {
   ON_ALERT_US_CHANGE,
@@ -156,30 +157,33 @@ export function setLoadingDetail() {
 
 function callApiSearch(params, dispatch, successCallback, failCallback) {
   dispatch(changeLoadingSearchResult(true));
-  return Api.getItems(params)
-    .then((data) => {
-      if (data.errMsg) {
-        dispatch(fetchSearchResultFail(data.errMsg));
-        failCallback && failCallback(data.errMsg);
-      }
-      else if (data.list) {
-        //let listAds = data.list;
-        log.info("searchActions.search, Number of result: " + data.length);
-        //log.info("searchActions.search", data);
+  NetInfo.fetch().then(isConnected => {
+    if (isConnected == 'none') {
+      dispatch(fetchSearchResultFail(gui.ERR_NoInternetConnection));
+      //Alert.alert(gui.ERR_LoiKetNoiMayChu)
+      failCallback && failCallback(gui.ERR_NoInternetConnection);
+    } else {
+      return Api.getItems(params)
+          .then((data) => {
+            if (data.errMsg) {
+              dispatch(fetchSearchResultFail(data.errMsg));
+              failCallback && failCallback(data.errMsg);
+            }
+            else if (data.list) {
+              //let listAds = data.list;
+              log.info("searchActions.search, Number of result: " + data.length);
+              //log.info("searchActions.search", data);
 
-        dispatch(fetchSearchResultSuccess({data, query:params}));
+              dispatch(fetchSearchResultSuccess({data, query:params}));
 
-        successCallback();
-      } else if (data.error) {
-        dispatch(fetchSearchResultFail(data.error));
-        failCallback && failCallback(data.error);
-      }
-      else {
-        dispatch(fetchSearchResultFail(gui.ERR_NoInternetConnection));
-        //Alert.alert(gui.ERR_LoiKetNoiMayChu)
-        failCallback && failCallback(gui.ERR_NoInternetConnection);
-      }
-    });
+              successCallback();
+            } else if (data.error) {
+              dispatch(fetchSearchResultFail(data.error));
+              failCallback && failCallback(data.error);
+            }
+          });
+    }
+  });
 }
 
 export function search(credential, successCallback, failCallback) {
@@ -211,21 +215,24 @@ export function getDetail(credential, successCallback) {
 
     dispatch(setLoadingDetail());
 
-    return Api.getDetail(credential)
-      .then((data) => {
-        log.info("getDetail", data);
-        if (data.ads) {
-          dispatch(fetchDetailSuccess(data));
+    NetInfo.fetch().then(isConnected => {
+      if (isConnected == 'none') {
+        dispatch(fetchDetailFail(gui.ERR_LoiKetNoiMayChu));
+      } else {
+        return Api.getDetail(credential)
+            .then((data) => {
+              log.info("getDetail", data);
+              if (data.ads) {
+                dispatch(fetchDetailSuccess(data));
 
-          successCallback(data);
-        } else if (data.error) {
-          dispatch(fetchDetailFail(data.error));
-        }
+                successCallback(data);
+              } else if (data.error) {
+                dispatch(fetchDetailFail(data.error));
+              }
 
-        else {
-          dispatch(fetchDetailFail(gui.ERR_LoiKetNoiMayChu));
-        }
-      });
+            });
+      }
+    });
   }
 }
 
@@ -391,16 +398,21 @@ export function loadHomeData(failCallback) {
       }
 
       var getHomeData = (currentLocation) => {
-        return Api.getAppHomeData({
-          timeModified : lastSearchObj.timeModified,
-          query : lastSearchObj.query,
-          currentLocation: currentLocation
-        }).then((res) => {
-          log.info("getAppHomeData", res);
-          dispatch(loadHomeDataDone(res));
-          dispatch(changeHomeRefreshing(false));
-          if (res.msg) {
+        NetInfo.fetch().then(isConnected => {
+          if (isConnected == 'none') {
             failCallback && failCallback(gui.ERR_NoInternetConnection);
+          } else {
+            return Api.getAppHomeData({
+              timeModified : lastSearchObj.timeModified,
+              query : lastSearchObj.query,
+              currentLocation: currentLocation
+            }).then((res) => {
+              log.info("getAppHomeData", res);
+              dispatch(loadHomeDataDone(res));
+              dispatch(changeHomeRefreshing(false));
+              if (res.msg) {
+              }
+            });
           }
         });
       };
