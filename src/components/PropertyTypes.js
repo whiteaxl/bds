@@ -67,7 +67,7 @@ class PropertyTypes extends Component {
       return (func == 'search') ? loaiTin : postAds.loaiTin;
   }
 
-  getLoaiNhaDat(loaiTin) {
+  getLoaiNhaDat() {
       var {func, loaiNhaDat, postAds} = this.props;
       return (func == 'search') ? loaiNhaDat : postAds.loaiNhaDat;
   }
@@ -84,7 +84,7 @@ class PropertyTypes extends Component {
 
   getLoaiNhaDatVal() {
       var loaiTin = this.getLoaiTin();
-      var loaiNhaDat = this.getLoaiNhaDat(loaiTin);
+      var loaiNhaDat = this.getLoaiNhaDat();
       loaiNhaDatValues = loaiTin=='ban' ? DanhMuc.getLoaiNhaDatBanValues() : DanhMuc.getLoaiNhaDatThueValues() ;
       var loaiNhaDatVal = this.getValueByKey(loaiNhaDatValues, loaiNhaDat);
       if (!loaiNhaDatVal) {
@@ -123,12 +123,12 @@ class PropertyTypes extends Component {
     var value = '';
     for (var i = 0; i < loaiNhaDatKeys.length; i++) {
       var loaiKey = loaiNhaDatKeys[i];
-      if (key === loaiKey) {
+      if (key == loaiKey) {
         value = values[i];
         break;
       }
     }
-    //console.log(value);
+    // console.log(value);
     return value;
   }
 
@@ -136,12 +136,12 @@ class PropertyTypes extends Component {
     var key = '';
     for (var i = 0; i < values.length; i++) {
       var oneValue = values[i];
-      if (value === oneValue) {
+      if (value == oneValue) {
         key = loaiNhaDatKeys[i];
         break;
       }
     }
-    //console.log(key);
+    // console.log(key);
     return key;
   }
 

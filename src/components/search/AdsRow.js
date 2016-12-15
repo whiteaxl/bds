@@ -179,7 +179,7 @@ class AdsRow extends React.Component {
             </TouchableHighlight>
           </View>;
         } else {
-          firstControl = <View style={{flex: 0, height: 25, alignItems: 'center', justifyContent: 'center'}}>
+          firstControl = <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>
             <View>
               <Text style={myStyles.pagingTitle}>{this.props.getPagingTitle()}</Text>
             </View>
