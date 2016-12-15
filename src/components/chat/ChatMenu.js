@@ -51,7 +51,7 @@ const orderTypes1 = [
     'Gửi cho mình thêm ảnh',
     'Gửi cho mình vị trí chính xác của nhà',
     'Giá cuối cùng bạn bán là bao nhiêu?',
-    'Giá có thương lượng được không bạn?',
+    'Giá thương lượng được không bạn?',
     'Cảm ơn bạn!',
     'Giảm giá thêm đi bạn'
 ];
@@ -84,10 +84,10 @@ class ChatMenu extends Component {
             <View>
                 <Menu onSelect={(option) => this._onApply(option)}>
                     <MenuTrigger>
-                        <RelandIcon name="list" color={gui.mainColor}
+                        <RelandIcon name="list" color='#0082f8'
                                     mainProps={myStyles.captureIcon}
                                     noAction={true}
-                                    size={22} textProps={{ paddingLeft: 0 }}
+                                    size={21} textProps={{ paddingLeft: 0 }}
                                     />
 
                     </MenuTrigger>
@@ -122,7 +122,7 @@ var myStyles = StyleSheet.create({
         marginTop: -310,
         left: 10,
         overflow: 'hidden',
-        width: Dimensions.get('window').width*3/4
+        width: Dimensions.get('window').width*9/10
     },
     sortText: {
         fontSize: 14,

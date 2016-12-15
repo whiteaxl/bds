@@ -697,7 +697,7 @@ var styles = StyleSheet.create({
         alignItems: 'center',
     },
     viewMeasure: {
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
         height: 5,
         width: width - 30,
         right: 15,
@@ -711,6 +711,7 @@ var styles = StyleSheet.create({
         backgroundColor: '#00a8e6',
         height: 5,
         width: 5,
+        borderRadius:5,
         left: 6
     },
 
@@ -718,18 +719,21 @@ var styles = StyleSheet.create({
         backgroundColor: '#00a8e6',
         height: 5,
         width: 5,
+        borderRadius:5,
         marginLeft: (width - 30) / 10
     },
     sliderDotThree: {
         backgroundColor: '#00a8e6',
         height: 5,
         width: 5,
+        borderRadius:5,
         marginLeft: (width - 30) / 10 - 7
     },
     sliderDotFour: {
         backgroundColor: '#00a8e6',
         height: 5,
         width: 5,
+        borderRadius:5,
         marginLeft: (width - 30) / 10 - 6
     },
     customPageHeader: {

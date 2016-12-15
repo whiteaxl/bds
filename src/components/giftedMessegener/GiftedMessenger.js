@@ -698,18 +698,18 @@ class GiftedMessenger extends Component {
             <View style={{ flexDirection: 'row', }}>
               <ChatMenu onPress={this._onPressTempMsg.bind(this)}/>
 
-              <RelandIcon name="camera-o" color={gui.mainColor}
+              <RelandIcon name="camera-o" color='#0082f8'
                           mainProps={this.styles.captureIcon}
-                          size={22} textProps={{ paddingLeft: 0 }}
+                          size={21} textProps={{ paddingLeft: 0 }}
                           onPress={this.takePicture} />
               {/*<RelandIcon name="photos" color={gui.mainColor}
                           mainProps={this.styles.captureIcon}
                           size={22} textProps={{ paddingLeft: 0 }}
                           onPress={this.coming} />
                */}
-              <RelandIcon name="location-o" color={gui.mainColor}
+              <RelandIcon name="location-o" color='#0082f8'
                           mainProps={this.styles.captureIcon}
-                          size={22} textProps={{ paddingLeft: 0 }}
+                          size={25} textProps={{ paddingLeft: 0 }}
                           onPress={this.coming} />
 
             </View>
