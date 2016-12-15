@@ -200,8 +200,8 @@ class AdsListTab extends Component {
 
   onDeleteButton(adsID){
     Alert.alert('', 'Bạn có muốn xóa tin này không ?',
-        [{text: 'Đồng ý', onPress: () => this._deleteAds(adsID)},
-         {text: 'Thoát' , onPress: () => console.log('Cancel Pressed!')}
+        [ {text: 'Thoát' , onPress: () => console.log('Cancel Pressed!')},
+          {text: 'Đồng ý', onPress: () => this._deleteAds(adsID)}
         ]);
   }
 

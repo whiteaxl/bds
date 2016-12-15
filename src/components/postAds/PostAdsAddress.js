@@ -114,6 +114,8 @@ class PostAdsAddress extends Component {
           place.diaChi = diaChiChiTiet
       }
 
+      this.props.onComplete(diaChiChiTiet);
+
       this.props.actions.onPostAdsFieldChange("place", place);
 
       Actions.pop();

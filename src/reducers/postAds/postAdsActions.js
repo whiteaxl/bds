@@ -4,6 +4,7 @@ import uploadApi from '../../lib/UploadApi';
 import findApi from '../../lib/FindApi';
 import userApi from '../../lib/userApi';
 import log from "../../lib/logUtil";
+import util from "../../lib/utils";
 
 const {
     ON_POST_ADS_FIELD_CHANGE,
@@ -120,13 +121,24 @@ export function getUpdateAds(adsID, token) {
         return userApi.getUpdateAds(adsID, token)
             .then(res => {
                 if (res.success) {
-                    dispatch(getUpdateAdsSuccess(res.data));
+                    let diaChinh = res.data.place.diaChinh;
+                    let diaChinhDto = {
+                        tinhKhongDau: diaChinh.tinh ? util.locDau(diaChinh.tinh) : undefined,
+                        huyenKhongDau: diaChinh.huyen ? util.locDau(diaChinh.huyen): undefined,
+                        xaKhongDau: diaChinh.xa ? util.locDau(diaChinh.xa) : undefined
+                    }
+                    findApi.getDiaChinhFromGoogleData(diaChinhDto)
+                        .then(function (json) {
+                            log.info("postAdsActions.getDiaChinhFromGoogleData", json);
+                            if (json.status === 'OK')
+                                dispatch(postAdsGetDiaChinhSuccess(json));
+                        });
 
+                    dispatch(getUpdateAdsSuccess(res.data));
                 } else {
                     log.error("get Update Ads error", res);
                     dispatch(getUpdateAdsFailure());
                 }
-
                 return res;
             })
     }

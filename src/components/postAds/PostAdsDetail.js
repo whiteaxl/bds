@@ -89,7 +89,12 @@ class NPostAdsDetail extends Component {
         StatusBar.setBarStyle('light-content');
         errorMessage = this.props.postAds.error;
 
+
         let adsID = props.postAds.id;
+
+        let diaChiChiTiet = props.postAds.place ? props.postAds.place.diaChiChiTiet : '';
+        
+        let diaChinhFullName = placeUtil.getDiaChinhFullName(props.postAds.place);
 
         this.state = {
             uploadUrls: [],
@@ -100,7 +105,8 @@ class NPostAdsDetail extends Component {
             initNamXayDung: '',
             inputNamXayDung: '',
             namXayDung: null,
-            diaChinhFullName: '',
+            diaChinhFullName: diaChinhFullName,
+            diaChiChiTiet: diaChiChiTiet,
             adsID: adsID,
             showMoreContent: false,
             deletedPhoto: null
@@ -1117,6 +1123,9 @@ class NPostAdsDetail extends Component {
 
         var {place} = this.props.postAds;
         place.geo = position.location;
+        place.diaChinh.tinh = position.diaChinh.tinh;
+        place.diaChinh.huyen = position.diaChinh.huyen;
+        place.diaChinh.xa = position.diaChinh.xa;
 
         this.props.actions.onPostAdsFieldChange('place', place);
 
@@ -1144,16 +1153,22 @@ class NPostAdsDetail extends Component {
     }
 
     _onDiaChiPressed() {
-        Actions.PostAdsAddress({ diaChinhFullName: this.state.diaChinhFullName });
+        Actions.PostAdsAddress({ diaChinhFullName: this.state.diaChinhFullName, onComplete: this._onDiaChiChosed.bind(this) });
     }
 
     _onLienHePressed() {
         Actions.PostAdsLienHe();
     }
 
+    _onDiaChiChosed(diaChiChiTiet){
+        this.setState({diaChiChiTiet: diaChiChiTiet});
+    }
+
     _getDiaChiValue() {
-        var {place} = this.props.postAds;
-        var diaChiChiTiet = place.diaChiChiTiet;
+        // var {place} = this.props.postAds;
+        // var diaChiChiTiet = place.diaChiChiTiet;
+
+        var diaChiChiTiet = this.state.diaChiChiTiet;
 
         if (!diaChiChiTiet || diaChiChiTiet.length <= 0)
             return '';
@@ -1161,6 +1176,7 @@ class NPostAdsDetail extends Component {
         if (diaChiChiTiet.length > 30) {
             diaChiChiTiet = diaChiChiTiet.substring(0, 30) + '...';
         }
+
         return diaChiChiTiet;
     }
 
@@ -1171,11 +1187,16 @@ class NPostAdsDetail extends Component {
             return '';
 
         var lienHeTxt = '';
-        if (lienHe.tenLienLac && lienHe.tenLienLac.length > 0)
+        if (lienHe.showTenLienLac && lienHe.tenLienLac && lienHe.tenLienLac.length > 0)
             lienHeTxt = lienHeTxt + lienHe.tenLienLac;
-        if (lienHe.phone && lienHe.phone.length > 0)
+        if (lienHe.showPhone && lienHe.phone && lienHe.phone.length > 0)
             lienHeTxt = lienHeTxt + "-" + lienHe.phone;
-        return lienHeTxt;
+        if (lienHe.showEmail && lienHe.email && lienHe.email.length > 0)
+            lienHeTxt = lienHeTxt + "-" + lienHe.email;
+
+        let result = lienHeTxt.substring(0, 30) + '...';
+
+        return result;
     }
 
 
@@ -1448,8 +1469,8 @@ class NPostAdsDetail extends Component {
         }
 
         if (selectedDuAn) {
-            place.diaChinh.codeDuAn = selectedDiaChinh.duAn || undefined;
-            place.diaChinh.duAn = selectedDiaChinh.placeName || undefined;
+            place.diaChinh.codeDuAn = selectedDuAn.duAn || undefined;
+            place.diaChinh.duAn = selectedDuAn.placeName || undefined;
         }
 
         var phongNgu = soPhongNguText != '' ? soPhongNguText : undefined;
@@ -1560,7 +1581,7 @@ class NPostAdsDetail extends Component {
                 huyen: '',
                 xa: '',
                 duAn: '',
-                tinhKhongDau: 'Hanoi',
+                tinhKhongDau: 'ha-noi',
                 huyenKhongDau: '',
                 xaKhongDau: '',
                 codeTinh: '',
@@ -1572,11 +1593,11 @@ class NPostAdsDetail extends Component {
         });
         this.onValueChange("lienHe", {
             tenLienLac: null,
-            showTenLienLac: false,
+            showTenLienLac: true,
             phone: null,
-            showPhone: false,
+            showPhone: true,
             email: null,
-            showEmail: false,
+            showEmail: true,
         });
         this.onValueChange("selectedDiaChinh", null);
         this.onValueChange("selectedDuAn", null);

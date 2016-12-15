@@ -335,7 +335,11 @@ class Search extends Component {
         if (diaChinh.tinhKhongDau) {
             placeName = diaChinh.fullName;
         } else { //others: banKinh or currentLocation
-            placeName = 'Tìm tất cả theo khung nhìn'
+            if (!diaChinh.fullName){
+                placeName = '';
+            } else {
+                placeName = 'Tìm tất cả theo khung nhìn';
+            }
         }
 
         return placeName;
@@ -399,8 +403,8 @@ class Search extends Component {
                             {this._renderGia()}
                             <FullLine style={{marginLeft:17}} />
                             {this._renderSoPhongNgu()}
-                            <FullLine />
-                            {this._renderBanKinhTimKiem()}
+
+                            {/*this._renderBanKinhTimKiem()*/}
 
                         </View>
                         <FullLine />

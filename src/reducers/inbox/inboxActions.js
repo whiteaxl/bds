@@ -59,8 +59,6 @@ export function loadInbox(userID) {
                                   console.log(res);
                                   console.log("========= inboxAction print chatRes");
                                   console.log(chatRes);
-                                  
-                                  
                               }
                           });
                   }

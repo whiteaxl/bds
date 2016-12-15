@@ -25,10 +25,6 @@ var Api = {
   _requestCnt : 0,
 
   convertFieldsToQueryParams : function(fields){
-    console.log("============== print search fields");
-    console.log(fields);
-    console.log("============== print search fields end");
-
     var {loaiTin, soPhongNguSelectedIdx, soNhaTamSelectedIdx,
         radiusInKmSelectedIdx, dienTich, orderBy, diaChinh, center, viewport, 
         huongNha, ngayDaDang, polygon, pageNo, limit, isIncludeCountInResponse,
@@ -46,16 +42,10 @@ var Api = {
 
     if (circle)
         mcircle = circle;
-    console.log("======================= print 1111111111111");
-    console.log(mcircle);
-    console.log("======================= print 1111111111111");
+
     if (!mcircle.radius || !mcircle.center) {
         mcircle = undefined;
     }
-
-      console.log("======================= print 22222222222222");
-      console.log(mcircle);
-      console.log("======================= print 22222222222222");
 
     if (viewport && viewport.length == 0 ) {
       viewport = undefined;

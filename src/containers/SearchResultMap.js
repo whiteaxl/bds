@@ -1095,10 +1095,6 @@ class SearchResultMap extends Component {
 
     let mcircle = null;
 
-    console.log("================= print new circle");
-    console.log(newCircle);
-    console.log("================= print new circle end");
-
     var fields = {
       loaiTin: loaiTin,
       ban: ban,

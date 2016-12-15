@@ -61,6 +61,7 @@ export default function postAdsReducer(state = initialState, action) {
     case POST_ADS_GET_DIACHINH_SUCCESS: {
       let selectedDiaChinh = action.payload.diaChinh;
       let duAnList = action.payload.duAn;
+
       let nextState = state.set('selectedDiaChinh', selectedDiaChinh)
           .set('duAnList', duAnList)
           .set('loadingDiaChinh', false);
@@ -78,6 +79,11 @@ export default function postAdsReducer(state = initialState, action) {
           ads.image.images.map( (e) => photos.push({uri:e}));
         }
       }
+
+      let diaChinh = ads.place.diaChinh;
+      let selectedDuAn = diaChinh && diaChinh.duAn && diaChinh.duAn.length >0 ?
+                          {duAn: diaChinh.codeDuAn, placeName: diaChinh.duAn, placeType:'A'} : null;
+
       let nextState = state.set('id', ads.id)
           .set('maSo', ads.maSo)
           .set('loaiTin', ads.loaiTin==0 ? 'ban' : 'thue')
@@ -105,6 +111,7 @@ export default function postAdsReducer(state = initialState, action) {
           .set('chinhChuDangTin', ads.chinhChuDangTin||false)
           .set('gia', ads.gia||-1)
           .set('chiTiet', ads.chiTiet||undefined)
+          .set('selectedDuAn', selectedDuAn)
           .set('loadingUpdateAds', false);
       return nextState;
     }

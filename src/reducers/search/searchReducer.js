@@ -475,16 +475,17 @@ function buildSearchCredentialFromSavedSearch(query) {
   }
   let ban = {};
   let thue = {};
+
   if (loaiTin == 0) {
     ban.loaiNhaDat = (loaiNhaDat && loaiNhaDat.length>0) ? loaiNhaDat[0]. toString() : '';
-    ban.gia = RangeUtils.sellPriceRange.rangeVal2Display(giaBETWEEN);
+    ban.gia = giaBETWEEN ? RangeUtils.sellPriceRange.rangeVal2Display(giaBETWEEN) : RangeUtils.BAT_KY_RANGE;
     thue.loaiNhaDat = '';
     thue.gia = RangeUtils.BAT_KY_RANGE;
   } else {
     ban.loaiNhaDat = '';
     ban.gia = RangeUtils.BAT_KY_RANGE;
     thue.loaiNhaDat = (loaiNhaDat && loaiNhaDat.length>0) ? loaiNhaDat[0]. toString() : '';
-    thue.gia = RangeUtils.sellPriceRange.rangeVal2Display(giaBETWEEN);
+    thue.gia = giaBETWEEN ? RangeUtils.sellPriceRange.rangeVal2Display(giaBETWEEN) : RangeUtils.BAT_KY_RANGE;
   }
   
   let ret = {
@@ -492,7 +493,7 @@ function buildSearchCredentialFromSavedSearch(query) {
     ban: ban,
     soPhongNguSelectedIdx: danhMuc.getIdx(danhMuc.SoPhongNgu, soPhongNguGREATER),
     soNhaTamSelectedIdx : danhMuc.getIdx(danhMuc.SoPhongTam, soPhongTamGREATER),
-    dienTich: RangeUtils.dienTichRange.rangeVal2Display(dienTichBETWEEN),
+    dienTich: dienTichBETWEEN ? RangeUtils.dienTichRange.rangeVal2Display(dienTichBETWEEN) : RangeUtils.BAT_KY_RANGE,
     thue: thue,
     orderBy: orderBy && Object.keys(orderBy).length == 2 ? orderBy.name + orderBy.type : '',
     viewport: viewport,

@@ -107,8 +107,9 @@ export function loadLikedList(userID) {
     userApi.getAdsLikes(userID)
       .then(res => {
         if (res.status == 0) {
-          dispatch(onAdsMgmtFieldChange('likedList', res.data));
-
+          let likedList = res.data;
+          likedList.sort((a, b) => b.timeModified - a.timeModified);
+          dispatch(onAdsMgmtFieldChange('likedList', likedList));
         } else {
           log.error("loadAdsMgmtData error", res);
         }

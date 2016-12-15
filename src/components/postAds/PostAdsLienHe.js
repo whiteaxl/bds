@@ -181,7 +181,7 @@ class PostAdsLienHe extends Component {
 
     _onShowEmailPressed(){
         let showEmail = this.state.showEmail
-        this.setState({showPhone: !showEmail});
+        this.setState({showEmail: !showEmail});
     }
 
     _onEmailChange(text){

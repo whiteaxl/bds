@@ -26,10 +26,10 @@ const InitialState = Record({
             huyen: '',
             xa: '',
             duAn: '',
-            tinhKhongDau: 'Hanoi',
+            tinhKhongDau: 'ha-noi',
             huyenKhongDau: '',
             xaKhongDau: '',
-            codeTinh: '',
+            codeTinh: 'HN',
             codeHuyen: '',
             codeXa: '',
             codeDuAn: ''

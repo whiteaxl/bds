@@ -217,7 +217,6 @@ class MMapView extends Component {
   }
 
   _onRegionChangeComplete(region) {
-    console.log("========== on region change complete");
     this.setState({region: region});
     findApi.getGeocoding(region.latitude, region.longitude, this._getDiaChinhContent.bind(this));
   }
@@ -279,10 +278,6 @@ class MMapView extends Component {
     location.lat = region.latitude;
     location.lon = region.longitude;
     var places = data.results;
-
-    console.log("===================== print result");
-    console.log(places);
-    console.log("===================== print result end");
 
     if (places.length > 0) {
       var newPlace = places[0];

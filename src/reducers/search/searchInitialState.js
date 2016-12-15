@@ -42,12 +42,12 @@ const SearchForm = Record({
         huongNha: 0,
         viewport: {
             northeast: {
-                lat: 21.055138,
-                lon: 105.857493
+                lat:24.009471352586818,
+                lon:110.60470223107492
             },
             southwest: {
-                lat: 21.0166219,
-                lon: 105.801771
+                lat:8.798282551106938,
+                lon:100.71703547982148
             }
         },
         polygon: [], //[{lat, lon}]
@@ -55,11 +55,11 @@ const SearchForm = Record({
         radiusInKmSelectedIdx: 0,
         center : null , //{lat, lon}
         diaChinh : {
-            tinhKhongDau : "HN",
-            huyenKhongDau : "7",
+            tinhKhongDau : undefined,
+            huyenKhongDau : undefined,
             xaKhongDau : undefined,
             duAnKhongDau : undefined,
-            fullName : 'Quận Cầu Giấy, Hà Nội'
+            fullName : undefined
         },
         diaChinhViewport: {
             northeast: {
