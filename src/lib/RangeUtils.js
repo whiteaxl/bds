@@ -1,6 +1,7 @@
 'use strict';
 
 import danhMuc from "../assets/DanhMuc";
+import utils from "./utils";
 
 
 var BIG = danhMuc.BIG;
@@ -103,16 +104,22 @@ class IncRange {
 		fromVal = String(fromVal);
 		if (fromVal && fromVal.indexOf(" ") != -1) {
 			let unitVal = this.getUnitValue ? this.getUnitValue(fromVal.substring(fromVal.indexOf(" ")+1)) : 1;
-			fromVal = Number(fromVal.substring(0, fromVal.indexOf(" ")))*unitVal;
+			fromVal = fromVal.substring(0, fromVal.indexOf(" "));
+			fromVal = utils.normalizeNumeric(fromVal);
+			fromVal = isNaN(fromVal) ? 0 : Number(fromVal)*unitVal;
 		} else {
-			fromVal = Number(fromVal);
+			fromVal = utils.normalizeNumeric(fromVal);
+			fromVal = isNaN(fromVal) ? 0 : Number(fromVal);
 		}
 		toVal = String(toVal);
 		if (toVal && toVal.indexOf(" ") != -1) {
 			let unitVal = this.getUnitValue ? this.getUnitValue(toVal.substring(toVal.indexOf(" ")+1)) : 1;
-			toVal = Number(toVal.substring(0, toVal.indexOf(" ")))*unitVal;
+			toVal = toVal.substring(0, toVal.indexOf(" "));
+			toVal = utils.normalizeNumeric(toVal);
+			toVal = isNaN(toVal) ? 0 : Number(toVal)*unitVal;
 		} else {
-			toVal = Number(toVal);
+			toVal = utils.normalizeNumeric(toVal);
+			toVal = isNaN(toVal) ? 0 : Number(toVal);
 		}
 		toVal = toVal == -1 ? BIG : toVal;
 
