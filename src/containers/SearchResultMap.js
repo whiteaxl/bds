@@ -413,9 +413,9 @@ class SearchResultMap extends Component {
           </MapView>
 
             <View>
-                <LinearGradient colors={['rgba(184, 184, 184, 0.85)', 'transparent']}
+                <LinearGradient colors={['rgba(105, 105, 105, 0.8)', 'transparent']}
                                 style={styles.linearGradient}>
-                    <Text style={{height: headerHeight}}></Text>
+                    <Text style={{height: 70}}></Text>
                     <View style={styles.search}>
                         <SearchHeader placeName={placeName} containerForm="SearchResultMap"
                                       refreshRegion={() => this.refreshRegion()} onShowMessage={() => this._onShowMessage()}
@@ -960,7 +960,7 @@ class SearchResultMap extends Component {
     let textValue = "Đang hiển thị từ " + rangeAds + " kết quả";
     let fontWeight = 'normal';
     let backgroundColor = 'transparent';
-    let textColor = 'white';
+    let textColor = gui.mainColor;
     if (errorMsg) {
         textValue = errorMsg;
     }
@@ -1573,7 +1573,7 @@ var styles = StyleSheet.create({
   mapIcon: {
   },
   resultIcon: {
-    color: '#F53113',
+    color: '#03a0da',
     fontSize: gui.capitalizeFontSize,
     fontFamily: gui.fontFamily,
     fontWeight : 'normal',
@@ -1615,7 +1615,7 @@ var styles = StyleSheet.create({
   },
   previousButton: {
     position: 'absolute',
-    top: height-114,
+    top: height-112,
     left: width/2-79,
     flexDirection: 'column',
     alignItems: 'center',
@@ -1630,7 +1630,7 @@ var styles = StyleSheet.create({
   },
   nextButton: {
     position: 'absolute',
-    top: height-114,
+    top: height-112,
     left: width/2+37,
     flexDirection: 'column',
     alignItems: 'center',

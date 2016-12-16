@@ -22,8 +22,9 @@ import MHeartIcon from '../MHeartIcon';
 
 import LinearGradient from 'react-native-linear-gradient';
 
-
 import Swipeout from 'react-native-swipeout';
+
+import ScalableText from 'react-native-text';
 
 import gui from '../../lib/gui';
 
@@ -323,8 +324,8 @@ class AdsListTab extends Component {
       return (
         <View style={myStyles.likedItemContainer}>
           <View style={myStyles.searchListViewRowAlign}>
-            <Text style={myStyles.price}>{rowData.giaFmt}</Text>
-            <Text style={myStyles.text}>{diaChi}{moreInfo}</Text>
+            <ScalableText style={myStyles.price}>{rowData.giaFmt}</ScalableText>
+            <ScalableText style={myStyles.text}>{diaChi}{moreInfo}</ScalableText>
           </View>
           <View style={myStyles.heartContent}>
             <MHeartIcon onPress={() => this.onLike(adsID)}
@@ -551,7 +552,7 @@ var myStyles = StyleSheet.create({
     flexDirection: 'column',
     justifyContent: 'space-between',
     width: 2*width/3,
-    marginLeft: 15
+    marginLeft: 17
   },
 
   leftTextGroup: {
@@ -572,11 +573,12 @@ var myStyles = StyleSheet.create({
     fontFamily: 'Open Sans',
   },
   text: {
-    fontSize: 14,
+    fontSize: 15,
     textAlign: 'left',
     backgroundColor: 'transparent',
     color: 'white',
     fontFamily: 'Open Sans',
+    marginTop: 2,
   },
   heartContent: {
     backgroundColor: 'transparent',

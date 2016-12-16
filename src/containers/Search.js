@@ -1228,7 +1228,7 @@ var myStyles = StyleSheet.create({
         fontFamily: gui.fontFamily
     },
     addViewBottom:{
-        height:20,
+        height:30,
         width:width,
         backgroundColor:'#fff'
     }

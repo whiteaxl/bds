@@ -282,11 +282,11 @@ const myStyles = StyleSheet.create({
     backgroundColor: 'transparent',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    top: imgHeight - 55,
+    top: imgHeight - 57,
     width: width
   },
   price: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'left',
     backgroundColor: 'transparent',
@@ -301,7 +301,8 @@ const myStyles = StyleSheet.create({
     marginBottom: 15,
     marginRight: 0,
     marginTop: 2,
-    color: 'white'
+    color: 'white',
+    fontWeight: '300',
   },
   rowControl: {
     fontSize: 13,

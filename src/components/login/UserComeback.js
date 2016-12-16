@@ -18,6 +18,8 @@ var Modal  = require('react-native-modalbox');
 import Icon from 'react-native-vector-icons/FontAwesome';
 import gui from '../../lib/gui';
 import GiftedSpinner from 'react-native-gifted-spinner';
+import ScalableText from 'react-native-text';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -117,7 +119,12 @@ class UserComeback extends React.Component {
     _onThucHienResetPasswordPress(){
         console.log("_onThucHienResetPasswordPress");
         console.log(this.state);
+        Alert.alert('Thông báo', 'Đăng nhập thành công!');
         //Actions.Login();
+    }
+
+    _scrollToInput(reactNode: any) {
+        this.refs.scroll.scrollToFocusedInput(reactNode)
     }
 
     render(){
@@ -143,7 +150,7 @@ class UserComeback extends React.Component {
                 </View>
                 <View style={styles.viewBody}>
                     <View style ={styles.viewWelcome}>
-                        <Text style={styles.textWelcome}>Chào mừng bạn quay lại</Text>
+                        <ScalableText style={styles.textWelcome}>Chào mừng bạn quay lại</ScalableText>
                     </View>
                     <View style ={styles.viewInput}>
                         <TextInput
@@ -188,7 +195,7 @@ class UserComeback extends React.Component {
                     </View>
                     <View style={styles.modalBody}>
                         <View style ={styles.bodyForget}>
-                            <Text style={styles.bodyTextFoget}>Quên mật khẩu?</Text>
+                            <ScalableText style={styles.bodyTextFoget}>Quên mật khẩu?</ScalableText>
                         </View>
                         <TextInput
                          underlineColorAndroid='rgba(0,0,0,0)'
@@ -225,9 +232,10 @@ class UserComeback extends React.Component {
                         </View>
                         <View style={styles.modalTextCan}></View>
                     </View>
+                    <KeyboardAwareScrollView ref='scroll'>
                     <View style={styles.modalBody}>
                         <View style ={styles.viewCapNhat}>
-                            <Text style={styles.textXacNhan}>Tạo mật khẩu mới cho tài khoản của bạn</Text>
+                            <ScalableText style={styles.textXacNhan}>Tạo mật khẩu mới cho tài khoản của bạn</ScalableText>
                         </View>
 
                          <TextInput
@@ -260,6 +268,7 @@ class UserComeback extends React.Component {
                             <Text style={styles.textActionButton}>Thực hiện</Text>
                         </TouchableOpacity>
                     </View>
+                    </KeyboardAwareScrollView>
                 </View>
             </Modal>
         )
@@ -427,6 +436,7 @@ const styles = StyleSheet.create({
         fontFamily: gui.fontFamily,
         backgroundColor:'white',
         height:38,
+        width: width- 39,
         borderRadius: 5,
         borderWidth:1,
         borderColor:'#c6cbce',

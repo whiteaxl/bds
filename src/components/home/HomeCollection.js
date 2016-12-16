@@ -170,7 +170,7 @@ class ImageItem extends React.Component {
     if (this.props.uploadingLikedAds.uploading && this.props.uploadingLikedAds.adsID == this.props.ads.adsID) {
       return (
           <View style={styles.heartContent}>
-            <View style={styles.heartButton}>
+            <View style={styles.heartButton2}>
               <GiftedSpinner size="small" color="white" />
             </View>
           </View>);
@@ -325,18 +325,30 @@ var styles = StyleSheet.create({
     backgroundColor: 'transparent',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    top: imageHeight - 60,
+    top: imageHeight - 62,
   },
   price: {
-    fontSize: 16,
+    fontSize: 13,
     fontWeight: 'bold',
+    textAlign: 'left',
+    backgroundColor: 'transparent',
+    marginLeft: 10,
+    color: 'white',
+    paddingTop:1
+  },
+  text: {
+    marginTop:2,
+    fontSize: 12,
+    fontWeight: '300',
     textAlign: 'left',
     backgroundColor: 'transparent',
     marginLeft: 10,
     color: 'white'
   },
-  text: {
-    fontSize: 14,
+  text2: {
+    marginTop:2,
+    fontSize: 10,
+    fontWeight: '300',
     textAlign: 'left',
     backgroundColor: 'transparent',
     marginLeft: 10,
@@ -345,16 +357,20 @@ var styles = StyleSheet.create({
   heartContent: {
     position: 'absolute',
     backgroundColor: 'transparent',
-    top: 3,
-    right: 5,
+    top: 8,
+    right: 8,
     width:35,
     height:35,
     justifyContent:'center',
-    alignSelf: 'auto'
+    alignItems:'center'
   },
   heartButton: {
     marginTop: 10,
     marginLeft: -10
+  },
+  heartButton2: {
+    marginBottom: 12,
+    marginLeft: 13
   },
 
   titleContainer: {

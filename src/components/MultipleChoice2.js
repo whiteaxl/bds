@@ -18,6 +18,10 @@ import TruliaIcon from './TruliaIcon';
 
 import gui from '../lib/gui';
 
+import FullLine from './line/FullLine';
+
+var {width, height} = Dimensions.get('window');
+
 const propTypes = {
     options: React.PropTypes.array.isRequired,
     selectedOptions: React.PropTypes.array,
@@ -36,7 +40,7 @@ const defaultProps = {
     selectedOptions: [],
     onSelection(option){},
     style:{},
-    optionStyle:{},
+    optionStyle:{marginTop:5, marginBottom:5},
     disabled: false
 };
 
@@ -129,7 +133,7 @@ class MultipleChoice2 extends BaseComponent {
             return this.props.renderSeparator(option);
         }
 
-        return (<View style={Styles.separator}></View>);
+        return (<FullLine />);
     }
 
     _renderText(option) {
@@ -145,6 +149,7 @@ class MultipleChoice2 extends BaseComponent {
                 <Text style={{fontFamily: gui.fontFamily, fontSize: gui.normalFontSize}}>{option}</Text>
                 <TextInput
                     secureTextEntry={false}
+                    returnKeyType='done'
                     placeholder = {"Lý do thông báo..."}
                     style={Styles.input}
                     onFocus={this.props.onTextFocus} />
@@ -205,7 +210,8 @@ var Styles = StyleSheet.create({
     },
 
     optionLabel: {
-        flex: 1
+        flex: 1,
+        paddingBottom:5
     },
 
     optionIndicator: {
@@ -213,7 +219,8 @@ var Styles = StyleSheet.create({
         height: 30,
         justifyContent: 'center',
         alignItems: 'center',
-        marginRight: 15
+        marginRight: 15,
+        paddingBottom: 28
     },
 
     optionIndicatorIcon: {
@@ -221,26 +228,19 @@ var Styles = StyleSheet.create({
         height: 20
     },
 
-    separator: {
-        height: 1,
-        marginTop: 5,
-        marginBottom: 5,
-        backgroundColor: gui.separatorLine
-    },
-
     input: {
-        fontSize: gui.normalFontSize,
+        fontSize: 13,
         fontFamily: gui.fontFamily,
         padding: 4,
         paddingRight: 10,
         paddingLeft: 10,
         height: 30,
-        borderColor: 'gray',
+        borderColor: '#c5c5c5',
         borderWidth: 1,
-        borderRadius: 5,
+        borderRadius: 4,
         margin: 5,
-        marginLeft: 0,
-        width: Dimensions.get('window').width - 100,
+        marginLeft: 40,
+        width: width - 50,
         textAlign: 'left',
         alignSelf: 'center'
     }

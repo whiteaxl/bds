@@ -560,7 +560,7 @@ const styles = StyleSheet.create({
   },
   textNhaDat: {
     color: '#9fa0a4',
-    fontSize: 15,
+    fontSize: 14,
     fontFamily: 'Open Sans',
     justifyContent: 'center',
     marginRight: 10

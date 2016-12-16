@@ -28,6 +28,8 @@ import log from "../../lib/logUtil";
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {Map} from 'immutable';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
+import ScalableText from 'react-native-text';
 
 import * as globalActions from '../../reducers/global/globalActions';
 import * as registerActions from '../../reducers/register/registerActions';
@@ -66,7 +68,9 @@ class Register extends React.Component {
             avatar: null
         }
     }
-
+    _scrollToInput(reactNode: any) {
+        this.refs.scroll.scrollToFocusedInput(reactNode)
+    }
     render(){
         let imgUrl = !this.props.register.image || this.props.register.image.length<=0 ?
                     require('../../assets/image/user.png') : {uri: this.props.register.image}
@@ -81,9 +85,10 @@ class Register extends React.Component {
             </View>
             <View style={styles.viewCan}></View>
           </View>
+          <KeyboardAwareScrollView ref='scroll'>
             <View style={styles.viewBody}>
               <View style ={styles.viewWelcome}>
-                <Text style={styles.textWelcome}>Chào mừng đến với Landber</Text>
+                <ScalableText style={styles.textWelcome}>Chào mừng đến với Landber</ScalableText>
               </View>
               <View style ={styles.viewInput1}>
                 <TextInput
@@ -127,9 +132,10 @@ class Register extends React.Component {
               <TouchableOpacity onPress = {this._onThucHien.bind(this)}style={styles.viewAction} >
                   <Text style={styles.textAction} >Thực hiện</Text>
               </TouchableOpacity>
-
             </View>
+          </KeyboardAwareScrollView>
           </View>
+
 
         );
   }

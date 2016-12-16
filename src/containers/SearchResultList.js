@@ -291,7 +291,7 @@ var myStyles = StyleSheet.create({
         paddingBottom: 10
     },
     resultIcon: {
-        color: 'white',
+        color: '#03a0da',
         fontSize: gui.capitalizeFontSize,
         fontFamily: gui.fontFamily,
         fontWeight : 'normal',

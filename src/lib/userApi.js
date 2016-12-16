@@ -20,10 +20,11 @@ var saveSearchUrl = cfg.rootUrl + "/saveSearch";
 var loginUrl = cfg.rootUrl + "/login";
 var signUrl = cfg.rootUrl + "/signup";
 var profileUrl = cfg.rootUrl + "/profile";
+var forgotPasswordUrl = cfg.rootUrl + "/forgotPassword";
+var updatePasswordUrl = cfg.rootUrl + "/updatePassword";
 var updateProfileUrl = cfg.rootUrl + "/updateProfile";
 var changePasswordUrl = cfg.rootUrl + "/changePassword";
 var checkUserExistUrl = cfg.rootUrl + "/checkUserExist";
-
 
 var userApi = {
   requestVerifyCode(phone) {
@@ -64,6 +65,80 @@ var userApi = {
     log.info("fetch ", params, checkUserExistUrl);
 
     return fetch(`${checkUserExistUrl}`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    })
+        .then(ApiUtils.checkStatus)
+        .then(response => {
+          log.info("Response of login", response);
+          return response.json()
+        })
+        .catch(e => {
+          log.info("Error in login", e);
+          return {
+            status : 101,
+            msg: gui.ERR_LoiKetNoiMayChu
+          }
+        });
+  },
+
+  forgotPassword(username){
+    var params = {
+      'phone': undefined,
+      'email' : undefined
+    };
+
+    if (username.indexOf("@") > -1) {
+      params.email = username;
+    } else {
+      params.phone = username;
+    };
+
+    log.info("fetch ", params, loginUrl);
+
+    return fetch(`${forgotPasswordUrl}`, {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(params)
+    })
+        .then(ApiUtils.checkStatus)
+        .then(response => {
+          log.info("Response of login", response);
+          return response.json()
+        })
+        .catch(e => {
+          log.info("Error in login", e);
+          return {
+            status : 101,
+            msg: gui.ERR_LoiKetNoiMayChu
+          }
+        });
+  },
+
+  updatePassword(username, verifyCode, newPassword){
+    var params = {
+      'phone': undefined,
+      'email' : undefined,
+      'verifyCode': verifyCode,
+      'newPassword': newPassword
+    };
+
+    if (username.indexOf("@") > -1) {
+      params.email = username;
+    } else {
+      params.phone = username;
+    };
+
+    log.info("fetch ", params, loginUrl);
+
+    return fetch(`${updatePasswordUrl}`, {
       method: 'POST',
       headers: {
         'Accept': 'application/json',

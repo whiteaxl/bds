@@ -8,7 +8,7 @@ import {
     View,
     Image, ListView,
     TouchableOpacity,
-    TextInput, Alert,ScrollView
+    TextInput, Alert, ScrollView, Dimensions
 
 } from 'react-native';
 
@@ -16,6 +16,7 @@ import gui from '../../lib/gui';
 import utils from '../../lib/utils';
 import FullLine from '../line/FullLine';
 import {Actions} from 'react-native-router-flux';
+var {width,height} = Dimensions.get('window');
 
 import GiftedSpinner from 'react-native-gifted-spinner';
 

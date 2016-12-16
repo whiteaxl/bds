@@ -20,7 +20,7 @@ var CommonHeader = React.createClass({
     return <View style={mStyles.container}>
       <View style={mStyles.home}>
       <TruliaIcon onPress={this._onHome}
-                  name="arrow-left" color={"#00a8e6"}
+                  name="arrow-left" color={"white"}
                   mainProps={{paddingLeft: 20, paddingRight: 12}} size={30} />
           {/* <RelandIcon onPress={this._onHome}
         name="close" color="white" size={18}
@@ -87,7 +87,7 @@ var mStyles = StyleSheet.create({
       backgroundColor: 'transparent',
       color: '#00a8e6',
       fontFamily: gui.fontFamily,
-      fontSize: 18,
+      fontSize: 17,
       fontWeight: '600'
   }
 });

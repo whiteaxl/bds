@@ -1816,7 +1816,7 @@ var myStyles = StyleSheet.create({
         justifyContent: 'space-between',
         width: Dimensions.get('window').width,
         backgroundColor: gui.mainColor,
-        height: 50
+        height: 44
     },
     searchButton: {
         alignItems: 'center',

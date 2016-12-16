@@ -59,14 +59,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'flex-start',
         alignItems: 'center',
-        backgroundColor: 'white',
+        backgroundColor: 'transparent',
         borderRadius: 4,
-        borderColor: '#0c0b0b',
+        borderColor: 'white',
         borderWidth: 1,
         marginLeft: 0,
         marginRight: 10,
         height: 30,
-        opacity: 0.5
+        opacity: 0.9
     },
     textInput : {
         fontSize: 15,
@@ -99,12 +99,10 @@ const styles = StyleSheet.create({
     titleText: {
         fontSize: 16,
         fontFamily: 'Open Sans',
-        fontWeight: 'normal',
-        textAlign: 'left',
-        paddingLeft: 5,
-        color: '#000',
+        textAlign: 'center',
+        color: '#fff',
         backgroundColor: 'transparent',
-        flex: 1
+        fontWeight: '500'
     },
     directorText: {
         color: 'grey',

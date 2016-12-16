@@ -13,6 +13,7 @@ import {
 
 import {Actions} from 'react-native-router-flux';
 import gui from '../../lib/gui';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 var Dimensions = require('Dimensions');
 
@@ -21,6 +22,7 @@ var {width, height} = Dimensions.get('window');
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import {Map} from 'immutable';
+import ScalableText from 'react-native-text';
 
 import * as globalActions from '../../reducers/global/globalActions';
 import * as authActions from '../../reducers/auth/authActions';
@@ -61,7 +63,10 @@ class Login extends React.Component {
     };
   }
 
-  render(){
+    _scrollToInput(reactNode: any) {
+        this.refs.scroll.scrollToFocusedInput(reactNode)
+    }
+    render(){
     return(
       <View style={styles.container}>
       <View style={[styles.toolbar, Platform.OS === 'ios' ? {marginTop: 0} : null]}>
@@ -75,25 +80,27 @@ class Login extends React.Component {
       </View>
         <View style={styles.viewDetail}>
           <View style ={styles.wiewWelcome}>
-            <Text style={styles.textWelcome}>Đăng nhập hoặc đăng ký</Text>
-            <Text style={styles.textWelcome}>để lưu nhà, chat và đăng tin</Text>
+            <ScalableText style={styles.textWelcome}>Đăng nhập hoặc đăng ký</ScalableText>
+            <ScalableText style={styles.textWelcome}>để lưu nhà, chat và đăng tin</ScalableText>
           </View>
-          <View style ={styles.viewInput}>
-            <TextInput
-              style = {styles.textInput}
-              autoCapitalize='none'
-              autoCorrect={false}
-              underlineColorAndroid='rgba(0,0,0,0)'
-              style={styles.viewTextInput}
-              placeholder="Nhập email hoặc số điện thoại" placeholderTextColor={gui.arrowColor}
-              onChangeText={(text) => {this._onUsernameTextChange(text)}}
-              value={this.state.username}
-              />
-            
-          </View>
-          <TouchableOpacity onPress = {this._onThucHien.bind(this)} style={styles.buttonAction} >
+          <KeyboardAwareScrollView ref='scroll'>
+            <View style ={styles.viewInput}>
+                <TextInput
+                    style = {styles.textInput}
+                    autoCapitalize='none'
+                    autoCorrect={false}
+                    returnKeyType='done'
+                    underlineColorAndroid='rgba(0,0,0,0)'
+                    style={styles.viewTextInput}
+                    placeholder="Nhập email hoặc số điện thoại" placeholderTextColor={gui.arrowColor}
+                    onChangeText={(text) => {this._onUsernameTextChange(text)}}
+                    value={this.state.username}
+                />
+            </View>
+            <TouchableOpacity onPress = {this._onThucHien.bind(this)} style={styles.buttonAction} >
               <Text style={styles.buttonTextAction} >Thực hiện</Text>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          </KeyboardAwareScrollView>
           {/*
           <View style ={styles.buttonRegister}>
             <Text style={styles.buttonTextRegister} >Hoặc đăng nhập với</Text>
@@ -105,7 +112,6 @@ class Login extends React.Component {
           <View style ={styles.viewAccept}>
             <Text style={styles.textAccept}>Tôi đồng ý với điều khoản dịch vụ của Landber</Text>
           </View>
-          
         </View>
       </View>
 
