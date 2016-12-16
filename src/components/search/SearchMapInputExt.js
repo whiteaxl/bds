@@ -5,6 +5,7 @@ import React, {Component} from 'react';
 import {
     StyleSheet,
     TextInput,
+    Text,
     TouchableOpacity,
     View,
 } from 'react-native';
@@ -26,11 +27,11 @@ export default class SearchMapInputExt extends Component {
                     <View style={styles.searchContainer}>
                             {this.props.isHeaderLoading && this.props.isHeaderLoading() ?
                                 <View style={{width: 26}} /> :
-                                <TruliaIcon name="search" size={14} color="#0c0b0b"
+                                <TruliaIcon name="search" size={14} color="#fff"
                                         mainProps={styles.searchIcon}
                             >
                             </TruliaIcon>}
-                            <TextInput style={styles.titleText} editable={false} value={this.props.placeName} />
+                        <Text style={styles.titleText}> {this.props.placeName}</Text>
                     </View>
                 </TouchableOpacity>
             </View>

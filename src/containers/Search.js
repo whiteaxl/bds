@@ -335,7 +335,7 @@ class Search extends Component {
         if (diaChinh && diaChinh.tinhKhongDau) {
             placeName = diaChinh.fullName;
         } else { //others: banKinh or currentLocation
-            if (!diaChinh || !diaChinh.fullName){
+            if (diaChinh.fullName){
                 placeName = '';
             } else {
                 placeName = 'Tìm tất cả theo khung nhìn';
