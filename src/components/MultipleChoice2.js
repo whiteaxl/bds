@@ -152,7 +152,8 @@ class MultipleChoice2 extends BaseComponent {
                     returnKeyType='done'
                     placeholder = {"Lý do thông báo..."}
                     style={Styles.input}
-                    onFocus={this.props.onTextFocus} />
+                    onFocus={this.props.onTextFocus}
+                    onChangeText={this.props.onTextChange} />
             </View>);
         }
     }

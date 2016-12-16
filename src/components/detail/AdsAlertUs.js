@@ -57,7 +57,8 @@ class AdsAlertUs extends Component {
         super(props);
         var alertUsVal = this.getAdsAlertUsVal();
         this.state = {
-            alertUs: alertUsVal
+            alertUs: alertUsVal,
+            otherReport: ''
         };
     }
 
@@ -89,6 +90,7 @@ class AdsAlertUs extends Component {
                     maxSelectedOptions={1}
                     onSelection={(option)=>this._onApply(option)}
                     onTextFocus={() => this.setAlertUs("Khác")}
+                    onTextChange={(text) => this.setState({otherReport: text})}
                 />
                 <View style={myStyles.buttonView}>
                     <Button style={myStyles.buttonText} onPress={this._onSend.bind(this)}>Gửi</Button>
@@ -126,7 +128,7 @@ class AdsAlertUs extends Component {
         let alertUsVal = this.props.search.alertUs;
         let reportType = this._getReportKeyByValue(alertUsVal);
         if (reportType == 6) {
-            // @todo: get other report content
+            alertUsVal = this.state.otherReport;
         }
         return alertUsVal;
     }
