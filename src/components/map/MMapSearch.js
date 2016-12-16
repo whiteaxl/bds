@@ -182,8 +182,8 @@ class MMapSearch extends Component {
             <TouchableHighlight onPress={this._onPress.bind(this)} style={styles.touchSearch}>
                 <View style={styles.searchTextContainer}>
                     <View style={{height:28, width:32, backgroundColor:'transparent', left:20, justifyContent:'center', alignItems:'flex-start'}}>
-                        <RelandIcon name="search" color='#8a8a8a' mainProps={{marginTop:8, marginLeft:5}}
-                                    size={22} textProps={{}}
+                        <RelandIcon name="search" color='#8a8a8a' mainProps={{marginTop:8, marginLeft:6}}
+                                    size={18} textProps={{}}
                         />
                     </View>
                     <View style={styles.viewSearch}>

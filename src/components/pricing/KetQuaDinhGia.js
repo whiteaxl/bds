@@ -18,6 +18,7 @@ var Dimensions = require('Dimensions');
 var {width, height} = Dimensions.get('window');
 import Icon from 'react-native-vector-icons/FontAwesome';
 import util from "../../lib/utils";
+import gui from "../../lib/gui";
 import MHeartIcon from '../MHeartIcon';
 import ScalableText from 'react-native-text';
 
@@ -85,7 +86,7 @@ class KetQuaDinhGia extends Component {
     return(
         <View style={styles.eachViewKetQua}>
           <TouchableOpacity style={styles.listMoRong}  onPress={() => Actions.SearchResultDetail({adsID: data.adsID, source: 'server'})} >
-            <Image style={{width: width, height:200}} source={data.image.cover ? {uri: data.image.cover} : require('../../assets/image/reland_house_large.jpg')}>
+            <Image style={{width: width, height:180}} source={data.image.cover ? {uri: data.image.cover} : require('../../assets/image/reland_house_large.jpg')}>
               <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.5)']}
                             style={styles.linearGradient2}>
               </LinearGradient>
@@ -94,10 +95,16 @@ class KetQuaDinhGia extends Component {
                           color={color} bgColor={bgColor}
                           bgStyle={bgStyle} mainProps={styles.heartButton} />
               </View>
-              <View style={{marginTop: -70, marginLeft: 10, paddingBottom: 10}}>
-                <Text style={styles.priceText}>{data.giaFmt}</Text>
-                <ScalableText style={styles.infoText}>{util.getPriceM2Display(data.giaM2, data.loaiTin)} - Cách {data.distance}m </ScalableText>
-                <ScalableText style={styles.infoText}>{data.diaChi && data.diaChi.length>30 ? data.diaChi.substring(0,30) + "..." : data.diaChi}</ScalableText>
+              <View style={{marginTop: -60, marginLeft: 10, paddingBottom: 8}}>
+                <View style={{flexDirection:'row', justifyContent:''}}>
+                  <Text style={styles.priceText}>{data.giaFmt}</Text>
+                  <Text style={[styles.priceText,
+                                {marginLeft:10, fontSize:13, paddingBottom:0,
+                                fontWeight: 'bold', color: gui.mainColor}]}>
+                    {util.getPriceM2Display(data.giaM2, data.loaiTin)}
+                  </Text>
+                </View>
+                <ScalableText style={styles.infoText}>{data.diaChi && data.diaChi.length>50 ? data.diaChi.substring(0,50) + "..." : data.diaChi}</ScalableText>
               </View>
             </Image>
           </TouchableOpacity>
@@ -399,16 +406,16 @@ const styles = StyleSheet.create({
   listMoRong:{
     justifyContent:'center',
     width: width,
-    height: 200,
+    height: 180,
   },
   eachViewKetQua:{
     justifyContent:'center',
     width: width,
-    height: 200,
+    height: 180,
   },
   linearGradient2: {
-    marginTop: 100,
-    height: 100,
+    marginTop: 90,
+    height: 90,
     paddingLeft: 0,
     paddingRight: 0,
     backgroundColor: "transparent",
@@ -421,8 +428,8 @@ const styles = StyleSheet.create({
   heartContent: {
     position: 'absolute',
     backgroundColor: 'transparent',
-    top: 3,
-    right: 10,
+    top: 4,
+    right: 23,
     alignSelf: 'auto'
   },
 
@@ -431,15 +438,19 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     color:'white',
     fontFamily: 'Open Sans',
-    fontWeight:'700'
+    fontWeight: 'bold',
+    textAlign: 'left',
+    paddingTop:2
   },
   infoText: {
-    fontSize:14,
+    fontSize:13,
     textAlign: 'left',
     backgroundColor: 'transparent',
+    marginBottom: 25,
     marginTop: 2,
-    color:'white',
-    fontFamily: 'Open Sans'
+    color: 'white',
+    fontFamily: 'Open Sans',
+    fontWeight: '300',
   }
 });
 
