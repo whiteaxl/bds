@@ -784,8 +784,8 @@ class SearchResultMap extends Component {
         return (
             <TouchableOpacity onPress={this._onMMapSearch.bind(this)} >
                 <View style={[styles.bubble, styles.button, {marginTop: 5}]}>
-                    <RelandIcon name="share" color='black' mainProps={{flexDirection: 'row'}}
-                                size={20} textProps={{paddingLeft: 0}}
+                    <RelandIcon name="map-view" color='black' mainProps={{flexDirection: 'row'}}
+                                size={24} textProps={{paddingLeft: 0}}
                                 noAction={true}></RelandIcon>
                 </View>
             </TouchableOpacity>

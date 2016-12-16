@@ -240,8 +240,9 @@ danhMuc.MapType = [
 danhMuc.CHAT_MESSAGE_TYPE ={
     TEXT: 1,
     IMAGE:2,
-    FILE: 3,
-    SYSTEM: 4
+    LOCATION:3,
+    FILE: 4,
+    SYSTEM: 5
 };
 
 danhMuc.DonViTien = {

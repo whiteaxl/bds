@@ -146,6 +146,14 @@ export default function inboxReducer(state = initialState, action) {
       data.forEach(
           (row) =>{
             row.relatedToAds.loaiNhaDatFmt = row.relatedToAds.loaiNhaDatFmt ? row.relatedToAds.loaiNhatDatFmt : util.getLoaiNhaDatFmt(row.relatedToAds);
+            console.log("============= print all inbox");
+            console.log(row);
+            if (row.msgType==2){
+              if (row.fromUserID == row.partner.userID)
+                row.content = 'Đã nhận ảnh';
+              else
+                row.content = 'Đã gửi ảnh'
+            }
             allRows.push(row);
           }
       );

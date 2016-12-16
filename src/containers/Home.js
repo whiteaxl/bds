@@ -240,7 +240,7 @@ class Home extends Component {
 
     let placeName;
     //2. Search by Polygon: name is just center
-    if (diaChinh.tinhKhongDau) {
+    if (diaChinh && diaChinh.tinhKhongDau) {
       placeName = diaChinh.fullName;
     } else { //others: banKinh or currentLocation
       //let geoBox = apiUtils.getBbox(r);

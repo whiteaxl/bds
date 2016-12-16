@@ -287,11 +287,7 @@ class GiftedMessenger extends Component {
   takePicture() {
     Actions.PostAds({ owner: 'chat' });
   }
-
-  coming() {
-    console.log("=============coming soon....")
-  }
-
+  
   onSend() {
     this.myTextInput.clear();
 
@@ -710,7 +706,7 @@ class GiftedMessenger extends Component {
               <RelandIcon name="location-o" color='#0082f8'
                           mainProps={this.styles.captureIcon}
                           size={25} textProps={{ paddingLeft: 0 }}
-                          onPress={this.coming} />
+                          onPress={this.getLocation.bind(this)} />
 
             </View>
 
@@ -720,13 +716,13 @@ class GiftedMessenger extends Component {
     return null;
   }
 
-  _onLocationPress(){
-    var mapWidth = 100;
-    var mapHeight = 33;
-    var lat = 15.91246021276861;
-    var lon = 105.7527299557314;
+  getLocation(){
+    let location = this.props.location ? {lat: this.props.location.latitude, lon: this.props.location.longitude} : {};
+    Actions.MMapView({onPress: this._onViTri.bind(this), location: location});
+  }
 
-    var mapUrl = 'http://maps.google.com/maps/api/staticmap?zoom=16&size='+mapWidth+'x'+mapHeight+'&markers=color:red|'+lat+','+lon+'&sensor=false';
+  _onViTri(position){
+    this.props.handleSendLocation(position);
   }
 
   _onPressTempMsg(msg){
@@ -746,6 +742,7 @@ class GiftedMessenger extends Component {
 
 GiftedMessenger.defaultProps = {
   autoFocus: true,
+  location: { },
   blurOnSubmit: false,
   dateLocale: '',
   displayNames: true,
@@ -754,6 +751,7 @@ GiftedMessenger.defaultProps = {
   handleEmailPress: () => { },
   handlePhonePress: () => { },
   handleSend: () => { },
+  handleSendLocation: () => { },
   handleUrlPress: () => { },
   hideTextInput: false,
   isLoadingEarlierMessages: false,
@@ -784,6 +782,7 @@ GiftedMessenger.defaultProps = {
 
 GiftedMessenger.propTypes = {
   autoFocus: React.PropTypes.bool,
+  location: React.PropTypes.object,
   blurOnSubmit: React.PropTypes.bool,
   dateLocale: React.PropTypes.string,
   displayNames: React.PropTypes.bool,
@@ -792,6 +791,7 @@ GiftedMessenger.propTypes = {
   handleEmailPress: React.PropTypes.func,
   handlePhonePress: React.PropTypes.func,
   handleSend: React.PropTypes.func,
+  handleSendLocation: React.PropTypes.func,
   handleUrlPress: React.PropTypes.func,
   hideTextInput: React.PropTypes.bool,
   isLoadingEarlierMessages: React.PropTypes.bool,

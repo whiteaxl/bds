@@ -37,7 +37,7 @@ import moment from 'moment';
 
 import cfg from "../cfg";
 
-var rootUrl = `http://${cfg.server}:5000`;
+var rootUrl = `https://${cfg.server}`;
 
 const actions = [
     globalActions,

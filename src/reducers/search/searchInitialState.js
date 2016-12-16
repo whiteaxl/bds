@@ -7,6 +7,7 @@ const {
 
 import RangeUtils from "../../lib/RangeUtils";
 import danhMuc from "../../assets/DanhMuc";
+import cfg from "../../cfg";
 
 
 const defaultItemInCollection = {
@@ -16,7 +17,7 @@ const defaultItemInCollection = {
     soPhongNguFmt : "",
     soPhongTamFmt : "",
     dienTichFmt : "",
-    cover : "http://203.162.13.177:5000/web/asset/img/no_cover.jpg"
+    cover : `https://${cfg.server}//web/asset/img/no_cover.jpg`
 };
 
 

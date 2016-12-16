@@ -139,6 +139,9 @@ function convertOne(e, partnerID) {
   e.uniqueId = e._id||e.id|| (new Date()).getTime().toString();
   e.position = e.fromUserID == partnerID ? 'left' : 'right';
   e.text = e.content;
+  if (e.msgType==3){
+    e.text = JSON.stringify(e.location);
+  }
   e.name = e.fromFullName;
   e.image = e.avatar ? {uri: e.avatar} : require('../../assets/image/register_avatar_icon.png');
 

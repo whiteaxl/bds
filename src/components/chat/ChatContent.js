@@ -6,8 +6,10 @@ import {
     View, Dimensions,
     Image, ListView,
     TouchableOpacity,
-    TextInput, Alert,ScrollView,
-
+    TextInput,
+    Alert,
+    ScrollView,
+    Linking
 } from 'react-native';
 
 import gui from '../../lib/gui';
@@ -27,10 +29,12 @@ import danhMuc from '../../assets/DanhMuc';
 import FullLine from '../line/FullLine';
 import {MenuContext} from '../../components/menu';
 
+import RelandIcon from '../RelandIcon';
+
 import ImagePreview from '../ImagePreview';
 
 var STATUS_BAR_HEIGHT = Navigator.NavigationBar.Styles.General.StatusBarHeight;
-var ADS_BAR_HEIGHT = 62;
+var ADS_BAR_HEIGHT = 110;
 
 const actions = [
   globalActions,
@@ -61,8 +65,31 @@ class  ChatContent extends React.Component {
 
     this.state = {
       imageUri: '',
-      modal: false
+      modal: false,
+      currentLocation: {}
     };
+  }
+
+  updateCurrentLocation() {
+    navigator.geolocation.getCurrentPosition(
+        (position) => {
+          //var geoUrl = 'http://maps.apple.com/?saddr='+position.coords.latitude+','+position.coords.longitude+'&daddr='+ads.place.geo.lat+','+ads.place.geo.lon+'&dirflg=d&t=s';
+          this.setState({
+            currentLocation : {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude
+            }
+          });
+        },
+        (error) => {
+          alert(error.message);
+        },
+        {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
+    );
+  }
+
+  componentWillMount() {
+    this.updateCurrentLocation();
   }
 
   coming() {
@@ -87,6 +114,33 @@ class  ChatContent extends React.Component {
       avatar: this.props.global.currentUser.avatar,
       content : message.text,
       msgType : message.type || danhMuc.CHAT_MESSAGE_TYPE.TEXT,
+      read: false,
+      type: 'Chat',
+      timeStamp : new Date().getTime()
+    };
+
+    log.info("ChatContent, start send myMsg=", myMsg, myMsg.position);
+
+    this.props.actions.sendChatMsg(myMsg);
+  }
+
+  handleSendLocation(message = {}) {
+    log.info("Enter handleSendLocation...", message);
+    const userID = this.props.global.currentUser.userID;
+    const chatID = "Chat_" + userID + "_" + new Date().getTime();
+
+    let myMsg = {
+      _id : chatID,
+      chatID : chatID,
+      id : chatID,
+      fromUserID : userID,
+      fromFullName : this.props.global.currentUser.fullName,
+      toUserID : this.props.chat.partner.userID,
+      toFullName : this.props.chat.partner.fullName,
+      relatedToAds : this.props.chat.ads,
+      avatar: this.props.global.currentUser.avatar,
+      location : message.location,
+      msgType : message.type || danhMuc.CHAT_MESSAGE_TYPE.LOCATION,
       read: false,
       type: 'Chat',
       timeStamp : new Date().getTime()
@@ -141,6 +195,12 @@ class  ChatContent extends React.Component {
                    style={styles.image}/>
           </TouchableOpacity>
       )
+    } else if (rowData.msgType==3){
+      return  <TouchableOpacity onPress={()=> this._onDanDuongPressed(rowData)}
+                                style={{paddingTop:10}}>
+                  <RelandIcon name="location-o" color='#17242c'
+                              noAction={true} size={25}/>
+              </TouchableOpacity>;
     } else {
       let d  = new Date(rowData.date);
       let msg = rowData.text;
@@ -153,6 +213,21 @@ class  ChatContent extends React.Component {
     }
   }
 
+  _onDanDuongPressed(rowData) {
+    let destLat = rowData.location.lat;
+    let destLon = rowData.location.lon;
+
+    var geoUrl = 'http://maps.apple.com/?saddr='+this.state.currentLocation.latitude+','+this.state.currentLocation.longitude+'&daddr='+destLat+','+destLon+'&dirflg=d&t=s';
+
+    Linking.canOpenURL(geoUrl).then(supported => {
+      if (supported) {
+        Linking.openURL(geoUrl);
+      } else {
+        console.log('Don\'t know how to open URI: ' + geoUrl);
+      }
+    });
+  }
+  
   render() {
     let maxHeight = Dimensions.get('window').height
         - Navigator.NavigationBar.Styles.General.NavBarHeight
@@ -189,8 +264,10 @@ class  ChatContent extends React.Component {
               //renderTextInput = {this.renderTextInput.bind(this)}
 
               autoFocus={false}
+              location={this.state.currentLocation}
               messages={this.props.chat.messages}
               handleSend={this.handleSend.bind(this)}
+              handleSendLocation={this.handleSendLocation.bind(this)}
               onErrorButtonPress={this.onErrorButtonPress.bind(this)}
               maxHeight={maxHeight}
 

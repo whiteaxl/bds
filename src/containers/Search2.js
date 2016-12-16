@@ -303,10 +303,10 @@ class Search2 extends Component {
     let placeName;
     let r = this.state.region;
     //2. Search by Polygon: name is just center
-    if (diaChinh.tinhKhongDau) {
+    if (diaChinh && diaChinh.tinhKhongDau) {
         placeName = diaChinh.fullName;
     } else { //others: banKinh or currentLocation
-        if (!diaChinh.fullName){
+        if (!diaChinh || !diaChinh.fullName){
             placeName = '';
         } else {
             placeName = 'Tìm tất cả theo khung nhìn';
