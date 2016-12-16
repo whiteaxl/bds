@@ -105,8 +105,8 @@ export default class MainBDS extends React.Component {
         let lastSearch = JSON.parse(ret);
         if (lastSearch.query && lastSearch.query.diaChinh){
           store.dispatch(onSearchFieldChange('diaChinh', lastSearch.query.diaChinh));
-          store.dispatch(onSearchFieldChange('viewport', undefined));
-          store.dispatch(onSearchFieldChange('diaChinhViewport', undefined));
+          store.dispatch(onSearchFieldChange('viewport', lastSearch.query.viewport));
+          store.dispatch(onSearchFieldChange('diaChinhViewport', lastSearch.query.viewport));
         }
       }
     });
