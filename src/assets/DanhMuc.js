@@ -265,14 +265,14 @@ danhMuc.AdsAlertUs = {
     1: "Nhà không có thật",
     2: "Nhà đã bị bán hoặc cho thuê",
     3: "Nhà bị trùng lặp",
-    4: "Khác"
+    6: "Khác"
 };
 
 danhMuc.AdsAlertUsKey = [
     1,
     2,
     3,
-    4
+    6
 ];
 
 danhMuc.goiTin = [

@@ -10,7 +10,7 @@ import {Map} from 'immutable';
 
 import React, {Component} from 'react';
 
-import {View, SegmentedControlIOS, Text, StyleSheet, Dimensions} from 'react-native'
+import {View, SegmentedControlIOS, Text, StyleSheet, Dimensions, AlertIOS} from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 
@@ -22,6 +22,8 @@ import MultipleChoice from '../MultipleChoice2';
 import gui from '../../lib/gui';
 
 import Button from 'react-native-button';
+
+import ReportApi from '../../lib/ReportRelandApi';
 
 /**
  * ## Redux boilerplate
@@ -80,6 +82,7 @@ class AdsAlertUs extends Component {
                 <View style={myStyles.headerSeparator} />
 
                 <MultipleChoice
+                    scrollEnabled={false}
                     options={DanhMuc.getAdsAlertUsValues()}
                     style={myStyles.choiceList}
                     selectedOptions={[this.state.alertUs]}
@@ -103,7 +106,43 @@ class AdsAlertUs extends Component {
     }
 
     _onSend() {
-        Actions.pop();
+        let params = {};
+        params.adsID = this.props.adsID;
+        params.ReportContent = this._getReportContent();
+        params.type = "ClientReport";
+        ReportApi.reportReland(params)
+            .then(data => {
+                AlertIOS.alert('Thông báo',
+                    'Thông báo thành công!',
+                    [{
+                        text: 'Đóng',
+                        onPress: () => {}
+                    }]);
+                Actions.pop();
+            });
+    }
+
+    _getReportContent() {
+        let alertUsVal = this.props.search.alertUs;
+        let reportType = this._getReportKeyByValue(alertUsVal);
+        if (reportType == 6) {
+            // @todo: get other report content
+        }
+        return alertUsVal;
+    }
+
+    _getReportKeyByValue(value) {
+        var values = DanhMuc.getAdsAlertUsValues();
+        var key = '';
+        for (var i = 0; i < values.length; i++) {
+            var oneValue = values[i];
+            if (value == oneValue) {
+                key = DanhMuc.AdsAlertUsKey[i];
+                break;
+            }
+        }
+        // console.log(key);
+        return key;
     }
 
 }
@@ -115,7 +154,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(AdsAlertUs);
 // Later on in your styles..
 var myStyles = StyleSheet.create({
     fullWidthContainer: {
-        flex: 1,
+        flex: 0,
         alignItems: 'stretch',
         backgroundColor: 'white'
     },

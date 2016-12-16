@@ -581,7 +581,7 @@ class SearchResultDetail extends Component {
   }
 
   _onAdsAlertUs() {
-    Actions.AdsAlertUs();
+    Actions.AdsAlertUs({adsID: this.props.adsID});
   }
 
   _renderLienHe(dangBoi, mobile, email, loaiNhaDat) {

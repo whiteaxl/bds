@@ -188,6 +188,7 @@ class MultipleChoice2 extends BaseComponent {
     render() {
         return (
             <ListView
+                scrollEnabled={this.props.scrollEnabled}
                 style={[Styles.list, this.props.style]}
                 dataSource={this.state.dataSource}
                 renderRow={this._renderRow}
