@@ -34,7 +34,7 @@ var HomeHeader = React.createClass({
                 </View>
                 <View style={mStyles.home}>
                     <RelandIcon
-                        name="location-alt" color="white" size={26} onPress={() => this._onMapView()}
+                        name="map-view" color="white" size={26} onPress={() => this._onMapView()}
                         mainProps={{marginTop: 17, paddingLeft: 18, paddingRight: 21}}
                     >
                     </RelandIcon>
