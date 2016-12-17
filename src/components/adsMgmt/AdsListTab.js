@@ -460,7 +460,7 @@ class MyImage extends Component {
         <TouchableHighlight
           onPress={() => Actions.SearchResultDetail({adsID: this.props.rowData.adsID, source: source})}>
           <Image style={myStyles.thumb} source={image}>
-            <LinearGradient colors={['transparent', 'rgba(0, 0, 0, 0.9)']}
+            <LinearGradient colors={['transparent', 'rgba(58, 58, 58, 0.7)']}
                             style={myStyles.linearGradient2}>
             </LinearGradient>
           </Image>
@@ -565,7 +565,7 @@ var myStyles = StyleSheet.create({
   },
 
   price: {
-    fontSize: 16,
+    fontSize: 14,
     fontWeight: 'bold',
     textAlign: 'left',
     backgroundColor: 'transparent',
@@ -573,12 +573,13 @@ var myStyles = StyleSheet.create({
     fontFamily: 'Open Sans',
   },
   text: {
-    fontSize: 15,
+    fontSize: 13,
     textAlign: 'left',
     backgroundColor: 'transparent',
     color: 'white',
     fontFamily: 'Open Sans',
     marginTop: 2,
+    fontWeight: '300',
   },
   heartContent: {
     backgroundColor: 'transparent',
