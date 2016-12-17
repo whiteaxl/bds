@@ -10,7 +10,7 @@ var getAllChatMsgUrl = cfg.rootUrl + "/getAllChatMsg";
 import log from './logUtil';
 import gui from './gui';
 
-const socket = io(`https://${cfg.server}:4432`, {
+const socket = io(`https://${cfg.server}`, {
     transports: ['websocket'] // you need to explicitly tell it to use websockets
 });
 

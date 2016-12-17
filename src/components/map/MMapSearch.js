@@ -70,7 +70,7 @@ class MMapSearch extends Component {
                     latitude: LATITUDE,
                     longitude: LONGITUDE,
                 },
-                radius: 100,
+                radius: 0,
             }
         }
     }
@@ -88,7 +88,7 @@ class MMapSearch extends Component {
             <View style={styles.fullWidthContainer}>
 
                 <View style={styles.search}>
-                    <HeaderMMapSearch backTitle={"Trở lại"} headerRightTitle={"Thực hiện" } onPress={this._onThucHien.bind(this)} />
+                    <HeaderMMapSearch backTitle={""} headerRightTitle={"Xong" } onPress={this._onThucHien.bind(this)} />
                     <View style={styles.headerSeparator} />
                 </View>
                 <View style={styles.map}>
@@ -101,7 +101,7 @@ class MMapSearch extends Component {
                         <MapView.Circle
                             key = {(circle.center.latitude + circle.center.longitude + circle.radius)}
                             center={circle.center}
-                            radius={circle.radius}
+                            radius={circle.radius/2}
                             fillColor="rgba(165,207,255,0.5)"
                             strokeColor="#00a8e6"
                             position="absolute"
@@ -137,12 +137,12 @@ class MMapSearch extends Component {
                             </View>
                             {this._renderSliderView()}
                             <View style={styles.viewBottomNav}>
-                                <View style={{flex:1, justifyContent:'center', alignItems:'flex-start', flexDirection:'row'}}>
+                                <View style={styles.viewTextBottom}>
                                     <Text style={styles.textBottomLeft}>{0.5*this.state.circle.radius/1000}</Text>
                                     <Text style={styles.textBottomCenter}>KM</Text>
                                 </View>
                                 <View style={{flex:1}}>
-                                    <Text style={styles.textBottomRight}>ALL OF VIETNAM</Text>
+                                    <Text style={styles.textBottomRight}>5 KM</Text>
                                 </View>
                             </View>
                         </View>
@@ -182,7 +182,7 @@ class MMapSearch extends Component {
             <TouchableHighlight onPress={this._onPress.bind(this)} style={styles.touchSearch}>
                 <View style={styles.searchTextContainer}>
                     <View style={{height:28, width:32, backgroundColor:'transparent', left:20, justifyContent:'center', alignItems:'flex-start'}}>
-                        <RelandIcon name="search" color='#8a8a8a' mainProps={{marginTop:8, marginLeft:6}}
+                        <RelandIcon name="search" color='#8a8a8a' mainProps={{marginTop:10, marginLeft:6}}
                                     size={18} textProps={{}}
                         />
                     </View>
@@ -422,10 +422,15 @@ class HeaderMMapSearch extends React.Component {
                 </Text>
             </View>
             <TruliaIcon onPress={this._onBack}
-                        name="arrow-left" color={gui.mainColor} size={25}
+                        name="arrow-left" color={gui.mainColor} size={24}
                         mainProps={styles.backButton} text={this.props.backTitle}
                         textProps={styles.backButtonText} >
             </TruliaIcon>
+            <View style={styles.customPageTitle2}>
+                <Text style={styles.customPageRightTitleText2}>
+                    Chọn địa điểm và bán kính
+                </Text>
+            </View>
             <TouchableOpacity onPress={this.props.onPress} style={styles.customPageRightTitle}>
                 <Text style={styles.customPageRightTitleText}>
                     {this.props.headerRightTitle}
@@ -564,7 +569,7 @@ var styles = StyleSheet.create({
     inMapButtonContainer: {
         position: 'absolute',
         bottom: 120,
-        right:12,
+        left:8,
         flexDirection: 'column',
         alignItems: 'flex-start',
         justifyContent: 'center',
@@ -637,24 +642,22 @@ var styles = StyleSheet.create({
         flex:1,
         color:'#676769',
         textAlign:'right',
-        paddingLeft:5,
-        marginBottom: 5
+        marginBottom: 5,
+        paddingRight:3,
     },
     textBottomCenter:{
         fontSize: 13,
         flex:5,
-        paddingLeft:3,
         color:'#676769',
         textAlign:'left',
         marginBottom: 5,
-
     },
     textBottomRight:{
         fontSize: 13,
         flex:1,
         color:'#676769',
         textAlign:'right',
-        paddingRight:10,
+        paddingRight:15,
         marginBottom: 5
     },
     track: {
@@ -776,7 +779,7 @@ var styles = StyleSheet.create({
         fontWeight:'500'
     },
     backButton: {
-        marginTop: 28,
+        marginTop: 30,
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'center',
@@ -790,6 +793,29 @@ var styles = StyleSheet.create({
         fontFamily: gui.fontFamily,
         textAlign: 'left',
         marginLeft: 7
+    },
+    customPageTitle2: {
+        flex:1,
+        justifyContent:'center',
+        alignItems:'center',
+        position: 'absolute',
+        marginTop: 33,
+        left:36,
+        right:36
+    },
+    customPageRightTitleText2: {
+        color: '#000',
+        fontSize: gui.normalFontSize,
+        fontFamily: gui.fontFamily,
+        textAlign: 'center',
+        fontWeight:'500'
+    },
+    viewTextBottom:{
+        flex:1,
+        justifyContent:'center',
+        alignItems:'flex-start',
+        flexDirection:'row',
+        backgroundColor:'transparent'
     }
 });
 

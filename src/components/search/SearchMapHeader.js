@@ -20,7 +20,7 @@ var CommonHeader = React.createClass({
     console.log("=================== print search header end");
 
     let isNotFoundAds = this.props.isNotFoundAds && this.props.isNotFoundAds();
-    let textColor = this.props.owner == 'map' && isNotFoundAds ? gui.mainColor : 'white';
+    let textColor = this.props.owner == 'map' && isNotFoundAds ? 'white' : 'white';
     return <View style={mStyles.container}>
       <View style={mStyles.home}>
       <TruliaIcon onPress={this._onHome}
