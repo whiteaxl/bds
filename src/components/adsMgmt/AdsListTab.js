@@ -316,7 +316,7 @@ class AdsListTab extends Component {
 
     let adsID = rowData.adsID || rowData.id;
     let isLiked = this.isLiked(adsID);
-    let color = isLiked ? '#A2A7AD' : 'white';
+    let color = isLiked ? '#fff' : 'white';
     let bgColor = isLiked ? '#E50064' : '#4A443F';
     let bgStyle = isLiked ? {} : {opacity: 0.55};
 
@@ -500,7 +500,7 @@ var myStyles = StyleSheet.create({
     //
   },
   separator: {
-    height: 0.5,
+    height: 0,
     backgroundColor: 'transparent'
   },
   dot: {
@@ -550,9 +550,10 @@ var myStyles = StyleSheet.create({
   searchListViewRowAlign: {
     backgroundColor: 'transparent',
     flexDirection: 'column',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     width: 2*width/3,
-    marginLeft: 17
+    marginLeft: 17,
+    bottom:7
   },
 
   leftTextGroup: {
@@ -583,7 +584,11 @@ var myStyles = StyleSheet.create({
   },
   heartContent: {
     backgroundColor: 'transparent',
-    marginRight: 10
+    marginRight: 10,
+    position: "absolute",
+    left: width-65,
+    top: -122
+
   },
   heartButton: {
     marginTop: 6,

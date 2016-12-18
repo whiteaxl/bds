@@ -26,7 +26,6 @@ import AdsMgmtTabBar from "../components/adsMgmt/AdsMgmtTabBar";
 import AdsListTab from '../components/adsMgmt/AdsListTab';
 import Login from '../components/login/Login';
 import TruliaIcon from '../components/TruliaIcon';
-import FullLine from '../components/line/FullLine';
 
 import HomeHeader from '../components/home/HomeHeader';
 
