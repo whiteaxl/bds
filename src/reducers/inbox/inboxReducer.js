@@ -9,7 +9,8 @@ const {
   ON_INBOX_FIELD_CHANGE,
   LOGOUT_SUCCESS,
   LOADING_INBOX_SUCCESS,
-  ON_NEW_MESSAGE
+  ON_NEW_MESSAGE,
+  INSERT_MY_CHAT
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
@@ -146,13 +147,17 @@ export default function inboxReducer(state = initialState, action) {
       data.forEach(
           (row) =>{
             row.relatedToAds.loaiNhaDatFmt = row.relatedToAds.loaiNhaDatFmt ? row.relatedToAds.loaiNhatDatFmt : util.getLoaiNhaDatFmt(row.relatedToAds);
-            console.log("============= print all inbox");
-            console.log(row);
             if (row.msgType==2){
               if (row.fromUserID == row.partner.userID)
                 row.content = 'Đã nhận ảnh';
               else
                 row.content = 'Đã gửi ảnh'
+            }
+            if (row.msgType==3){
+              if (row.fromUserID == row.partner.userID)
+                row.content = 'Đã nhận vị trí';
+              else
+                row.content = 'Đã gửi vị trí'
             }
             allRows.push(row);
           }
@@ -166,23 +171,93 @@ export default function inboxReducer(state = initialState, action) {
           .set("allInboxDS", newDs);
     }
 
+    case INSERT_MY_CHAT : {
+      var msg = action.payload;
+      
+      var allRows = state.inboxList;
+
+      let newInboxList = [];
+
+      let changed = false;
+
+      for(let i=0; i<allRows.length; i++){
+        if (allRows[i].partner.userID == msg.toUserID && allRows[i].relatedToAds.adsID == msg.relatedToAds.adsID){
+          let updateItem = JSON.parse(JSON.stringify(allRows[i]));
+          updateItem.date = msg.date ? new Date(msg.date) : new Date();
+          updateItem.content = msg.content;
+          newInboxList = [updateItem, ...allRows.slice(0,i), ...allRows.slice(i+1)];
+          changed = true;
+          break;
+        }
+      }
+      if (!changed){
+        let newItem = {
+          content: msg.content,
+          numOfUnreadMessage: 0,
+          msgType: msg.msgType,
+          fromUserID: msg.fromUserID,
+          date: msg.date ? new Date(msg.date) : new Date(),
+          relatedToAds: msg.relatedToAds,
+          partner: {
+            fullName: msg.fromFullName,
+            userID: msg.fromUserID,
+            avatar: msg.fromUserAvar
+          }
+        }
+        newInboxList = [newItem, ...allRows];
+      }
+
+      var ds = state.allInboxDS;
+      var newDs = ds.cloneWithRows(newInboxList);
+
+      return state
+          .set("inboxList", newInboxList)
+          .set("allInboxDS", newDs);
+
+      return state;
+    }
+
     case ON_NEW_MESSAGE:
     {
       let msg = action.payload.msg;
 
       var allRows = state.inboxList;
 
+      let newInboxList = [];
+      let changed = false;
+
       for(let i=0; i<allRows.length; i++){
         if (allRows[i].partner.userID == msg.fromUserID && allRows[i].relatedToAds.adsID == msg.relatedToAds.adsID){
-          allRows[i].date = msg.date ? new Date(msg.date) : new Date();
-          allRows[i].content = msg.content;
+          let updateItem = JSON.parse(JSON.stringify(allRows[i]));
+          updateItem.date = msg.date ? new Date(msg.date) : new Date();
+          updateItem.content = msg.content;
+          updateItem.numOfUnreadMessage = updateItem.numOfUnreadMessage + 1;
+          newInboxList = [updateItem, ...allRows.slice(0,i), ...allRows.slice(i+1)];
+          changed = true;
+          break;
         }
       }
+      if (!changed){
+        let newItem = {
+          content: msg.content,
+          numOfUnreadMessage: 1,
+          msgType: msg.msgType,
+          fromUserID: msg.fromUserID,
+          date: msg.date ? new Date(msg.date) : new Date(),
+          relatedToAds: msg.relatedToAds,
+          partner: {
+            fullName: msg.fromFullName,
+            userID: msg.fromUserID,
+            avatar: msg.fromUserAvar
+          }
+        }
+        newInboxList = [newItem, ...allRows];
+      }
       var ds = state.allInboxDS;
-      var newDs = ds.cloneWithRows(allRows);
+      var newDs = ds.cloneWithRows(newInboxList);
 
       return state
-          .set("inboxList", allRows)
+          .set("inboxList", newInboxList)
           .set("allInboxDS", newDs);
     }
   }
