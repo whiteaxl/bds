@@ -15,10 +15,6 @@ import SearchInputExt from './SearchMapInputExt';
 // Create our component
 var CommonHeader = React.createClass({
   render: function() {
-    console.log("=================== print search header");
-    console.log(this.props.placeName) ;
-    console.log("=================== print search header end");
-
     let isNotFoundAds = this.props.isNotFoundAds && this.props.isNotFoundAds();
     let textColor = this.props.owner == 'map' && isNotFoundAds ? 'white' : 'white';
     return <View style={mStyles.container}>

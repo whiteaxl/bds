@@ -72,12 +72,18 @@ class UserComeback extends React.Component {
     }
 
     forgetPassWord() {
-        Alert.alert("coming soon ...");
-        //this.refs.modalForgetPassword.open();
+        //Alert.alert("coming soon ...");
+        this.refs.modalForgetPassword.open();
     }
 
     resetPassword() {
         //TODO: call API to send sms
+        this.props.actions.forgotPassword(this.state.username)
+            .then((e) => {
+                if (!e.success){
+                   Alert.alert(e.msg);
+                }
+            });
         this.refs.modalResetPassword.open();
     }
 
@@ -119,9 +125,42 @@ class UserComeback extends React.Component {
     _onThucHienResetPasswordPress(){
         console.log("_onThucHienResetPasswordPress");
         console.log(this.state);
-        Alert.alert('Thông báo', 'Đăng nhập thành công!');
-        //Actions.Login();
+        let validate = this._validateData();
+
+        if (!validate)
+            return;
+
+        this.props.actions.updatePassword(this.state.username, this.state.verifyCode, this.state.newPassword)
+            .then((e) => {
+                if (e.success){
+                    Alert.alert('Thông báo', 'Đổi mật khẩu thành công');
+                    Actions.Login();
+                } else {
+                    let msg = e.msg || "Thay đổi mật khẩu không thành công";
+                    Alert.alert('Thông báo', msg);
+                }
+            });
     }
+
+    _validateData(){
+        if (!this.state.username || this.state.username.length <=0 ){
+            Alert.alert('Thông báo', "Tên đăng nhập sai định dạng");
+            return false;
+        }
+
+        if (!this.state.verifyCode || this.state.verifyCode.length<=0){
+            Alert.alert('Thông báo', "Mã xác nhận sai định dạng");
+            return false;
+        }
+
+        if (!this.state.newPassword || this.state.newPassword.length<=0){
+            Alert.alert('Thông báo', "Bạn chưa nhập mật khẩu");
+            return false;
+        }
+
+        return true;
+    }
+
 
     _scrollToInput(reactNode: any) {
         this.refs.scroll.scrollToFocusedInput(reactNode)
