@@ -262,8 +262,12 @@ class Profile extends Component {
     }
     _renderContentGroupTitle(title){
         return (
-            <View style={style.contentGroupTitle}>
-                <Text style={style.contentGroupTitleText}>{title}</Text>
+            <View>
+                <FullLine />
+                <View style={style.contentGroupTitle}>
+                    <Text style={style.contentGroupTitleText}>{title}</Text>
+                </View>
+                <FullLine />
             </View>
         );
     }
@@ -382,7 +386,7 @@ class Profile extends Component {
                         secureTextEntry={false}
                         multiline = {true}
                         numberOfLines = {5}
-                        style={[style.contentText, {borderColor: 'lightgray', borderWidth: 0.5, height: 100}]}
+                        style={[style.contentText, {borderColor: '#dcdcdc', borderWidth: 1, height: 100}]}
                         value={this._getGioiThieu()}
                         onChangeText={(text) => this.onValueChange("gioiThieu", text)}
                     />
@@ -739,8 +743,7 @@ var style = StyleSheet.create({
         paddingTop: 8,
         paddingBottom: 8,
         backgroundColor: '#f8f8f8',
-        borderBottomWidth:0.5,
-        borderTopWidth:0.5,
+        borderTopWidth:0,
         borderColor:'lightgray'
     },
     contentGroupTitleText: {
