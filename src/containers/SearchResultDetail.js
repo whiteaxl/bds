@@ -118,21 +118,23 @@ class SearchResultDetail extends Component {
       this.props.actions.getDetail(
           {'adsID' : this.props.adsID}
           , (data) => {
-            this.refreshRowData(data.ads)
+            this.checkSupportStreetView(data.ads)
           });
     }
     else {
-      dbService.getAds(this.props.adsID, this.refreshRowData.bind(this));
+      dbService.getAds(this.props.adsID, this.checkSupportStreetView.bind(this));
     }
   }
 
-  refreshRowData(ads) {
+  refreshRowData(ads, streetViewUrl, supported) {
     navigator.geolocation.getCurrentPosition(
         (position) => {
           var geoUrl = 'http://maps.apple.com/?saddr='+position.coords.latitude+','+position.coords.longitude+'&daddr='+ads.place.geo.lat+','+ads.place.geo.lon+'&dirflg=d&t=s';
           this.setState({
             'data' : ads,
             'geoUrl' : geoUrl,
+            'streetViewUrl' : streetViewUrl,
+            'supportStreetView': supported,
             'coords' : position.coords,
             loaded: true
           });
@@ -142,6 +144,8 @@ class SearchResultDetail extends Component {
           this.setState({
             'data' : ads,
             'geoUrl' : geoUrl,
+            'streetViewUrl' : streetViewUrl,
+            'supportStreetView': supported,
             'coords' : {},
             loaded: true
           });
@@ -149,6 +153,13 @@ class SearchResultDetail extends Component {
         },
         {enableHighAccuracy: true, timeout: 20000, maximumAge: 1000}
     );
+  }
+
+  checkSupportStreetView(ads) {
+    let streetViewUrl = 'comgooglemaps://?center='+ads.place.geo.lat+','+ads.place.geo.lon+'&mapmode=streetview';
+    Linking.canOpenURL(streetViewUrl).then(supported => {
+      this.refreshRowData(ads, streetViewUrl, supported);
+    });
   }
   componentWillMount() {
     //this.props.actions.loadHomeData();
@@ -445,7 +456,7 @@ class SearchResultDetail extends Component {
                   </SummaryText>
                 </View>
                 {this._renderDanDuong()}
-                {/*this._renderStreetView()*/}
+                {this.state.supportStreetView ? this._renderStreetView() : null}
                 <View style={detailStyles.lineBorder2} />
                 {this._renderDacDiem(loaiNhaDat, gia, giaM2, soPhongNguVal, soPhongTamVal, dienTich,
                     huongNha, duAn, ngayDangTin, luotXem, diaChi, rowData.maSo)}
@@ -914,7 +925,13 @@ class SearchResultDetail extends Component {
   }
 
   _onStreetViewPressed() {
-
+    Linking.canOpenURL(this.state.streetViewUrl).then(supported => {
+      if (supported) {
+        Linking.openURL(this.state.streetViewUrl);
+      } else {
+        console.log('Don\'t know how to open URI: ' + this.state.streetViewUrl);
+      }
+    });
   }
 
   renderTwoNormalProps(prop1, prop2, dotStyle, textStyle, key) {
