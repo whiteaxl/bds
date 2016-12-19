@@ -8,13 +8,14 @@ import {
 } from 'react-native';
 import gui from '../lib/gui';
 import HomeHeader from '../components/home/HomeHeader';
+import ScalableText from 'react-native-text';
 
 class MicroVoice extends React.Component {
     _renderComingSoon() {
         return (
             <View style={styles.contentComing}>
-                <Text style={styles.textComingTitle}>Sắp xuất hiện!</Text>
-                <Text style={styles.textComing}>Bạn chỉ cần nói ra đặc điểm của bất động sản cần tìm, "Trợ lý Landber" sẽ tự động tìm kiếm giúp bạn.</Text>
+                <ScalableText style={styles.textComingTitle}>Sắp xuất hiện!</ScalableText>
+                <ScalableText style={styles.textComing}>Bạn chỉ cần nói ra đặc điểm của bất động sản cần tìm, "Trợ lý Landber" sẽ tự động tìm kiếm giúp bạn.</ScalableText>
             </View>
 
         );
@@ -57,7 +58,8 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         color:'#6a6a6c',
         marginLeft: 25,
-        marginRight:25
+        marginRight:25,
+        textAlign:'center'
     }
 
 });

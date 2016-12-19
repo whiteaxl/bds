@@ -340,8 +340,8 @@ class AdsListTab extends Component {
       <View style={myStyles.leftTextGroup}>
         <ScalableText numberOfLines={1} style={myStyles.price}>{rowData.giaFmt}</ScalableText>
         <View style={myStyles.viewChildGia}>
-          <ScalableText numberOfLines={1} style={myStyles.smallText1}>{rowData.diaChi}</ScalableText>
-          <ScalableText numberOfLines={1} style={myStyles.smallText2}>{moreInfoWithoutDot}</ScalableText>
+          <ScalableText numberOfLines={1} style={myStyles.smallText1}>{diaChi}</ScalableText>
+          <ScalableText numberOfLines={1} style={myStyles.smallText2}>{moreInfoWithoutDot}{soTang}</ScalableText>
         </View>
       </View>
     )
@@ -562,7 +562,7 @@ var myStyles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: 'transparent',
     flexDirection: 'column',
-    top: imgHeight - 59,
+    top: imgHeight - 58,
     width: Dimensions.get('window').width,
     marginLeft: 17
   },
@@ -607,7 +607,6 @@ var myStyles = StyleSheet.create({
     textAlign: 'left',
     color: 'white',
     fontFamily: 'Open Sans',
-    marginTop: 2,
     fontWeight: '300'
   },
   smallText2: {
