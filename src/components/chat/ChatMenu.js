@@ -84,7 +84,7 @@ class ChatMenu extends Component {
             <View>
                 <Menu onSelect={(option) => this._onApply(option)}>
                     <MenuTrigger>
-                        <RelandIcon name="list" color='#0082f8'
+                        <RelandIcon name="list" color='#b8cbdb'
                                     mainProps={myStyles.captureIcon}
                                     noAction={true}
                                     size={21} textProps={{ paddingLeft: 0 }}

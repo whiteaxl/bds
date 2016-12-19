@@ -34,7 +34,7 @@ import RelandIcon from '../RelandIcon';
 import ImagePreview from '../ImagePreview';
 
 var STATUS_BAR_HEIGHT = Navigator.NavigationBar.Styles.General.StatusBarHeight;
-var ADS_BAR_HEIGHT = 110;
+var ADS_BAR_HEIGHT = 60;
 
 const actions = [
   globalActions,
@@ -379,13 +379,13 @@ var styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
   },
-  adsCover : {
-    width: 40,
-    height: 40,
-    marginLeft: 18,
-    marginRight: 18,
-    marginTop: 4
-  },
+  // adsCover : {
+  //   width: 40,
+  //   height: 40,
+  //   marginLeft: 18,
+  //   marginRight: 18,
+  //   marginTop: 4
+  // },
   bottomText : {
     fontSize: 16,
     textAlign: 'center',
@@ -418,7 +418,7 @@ var styles = StyleSheet.create({
     marginLeft: 10,
   },
   adsCover : {
-    width: 120,
+    width: 80,
     height: ADS_BAR_HEIGHT,
   },
 
@@ -438,7 +438,7 @@ var styles = StyleSheet.create({
   },
 
   adsLine2: {
-    fontSize: 15,
+    fontSize: 13,
     textAlign: 'left',
     fontFamily: 'Open Sans',
     color : '#e50e27',

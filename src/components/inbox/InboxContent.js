@@ -126,7 +126,6 @@ class InboxContent extends React.Component {
         <TouchableOpacity onPress={() => this.onRowClick(row)} style={styles.rowFront}>
           <View style={[styles.rowContainer, {marginLeft: 0, paddingLeft:5}]}>
             <AvatarItem avatar={row.partner.avatar} numOfUnreadMessage={row.numOfUnreadMessage}/>
-
             <View style={styles.rightContainer}>
               <View style={styles.nameAndDateTime}>
                 <Text style={styles.name}>{row.partner.fullName}</Text>
@@ -145,7 +144,6 @@ class InboxContent extends React.Component {
               </View>
             </View>
           </View>
-          <FullLine />
         </TouchableOpacity>
     );
   }
@@ -254,9 +252,9 @@ var styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#eceef0',
-    borderTopWidth: 0,
-    borderColor: '#e6e6e6',
+    backgroundColor: 'white',
+    borderBottomWidth: 1,
+    borderColor: '#dcdcdc',
     paddingTop: 0,
     paddingBottom: 10,
   },
@@ -272,8 +270,6 @@ var styles = StyleSheet.create({
     fontSize: 12,
     color: 'gray',
     fontFamily: 'Open Sans',
-    //borderWidth: 2,
-    //borderColor: 'red',
     marginRight: 18
   },
   title: {
