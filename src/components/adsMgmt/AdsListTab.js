@@ -500,7 +500,7 @@ var myStyles = StyleSheet.create({
     //
   },
   separator: {
-    height: 0.5,
+    height: 0,
     backgroundColor: 'transparent'
   },
   dot: {
