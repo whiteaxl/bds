@@ -27,6 +27,14 @@ const {
 
   ON_AUTH_FIELD_CHANGE,
 
+  FORGOT_PASSWORD_REQUEST,
+  FORGOT_PASSWORD_SUCCESS,
+  FORGOT_PASSWORD_FAILURE,
+
+  UPDATE_PASSWORD_REQUEST,
+  UPDATE_PASSWORD_SUCCESS,
+  UPDATE_PASSWORD_FAILURE,
+
   RESET_PASSWORD_REQUEST,
   RESET_PASSWORD_SUCCESS,
   RESET_PASSWORD_FAILURE,
@@ -84,6 +92,45 @@ export function checkUserExistFailure(error) {
   };
 }
 
+/**
+ * ## forgotPassword actions
+ */
+export function forgotPasswordRequest() {
+  return {
+    type: FORGOT_PASSWORD_REQUEST
+  };
+}
+
+export function forgotPasswordSuccess() {
+  return {
+    type: FORGOT_PASSWORD_SUCCESS
+  };
+}
+export function forgotPasswordFailure(error) {
+  return {
+    type: FORGOT_PASSWORD_FAILURE
+  };
+}
+
+/**
+ * ## updatePassword actions
+ */
+export function updatePasswordRequest() {
+  return {
+    type: UPDATE_PASSWORD_REQUEST
+  };
+}
+
+export function updatePasswordSuccess() {
+  return {
+    type: UPDATE_PASSWORD_SUCCESS
+  };
+}
+export function updatePasswordFailure(error) {
+  return {
+    type: UPDATE_PASSWORD_FAILURE
+  };
+}
 
 /**
  * ## Logout actions
@@ -328,6 +375,44 @@ export function checkUserExist(username) {
           } else {
             console.log("CheckUserExist error");
             dispatch(checkUserExistFailure());
+          }
+          return json;
+        });
+  };
+}
+
+export function forgotPassword(username) {
+  return dispatch => {
+    dispatch(forgotPasswordRequest());
+
+    return userApi.forgotPassword(username)
+        .then(function (json) {
+          log.info("authActions.forgotPassword", json);
+
+          if (json.exist) {
+            dispatch(forgotPasswordSuccess(json));
+          } else {
+            console.log("authActions.forgotPassword error");
+            dispatch(forgotPasswordFailure());
+          }
+          return json;
+        });
+  };
+}
+
+export function updatePassword(username, verifyCode, newPassword) {
+  return dispatch => {
+    dispatch(forgotPasswordRequest());
+
+    return userApi.updatePassword(username, verifyCode, newPassword)
+        .then(function (json) {
+          log.info("authActions.updatePassword", json);
+
+          if (json.exist) {
+            dispatch(forgotPasswordSuccess(json));
+          } else {
+            console.log("authActions.updatePassword error");
+            dispatch(forgotPasswordFailure());
           }
           return json;
         });

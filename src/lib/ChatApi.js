@@ -51,14 +51,10 @@ var ChatApi = {
         });
 
         socket.on("user-start-typing", function(data){
-            console.log("=================== CHAT print typing status");
-            console.log(data);
             onTypingMessage({data: data, isTyping: true});
         });
 
         socket.on("user-stop-typing", function(data){
-            console.log("=================== CHAT print stop typing status");
-            console.log(data);
             onTypingMessage({data: data, isTyping: false});
         });
     },
