@@ -325,23 +325,13 @@ class DinhGia extends React.Component {
           <FullLine />
           <View style={styles.viewNhaDat}>
             <View style={styles.viewDacDiem}>
-              <Text style={styles.textDacDiem}>ĐẶC ĐIỂM CỦA NHÀ ĐẤT CẦN ĐỊNH GIÁ</Text>
+              <Text style={styles.textDacDiem}>NHẬP THÔNG CỦA NHÀ ĐẤT CẦN ĐỊNH GIÁ</Text>
             </View>
             <FullLine />
             <TouchableOpacity disabled={this.state.onThucHienPressed}
-                              onPress={this._onViTriPress.bind(this)} style={styles.touchViTri}>
-              <View style={styles.viewWidth}>
-                <Text style={styles.textViTri}>Vị trí</Text>
-              </View>
-              <View style={styles.viewLoaiNha}>
-                <ScalableText style={styles.textNhaDat}>{this.state.diaChi.substring(0, 25)}</ScalableText>
-              </View>
-              <Icon name="angle-right" size={24} color="#bebec0" />
-            </TouchableOpacity>
-            <FullLine style={{marginLeft: 28}} />
-            <TouchableOpacity disabled={this.state.onThucHienPressed}
                               onPress={this._onLoaiNhaDat.bind(this)} style={styles.touchViTri}>
               <View style={styles.viewWidth}>
+                <Text style={styles.textStar}>*</Text>
                 <Text style={styles.textViTri}>Loại nhà đất</Text>
               </View>
               <View style={styles.viewLoaiNha}>
@@ -351,8 +341,20 @@ class DinhGia extends React.Component {
             </TouchableOpacity>
             <FullLine style={{marginLeft: 28}} />
             <TouchableOpacity disabled={this.state.onThucHienPressed}
-                              onPress={this._onDuAnPress.bind(this)} style={styles.touchViTri}>
+                              onPress={this._onViTriPress.bind(this)} style={styles.touchViTri}>
               <View style={styles.viewWidth}>
+                <Text style={styles.textStar}>*</Text>
+                <Text style={styles.textViTri}>Vị trí</Text>
+              </View>
+              <View style={styles.viewLoaiNha}>
+                <ScalableText style={styles.textNhaDat}>{this.state.diaChi.substring(0, 25)}</ScalableText>
+              </View>
+              <Icon name="angle-right" size={24} color="#bebec0" />
+            </TouchableOpacity>
+            <FullLine style={{marginLeft: 28}} />
+            <TouchableOpacity disabled={this.state.onThucHienPressed}
+                              onPress={this._onDuAnPress.bind(this)} style={styles.touchViTri}>
+              <View style={styles.viewWidth2}>
                 <Text style={styles.textViTri}>Thuộc dự án</Text>
               </View>
               <View style={styles.viewLoaiNha}>
@@ -540,10 +542,16 @@ const styles = StyleSheet.create({
     justifyContent: 'center'
   },
   textDacDiem: {
-    color: '#9fa0a4',
+    color: '#5e5d63',
     fontSize: 10,
     marginLeft: 28,
     fontFamily: 'Open Sans'
+  },
+  textDacDiem1: {
+      color: '#5e5d63',
+      fontSize: 12,
+      marginLeft: 28,
+      fontFamily: 'Open Sans'
   },
   touchViTri: {
     flex: 1,
@@ -553,10 +561,21 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
 
   },
+    textStar:{
+    color: '#e70101',
+    width:10,
+    fontSize: 13,
+    fontFamily: 'Open Sans',
+    textAlign:'center',
+    paddingTop: 5,
+    marginRight:5,
+    backgroundColor:'transparent'
+    },
   textViTri: {
     color: 'black',
     fontSize: 15,
-    fontFamily: 'Open Sans'
+    fontFamily: 'Open Sans',
+    textAlign:'center'
   },
   textNhaDat: {
     color: '#9fa0a4',
@@ -590,12 +609,18 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   viewWidth: {
-    width: 90,
+    width: 105,
     flexDirection: 'row',
-    backgroundColor: 'white'
+    backgroundColor: 'transparent'
+  },
+  viewWidth2: {
+    width: 105,
+    flexDirection: 'row',
+    backgroundColor: 'transparent',
+    paddingLeft:15
   },
   viewLoaiNha: {
-    width: width - 134,
+    width: width - 150,
     backgroundColor: 'white',
     alignItems: 'flex-end',
     height: 21

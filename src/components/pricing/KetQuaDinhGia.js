@@ -195,8 +195,8 @@ class KetQuaDinhGia extends Component {
         return (
             <View style={[styles.viewHopGia,{height: 150}]}>
               <ScalableText style={styles.textHopGia1}>{this.state.loaiNhaDat.toUpperCase()}</ScalableText>
-              <Text style={styles.textHopGia2}>{this.state.duAn}</Text>
-              <Text style={styles.textHopGia4}>Không có thông tin định giá</Text>
+              <ScalableText style={styles.textHopGia2}>{this.state.duAn}</ScalableText>
+              <ScalableText style={styles.textHopGia4}>Không có thông tin định giá</ScalableText>
               <ScalableText style={styles.textHopGia5}>thuộc dự án {this.state.duAn}</ScalableText>
             </View>
         )
@@ -218,7 +218,7 @@ class KetQuaDinhGia extends Component {
             <View style={[styles.viewHopGia,{height: 150}]}>
               <ScalableText style={styles.textHopGia1}>{this.state.loaiNhaDat.toUpperCase()}</ScalableText>
               <ScalableText style={styles.textHopGia2}>{this.state.diaChi}</ScalableText>
-              <Text style={styles.textHopGia4}>Không có thông tin định giá</Text>
+              <ScalableText style={styles.textHopGia4}>Không có thông tin định giá</ScalableText>
               <ScalableText style={styles.textHopGia5}>nằm trong vòng {this.state.radius}m xung quanh vị trí đã chọn</ScalableText>
             </View>
         )
