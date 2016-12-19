@@ -163,13 +163,13 @@ class MMapView extends Component {
     return (
         <View >
           <TouchableOpacity onPress={this._onSuggestionLocationPress.bind(this)} >
-            <View style={[styles.bubble, styles.button, {flexDirection: 'column', width: 60}]}>
-              <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'flex-start'}}>
-                <RelandIcon name="hand-o-up" color={'black'}
+            <View style={[styles.bubble, styles.button, {flexDirection: 'column'}]}>
+              <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                <RelandIcon name="share-o" color={'black'}
                             mainProps={{flexDirection: 'row'}}
                             size={20} textProps={{paddingLeft: 0}}
                             noAction={true}></RelandIcon>
-                <Text style={[styles.positionSuggetionIconText, {color: 'black'}]}>Vị trí gợi ý</Text>
+                <Text style={[styles.positionSuggetionIconText, {color: 'black'}]}>Vị trí</Text>
               </View>
             </View>
           </TouchableOpacity>
@@ -478,7 +478,8 @@ var styles = StyleSheet.create({
     fontSize: 9,
     fontFamily: gui.fontFamily,
     fontWeight : 'normal',
-    textAlign: 'center'
+    textAlign: 'center',
+    backgroundColor:'transparent'
   },
   touchSearch:{
     position: 'absolute',
