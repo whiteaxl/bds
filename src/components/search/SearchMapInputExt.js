@@ -27,7 +27,7 @@ export default class SearchMapInputExt extends Component {
                     <View style={styles.searchContainer}>
                             {this.props.isHeaderLoading && this.props.isHeaderLoading() ?
                                 <View style={{width: 26}} /> :
-                                <TruliaIcon name="search" size={14} color="#fff"
+                                <TruliaIcon name="search" size={14} color="#fff" iconProps={styles.typeIcon}
                                         mainProps={styles.searchIcon}
                             >
                             </TruliaIcon>}
@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'transparent',
         borderRadius: 4,
         borderColor: 'white',
-        borderWidth: 1,
+        borderWidth: 2,
         marginLeft: 0,
         marginRight: 10,
         height: 30,

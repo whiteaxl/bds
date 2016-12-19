@@ -932,7 +932,7 @@ class SearchResultMap extends Component {
 
         return (<View style={styles.resultContainer}>
             <Animatable.View animation={"fadeIn"}
-                             duration={500}>
+                             duration={9000}>
                 <View style={[styles.resultText, {marginTop: 0, backgroundColor: backgroundColor}]}>
                     <Text style={[styles.resultIcon, {fontWeight: fontWeight, color: textColor}]}>  {textValue} </Text>
                     <Text style={[styles.resultIcon, {color: textColor}]}>  {textNotFound2} </Text>

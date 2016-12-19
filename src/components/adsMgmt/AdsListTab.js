@@ -338,9 +338,11 @@ class AdsListTab extends Component {
     //Ban or Cho Thue
     return (
       <View style={myStyles.leftTextGroup}>
-        <Text numberOfLines={1} style={myStyles.price}>{rowData.giaFmt}</Text>
-        <Text numberOfLines={1} style={myStyles.smallText1}>{rowData.diaChi}</Text>
-        <Text numberOfLines={1} style={myStyles.smallText1}>{moreInfoWithoutDot}</Text>
+        <ScalableText numberOfLines={1} style={myStyles.price}>{rowData.giaFmt}</ScalableText>
+        <View style={myStyles.viewChildGia}>
+          <ScalableText numberOfLines={1} style={myStyles.smallText1}>{rowData.diaChi}</ScalableText>
+          <ScalableText numberOfLines={1} style={myStyles.smallText2}>{moreInfoWithoutDot}</ScalableText>
+        </View>
       </View>
     )
   }
@@ -560,9 +562,13 @@ var myStyles = StyleSheet.create({
     position: 'absolute',
     backgroundColor: 'transparent',
     flexDirection: 'column',
-    top: imgHeight - 70,
-    width: 220,
+    top: imgHeight - 59,
+    width: Dimensions.get('window').width,
     marginLeft: 17
+  },
+  viewChildGia:{
+    backgroundColor:'transparent',
+    flexDirection:'row'
   },
 
   price: {
@@ -571,7 +577,7 @@ var myStyles = StyleSheet.create({
     textAlign: 'left',
     backgroundColor: 'transparent',
     color: 'white',
-    fontFamily: 'Open Sans',
+    fontFamily: 'Open Sans'
   },
   text: {
     fontSize: 13,
@@ -580,7 +586,7 @@ var myStyles = StyleSheet.create({
     color: 'white',
     fontFamily: 'Open Sans',
     marginTop: 2,
-    fontWeight: '300',
+    fontWeight: '300'
   },
   heartContent: {
     backgroundColor: 'transparent',
@@ -601,6 +607,17 @@ var myStyles = StyleSheet.create({
     textAlign: 'left',
     color: 'white',
     fontFamily: 'Open Sans',
+    marginTop: 2,
+    fontWeight: '300'
+  },
+  smallText2: {
+      fontSize: 13,
+      textAlign: 'left',
+      color: 'white',
+      fontFamily: 'Open Sans',
+      marginLeft: 5,
+      fontWeight: '300',
+      backgroundColor:'transparent'
   },
 
   linkText  : {
