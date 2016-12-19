@@ -9,6 +9,7 @@ import {
 } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
+import CommonHeader from '../CommonHeader';
 
 var gui = require("../../lib/gui");
 var log = require("../../lib/logUtil");
@@ -26,12 +27,17 @@ export default class GoogleAutoComplete extends React.Component {
     StatusBar.setBarStyle('light-content');
   }
 
+  _onBack() {
+    Actions.pop();
+  }
+
   render() {
     log.info("Place Autocomplete - render, search=", this.props.search);
 
     return (
-
-        <GooglePlacesAutocomplete
+        <View>
+          <CommonHeader headerTitle={"Chọn địa điểm"} />
+          <GooglePlacesAutocomplete
             placeholder='Search'
             minLength={2} // minimum length of text to search
             autoFocus={false}
@@ -75,20 +81,22 @@ export default class GoogleAutoComplete extends React.Component {
             }}
 
             currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
-            currentLocationLabel="vị trí hiện tại"
             nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
             GoogleReverseGeocodingQuery={{
           // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-        }}
+          }}
             GooglePlacesSearchQuery={{
           // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
           rankby: 'distance',
           types: 'food',
-        }}
+          }}
 
 
             predefinedPlaces={[]}
-        />
+          />
+
+        </View>
     );
   }
 }
+
