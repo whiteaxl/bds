@@ -150,8 +150,6 @@ class InboxContent extends React.Component {
 
   render() {
     return (
-        <View>
-          {/*this.renderChatWithAdmin()*/}
           <ScrollView style={styles.wrapper}>
             <SwipeListView
                 enableEmptySections={true}
@@ -167,7 +165,6 @@ class InboxContent extends React.Component {
                   <TouchableOpacity onPress = { () => this.onDelete(data)} >
                     <Text style={styles.deleteText}>Xóa</Text>
                   </TouchableOpacity>
-
                 </View>
             )}
 
@@ -176,7 +173,6 @@ class InboxContent extends React.Component {
             />
             <Text style={styles.bottomText}>Tất cả đã được hiển thị</Text>
           </ScrollView>
-        </View>
     );
   }
 }
@@ -350,9 +346,9 @@ var styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     fontFamily: 'Open Sans',
-    fontWeight: '600',
-    color: 'gray',
-    paddingTop: 10
+    fontWeight: '500',
+    color: '#606060',
+    marginTop:10
   },
   rowBack: {
     alignItems: 'center',
