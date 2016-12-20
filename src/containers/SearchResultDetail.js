@@ -118,15 +118,16 @@ class SearchResultDetail extends Component {
       this.props.actions.getDetail(
           {'adsID' : this.props.adsID}
           , (data) => {
-            this.checkSupportStreetView(data.ads)
+            this.refreshRowData(data.ads)
           });
     }
     else {
-      dbService.getAds(this.props.adsID, this.checkSupportStreetView.bind(this));
+      dbService.getAds(this.props.adsID, this.refreshRowData.bind(this));
     }
   }
 
-  refreshRowData(ads, streetViewUrl, supported) {
+  refreshRowData(ads) {
+    let streetViewUrl = 'comgooglemaps://?center='+ads.place.geo.lat+','+ads.place.geo.lon+'&mapmode=streetview';
     navigator.geolocation.getCurrentPosition(
         (position) => {
           var geoUrl = 'http://maps.apple.com/?saddr='+position.coords.latitude+','+position.coords.longitude+'&daddr='+ads.place.geo.lat+','+ads.place.geo.lon+'&dirflg=d&t=s';
@@ -134,7 +135,6 @@ class SearchResultDetail extends Component {
             'data' : ads,
             'geoUrl' : geoUrl,
             'streetViewUrl' : streetViewUrl,
-            'supportStreetView': supported,
             'coords' : position.coords,
             loaded: true
           });
@@ -145,7 +145,6 @@ class SearchResultDetail extends Component {
             'data' : ads,
             'geoUrl' : geoUrl,
             'streetViewUrl' : streetViewUrl,
-            'supportStreetView': supported,
             'coords' : {},
             loaded: true
           });
@@ -155,12 +154,6 @@ class SearchResultDetail extends Component {
     );
   }
 
-  checkSupportStreetView(ads) {
-    let streetViewUrl = 'comgooglemaps://?center='+ads.place.geo.lat+','+ads.place.geo.lon+'&mapmode=streetview';
-    Linking.canOpenURL(streetViewUrl).then(supported => {
-      this.refreshRowData(ads, streetViewUrl, supported);
-    });
-  }
   componentWillMount() {
     //this.props.actions.loadHomeData();
     setTimeout(() => this.fetchData(), 300);
@@ -456,7 +449,7 @@ class SearchResultDetail extends Component {
                   </SummaryText>
                 </View>
                 {this._renderDanDuong()}
-                {this.state.supportStreetView ? this._renderStreetView() : null}
+                {this._renderStreetView()}
                 <View style={detailStyles.lineBorder2} />
                 {this._renderDacDiem(loaiNhaDat, gia, giaM2, soPhongNguVal, soPhongTamVal, dienTich,
                     huongNha, duAn, ngayDangTin, luotXem, diaChi, rowData.maSo)}
@@ -929,7 +922,12 @@ class SearchResultDetail extends Component {
       if (supported) {
         Linking.openURL(this.state.streetViewUrl);
       } else {
-        console.log('Don\'t know how to open URI: ' + this.state.streetViewUrl);
+        AlertIOS.alert('Thông báo',
+          'Bạn cần cài đặt ứng dụng Google Maps!',
+          [{
+            text: 'Đóng',
+            onPress: () => {}
+          }]);
       }
     });
   }

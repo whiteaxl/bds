@@ -781,15 +781,23 @@ class SearchResultMap extends Component {
   }
 
   _renderNSearchMap() {
+      let iconName = this.state.positionSearchPress ? 'map-view' : 'close';
         return (
             <TouchableOpacity onPress={this._onMMapSearch.bind(this)} >
                 <View style={[styles.bubble2, styles.button, {marginTop: 1}]}>
-                    <RelandIcon name="map-view" color='black' mainProps={{flexDirection: 'column', flex:1}}
-                                size={24} textProps={{paddingLeft: 0}}
+                    {!this.state.positionSearchPress ?
+                    <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
+                        <RelandIcon name="map-view" color='black' mainProps={{flexDirection: 'row'}}
+                                    size={24} textProps={{paddingLeft: 0}}
+                                    noAction={true}></RelandIcon>
+                        < View style = {styles.viewIconDiaDiem}>
+                            <Text style={styles.textIconDiaDiem}>Địa điểm</Text>
+                        </View>
+                    </View> :
+                    <RelandIcon name="close" color='black' mainProps={{flexDirection: 'row'}}
+                                size={15} textProps={{paddingLeft: 0}}
                                 noAction={true}></RelandIcon>
-                    <View style={styles.viewIconDiaDiem}>
-                        <Text style={styles.textIconDiaDiem}>Địa điểm</Text>
-                    </View>
+                    }
                 </View>
             </TouchableOpacity>
         );
