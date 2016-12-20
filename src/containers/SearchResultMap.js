@@ -783,7 +783,7 @@ class SearchResultMap extends Component {
   _renderNSearchMap() {
         return (
             <TouchableOpacity onPress={this._onMMapSearch.bind(this)} >
-                <View style={[styles.bubble, styles.button, {marginTop: 1}]}>
+                <View style={[styles.bubble2, styles.button, {marginTop: 1}]}>
                     <RelandIcon name="map-view" color='black' mainProps={{flexDirection: 'column', flex:1}}
                                 size={24} textProps={{paddingLeft: 0}}
                                 noAction={true}></RelandIcon>
@@ -1563,6 +1563,18 @@ var styles = StyleSheet.create({
     justifyContent: 'center',
     marginBottom:5
   },
+
+bubble2: {
+    backgroundColor: gui.mainColor,
+    paddingHorizontal: 2,
+    paddingVertical: 2,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: '#C5C2BA',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginBottom:13
+},
   button: {
     width: 43,
     height: 38,
