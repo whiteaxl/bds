@@ -23,7 +23,7 @@ import gui from "../lib/gui";
 import log from "../lib/logUtil";
 
 import AdsMgmtTabBar from "../components/adsMgmt/AdsMgmtTabBar";
-import AdsListTab from '../components/adsMgmt/AdsListTab';
+import AdsListTab2 from '../components/adsMgmt/AdsListTab2';
 import Login from '../components/login/Login';
 import TruliaIcon from '../components/TruliaIcon';
 
@@ -73,7 +73,9 @@ class AdsMgmt extends React.Component {
     //this.props.actions.loadMySellRentList(this.props.global.currentUser.userID);
     //this.props.actions.loadLikedList(this.props.global.currentUser.userID);
   }
-
+    _onUpdateContent(){
+    console.log('=============== press me to up date');
+    }
   _renderHeaderAds(){
     return (
         <View style={styles.pageHeader}>
@@ -91,7 +93,7 @@ class AdsMgmt extends React.Component {
                 source={require('../assets/image/logo.png')}
             />
           </View>
-          <TouchableOpacity style={styles.viewEdit}>
+          <TouchableOpacity onPress={() =>this._onUpdateContent()} style={styles.viewEdit}>
             <Text style={styles.textEdit}>Sửa</Text>
           </TouchableOpacity>
         </View>
@@ -104,8 +106,8 @@ class AdsMgmt extends React.Component {
 
       return (
         <View style={{flex: 1, marginBottom: 45}}>
-          <HomeHeader />
-          {/*this._renderHeaderAds()*/}
+          {/*<HomeHeader />*/}
+            {this._renderHeaderAds()}
 
           <ScrollableTabView page={page} initialPage={0}
                              renderTabBar={this.renderTabBar.bind(this)}
@@ -115,15 +117,15 @@ class AdsMgmt extends React.Component {
                              tabBarActiveTextColor={gui.mainColor}
                              onChangeTab={this.onChangeTab.bind(this)}
           >
-            <AdsListTab name="likedTab" tabLabel="ĐÃ LƯU" ref="likedTab"
+            <AdsListTab2 name="likedTab" tabLabel="ĐÃ LƯU" ref="likedTab"
                         listAds={this.props.adsMgmt.likedList} source={"server"}
                         likeAds={this.props.actions.likeAds}
                         unlikeAds={this.props.actions.unlikeAds}
             />
-            <AdsListTab name="sellTab" tabLabel="BÁN" ref="sellTab"
+            <AdsListTab2 name="sellTab" tabLabel="BÁN" ref="sellTab"
                         listAds={this.props.adsMgmt.sellList} source={"server"}
             />
-            <AdsListTab name="rentTab" tabLabel="CHO THUÊ" ref="rentTab"
+            <AdsListTab2 name="rentTab" tabLabel="CHO THUÊ" ref="rentTab"
                         listAds={this.props.adsMgmt.rentList} source={"server"}
             />
           </ScrollableTabView>
