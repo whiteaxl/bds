@@ -418,8 +418,9 @@ var styles = StyleSheet.create({
     marginLeft: 10,
   },
   adsCover : {
-    width: 80,
-    height: ADS_BAR_HEIGHT,
+    width: 60,
+    height: 60,
+    margin:3
   },
 
   adsTitle : {

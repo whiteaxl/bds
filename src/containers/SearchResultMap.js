@@ -783,10 +783,13 @@ class SearchResultMap extends Component {
   _renderNSearchMap() {
         return (
             <TouchableOpacity onPress={this._onMMapSearch.bind(this)} >
-                <View style={[styles.bubble, styles.button, {marginTop: 5}]}>
-                    <RelandIcon name="map-view" color='black' mainProps={{flexDirection: 'row'}}
+                <View style={[styles.bubble, styles.button, {marginTop: 1}]}>
+                    <RelandIcon name="map-view" color='black' mainProps={{flexDirection: 'column', flex:1}}
                                 size={24} textProps={{paddingLeft: 0}}
                                 noAction={true}></RelandIcon>
+                    <View style={styles.viewIconDiaDiem}>
+                        <Text style={styles.textIconDiaDiem}>Địa điểm</Text>
+                    </View>
                 </View>
             </TouchableOpacity>
         );
@@ -1551,23 +1554,23 @@ var styles = StyleSheet.create({
   },
   bubble: {
     backgroundColor: gui.mainColor,
-    paddingHorizontal: 5,
-    paddingVertical: 5,
+    paddingHorizontal: 2,
+    paddingVertical: 2,
     borderRadius: 5,
     borderWidth: 1,
     borderColor: '#C5C2BA',
     alignItems: 'center',
     justifyContent: 'center',
-    marginBottom:8
+    marginBottom:5
   },
   button: {
     width: 43,
     height: 38,
-    paddingVertical: 5,
+    paddingVertical: 2,
     alignItems: 'center',
-    marginVertical: 5,
+    marginVertical: 2,
     backgroundColor: 'white',
-    opacity: 0.9,
+    opacity: 0.75,
     marginLeft: 15
   },
   mapIcon: {
@@ -1580,7 +1583,7 @@ var styles = StyleSheet.create({
     textAlign: 'center'
   },
   drawIconText: {
-    fontSize: 9,
+    fontSize: 8,
     fontFamily: gui.fontFamily,
     fontWeight : 'normal',
     textAlign: 'center'
@@ -1834,6 +1837,15 @@ var styles = StyleSheet.create({
         fontFamily: gui.fontFamily,
         fontWeight: 'normal',
         fontSize: 15
+    },
+    viewIconDiaDiem:{
+        flex:1,
+        backgroundColor:'transparent',
+        justifyContent:'flex-end'
+    },
+    textIconDiaDiem:{
+        backgroundColor:'white',
+        fontSize:8
     }
 });
 

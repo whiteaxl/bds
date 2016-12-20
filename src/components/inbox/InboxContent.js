@@ -161,10 +161,10 @@ class InboxContent extends React.Component {
 
                 renderHiddenRow={ data => (
                 <View style={styles.rowBack}>
-                  <TouchableOpacity onPress = { () => this.onDelete(data)}>
-                    <Text style={styles.deleteText}>Lưu trữ</Text>
+                  <TouchableOpacity onPress = { () => this.onDelete(data)} >
+                    <Text style={styles.saveText}>Lưu trữ</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress = { () => this.onDelete(data)}>
+                  <TouchableOpacity onPress = { () => this.onDelete(data)} >
                     <Text style={styles.deleteText}>Xóa</Text>
                   </TouchableOpacity>
 
@@ -226,12 +226,22 @@ var styles = StyleSheet.create({
     marginBottom: 50
   },
 
+  saveText : {
+    fontSize: 16,
+    fontFamily: 'Open Sans',
+    color: "white",
+    fontWeight : 'normal',
+    textAlign:'center',
+    paddingLeft:10
+  },
   deleteText : {
     fontSize: 16,
     fontFamily: 'Open Sans',
     color: "white",
     fontWeight : 'normal',
-  },
+    textAlign:'center',
+    paddingRight:20
+    },
 
   text: {
     flex: 1,
@@ -315,7 +325,7 @@ var styles = StyleSheet.create({
     paddingTop: 0,
     backgroundColor: 'white',
     borderColor: '#e6e6e6',
-    borderBottomWidth: 0
+    borderBottomWidth: 0,
   },
   nameAndDateTime : {
     flex: 1,

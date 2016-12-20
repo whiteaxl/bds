@@ -1,6 +1,6 @@
 var cfg = {
     //server : 'localhost'
-    server : 'dev.landber.com'
+    server : 'dev2.landber.com'
     //server : '203.162.13.40'
     //server : '192.168.0.109'
 };
