@@ -833,6 +833,9 @@ class SearchResultMap extends Component {
 
         this._refreshListData(null, null, this._onSetupMessageTimeout.bind(this), null, null, null, 1, false, sCircle);
 
+        this.props.actions.onDrawModeChange(false);
+        this.props.actions.onPolygonsChange([]);
+        this.props.actions.onSearchFieldChange("polygon", []);
         this.props.actions.onSearchFieldChange("circle", sCircle);
 
         this.setState({
@@ -938,7 +941,7 @@ class SearchResultMap extends Component {
         let textColor = 'black';
 
         if (noAdsCount === 1) {
-            textNotFound2 = gui.INF_KhongCoKetQua3;
+            return null;
         }
 
         return (<View style={styles.resultContainer}>
@@ -956,7 +959,7 @@ class SearchResultMap extends Component {
   _renderTotalResultView(){
     console.log("Call SearchResultMap._renderTotalResultView");
     let {loading, totalCount, listAds, search, errorMsg} = this.props;
-    let {showMessage, mounting, openDraw} = this.state;
+    let {showMessage, mounting, openDraw, noAdsCount} = this.state;
     let {pageNo} = search.form.fields;
     let limit = this.props.maxAdsInMapView;
     let numberOfAds = listAds.length;
@@ -975,11 +978,21 @@ class SearchResultMap extends Component {
     if (errorMsg) {
         textValue = errorMsg;
     }
-    else if (numberOfAds == 0) {
+    else if (numberOfAds == 0 && noAdsCount != 1) {
         return null;
     }
     else if (totalCount == 0 || (totalCount == numberOfAds && totalCount <= this.props.maxAdsInMapView)) {
       textValue = "Đang hiển thị " + rangeAds + " kết quả";
+    }
+
+    let textNotFound2 = '';
+
+    if (numberOfAds == 0 && noAdsCount === 1) {
+        textValue = gui.INF_KhongCoKetQua;
+        textNotFound2 = gui.INF_KhongCoKetQua3;
+        fontWeight = '600';
+        backgroundColor = 'white';
+        textColor = 'black';
     }
 
     return (<View style={styles.resultContainer}>
@@ -989,6 +1002,7 @@ class SearchResultMap extends Component {
                        onAnimationBegin={() => this.setState({endMsgAnimation: false})} >
         <View style={[styles.resultText, {marginTop: 0, opacity: 1, backgroundColor: backgroundColor}]}>
             <Text style={[styles.resultIcon, {fontWeight: fontWeight, color: textColor}]}>  {textValue} </Text>
+            {textNotFound2 != '' ? <Text style={[styles.resultIcon, {color: textColor}]}>  {textNotFound2} </Text> : null}
         </View>
       </Animatable.View>
     </View>)
@@ -1241,9 +1255,12 @@ class SearchResultMap extends Component {
         openLocalInfo: false,
         editing: null,
         showMessage: false,
-        openDraw: openDraw});
+        openDraw: openDraw,
+        positionSearchPress: false,
+        circle: {}});
       this.props.actions.onResetAdsList();
       this.props.actions.onDrawModeChange(openDraw);
+      this.props.actions.onSearchFieldChange("circle", {});
     } else {
       this.setState({
         openDetailAdsModal: false,
