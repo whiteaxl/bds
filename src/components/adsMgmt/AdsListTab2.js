@@ -406,7 +406,7 @@ class AdsListTab2 extends Component {
                         rightOpenValue={-75}
                         scroll={event => this._allowScroll(event)}>
                         <View style={myStyles.viewSwipeButton}>
-                            <TouchableOpacity onPress={() => this._onDeleteContent()} style={myStyles.viewXoa}>
+                            <TouchableOpacity onPress={() => this.onLike(adsID)} style={myStyles.viewXoa}>
                                 <Text style={myStyles.textDelete}>Xóa</Text>
                             </TouchableOpacity>
                         </View>
@@ -439,10 +439,10 @@ class AdsListTab2 extends Component {
                         scroll={event => this._allowScroll(event)}>
                         <View style={myStyles.viewSwipeButton}>
                             <View style={myStyles.viewTwoButton}>
-                                <TouchableOpacity onPress={() => this._onDeleteContent()} style={myStyles.viewXoa}>
+                                <TouchableOpacity onPress={() => this.onDeleteButton(adsID)} style={myStyles.viewXoa}>
                                     <Text style={myStyles.textDelete}>Xóa</Text>
                                 </TouchableOpacity>
-                                <TouchableOpacity onPress={() => this._onChangeContent()} style={myStyles.viewSua}>
+                                <TouchableOpacity onPress={() => this.onEditButton(adsID)} style={myStyles.viewSua}>
                                     <Text style={myStyles.textDelete}>Sửa</Text>
                                 </TouchableOpacity>
                             </View>

@@ -121,7 +121,7 @@ class InboxContent extends React.Component {
     let dt = moment(row.date).format("DD/MM   HH:mm");
     dt = dt.replace("/", " tháng ");
     //let w = rowID == 0 ? 0 : 1;
-    let w = 1
+    let w = 1;
 
     return (
         <TouchableOpacity onPress={() => this.onRowClick(row)} style={styles.rowFront}>
@@ -164,11 +164,12 @@ class InboxContent extends React.Component {
                       <Text style={styles.saveText}>Xóa</Text>
                     </View>
                   </TouchableOpacity>
-                  <TouchableOpacity onPress = { () => this.onDelete(data)} >
+                  {/*<TouchableOpacity onPress = { () => this.onDelete(data)} >
                     <View style={styles.viewSaveInbox}>
                       <Text style={styles.saveText}>Lưu</Text>
                     </View>
                   </TouchableOpacity>
+                  */}
                 </View>
             )}
                 disableRightSwipe={true}
@@ -186,7 +187,7 @@ class AvatarItem extends React.Component{
 
     this.state = {
       avatar: props.avatar ? {uri: props.avatar} : defaultAvatar,
-      numOfUnreadMessage: props.numOfUnreadMessage || undefined
+      numOfUnreadMessage: props.numOfUnreadMessage
     }
   }
 

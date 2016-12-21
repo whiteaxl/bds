@@ -15,7 +15,7 @@ const socket = io(`https://${cfg.server}`, {
 });
 
 var ChatApi = {
-    connectAndStartListener: function(userDto, onNewMessage, onTypingMessage) {
+    connectAndStartListener: function(userDto, onNewMessage, onTypingMessage, onCheckUserOnline) {
         console.log("chatApi.connectAndStartListener");
         
         socket.on('connect', () => {
@@ -27,6 +27,7 @@ var ChatApi = {
             , { email: userDto.email,
                 phone: userDto.phone,
                 userID:  userDto.userID,
+                sessionID: userDto.token,
                 username : userDto.fullname,
                 avatar : userDto.avatar
             }
@@ -57,12 +58,16 @@ var ChatApi = {
         socket.on("user-stop-typing", function(data){
             onTypingMessage({data: data, isTyping: false});
         });
+
+        socket.on('check user online', function(data){
+            onCheckUserOnline(data);
+        });
     },
 
-    disconnect: function (userID) {
+    disconnect: function (user) {
         console.log("chatApi.disconnect");
         socket.emit('user leave'
-            ,   {userID:  userID}
+            ,   {userID:  user.userID, sessionID: user.token}
             ,   function(data){
                     console.log("disconect socket return " + JSON.stringify(data));
                 }
@@ -84,6 +89,14 @@ var ChatApi = {
     sendStopTyping: function(fromUserID, toUserID){
         socket.emit("user-stop-typing", {fromUserID: fromUserID, toUserID: toUserID}, function(data){
             console.log("emit stop typing to " + toUserID);
+        });
+    },
+
+    checkUserOnline(fromUserID, toUserID){
+        console.log("emit check user online " + toUserID);
+
+        socket.emit("check user online", {fromUserID: fromUserID, toUserID: toUserID}, function(data){
+            console.log("emit check user online " + toUserID);
         });
     },
 

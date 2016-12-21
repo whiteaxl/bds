@@ -2,7 +2,7 @@
 
 import  React, {Component} from 'react';
 
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Dimensions, Alert} from 'react-native';
 
 import {Actions} from 'react-native-router-flux';
 import log from "../lib/logUtil";
@@ -140,7 +140,12 @@ class PostAds extends Component {
                 this.setState({isCapturing: false});
             })
             .catch(err => {
-                console.error(err);
+                console.log(err.message);
+                if (err.message.indexOf("User denied access")>=0){
+                    Alert.alert("Thông báo", "Ứng dụng không được phép truy cập camera. Bạn hãy thay đổi setting để sử dụng được chức năng này");
+                } else {
+                    console.log(err);
+                }
                 this.setState({isCapturing: false});
             });
     }

@@ -41,7 +41,8 @@ const {
 
   ON_DB_CHANGE,
   ON_NEW_MESSAGE,
-  ON_TYPING_MESSAGE
+  ON_TYPING_MESSAGE,
+  ON_CHECK_USER_ONLINE
 
 } = require('../../lib/constants').default;
 
@@ -153,13 +154,13 @@ export function logoutFailure(error) {
   };
 }
 
-export function logout(userID) {
+export function logout(user) {
   return dispatch => {
     log.info("start authenAction.logout");
     ls.removeLogin();
     dispatch(logoutSuccess());
     // disconnect to chat
-    chatApi.disconnect(userID);
+    chatApi.disconnect(user);
   };
 }
 
@@ -321,6 +322,16 @@ export function onTypingMessage(msg) {
 
 }
 
+export function onCheckUserOnline(msg) {
+  log.enter("AuthenAction.onCheckUserOnline");
+
+  return {
+    type: ON_CHECK_USER_ONLINE,
+    payload: {msg}
+  };
+
+}
+
 export function login(username, password, deviceDto) {
 
   return dispatch => {
@@ -350,7 +361,11 @@ export function login(username, password, deviceDto) {
               },
               (data) =>{
                 dispatch(onTypingMessage(data));
-              });
+              },
+              (data)=>{
+                dispatch(onCheckUserOnline(data));
+              }
+          );
 
         } else {
           dispatch(loginFailure(json.error));

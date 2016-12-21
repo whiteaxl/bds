@@ -33,9 +33,9 @@ export function startChat(userID, partner, ads) {
     chatApi.getAllChatMsg(dto)
       .then((res) => {
         if (res.status==0){
+          chatApi.checkUserOnline(userID, partner.userID);
           dispatch(requestStartChat({allMsg: res.data, partner, ads}))
         }
-
       });
   };
 }

@@ -16,7 +16,10 @@ const InitialState = require('./searchInitialState').default;
 const {
   ON_ALERT_US_CHANGE,
   ON_POLYGONS_CHANGE,
+  ON_CIRCLE_CHANGE,
   ON_DRAW_MODE_CHANGE,
+  ON_POSITION_SEARCH_MODE_CHANGE,
+  ON_DRAW_SEARCH_MODE_CHANGE,
   ON_RESET_LIST_ADS,
   ON_CHANGE_MAP_PAGE_NO,
   ON_CHANGE_LIST_SCROLL_POS,
@@ -86,6 +89,12 @@ export default function searchReducer(state = initialState, action) {
     case ON_DRAW_MODE_CHANGE:
       return state.set("drawMode", action.payload);
 
+    case ON_POSITION_SEARCH_MODE_CHANGE:
+      return state.set("positionSearchMode", action.payload);
+
+    case ON_DRAW_SEARCH_MODE_CHANGE:
+      return state.set("drawSearchMode", action.payload);
+
     case ON_RESET_LIST_ADS:
       return state.setIn(['result', "listAds"], []);
 
@@ -97,7 +106,8 @@ export default function searchReducer(state = initialState, action) {
 
     case ON_POLYGONS_CHANGE:
       return state.setIn(['map', 'polygons'], action.payload);
-
+    case ON_CIRCLE_CHANGE:
+      return state.setIn(['map', 'circle'], action.payload);
     case ON_ALERT_US_CHANGE:
       return state.set("alertUs", action.payload);
 

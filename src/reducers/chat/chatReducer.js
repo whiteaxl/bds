@@ -10,7 +10,8 @@ const {
   INSERT_MY_CHAT,
   LOGOUT_SUCCESS,
   ON_NEW_MESSAGE,
-  ON_TYPING_MESSAGE
+  ON_TYPING_MESSAGE,
+  ON_CHECK_USER_ONLINE
 } = require('../../lib/constants').default;
 
 const initialState = new InitialState;
@@ -93,6 +94,16 @@ export default function chatReducer(state = initialState, action) {
       if (partner.userID && msg.data && partner.userID == msg.data.fromUserID ){
         let typing = msg.isTyping ? " is typing ..." : "  ";
         return state.set("typingMessage", typing);
+      }
+      return state;
+    }
+
+    case ON_CHECK_USER_ONLINE: {
+      const {msg} = action.payload;
+      var {partner} = state;
+      if (partner.userID == msg.toUserID){
+        partner.isOnline = msg.toUserIsOnline
+        return state.set('partner', partner);
       }
       return state;
     }

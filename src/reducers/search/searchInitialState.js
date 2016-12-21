@@ -96,7 +96,8 @@ var InitialState = Record({
     loadingFromServer : false,
     map : new (Record({
         type: "Standard",
-        polygons: []
+        polygons: [],
+        circle:{}
     })),
 
     result: new (Record({
@@ -137,6 +138,8 @@ var InitialState = Record({
     //shared
     searchCalledFrom : "Search",
     drawMode: false,
+    positionSearchMode: false,
+    drawSearchMode: false,
     alertUs: '',
     listScrollPos: 0,
     mapPageNo: 1

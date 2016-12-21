@@ -6,7 +6,10 @@ export default keyMirror({
   ON_RESET_LIST_ADS: null,
   ON_ALERT_US_CHANGE: null,
   ON_POLYGONS_CHANGE: null,
+  ON_CIRCLE_CHANGE: null,
   ON_DRAW_MODE_CHANGE: null,
+  ON_POSITION_SEARCH_MODE_CHANGE: null,
+  ON_DRAW_SEARCH_MODE_CHANGE: null,
 
   ON_SEARCH_FIELD_CHANGE : null,
   SEARCH_STATE_INPUT: null,
@@ -128,6 +131,7 @@ export default keyMirror({
 
   ON_NEW_MESSAGE: null,
   ON_TYPING_MESSAGE: null,
+  ON_CHECK_USER_ONLINE: null,
 
   ON_PRICING_FIELD_CHANGE: null,
   ON_PRICING_REQUEST: null,

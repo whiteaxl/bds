@@ -76,14 +76,12 @@ class MMapSearch extends Component {
     }
 
     _onThucHien(){
-        var circle = JSON.parse(JSON.stringify(this.state.circle));
-        if(circle.radius !== 0) {
+        if(this.state.circle.radius > 0) {
             this.props.onPress(this.state.circle);
             Actions.pop();
         }else{
             Alert.alert('Thông báo', 'Bạn phải chọn bán kính để thực hiện tìm kiếm') ;
         }
-
     }
 
     render() {

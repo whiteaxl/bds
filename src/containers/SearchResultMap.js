@@ -245,6 +245,8 @@ class SearchResultMap extends Component {
 
     var region = this.getInitialRegion();
 
+    let circle = props.search.map.circle;
+
     this.state = {
       modal: false,
       mapType: "Standard",
@@ -257,12 +259,14 @@ class SearchResultMap extends Component {
       editing: null,
       region: region,
       coordinate : null,
-      circle:{},
+      circle: circle,
       // pageNo: 1,
       showMessage: false,
       endMsgAnimation: true,
       mounting: true,
-      positionSearchPress: false,
+      positionSearchPress: props.search.positionSearchMode,
+      drawSearchPress: false,
+      myLocationSearchPress: false,
       searchTime: moment().toDate().getTime(),
       noAdsCount: 0
     };
@@ -431,7 +435,7 @@ class SearchResultMap extends Component {
             </View>
 
             <View style={styles.mapButtonContainer}>
-            {this._renderNSearchMap()}    
+            {this._renderPositionSearchButton()}
             {this._renderDrawButton()}
             {this._renderCurrentPosButton()}
           </View>
@@ -490,7 +494,9 @@ class SearchResultMap extends Component {
   }
 
   _renderMapCircle(){
-        var circle = this.state.circle;
+        //var circle = this.state.circle;
+        let circle = this.state.circle;
+
         if (JSON.stringify(circle) != JSON.stringify({})){
             return (
                 <MapView.Circle
@@ -770,28 +776,38 @@ class SearchResultMap extends Component {
         && Math.abs(center.lon - region.longitude) <= PADDING;
     let color = isCurrentPos ? gui.mainColor : 'black';
     return (
-        <TouchableOpacity onPress={this._onCurrentLocationPress.bind(this)} >
+        <TouchableOpacity   disabled={this.state.positionSearchPress || this.state.drawSearchPress || this.props.search.drawSearchMode}
+                            onPress={this._onCurrentLocationPress.bind(this)} >
           <View style={[styles.bubble, styles.button, {marginTop: 10}]}>
-            <RelandIcon name="direction" color={color} mainProps={{flexDirection: 'row'}}
-                        size={20} textProps={{paddingLeft: 0}}
-                        noAction={true}></RelandIcon>
+              { this.state.myLocationSearchPress ?
+                  (<RelandIcon name="close" color='black' mainProps={{flexDirection: 'row'}}
+                        size={15} textProps={{paddingLeft: 0}}
+                        noAction={true}></RelandIcon>) :
+                  (<RelandIcon name="direction" color={color}
+                               mainProps={{flexDirection: 'row'}}
+                               size={20} textProps={{paddingLeft: 0}}
+                               noAction={true}></RelandIcon>)
+              }
           </View>
         </TouchableOpacity>
     );
   }
 
-  _renderNSearchMap() {
-      let iconName = this.state.positionSearchPress ? 'map-view' : 'close';
+    _renderPositionSearchButton() {
+        let iconName = this.state.positionSearchPress ? 'map-view' : 'close';
+        let mainColor = this.state.positionSearchPress ? gui.mainColor : 'black';
         return (
-            <TouchableOpacity onPress={this._onMMapSearch.bind(this)} >
+            <TouchableOpacity   disabled={this.state.myLocationSearchPress || this.props.search.drawSearchMode}
+                                onPress={this._onMMapSearch.bind(this)} >
                 <View style={[styles.bubble2, styles.button, {marginTop: 1}]}>
                     {!this.state.positionSearchPress ?
                     <View style={{flexDirection: 'column', justifyContent: 'center', alignItems: 'center'}}>
-                        <RelandIcon name="map-view" color='black' mainProps={{flexDirection: 'row'}}
+                        <RelandIcon name="map-view" color={mainColor}
+                                    mainProps={{flexDirection: 'row'}}
                                     size={24} textProps={{paddingLeft: 0}}
                                     noAction={true}></RelandIcon>
                         < View style = {styles.viewIconDiaDiem}>
-                            <Text style={styles.textIconDiaDiem}>Địa điểm</Text>
+                            <Text style={[styles.textIconDiaDiem, {color: mainColor}]}>Địa điểm</Text>
                         </View>
                     </View> :
                     <RelandIcon name="close" color='black' mainProps={{flexDirection: 'row'}}
@@ -810,10 +826,11 @@ class SearchResultMap extends Component {
           Actions.MMapSearch({ onPress: this._onVitri.bind(this), location: this.state.region });
       } else {
           this.setState({positionSearchPress: false});
-
           this.props.actions.onSearchFieldChange("circle", {});
-
           this.setState({circle: {}});
+          this.props.actions.onPositionSearchModeChange(false);
+          this.props.actions.onCircleChange({});
+          this.props.actions.onSearchFieldChange("circle", {});
       }
   }
 
@@ -836,6 +853,9 @@ class SearchResultMap extends Component {
         this.props.actions.onDrawModeChange(false);
         this.props.actions.onPolygonsChange([]);
         this.props.actions.onSearchFieldChange("polygon", []);
+
+        this.props.actions.onPositionSearchModeChange(true);
+        this.props.actions.onCircleChange(circle);
         this.props.actions.onSearchFieldChange("circle", sCircle);
 
         this.setState({
@@ -846,7 +866,8 @@ class SearchResultMap extends Component {
   _renderDrawButton() {
     let drawIconColor = this.props.search.map.polygons && this.props.search.map.polygons.length == 0 && this.props.search.drawMode ? gui.mainColor : 'black';
     return (
-        <TouchableOpacity onPress={this._onDrawPressed.bind(this)} >
+        <TouchableOpacity   disabled={this.state.positionSearchPress || this.state.myLocationSearchPress}
+                            onPress={this._onDrawPressed.bind(this)} >
           <View style={[styles.bubble, styles.button, {flexDirection: 'column'}]}>
             {this.props.search.map.polygons && this.props.search.map.polygons.length > 0 ? (
                 <RelandIcon name="close" color='black' mainProps={{flexDirection: 'row'}}
@@ -1200,6 +1221,10 @@ class SearchResultMap extends Component {
   _onCurrentLocationPress(){
     console.log("Call SearchResultMap._onCurrentLocationPress");
 
+    //TODO: tam thoi them de fix issue dinh marker, can remove khi co giai phap tot hon
+    let myLocationSearchPress = this.state.myLocationSearchPress;
+    this.setState({myLocationSearchPress: !myLocationSearchPress});
+
     navigator.geolocation.getCurrentPosition(
         (position) => {
           //this._requestNearby(position.coords.latitude, position.coords.longitude);
@@ -1243,6 +1268,12 @@ class SearchResultMap extends Component {
 
   _onDrawPressed(){
     console.log("SearchResultMap._onDrawPressed");
+
+    //TODO: tam thoi them de fix issue dinh marker, can remove khi co giai phap tot hon
+    let drawSearchPress = this.state.drawSearchPress;
+    this.setState({drawSearchPress: !drawSearchPress});
+    let drawSearchMode = this.props.search.drawSearchMode;
+    this.props.actions.onDrawSearchModeChange(!drawSearchMode);
 
     var {polygons} = this.props.search.map;
     var openDraw = !polygons || polygons.length === 0;
@@ -1307,6 +1338,7 @@ class SearchResultMap extends Component {
       openDraw: false
     });
     this.props.actions.onDrawModeChange(false);
+    this.props.actions.onDrawSearchModeChange(false);
     this.props.actions.onPolygonsChange([]);
     this.props.actions.onSearchFieldChange("polygon", []);
   }

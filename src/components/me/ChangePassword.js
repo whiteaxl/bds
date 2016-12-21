@@ -105,7 +105,7 @@ class ChangePassword extends Component {
         (res) => {
             if (res.success){
                 Alert.alert("Bạn đổi mật khẩu thành công!");
-                this.props.actions.logout(this.props.global.currentUser.userID);
+                this.props.actions.logout(this.props.global.currentUser);
                 Actions.pop();
                 Actions.pop();
             } else {

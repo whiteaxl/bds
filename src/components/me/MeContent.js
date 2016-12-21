@@ -72,7 +72,7 @@ class MeContent extends Component {
   }
 
   _onLogout() {
-    this.props.actions.logout(this.props.global.currentUser.userID);
+    this.props.actions.logout(this.props.global.currentUser);
   }
 
   _onTopup() {

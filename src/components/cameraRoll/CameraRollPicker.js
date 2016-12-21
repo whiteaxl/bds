@@ -7,6 +7,7 @@ import {
     Text,
     ListView,
     ActivityIndicator,
+    Alert
 } from 'react-native';
 import ImageItem from './ImageItem';
 
@@ -59,8 +60,18 @@ class CameraRollPicker extends Component {
         }
 
         CameraRoll.getPhotos(fetchParams)
-            .then((data) => this._appendImages(data), (e) => console.log(e));
+            .then((data) => this._appendImages(data), (e) => this._alertError(e));
     }
+
+    _alertError(err){
+        console.log(err.message);
+        if (err.message.indexOf("User denied access")>=0){
+            Alert.alert("Thông báo", "Ứng dụng không được phép truy cập thư viện ảnh. Bạn hãy thay đổi setting để sử dụng được chức năng này");
+        } else {
+            console.log(err);
+        }
+    }
+
 
     _appendImages(data) {
         var assets = data.edges;
@@ -286,7 +297,7 @@ CameraRollPicker.defaultProps = {
         console.log(currentImage);
         console.log(selectedImages);
     },
-    emptyText: 'No photos.',
+    emptyText: '',
 }
 
 export default CameraRollPicker;

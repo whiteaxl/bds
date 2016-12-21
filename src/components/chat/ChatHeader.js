@@ -64,7 +64,7 @@ class ChatHeader extends Component {
           {this.props.chat.partner.fullName}
         </Text>
         <Text style={styles.customPageTitleNote}>
-           Đang trực tuyến
+            {this.props.chat.partner.isOnline ? "Đang trực tuyến" : "Không trực tuyến"}
         </Text>
       </View>
 

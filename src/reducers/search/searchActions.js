@@ -14,7 +14,10 @@ import {NetInfo} from 'react-native';
 const {
   ON_ALERT_US_CHANGE,
   ON_POLYGONS_CHANGE,
+  ON_CIRCLE_CHANGE,
   ON_DRAW_MODE_CHANGE,
+  ON_POSITION_SEARCH_MODE_CHANGE,
+  ON_DRAW_SEARCH_MODE_CHANGE,
   ON_RESET_LIST_ADS,
   ON_CHANGE_MAP_PAGE_NO,
   ON_CHANGE_LIST_SCROLL_POS,
@@ -92,6 +95,21 @@ export function onDrawModeChange(loading) {
   }
 }
 
+export function onPositionSearchModeChange(loading) {
+  return {
+    type: ON_POSITION_SEARCH_MODE_CHANGE,
+    payload: loading
+  }
+}
+
+export function onDrawSearchModeChange(loading) {
+  return {
+    type: ON_DRAW_SEARCH_MODE_CHANGE,
+    payload: loading
+  }
+}
+
+
 export function onResetAdsList() {
   return {
     type: ON_RESET_LIST_ADS,
@@ -116,6 +134,13 @@ export function onChangeListScrollPos(pos) {
 export function onPolygonsChange(loading) {
   return {
     type: ON_POLYGONS_CHANGE,
+    payload: loading
+  }
+}
+
+export function onCircleChange(loading) {
+  return {
+    type: ON_CIRCLE_CHANGE,
     payload: loading
   }
 }

@@ -231,7 +231,7 @@ export default function inboxReducer(state = initialState, action) {
           let updateItem = JSON.parse(JSON.stringify(allRows[i]));
           updateItem.date = msg.date ? new Date(msg.date) : new Date();
           updateItem.content = msg.content;
-          updateItem.numOfUnreadMessage = updateItem.numOfUnreadMessage + 1;
+          updateItem.numOfUnreadMessage = updateItem.numOfUnreadMessage||0 + 1;
           newInboxList = [updateItem, ...allRows.slice(0,i), ...allRows.slice(i+1)];
           changed = true;
           break;
