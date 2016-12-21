@@ -378,11 +378,13 @@ class AdsListTab2 extends Component {
     }
     _onDeleteContent(){
         console.log('=============== press Delete content button');
+        //Alert.alert('Thông báo', 'Coming soon...');
 
     }
 
     _onChangeContent(){
         console.log('=============== press Change content button');
+        //Alert.alert('Thông báo', 'Coming soon...');
     }
 
     renderRow(rowData, sectionID, rowID) {
@@ -740,7 +742,7 @@ var myStyles = StyleSheet.create({
     },
     textDelete:{
         color:'#fff',
-        fontSize:18,
+        fontSize:16,
         fontFamily:gui.fontFamily,
         fontWeight:'500'
     },
@@ -772,7 +774,7 @@ var myStyles = StyleSheet.create({
     },
     viewSua:{
         width:75,
-        backgroundColor:'#ffcf00',
+        backgroundColor:'#ffa600',
         height:imgHeight,
         alignItems: 'center',
         justifyContent:'center'

@@ -65,7 +65,8 @@ class InboxContent extends React.Component {
   }
 
   coming() {
-    Alert.alert("Coming soon...");
+    console.log('================ press to change inbox ');
+    //Alert.alert('Thông báo', 'Coming soon...');
   }
 
   onDelete() {
@@ -156,20 +157,22 @@ class InboxContent extends React.Component {
                 dataSource={this.props.inbox.allInboxDS}
                 renderRow={this.renderRow.bind(this)}
                 style={styles.listView}
-
                 renderHiddenRow={ data => (
                 <View style={styles.rowBack}>
                   <TouchableOpacity onPress = { () => this.onDelete(data)} >
-                    <Text style={styles.saveText}>Lưu trữ</Text>
+                    <View style={styles.viewDeleteInbox}>
+                      <Text style={styles.saveText}>Xóa</Text>
+                    </View>
                   </TouchableOpacity>
                   <TouchableOpacity onPress = { () => this.onDelete(data)} >
-                    <Text style={styles.deleteText}>Xóa</Text>
+                    <View style={styles.viewSaveInbox}>
+                      <Text style={styles.saveText}>Lưu</Text>
+                    </View>
                   </TouchableOpacity>
                 </View>
             )}
-
-                rightOpenValue={-75}
-                leftOpenValue={75}
+                disableRightSwipe={true}
+                rightOpenValue={-130}
             />
             <Text style={styles.bottomText}>Tất cả đã được hiển thị</Text>
           </ScrollView>
@@ -228,17 +231,24 @@ var styles = StyleSheet.create({
     color: "white",
     fontWeight : 'normal',
     textAlign:'center',
-    paddingLeft:10
+    fontWeight:'500'
   },
-  deleteText : {
-    fontSize: 16,
-    fontFamily: 'Open Sans',
-    color: "white",
-    fontWeight : 'normal',
-    textAlign:'center',
-    paddingRight:20
-    },
-
+  viewSaveInbox:{
+    right:0,
+    width:65,
+    backgroundColor:'#00a8e6',
+    height:70,
+    alignItems: 'center',
+    justifyContent:'center'
+  },
+  viewDeleteInbox:{
+    right:0,
+    width:65,
+    backgroundColor:'#ff2000',
+    height:70,
+    alignItems: 'center',
+    justifyContent:'center'
+  },
   text: {
     flex: 1,
     alignSelf:'center',
@@ -352,10 +362,10 @@ var styles = StyleSheet.create({
   },
   rowBack: {
     alignItems: 'center',
-    backgroundColor: gui.mainColor,
+    backgroundColor: '#fff',
     flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'flex-end',
     paddingLeft: 0,
   },
 

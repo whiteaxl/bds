@@ -106,7 +106,8 @@ class PostAdsGoogleAutoComplete extends React.Component {
                   backgroundColor: 'white'
                 },
                 row : {
-                  height: 44
+                  height: 44,
+                  padding: 30,
                 },
                 separator:{
                   backgroundColor: "#E9E9E9",
