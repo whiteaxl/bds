@@ -163,6 +163,7 @@ class AdsListView extends React.Component {
   // }
 
   handleScroll(event: Object) {
+
     // if (event.nativeEvent.contentOffset.y < -100) {
     //   let myProps = this.props;
     //

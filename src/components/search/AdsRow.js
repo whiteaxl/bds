@@ -9,6 +9,8 @@ import LinearGradient from 'react-native-linear-gradient';
 import log from '../../lib/logUtil';
 import DanhMuc from '../../assets/DanhMuc';
 import MHeartIcon from '../MHeartIcon';
+import FullLine from '../line/FullLine';
+
 import CommonUtils from '../../lib/CommonUtils';
 import gui from '../../lib/gui';
 import GiftedSpinner from 'react-native-gifted-spinner';
@@ -170,32 +172,46 @@ class AdsRow extends React.Component {
         </View>;
       } else {
         if (showFirstControl) {
-          firstControl = <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>
-            <TouchableHighlight onPress={this.props.loadPreviousPage} underlayColor="transparent">
-              <View style={{flexDirection: 'column'}}>
-                <Text style={myStyles.rowControl}>Nhấn vào đây để quay lại trang trước</Text>
-                <Text style={myStyles.pagingTitle}>{this.props.getPagingTitle()}</Text>
+          firstControl =
+              <View>
+              <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>
+                <TouchableHighlight onPress={this.props.loadPreviousPage} underlayColor="transparent">
+                  <View style={{flexDirection: 'column'}}>
+                    <Text style={myStyles.rowControl}>Nhấn vào đây để quay lại trang trước</Text>
+                    <Text style={myStyles.pagingTitle}>{this.props.getPagingTitle()}</Text>
+                  </View>
+                </TouchableHighlight>
+                <FullLine/>
               </View>
-            </TouchableHighlight>
           </View>;
         } else {
-          firstControl = <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>
-            <View>
-              <Text style={myStyles.pagingTitle}>{this.props.getPagingTitle()}</Text>
-            </View>
-          </View>;
+          firstControl =
+              <View>
+                <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>
+                  <View>
+                    <Text style={myStyles.pagingTitle}>{this.props.getPagingTitle()}</Text>
+                  </View>
+                </View>
+                <FullLine />
+              </View>
+          ;
         }
       }
     }
     if (showLastControl && isLastRow) {
-      lastControl = <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>
-        <TouchableHighlight onPress={this.props.loadNextPage} underlayColor="transparent">
-        <View style={{flexDirection: 'column'}}>
-          <Text style={myStyles.rowControl}>Nhấn vào đây để đi đến trang sau</Text>
-          <Text style={myStyles.pagingTitle}>{this.props.getPagingTitle()}</Text>
-        </View>
-      </TouchableHighlight>
-      </View>;
+      lastControl =
+          <View>
+            <FullLine/>
+            <View style={{flex: 0, height: 40, alignItems: 'center', justifyContent: 'center'}}>
+              <TouchableHighlight onPress={this.props.loadNextPage} underlayColor="transparent">
+                <View style={{flexDirection: 'column'}}>
+                  <Text style={myStyles.rowControl}>Nhấn vào đây để đi đến trang sau</Text>
+                  <Text style={myStyles.pagingTitle}>{this.props.getPagingTitle()}</Text>
+                </View>
+              </TouchableHighlight>
+            </View>
+          </View>
+            ;
     }
     return (
       <View key={ads.adsID} style={{flexDirection: 'column'}}>
