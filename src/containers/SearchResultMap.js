@@ -1335,7 +1335,8 @@ class SearchResultMap extends Component {
       openDetailAdsModal: false,
       openLocalInfo: false,
       editing: null,
-      openDraw: false
+      openDraw: false,
+      noAdsCount: 1
     });
     this.props.actions.onDrawModeChange(false);
     this.props.actions.onDrawSearchModeChange(false);

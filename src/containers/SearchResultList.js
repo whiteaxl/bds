@@ -156,7 +156,7 @@ class SearchResultList extends Component {
                         {...this.props} noCoverUrl={noCoverUrl} scrollToTop={this._scrollToTop.bind(this)}/>
                 </View>
 
-                {/*this._renderTotalResultView()*/}
+                {this._renderTotalResultView()}
 
                 <View style={myStyles.searchButton}>
                     <SearchResultFooter center = {this.props.fields.center}
@@ -223,7 +223,9 @@ class SearchResultList extends Component {
             </View>)
         }
 
-        return (<View style={myStyles.resultContainer}>
+        return null;
+
+        /*return (<View style={myStyles.resultContainer}>
             <Animatable.View animation={showMessage ? "fadeIn" : "fadeOut"}
                              duration={showMessage ? 500 : 3000}>
                 <LinearGradient colors={['rgba(184, 184, 184, 0.75)', 'transparent']}
@@ -234,6 +236,7 @@ class SearchResultList extends Component {
                 </LinearGradient>
             </Animatable.View>
         </View>)
+        */
     }
 }
 

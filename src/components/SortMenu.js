@@ -122,7 +122,15 @@ class SortMenu extends Component {
                         <Text style={myStyles.sortText}>Sắp xếp</Text>
                         {/*<RelandIcon name="sort-alt" size={24} text="Sắp xếp" textProps={myStyles.sortText} noAction={true}/>*/}
                     </MenuTrigger>
-                    <MenuOptions optionsContainerStyle={myStyles.dropdownOptions2}>
+                    <MenuOptions optionsContainerStyle={myStyles.dropdownOptions2}
+                                 renderOptionsContainer={(options) =>
+                                 <View style={{flexDirection: 'column', alignSelf: 'flex-start'}}>
+                                     <View style={myStyles.bubble}>
+                                        {options}
+                                     </View>
+                                    <View style={[myStyles.arrowBorder,{borderTopColor: 'lightgray'}]} />
+                                    <View style={[myStyles.arrow, {borderTopColor: 'white'}]} />
+                                 </View>}>
                         {optionList}
                     </MenuOptions>
                 </Menu>
@@ -232,6 +240,35 @@ var myStyles = StyleSheet.create({
         alignItems: 'stretch',
         backgroundColor: 'white'
     },
+    bubble: {
+        flex: 0,
+        flexDirection: 'row',
+        alignSelf: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: 'white',
+        padding: 0,
+        borderRadius: 10,
+        borderColor: 'lightgray',
+        borderWidth: 0.5
+    },
+    arrow: {
+        backgroundColor: 'transparent',
+        borderWidth: 14,
+        borderColor: 'transparent',
+        borderTopColor: 'white',
+        alignSelf: 'flex-start',
+        marginLeft: 20,
+        marginTop: -29
+    },
+    arrowBorder: {
+        backgroundColor: 'transparent',
+        borderWidth: 14,
+        borderColor: 'transparent',
+        borderTopColor: 'lightgray',
+        alignSelf: 'flex-start',
+        marginLeft: 20,
+        marginTop: -0.5
+    },
     choiceList: {
         paddingTop: 10,
         paddingLeft: 26,
@@ -272,11 +309,12 @@ var myStyles = StyleSheet.create({
     },
     dropdownOptions2: {
         borderColor: '#ccc',
-        borderWidth: 1,
+        borderWidth: 0,
         marginTop: -310,
         left: 10,
         overflow: 'hidden',
-        width: 226
+        width: 226,
+        backgroundColor: 'transparent'
     },
     sortText: {
         fontSize: gui.buttonFontSize
