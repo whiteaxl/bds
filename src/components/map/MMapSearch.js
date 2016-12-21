@@ -3,7 +3,7 @@
 import React, {Component} from 'react';
 
 import { Text, View, StyleSheet, Navigator, TouchableOpacity,
-    TouchableHighlight, Dimensions, StatusBar } from 'react-native'
+    TouchableHighlight, Dimensions, StatusBar, Alert } from 'react-native'
 
 import {Actions} from 'react-native-router-flux';
 import MapView from 'react-native-maps';
@@ -76,8 +76,14 @@ class MMapSearch extends Component {
     }
 
     _onThucHien(){
-        this.props.onPress(this.state.circle);
-        Actions.pop();
+        var circle = JSON.parse(JSON.stringify(this.state.circle));
+        if(circle.radius !== 0) {
+            this.props.onPress(this.state.circle);
+            Actions.pop();
+        }else{
+            Alert.alert('Thông báo', 'Bạn phải chọn bán kính để thực hiện tìm kiếm') ;
+        }
+
     }
 
     render() {
@@ -182,7 +188,7 @@ class MMapSearch extends Component {
             <TouchableHighlight onPress={this._onPress.bind(this)} style={styles.touchSearch}>
                 <View style={styles.searchTextContainer}>
                     <View style={{height:28, width:32, backgroundColor:'transparent', left:20, justifyContent:'center', alignItems:'flex-start'}}>
-                        <RelandIcon name="search" color='#8a8a8a' mainProps={{marginTop:10, marginLeft:6}}
+                        <RelandIcon name="search" color='#8a8a8a' mainProps={{top:8, marginLeft:6}}
                                     size={18} textProps={{}}
                         />
                     </View>
