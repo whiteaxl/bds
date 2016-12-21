@@ -453,7 +453,6 @@ class NPostAdsDetail extends Component {
     _renderNamXayDung() {
         return (
             <View>
-                <FullLine style={{marginLeft:17}} />
 
                 <View style={[myStyles.headerSeparator, { paddingTop: 9, marginBottom: 7, marginLeft: 17, paddingLeft: 0 }]} >
                     <TouchableHighlight onPress={() => this._onNamXayDungPressed()}
@@ -634,15 +633,14 @@ class NPostAdsDetail extends Component {
             return (
                 <View>
                     {this._renderCategoryTitle('THÔNG TIN KHÁC')}
-                    <FullLine />
+                    <FullLine/>
+
                     {this._renderMatTien()}
 
                     {this._renderDuongTruocNha()}
 
                     {this._renderNamXayDung()}
-                    <FullLine />
-                    {this._renderCategoryTitle('')}
-                    <FullLine />
+
                     {this._renderNhaMoiXay()}
 
                     {this._renderNhaLoGoc()}
@@ -661,6 +659,7 @@ class NPostAdsDetail extends Component {
             return (
                 <View>
                     {this._renderCategoryTitle('')}
+                    <FullLine/>
                     <View style={[myStyles.headerSeparator, { paddingTop: 9, marginBottom: 7, paddingLeft: 0 }]} >
                         <TouchableOpacity
                             disabled = {!this.isUploading.bind(this)}
@@ -672,18 +671,19 @@ class NPostAdsDetail extends Component {
                             </View>
                         </TouchableOpacity>
                     </View>
+                    <FullLine/>
                 </View>
             );
         }
     }
     _renderResetButton() {
         return (
-            <View style={[myStyles.headerSeparator, { paddingTop: 9, marginBottom: 7, paddingLeft: 0 }]} >
+            <View style={[myStyles.headerSeparator, { paddingTop: 9, marginBottom: 15, paddingLeft: 0 }]} >
                 <TouchableOpacity
                     disabled = {!this.isUploading.bind(this)}
                     onPress={() => this._onResetButtonPressed()}>
                     <View style={[myStyles.imgList, { justifyContent: 'center' }]} >
-                        <Text style={[myStyles.label, { color: 'red' }]}>
+                        <Text style={[myStyles.label, { color: '#ff0000' }]}>
                             Thiết lập lại
                         </Text>
                     </View>
